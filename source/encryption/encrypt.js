@@ -37,7 +37,8 @@
 		},
 
 		packEncryptedContent: function(encryptedContent, iv, authTag) {
-			return lib.zeroPad(iv.length) + iv + lib.zeroPad(authTag.length) + authTag + encryptedContent;
+			var tag = (typeof authTag !== "string") ? authTag.toString("hex") : tag;
+			return lib.zeroPad(iv.length) + iv + lib.zeroPad(tag.length) + tag + encryptedContent;
 		},
 
 		zeroPad: function(text) {
