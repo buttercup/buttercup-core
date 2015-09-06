@@ -2,8 +2,11 @@
 
 	"use strict";
 
-	var Encryption = require(__dirname + "/encryption/encrypt.js"),
-		Decryption = require(__dirname + "/encryption/decrypt.js");
+	GLOBAL.root = __dirname;
+
+	// Encryption info from: http://lollyrock.com/articles/nodejs-encryption/
+	var Encryption = require(GLOBAL.root + "/encryption/encrypt.js"),
+		Decryption = require(GLOBAL.root + "/encryption/decrypt.js");
 
 	module.exports = {
 
