@@ -1,0 +1,26 @@
+{
+	"name": "buttercup",
+	"version": "0.1.1",
+	"description": "A NodeJS password vault.",
+	"main": "source/app.js",
+	"scripts": {
+		"test": "npm run test"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/perry-mitchell/buttercup.git"
+	},
+	"keywords": [
+		"password",
+		"vault"
+	],
+	"author": "Perry Mitchell <perry@perrymitchell.net>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/perry-mitchell/buttercup/issues"
+	},
+	"homepage": "https://github.com/perry-mitchell/buttercup#readme",
+	"dependencies": {
+		
+	}
+}

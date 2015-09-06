@@ -1,0 +1,10 @@
+(function() {
+
+	"use strict";
+
+	var Buttercup = require(__dirname + "/module.js");
+
+	var encrypted = Buttercup.encryptText("I love NodeJS!", "an amazing monkey");
+	console.log(encrypted);
+
+})();
