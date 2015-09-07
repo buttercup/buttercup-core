@@ -1,0 +1,28 @@
+{
+	"title": "New archive",
+	"format": "buttercup/a",
+	"groups": [
+		{
+			"title": "Websites",
+			"parent": "",
+			"id": "ab9d3b478ad411bfe80316bae8b2fdc8ca094887f333259c1bbcaeb5f4982f1f"
+		},
+		{
+			"title": "Email",
+			"parent": "ab9d3b478ad411bfe80316bae8b2fdc8ca094887f333259c1bbcaeb5f4982f1f",
+			"id": "99cec83bc149b82230972534f17206c773e412c36a70003d3d8e8adc76e32ca6"
+		}
+	],
+	"entries": [
+		{
+			"title": "My site login",
+			"username": "someone@somesite.com",
+			"password": "sdvv5^.x8F1",
+			"group": "ab9d3b478ad411bfe80316bae8b2fdc8ca094887f333259c1bbcaeb5f4982f1f",
+			"urls": [
+				"http://somesite.com/login",
+				"http://somesite.com"
+			]
+		}
+	]
+}
