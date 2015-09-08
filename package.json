@@ -21,6 +21,6 @@
 	},
 	"homepage": "https://github.com/perry-mitchell/buttercup#readme",
 	"dependencies": {
-		
+		"promise-polyfill":				"2.1.x"
 	}
 }
