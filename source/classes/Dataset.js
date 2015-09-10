@@ -4,13 +4,18 @@
 
 	var Promise = require("promise-polyfill");
 
-	var Dataset = function() {
-		this._title = "";
-		this._groups = [];
-		this._entries = [];
+	var Dataset = function(data) {
+		data = data || {};
+		this._title = data.title || "";
+		this._groups = data.groups || [];
+		this._entries = data.entries || [];
 	};
 
 	Dataset.prototype.addVaultEntry = function(entry) {
+
+	};
+
+	Dataset.prototype.addVaultGroup = function(group) {
 
 	};
 
@@ -43,7 +48,12 @@
 	Dataset.loadFromDatasource = function(datasource, password) {
 		var _this = this;
 		return datasource.getData(password).then(function(data) {
-			console.log("Loaded data:", data);
+			return new Dataset({
+				title: data.title,
+				format: data.format,
+				groups: data.groups || [],
+				entries: data.entries || []
+			});
 		});
 	};	
 
