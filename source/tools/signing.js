@@ -11,6 +11,10 @@
 			return BUTTERCUP_FORMAT;
 		},
 
+		getSignature: function() {
+			return BUTTERCUP_SIGNATURE;
+		},
+
 		hasValidSignature: function(text) {
 			return text.indexOf(BUTTERCUP_SIGNATURE) === 0;
 		},
@@ -21,7 +25,7 @@
 
 		stripSignature: function(text) {
 			var sigLen = BUTTERCUP_SIGNATURE.length;
-			return text.substring(sigLen, text.length - sigLen);
+			return text.substr(sigLen, text.length - sigLen);
 		}
 
 	};

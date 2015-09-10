@@ -4,7 +4,10 @@
 	"description": "A NodeJS password vault.",
 	"main": "source/app.js",
 	"scripts": {
-		"test": "npm run test"
+		"test": "nodeunit tests"
+	},
+	"bin": {
+		"nodeunit": "node_modules/nodeunit/bin/nodeunit"
 	},
 	"repository": {
 		"type": "git",
@@ -21,6 +24,7 @@
 	},
 	"homepage": "https://github.com/perry-mitchell/buttercup#readme",
 	"dependencies": {
+		"nodeunit": 					"0.9.x",
 		"promise-polyfill":				"2.1.x"
 	}
 }

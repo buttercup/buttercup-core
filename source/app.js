@@ -6,7 +6,7 @@
 		Dataset = require(__dirname + "/classes/Dataset.js"),
 		FileDatasource = require(__dirname + "/classes/FileDatasource.js");
 
-	var datasource = new FileDatasource("/home/perry/temp.bcp");
+	var datasource = new FileDatasource("/Users/pez/temp.bcp");
 
 	var dataset = new Dataset();
 	dataset._title = "Perry's archive";
