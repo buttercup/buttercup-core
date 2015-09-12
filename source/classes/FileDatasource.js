@@ -15,17 +15,15 @@
 		return {
 			title: 				obj.title || "",
 			format: 			obj.format || "",
-			groups: 			typeTool.isArray(obj.groups) ? obj.groups : [],
-			entries: 			typeTool.isArray(obj.entries) ? obj.entries : []
+			groups: 			typeTool.isArray(obj.groups) ? obj.groups : []
 		};
 	}
 
-	function marshalNewData(details, groups, entries) {
+	function marshalNewData(details, groups) {
 		return {
 			title: 				details.title || "",
 			format: 			signing.getFormat(),
-			groups: 			groups,
-			entries: 			entries
+			groups: 			groups
 		};
 	}
 
@@ -76,9 +74,9 @@
 		});
 	};
 
-	FileDatasource.prototype.setData = function(password, details, groups, entries) {
+	FileDatasource.prototype.setData = function(password, details, groups) {
 		var filename = this._filename,
-			data = marshalNewData(details, groups, entries),
+			data = marshalNewData(details, groups),
 			textData = JSON.stringify(data),
 			encrypted = Encryption.encrypt(textData, password);
 		// sign archive
