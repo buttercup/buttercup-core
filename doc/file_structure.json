@@ -1,0 +1,28 @@
+{
+	"title": "New archive",
+	"format": "buttercup/a",
+	"groups": [
+		{
+			"title": "Websites",
+			"groups": [
+				{
+					"title": "Personal",
+					"entries": [
+						{
+							"title": "My site login",
+							"username": "someone@somesite.com",
+							"password": "sdvv5^.x8F1",
+							"urls": [
+								"http://somesite.com/login",
+								"http://somesite.com"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"title": "Email"
+		}
+	]
+}

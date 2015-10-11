@@ -1,10 +1,23 @@
 {
 	"name": "buttercup",
-	"version": "0.1.1",
+	"version": "0.1.1-a",
 	"description": "A NodeJS password vault.",
 	"main": "source/app.js",
+	"contributors": [
+		{
+			"name": "Perry Mitchell",
+			"email": "perry@perrymitchell.net"
+		},
+		{
+			"name": "Sallar Kaboli",
+			"email": "sallar.kaboli@gmail.com"
+		}
+	],
 	"scripts": {
-		"test": "npm run test"
+		"test": "nodeunit tests"
+	},
+	"bin": {
+		"nodeunit": "node_modules/nodeunit/bin/nodeunit"
 	},
 	"repository": {
 		"type": "git",
@@ -21,6 +34,8 @@
 	},
 	"homepage": "https://github.com/perry-mitchell/buttercup#readme",
 	"dependencies": {
-		
+		"clone":						"^1.0.2",
+		"nodeunit": 					"0.9.x",
+		"promise-polyfill":				"2.1.x"
 	}
 }

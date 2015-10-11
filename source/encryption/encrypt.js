@@ -3,7 +3,8 @@
 	"use strict";
 
 	var Crypto = require("crypto"),
-    	algorithm = "aes-256-gcm";
+    	algorithm = "aes-256-gcm",
+    	encoding = require(GLOBAL.root + "/tools/encoding.js");
 
     function encrypt(text, iv, password) {
     	var cipher = Crypto.createCipheriv(algorithm, password, iv);
@@ -33,7 +34,7 @@
 		},
 
 		hashPassword: function(password) {
-			return Crypto.createHash('sha256').update(password).digest();
+			return encoding.hashText(password);
 		},
 
 		packEncryptedContent: function(encryptedContent, iv, authTag) {

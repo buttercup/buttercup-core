@@ -2,18 +2,19 @@
 
 	"use strict";
 
-	var Encryption = require(__dirname + "/encryption/encrypt.js"),
-		Decryption = require(__dirname + "/encryption/decrypt.js");
+	GLOBAL.root = __dirname;
 
 	module.exports = {
 
-		decryptText: function(text, password) {
-			return Decryption.decrypt(text, password);
-		},
+		Dataset:  			require(GLOBAL.root + "/classes/Dataset.js"),
+		VaultGroup: 		require(GLOBAL.root + "/classes/VaultGroup.js"),
+		VaultEntry:  		require(GLOBAL.root + "/classes/VaultEntry.js"),
 
-		encryptText: function(text, password) {
-			return Encryption.encrypt(text, password);
-		}
+		FileDatasource: 	require(GLOBAL.root + "/classes/FileDatasource.js"),
+
+		// Encryption info from: http://lollyrock.com/articles/nodejs-encryption/
+		Encryption: require(GLOBAL.root + "/encryption/encrypt.js"),
+		Decryption: require(GLOBAL.root + "/encryption/decrypt.js")
 
 	};
 
