@@ -3,6 +3,16 @@
 	"version": "0.1.1-a",
 	"description": "A NodeJS password vault.",
 	"main": "source/app.js",
+	"contributors": [
+		{
+			"name": "Perry Mitchell",
+			"email": "perry@perrymitchell.net"
+		},
+		{
+			"name": "Sallar Kaboli",
+			"email": "sallar.kaboli@gmail.com"
+		}
+	],
 	"scripts": {
 		"test": "nodeunit tests"
 	},
