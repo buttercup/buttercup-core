@@ -24,7 +24,11 @@
 	}
 
 	function renderGroupsToRaw(groups) {
-
+		var raw = [];
+		groups.forEach(function(group) {
+			raw.push(group.toRaw());
+		});
+		return raw;
 	}
 
 	var Dataset = function(data) {
@@ -44,6 +48,11 @@
 	// Dataset.prototype.getEntriesData = function() {
 	// 	return this._entries;
 	// };
+
+	Dataset.prototype.addGroup = function(group) {
+		this._groups.push(group);
+		return this;
+	};
 
 	Dataset.prototype.getGroups = function() {
 		return this._groups;
@@ -67,6 +76,13 @@
 			},
 			groups
 		);
+	};
+
+	Dataset.prototype.toRaw = function() {
+		return {
+			title: this.getTitle(),
+			groups: this.getGroupsData()
+		};
 	};
 
 	Dataset.loadFromDatasource = function(datasource, password) {

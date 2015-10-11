@@ -34,9 +34,28 @@
 		return this;
 	};
 
+	VaultGroup.prototype.getChildGroups = function() {
+		return this._children;
+	};
+
+	VaultGroup.prototype.getTitle = function() {
+		return this._title;
+	};
+
 	VaultGroup.prototype.setTitle = function(title) {
 		this._title = title;
 		return this;
+	};
+
+	VaultGroup.prototype.toRaw = function() {
+		var raw = {
+			title: this.getTitle(),
+			groups: []
+		};
+		this.getChildGroups().forEach(function(group) {
+			raw.groups.push(group.toRaw());
+		});
+		return raw;
 	};
 
 	module.exports = VaultGroup;

@@ -5,7 +5,7 @@
 	var VaultEntry = function() {
 		this._data = {
 			properties: {
-				group: ""
+				
 			},
 			meta: {}
 		};
