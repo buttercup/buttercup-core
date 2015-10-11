@@ -3,7 +3,8 @@
 	"use strict";
 
 	var Promise = require("promise-polyfill"),
-		VaultGroup = require(__dirname + "/VaultGroup.js");
+		VaultGroup = require(__dirname + "/VaultGroup.js"),
+		VaultEntry = require(__dirname + "/VaultEntry.js");
 
 	function renderRawToGroups(groupsData) {
 		groupsData = groupsData || [];
@@ -17,7 +18,11 @@
 				group.addChildGroups(renderRawToGroups(groupData.groups));
 			}
 			if (groupData.entries) {
-				
+				var entries = [];
+				groupData.entries.forEach(function(entryData) {
+					entries.push(new VaultEntry(entryData));
+				});
+				group.addEntries(entries);
 			}
 		});
 		return groups;
