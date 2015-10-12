@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	
+	var Westley = require("./classes/WestleyParser.js");
 
 	/*var Buttercup = require(__dirname + "/module.js"),
 		Dataset = require(__dirname + "/classes/Dataset.js"),
