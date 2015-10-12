@@ -2,7 +2,9 @@
 
 	"use strict";
 
-	var Buttercup = require(__dirname + "/module.js"),
+	
+
+	/*var Buttercup = require(__dirname + "/module.js"),
 		Dataset = require(__dirname + "/classes/Dataset.js"),
 		VaultGroup = require(__dirname + "/classes/VaultGroup.js"),
 		VaultEntry = require(__dirname + "/classes/VaultEntry.js"),
@@ -32,6 +34,6 @@
 				.then(function(datasource2) {
 					console.log("D2", JSON.stringify(datasource2.toRaw()));
 				});
-		});
+		});*/
 
 })();
