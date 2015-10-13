@@ -26,9 +26,10 @@
 				if (groups[i].id === id) {
 					return groups[i];
 				}
-			}
-			if (groups.groups) {
-				return searching.findGroupByID(groups.groups, id);
+				var deepGroup = searching.findGroupByID(groups[i].groups, id);
+				if (deepGroup) {
+					return deepGroup;
+				}
 			}
 			return null;
 		}

@@ -7,6 +7,7 @@
 		encoding = require("./tools/encoding.js");
 
 	var mainGroupID = encoding.getUniqueID(),
+		secondGroupID = encoding.getUniqueID(),
 		firstEntryID = encoding.getUniqueID();
 
 	var parser = new Westley();
@@ -16,7 +17,10 @@
 		'tgr ' + mainGroupID + ' "Perry\'s websites"',
 		'cen ' + mainGroupID + ' ' + firstEntryID,
 		'sep ' + firstEntryID + ' title "Blog login"',
-		'sem ' + firstEntryID + ' "security key" "9924dd--..$#(*&^)&*#^$% ;; !![]\\\"\\\"..."'
+		'sem ' + firstEntryID + ' "security key" "9924dd--..$#(*&^)&*#^$% ;; !![]\\\"\\\"..."',
+
+		'cgr ' + mainGroupID + ' ' + secondGroupID,
+		'tgr ' + secondGroupID + ' "Work-related"'
 	].forEach(function(command) {
 		parser.execute(command);
 	});
