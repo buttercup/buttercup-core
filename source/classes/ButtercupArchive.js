@@ -7,11 +7,18 @@
 		ManagedGroup = require(__dirname + "/ManagedGroup.js"),
 		ManagedEntry = require(__dirname + "/ManagedEntry.js");
 
+	var signing = require(__dirname + "/../tools/signing.js");
+
 	var Archive = function() {
 		this._westley = new Westley();
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.Comment)
 				.addArgument('Buttercup archive created (todo: date)')
+				.generateCommand()
+		);
+		this._getWestley().execute(
+			Inigo.create(Inigo.Command.Format)
+				.addArgument(signing.getFormat())
 				.generateCommand()
 		);
 	};
