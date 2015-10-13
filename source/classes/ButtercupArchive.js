@@ -4,9 +4,7 @@
 
 	var Westley = require(__dirname + "/WestleyParser.js"),
 		Inigo = require(__dirname + "/InigoGenerator.js"),
-		ManagedGroup = require(__dirname + "/ManagedGroup.js"),
-		encoding = require(__dirname + "/../tools/encoding.js"),
-		searching = require(__dirname + "/commands/searching.js");
+		ManagedGroup = require(__dirname + "/ManagedGroup.js");
 
 	var Archive = function() {
 		this._westley = new Westley();
@@ -18,16 +16,10 @@
 	};
 
 	Archive.prototype.createGroup = function(title) {
-		var id = encoding.getUniqueID();
-		this._getWestley().execute(
-			Inigo.create(Inigo.Command.CreateGroup)
-				.addArgument("0")
-				.addArgument(id)
-				.generateCommand()
-		);
-		var group = searching.findGroupByID(this._getWestley().getDataset().groups, id),
-			managedGroup = new ManagedGroup(this._getWestley(), group);
-		managedGroup.setTitle(title);
+		var managedGroup = ManagedGroup.createNew(this._getWestley());
+		if (title) {
+			managedGroup.setTitle(title);
+		}
 		return managedGroup;
 	};
 
