@@ -8,6 +8,7 @@
 
 	var mainGroupID = encoding.getUniqueID(),
 		secondGroupID = encoding.getUniqueID(),
+		thirdGroupID = encoding.getUniqueID(),
 		firstEntryID = encoding.getUniqueID(),
 		secondEntryID = encoding.getUniqueID();
 
@@ -15,16 +16,21 @@
 	[
 		'cmm "This is \\\" a new \\\" comment"',
 		'cgr 0 ' + mainGroupID,
-		'tgr ' + mainGroupID + ' "Perry\'s websites"',
+		'tgr ' + mainGroupID + ' "First group"',
 		'cen ' + mainGroupID + ' ' + firstEntryID,
 		'sep ' + firstEntryID + ' title "Blog login"',
 		'sem ' + firstEntryID + ' "security key" "9924dd--..$#(*&^)&*#^$% ;; !![]\\\"\\\"..."',
 
 		'cgr ' + mainGroupID + ' ' + secondGroupID,
-		'tgr ' + secondGroupID + ' "Work-related"',
+		'tgr ' + secondGroupID + ' "Second group"',
 		'cen ' + secondGroupID + ' ' + secondEntryID,
 		'sep ' + secondEntryID + ' title "Second entry"',
-		'men ' + secondEntryID + ' ' + mainGroupID
+		'men ' + secondEntryID + ' ' + mainGroupID,
+
+		'cgr ' + secondGroupID + ' ' + thirdGroupID,
+		'tgr ' + thirdGroupID + ' "Third group"',
+		'mgr ' + thirdGroupID + ' ' + mainGroupID,
+		'mgr ' + thirdGroupID + ' ' + '0'
 	].forEach(function(command) {
 		parser.execute(command);
 	});

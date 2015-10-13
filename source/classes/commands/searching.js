@@ -54,9 +54,29 @@
 				}
 				if (group.groups) {
 					var deepGroup = searching.findGroupContainingEntryID(group.groups, id);
-					if (deepGroup) {
+					if (deepGroup.group) {
 						return deepGroup;
 					}
+				}
+			}
+			return {
+				group: null,
+				index: null
+			};
+		},
+
+		findGroupContainingGroupID: function(group, id) {
+			var groups = group.groups || [];
+			for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
+				if (groups[i].id === id) {
+					return {
+						group: group,
+						index: i
+					};
+				}
+				var deepGroup = searching.findGroupContainingGroupID(groups[i], id);
+				if (deepGroup.group) {
+					return deepGroup;
 				}
 			}
 			return {
