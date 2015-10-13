@@ -4,7 +4,8 @@
 
 	var Westley = require("./classes/WestleyParser.js"),
 		library = require("./module.js"),
-		encoding = require("./tools/encoding.js");
+		encoding = require("./tools/encoding.js"),
+		signing = require("./tools/signing.js");
 
 	var mainGroupID = encoding.getUniqueID(),
 		secondGroupID = encoding.getUniqueID(),
@@ -15,6 +16,7 @@
 	var parser = new Westley();
 	[
 		'cmm "This is \\\" a new \\\" comment"',
+		'fmt ' + signing.getFormat(),
 		'cgr 0 ' + mainGroupID,
 		'tgr ' + mainGroupID + ' "First group"',
 		'cen ' + mainGroupID + ' ' + firstEntryID,
