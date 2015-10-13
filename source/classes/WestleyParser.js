@@ -27,7 +27,7 @@
 			if (item === quotedStringPlaceholder) {
 				item = matches.shift();  
 			}
-			item = item.replace(new RegExp(escapedQuotePlaceholder, 'g'), "\\\"");
+			item = item.replace(new RegExp(escapedQuotePlaceholder, 'g'), '"');
 			return item;
 		});
 
@@ -36,6 +36,7 @@
 
 	var Westley = function() {
 		this._dataset = {};
+		this._history = [];
 	};
 
 	Westley.prototype.execute = function(command) {
@@ -51,8 +52,17 @@
 		} catch (err) {
 			throw new Error("Unrecognised command: " + commandKey);
 		}
+		this._history.push(command);
 		this._dataset = commandExecute.apply(commandExecute, [this._dataset].concat(commandComponents))
 			|| this._dataset;
+	};
+
+	Westley.prototype.getDataset = function() {
+		return this._dataset;
+	};
+
+	Westley.prototype.getHistory = function() {
+		return this._history;
 	};
 
 	module.exports = Westley;

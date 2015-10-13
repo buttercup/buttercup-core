@@ -6,6 +6,8 @@
 
 	module.exports = {
 
+		Archive: require(GLOBAL.root + "/classes/ButtercupArchive.js"),
+
 		// Dataset:  			require(GLOBAL.root + "/classes/Dataset.js"),
 		// VaultGroup: 		require(GLOBAL.root + "/classes/VaultGroup.js"),
 		// VaultEntry:  		require(GLOBAL.root + "/classes/VaultEntry.js"),
