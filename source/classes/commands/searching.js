@@ -14,9 +14,12 @@
 						}
 					}
 				}
-			}
-			if (groups.groups) {
-				return searching.findEntryByID(groups.groups, id);
+				if (group.groups) {
+					var deepEntry = searching.findEntryByID(group.groups, id);
+					if (deepEntry) {
+						return deepEntry;
+					}
+				}
 			}
 			return null;
 		},
@@ -26,9 +29,11 @@
 				if (groups[i].id === id) {
 					return groups[i];
 				}
-				var deepGroup = searching.findGroupByID(groups[i].groups, id);
-				if (deepGroup) {
-					return deepGroup;
+				if (groups[i].groups) {
+					var deepGroup = searching.findGroupByID(groups[i].groups, id);
+					if (deepGroup) {
+						return deepGroup;
+					}
 				}
 			}
 			return null;
