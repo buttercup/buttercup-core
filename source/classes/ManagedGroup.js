@@ -3,12 +3,21 @@
 	"use strict";
 
 	var Inigo = require(__dirname + "/InigoGenerator.js"),
+		ManagedEntry = require(__dirname + "/ManagedEntry.js"),
 		encoding = require(__dirname + "/../tools/encoding.js"),
 		searching = require(__dirname + "/commands/searching.js");
 
 	var Group = function(westly, remoteObj) {
 		this._westley = westly;
 		this._remoteObject = remoteObj;
+	};
+
+	Group.prototype.createEntry = function(title) {
+		var managedEntry = ManagedEntry.createNew(this._getWestley(), this.getID());
+		if (title) {
+			managedEntry.setProperty("title", title);
+		}
+		return managedEntry;
 	};
 
 	Group.prototype.createGroup = function(title) {

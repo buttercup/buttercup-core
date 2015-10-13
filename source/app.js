@@ -45,6 +45,7 @@
 
 	var archive = new Archive();
 	var group = archive.createGroup("test");
+	var entry = group.createEntry("Monkey");
 
 	console.log(JSON.stringify(archive._getWestley()._dataset));
 	console.log("---\n" + archive._getWestley().getHistory().join("\n") + "\n---");

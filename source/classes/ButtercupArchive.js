@@ -4,7 +4,8 @@
 
 	var Westley = require(__dirname + "/WestleyParser.js"),
 		Inigo = require(__dirname + "/InigoGenerator.js"),
-		ManagedGroup = require(__dirname + "/ManagedGroup.js");
+		ManagedGroup = require(__dirname + "/ManagedGroup.js"),
+		ManagedEntry = require(__dirname + "/ManagedEntry.js");
 
 	var Archive = function() {
 		this._westley = new Westley();
