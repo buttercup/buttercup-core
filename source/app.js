@@ -6,18 +6,22 @@
 		library = require("./module.js"),
 		encoding = require("./tools/encoding.js");
 
-	var mainGroupID = encoding.getUniqueID();
+	var mainGroupID = encoding.getUniqueID(),
+		firstEntryID = encoding.getUniqueID();
 
 	var parser = new Westley();
 	[
 		'cmm "This is \\\" a new \\\" comment"',
 		'cgr 0 ' + mainGroupID,
-		'tgr ' + mainGroupID + ' "Perry\'s websites"'
+		'tgr ' + mainGroupID + ' "Perry\'s websites"',
+		'cen ' + mainGroupID + ' ' + firstEntryID,
+		'sep ' + firstEntryID + ' title "Blog login"',
+		'sem ' + firstEntryID + ' "security key" "9924dd--..$#(*&^)&*#^$% ;; !![]\\\"\\\"..."'
 	].forEach(function(command) {
 		parser.execute(command);
 	});
 
-	console.log(parser._dataset);
+	console.log(JSON.stringify(parser._dataset));
 
 	/*var Buttercup = require(__dirname + "/module.js"),
 		Dataset = require(__dirname + "/classes/Dataset.js"),
