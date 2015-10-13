@@ -37,6 +37,32 @@
 				}
 			}
 			return null;
+		},
+
+		findGroupContainingEntryID: function(groups, id) {
+			for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
+				var group = groups[i];
+				if (group.entries) {
+					for (var j = 0, entriesLen = group.entries.length; j < entriesLen; j += 1) {
+						if (group.entries[j].id === id) {
+							return { 
+								group: group,
+								index: j
+							};
+						}
+					}
+				}
+				if (group.groups) {
+					var deepGroup = searching.findGroupContainingEntryID(group.groups, id);
+					if (deepGroup) {
+						return deepGroup;
+					}
+				}
+			}
+			return {
+				group: null,
+				index: null
+			};
 		}
 
 	};

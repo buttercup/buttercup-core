@@ -12,7 +12,7 @@
 		};
 		var group = searching.findGroupByID(obj.groups, groupID);
 		if (!group) {
-			throw new Error("Group not found for ID");
+			throw new Error("Invalid group ID");
 		}
 		group.entries = group.entries || [];
 		group.entries.push(entry);

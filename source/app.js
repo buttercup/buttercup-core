@@ -8,7 +8,8 @@
 
 	var mainGroupID = encoding.getUniqueID(),
 		secondGroupID = encoding.getUniqueID(),
-		firstEntryID = encoding.getUniqueID();
+		firstEntryID = encoding.getUniqueID(),
+		secondEntryID = encoding.getUniqueID();
 
 	var parser = new Westley();
 	[
@@ -20,7 +21,10 @@
 		'sem ' + firstEntryID + ' "security key" "9924dd--..$#(*&^)&*#^$% ;; !![]\\\"\\\"..."',
 
 		'cgr ' + mainGroupID + ' ' + secondGroupID,
-		'tgr ' + secondGroupID + ' "Work-related"'
+		'tgr ' + secondGroupID + ' "Work-related"',
+		'cen ' + secondGroupID + ' ' + secondEntryID,
+		'sep ' + secondEntryID + ' title "Second entry"',
+		'men ' + secondEntryID + ' ' + mainGroupID
 	].forEach(function(command) {
 		parser.execute(command);
 	});
