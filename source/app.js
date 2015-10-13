@@ -2,7 +2,22 @@
 
 	"use strict";
 
-	var Westley = require("./classes/WestleyParser.js");
+	var Westley = require("./classes/WestleyParser.js"),
+		library = require("./module.js"),
+		encoding = require("./tools/encoding.js");
+
+	var mainGroupID = encoding.getUniqueID();
+
+	var parser = new Westley();
+	[
+		'cmm "This is \\\" a new \\\" comment"',
+		'cgr 0 ' + mainGroupID,
+		'tgr ' + mainGroupID + ' "Perry\'s websites"'
+	].forEach(function(command) {
+		parser.execute(command);
+	});
+
+	console.log(parser._dataset);
 
 	/*var Buttercup = require(__dirname + "/module.js"),
 		Dataset = require(__dirname + "/classes/Dataset.js"),
