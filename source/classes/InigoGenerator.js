@@ -56,7 +56,7 @@
 		Format: 					{ s:"fmt", args:[ARG.StringValue] },
 		MoveEntry: 					{ s:"men", args:[ARG.ItemID, ARG.ItemID] },
 		MoveGroup: 					{ s:"mgr", args:[ARG.ItemID, ARG.ItemIDOrRoot] },
-		SetEntryMeta: 				{ s:"sep", args:[ARG.ItemID, ARG.StringKey, ARG.StringValue] },
+		SetEntryMeta: 				{ s:"sem", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
 		SetEntryProperty: 			{ s:"sep", args:[ARG.ItemID, ARG.StringKey, ARG.StringValue] },
 		SetGroupTitle: 				{ s:"tgr", args:[ARG.ItemID, ARG.StringValue] }
 	};

@@ -32,6 +32,17 @@
 		return this._getRemoteObject().id;
 	};
 
+	Group.prototype.moveToGroup = function(group) {
+		var targetID = group.getID();
+		this._getWestley().execute(
+			Inigo.create(Inigo.Command.MoveGroup)
+				.addArgument(this.getID())
+				.addArgument(targetID)
+				.generateCommand()
+		);
+		return this;
+	};
+
 	Group.prototype.setTitle = function(title) {
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.SetGroupTitle)

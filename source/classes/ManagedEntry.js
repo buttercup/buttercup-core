@@ -15,6 +15,28 @@
 		return this._getRemoteObject().id;
 	};
 
+	Entry.prototype.moveToGroup = function(group) {
+		var targetID = group.getID();
+		this._getWestley().execute(
+			Inigo.create(Inigo.Command.MoveEntry)
+				.addArgument(this.getID())
+				.addArgument(targetID)
+				.generateCommand()
+		);
+		return this;
+	};
+
+	Entry.prototype.setMeta = function(prop, value) {
+		this._getWestley().execute(
+			Inigo.create(Inigo.Command.SetEntryMeta)
+				.addArgument(this.getID())
+				.addArgument(prop)
+				.addArgument(value)
+				.generateCommand()
+		);
+		return this;
+	};
+
 	Entry.prototype.setProperty = function(prop, value) {
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.SetEntryProperty)
