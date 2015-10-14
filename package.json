@@ -21,7 +21,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/perry-mitchell/buttercup.git"
+		"url": "git+https://github.com/perry-mitchell/buttercup-core"
 	},
 	"keywords": [
 		"password",
@@ -30,9 +30,9 @@
 	"author": "Perry Mitchell <perry@perrymitchell.net>",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/perry-mitchell/buttercup/issues"
+		"url": "https://github.com/perry-mitchell/buttercup-core/issues"
 	},
-	"homepage": "https://github.com/perry-mitchell/buttercup#readme",
+	"homepage": "https://github.com/perry-mitchell/buttercup-core#readme",
 	"dependencies": {
 		"clone":						"^1.0.2",
 		"promise-polyfill":				"2.1.x",
