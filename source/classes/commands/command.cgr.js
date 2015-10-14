@@ -14,7 +14,7 @@
 			obj.groups.push(group);
 		} else {
 			var parentGroup = searching.findGroupByID(obj.groups, parentID);
-			if (!parentID) {
+			if (!parentGroup) {
 				throw new Error("Invalid parent group ID: not found");
 			}
 			parentGroup.groups = parentGroup.groups || [];
