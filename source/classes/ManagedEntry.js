@@ -11,6 +11,16 @@
 		this._remoteObject = remoteObj;
 	};
 
+	Entry.prototype.delete = function() {
+		this._getWestley().execute(
+			Inigo.create(Inigo.Command.DeleteEntry)
+				.addArgument(this.getID())
+				.generateCommand()
+		);
+		delete this._westley;
+		delete this._remoteObject;
+	};
+
 	Entry.prototype.getID = function() {
 		return this._getRemoteObject().id;
 	};

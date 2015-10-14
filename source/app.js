@@ -57,6 +57,8 @@
 
 	group2.moveToGroup(group);
 	entry.moveToGroup(group2);
+	entry.delete();
+	//group2.delete();
 
 	console.log(JSON.stringify(archive._getWestley()._dataset));
 	console.log("---\n" + archive._getWestley().getHistory().join("\n") + "\n---");

@@ -28,6 +28,16 @@
 		return group;
 	};
 
+	Group.prototype.delete = function() {
+		this._getWestley().execute(
+			Inigo.create(Inigo.Command.DeleteGroup)
+				.addArgument(this.getID())
+				.generateCommand()
+		);
+		delete this._westley;
+		delete this._remoteObject;
+	};
+
 	Group.prototype.getID = function() {
 		return this._getRemoteObject().id;
 	};
