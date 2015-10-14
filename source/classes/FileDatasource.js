@@ -2,38 +2,17 @@
 
 	"use strict";
 
-	var Decryption = require(GLOBAL.root + "/encryption/decrypt.js"),
-		Encryption = require(GLOBAL.root + "/encryption/encrypt.js"),
+	var Encryption = require(GLOBAL.root + "/encryption/encrypt.js"),
+		Decryption = require(GLOBAL.root + "/encryption/decrypt.js"),
+		Archive = require(GLOBAL.root + "/classes/ButtercupArchive.js"),
 		signing = require(GLOBAL.root + "/tools/signing.js"),
-		typeTool = require(GLOBAL.root + "/tools/type.js"),
-		fs = require("fs"),
-		Promise = require("promise-polyfill");
-
-	// *** Helpers
-
-	function marshalDecryptedData(obj) {
-		return {
-			title: 				obj.title || "",
-			format: 			obj.format || "",
-			groups: 			typeTool.isArray(obj.groups) ? obj.groups : []
-		};
-	}
-
-	function marshalNewData(details, groups) {
-		return {
-			title: 				details.title || "",
-			format: 			signing.getFormat(),
-			groups: 			groups
-		};
-	}
-
-	// *** Class
+		fs = require("fs");
 
 	var FileDatasource = function(filename) {
 		this._filename = filename;
 	};
 
-	FileDatasource.prototype.getData = function(password) {
+	FileDatasource.prototype.load = function(password) {
 		var filename = this._filename;
 		return (new Promise(function(resolve, reject) {
 			fs.readFile(filename, "utf8", function(error, data) {
@@ -51,44 +30,34 @@
 		}).then(function(encryptedData) {
 			var decrypted = Decryption.decrypt(encryptedData, password);
 			if (decrypted && decrypted.length > 0) {
-				var decodedObject = false,
-					errorMessage = "JSON decoding failed";
-				try {
-					decodedObject = JSON.parse(decrypted);
-				} catch (e) {
-					errorMessage = e.message || errorMessage;
-				}
-				if (!decodedObject) {
-					return Promise.reject(errorMessage);
-				}
-				return decodedObject;
+				return decrypted.split("\n");
 			} else {
 				return Promise.reject("Decryption failed");
 			}
-		}).then(function(decryptedObject) {
-			return marshalDecryptedData(decryptedObject);
+		}).then(function(history) {
+			var archive = new Archive(),
+				westley = archive._getWestley();
+			history.forEach(westley.execute.bind(westley));
+			return archive;
 		}).catch(function(error) {
 			var errorMsg = "Failed opening archive: " + error;
 			console.error(errorMsg);
-			return Promise.reject(errorMsg);
+			throw new Error(errorMsg);
 		});
 	};
 
-	FileDatasource.prototype.setData = function(password, details, groups) {
-		var filename = this._filename,
-			data = marshalNewData(details, groups),
-			textData = JSON.stringify(data),
-			encrypted = Encryption.encrypt(textData, password);
-		// sign archive
-		encrypted = signing.sign(encrypted);
+	FileDatasource.prototype.save = function(archive, password) {
+		var history = archive._getWestley().getHistory().join("\n"),
+			encrypted = signing.sign(Encryption.encrypt(history, password)),
+			filename = this._filename;
 		return new Promise(function(resolve, reject) {
-			fs.writeFile(filename, encrypted, function(error) {
-				if (error) {
-					(reject)(error);
+			fs.writeFile(filename, encrypted, function(err) {
+				if (err) {
+					(reject)(err);
 				} else {
 					(resolve)();
 				}
-			})
+			});
 		});
 	};
 
