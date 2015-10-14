@@ -4,7 +4,7 @@
 
 	var Inigo = require(__dirname + "/InigoGenerator.js"),
 		ManagedEntry = require(__dirname + "/ManagedEntry.js"),
-		encoding = require(__dirname + "/../tools/encoding.js"),
+		encoding = require(GLOBAL.root + "/tools/encoding.js"),
 		searching = require(__dirname + "/commands/searching.js");
 
 	var Group = function(westly, remoteObj) {

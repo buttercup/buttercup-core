@@ -7,7 +7,7 @@
 		ManagedGroup = require(__dirname + "/ManagedGroup.js"),
 		ManagedEntry = require(__dirname + "/ManagedEntry.js");
 
-	var signing = require(__dirname + "/../tools/signing.js");
+	var signing = require(GLOBAL.root + "/tools/signing.js");
 
 	var Archive = function() {
 		this._westley = new Westley();

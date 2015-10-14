@@ -3,7 +3,7 @@
 	"use strict";
 
 	var Inigo = require(__dirname + "/InigoGenerator.js"),
-		encoding = require(__dirname + "/../tools/encoding.js"),
+		encoding = require(GLOBAL.root + "/tools/encoding.js"),
 		searching = require(__dirname + "/commands/searching.js");
 
 	var Entry = function(westly, remoteObj) {
