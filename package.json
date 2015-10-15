@@ -2,7 +2,7 @@
 	"name": "buttercup",
 	"version": "0.2.2-a",
 	"description": "A NodeJS password vault.",
-	"main": "source/app.js",
+	"main": "source/module.js",
 	"contributors": [
 		{
 			"name": "Perry Mitchell",
