@@ -35,6 +35,7 @@
 	"homepage": "https://github.com/perry-mitchell/buttercup-core#readme",
 	"dependencies": {
 		"clone":						"^1.0.2",
+		"curlrequest": 					"^0.5.3",
 		"promise-polyfill":				"2.1.x",
 		"uuid":							"^2.0.1"
 	},

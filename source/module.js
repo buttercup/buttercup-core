@@ -13,6 +13,7 @@
 		// VaultEntry:  		require(GLOBAL.root + "/classes/VaultEntry.js"),
 
 		FileDatasource: require(GLOBAL.root + "/classes/FileDatasource.js"),
+		WebDAVDatasource: require(GLOBAL.root + "/classes/WebDAVDatasource.js"),
 
 		// Encryption info from: http://lollyrock.com/articles/nodejs-encryption/
 		Encryption: require(GLOBAL.root + "/encryption/encrypt.js"),
