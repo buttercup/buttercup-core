@@ -61,8 +61,8 @@
 	entry.moveToGroup(group2);
 	entry.delete();
 
-	var datasource = new FileDatasource("/Users/pez/test.bcp");
-	datasource.save(archive, "123 banana");
+	// var datasource = new FileDatasource("/Users/pez/test.bcp");
+	// datasource.save(archive, "123 banana");
 
 
 	// ----
@@ -70,11 +70,11 @@
 	// archive = null;
 	// datasource = null;
 
-	datasource = new FileDatasource("/Users/pez/test.bcp");
-	datasource.load("123 banana").then(function(archive) {
-		console.log(JSON.stringify(archive._getWestley()._dataset));
-		console.log("---\n" + archive._getWestley().getHistory().join("\n") + "\n---");
-	});
+	// datasource = new FileDatasource("/Users/pez/test.bcp");
+	// datasource.load("123 banana").then(function(archive) {
+		// console.log(JSON.stringify(archive._getWestley()._dataset));
+		// console.log("---\n" + archive._getWestley().getHistory().join("\n") + "\n---");
+	// });
 
 	// console.log(JSON.stringify(archive._getWestley()._dataset));
 	// console.log("---\n" + archive._getWestley().getHistory().join("\n") + "\n---");

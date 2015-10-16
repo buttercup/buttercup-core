@@ -3,37 +3,60 @@
 	"use strict";
 
 	var curl = require("curlrequest"),
-		Encryption = require(GLOBAL.root + "/encryption/encrypt.js"),
-		Decryption = require(GLOBAL.root + "/encryption/decrypt.js"),
-		Archive = require(GLOBAL.root + "/classes/ButtercupArchive.js"),
-		signing = require(GLOBAL.root + "/tools/signing.js");
+		TextDatasource = require(GLOBAL.root + "/classes/TextDatasource.js");
 
 	var WebDAV = function(endpoint, path, username, password) {
 		var endpointLen = endpoint.length;
 		endpoint = (endpoint[endpointLen - 1] === "/") ? endpoint : endpoint + "/";
 		var login = username + ":" + password;
-		this._targetURL = (endpoint + filename).replace(/(https?):\/\//i, "$1://" + login + "@");
+		this._targetURL = (endpoint + path).replace(/(https?):\/\//i, "$1://" + login + "@");
 	};
 
-	WebDAV.prototype.save = function(archive, password) {
-		var history = archive._getWestley().getHistory().join("\n"),
-			encrypted = signing.sign(Encryption.encrypt(history, password)),
-			filename = this._filename;
+	WebDAV.prototype.load = function(password) {
 		var curlOpts = {
 			url: this._targetURL,
-			method: "PUT",
-			data: encrypted,
+			method: "GET",
 			verbose: true
 		};
-		return new Promise(function(resolve, reject) {
+		return (new Promise(function(resolve, reject) {
 			curl.request(curlOpts, function(err, data) {
 				if (err) {
 					(reject)(err);
 				} else {
-					(resolve)();
+					(resolve)(data);
 				}
 			});
+		})).then(function(content) {
+			var textDatasource = new TextDatasource(content);
+			return textDatasource.load(password);
+		}).catch(function(err) {
+			var errorMsg = "Failed opening archive: " + err;
+			console.error(errorMsg);
+			throw new Error(errorMsg);
 		});
+	};
+
+	WebDAV.prototype.save = function(archive, password) {
+		var targetURL = this._targetURL,
+			textDatasource = new TextDatasource();
+		return textDatasource.save(archive, password)
+			.then(function(encrypted) {
+				var curlOpts = {
+					url: targetURL,
+					method: "PUT",
+					data: encrypted,
+					verbose: true
+				};
+				return new Promise(function(resolve, reject) {
+					curl.request(curlOpts, function(err, data) {
+						if (err) {
+							(reject)(err);
+						} else {
+							(resolve)();
+						}
+					});
+				});
+			});
 	};
 
 	module.exports = WebDAV;
