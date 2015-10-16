@@ -43,7 +43,8 @@
 	var library = require("./module.js"),
 		Archive = library.Archive,
 		FileDatasource = library.FileDatasource,
-		WebDAVDatasource = library.WebDAVDatasource;
+		WebDAVDatasource = library.WebDAVDatasource,
+		OwnCloudDatasource = library.OwnCloudDatasource;
 
 	var archive = new Archive();
 	var group = archive.createGroup("test");

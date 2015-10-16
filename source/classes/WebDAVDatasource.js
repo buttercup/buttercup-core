@@ -8,6 +8,7 @@
 	var WebDAV = function(endpoint, path, username, password) {
 		var endpointLen = endpoint.length;
 		endpoint = (endpoint[endpointLen - 1] === "/") ? endpoint : endpoint + "/";
+		path = (path[0] === "/") ? path.substring(1) : path;
 		var login = username + ":" + password;
 		this._targetURL = (endpoint + path).replace(/(https?):\/\//i, "$1://" + login + "@");
 	};
