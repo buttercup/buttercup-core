@@ -34,6 +34,7 @@
 				.addArgument(this.getID())
 				.generateCommand()
 		);
+		this._getWestley().pad();
 		delete this._westley;
 		delete this._remoteObject;
 	};
@@ -50,6 +51,7 @@
 				.addArgument(targetID)
 				.generateCommand()
 		);
+		this._getWestley().pad();
 		return this;
 	};
 
@@ -60,6 +62,7 @@
 				.addArgument(title)
 				.generateCommand()
 		);
+		this._getWestley().pad();
 		return this;
 	};
 

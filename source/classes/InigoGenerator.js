@@ -56,6 +56,7 @@
 		Format: 					{ s:"fmt", args:[ARG.StringValue] },
 		MoveEntry: 					{ s:"men", args:[ARG.ItemID, ARG.ItemID] },
 		MoveGroup: 					{ s:"mgr", args:[ARG.ItemID, ARG.ItemIDOrRoot] },
+		Pad: 						{ s:"pad", args:[ARG.ItemID] },
 		SetEntryMeta: 				{ s:"sem", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
 		SetEntryProperty: 			{ s:"sep", args:[ARG.ItemID, ARG.StringKey, ARG.StringValue] },
 		SetGroupTitle: 				{ s:"tgr", args:[ARG.ItemID, ARG.StringValue] }
@@ -63,6 +64,13 @@
 
 	InigoCommand.create = function(cmd) {
 		return new InigoCommand(cmd);
+	};
+
+	InigoCommand.generatePaddingCommand = function() {
+		var inigo = InigoCommand.create(InigoCommand.Command.Pad);
+		return inigo
+			.addArgument(encoding.getUniqueID())
+			.generateCommand();
 	};
 
 	module.exports = InigoCommand;
