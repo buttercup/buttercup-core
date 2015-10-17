@@ -41,7 +41,7 @@
 			wrap: function(txt) { return txt; }
 		},
 		StringValue: {
-			test: /^.+$/,
+			test: /(^.+$|^$)/,
 			wrap: function(txt) { return '"' + encoding.escapeTextValue(txt) + '"' }
 		}
 	};

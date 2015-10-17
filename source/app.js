@@ -40,44 +40,55 @@
 	// console.log(JSON.stringify(parser._dataset));
 
 
-	var library = require("./module.js"),
-		Archive = library.Archive,
-		FileDatasource = library.FileDatasource,
-		WebDAVDatasource = library.WebDAVDatasource,
-		OwnCloudDatasource = library.OwnCloudDatasource;
+	// var library = require("./module.js"),
+	// 	Archive = library.Archive,
+	// 	FileDatasource = library.FileDatasource,
+	// 	WebDAVDatasource = library.WebDAVDatasource,
+	// 	OwnCloudDatasource = library.OwnCloudDatasource;
 
-	var archive = new Archive();
-	var group = archive.createGroup("test");
-	var entry = group.createEntry("Monkey");
-	entry.setProperty("username", "gorilla");
-	entry.setProperty("password", "inDaHou$3");
-	entry.setMeta(" some long a$$ string ", "dasdw3r2nlj4nr3k4nr3kbrabebfiu4aeib a4beliubtie4ut");
+	// var archive = new Archive();
+	// var group = archive.createGroup("test");
+	// var entry = group.createEntry("Monkey");
+	// entry.setProperty("username", "gorilla");
+	// entry.setProperty("password", "inDaHou$3");
+	// entry.setMeta(" some long a$$ string ", "dasdw3r2nlj4nr3k4nr3kbrabebfiu4aeib a4beliubtie4ut");
 
-	var group2 = archive.createGroup("test2");
-	var entry2 = group2.createEntry("Toadstool");
-	entry2.setProperty("title", "Toadstool-!");
-	entry2.setProperty("username", "kong");
+	// var group2 = archive.createGroup("test2");
+	// var entry2 = group2.createEntry("Toadstool");
+	// entry2.setProperty("title", "Toadstool-!");
+	// entry2.setProperty("username", "kong");
 
-	group2.moveToGroup(group);
-	entry.moveToGroup(group2);
-	entry.delete();
+	// group2.moveToGroup(group);
+	// entry.moveToGroup(group2);
+	// entry.delete();
 
-	var datasource = new FileDatasource("/Users/pez/test.bcp");
-	datasource.save(archive, "123 banana");
+	// var datasource = new FileDatasource("/Users/pez/test.bcp");
+	// datasource.save(archive, "123 banana");
 
 
 	// ----
 
-	archive = null;
-	datasource = null;
+	// archive = null;
+	// datasource = null;
 
-	datasource = new FileDatasource("/Users/pez/test.bcp");
-	datasource.load("123 banana").then(function(archive) {
-		console.log(JSON.stringify(archive._getWestley()._dataset));
-		console.log("---\n" + archive._getWestley().getHistory().join("\n") + "\n---");
+	// datasource = new FileDatasource("/Users/pez/test.bcp");
+	// datasource.load("123 banana").then(function(archive) {
+	// 	console.log(JSON.stringify(archive._getWestley()._dataset));
+	// 	console.log("---\n" + archive._getWestley().getHistory().join("\n") + "\n---");
+	// });
+
+	var library = require("./module.js"),
+		KeePass2XMLImporter = library.KeePass2XMLImporter;
+
+	KeePass2XMLImporter.loadFromFile("/Users/pez/perry.test.xml").then(function(importer) {
+		importer.exportArchive().then(function(archive) {
+			console.log(JSON.stringify(archive._getWestley()._dataset));
+			//console.log("---\n" + archive._getWestley().getHistory().join("\n") + "\n---");
+		}).catch(function(err) {
+			console.error("err", err);
+		});
+	}).catch(function(err) {
+		console.error("err", err);
 	});
-
-	// console.log(JSON.stringify(archive._getWestley()._dataset));
-	// console.log("---\n" + archive._getWestley().getHistory().join("\n") + "\n---");
 
 })();

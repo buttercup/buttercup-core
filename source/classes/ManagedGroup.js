@@ -74,17 +74,17 @@
 		return this._westley;
 	};
 
-	Group.createNew = function(westly, parentID) {
+	Group.createNew = function(westley, parentID) {
 		parentID = parentID || "0";
 		var id = encoding.getUniqueID();
-		westly.execute(
+		westley.execute(
 			Inigo.create(Inigo.Command.CreateGroup)
 				.addArgument(parentID)
 				.addArgument(id)
 				.generateCommand()
 		);
-		var group = searching.findGroupByID(westly.getDataset().groups, id);
-		return new Group(westly, group);
+		var group = searching.findGroupByID(westley.getDataset().groups, id);
+		return new Group(westley, group);
 	};
 
 	module.exports = Group;
