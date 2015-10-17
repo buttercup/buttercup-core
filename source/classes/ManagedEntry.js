@@ -6,8 +6,8 @@
 		encoding = require(GLOBAL.root + "/tools/encoding.js"),
 		searching = require(__dirname + "/commands/searching.js");
 
-	var Entry = function(westly, remoteObj) {
-		this._westley = westly;
+	var Entry = function(westley, remoteObj) {
+		this._westley = westley;
 		this._remoteObject = remoteObj;
 	};
 
@@ -17,6 +17,7 @@
 				.addArgument(this.getID())
 				.generateCommand()
 		);
+		this._getWestley().pad();
 		delete this._westley;
 		delete this._remoteObject;
 	};
@@ -33,6 +34,7 @@
 				.addArgument(targetID)
 				.generateCommand()
 		);
+		this._getWestley().pad();
 		return this;
 	};
 
@@ -44,6 +46,7 @@
 				.addArgument(value)
 				.generateCommand()
 		);
+		this._getWestley().pad();
 		return this;
 	};
 
@@ -55,6 +58,7 @@
 				.addArgument(value)
 				.generateCommand()
 		);
+		this._getWestley().pad();
 		return this;
 	};
 
@@ -66,16 +70,16 @@
 		return this._westley;
 	};
 
-	Entry.createNew = function(westly, groupID) {
+	Entry.createNew = function(westley, groupID) {
 		var id = encoding.getUniqueID();
-		westly.execute(
+		westley.execute(
 			Inigo.create(Inigo.Command.CreateEntry)
 				.addArgument(groupID)
 				.addArgument(id)
 				.generateCommand()
 		);
-		var entry = searching.findEntryByID(westly.getDataset().groups, id);
-		return new Entry(westly, entry);
+		var entry = searching.findEntryByID(westley.getDataset().groups, id);
+		return new Entry(westley, entry);
 	};
 
 	module.exports = Entry;

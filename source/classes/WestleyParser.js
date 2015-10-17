@@ -2,6 +2,8 @@
 
 	"use strict";
 
+	var Inigo = require(__dirname + "/InigoGenerator.js");
+
 	var VALID_COMMAND_EXP = 			/^[a-z]{3}[ ].+$/;
 
 	function extractCommandComponents(command) {
@@ -55,6 +57,11 @@
 		this._history.push(command);
 		this._dataset = commandExecute.apply(commandExecute, [this._dataset].concat(commandComponents))
 			|| this._dataset;
+	};
+
+	Westley.prototype.pad = function() {
+		this.execute(Inigo.generatePaddingCommand());
+		return this;
 	};
 
 	Westley.prototype.getDataset = function() {
