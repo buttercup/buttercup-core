@@ -15,6 +15,11 @@
 			return uuid.v4();
 		},
 
+		/**
+		 * Hash text using sha256
+		 * @param {String} text
+		 * @returns {Buffer}
+		 */
 		hashText: function(text) {
 			return Crypto.createHash('sha256').update(text).digest();
 		},

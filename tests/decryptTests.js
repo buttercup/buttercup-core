@@ -1,4 +1,5 @@
-var Decryption = require("../source/encryption/decrypt.js");
+var lib = require("../source/module.js"),
+	Decryption = lib.Decryption;
 
 module.exports = {
 
