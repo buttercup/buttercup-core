@@ -54,6 +54,7 @@
 	};
 
 	Workspace.prototype.archiveDiffersFromDatasource = function() {
+		checkWorkspace(this);
 		var mainArchive = this.getArchive();
 		return stageArchiveFromDatasource(this)
 			.then(function(stagedArchive) {
@@ -75,6 +76,7 @@
 	};
 
 	Workspace.prototype.mergeFromDatasource = function() {
+		checkWorkspace(this);
 		var mainArchive = this.getArchive(),
 			workspace = this;
 		return this.archiveDiffersFromDatasource()
@@ -99,6 +101,12 @@
 				workspace.setArchive(newArchive);
 				return newArchive;
 			});
+	};
+
+	Workspace.prototype.save = function() {
+		checkWorkspace(this);
+		this.getDatasource().save(this.getArchive(), this.getPassword());
+		return this;
 	};
 
 	Workspace.prototype.setArchive = function(archive) {
