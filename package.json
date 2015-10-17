@@ -14,7 +14,7 @@
 		}
 	],
 	"scripts": {
-		"test": "nodeunit tests"
+		"test": "nodeunit tests --reporter junit --output build"
 	},
 	"bin": {
 		"nodeunit": "node_modules/nodeunit/bin/nodeunit"
@@ -36,7 +36,7 @@
 	"dependencies": {
 		"clone":						"^1.0.2",
 		"curlrequest": 					"^0.5.3",
-		"promise-polyfill":				"2.1.x",
+		"promise-polyfill":				"^2.1.0",
 		"uuid":							"^2.0.1"
 	},
 	"devDependencies": {
