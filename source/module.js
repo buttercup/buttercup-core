@@ -7,6 +7,7 @@
 	module.exports = {
 
 		Archive: require(GLOBAL.root + "/classes/ButtercupArchive.js"),
+		Workspace: require(GLOBAL.root + "/classes/Workspace.js"),
 
 		FileDatasource: require(GLOBAL.root + "/classes/FileDatasource.js"),
 		OwnCloudDatasource: require(GLOBAL.root + "/classes/OwnCloudDatasource.js"),

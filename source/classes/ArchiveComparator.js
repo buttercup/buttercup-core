@@ -77,8 +77,9 @@
 			return false;
 		}
 		return {
-			original: commonIndexes.historyA.splice(commonIndexes.a, commonIndexes.historyA.length),
-			secondary: commonIndexes.historyB.splice(commonIndexes.b, commonIndexes.historyB.length)
+			original: commonIndexes.historyA.splice(commonIndexes.a + 1, commonIndexes.historyA.length),
+			secondary: commonIndexes.historyB.splice(commonIndexes.b + 1, commonIndexes.historyB.length),
+			common: commonIndexes.historyA
 		};
 	};
 

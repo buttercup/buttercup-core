@@ -77,12 +77,20 @@ module.exports = {
 
 	calculateDifferences: {
 
+		testCommonality: function(test) {
+			var comp = new Comparator(this.diffArchiveA, this.diffArchiveB),
+				differences = comp.calculateDifferences();
+			test.strictEqual(differences.common[differences.common.length - 1], "pad 4",
+				"Common history should end with padding");
+			test.done();
+		},
+
 		testDifferencesCount: function(test) {
 			var comp = new Comparator(this.diffArchiveA, this.diffArchiveB),
 				differences = comp.calculateDifferences();
-			// expected lengths are +2 because of the common commands in the base array
-			test.strictEqual(differences.original.length, 4 + 2, "Archive A should have 4 different commands");
-			test.strictEqual(differences.secondary.length, 5 + 2, "Archive B should have 5 different commands");
+			// expected lengths are +1 because of the common commands in the base array (comment)
+			test.strictEqual(differences.original.length, 4 + 1, "Archive A should have 4 different commands");
+			test.strictEqual(differences.secondary.length, 5 + 1, "Archive B should have 5 different commands");
 			test.done();
 		}
 

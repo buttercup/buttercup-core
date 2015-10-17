@@ -2,7 +2,9 @@
 
 	"use strict";
 
-	var Archive = require(__dirname + "/ButtercupArchive.js");
+	var Archive = require(__dirname + "/ButtercupArchive.js"),
+		Inigo = require(__dirname + "/InigoGenerator.js"),
+		Comparator = require(__dirname + "/ArchiveComparator.js");
 
 	function checkWorkspace(workspace) {
 		if (workspace.getArchive() instanceof Archive !== true) {
@@ -20,6 +22,10 @@
 		workspace._stagedArchive = null;
 	}
 
+	function getCommandType(fullCommand) {
+		return (fullCommand && fullCommand.length >= 3) ? fullCommand.substr(0, 3) : "";
+	}
+
 	function stageArchiveFromDatasource(workspace) {
 		return (workspace._stagedArchive instanceof Archive) ?
 			Promise.resolve(workspace._stagedArchive) :
@@ -28,6 +34,15 @@
 					workspace._stagedArchive = archive;
 					return archive;
 				});
+	}
+
+	function stripDestructiveCommands(history) {
+		return history.filter(function(command) {
+			return [
+				Inigo.Command.DeleteEntry.s,
+				Inigo.Command.DeleteGroup.s
+			].indexOf(getCommandType(command)) < 0;
+		});
 	}
 
 	var Workspace = function() {
@@ -39,9 +54,11 @@
 	};
 
 	Workspace.prototype.archiveDiffersFromDatasource = function() {
+		var mainArchive = this.getArchive();
 		return stageArchiveFromDatasource(this)
 			.then(function(stagedArchive) {
-
+				var comparator = new Comparator(mainArchive, stagedArchive);
+				return comparator.archivesDiffer();
 			});
 	};
 
@@ -55,6 +72,33 @@
 
 	Workspace.prototype.getPassword = function() {
 		return this._password;
+	};
+
+	Workspace.prototype.mergeFromDatasource = function() {
+		var mainArchive = this.getArchive(),
+			workspace = this;
+		return this.archiveDiffersFromDatasource()
+			.then(function(differs) {
+				if (differs) {
+					return stageArchiveFromDatasource(workspace);
+				} else {
+					return Promise.reject("No differences in archives");
+				}
+			})
+			.then(function(stagedArchive) {
+				var comparator = new Comparator(mainArchive, stagedArchive),
+					differences = comparator.calculateDifferences();
+				var newHistoryMain = stripDestructiveCommands(differences.original),
+					newHistoryStaged = stripDestructiveCommands(differences.secondary),
+					base = differences.common;
+				var newArchive = new Archive();
+				newArchive._getWestley().clear();
+				base.concat(newHistoryStaged).concat(newHistoryMain).forEach(function(command) {
+					newArchive._getWestley().execute(command);
+				});
+				workspace.setArchive(newArchive);
+				return newArchive;
+			});
 	};
 
 	Workspace.prototype.setArchive = function(archive) {

@@ -37,9 +37,13 @@
 	}
 
 	var Westley = function() {
+		this.clear();
+	};
+
+	Westley.prototype.clear = function() {
 		this._dataset = {};
 		this._history = [];
-	};
+	}
 
 	Westley.prototype.execute = function(command) {
 		if (!VALID_COMMAND_EXP.test(command)) {
