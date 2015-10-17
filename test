@@ -2,4 +2,4 @@
 
 NODEUNIT="./node_modules/nodeunit/bin/nodeunit"
 
-node "$NODEUNIT" tests
+node "$NODEUNIT" tests tests/integration

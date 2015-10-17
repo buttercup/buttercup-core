@@ -14,7 +14,7 @@
 		}
 	],
 	"scripts": {
-		"test": "nodeunit tests --reporter junit --output build"
+		"test": "nodeunit tests tests/integration --reporter junit --output build"
 	},
 	"bin": {
 		"nodeunit": "node_modules/nodeunit/bin/nodeunit"
