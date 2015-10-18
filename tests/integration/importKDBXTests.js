@@ -1,5 +1,6 @@
 var lib = require("../../source/module.js"),
-	KeePass2XMLImporter = lib.KeePass2XMLImporter;
+	KeePass2XMLImporter = lib.KeePass2XMLImporter,
+	ManagedGroup = lib.ManagedGroup;
 
 module.exports = {
 
@@ -38,8 +39,17 @@ module.exports = {
 
 	containsItems: {
 
-		
-		
+		testContainsRootGroup: function(test) {
+			var buttercupGroup = null;
+			this.archive.getGroups().forEach(function(group) {
+				if (group.getTitle() === "Buttercup") {
+					buttercupGroup = group;
+				}
+			});
+			test.ok(buttercupGroup instanceof ManagedGroup, "Imported archive should contain root group");
+			test.done();
+		}
+
 	}
 
 };

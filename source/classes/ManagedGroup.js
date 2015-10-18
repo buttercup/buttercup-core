@@ -43,6 +43,10 @@
 		return this._getRemoteObject().id;
 	};
 
+	Group.prototype.getTitle = function() {
+		return this._getRemoteObject().title || "";
+	};
+
 	Group.prototype.moveToGroup = function(group) {
 		var targetID = group.getID();
 		this._getWestley().execute(
