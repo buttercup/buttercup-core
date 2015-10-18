@@ -24,6 +24,7 @@ Buttercup manages credentials in an encrypted archive. The archive utilises a de
  - AES 256 bit GCM encryption
  - Archive change delta tracking
  - WebDAV remote file support
+ - Importing from KeePass archives (XML)
 
 ## Usage
 
@@ -100,3 +101,20 @@ workspace.archiveDiffersFromDatasource()
 ```
 
 Merging is especially helpful for situations where archives can be modified at any time, such as with cloud storage.
+
+### Importing
+
+You can import other databases into Buttercup, such as KeePass. You need to export an XML file from the KeePass2 database first, before passing it into the importer.
+
+```
+var Buttercup = require("Buttercup"),
+	KeePass2XMLImporter = Buttercup.KeePass2XMLImporter,
+
+KeePass2XMLImporter.loadFromFile(__dirname + "/../_resources/test.kdbx.xml")
+	.then(function(importer) {
+		return importer.exportArchive();
+	})
+	.then(function(archive) {
+		// `archive` is the ready Buttercup archive imported from the KeePass XML
+	});
+```
