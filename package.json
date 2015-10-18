@@ -37,7 +37,8 @@
 		"clone":						"^1.0.2",
 		"curlrequest": 					"^0.5.3",
 		"promise-polyfill":				"^2.1.0",
-		"uuid":							"^2.0.1"
+		"uuid":							"^2.0.1",
+		"xml2js": 						"^0.4.13"
 	},
 	"devDependencies": {
 		"nodeunit": 					"0.9.x"

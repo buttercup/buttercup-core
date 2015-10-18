@@ -5,10 +5,10 @@
 	var Inigo = require(__dirname + "/InigoGenerator.js"),
 		ManagedEntry = require(__dirname + "/ManagedEntry.js"),
 		encoding = require(GLOBAL.root + "/tools/encoding.js"),
-		searching = require(__dirname + "/commands/searching.js");
+		searching = require(GLOBAL.root + "/tools/searching.js");
 
-	var Group = function(westly, remoteObj) {
-		this._westley = westly;
+	var Group = function(westley, remoteObj) {
+		this._westley = westley;
 		this._remoteObject = remoteObj;
 	};
 
@@ -43,6 +43,10 @@
 		return this._getRemoteObject().id;
 	};
 
+	Group.prototype.getTitle = function() {
+		return this._getRemoteObject().title || "";
+	};
+
 	Group.prototype.moveToGroup = function(group) {
 		var targetID = group.getID();
 		this._getWestley().execute(
@@ -74,17 +78,17 @@
 		return this._westley;
 	};
 
-	Group.createNew = function(westly, parentID) {
+	Group.createNew = function(westley, parentID) {
 		parentID = parentID || "0";
 		var id = encoding.getUniqueID();
-		westly.execute(
+		westley.execute(
 			Inigo.create(Inigo.Command.CreateGroup)
 				.addArgument(parentID)
 				.addArgument(id)
 				.generateCommand()
 		);
-		var group = searching.findGroupByID(westly.getDataset().groups, id);
-		return new Group(westly, group);
+		var group = searching.findGroupByID(westley.getDataset().groups, id);
+		return new Group(westley, group);
 	};
 
 	module.exports = Group;
