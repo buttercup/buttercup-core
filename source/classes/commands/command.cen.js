@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	var searching = require(__dirname + "/searching.js");
+	var searching = require(GLOBAL.root + "/tools/searching.js");
 
 	module.exports = function(obj, groupID, entryID) {
 		obj.groups = obj.groups || [];

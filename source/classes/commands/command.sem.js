@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var Searching = require(__dirname + "/searching.js"),
-		Entry = require(__dirname + "/entry.js");
+	var Searching = require(GLOBAL.root + "/tools/searching.js"),
+		Entry = require(GLOBAL.root + "/tools/entry.js");
 
 	module.exports = function(obj, entryID, propertyName, value) {
 		obj.groups = obj.groups || [];

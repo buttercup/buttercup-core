@@ -72,14 +72,14 @@
 			});
 		})).then(function(keepassJS) {
 			var archive = new Archive(),
-				rootGroups;
+				rootGroup;
 			try {
-				rootGroups = keepassJS.KeePassFile.Root[0].Group[0];
+				rootGroup = keepassJS.KeePassFile.Root[0];
 			} catch (err) {
 				// squelch error
 			}
 			processGroup(
-				rootGroups || {},
+				rootGroup || {},
 				archive
 			);
 			return archive;

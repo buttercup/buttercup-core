@@ -5,10 +5,10 @@
 	var Inigo = require(__dirname + "/InigoGenerator.js"),
 		ManagedEntry = require(__dirname + "/ManagedEntry.js"),
 		encoding = require(GLOBAL.root + "/tools/encoding.js"),
-		searching = require(__dirname + "/commands/searching.js");
+		searching = require(GLOBAL.root + "/tools/searching.js");
 
-	var Group = function(westly, remoteObj) {
-		this._westley = westly;
+	var Group = function(westley, remoteObj) {
+		this._westley = westley;
 		this._remoteObject = remoteObj;
 	};
 
