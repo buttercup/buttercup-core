@@ -30,6 +30,8 @@ Buttercup manages credentials in an encrypted archive. The archive utilises a de
 
 Buttercup can be easily used as a component, allowing for powerful and secure data storage within projects.
 
+You can read the [API documentation here](doc/api.md).
+
 ### Creating, saving and loading
 
 Create an archive and a data source: The datasource is where the archive will be written to.
