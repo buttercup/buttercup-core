@@ -1,0 +1,5 @@
+#!/bin/bash
+
+JSDOC2MD="./node_modules/jsdoc-to-markdown/bin/cli.js"
+
+node "$JSDOC2MD" "source/**/*.js" > doc/api.md

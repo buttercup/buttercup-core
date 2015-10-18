@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	// var Westley = require("./classes/WestleyParser.js"),
+	// var Westley = require("./classes/Westley.js"),
 	// 	library = require("./module.js"),
 	// 	encoding = require("./tools/encoding.js"),
 	// 	signing = require("./tools/signing.js");
