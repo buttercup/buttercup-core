@@ -33,8 +33,7 @@
 
 	Archive.prototype.getGroups = function() {
 		var westley = this._getWestley();
-		//var group = searching.findGroupByID(westley.getDataset().groups, id);
-		return westley.getDataset().groups.map(function(rawGroup) {
+		return (westley.getDataset().groups || []).map(function(rawGroup) {
 			return new ManagedGroup(westley, rawGroup);
 		});
 	};

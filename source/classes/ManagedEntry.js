@@ -4,7 +4,8 @@
 
 	var Inigo = require(__dirname + "/InigoGenerator.js"),
 		encoding = require(GLOBAL.root + "/tools/encoding.js"),
-		searching = require(GLOBAL.root + "/tools/searching.js");
+		searching = require(GLOBAL.root + "/tools/searching.js"),
+		entryTools = require(GLOBAL.root + "/tools/entry.js");
 
 	var Entry = function(westley, remoteObj) {
 		this._westley = westley;
@@ -24,6 +25,18 @@
 
 	Entry.prototype.getID = function() {
 		return this._getRemoteObject().id;
+	};
+
+	Entry.prototype.getMeta = function(property) {
+		var raw = this._getRemoteObject();
+		return raw.meta && raw.meta.hasOwnProperty(property) ?
+			raw.meta[property] : undefined;
+	};
+
+	Entry.prototype.getProperty = function(property) {
+		var raw = this._getRemoteObject();
+		return raw.hasOwnProperty(property) && entryTools.isValidProperty(property) ?
+			raw[property] : undefined;
 	};
 
 	Entry.prototype.moveToGroup = function(group) {
@@ -60,6 +73,10 @@
 		);
 		this._getWestley().pad();
 		return this;
+	};
+
+	Entry.prototype.toString = function() {
+		return JSON.stringify(this._getRemoteObject());
 	};
 
 	Entry.prototype._getRemoteObject = function() {

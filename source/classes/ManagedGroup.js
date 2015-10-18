@@ -39,6 +39,20 @@
 		delete this._remoteObject;
 	};
 
+	Group.prototype.getEntries = function() {
+		var westley = this._getWestley();
+		return (this._getRemoteObject().entries || []).map(function(rawEntry) {
+			return new ManagedEntry(westley, rawEntry);
+		});
+	};
+
+	Group.prototype.getGroups = function() {
+		var westley = this._getWestley();
+		return (this._getRemoteObject().groups || []).map(function(rawGroup) {
+			return new Group(westley, rawGroup);
+		});
+	};
+
 	Group.prototype.getID = function() {
 		return this._getRemoteObject().id;
 	};

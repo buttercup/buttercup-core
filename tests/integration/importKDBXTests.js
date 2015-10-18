@@ -1,6 +1,7 @@
 var lib = require("../../source/module.js"),
 	KeePass2XMLImporter = lib.KeePass2XMLImporter,
-	ManagedGroup = lib.ManagedGroup;
+	ManagedGroup = lib.ManagedGroup,
+	ManagedEntry = lib.ManagedEntry;
 
 module.exports = {
 
@@ -40,13 +41,31 @@ module.exports = {
 	containsItems: {
 
 		testContainsRootGroup: function(test) {
-			var buttercupGroup = null;
-			this.archive.getGroups().forEach(function(group) {
-				if (group.getTitle() === "Buttercup") {
-					buttercupGroup = group;
-				}
-			});
+			var buttercupGroup = this.archive.getGroups()[0];
 			test.ok(buttercupGroup instanceof ManagedGroup, "Imported archive should contain root group");
+			test.done();
+		},
+
+		testContainsSubGroup: function(test) {
+			var buttercupGroup = this.archive.getGroups()[0],
+				generalGroup = buttercupGroup.getGroups().filter(function(group) {
+					return group.getTitle() === "General";
+				})[0];
+			test.ok(generalGroup instanceof ManagedGroup, "Imported archive should contain sub group");
+			test.done();
+		},
+
+		testContainsSampleEntry: function(test) {
+			var buttercupGroup = this.archive.getGroups()[0],
+				sampleEntry = buttercupGroup.getEntries()[0];
+			test.ok(sampleEntry instanceof ManagedEntry, "Imported archive should contain sample entry");
+			test.strictEqual(sampleEntry.getProperty("title"), "Buttercup test", "Sample title should match");
+			test.strictEqual(sampleEntry.getProperty("username"), "buttercup", "Sample username should match");
+			test.strictEqual(sampleEntry.getProperty("password"), "test password", "Sample password should match");
+			test.ok(sampleEntry.getMeta("Notes").indexOf("You killed my father.") > 0,
+				"Sample entry should contain notes");
+			test.strictEqual(sampleEntry.getMeta("Buttercup"), "I will never love again.",
+				"Sample entry should contain meta properties");
 			test.done();
 		}
 
