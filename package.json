@@ -14,10 +14,7 @@
 		}
 	],
 	"scripts": {
-		"test": "nodeunit tests tests/integration --reporter junit --output build"
-	},
-	"bin": {
-		"nodeunit": "node_modules/nodeunit/bin/nodeunit"
+		"test": "bash test-junit"
 	},
 	"repository": {
 		"type": "git",
