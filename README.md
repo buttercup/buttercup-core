@@ -77,10 +77,14 @@ var workspace = new Buttercup.Workspace(),
 	archive = new Buttercup.Archive(),
 	datasource = new Buttercup.FileDatasource("~/myArchive.bcup");
 
-workspace
-	.setArchive(archive)
-	.setDatasource(datasource)
-	.setPassword("Fezzik, tear his arms off");
+datasource
+	.load("password")
+	.then(function(archive) {
+		workspace
+			.setArchive(archive)
+			.setDatasource(datasource)
+			.setPassword("Fezzik, tear his arms off");
+	});
 ```
 
 The workspace can handle some complex operations like merge conflicts - for instance, if a user has an archive open, and remotely the archive is modified, the workspace can help perform a merge between the two.
