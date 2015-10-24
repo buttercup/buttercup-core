@@ -2,6 +2,10 @@
 <dl>
 <dt><a href="#Archive">Archive</a></dt>
 <dd></dd>
+<dt><a href="#ManagedEntry">ManagedEntry</a></dt>
+<dd></dd>
+<dt><a href="#ManagedGroup">ManagedGroup</a></dt>
+<dd></dd>
 <dt><a href="#Westley">Westley</a></dt>
 <dd></dd>
 </dl>
@@ -11,7 +15,7 @@
 
 * [Archive](#Archive)
   * [new Archive()](#new_Archive_new)
-  * [.createGroup([title])](#Archive+createGroup) ⇒ <code>ManagedGroup</code>
+  * [.createGroup([title])](#Archive+createGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
   * [.getGroups()](#Archive+getGroups) ⇒ <code>Array.&lt;ManagedGroups&gt;</code>
   * [._getWestley()](#Archive+_getWestley) ⇒ <code>[Westley](#Westley)</code>
 
@@ -20,7 +24,7 @@
 The base Buttercup Archive class
 
 <a name="Archive+createGroup"></a>
-### archive.createGroup([title]) ⇒ <code>ManagedGroup</code>
+### archive.createGroup([title]) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
 Create a new group
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
@@ -41,6 +45,52 @@ Get the underlying Westley instance
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Access:** protected  
+<a name="ManagedEntry"></a>
+## ManagedEntry
+**Kind**: global class  
+
+* [ManagedEntry](#ManagedEntry)
+  * [new ManagedEntry(westley, remoteObj)](#new_ManagedEntry_new)
+  * [.toObject()](#ManagedEntry+toObject) ⇒ <code>Object</code>
+
+<a name="new_ManagedEntry_new"></a>
+### new ManagedEntry(westley, remoteObj)
+Managed entry class
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| westley | <code>[Westley](#Westley)</code> | The Westley instance |
+| remoteObj | <code>Object</code> | The remote object reference |
+
+<a name="ManagedEntry+toObject"></a>
+### managedEntry.toObject() ⇒ <code>Object</code>
+Export entry to object
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+<a name="ManagedGroup"></a>
+## ManagedGroup
+**Kind**: global class  
+
+* [ManagedGroup](#ManagedGroup)
+  * [new ManagedGroup(westley, remoteObj)](#new_ManagedGroup_new)
+  * [.toObject()](#ManagedGroup+toObject) ⇒ <code>Object</code>
+
+<a name="new_ManagedGroup_new"></a>
+### new ManagedGroup(westley, remoteObj)
+Managed group class
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| westley | <code>[Westley](#Westley)</code> | The Westley instance |
+| remoteObj | <code>Object</code> | The remote object reference |
+
+<a name="ManagedGroup+toObject"></a>
+### managedGroup.toObject() ⇒ <code>Object</code>
+Export group to object
+
+**Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
 <a name="Westley"></a>
 ## Westley
 **Kind**: global class  

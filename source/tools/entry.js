@@ -10,10 +10,20 @@
 
 	module.exports = {
 
+		getValidProperties: function() {
+			var props = [];
+			for (var keyName in EntryProperty) {
+				if (EntryProperty.hasOwnProperty(keyName)) {
+					props.push(EntryProperty[keyName]);
+				}
+			}
+			return props;
+		},
+
 		isValidProperty: function(name) {
-			for (var keyname in EntryProperty) {
-				if (EntryProperty.hasOwnProperty(keyname)) {
-					if (EntryProperty[keyname] === name) {
+			for (var keyName in EntryProperty) {
+				if (EntryProperty.hasOwnProperty(keyName)) {
+					if (EntryProperty[keyName] === name) {
 						return true;
 					}
 				}
