@@ -7,12 +7,18 @@
 		encoding = require(GLOBAL.root + "/tools/encoding.js"),
 		searching = require(GLOBAL.root + "/tools/searching.js");
 
-	var Group = function(westley, remoteObj) {
+	/**
+	 * Managed group class
+	 * @class ManagedGroup
+	 * @param {Westley} westley The Westley instance
+	 * @param {Object} remoteObj The remote object reference
+	 */
+	var ManagedGroup = function(westley, remoteObj) {
 		this._westley = westley;
 		this._remoteObject = remoteObj;
 	};
 
-	Group.prototype.createEntry = function(title) {
+	ManagedGroup.prototype.createEntry = function(title) {
 		var managedEntry = ManagedEntry.createNew(this._getWestley(), this.getID());
 		if (title) {
 			managedEntry.setProperty("title", title);
@@ -20,15 +26,15 @@
 		return managedEntry;
 	};
 
-	Group.prototype.createGroup = function(title) {
-		var group = Group.createNew(this._getWestley(), this.getID());
+	ManagedGroup.prototype.createGroup = function(title) {
+		var group = ManagedGroup.createNew(this._getWestley(), this.getID());
 		if (title) {
 			group.setTitle(title);
 		}
 		return group;
 	};
 
-	Group.prototype.delete = function() {
+	ManagedGroup.prototype.delete = function() {
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.DeleteGroup)
 				.addArgument(this.getID())
@@ -39,29 +45,29 @@
 		delete this._remoteObject;
 	};
 
-	Group.prototype.getEntries = function() {
+	ManagedGroup.prototype.getEntries = function() {
 		var westley = this._getWestley();
 		return (this._getRemoteObject().entries || []).map(function(rawEntry) {
 			return new ManagedEntry(westley, rawEntry);
 		});
 	};
 
-	Group.prototype.getGroups = function() {
+	ManagedGroup.prototype.getGroups = function() {
 		var westley = this._getWestley();
 		return (this._getRemoteObject().groups || []).map(function(rawGroup) {
-			return new Group(westley, rawGroup);
+			return new ManagedGroup(westley, rawGroup);
 		});
 	};
 
-	Group.prototype.getID = function() {
+	ManagedGroup.prototype.getID = function() {
 		return this._getRemoteObject().id;
 	};
 
-	Group.prototype.getTitle = function() {
+	ManagedGroup.prototype.getTitle = function() {
 		return this._getRemoteObject().title || "";
 	};
 
-	Group.prototype.moveToGroup = function(group) {
+	ManagedGroup.prototype.moveToGroup = function(group) {
 		var targetID = group.getID();
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.MoveGroup)
@@ -73,7 +79,7 @@
 		return this;
 	};
 
-	Group.prototype.setTitle = function(title) {
+	ManagedGroup.prototype.setTitle = function(title) {
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.SetGroupTitle)
 				.addArgument(this.getID())
@@ -84,15 +90,27 @@
 		return this;
 	};
 
-	Group.prototype._getRemoteObject = function() {
+	/**
+	 * Export group to object
+	 * @returns {Object}
+	 * @memberof ManagedGroup
+	 */
+	ManagedGroup.prototype.toObject = function() {
+		return {
+			id: this.getID(),
+			title: this.getTitle()
+		};
+	};
+
+	ManagedGroup.prototype._getRemoteObject = function() {
 		return this._remoteObject;
 	};
 
-	Group.prototype._getWestley = function() {
+	ManagedGroup.prototype._getWestley = function() {
 		return this._westley;
 	};
 
-	Group.createNew = function(westley, parentID) {
+	ManagedGroup.createNew = function(westley, parentID) {
 		parentID = parentID || "0";
 		var id = encoding.getUniqueID();
 		westley.execute(
@@ -102,9 +120,9 @@
 				.generateCommand()
 		);
 		var group = searching.findGroupByID(westley.getDataset().groups, id);
-		return new Group(westley, group);
+		return new ManagedGroup(westley, group);
 	};
 
-	module.exports = Group;
+	module.exports = ManagedGroup;
 
 })(module);

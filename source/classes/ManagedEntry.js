@@ -7,12 +7,18 @@
 		searching = require(GLOBAL.root + "/tools/searching.js"),
 		entryTools = require(GLOBAL.root + "/tools/entry.js");
 
-	var Entry = function(westley, remoteObj) {
+	/**
+	 * Managed entry class
+	 * @class ManagedEntry
+	 * @param {Westley} westley The Westley instance
+	 * @param {Object} remoteObj The remote object reference
+	 */
+	var ManagedEntry = function(westley, remoteObj) {
 		this._westley = westley;
 		this._remoteObject = remoteObj;
 	};
 
-	Entry.prototype.delete = function() {
+	ManagedEntry.prototype.delete = function() {
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.DeleteEntry)
 				.addArgument(this.getID())
@@ -23,23 +29,23 @@
 		delete this._remoteObject;
 	};
 
-	Entry.prototype.getID = function() {
+	ManagedEntry.prototype.getID = function() {
 		return this._getRemoteObject().id;
 	};
 
-	Entry.prototype.getMeta = function(property) {
+	ManagedEntry.prototype.getMeta = function(property) {
 		var raw = this._getRemoteObject();
 		return raw.meta && raw.meta.hasOwnProperty(property) ?
 			raw.meta[property] : undefined;
 	};
 
-	Entry.prototype.getProperty = function(property) {
+	ManagedEntry.prototype.getProperty = function(property) {
 		var raw = this._getRemoteObject();
 		return raw.hasOwnProperty(property) && entryTools.isValidProperty(property) ?
 			raw[property] : undefined;
 	};
 
-	Entry.prototype.moveToGroup = function(group) {
+	ManagedEntry.prototype.moveToGroup = function(group) {
 		var targetID = group.getID();
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.MoveEntry)
@@ -51,7 +57,7 @@
 		return this;
 	};
 
-	Entry.prototype.setMeta = function(prop, value) {
+	ManagedEntry.prototype.setMeta = function(prop, value) {
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.SetEntryMeta)
 				.addArgument(this.getID())
@@ -63,7 +69,7 @@
 		return this;
 	};
 
-	Entry.prototype.setProperty = function(prop, value) {
+	ManagedEntry.prototype.setProperty = function(prop, value) {
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.SetEntryProperty)
 				.addArgument(this.getID())
@@ -75,19 +81,47 @@
 		return this;
 	};
 
-	Entry.prototype.toString = function() {
-		return JSON.stringify(this._getRemoteObject());
+	/**
+	 * Export entry to object
+	 * @returns {Object}
+	 * @memberof ManagedEntry
+	 */
+	ManagedEntry.prototype.toObject = function() {
+		var properties = {},
+			meta = {},
+			remoteMeta = this._getRemoteObject().meta || {},
+			_this = this;
+		entryTools.getValidProperties().forEach(function(propName) {
+			var val = _this.getProperty(propName);
+			if (val !== undefined) {
+				properties[propName] = val;
+			}
+		});
+		for (var metaName in remoteMeta) {
+			if (remoteMeta.hasOwnProperty(metaName)) {
+				meta[metaName] = remoteMeta[metaName];
+			}
+		}
+		return {
+			id: this.getID(),
+			properties: properties,
+			meta: meta
+		};
 	};
 
-	Entry.prototype._getRemoteObject = function() {
+	ManagedEntry.prototype.toString = function() {
+		return JSON.stringify(this.toObject());
+	};
+
+	ManagedEntry.prototype._getRemoteObject = function() {
 		return this._remoteObject;
 	};
 
-	Entry.prototype._getWestley = function() {
+	ManagedEntry.prototype._getWestley = function() {
 		return this._westley;
 	};
 
-	Entry.createNew = function(westley, groupID) {
+	ManagedEntry.createNew = function(westley, groupID) {
 		var id = encoding.getUniqueID();
 		westley.execute(
 			Inigo.create(Inigo.Command.CreateEntry)
@@ -96,9 +130,9 @@
 				.generateCommand()
 		);
 		var entry = searching.findEntryByID(westley.getDataset().groups, id);
-		return new Entry(westley, entry);
+		return new ManagedEntry(westley, entry);
 	};
 
-	module.exports = Entry;
+	module.exports = ManagedEntry;
 
 })(module);
