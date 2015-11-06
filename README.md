@@ -114,7 +114,7 @@ You can import other databases into Buttercup, such as KeePass. You need to expo
 
 ```
 var Buttercup = require("Buttercup"),
-	KeePass2XMLImporter = Buttercup.KeePass2XMLImporter,
+	KeePass2XMLImporter = Buttercup.KeePass2XMLImporter;
 
 KeePass2XMLImporter.loadFromFile(__dirname + "/../_resources/test.kdbx.xml")
 	.then(function(importer) {
