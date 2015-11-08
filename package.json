@@ -1,6 +1,6 @@
 {
 	"name": "buttercup",
-	"version": "0.6.1",
+	"version": "0.7.0",
 	"description": "A NodeJS password vault.",
 	"main": "source/module.js",
 	"contributors": [
@@ -33,7 +33,7 @@
 	"dependencies": {
 		"clone":						"^1.0.2",
 		"curlrequest": 					"^0.5.3",
-    "pbkdf2": "^3.0.4",
+		"pbkdf2": 						"^3.0.4",
 		"promise-polyfill":				"^2.1.0",
 		"uuid":							"^2.0.1",
 		"xml2js": 						"^0.4.13"
