@@ -4,7 +4,8 @@
 
 	var Westley = require(__dirname + "/Westley.js"),
 		Inigo = require(__dirname + "/InigoGenerator.js"),
-		ManagedGroup = require(__dirname + "/ManagedGroup.js");
+		ManagedGroup = require(__dirname + "/ManagedGroup.js"),
+		ManagedEntry = require(__dirname + "/ManagedEntry.js");
 
 	var signing = require(GLOBAL.root + "/tools/signing.js"),
 		searching = require(GLOBAL.root + "/tools/searching.js");
@@ -39,6 +40,28 @@
 			managedGroup.setTitle(title);
 		}
 		return managedGroup;
+	};
+
+	/**
+	 * Find an entry by its ID
+	 * @param {String} The entry's ID
+	 * @returns {ManagedEntry|null}
+	 */
+	Archive.prototype.getEntryByID = function(entryID) {
+		var westley = this._getWestley();
+		var entryRaw = searching.findEntryByID(westley.getDataset().groups, entryID);
+		return (entryRaw === null) ? null : new ManagedEntry(westley, entryRaw);
+	};
+
+	/**
+	 * Find a group by its ID
+	 * @param {String} The group's ID
+	 * @returns {ManagedGroup|null}
+	 */
+	Archive.prototype.getGroupByID = function(groupID) {
+		var westley = this._getWestley();
+		var groupRaw = searching.findGroupByID(westley.getDataset().groups, groupID);
+		return (groupRaw === null) ? null : new ManagedGroup(westley, groupRaw);
 	};
 
 	/**
