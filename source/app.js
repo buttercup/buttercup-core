@@ -2,6 +2,15 @@
 
 	"use strict";
 
+	var library = require("./module.js"),
+		Encryption = library.Encryption,
+		Decryption = library.Decryption;
+
+	var encrypted = Encryption.encrypt("This means that... it worked!", "monkey");
+	console.log(encrypted);
+	var decrypted = Decryption.decrypt(encrypted, "monkey");
+	console.log(decrypted);
+
 	// var Westley = require("./classes/Westley.js"),
 	// 	library = require("./module.js"),
 	// 	encoding = require("./tools/encoding.js"),
@@ -77,18 +86,18 @@
 	// 	console.log("---\n" + archive._getWestley().getHistory().join("\n") + "\n---");
 	// });
 
-	var library = require("./module.js"),
-		KeePass2XMLImporter = library.KeePass2XMLImporter;
+	// var library = require("./module.js"),
+	// 	KeePass2XMLImporter = library.KeePass2XMLImporter;
 
-	KeePass2XMLImporter.loadFromFile("/Users/pez/perry.test.xml").then(function(importer) {
-		importer.exportArchive().then(function(archive) {
-			console.log(JSON.stringify(archive._getWestley()._dataset));
-			//console.log("---\n" + archive._getWestley().getHistory().join("\n") + "\n---");
-		}).catch(function(err) {
-			console.error("err", err);
-		});
-	}).catch(function(err) {
-		console.error("err", err);
-	});
+	// KeePass2XMLImporter.loadFromFile("/Users/pez/perry.test.xml").then(function(importer) {
+	// 	importer.exportArchive().then(function(archive) {
+	// 		console.log(JSON.stringify(archive._getWestley()._dataset));
+	// 		//console.log("---\n" + archive._getWestley().getHistory().join("\n") + "\n---");
+	// 	}).catch(function(err) {
+	// 		console.error("err", err);
+	// 	});
+	// }).catch(function(err) {
+	// 	console.error("err", err);
+	// });
 
 })();

@@ -2,56 +2,63 @@
 
 	"use strict";
 
-	var Crypto = require("crypto"),
-    	algorithm = "aes-256-gcm";
+	var constantTimeCompare = function (val1, val2) {
+		var sentinel;
 
-    function decrypt(text, iv, authTag, password) {
-    	var decipher = Crypto.createDecipheriv(algorithm, password, iv)
-		decipher.setAuthTag(authTag);
-		var dec = decipher.update(text, 'hex', 'utf8')
-		dec += decipher.final('utf8');
-		return dec;
-    }
+		if (val1.length !== val2.length) {
+			return false;
+		}
+
+
+		for (var i = 0; i <= (val1.length - 1); i += 1) {
+			sentinel |= val1.charCodeAt(i) ^ val2.charCodeAt(i);
+		}
+
+		return sentinel === 0;
+	};
+
+ 	var Crypto = require("crypto"),
+ 		pbkdf2 = require("pbkdf2"),
+ 		Encryption = require(__dirname + "/encrypt.js"),
+ 		config = require(__dirname + "/encryptionConfig.js");
 
 	var lib = module.exports = {
 
 		decrypt: function(text, password) {
-			var decryptProps = lib.unpackEncryptedContent(text);
-			return decrypt(
-				decryptProps.content,
-				decryptProps.iv,
-				decryptProps.tag,
-				lib.hashPassword(password)
-			);
-		},
-
-		hashPassword: function(password) {
-			return Crypto.createHash('sha256').update(password).digest();
-		},
-
-		stringPop: function(text, count) {
-			return {
-				popped: text.substr(text, count),
-				altered: text.substring(count, text.length)
-			};
+			// Fetch the components
+			var components = lib.unpackEncryptedContent(text),
+				encryptedContent = components.content,
+				iv = new Buffer(components.iv, "hex"),
+				salt = components.salt,
+				hmacData = components.hmac;
+			// Get the key
+			var keyDerivationInfo = Encryption.generateDerivedKey(password, salt),
+				hmacTool = Crypto.createHmac(config.HMAC_ALGORITHM, keyDerivationInfo.hmac);
+			// Generate the hmac
+			hmacTool.update(encryptedContent);
+			hmacTool.update(components.iv);
+			hmacTool.update(salt);
+			var newHmaxHex = hmacTool.digest("hex");
+			// Check hmac for tampering
+			if (constantTimeCompare(hmacData, newHmaxHex) !== true) {
+				throw new Error("Encrypted content has been tampered with");
+			}
+			// Decrypt
+			var decryptTool = Crypto.createDecipheriv(config.ENC_ALGORITHM, keyDerivationInfo.key, iv),
+				decryptedText = decryptTool.update(encryptedContent, "base64", "utf8");
+			return decryptedText + decryptTool.final("utf8");
 		},
 
 		unpackEncryptedContent: function(encryptedContent) {
-			// Firstly, get the IV:
-			var ivLenPop = lib.stringPop(encryptedContent, 3),
-				ivLen = parseInt(ivLenPop.popped, 10),
-				ivPop = lib.stringPop(ivLenPop.altered, ivLen),
-				iv = ivPop.popped,
-				// Secondly get the auth tag:
-				authLenPop = lib.stringPop(ivPop.altered, 3),
-				authLen = parseInt(authLenPop.popped, 10),
-				authPop = lib.stringPop(authLenPop.altered, authLen),
-				authTag = authPop.popped,
-				data = authPop.altered;
+			var components = encryptedContent.split("$");
+			if (components.length !== config.COMPONENTS_COUNT) {
+				throw new Error("Decryption error - unexpected number of encrypted components");
+			}
 			return {
-				content: data,
-				iv: iv,
-				tag: new Buffer(authTag, "hex")
+				content: components[0],
+				iv: components[1],
+				salt: components[2],
+				hmac: components[3]
 			};
 		}
 
