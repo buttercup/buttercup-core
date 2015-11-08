@@ -18,6 +18,11 @@
 		this._remoteObject = remoteObj;
 	};
 
+	/**
+	 * Create a new entry with a title
+	 * @param {String=} title
+	 * @returns {ManagedEntry} The new entry
+	 */
 	ManagedGroup.prototype.createEntry = function(title) {
 		var managedEntry = ManagedEntry.createNew(this._getWestley(), this.getID());
 		if (title) {
