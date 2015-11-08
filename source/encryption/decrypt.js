@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	var constantTimeCompare = function (val1, val2) {
+	var constantTimeCompare = function(val1, val2) {
 		var sentinel;
 
 		if (val1.length !== val2.length) {
