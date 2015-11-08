@@ -2,7 +2,7 @@
 
 A NodeJS password vault.
 
-[![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![Build Status](https://travis-ci.org/perry-mitchell/buttercup-core.svg?branch=master)](https://travis-ci.org/perry-mitchell/buttercup-core)
+[![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![Build Status](https://travis-ci.org/perry-mitchell/buttercup-core.svg?branch=master)](https://travis-ci.org/perry-mitchell/buttercup-core) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC-red.svg)](https://tools.ietf.org/html/rfc3602)
 
 [![NPM](https://nodei.co/npm/buttercup.png?downloads=true&stars=true)](https://nodei.co/npm/buttercup/)
 
@@ -23,7 +23,7 @@ Buttercup manages credentials in an encrypted archive. The archive utilises a de
 
 ## Features
 
- - AES 256 bit GCM encryption
+ - AES 256 bit CBC encryption (w/ HMAC-sha256)
  - Archive change delta tracking
  - WebDAV remote file support
  - Importing from KeePass archives (XML)

@@ -7,6 +7,7 @@ module.exports = {
 
 		testLength: function(test) {
 			var encrypted = Encryption.encrypt("some text", "the password");
+			//console.log("encrypted", encrypted);
 			test.ok(encrypted.length > 0, "Length should be greater than 0");
 			test.done();
 		},
@@ -19,33 +20,57 @@ module.exports = {
 
 	},
 
-	generateIV: {
+	generateDerivedKey: {
 
-		testLength: function(test) {
-			var iv = Encryption.generateIV();
-			test.strictEqual(iv.length, 12);
+		testGeneratesComponents: function(test) {
+			var components = Encryption.generateDerivedKey("password", "salt");
+			test.ok(components.salt.length > 0, "Salt should be defined and not empty");
+			test.ok(components.key.length > 0, "Key should be defined and not empty");
+			test.ok(components.hmac.length > 0, "HMAC key should be defined and not empty");
+			test.done();
+		},
+
+		testUsesSameSalt: function(test) {
+			var components1 = Encryption.generateDerivedKey("password", "salt1"),
+				components2 = Encryption.generateDerivedKey("password", "salt1");
+			test.strictEqual(components1.salt, components2.salt, "Salts should match");
+			test.strictEqual(components1.salt, "salt1", "Should use provided salt");
+			test.done();
+		},
+
+		testProducesSameOutput: function(test) {
+			var components1 = Encryption.generateDerivedKey("humperdinck"),
+				salt = components1.salt,
+				components2 = Encryption.generateDerivedKey("humperdinck", salt);
+			test.strictEqual(components1.key.toString("hex"), components2.key.toString("hex"), "Keys should match");
+			test.strictEqual(components1.hmac.toString("hex"), components2.hmac.toString("hex"), "HMACs should match");
+			test.strictEqual(components1.salt, components2.salt, "Salts should match");
 			test.done();
 		}
 
 	},
 
-	hashPassword: {
-
-		testHashed: function(test) {
-			var hash = Encryption.hashPassword("my password").toString("hex");
-			test.ok(/^[a-f0-9]+$/i.test(hash), "Hash should be SHA");
-			test.done();
-		},
+	generateIV: {
 
 		testLength: function(test) {
-			var hash = Encryption.hashPassword("my password");
-			test.ok(hash.length > 0, "Length should be greater than 0");
+			var iv = Encryption.generateIV();
+			test.strictEqual(iv.length, 16);
+			test.done();
+		}
+
+	},
+
+	generateSalt: {
+
+		testGeneratesSaltForLength: function(test) {
+			test.strictEqual(Encryption.generateSalt(8).length, 8);
+			test.strictEqual(Encryption.generateSalt(50).length, 50);
 			test.done();
 		},
 
-		testModified: function(test) {
-			var hash = Encryption.hashPassword("my other password");
-			test.notStrictEqual(hash, "my other password");
+		testGeneratesHex: function(test) {
+			var salt = Encryption.generateSalt(100);
+			test.ok(/^[a-f0-9]+$/i.test(salt), "Salt should be hex");
 			test.done();
 		}
 
@@ -54,29 +79,15 @@ module.exports = {
 	packEncryptedContent: {
 
 		testPacksText: function(test) {
-			var iv = "1234567",
-				content = "prepare-to-die",
-				authTag = ".sd2";
-			var packed = Encryption.packEncryptedContent(content, iv, authTag);
-			test.ok(packed.indexOf(content) >= 0, "Content should be packed");
-			test.ok(packed.indexOf(iv) >= 0, "IV should be packed");
-			test.ok(packed.indexOf(authTag) >= 0, "Auth tag should be packed");
-			test.done();
-		}
-
-	},
-
-	zeroPad: {
-
-		testPad: function(test) {
-			var padded = Encryption.zeroPad("23");
-			test.strictEqual(padded, "023");
-			test.done();
-		},
-
-		testNoPad: function(test) {
-			var padded = Encryption.zeroPad("467");
-			test.strictEqual(padded, "467");
+			var packed = Encryption.packEncryptedContent("!encrypted!", "(iv)", ".salt.", "+hmac+"),
+				indEnc = packed.indexOf("!encrypted!"),
+				indIV = packed.indexOf("(iv)"),
+				indSalt = packed.indexOf(".salt."),
+				indHmac = packed.indexOf("+hmac+");
+			test.ok(indEnc === 0, "Encrypted content should be first");
+			test.ok(indIV > indEnc, "IV should be after encrypted content");
+			test.ok(indSalt > indIV, "Salt should be after IV");
+			test.ok(indHmac > indSalt, "HMAC should be after salt");
 			test.done();
 		}
 
