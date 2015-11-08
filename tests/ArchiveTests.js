@@ -11,7 +11,7 @@ module.exports = {
 				'tgr 1 "Main Group"',
 				'pad 1',
 				'cgr 1 2',
-				'tgr 2 "Secondary Group',
+				'tgr 2 "Secondary Group"',
 				'pad 2',
 				'cen 1 1',
 				'sep 1 title "My first entry"',
@@ -31,6 +31,40 @@ module.exports = {
 		this.archiveA = archiveA;
 
 		cb();
+	},
+
+	getEntryByID: {
+
+		testGetsEntryIfExists: function(test) {
+			var entry = this.archiveA.getEntryByID("1");
+			test.strictEqual(entry.getProperty("title"), "My first entry");
+			test.strictEqual(entry.getProperty("username"), "anonymous");
+			test.strictEqual(entry.getProperty("password"), "retro");
+			test.done();
+		},
+
+		testGetsNullIfNotFound: function(test) {
+			var entry = this.archiveA.getEntryByID("999");
+			test.strictEqual(entry, null, "Entry should not exist");
+			test.done();
+		}
+
+	},
+
+	getGroupByID: {
+
+		testGetsGroupIfExists: function(test) {
+			var group = this.archiveA.getGroupByID("2");
+			test.strictEqual(group.getTitle(), "Secondary Group");
+			test.done();
+		},
+
+		testGetsNullIfNotFound: function(test) {
+			var group = this.archiveA.getGroupByID("999");
+			test.strictEqual(group, null, "Group should not exist");
+			test.done();
+		}
+
 	},
 
 	getGroups: {
