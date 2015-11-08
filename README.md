@@ -6,6 +6,8 @@ A NodeJS password vault.
 
 [![NPM](https://nodei.co/npm/buttercup.png?downloads=true&stars=true)](https://nodei.co/npm/buttercup/)
 
+**Please be aware** that breaking changes _will occur_ during 0.* (alpha) development. Until 1.0 is released, assume that every minor version contains breaking changes to encryption, structure and API.
+
 ## This library
 
 This repository holds the core system functionality:
