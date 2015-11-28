@@ -52,6 +52,7 @@
 		CreateEntry: 				{ s:"cen", args:[ARG.ItemID, ARG.ItemID] },
 		CreateGroup: 				{ s:"cgr", args:[ARG.ItemIDOrRoot, ARG.ItemID] },
 		DeleteEntry: 				{ s:"den", args:[ARG.ItemID] },
+		DeleteEntryMeta: 			{ s:"dem", args:[ARG.ItemID, ARG.StringKey] },
 		DeleteGroup: 				{ s:"dgr", args:[ARG.ItemID] },
 		Format: 					{ s:"fmt", args:[ARG.StringValue] },
 		MoveEntry: 					{ s:"men", args:[ARG.ItemID, ARG.ItemID] },

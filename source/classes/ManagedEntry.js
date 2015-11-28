@@ -29,6 +29,17 @@
 		delete this._remoteObject;
 	};
 
+	ManagedEntry.prototype.deleteMeta = function(property) {
+		this._getWestley().execute(
+			Inigo.create(Inigo.Command.DeleteEntryMeta)
+				.addArgument(this.getID())
+				.addArgument(property)
+				.generateCommand()
+		);
+		this._getWestley().pad();
+		return this;
+	};
+
 	ManagedEntry.prototype.getID = function() {
 		return this._getRemoteObject().id;
 	};
