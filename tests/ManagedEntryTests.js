@@ -31,6 +31,37 @@ module.exports = {
 
 	},
 
+	getMeta: {
+
+		testGetsMeta: function(test) {
+			test.strictEqual(this.entry.getMeta("accessKey"), "12345", "Entry should contain meta");
+			test.strictEqual(this.entry.getMeta("user prop"), "user val", "Entry should contain meta");
+			test.done();
+		},
+
+		testUnsetReturnsUndefined: function(test) {
+			test.strictEqual(this.entry.getMeta("not set"), undefined, "Should return undefined");
+			test.done();
+		}
+
+	},
+
+	getProperty: {
+
+		testGetsProperties: function(test) {
+			test.strictEqual(this.entry.getProperty("title"), "My entry", "Should return title");
+			test.strictEqual(this.entry.getProperty("username"), "some-user", "Should return username");
+			test.strictEqual(this.entry.getProperty("password"), "passw0rd", "Should return password");
+			test.done();
+		},
+
+		testUnsetReturnsUndefined: function(test) {
+			test.strictEqual(this.entry.getProperty("unset"), undefined, "Should return undefined");
+			test.done();
+		}
+
+	},
+
 	toObject: {
 
 		testTransfersProperties: function(test) {
