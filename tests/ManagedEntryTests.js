@@ -1,24 +1,65 @@
 var lib = require("../source/module.js"),
 	encoding = require(GLOBAL.root + "/tools/encoding.js"),
 	entryTools = require(GLOBAL.root + "/tools/entry.js"),
-	ManagedEntry = lib.ManagedEntry;
+	Archive = require(GLOBAL.root + "/classes/ButtercupArchive.js");
+	//ManagedEntry = lib.ManagedEntry;
 
 module.exports = {
 
 	setUp: function(cb) {
-		this.id = encoding.getUniqueID();
-		var entryData = {
-			id: this.id,
-			title: "My entry",
-			username: "some-user",
-			password: "passw0rd",
-			meta: {
-				accessKey: "12345",
-				"user prop": "user val"
-			}
-		};
-		this.entry = new ManagedEntry(null, entryData);
+		var archive = new Archive(),
+			group = archive.createGroup("test group");
+			entry = group.createEntry("My entry");
+		entry
+			.setProperty("username", "some-user")
+			.setProperty("password", "passw0rd")
+			.setMeta("accessKey", "12345")
+			.setMeta("user prop", "user val");
+		this.id = entry.getID();
+		this.entry = entry;
 		(cb)();
+	},
+
+	deleteMeta: {
+
+		testDeletesProperties: function(test) {
+			test.strictEqual(this.entry.getMeta("accessKey"), "12345", "Entry should contain meta item");
+			this.entry.deleteMeta("accessKey");
+			test.strictEqual(this.entry.getMeta("accessKey"), undefined, "Meta item should be deleted");
+			test.done();
+		}
+
+	},
+
+	getMeta: {
+
+		testGetsMeta: function(test) {
+			test.strictEqual(this.entry.getMeta("accessKey"), "12345", "Entry should contain meta");
+			test.strictEqual(this.entry.getMeta("user prop"), "user val", "Entry should contain meta");
+			test.done();
+		},
+
+		testUnsetReturnsUndefined: function(test) {
+			test.strictEqual(this.entry.getMeta("not set"), undefined, "Should return undefined");
+			test.done();
+		}
+
+	},
+
+	getProperty: {
+
+		testGetsProperties: function(test) {
+			test.strictEqual(this.entry.getProperty("title"), "My entry", "Should return title");
+			test.strictEqual(this.entry.getProperty("username"), "some-user", "Should return username");
+			test.strictEqual(this.entry.getProperty("password"), "passw0rd", "Should return password");
+			test.done();
+		},
+
+		testUnsetReturnsUndefined: function(test) {
+			test.strictEqual(this.entry.getProperty("unset"), undefined, "Should return undefined");
+			test.done();
+		}
+
 	},
 
 	toObject: {

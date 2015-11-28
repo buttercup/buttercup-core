@@ -18,6 +18,10 @@
 		this._remoteObject = remoteObj;
 	};
 
+	/**
+	 * Delete the entry - removes from the archive
+	 * @memberof ManagedEntry
+	 */
 	ManagedEntry.prototype.delete = function() {
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.DeleteEntry)
@@ -29,6 +33,29 @@
 		delete this._remoteObject;
 	};
 
+	/**
+	 * Delete a meta item
+	 * @param {String} property The property name
+	 * @throws {Error} Throws if property doesn't exist, or cannot be deleted
+	 * @returns {ManagedEntry}
+	 * @memberof ManagedEntry
+	 */
+	ManagedEntry.prototype.deleteMeta = function(property) {
+		this._getWestley().execute(
+			Inigo.create(Inigo.Command.DeleteEntryMeta)
+				.addArgument(this.getID())
+				.addArgument(property)
+				.generateCommand()
+		);
+		this._getWestley().pad();
+		return this;
+	};
+
+	/**
+	 * Get the entry ID
+	 * @returns {String}
+	 * @memberof ManagedEntry
+	 */
 	ManagedEntry.prototype.getID = function() {
 		return this._getRemoteObject().id;
 	};

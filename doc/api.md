@@ -51,6 +51,9 @@ Get the underlying Westley instance
 
 * [ManagedEntry](#ManagedEntry)
   * [new ManagedEntry(westley, remoteObj)](#new_ManagedEntry_new)
+  * [.delete()](#ManagedEntry+delete)
+  * [.deleteMeta(property)](#ManagedEntry+deleteMeta) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
+  * [.getID()](#ManagedEntry+getID) ⇒ <code>String</code>
   * [.toObject()](#ManagedEntry+toObject) ⇒ <code>Object</code>
 
 <a name="new_ManagedEntry_new"></a>
@@ -63,6 +66,30 @@ Managed entry class
 | westley | <code>[Westley](#Westley)</code> | The Westley instance |
 | remoteObj | <code>Object</code> | The remote object reference |
 
+<a name="ManagedEntry+delete"></a>
+### managedEntry.delete()
+Delete the entry - removes from the archive
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+<a name="ManagedEntry+deleteMeta"></a>
+### managedEntry.deleteMeta(property) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
+Delete a meta item
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+**Throws**:
+
+- <code>Error</code> Throws if property doesn't exist, or cannot be deleted
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| property | <code>String</code> | The property name |
+
+<a name="ManagedEntry+getID"></a>
+### managedEntry.getID() ⇒ <code>String</code>
+Get the entry ID
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 <a name="ManagedEntry+toObject"></a>
 ### managedEntry.toObject() ⇒ <code>Object</code>
 Export entry to object
