@@ -181,18 +181,18 @@
 	/**
 	 * Generate an archive
 	 * @param {Number} numActions Number of "actions" to perform
+	 * @param {Archive=} archive
 	 * @returns {Archive}
 	 * @public
 	 * @type {Function}
 	 */
-	module.exports = function generate(numActions) {
-		var archive = new Archive(),
-			westley = archive._getWestley(),
+	module.exports = function generate(numActions, archive) {
+		archive = archive || new Archive();
+		var westley = archive._getWestley(),
 			command;
 		while (numActions > 0) {
 			command = getRandomCommand(westley.getDataset());
 			if (command) {
-				console.log("Command: " + command);
 				westley
 					.execute(command)
 					.pad();
