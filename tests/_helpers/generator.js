@@ -29,6 +29,12 @@
 	}
 	ACTIONS_COUNT = ACTIONS.length;
 
+	/**
+	 * Generate a random command
+	 * @param {Object} dataset The internal dataset that a Westley instance uses
+	 * @returns {String}
+	 * @private
+	 */
 	function getRandomCommand(dataset) {
 		var randIndex = getRandomIndex(ACTIONS_COUNT),
 			action = ACTIONS[randIndex],
@@ -91,6 +97,12 @@
 		return false;
 	}
 
+	/**
+	 * Get a random entry ID from the current dataset
+	 * @param {Object} dataset
+	 * @returns {String|Boolean} An ID on success, false on failure
+	 * @private
+	 */
 	function getRandomEntryID(dataset) {
 		var entryIDs = [];
 		(function collectGroupIDs(groups) {
@@ -106,6 +118,13 @@
 		return entryIDs.length > 0 ? entryIDs[getRandomIndex(entryIDs.length)] : false;
 	}
 
+	/**
+	 * Get a random group ID
+	 * @param {Object} dataset
+	 * @param {Boolean=} includeRoot
+	 * @returns {String|Boolean} An ID on success, false on failure
+	 * @private
+	 */
 	function getRandomGroupID(dataset, includeRoot) {
 		var groupIDs = includeRoot ? [0] : [];
 		(function collectGroupIDs(groups) {
@@ -117,26 +136,56 @@
 		return groupIDs.length > 0 ? groupIDs[getRandomIndex(groupIDs.length)] : false;
 	}
 
+	/**
+	 * Get a random index. Given a `len` of 3, the return value would be between 0 and 2 inclusive.
+	 * @param {Number} len Length/Count
+	 * @returns {Number}
+	 * @private
+	 */
 	function getRandomIndex(len) {
 		return Math.floor(Math.random() * len);
 	}
 
+	/**
+	 * Get a random property key
+	 * @returns {String}
+	 * @private
+	 */
 	function getRandomKey() {
 		return getRandomString(12, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 _");
 	}
 
+	/**
+	 * Get a random string
+	 * @param {Number} length The length of the string to generate
+	 * @param {String} chars A string of characters to use
+	 * @returns {String}
+	 * @private
+	 */
 	function getRandomString(length, chars) {
 		var result = '';
 		for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
 		return result;
 	}
 
+	/**
+	 * Get a random property value
+	 * @returns {String}
+	 * @private
+	 */
 	function getRandomValue() {
 		return getRandomString(32, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" +
 			"!@#$%^&*()_+-={}[]|\\;':\",.<>/?`~");
 	}
 
-	module.exports = function(numActions) {
+	/**
+	 * Generate an archive
+	 * @param {Number} numActions Number of "actions" to perform
+	 * @returns {Archive}
+	 * @public
+	 * @type {Function}
+	 */
+	module.exports = function generate(numActions) {
 		var archive = new Archive(),
 			westley = archive._getWestley(),
 			command;
