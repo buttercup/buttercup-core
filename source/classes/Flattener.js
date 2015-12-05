@@ -2,8 +2,7 @@
 
 	"use strict";
 
-	var CANDIDATE_MIN_HISTORY = 					1000,
-		FLATTEN_COUNT = 							500;
+	var PRESERVE_LAST_LINES = 						1000;
 
 	var commandTools = require(GLOBAL.root + "/tools/command.js");
 
@@ -12,23 +11,32 @@
 	};
 
 	Flattener.prototype.canBeFlattened = function() {
-		return (this._westley.getHistory().length >= CANDIDATE_MIN_HISTORY);
+		return (this._westley.getHistory().length > PRESERVE_LAST_LINES);
 	};
 
-	Flattener.prototype.flatten = function() {
+	Flattener.prototype.flatten = function(force) {
+		force = (force === undefined) ? false : force;
 		var entryStates = {},
 			workingHistory = [],
 			history = this._westley.getHistory(),
+			availableLines = history.length - PRESERVE_LAST_LINES,
 			i,
 			parts,
 			command,
 			entryID;
+		// check if possible to flatten
+		if (availableLines <= 0) {
+			if (!force) {
+				return false;
+			}
+			availableLines = history.length;
+		}
 		// collect history
-		for (i = 0; i < FLATTEN_COUNT; i += 1) {
+		for (i = 0; i < availableLines; i += 1) {
 			workingHistory.push(history[i]);
 		}
 		// collect entry/group states
-		for (i = 0; i < FLATTEN_COUNT; i += 1) {
+		for (i = 0; i < availableLines; i += 1) {
 			parts = commandTools.extractCommandComponents(workingHistory[i]);
 			command = parts[0];
 			if (command === "cen") {
@@ -58,26 +66,16 @@
 							// strip: creation/deletion/setting/moving commands
 							return false;
 						}
-						// if (historyCommand === "cen" || historyCommand === "den" && historyParts[1] === entryID) {
-						// 	// strip create/delete commands
-						// 	return false;
-						// } else if (historyCommand === "sep" || historyCommand === "sem" ||
-						// 	historyCommand === "dem" && historyParts[1] === entryID) {
-						// 	// strip property/meta operations
-						// 	return false;
-						// } else if (historyCommand === "men" && historyParts[1] === entryID) {
-						// 	// strip moving commands
-						// 	return false;
-						// }
 						return true;
 					});
 				}
 			}
 		}
 		// prepare to replay
-		var newHistory = [].concat(workingHistory).concat(history.slice(FLATTEN_COUNT));
+		var newHistory = [].concat(workingHistory).concat(history.slice(availableLines));
 		this._westley.clear();
 		newHistory.forEach(this._westley.execute.bind(this._westley));
+		return true;
 	};
 
 	module.exports = Flattener;

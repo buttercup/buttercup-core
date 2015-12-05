@@ -17,7 +17,7 @@ module.exports = {
 			generate(500, this.archive);
 			this.archive._getWestley().getHistory().splice(500, 1000);
 			test.ok(this.archive._getWestley().getHistory().length <= 500);
-			this.flattener.flatten();
+			this.flattener.flatten(true);
 			var deleteCommands = 0;
 			this.archive._getWestley().getHistory().forEach(function(command) {
 				if (command.indexOf("den") === 0) {
