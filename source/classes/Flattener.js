@@ -4,11 +4,14 @@
 
 	var PRESERVE_LAST_LINES = 						1000;
 
-	//var commandTools = require(GLOBAL.root + "/tools/command.js");
-
 	var describe = require(GLOBAL.root + "/classes/Descriptor.js"),
 		Westley = require(GLOBAL.root + "/classes/Westley.js");
 
+	/**
+	 * Flatten archives
+	 * @class Flattener
+	 * @param {Westley} westley
+	 */
 	var Flattener = function(westley) {
 		this._westley = westley;
 	};
