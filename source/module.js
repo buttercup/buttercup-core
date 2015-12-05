@@ -19,6 +19,7 @@
 		KeePass2XMLImporter: require(GLOBAL.root + "/classes/importers/KeePass2XMLImporter.js"),
 
 		Flattener: require(GLOBAL.root + "/classes/Flattener.js"),
+		Descriptor: require(GLOBAL.root + "/classes/Descriptor.js"),
 
 		// Encryption info from: http://lollyrock.com/articles/nodejs-encryption/
 		Encryption: require(GLOBAL.root + "/encryption/encrypt.js"),
