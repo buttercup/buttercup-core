@@ -1,6 +1,4 @@
 var lib = require("../source/module.js"),
-	generate = require("./_helpers/generator.js");
-	Archive = lib.Archive,
 	describe = lib.Descriptor,
 	encoding = require(GLOBAL.root + "/tools/encoding.js"),
 	getUniqueID = encoding.getUniqueID;
@@ -15,6 +13,7 @@ module.exports = {
 
 		testDescribesBasicStructures: function(test) {
 			var groupID = getUniqueID(),
+				subGroupID = getUniqueID(),
 				entryID = getUniqueID();
 			var dataset = {
 				groups: [
@@ -28,6 +27,12 @@ module.exports = {
 								username: "name",
 								password: "code"
 							}
+						],
+						groups: [
+							{
+								id: subGroupID,
+								title: "Sub"
+							}
 						]
 					}
 				]
@@ -39,6 +44,8 @@ module.exports = {
 			test.ok(description.indexOf("sep " + entryID + " title \"Website\"") >= 0, "Entry should have title");
 			test.ok(description.indexOf("sep " + entryID + " username \"name\"") >= 0, "Entry should have username");
 			test.ok(description.indexOf("sep " + entryID + " password \"code\"") >= 0, "Entry should have password");
+			test.ok(description.indexOf("cgr " + groupID + " " + subGroupID) >= 0, "Sub-group should be created");
+			test.ok(description.indexOf("tgr " + subGroupID + " \"Sub\"") >= 0, "Sub-group should be titled");
 			test.done();
 		}
 

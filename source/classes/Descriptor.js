@@ -11,11 +11,18 @@
 				[] :
 				(dataset.entries || []);
 		var commands = [];
+		if (currentGroupID === "0" && dataset.format) {
+			commands.push(
+				Inigo
+					.create(Commands.Format)
+					.addArgument(dataset.format)
+					.generateCommand()
+			);
+		}
 		if (currentGroupID !== "0") {
 			if (!parentGroupID) {
 				throw new Error("No parent group ID specified");
 			}
-			console.log("CREATE GROUP:", parentGroupID, currentGroupID);
 			commands.push(
 				Inigo
 					.create(Commands.CreateGroup)

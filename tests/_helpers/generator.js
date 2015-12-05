@@ -175,7 +175,7 @@
 	 */
 	function getRandomValue() {
 		return getRandomString(32, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" +
-			"!@#$%^&*()_+-={}[]|\\;':\",.<>/?`~");
+			"!@#$%^&*()_+-={}[]|\\;'\":,.<>/?`~");
 	}
 
 	/**
