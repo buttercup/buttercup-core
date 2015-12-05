@@ -4,6 +4,8 @@
 
 	var Buttercup = require(__dirname + "/../../source/module.js"),
 		Archive = Buttercup.Archive,
+		Inigo = require(GLOBAL.root + "/classes/InigoGenerator.js"),
+		Commands = Inigo.Command,
 		searching = require(GLOBAL.root + "/tools/searching.js"),
 		encoding = require(GLOBAL.root + "/tools/encoding.js");
 
@@ -16,7 +18,8 @@
 			"move-entry": 		2,
 			"move-group": 		1,
 			"set-prop": 		15,
-			"set-meta": 		12
+			"set-meta": 		12,
+			"title-group": 		3
 		},
 		ACTIONS = [],
 		ACTIONS_COUNT;
@@ -45,34 +48,56 @@
 			groupID = getRandomGroupID(dataset, false);
 			if (groupID) {
 				entryID = encoding.getUniqueID();
-				return "cen " + groupID + " " + entryID;
+				return Inigo
+					.create(Commands.CreateEntry)
+					.addArgument(groupID)
+					.addArgument(entryID)
+					.generateCommand();
 			}
 		} else if (action === "new-group") {
 			targetID = 0;
 			groupID = encoding.getUniqueID();
 			targetID = getRandomGroupID(dataset, true);
-			return "cgr " + targetID + " " + groupID;
+			return Inigo
+					.create(Commands.CreateGroup)
+					.addArgument(targetID)
+					.addArgument(groupID)
+					.generateCommand();
 		} else if (action === "delete-entry") {
 			entryID = getRandomEntryID(dataset);
 			if (entryID) {
-				return "den " + entryID;
+				return Inigo
+					.create(Commands.DeleteEntry)
+					.addArgument(entryID)
+					.generateCommand();
 			}
 		} else if (action === "delete-group") {
 			groupID = getRandomGroupID(dataset, false);
 			if (groupID) {
-				return "dgr " + groupID;
+				return Inigo
+					.create(Commands.DeleteGroup)
+					.addArgument(groupID)
+					.generateCommand();
 			}
 		} else if (action === "move-entry") {
 			entryID = getRandomEntryID(dataset);
 			groupID = getRandomGroupID(dataset);
 			if (entryID && groupID) {
-				return "men " + entryID + " " + groupID;
+				return Inigo
+					.create(Commands.MoveEntry)
+					.addArgument(entryID)
+					.addArgument(groupID)
+					.generateCommand();
 			}
 		} else if (action === "move-group") {
 			groupID = getRandomGroupID(dataset);
 			targetID = getRandomGroupID(dataset);
 			if (groupID && targetID && groupID !== targetID) {
-				return "mgr " + groupID + " " + targetID;
+				return Inigo
+					.create(Commands.MoveGroup)
+					.addArgument(groupID)
+					.addArgument(targetID)
+					.generateCommand();
 			}
 		} else if (action === "set-prop") {
 			entryID = getRandomEntryID(dataset);
@@ -86,12 +111,31 @@
 				} else {
 					setPropType = "password";
 				}
-				return "sep " + entryID + " " + setPropType + " \"" + getRandomValue() + "\"";
+				return Inigo
+					.create(Commands.SetEntryProperty)
+					.addArgument(entryID)
+					.addArgument(setPropType)
+					.addArgument(getRandomValue())
+					.generateCommand();
 			}
 		} else if (action === "set-meta") {
 			entryID = getRandomEntryID(dataset);
 			if (entryID) {
-				return "sem " + entryID + " \"" + getRandomKey() + "\" \"" + getRandomValue() + "\"";
+				return Inigo
+					.create(Commands.SetEntryMeta)
+					.addArgument(entryID)
+					.addArgument(getRandomKey())
+					.addArgument(getRandomValue())
+					.generateCommand();
+			}
+		} else if (action === "title-group") {
+			groupID = getRandomGroupID(dataset);
+			if (groupID) {
+				return Inigo
+					.create(Commands.SetGroupTitle)
+					.addArgument(groupID)
+					.addArgument(getRandomValue())
+					.generateCommand();
 			}
 		}
 		return false;
