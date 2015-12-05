@@ -27,7 +27,8 @@ module.exports = {
 			test.ok(length <= this.flattener.getPreservationCount(),
 				"Total generated length should be less than the preservation count (" + length + ")");
 			this.flattener.flatten();
-			test.strictEqual(this.archive._getWestley().getHistory().length, length, "Length should remain unchanged");
+			test.strictEqual(this.archive._getWestley().getHistory().length, length,
+				"Length should remain unchanged");
 			test.done();
 		}
 
@@ -43,6 +44,8 @@ module.exports = {
 			var deleteCommands = 0;
 			this.archive._getWestley().getHistory().forEach(function(command) {
 				if (command.indexOf("den") === 0) {
+					deleteCommands += 1;
+				} else if (command.indexOf("dgr") === 0) {
 					deleteCommands += 1;
 				}
 			});
