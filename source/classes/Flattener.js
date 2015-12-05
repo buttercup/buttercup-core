@@ -78,6 +78,10 @@
 		return true;
 	};
 
+	Flattener.prototype.getPreservationCount = function() {
+		return PRESERVE_LAST_LINES;
+	};
+
 	module.exports = Flattener;
 
 })(module);

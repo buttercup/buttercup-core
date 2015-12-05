@@ -11,6 +11,28 @@ module.exports = {
 		(cb)();
 	},
 
+	preservation : {
+
+		testRecognisesSmallHistorySets: function(test) {
+			generate(450, this.archive);
+			test.ok(!this.flattener.canBeFlattened(), "Should not be flattenable at too smaller size");
+			generate(450, this.archive);
+			test.ok(this.flattener.canBeFlattened(), "Should be flattenable at larger sizes");
+			test.done();
+		},
+
+		testIgnoresIfTooLittleHistory: function(test) {
+			generate(450, this.archive);
+			var length = this.archive._getWestley().getHistory().length;
+			test.ok(length <= this.flattener.getPreservationCount(),
+				"Total generated length should be less than the preservation count (" + length + ")");
+			this.flattener.flatten();
+			test.strictEqual(this.archive._getWestley().getHistory().length, length, "Length should remain unchanged");
+			test.done();
+		}
+
+	},
+
 	stripping: {
 
 		testStripsDeletionCommands: function(test) {
