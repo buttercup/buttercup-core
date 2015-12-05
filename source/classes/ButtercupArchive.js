@@ -4,6 +4,7 @@
 
 	var Westley = require(__dirname + "/Westley.js"),
 		Inigo = require(__dirname + "/InigoGenerator.js"),
+		Flattener = require(__dirname + "/Flattener.js"),
 		ManagedGroup = require(__dirname + "/ManagedGroup.js"),
 		ManagedEntry = require(__dirname + "/ManagedEntry.js");
 
@@ -74,6 +75,17 @@
 		return (westley.getDataset().groups || []).map(function(rawGroup) {
 			return new ManagedGroup(westley, rawGroup);
 		});
+	};
+
+	/**
+	 * Perform archive optimisations
+	 * @memberof Archive
+	 */
+	Archive.prototype.optimise = function() {
+		var flattener = new Flattener(this._getWestley());
+		if (flattener.canBeFlattened()) {
+			flattener.flatten();
+		}
 	};
 
 	/**

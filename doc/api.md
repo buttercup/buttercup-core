@@ -8,6 +8,8 @@
 <dl>
 <dt><a href="#Archive">Archive</a></dt>
 <dd></dd>
+<dt><a href="#Flattener">Flattener</a></dt>
+<dd></dd>
 <dt><a href="#ManagedEntry">ManagedEntry</a></dt>
 <dd></dd>
 <dt><a href="#ManagedGroup">ManagedGroup</a></dt>
@@ -38,6 +40,7 @@ Extract command components from a string
   * [new Archive()](#new_Archive_new)
   * [.createGroup([title])](#Archive+createGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
   * [.getGroups()](#Archive+getGroups) ⇒ <code>Array.&lt;ManagedGroups&gt;</code>
+  * [.optimise()](#Archive+optimise)
   * [._getWestley()](#Archive+_getWestley) ⇒ <code>[Westley](#Westley)</code>
 
 <a name="new_Archive_new"></a>
@@ -60,12 +63,29 @@ Get all groups (root) in the archive
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Returns**: <code>Array.&lt;ManagedGroups&gt;</code> - An array of ManagedGroups  
+<a name="Archive+optimise"></a>
+### archive.optimise()
+Perform archive optimisations
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
 <a name="Archive+_getWestley"></a>
 ### archive._getWestley() ⇒ <code>[Westley](#Westley)</code>
 Get the underlying Westley instance
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Access:** protected  
+<a name="Flattener"></a>
+## Flattener
+**Kind**: global class  
+<a name="new_Flattener_new"></a>
+### new Flattener(westley)
+Flatten archives
+
+
+| Param | Type |
+| --- | --- |
+| westley | <code>[Westley](#Westley)</code> | 
+
 <a name="ManagedEntry"></a>
 ## ManagedEntry
 **Kind**: global class  
