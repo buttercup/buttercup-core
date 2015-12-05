@@ -1,6 +1,14 @@
+## Modules
+<dl>
+<dt><a href="#module_command">command</a></dt>
+<dd><p>Command related tools</p>
+</dd>
+</dl>
 ## Classes
 <dl>
 <dt><a href="#Archive">Archive</a></dt>
+<dd></dd>
+<dt><a href="#Flattener">Flattener</a></dt>
 <dd></dd>
 <dt><a href="#ManagedEntry">ManagedEntry</a></dt>
 <dd></dd>
@@ -9,6 +17,21 @@
 <dt><a href="#Westley">Westley</a></dt>
 <dd></dd>
 </dl>
+<a name="module_command"></a>
+## command
+Command related tools
+
+<a name="module_command.extractCommandComponents"></a>
+### command.extractCommandComponents(command) ⇒ <code>Array.&lt;String&gt;</code>
+Extract command components from a string
+
+**Kind**: static method of <code>[command](#module_command)</code>  
+**Returns**: <code>Array.&lt;String&gt;</code> - The separated parts  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| command | <code>String</code> | The command to extract from |
+
 <a name="Archive"></a>
 ## Archive
 **Kind**: global class  
@@ -17,6 +40,7 @@
   * [new Archive()](#new_Archive_new)
   * [.createGroup([title])](#Archive+createGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
   * [.getGroups()](#Archive+getGroups) ⇒ <code>Array.&lt;ManagedGroups&gt;</code>
+  * [.optimise()](#Archive+optimise)
   * [._getWestley()](#Archive+_getWestley) ⇒ <code>[Westley](#Westley)</code>
 
 <a name="new_Archive_new"></a>
@@ -39,12 +63,29 @@ Get all groups (root) in the archive
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Returns**: <code>Array.&lt;ManagedGroups&gt;</code> - An array of ManagedGroups  
+<a name="Archive+optimise"></a>
+### archive.optimise()
+Perform archive optimisations
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
 <a name="Archive+_getWestley"></a>
 ### archive._getWestley() ⇒ <code>[Westley](#Westley)</code>
 Get the underlying Westley instance
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Access:** protected  
+<a name="Flattener"></a>
+## Flattener
+**Kind**: global class  
+<a name="new_Flattener_new"></a>
+### new Flattener(westley)
+Flatten archives
+
+
+| Param | Type |
+| --- | --- |
+| westley | <code>[Westley](#Westley)</code> | 
+
 <a name="ManagedEntry"></a>
 ## ManagedEntry
 **Kind**: global class  
@@ -125,7 +166,7 @@ Export group to object
 * [Westley](#Westley)
   * [new Westley()](#new_Westley_new)
   * [.clear()](#Westley+clear) ⇒ <code>[Westley](#Westley)</code>
-  * [.execute(command)](#Westley+execute)
+  * [.execute(command)](#Westley+execute) ⇒ <code>[Westley](#Westley)</code>
   * [.pad()](#Westley+pad) ⇒ <code>[Westley](#Westley)</code>
   * [.getDataset()](#Westley+getDataset) ⇒ <code>Object</code>
   * [.getHistory()](#Westley+getHistory) ⇒ <code>Array.&lt;String&gt;</code>
@@ -142,10 +183,11 @@ Clear the dataset and history
 **Kind**: instance method of <code>[Westley](#Westley)</code>  
 **Returns**: <code>[Westley](#Westley)</code> - Returns self  
 <a name="Westley+execute"></a>
-### westley.execute(command)
+### westley.execute(command) ⇒ <code>[Westley](#Westley)</code>
 Execute a command - stored in history and modifies the dataset
 
 **Kind**: instance method of <code>[Westley](#Westley)</code>  
+**Returns**: <code>[Westley](#Westley)</code> - Returns self  
 
 | Param | Type | Description |
 | --- | --- | --- |
