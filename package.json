@@ -33,6 +33,7 @@
 	"dependencies": {
 		"clone":						"^1.0.2",
 		"curlrequest": 					"^0.5.3",
+		"gzip-js":						"^0.3.2",
 		"pbkdf2": 						"^3.0.4",
 		"promise-polyfill":				"^2.1.0",
 		"uuid":							"^2.0.1",
