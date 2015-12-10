@@ -23,6 +23,7 @@ module.exports = {
 						var groups = archiveAfter.getGroups();
 						test.strictEqual(groups.length, 1, "There should be 1 group");
 						test.strictEqual(groups[0].getTitle(), "1 2 3", "Group should have the correct title");
+						fs.unlinkSync("./test-archive.bcup");
 						test.done();
 					});
 			});
