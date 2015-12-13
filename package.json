@@ -22,7 +22,10 @@
 	},
 	"keywords": [
 		"password",
-		"vault"
+		"vault",
+		"credentials",
+		"login",
+		"secure"
 	],
 	"author": "Perry Mitchell <perry@perrymitchell.net>",
 	"license": "MIT",
