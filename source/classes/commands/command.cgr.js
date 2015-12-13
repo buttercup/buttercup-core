@@ -10,7 +10,7 @@
 			id: newID,
 			title: ""
 		};
-		if (parseInt(parentID, 10) === 0) {
+		if ("" + parentID === "0") {
 			obj.groups.push(group);
 		} else {
 			var parentGroup = searching.findGroupByID(obj.groups, parentID);
