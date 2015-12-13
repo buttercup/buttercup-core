@@ -47,8 +47,7 @@
 			throw new Error("Unrecognised command: " + commandKey);
 		}
 		this._history.push(command);
-		this._dataset = commandExecute.apply(commandExecute, [this._dataset].concat(commandComponents))
-			|| this._dataset;
+		commandExecute.apply(commandExecute, [this._dataset].concat(commandComponents));
 		return this;
 	};
 
