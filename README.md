@@ -27,6 +27,7 @@ Buttercup manages credentials in an encrypted archive. The archive utilises a de
  - Archive change delta tracking
  - WebDAV remote file support
  - Importing from KeePass archives (XML)
+ - Text compression with GZIP
 
 ## Usage
 
