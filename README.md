@@ -42,7 +42,7 @@ Create an archive and a data source: The datasource is where the archive will be
 var Buttercup = require("buttercup");
 
 var archive = new Buttercup.Archive(),
-	datasource = new Buttercup.FileDatasource("~/myArchive.bcup");
+    datasource = new Buttercup.FileDatasource("~/myArchive.bcup");
 
 datasource.save(archive, "my secure password");
 ```
@@ -53,16 +53,16 @@ Using the same system, you can also load an archive:
 var Buttercup = require("buttercup");
 
 var datasource = new Buttercup.OwnCloudDatasource(
-	"http://www.mycloud.com",
-	"/personal/security/passwords.bcup",
-	"inigo",
-	"montoya1987"
+    "http://www.mycloud.com",
+    "/personal/security/passwords.bcup",
+    "inigo",
+    "montoya1987"
 );
 
 // `load()` returns a promise
 datasource.load("my archive password").then(function(archive) {
-	// `archive` is the archive, loaded from remote. Saving on this datasource will
-	// write back to the remote.
+    // `archive` is the archive, loaded from remote. Saving on this datasource will
+    // write back to the remote.
 });
 ```
 
@@ -76,17 +76,17 @@ In reality, the workspace is just a container:
 var Buttercup = require("buttercup");
 
 var workspace = new Buttercup.Workspace(),
-	archive = new Buttercup.Archive(),
-	datasource = new Buttercup.FileDatasource("~/myArchive.bcup");
+    archive = new Buttercup.Archive(),
+    datasource = new Buttercup.FileDatasource("~/myArchive.bcup");
 
 datasource
-	.load("password")
-	.then(function(archive) {
-		workspace
-			.setArchive(archive)
-			.setDatasource(datasource)
-			.setPassword("Fezzik, tear his arms off");
-	});
+    .load("password")
+    .then(function(archive) {
+        workspace
+            .setArchive(archive)
+            .setDatasource(datasource)
+            .setPassword("Fezzik, tear his arms off");
+    });
 ```
 
 The workspace can handle some complex operations like merge conflicts - for instance, if a user has an archive open, and remotely the archive is modified, the workspace can help perform a merge between the two.
@@ -96,16 +96,16 @@ _A merge is quite basic, in that the remote commands (that differ) are run first
 ```
 // Check for differences
 workspace.archiveDiffersFromDatasource()
-	.then(function(differs) {
-		if (differs) {
-			// Merge differences first
-			return workspace.mergeFromDatasource();
-		}
-	})
-	.then(function() {
-		// Save the archive
-		workspace.save();
-	});
+    .then(function(differs) {
+        if (differs) {
+            // Merge differences first
+            return workspace.mergeFromDatasource();
+        }
+    })
+    .then(function() {
+        // Save the archive
+        workspace.save();
+    });
 ```
 
 Merging is especially helpful for situations where archives can be modified at any time, such as with cloud storage.
@@ -116,13 +116,13 @@ You can import other databases into Buttercup, such as KeePass. You need to expo
 
 ```
 var Buttercup = require("Buttercup"),
-	KeePass2XMLImporter = Buttercup.KeePass2XMLImporter;
+    KeePass2XMLImporter = Buttercup.KeePass2XMLImporter;
 
 KeePass2XMLImporter.loadFromFile(__dirname + "/../_resources/test.kdbx.xml")
-	.then(function(importer) {
-		return importer.exportArchive();
-	})
-	.then(function(archive) {
-		// `archive` is the ready Buttercup archive imported from the KeePass XML
-	});
+    .then(function(importer) {
+        return importer.exportArchive();
+    })
+    .then(function(archive) {
+        // `archive` is the ready Buttercup archive imported from the KeePass XML
+    });
 ```
