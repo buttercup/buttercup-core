@@ -4,7 +4,7 @@
 
 	var Encryption = require(GLOBAL.root + "/encryption/encrypt.js"),
 		Decryption = require(GLOBAL.root + "/encryption/decrypt.js"),
-		Archive = require(GLOBAL.root + "/classes/ButtercupArchive.js"),
+		Archive = require(GLOBAL.root + "/classes/Archive.js"),
 		signing = require(GLOBAL.root + "/tools/signing.js"),
 		encoding = require(GLOBAL.root + "/tools/encoding.js");
 

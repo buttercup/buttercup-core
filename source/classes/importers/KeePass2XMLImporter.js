@@ -5,7 +5,7 @@
 	var fs = require("fs"),
 		xml2js = require('xml2js');
 
-	var Archive = require(GLOBAL.root + "/classes/ButtercupArchive.js"),
+	var Archive = require(GLOBAL.root + "/classes/Archive.js"),
 		Inigo = require(GLOBAL.root + "/classes/InigoGenerator.js"),
 		ManagedGroup = require(GLOBAL.root + "/classes/ManagedGroup.js"),
 		ManagedEntry = require(GLOBAL.root + "/classes/ManagedEntry.js");
