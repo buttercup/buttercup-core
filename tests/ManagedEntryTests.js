@@ -1,8 +1,7 @@
 var lib = require("../source/module.js"),
 	encoding = require(GLOBAL.root + "/tools/encoding.js"),
 	entryTools = require(GLOBAL.root + "/tools/entry.js"),
-	Archive = require(GLOBAL.root + "/classes/ButtercupArchive.js");
-	//ManagedEntry = lib.ManagedEntry;
+	Archive = lib.Archive;
 
 module.exports = {
 

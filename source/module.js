@@ -6,7 +6,7 @@
 
 	module.exports = {
 
-		Archive: require(GLOBAL.root + "/classes/ButtercupArchive.js"),
+		Archive: require(GLOBAL.root + "/classes/Archive.js"),
 		Westley: require(GLOBAL.root + "/classes/Westley.js"),
 		Workspace: require(GLOBAL.root + "/classes/Workspace.js"),
 

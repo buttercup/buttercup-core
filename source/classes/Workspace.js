@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	var Archive = require(__dirname + "/ButtercupArchive.js"),
+	var Archive = require(__dirname + "/Archive.js"),
 		Inigo = require(__dirname + "/InigoGenerator.js"),
 		Comparator = require(__dirname + "/ArchiveComparator.js");
 
