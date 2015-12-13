@@ -14,6 +14,8 @@
 <dd></dd>
 <dt><a href="#ManagedGroup">ManagedGroup</a></dt>
 <dd></dd>
+<dt><a href="#OwnCloudDatasource">OwnCloudDatasource</a></dt>
+<dd></dd>
 <dt><a href="#Westley">Westley</a></dt>
 <dd></dd>
 </dl>
@@ -159,6 +161,21 @@ Managed group class
 Export group to object
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
+<a name="OwnCloudDatasource"></a>
+## OwnCloudDatasource
+**Kind**: global class  
+<a name="new_OwnCloudDatasource_new"></a>
+### new OwnCloudDatasource(owncloudURL, path, username, password)
+Datasource for Owncloud connections
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| owncloudURL | <code>String</code> | The URL to the owncloud instance, without "remote.php/webdav" etc. |
+| path | <code>String</code> | The file path |
+| username | <code>String</code> | The username for owncloud |
+| password | <code>String</code> | The password for owncloud |
+
 <a name="Westley"></a>
 ## Westley
 **Kind**: global class  
