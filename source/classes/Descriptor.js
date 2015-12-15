@@ -5,6 +5,14 @@
 	var Inigo = require(__dirname + "/InigoGenerator.js"),
 		Commands = Inigo.Command;
 
+	/**
+	 * Describe an archive dataset - to history commands
+	 * @param {Object} dataset The archive dataset
+	 * @param {String} parentGroupID
+	 * @returns {Array}
+	 * @module Descriptor
+	 * @type {Function} 
+	 */
 	module.exports = function describe(dataset, parentGroupID) {
 		var currentGroupID = dataset.id || "0",
 			entries = (currentGroupID === "0") ?

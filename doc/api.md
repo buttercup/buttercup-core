@@ -1,5 +1,8 @@
 ## Modules
 <dl>
+<dt><a href="#module_Descriptor">Descriptor</a> ⇒ <code>Array</code></dt>
+<dd><p>Describe an archive dataset - to history commands</p>
+</dd>
 <dt><a href="#module_command">command</a></dt>
 <dd><p>Command related tools</p>
 </dd>
@@ -7,6 +10,8 @@
 ## Classes
 <dl>
 <dt><a href="#Archive">Archive</a></dt>
+<dd></dd>
+<dt><a href="#Comparator">Comparator</a></dt>
 <dd></dd>
 <dt><a href="#Flattener">Flattener</a></dt>
 <dd></dd>
@@ -18,7 +23,19 @@
 <dd></dd>
 <dt><a href="#Westley">Westley</a></dt>
 <dd></dd>
+<dt><a href="#Workspace">Workspace</a></dt>
+<dd></dd>
 </dl>
+<a name="module_Descriptor"></a>
+## Descriptor ⇒ <code>Array</code>
+Describe an archive dataset - to history commands
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| dataset | <code>Object</code> | The archive dataset |
+| parentGroupID | <code>String</code> |  |
+
 <a name="module_command"></a>
 ## command
 Command related tools
@@ -76,6 +93,37 @@ Get the underlying Westley instance
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Access:** protected  
+<a name="Comparator"></a>
+## Comparator
+**Kind**: global class  
+
+* [Comparator](#Comparator)
+  * [new Comparator(originalArchive, secondaryArchive)](#new_Comparator_new)
+  * [.archivesDiffer()](#Comparator+archivesDiffer) ⇒ <code>Boolean</code>
+  * [.calculateDifferences()](#Comparator+calculateDifferences) ⇒ <code>Object</code> &#124; <code>Boolean</code>
+
+<a name="new_Comparator_new"></a>
+### new Comparator(originalArchive, secondaryArchive)
+Archive comparison class
+
+
+| Param | Type |
+| --- | --- |
+| originalArchive | <code>[Archive](#Archive)</code> | 
+| secondaryArchive | <code>[Archive](#Archive)</code> | 
+
+<a name="Comparator+archivesDiffer"></a>
+### comparator.archivesDiffer() ⇒ <code>Boolean</code>
+Check if the current archives differ in any way
+
+**Kind**: instance method of <code>[Comparator](#Comparator)</code>  
+<a name="Comparator+calculateDifferences"></a>
+### comparator.calculateDifferences() ⇒ <code>Object</code> &#124; <code>Boolean</code>
+Calculate the differences, in commands, between the two archives
+
+**Kind**: instance method of <code>[Comparator](#Comparator)</code>  
+**Returns**: <code>Object</code> &#124; <code>Boolean</code> - Returns false if no common base
+		is found, or the command differences as two arrays  
 <a name="Flattener"></a>
 ## Flattener
 **Kind**: global class  
@@ -226,3 +274,89 @@ Get the core dataset
 Get the history (deltas)
 
 **Kind**: instance method of <code>[Westley](#Westley)</code>  
+<a name="Workspace"></a>
+## Workspace
+**Kind**: global class  
+
+* [Workspace](#Workspace)
+  * [new Workspace()](#new_Workspace_new)
+  * [.archiveDiffersFromDatasource()](#Workspace+archiveDiffersFromDatasource) ⇒ <code>Promise</code>
+  * [.getArchive()](#Workspace+getArchive) ⇒ <code>[Archive](#Archive)</code>
+  * [.getDatasource()](#Workspace+getDatasource) ⇒ <code>Object</code>
+  * [.getPassword()](#Workspace+getPassword) ⇒ <code>String</code>
+  * [.mergeFromDatasource()](#Workspace+mergeFromDatasource) ⇒ <code>Promise</code>
+  * [.save()](#Workspace+save) ⇒ <code>[Workspace](#Workspace)</code>
+  * [.setArchive(archive)](#Workspace+setArchive) ⇒ <code>[Workspace](#Workspace)</code>
+  * [.setDatasource(datasource)](#Workspace+setDatasource) ⇒ <code>[Workspace](#Workspace)</code>
+  * [.setPassword(password)](#Workspace+setPassword) ⇒ <code>[Workspace](#Workspace)</code>
+
+<a name="new_Workspace_new"></a>
+### new Workspace()
+Workspace: handling archive loading, saving and merging
+
+<a name="Workspace+archiveDiffersFromDatasource"></a>
+### workspace.archiveDiffersFromDatasource() ⇒ <code>Promise</code>
+Check if the archive differs from the one in the datasource
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**See**: stageArchiveFromDatasource  
+<a name="Workspace+getArchive"></a>
+### workspace.getArchive() ⇒ <code>[Archive](#Archive)</code>
+Get the archive instance
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+<a name="Workspace+getDatasource"></a>
+### workspace.getDatasource() ⇒ <code>Object</code>
+Get the datasource instance
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>Object</code> - A datasource instance (FileDatasource/TextDatasource etc.)  
+<a name="Workspace+getPassword"></a>
+### workspace.getPassword() ⇒ <code>String</code>
+Get the stored password
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+<a name="Workspace+mergeFromDatasource"></a>
+### workspace.mergeFromDatasource() ⇒ <code>Promise</code>
+Perform a merge against the remote datasource
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+<a name="Workspace+save"></a>
+### workspace.save() ⇒ <code>[Workspace](#Workspace)</code>
+Save the archive to the datasource
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>[Workspace](#Workspace)</code> - Self  
+<a name="Workspace+setArchive"></a>
+### workspace.setArchive(archive) ⇒ <code>[Workspace](#Workspace)</code>
+Set the archive instance
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>[Workspace](#Workspace)</code> - Self  
+
+| Param | Type |
+| --- | --- |
+| archive | <code>[Archive](#Archive)</code> | 
+
+<a name="Workspace+setDatasource"></a>
+### workspace.setDatasource(datasource) ⇒ <code>[Workspace](#Workspace)</code>
+Set the datasource instance
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>[Workspace](#Workspace)</code> - Self  
+
+| Param | Type |
+| --- | --- |
+| datasource | <code>Object</code> | 
+
+<a name="Workspace+setPassword"></a>
+### workspace.setPassword(password) ⇒ <code>[Workspace](#Workspace)</code>
+Set the password
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>[Workspace](#Workspace)</code> - Self  
+
+| Param | Type |
+| --- | --- |
+| password | <code>String</code> | 
+

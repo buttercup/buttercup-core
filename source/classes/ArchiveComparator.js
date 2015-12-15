@@ -18,6 +18,9 @@
 	 *		false if no common point, or an object with the common information. `a` and `b`
 	 *		are the indexes where the common padding occurs, and historyA and historyB are
 	 *		the history arrays for the archives.
+	 * @private
+	 * @static
+	 * @memberof Comparator
 	 */
 	function calculateCommonRecentCommand(archiveA, archiveB) {
 		var historyA = archiveA._getWestley().getHistory(),
@@ -45,19 +48,46 @@
 		return false;
 	}
 
+	/**
+	 * Get the command type/name
+	 * @param {String} fullCommand The command
+	 * @returns {String} The 3-character command name
+	 * @private
+	 * @static
+	 * @memberof Comparator
+	 */
 	function getCommandType(fullCommand) {
 		return (fullCommand && fullCommand.length >= 3) ? fullCommand.substr(0, 3) : "";
 	}
 
+	/**
+	 * Get the ID of a padding command
+	 * @param {String} command Padding command
+	 * @returns {String} The UUID of the padding command
+	 * @private
+	 * @static
+	 * @memberof Comparator
+	 */
 	function getPaddingID(command) {
 		return command.split(" ")[1];
 	}
 
+	/**
+	 * Archive comparison class
+	 * @class Comparator
+	 * @param {Archive} originalArchive
+	 * @param {Archive} secondaryArchive
+	 */
 	var Comparator = function(originalArchive, secondaryArchive) {
 		this._archiveA = originalArchive;
 		this._archiveB = secondaryArchive;
 	};
 
+	/**
+	 * Check if the current archives differ in any way
+	 * @returns {Boolean}
+	 * @memberof Comparator
+	 */
 	Comparator.prototype.archivesDiffer = function archivesDiffer() {
 		var historyA = this._archiveA._getWestley().getHistory().join("\n"),
 			historyB = this._archiveB._getWestley().getHistory().join("\n"),
@@ -70,6 +100,7 @@
 	 * Calculate the differences, in commands, between the two archives
 	 * @returns {{ original:Array, secondary:Array }|Boolean} Returns false if no common base
 	 *		is found, or the command differences as two arrays
+	 * @memberof Comparator
 	 */
 	Comparator.prototype.calculateDifferences = function() {
 		var commonIndexes = calculateCommonRecentCommand(this._archiveA, this._archiveB);
