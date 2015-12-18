@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	var encoding = require(GLOBAL.root + "/tools/encoding.js");
+	var encoding = require("buttercup/tools/encoding.js");
 
 	/**
 	 * Calculate the common command indexes between 2 archives.

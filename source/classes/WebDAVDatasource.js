@@ -3,7 +3,7 @@
 	"use strict";
 
 	var curl = require("curlrequest"),
-		TextDatasource = require(GLOBAL.root + "/classes/TextDatasource.js");
+		TextDatasource = require("buttercup/classes/TextDatasource.js");
 
 	var WebDAV = function(endpoint, path, username, password) {
 		var endpointLen = endpoint.length;

@@ -4,8 +4,8 @@
 
 	var PRESERVE_LAST_LINES = 						1000;
 
-	var describe = require(GLOBAL.root + "/classes/Descriptor.js"),
-		Westley = require(GLOBAL.root + "/classes/Westley.js");
+	var describe = require("buttercup/classes/Descriptor.js"),
+		Westley = require("buttercup/classes/Westley.js");
 
 	/**
 	 * Flatten archives

@@ -2,11 +2,11 @@
 
 	"use strict";
 
-	var Encryption = require(GLOBAL.root + "/encryption/encrypt.js"),
-		Decryption = require(GLOBAL.root + "/encryption/decrypt.js"),
-		Archive = require(GLOBAL.root + "/classes/Archive.js"),
-		signing = require(GLOBAL.root + "/tools/signing.js"),
-		encoding = require(GLOBAL.root + "/tools/encoding.js");
+	var Encryption = require("buttercup/encryption/encrypt.js"),
+		Decryption = require("buttercup/encryption/decrypt.js"),
+		Archive = require("buttercup/classes/Archive.js"),
+		signing = require("buttercup/tools/signing.js"),
+		encoding = require("buttercup/tools/encoding.js");
 
 	var TextDatasource = function(content) {
 		this._content = content;

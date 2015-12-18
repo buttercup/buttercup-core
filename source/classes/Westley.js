@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var Inigo = require(__dirname + "/InigoGenerator.js"),
-		commandTools = require(GLOBAL.root + "/tools/command.js");
+	var Inigo = require("buttercup/classes/InigoGenerator.js"),
+		commandTools = require("buttercup/tools/command.js");
 
 	var VALID_COMMAND_EXP = 			/^[a-z]{3}[ ].+$/;
 
