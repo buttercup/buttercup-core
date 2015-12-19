@@ -2,8 +2,6 @@
 
 	"use strict";
 
-	GLOBAL.root = __dirname;
-
 	module.exports = {
 
 		Archive: require("buttercup/classes/Archive.js"),

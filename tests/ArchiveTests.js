@@ -1,4 +1,4 @@
-var lib = require("../source/module.js"),
+var lib = require("buttercup/module.js"),
 	Archive = lib.Archive,
 	ManagedGroup = lib.ManagedGroup;
 

@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var Searching = require(GLOBAL.root + "/tools/searching.js"),
-		Entry = require(GLOBAL.root + "/tools/entry.js");
+	var Searching = require("buttercup/tools/searching.js"),
+		Entry = require("buttercup/tools/entry.js");
 
 	module.exports = function(obj, entryID, propertyName) {
 		obj.groups = obj.groups || [];

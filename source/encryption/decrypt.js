@@ -2,6 +2,11 @@
 
 	"use strict";
 
+	var Crypto = require("crypto"),
+ 		pbkdf2 = require("pbkdf2"),
+ 		Encryption = require("buttercup/encryption/encrypt.js"),
+ 		config = require("buttercup/encryption/encryptionConfig.js");
+
 	var constantTimeCompare = function(val1, val2) {
 		var sentinel;
 
@@ -16,11 +21,6 @@
 
 		return sentinel === 0;
 	};
-
- 	var Crypto = require("crypto"),
- 		pbkdf2 = require("pbkdf2"),
- 		Encryption = require(__dirname + "/encrypt.js"),
- 		config = require(__dirname + "/encryptionConfig.js");
 
 	var lib = module.exports = {
 
