@@ -1,4 +1,4 @@
-var lib = require("../source/module.js"),
+var lib = require("buttercup/module.js"),
 	Decryption = lib.Decryption;
 
 module.exports = {

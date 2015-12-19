@@ -4,9 +4,9 @@
 
 	var Crypto = require("crypto"),
 		pbkdf2 = require("pbkdf2"),
-		config = require(__dirname + "/encryptionConfig.js");
+		config = require("buttercup/encryption/encryptionConfig.js");
 
-	var encoding = require(GLOBAL.root + "/tools/encoding.js");
+	var encoding = require("buttercup/tools/encoding.js");
 
 	var lib = module.exports = {
 

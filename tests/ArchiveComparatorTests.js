@@ -1,7 +1,7 @@
-var lib = require("../source/module.js"),
+var lib = require("buttercup/module.js"),
 	Archive = lib.Archive;
 
-var Comparator = require(GLOBAL.root + "/classes/ArchiveComparator.js");
+var Comparator = require("buttercup/classes/ArchiveComparator.js");
 
 module.exports = {
 
