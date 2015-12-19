@@ -1,0 +1,5 @@
+#!/bin/bash
+
+CWD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+cd ${CWD}/node_modules && ln -s ../source buttercup && cd -
