@@ -60,18 +60,48 @@
 		return this._getRemoteObject().id;
 	};
 
+	/**
+	 * Get an attribute
+	 * @params {String} attributeName The name of the attribute
+	 * @returns {String|undefined}
+	 * @memberof ManagedEntry
+	 */
+	ManagedEntry.prototype.getAttribute = function(attributeName) {
+		var raw = this._getRemoteObject();
+		return raw.attributes && raw.attributes.hasOwnProperty(attributeName) ?
+			raw.attributes[attributeName] : undefined;
+	};
+
+	/**
+	 * Get a meta value
+	 * @params {String} property The name of the meta property
+	 * @returns {String|undefined}
+	 * @memberof ManagedEntry
+	 */
 	ManagedEntry.prototype.getMeta = function(property) {
 		var raw = this._getRemoteObject();
 		return raw.meta && raw.meta.hasOwnProperty(property) ?
 			raw.meta[property] : undefined;
 	};
 
+	/**
+	 * Get a property value
+	 * @params {String} property The name of the meta property
+	 * @returns {String|undefined}
+	 * @memberof ManagedEntry
+	 */
 	ManagedEntry.prototype.getProperty = function(property) {
 		var raw = this._getRemoteObject();
 		return raw.hasOwnProperty(property) && entryTools.isValidProperty(property) ?
 			raw[property] : undefined;
 	};
 
+	/**
+	 * Move the entry to another group
+	 * @params {ManagedGroup} group The target group
+	 * @returns {ManagedEntry} Returns self
+	 * @memberof ManagedEntry
+	 */
 	ManagedEntry.prototype.moveToGroup = function(group) {
 		var targetID = group.getID();
 		this._getWestley().execute(
@@ -84,6 +114,32 @@
 		return this;
 	};
 
+	/**
+	 * Set an attribute on the entry
+	 * @param {String} attributeName The name of the attribute
+	 * @param {String} value The value to set
+	 * @returns {ManagedEntry} Returns self
+	 * @memberof ManagedEntry
+	 */
+	ManagedEntry.prototype.setAttribute = function(attributeName, value) {
+		this._getWestley().execute(
+			Inigo.create(Inigo.Command.SetEntryAttribute)
+				.addArgument(this.getID())
+				.addArgument(attributeName)
+				.addArgument(value)
+				.generateCommand()
+		);
+		this._getWestley().pad();
+		return this;
+	};
+
+	/**
+	 * Set a meta value on the entry
+	 * @param {String} prop The meta name
+	 * @param {String} value The value to set
+	 * @returns {ManagedEntry} Returns self
+	 * @memberof ManagedEntry
+	 */
 	ManagedEntry.prototype.setMeta = function(prop, value) {
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.SetEntryMeta)
@@ -96,6 +152,13 @@
 		return this;
 	};
 
+	/**
+	 * Set a property on the entry
+	 * @param {String} prop The property name
+	 * @param {String} value The property value
+	 * @returns {ManagedEntry} Returns self
+	 * @memberof ManagedEntry
+	 */
 	ManagedEntry.prototype.setProperty = function(prop, value) {
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.SetEntryProperty)

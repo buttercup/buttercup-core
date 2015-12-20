@@ -9,6 +9,7 @@
 		cen: 		require("buttercup/classes/commands/command.cen.js"),
 		cgr: 		require("buttercup/classes/commands/command.cgr.js"),
 		cmm: 		require("buttercup/classes/commands/command.cmm.js"),
+		dea: 		require("buttercup/classes/commands/command.dea.js"),
 		dem: 		require("buttercup/classes/commands/command.dem.js"),
 		den: 		require("buttercup/classes/commands/command.den.js"),
 		dgr: 		require("buttercup/classes/commands/command.dgr.js"),
@@ -16,6 +17,7 @@
 		men: 		require("buttercup/classes/commands/command.men.js"),
 		mgr: 		require("buttercup/classes/commands/command.mgr.js"),
 		pad: 		require("buttercup/classes/commands/command.pad.js"),
+		sea: 		require("buttercup/classes/commands/command.sea.js"),
 		sem: 		require("buttercup/classes/commands/command.sem.js"),
 		sep: 		require("buttercup/classes/commands/command.sep.js"),
 		tgr: 		require("buttercup/classes/commands/command.tgr.js")

@@ -145,6 +145,13 @@ Flatten archives
   * [.delete()](#ManagedEntry+delete)
   * [.deleteMeta(property)](#ManagedEntry+deleteMeta) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
   * [.getID()](#ManagedEntry+getID) ⇒ <code>String</code>
+  * [.getAttribute()](#ManagedEntry+getAttribute) ⇒ <code>String</code> &#124; <code>undefined</code>
+  * [.getMeta()](#ManagedEntry+getMeta) ⇒ <code>String</code> &#124; <code>undefined</code>
+  * [.getProperty()](#ManagedEntry+getProperty) ⇒ <code>String</code> &#124; <code>undefined</code>
+  * [.moveToGroup()](#ManagedEntry+moveToGroup) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
+  * [.setAttribute(attributeName, value)](#ManagedEntry+setAttribute) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
+  * [.setMeta(prop, value)](#ManagedEntry+setMeta) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
+  * [.setProperty(prop, value)](#ManagedEntry+setProperty) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
   * [.toObject()](#ManagedEntry+toObject) ⇒ <code>Object</code>
 
 <a name="new_ManagedEntry_new"></a>
@@ -181,6 +188,67 @@ Delete a meta item
 Get the entry ID
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+<a name="ManagedEntry+getAttribute"></a>
+### managedEntry.getAttribute() ⇒ <code>String</code> &#124; <code>undefined</code>
+Get an attribute
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+**Params**: <code>String</code> attributeName The name of the attribute  
+<a name="ManagedEntry+getMeta"></a>
+### managedEntry.getMeta() ⇒ <code>String</code> &#124; <code>undefined</code>
+Get a meta value
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+**Params**: <code>String</code> property The name of the meta property  
+<a name="ManagedEntry+getProperty"></a>
+### managedEntry.getProperty() ⇒ <code>String</code> &#124; <code>undefined</code>
+Get a property value
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+**Params**: <code>String</code> property The name of the meta property  
+<a name="ManagedEntry+moveToGroup"></a>
+### managedEntry.moveToGroup() ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
+Move the entry to another group
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+**Returns**: <code>[ManagedEntry](#ManagedEntry)</code> - Returns self  
+**Params**: <code>[ManagedGroup](#ManagedGroup)</code> group The target group  
+<a name="ManagedEntry+setAttribute"></a>
+### managedEntry.setAttribute(attributeName, value) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
+Set an attribute on the entry
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+**Returns**: <code>[ManagedEntry](#ManagedEntry)</code> - Returns self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attributeName | <code>String</code> | The name of the attribute |
+| value | <code>String</code> | The value to set |
+
+<a name="ManagedEntry+setMeta"></a>
+### managedEntry.setMeta(prop, value) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
+Set a meta value on the entry
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+**Returns**: <code>[ManagedEntry](#ManagedEntry)</code> - Returns self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| prop | <code>String</code> | The meta name |
+| value | <code>String</code> | The value to set |
+
+<a name="ManagedEntry+setProperty"></a>
+### managedEntry.setProperty(prop, value) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
+Set a property on the entry
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+**Returns**: <code>[ManagedEntry](#ManagedEntry)</code> - Returns self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| prop | <code>String</code> | The property name |
+| value | <code>String</code> | The property value |
+
 <a name="ManagedEntry+toObject"></a>
 ### managedEntry.toObject() ⇒ <code>Object</code>
 Export entry to object
