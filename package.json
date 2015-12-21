@@ -43,7 +43,9 @@
 		"webdav-fs":					"^0.3.0"
 	},
 	"devDependencies": {
+    "base64-img": "^1.0.3",
 		"jsdoc-to-markdown": 			"^1.2.0",
-		"nodeunit": 					"^0.9.1"
+		"nodeunit": 					"^0.9.1",
+    "walk": "^2.3.9"
 	}
 }
