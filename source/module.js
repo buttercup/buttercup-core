@@ -12,6 +12,7 @@
 		ManagedGroup: require("buttercup/classes/ManagedGroup.js"),
 		ManagedEntry: require("buttercup/classes/ManagedEntry.js"),
 
+		TextDatasource: require("buttercup/classes/TextDatasource.js"),
 		FileDatasource: require("buttercup/classes/FileDatasource.js"),
 		OwnCloudDatasource: require("buttercup/classes/OwnCloudDatasource.js"),
 		WebDAVDatasource: require("buttercup/classes/WebDAVDatasource.js"),
