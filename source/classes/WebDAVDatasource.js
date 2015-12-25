@@ -2,8 +2,7 @@
 
 	"use strict";
 
-	var curl = require("curlrequest"),
-		webdavFS = require("webdav-fs"),
+	var webdavFS = require("webdav-fs"),
 		TextDatasource = require("buttercup/classes/TextDatasource.js");
 
 	var WebDAV = function(endpoint, path, username, password) {
@@ -15,15 +14,12 @@
 	};
 
 	WebDAV.prototype.load = function(password) {
-		var curlOpts = {
-			url: this._targetURL,
-			method: "GET",
-			verbose: true
-		};
+		var wfs = this._wfs,
+			path = this._path;
 		return (new Promise(function(resolve, reject) {
-			curl.request(curlOpts, function(err, data) {
-				if (err) {
-					(reject)(err);
+			wfs.readFile(path, "utf8", function(error, data) {
+				if (error) {
+					(reject)(error);
 				} else {
 					(resolve)(data);
 				}
