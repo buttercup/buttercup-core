@@ -38,11 +38,15 @@
 		for (i = 0; i < availableLines; i += 1) {
 			tempWestley.execute(history[i]);
 		}
-		// describe
+		// describe the archive at its current state
 		cleanHistory = describe(tempWestley.getDataset());
 		// prepare to replay
-		var newHistory = [].concat(cleanHistory).concat(history.slice(availableLines));
+		var newHistory = []
+			.concat(cleanHistory)					// The newly flattened description commands
+			.concat(history.slice(availableLines)); // The existing history minus the flattened portion
+		// clear the system
 		this._westley.clear();
+		// replay all history (expensive)
 		newHistory.forEach(this._westley.execute.bind(this._westley));
 		return true;
 	};
