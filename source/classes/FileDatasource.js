@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	var TextDatasource = require("buttercup/classes/TextDatasource.js"),
+	var TextDatasource = require("__buttercup/classes/TextDatasource.js"),
 		fs = require("fs");
 
 	var FileDatasource = function(filename) {

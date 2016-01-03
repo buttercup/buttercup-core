@@ -2,9 +2,9 @@
 
 	"use strict";
 
-	var Archive = require("buttercup/classes/Archive.js"),
-		Inigo = require("buttercup/classes/InigoGenerator.js"),
-		Comparator = require("buttercup/classes/ArchiveComparator.js");
+	var Archive = require("__buttercup/classes/Archive.js"),
+		Inigo = require("__buttercup/classes/InigoGenerator.js"),
+		Comparator = require("__buttercup/classes/ArchiveComparator.js");
 
 	function checkWorkspace(workspace) {
 		if (workspace.getArchive() instanceof Archive !== true) {

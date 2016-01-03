@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	var searching = require("buttercup/tools/searching.js");
+	var searching = require("__buttercup/tools/searching.js");
 
 	module.exports = function(obj, entryID, targetGroupID) {
 		obj.groups = obj.groups || [];

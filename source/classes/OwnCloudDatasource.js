@@ -2,7 +2,7 @@
 	
 	"use strict";
 
-	var WebDAVDatasource = require("buttercup/classes/WebDAVDatasource.js");
+	var WebDAVDatasource = require("__buttercup/classes/WebDAVDatasource.js");
 
 	/**
 	 * Datasource for Owncloud connections

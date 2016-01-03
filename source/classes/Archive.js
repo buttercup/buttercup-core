@@ -2,14 +2,14 @@
 
 	"use strict";
 
-	var Westley = require("buttercup/classes/Westley.js"),
-		Inigo = require("buttercup/classes/InigoGenerator.js"),
-		Flattener = require("buttercup/classes/Flattener.js"),
-		ManagedGroup = require("buttercup/classes/ManagedGroup.js"),
-		ManagedEntry = require("buttercup/classes/ManagedEntry.js");
+	var Westley = require("__buttercup/classes/Westley.js"),
+		Inigo = require("__buttercup/classes/InigoGenerator.js"),
+		Flattener = require("__buttercup/classes/Flattener.js"),
+		ManagedGroup = require("__buttercup/classes/ManagedGroup.js"),
+		ManagedEntry = require("__buttercup/classes/ManagedEntry.js");
 
-	var signing = require("buttercup/tools/signing.js"),
-		searching = require("buttercup/tools/searching.js");
+	var signing = require("__buttercup/tools/signing.js"),
+		searching = require("__buttercup/tools/searching.js");
 
 	/**
 	 * The base Buttercup Archive class
