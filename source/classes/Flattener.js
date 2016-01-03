@@ -7,6 +7,11 @@
 	var describe = require("buttercup/classes/Descriptor.js"),
 		Westley = require("buttercup/classes/Westley.js");
 
+	function mustBePreserved(command) {
+		var commandName = command.substr(0, 3);
+		return ["cmm"].indexOf(commandName) >= 0; 
+	}
+
 	/**
 	 * Flatten archives
 	 * @class Flattener
@@ -25,6 +30,7 @@
 		var history = this._westley.getHistory(),
 			availableLines = history.length - PRESERVE_LAST_LINES,
 			cleanHistory,
+			preservedLines = [],
 			i,
 			tempWestley = new Westley();
 		// check if possible to flatten
@@ -35,14 +41,24 @@
 			availableLines = history.length;
 		}
 		// execute early history
+		var currentCommand;
 		for (i = 0; i < availableLines; i += 1) {
-			tempWestley.execute(history[i]);
+			currentCommand = history[i];
+			if (mustBePreserved(currentCommand)) {
+				preservedLines.push(currentCommand);
+			}
+			tempWestley.execute(currentCommand);
 		}
-		// describe
+		// describe the archive at its current state
 		cleanHistory = describe(tempWestley.getDataset());
 		// prepare to replay
-		var newHistory = [].concat(cleanHistory).concat(history.slice(availableLines));
+		var newHistory = []
+			.concat(preservedLines)					// preserved commands that cannot be stripped
+			.concat(cleanHistory)					// the newly flattened description commands
+			.concat(history.slice(availableLines)); // the existing history minus the flattened portion
+		// clear the system
 		this._westley.clear();
+		// replay all history (expensive)
 		newHistory.forEach(this._westley.execute.bind(this._westley));
 		return true;
 	};

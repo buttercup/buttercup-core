@@ -52,6 +52,24 @@ module.exports = {
 			test.strictEqual(deleteCommands, 0,
 				"There should be no delete-entry commands, but there were " + deleteCommands);
 			test.done();
+		},
+
+		testKeepsFormatAndComments: function(test) {
+			generate(500, this.archive);
+			this.archive._getWestley().getHistory().splice(500, 1000);
+			this.flattener.flatten(true);
+			var fmt = 0,
+				cmm = 0;
+			this.archive._getWestley().getHistory().forEach(function(command) {
+				if (command.indexOf("fmt") === 0) {
+					fmt += 1;
+				} else if (command.indexOf("cmm") === 0) {
+					cmm += 1;
+				}
+			});
+			test.strictEqual(fmt, 1, "There should be exactly 1 format command");
+			test.ok(cmm > 0, "There should be at least 1 comment");
+			test.done();
 		}
 
 	}

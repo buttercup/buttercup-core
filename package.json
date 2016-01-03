@@ -1,51 +1,51 @@
 {
-  "name": "buttercup",
-  "version": "0.11.2",
-  "description": "A NodeJS password vault.",
-  "main": "source/module.js",
-  "contributors": [
-    {
-      "name": "Perry Mitchell",
-      "email": "perry@perrymitchell.net"
-    },
-    {
-      "name": "Sallar Kaboli",
-      "email": "sallar.kaboli@gmail.com"
-    }
-  ],
-  "scripts": {
-    "test": "bash test",
-    "install": "bash link"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/perry-mitchell/buttercup-core"
-  },
-  "keywords": [
-    "password",
-    "vault",
-    "credentials",
-    "login",
-    "secure"
-  ],
-  "author": "Perry Mitchell <perry@perrymitchell.net>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/perry-mitchell/buttercup-core/issues"
-  },
-  "homepage": "https://github.com/perry-mitchell/buttercup-core#readme",
-  "dependencies": {
-    "clone": "^1.0.2",
-    "curlrequest": "^0.5.3",
-    "gzip-js": "^0.3.2",
-    "pbkdf2": "^3.0.4",
-    "promise-polyfill": "^2.1.0",
-    "uuid": "^2.0.1"
-  },
-  "devDependencies": {
+	"name": "buttercup",
+	"version": "0.11.3",
+	"description": "A NodeJS password vault.",
+	"main": "source/module.js",
+	"contributors": [
+		{
+			"name": "Perry Mitchell",
+			"email": "perry@perrymitchell.net"
+		},
+		{
+			"name": "Sallar Kaboli",
+			"email": "sallar.kaboli@gmail.com"
+		}
+	],
+	"scripts": {
+		"test": "bash test",
+		"install": "bash link"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/perry-mitchell/buttercup-core"
+	},
+	"keywords": [
+		"password",
+		"vault",
+		"credentials",
+		"login",
+		"secure"
+	],
+	"author": "Perry Mitchell <perry@perrymitchell.net>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/perry-mitchell/buttercup-core/issues"
+	},
+	"homepage": "https://github.com/perry-mitchell/buttercup-core#readme",
+	"dependencies": {
+		"clone":						"^1.0.2",
+		"gzip-js":						"^0.3.2",
+		"pbkdf2": 						"^3.0.4",
+		"promise-polyfill":				"^2.1.0",
+		"uuid":							"^2.0.1",
+		"webdav-fs":					"^0.3.0"
+	},
+	"devDependencies": {
     "base64-img": "^1.0.3",
-    "jsdoc-to-markdown": "^1.2.0",
-    "nodeunit": "^0.9.1",
+		"jsdoc-to-markdown": 			"^1.2.0",
+		"nodeunit": 					"^0.9.1",
     "walk": "^2.3.9"
-  }
+	}
 }
