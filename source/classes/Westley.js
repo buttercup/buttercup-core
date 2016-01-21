@@ -6,21 +6,21 @@
 		commandTools = require("__buttercup/tools/command.js");
 
 	var availableCommands = {
-		cen: 		require("buttercup/classes/commands/command.cen.js"),
-		cgr: 		require("buttercup/classes/commands/command.cgr.js"),
-		cmm: 		require("buttercup/classes/commands/command.cmm.js"),
-		dea: 		require("buttercup/classes/commands/command.dea.js"),
-		dem: 		require("buttercup/classes/commands/command.dem.js"),
-		den: 		require("buttercup/classes/commands/command.den.js"),
-		dgr: 		require("buttercup/classes/commands/command.dgr.js"),
-		fmt: 		require("buttercup/classes/commands/command.fmt.js"),
-		men: 		require("buttercup/classes/commands/command.men.js"),
-		mgr: 		require("buttercup/classes/commands/command.mgr.js"),
-		pad: 		require("buttercup/classes/commands/command.pad.js"),
-		sea: 		require("buttercup/classes/commands/command.sea.js"),
-		sem: 		require("buttercup/classes/commands/command.sem.js"),
-		sep: 		require("buttercup/classes/commands/command.sep.js"),
-		tgr: 		require("buttercup/classes/commands/command.tgr.js")
+		cen: 		require("__buttercup/classes/commands/command.cen.js"),
+		cgr: 		require("__buttercup/classes/commands/command.cgr.js"),
+		cmm: 		require("__buttercup/classes/commands/command.cmm.js"),
+		dea: 		require("__buttercup/classes/commands/command.dea.js"),
+		dem: 		require("__buttercup/classes/commands/command.dem.js"),
+		den: 		require("__buttercup/classes/commands/command.den.js"),
+		dgr: 		require("__buttercup/classes/commands/command.dgr.js"),
+		fmt: 		require("__buttercup/classes/commands/command.fmt.js"),
+		men: 		require("__buttercup/classes/commands/command.men.js"),
+		mgr: 		require("__buttercup/classes/commands/command.mgr.js"),
+		pad: 		require("__buttercup/classes/commands/command.pad.js"),
+		sea: 		require("__buttercup/classes/commands/command.sea.js"),
+		sem: 		require("__buttercup/classes/commands/command.sem.js"),
+		sep: 		require("__buttercup/classes/commands/command.sep.js"),
+		tgr: 		require("__buttercup/classes/commands/command.tgr.js")
 	};
 
 	var VALID_COMMAND_EXP = 			/^[a-z]{3}[ ].+$/;

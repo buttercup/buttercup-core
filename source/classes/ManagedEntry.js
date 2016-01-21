@@ -211,6 +211,10 @@
 		return this._westley;
 	};
 
+	ManagedEntry.Attributes = Object.freeze({
+		Icon:				"bc_entry_icon"
+	});
+
 	ManagedEntry.createNew = function(westley, groupID) {
 		var id = encoding.getUniqueID();
 		westley.execute(
