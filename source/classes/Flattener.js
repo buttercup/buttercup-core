@@ -4,8 +4,8 @@
 
 	var PRESERVE_LAST_LINES = 						1000;
 
-	var describe = require("buttercup/classes/Descriptor.js"),
-		Westley = require("buttercup/classes/Westley.js");
+	var describe = require("__buttercup/classes/Descriptor.js"),
+		Westley = require("__buttercup/classes/Westley.js");
 
 	function mustBePreserved(command) {
 		var commandName = command.substr(0, 3);

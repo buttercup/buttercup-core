@@ -3,7 +3,7 @@
 CWD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 mkdir -p ${CWD}/node_modules
-if [ ! -L "${CWD}/node_modules/buttercup" ]; then
+if [ ! -L "${CWD}/node_modules/__buttercup" ]; then
 	echo "Creating buttercup link..."
-	cd ${CWD}/node_modules && ln -s ../source buttercup && cd -
+	cd ${CWD}/node_modules && ln -s ../source __buttercup && cd -
 fi

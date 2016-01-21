@@ -4,25 +4,25 @@
 
 	module.exports = {
 
-		Archive: require("buttercup/classes/Archive.js"),
-		Westley: require("buttercup/classes/Westley.js"),
-		Inigo: require("buttercup/classes/InigoGenerator.js"),
-		Workspace: require("buttercup/classes/Workspace.js"),
+		Archive: require("__buttercup/classes/Archive.js"),
+		Westley: require("__buttercup/classes/Westley.js"),
+		Inigo: require("__buttercup/classes/InigoGenerator.js"),
+		Workspace: require("__buttercup/classes/Workspace.js"),
 
-		ManagedGroup: require("buttercup/classes/ManagedGroup.js"),
-		ManagedEntry: require("buttercup/classes/ManagedEntry.js"),
+		ManagedGroup: require("__buttercup/classes/ManagedGroup.js"),
+		ManagedEntry: require("__buttercup/classes/ManagedEntry.js"),
 
-		TextDatasource: require("buttercup/classes/TextDatasource.js"),
-		FileDatasource: require("buttercup/classes/FileDatasource.js"),
-		OwnCloudDatasource: require("buttercup/classes/OwnCloudDatasource.js"),
-		WebDAVDatasource: require("buttercup/classes/WebDAVDatasource.js"),
+		TextDatasource: require("__buttercup/classes/TextDatasource.js"),
+		FileDatasource: require("__buttercup/classes/FileDatasource.js"),
+		OwnCloudDatasource: require("__buttercup/classes/OwnCloudDatasource.js"),
+		WebDAVDatasource: require("__buttercup/classes/WebDAVDatasource.js"),
 
-		Flattener: require("buttercup/classes/Flattener.js"),
-		Descriptor: require("buttercup/classes/Descriptor.js"),
+		Flattener: require("__buttercup/classes/Flattener.js"),
+		Descriptor: require("__buttercup/classes/Descriptor.js"),
 
 		// Encryption info from: http://lollyrock.com/articles/nodejs-encryption/
-		Encryption: require("buttercup/encryption/encrypt.js"),
-		Decryption: require("buttercup/encryption/decrypt.js")
+		Encryption: require("__buttercup/encryption/encrypt.js"),
+		Decryption: require("__buttercup/encryption/decrypt.js")
 
 	};
 

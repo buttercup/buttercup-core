@@ -1,4 +1,4 @@
-var signing = require("buttercup/tools/signing.js");
+var signing = require("__buttercup/tools/signing.js");
 
 module.exports = {
 

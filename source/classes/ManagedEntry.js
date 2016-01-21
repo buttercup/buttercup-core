@@ -2,10 +2,10 @@
 
 	"use strict";
 
-	var Inigo = require("buttercup/classes/InigoGenerator.js"),
-		encoding = require("buttercup/tools/encoding.js"),
-		searching = require("buttercup/tools/searching.js"),
-		entryTools = require("buttercup/tools/entry.js");
+	var Inigo = require("__buttercup/classes/InigoGenerator.js"),
+		encoding = require("__buttercup/tools/encoding.js"),
+		searching = require("__buttercup/tools/searching.js"),
+		entryTools = require("__buttercup/tools/entry.js");
 
 	/**
 	 * Managed entry class

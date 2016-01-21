@@ -1,6 +1,6 @@
-var lib = require("buttercup/module.js"),
+var lib = require("__buttercup/module.js"),
 	describe = lib.Descriptor,
-	encoding = require("buttercup/tools/encoding.js"),
+	encoding = require("__buttercup/tools/encoding.js"),
 	getUniqueID = encoding.getUniqueID;
 
 module.exports = {

@@ -1,4 +1,4 @@
-var encodingTools = require("buttercup/tools/encoding.js");
+var encodingTools = require("__buttercup/tools/encoding.js");
 
 module.exports = {
 

@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var Inigo = require("buttercup/classes/InigoGenerator.js"),
-		commandTools = require("buttercup/tools/command.js");
+	var Inigo = require("__buttercup/classes/InigoGenerator.js"),
+		commandTools = require("__buttercup/tools/command.js");
 
 	var availableCommands = {
 		cen: 		require("buttercup/classes/commands/command.cen.js"),
@@ -63,7 +63,7 @@
 			throw new Error("Unrecognised command: " + commandKey);
 		}
 		// try {
-		// 	commandExecute = require("buttercup/classes/commands/" + commandFilename);
+		// 	commandExecute = require("__buttercup/classes/commands/" + commandFilename);
 		// } catch (err) {
 		// 	throw new Error("Unrecognised command: " + commandKey);
 		// }

@@ -1,5 +1,5 @@
-var lib = require("buttercup/module.js"),
-	encoding = require("buttercup/tools/encoding.js"),
+var lib = require("__buttercup/module.js"),
+	encoding = require("__buttercup/tools/encoding.js"),
 	ManagedGroup = lib.ManagedGroup;
 
 module.exports = {
