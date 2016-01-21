@@ -27,4 +27,6 @@ build/Release
 node_modules/*
 !node_modules/__buttercup
 
+.DS_Store
+
 source/test.js
