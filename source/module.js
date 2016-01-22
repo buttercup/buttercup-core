@@ -22,7 +22,11 @@
 
 		// Encryption info from: http://lollyrock.com/articles/nodejs-encryption/
 		Encryption: require("__buttercup/encryption/encrypt.js"),
-		Decryption: require("__buttercup/encryption/decrypt.js")
+		Decryption: require("__buttercup/encryption/decrypt.js"),
+
+		tools: {
+			design: require("__buttercup/tools/design.js")
+		}
 
 	};
 

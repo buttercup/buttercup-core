@@ -17,7 +17,7 @@ This repository holds the core system functionality:
  - Encryption/decryption
  - Low-level processing and manipulation
  - Archive format handling
- 
+
 ## About
 
 Buttercup manages credentials in an encrypted archive. The archive utilises a delta-based (history) archive description method to load and save data. This allows for more robust saving and loading whilst protecting against external file changes by allowing some degree of merging.
@@ -114,3 +114,20 @@ Merging is especially helpful for situations where archives can be modified at a
 ### Importing
 
 You can import from other password archive formats, such as KeePass. Checkout the [Buttercup Importer](https://github.com/perry-mitchell/buttercup-importer) project.
+
+### Attributes & Media
+
+Entries and groups have attributes, describing how they should be treated by the various interfaces that interact with the archive. Attributes are not visible to the users and can contain a variety of different properties.
+
+One such use for attributes is the description of how to present the groups and entries to the user - like with item icons.
+
+You can view all of the icons stored in Buttercup by running the following:
+
+```
+var Buttercup = require("buttercup"),
+    images = Buttercup.tools.design
+        .getImageNames()
+        .map(Buttercup.tools.design.getImageData);
+
+images[0] // { "name": "about", "image": "data:image/svg;base64..." }
+```
