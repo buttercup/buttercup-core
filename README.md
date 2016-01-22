@@ -131,3 +131,13 @@ var Buttercup = require("buttercup"),
 
 images[0] // { "name": "about", "image": "data:image/svg;base64..." }
 ```
+
+You can get the various display options for an entry by using the following methods:
+
+```
+var imageDetails = Buttercup.tools.design.getEntryImageDetails(entry);
+// imageDetails === { "name": "key", "image": "data:image..." }
+
+var displayInfo = entry.getDisplayInfo();
+// displayInfo === { "title": "Title", "username": "Username", "password": "Password" }
+```

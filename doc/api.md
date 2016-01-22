@@ -6,6 +6,9 @@
 <dt><a href="#module_command">command</a></dt>
 <dd><p>Command related tools</p>
 </dd>
+<dt><a href="#module_design">design</a></dt>
+<dd><p>Design related tools</p>
+</dd>
 </dl>
 ## Classes
 <dl>
@@ -24,6 +27,11 @@
 <dt><a href="#Westley">Westley</a></dt>
 <dd></dd>
 <dt><a href="#Workspace">Workspace</a></dt>
+<dd></dd>
+</dl>
+## Typedefs
+<dl>
+<dt><a href="#DisplayInfo">DisplayInfo</a></dt>
 <dd></dd>
 </dl>
 <a name="module_Descriptor"></a>
@@ -50,6 +58,10 @@ Extract command components from a string
 | Param | Type | Description |
 | --- | --- | --- |
 | command | <code>String</code> | The command to extract from |
+
+<a name="module_design"></a>
+## design
+Design related tools
 
 <a name="Archive"></a>
 ## Archive
@@ -146,6 +158,7 @@ Flatten archives
   * [.deleteMeta(property)](#ManagedEntry+deleteMeta) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
   * [.getID()](#ManagedEntry+getID) ⇒ <code>String</code>
   * [.getAttribute()](#ManagedEntry+getAttribute) ⇒ <code>String</code> &#124; <code>undefined</code>
+  * [.getDisplayInfo()](#ManagedEntry+getDisplayInfo) ⇒ <code>[DisplayInfo](#DisplayInfo)</code> &#124; <code>undefined</code>
   * [.getMeta()](#ManagedEntry+getMeta) ⇒ <code>String</code> &#124; <code>undefined</code>
   * [.getProperty()](#ManagedEntry+getProperty) ⇒ <code>String</code> &#124; <code>undefined</code>
   * [.moveToGroup()](#ManagedEntry+moveToGroup) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
@@ -194,6 +207,11 @@ Get an attribute
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 **Params**: <code>String</code> attributeName The name of the attribute  
+<a name="ManagedEntry+getDisplayInfo"></a>
+### managedEntry.getDisplayInfo() ⇒ <code>[DisplayInfo](#DisplayInfo)</code> &#124; <code>undefined</code>
+Get the display information for the entry
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 <a name="ManagedEntry+getMeta"></a>
 ### managedEntry.getMeta() ⇒ <code>String</code> &#124; <code>undefined</code>
 Get a meta value
@@ -427,4 +445,15 @@ Set the password
 | Param | Type |
 | --- | --- |
 | password | <code>String</code> | 
+
+<a name="DisplayInfo"></a>
+## DisplayInfo
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| title | <code>string</code> | The text to replace "title" |
+| username | <code>string</code> | The text to replace "username" |
+| password | <code>string</code> | The text to replace "password" |
 

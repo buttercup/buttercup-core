@@ -7,6 +7,19 @@
 		searching = require("__buttercup/tools/searching.js"),
 		entryTools = require("__buttercup/tools/entry.js");
 
+	var __displayTypes = {
+		"default": {
+			"title": "Title",
+			"username": "Username",
+			"password": "Password"
+		},
+		"credit-card": {
+			"title": "Name on card",
+			"username": "Card number",
+			"password": "CVV"
+		}
+	};
+
 	/**
 	 * Managed entry class
 	 * @class ManagedEntry
@@ -70,6 +83,23 @@
 		var raw = this._getRemoteObject();
 		return raw.attributes && raw.attributes.hasOwnProperty(attributeName) ?
 			raw.attributes[attributeName] : undefined;
+	};
+
+	/**
+	 * @typedef DisplayInfo
+	 * @property {string} title The text to replace "title"
+	 * @property {string} username The text to replace "username"
+	 * @property {string} password The text to replace "password"
+	 */
+
+	/**
+	 * Get the display information for the entry
+	 * @returns {DisplayInfo|undefined}
+	 * @memberof ManagedEntry
+	 */
+	ManagedEntry.prototype.getDisplayInfo = function() {
+		var displayType = this.getAttribute(ManagedEntry.Attributes.DisplayType) || "default";
+		return __displayTypes[displayType];
 	};
 
 	/**
@@ -212,6 +242,7 @@
 	};
 
 	ManagedEntry.Attributes = Object.freeze({
+		DisplayType:		"bc_entry_display_type",
 		Icon:				"bc_entry_icon"
 	});
 
