@@ -2,7 +2,9 @@
 
 A NodeJS password vault.
 
-[![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![Build Status](https://travis-ci.org/perry-mitchell/buttercup-core.svg?branch=master)](https://travis-ci.org/perry-mitchell/buttercup-core) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC-red.svg)](https://tools.ietf.org/html/rfc3602)
+[![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC-red.svg)](https://tools.ietf.org/html/rfc3602)
+
+[![Build Status](https://travis-ci.org/perry-mitchell/buttercup-core.svg?branch=master)](https://travis-ci.org/perry-mitchell/buttercup-core) [![Code Climate](https://codeclimate.com/github/buttercup-pw/buttercup-core/badges/gpa.svg)](https://codeclimate.com/github/buttercup-pw/buttercup-core)
 
 [![NPM](https://nodei.co/npm/buttercup.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/buttercup/)
 [![NPM](https://nodei.co/npm-dl/buttercup.png?months=3)](https://nodei.co/npm/buttercup/)
@@ -17,7 +19,7 @@ This repository holds the core system functionality:
  - Encryption/decryption
  - Low-level processing and manipulation
  - Archive format handling
- 
+
 ## About
 
 Buttercup manages credentials in an encrypted archive. The archive utilises a delta-based (history) archive description method to load and save data. This allows for more robust saving and loading whilst protecting against external file changes by allowing some degree of merging.
@@ -114,3 +116,30 @@ Merging is especially helpful for situations where archives can be modified at a
 ### Importing
 
 You can import from other password archive formats, such as KeePass. Checkout the [Buttercup Importer](https://github.com/perry-mitchell/buttercup-importer) project.
+
+### Attributes & Media
+
+Entries and groups have attributes, describing how they should be treated by the various interfaces that interact with the archive. Attributes are not visible to the users and can contain a variety of different properties.
+
+One such use for attributes is the description of how to present the groups and entries to the user - like with item icons.
+
+You can view all of the icons stored in Buttercup by running the following:
+
+```
+var Buttercup = require("buttercup"),
+    images = Buttercup.tools.design
+        .getImageNames()
+        .map(Buttercup.tools.design.getImageData);
+
+images[0] // { "name": "about", "image": "data:image/svg;base64..." }
+```
+
+You can get the various display options for an entry by using the following methods:
+
+```
+var imageDetails = Buttercup.tools.design.getEntryImageDetails(entry);
+// imageDetails === { "name": "key", "image": "data:image..." }
+
+var displayInfo = entry.getDisplayInfo();
+// displayInfo === { "title": "Title", "username": "Username", "password": "Password" }
+```

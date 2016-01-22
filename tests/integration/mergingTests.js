@@ -24,6 +24,7 @@ module.exports = {
 				'pad 3',
 				'sep 1 username "anonymous"',
 				'sep 1 password "retro"',
+				'sea 1 "test" "test"',
 				'pad 4',
 				'cmm "after pad"'
 			],

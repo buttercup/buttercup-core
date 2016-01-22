@@ -25,7 +25,13 @@ module.exports = {
 								id: entryID,
 								title: "Website",
 								username: "name",
-								password: "code"
+								password: "code",
+								meta: {
+									metaItem1: "123 456"
+								},
+								attributes: {
+									"my attribute": "attr value"
+								}
 							}
 						],
 						groups: [
@@ -44,6 +50,8 @@ module.exports = {
 			test.ok(description.indexOf("sep " + entryID + " title \"Website\"") >= 0, "Entry should have title");
 			test.ok(description.indexOf("sep " + entryID + " username \"name\"") >= 0, "Entry should have username");
 			test.ok(description.indexOf("sep " + entryID + " password \"code\"") >= 0, "Entry should have password");
+			test.ok(description.indexOf("sem " + entryID + " \"metaItem1\" \"123 456\"") >= 0, "Entry should have meta");
+			test.ok(description.indexOf("sea " + entryID + " \"my attribute\" \"attr value\"") >= 0, "Entry should have attribute");
 			test.ok(description.indexOf("cgr " + groupID + " " + subGroupID) >= 0, "Sub-group should be created");
 			test.ok(description.indexOf("tgr " + subGroupID + " \"Sub\"") >= 0, "Sub-group should be titled");
 			test.done();

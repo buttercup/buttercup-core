@@ -1,7 +1,8 @@
 var lib = require("__buttercup/module.js"),
 	encoding = require("__buttercup/tools/encoding.js"),
 	entryTools = require("__buttercup/tools/entry.js"),
-	Archive = lib.Archive;
+	Archive = lib.Archive,
+	ManagedEntry = lib.ManagedEntry;
 
 module.exports = {
 
@@ -13,7 +14,8 @@ module.exports = {
 			.setProperty("username", "some-user")
 			.setProperty("password", "passw0rd")
 			.setMeta("accessKey", "12345")
-			.setMeta("user prop", "user val");
+			.setMeta("user prop", "user val")
+			.setAttribute(ManagedEntry.Attributes.DisplayType, "credit-card");
 		this.id = entry.getID();
 		this.entry = entry;
 		(cb)();
@@ -40,6 +42,32 @@ module.exports = {
 
 		testUnsetReturnsUndefined: function(test) {
 			test.strictEqual(this.entry.getMeta("not set"), undefined, "Should return undefined");
+			test.done();
+		}
+
+	},
+
+	getAttribute: {
+
+		testGetsAttribute: function(test) {
+			test.strictEqual(this.entry.getAttribute(ManagedEntry.Attributes.DisplayType), "credit-card", "Entry should contain attribute");
+			test.done();
+		},
+
+		testUnsetReturnsUndefined: function(test) {
+			test.strictEqual(this.entry.getAttribute("not set"), undefined, "Should return undefined");
+			test.done();
+		}
+
+	},
+
+	getDisplayInfo: {
+
+		testGetsCorrectInfo: function(test) {
+			var dInfo = this.entry.getDisplayInfo();
+			test.strictEqual(dInfo.title, "Name on card");
+			test.strictEqual(dInfo.username, "Card number");
+			test.strictEqual(dInfo.password, "CVV");
 			test.done();
 		}
 

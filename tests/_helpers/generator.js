@@ -19,6 +19,7 @@
 			"move-group": 		1,
 			"set-prop": 		15,
 			"set-meta": 		12,
+			"set-attribute": 	7,
 			"title-group": 		3
 		},
 		ACTIONS = [],
@@ -125,6 +126,16 @@
 					.create(Commands.SetEntryMeta)
 					.addArgument(entryID)
 					.addArgument(getRandomKey())
+					.addArgument(getRandomValue())
+					.generateCommand();
+			}
+		} else if (action === "set-attribute") {
+			entryID = getRandomEntryID(dataset);
+			if (entryID) {
+				return Inigo
+					.create(Commands.SetEntryAttribute)
+					.addArgument(entryID)
+					.addArgument(getRandomKey().toUpperCase())
 					.addArgument(getRandomValue())
 					.generateCommand();
 			}

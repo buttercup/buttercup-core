@@ -83,6 +83,20 @@
 					}
 				}
 			}
+			if (entry.attributes) {
+				for (var attributeName in entry.attributes) {
+					if (entry.attributes.hasOwnProperty(attributeName)) {
+						commands.push(
+							Inigo
+								.create(Commands.SetEntryAttribute)
+								.addArgument(entry.id)
+								.addArgument(attributeName)
+								.addArgument(entry.attributes[attributeName])
+								.generateCommand()
+						);
+					}
+				}
+			}
 			commands.push(Inigo.generatePaddingCommand());
 		});
 		(dataset.groups || []).forEach(function(group) {
