@@ -4,7 +4,7 @@ A NodeJS password vault.
 
 [![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC-red.svg)](https://tools.ietf.org/html/rfc3602)
 
-[![Build Status](https://travis-ci.org/perry-mitchell/buttercup-core.svg?branch=master)](https://travis-ci.org/perry-mitchell/buttercup-core) [![Code Climate](https://codeclimate.com/github/buttercup-pw/buttercup-core/badges/gpa.svg)](https://codeclimate.com/github/buttercup-pw/buttercup-core)
+[![Build Status](https://travis-ci.org/buttercup-pw/buttercup-core.svg?branch=master)](https://travis-ci.org/buttercup-pw/buttercup-core) [![Code Climate](https://codeclimate.com/github/buttercup-pw/buttercup-core/badges/gpa.svg)](https://codeclimate.com/github/buttercup-pw/buttercup-core)
 
 [![NPM](https://nodei.co/npm/buttercup.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/buttercup/)
 [![NPM](https://nodei.co/npm-dl/buttercup.png?months=3)](https://nodei.co/npm/buttercup/)
