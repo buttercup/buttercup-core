@@ -1,6 +1,6 @@
 {
 	"name": "buttercup",
-	"version": "0.12.0",
+	"version": "0.12.1",
 	"description": "A NodeJS password vault.",
 	"main": "source/module.js",
 	"contributors": [
@@ -15,8 +15,9 @@
 	],
 	"scripts": {
 		"build:images": "node resources/prepare-images.js",
-		"install": "bash link",
-		"test": "bash test"
+		"install": "node scripts/link.js",
+		"test": "node node_modules/nodeunit/bin/nodeunit tests tests/integration",
+		"test:junit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration --reporter junit --output build"
 	},
 	"repository": {
 		"type": "git",
@@ -47,6 +48,7 @@
     	"base64-img":					"~1.0.3",
 		"jsdoc-to-markdown": 			"~1.2.0",
 		"nodeunit": 					"~0.9.1",
+		"fs-symlink":					"~1.2.1",
     	"walk": 						"~2.3.9"
 	}
 }
