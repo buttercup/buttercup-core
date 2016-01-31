@@ -15,7 +15,7 @@
 	],
 	"scripts": {
 		"build:images": "node resources/prepare-images.js",
-		"install": "./scripts/link",
+		"install": "node scripts/link.js",
 		"test": "bash test"
 	},
 	"repository": {
