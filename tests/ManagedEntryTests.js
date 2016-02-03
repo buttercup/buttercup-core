@@ -2,6 +2,7 @@ var lib = require("__buttercup/module.js"),
 	encoding = require("__buttercup/tools/encoding.js"),
 	entryTools = require("__buttercup/tools/entry.js"),
 	Archive = lib.Archive,
+	ManagedGroup = lib.ManagedGroup,
 	ManagedEntry = lib.ManagedEntry;
 
 module.exports = {
@@ -17,9 +18,31 @@ module.exports = {
 			.setMeta("user prop", "user val")
 			.setAttribute(ManagedEntry.Attributes.DisplayType, "credit-card");
 		this.id = entry.getID();
+		this.archive = archive;
 		this.entry = entry;
 		this.group = group;
 		(cb)();
+	},
+
+	delete: {
+
+		testDeletesWhenNoTrash: function(test) {
+			this.entry.delete();
+			test.strictEqual(this.group.getEntries().length, 0, "Entry should be gone");
+			test.done();
+		},
+
+		testMovedToTrash: function(test) {
+			var trash = this.archive
+				.createGroup("Trash")
+					.setAttribute(ManagedGroup.Attributes.Role, "trash");
+			this.entry.delete();
+			test.strictEqual(trash.getEntries().length, 1, "Entry should be in trash");
+			this.entry.delete();
+			test.strictEqual(trash.getEntries().length, 0, "Entry should be gone from trash");
+			test.done();
+		}
+
 	},
 
 	deleteMeta: {

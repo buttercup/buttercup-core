@@ -33,18 +33,30 @@
 	};
 
 	/**
-	 * Delete the entry - removes from the archive
+	 * Delete the entry - either trashes the entry, or removes it completely.
+	 * If the entry is in the trash already, it is removed (including if there is no
+ 	 *	trash group). If the entry is in a normal group and a trash group exists, it
+	 *  is moved there instead of being deleted.
 	 * @memberof ManagedEntry
+	 * @see moveToGroup
+	 * @see Archive.getTrashGroup
 	 */
 	ManagedEntry.prototype.delete = function() {
-		this._getWestley().execute(
-			Inigo.create(Inigo.Command.DeleteEntry)
-				.addArgument(this.getID())
-				.generateCommand()
-		);
-		this._getWestley().pad();
-		delete this._westley;
-		delete this._remoteObject;
+		var trashGroup = this._getArchive().getTrashGroup(),
+			parentGroup = this.getGroup();
+		if (trashGroup && parentGroup && !parentGroup.isTrash()) {
+			// trash it
+			this.moveToGroup(trashGroup);
+		} else {
+			this._getWestley().execute(
+				Inigo.create(Inigo.Command.DeleteEntry)
+					.addArgument(this.getID())
+					.generateCommand()
+			);
+			this._getWestley().pad();
+			delete this._westley;
+			delete this._remoteObject;
+		}
 	};
 
 	/**

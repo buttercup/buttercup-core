@@ -205,9 +205,17 @@ Managed entry class
 
 <a name="ManagedEntry+delete"></a>
 ### managedEntry.delete()
-Delete the entry - removes from the archive
+Delete the entry - either trashes the entry, or removes it completely.
+If the entry is in the trash already, it is removed (including if there is no
+	trash group). If the entry is in a normal group and a trash group exists, it
+ is moved there instead of being deleted.
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+**See**
+
+- moveToGroup
+- Archive.getTrashGroup
+
 <a name="ManagedEntry+deleteAttribute"></a>
 ### managedEntry.deleteAttribute(attr) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
 Delete an attribute
