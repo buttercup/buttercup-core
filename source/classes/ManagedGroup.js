@@ -192,7 +192,7 @@
 	 */
 	ManagedGroup.prototype.toObject = function() {
 		// @todo use object cloning
-		let attributes = {},
+		var attributes = {},
 			groupAttributes = this._remoteObject.attributes || {};
 		for (var attrKey in groupAttributes) {
 			attributes[attrKey] = groupAttributes[attrKey];
