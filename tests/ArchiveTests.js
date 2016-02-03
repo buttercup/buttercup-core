@@ -1,4 +1,5 @@
 var lib = require("__buttercup/module.js"),
+	encoding = require("__buttercup/tools/encoding.js"),
 	Archive = lib.Archive,
 	ManagedGroup = lib.ManagedGroup;
 
@@ -6,29 +7,36 @@ module.exports = {
 
 	setUp: function(cb) {
 		var archiveA = new Archive(),
+			mainGroupID = encoding.getUniqueID(),
+			secondaryGroupID = encoding.getUniqueID(),
+			entry1ID = encoding.getUniqueID(),
+			thirdGroupID = encoding.getUniqueID(),
 			commonCommands = [
-				'cgr 0 1',
-				'tgr 1 "Main Group"',
-				'pad 1',
-				'cgr 1 2',
-				'tgr 2 "Secondary Group"',
-				'pad 2',
-				'cen 1 1',
-				'sep 1 title "My first entry"',
-				'pad 3',
-				'sep 1 username "anonymous"',
-				'sep 1 password "retro"',
-				'pad 4',
+				'cgr 0 ' + mainGroupID,
+				'tgr ' + mainGroupID + ' "Main Group"',
+				'pad ' + encoding.getUniqueID(),
+				'cgr ' + mainGroupID + ' ' + secondaryGroupID,
+				'tgr ' + secondaryGroupID + ' "Secondary Group"',
+				'pad ' + encoding.getUniqueID(),
+				'cen ' + mainGroupID + ' ' + entry1ID,
+				'sep ' + entry1ID + ' title "My first entry"',
+				'pad ' + encoding.getUniqueID(),
+				'sep ' + entry1ID + ' username "anonymous"',
+				'sep ' + entry1ID + ' password "retro"',
+				'pad ' + encoding.getUniqueID(),
 				'cmm "after pad"',
-				'cgr 0 3',
-				'tgr 3 "Websites"',
-				'pad 5'
+				'cgr 0 ' + thirdGroupID,
+				'tgr ' + thirdGroupID + ' "Websites"',
+				'pad ' + encoding.getUniqueID()
 			];
 		commonCommands.forEach(function(command) {
 			archiveA._getWestley().execute(command);
 		});
 
 		this.archiveA = archiveA;
+		this.entry1ID = entry1ID;
+		this.group2ID = secondaryGroupID;
+		this.group3ID = thirdGroupID;
 
 		cb();
 	},
@@ -36,7 +44,7 @@ module.exports = {
 	getEntryByID: {
 
 		testGetsEntryIfExists: function(test) {
-			var entry = this.archiveA.getEntryByID("1");
+			var entry = this.archiveA.getEntryByID(this.entry1ID);
 			test.strictEqual(entry.getProperty("title"), "My first entry");
 			test.strictEqual(entry.getProperty("username"), "anonymous");
 			test.strictEqual(entry.getProperty("password"), "retro");
@@ -54,7 +62,7 @@ module.exports = {
 	getGroupByID: {
 
 		testGetsGroupIfExists: function(test) {
-			var group = this.archiveA.getGroupByID("2");
+			var group = this.archiveA.getGroupByID(this.group2ID);
 			test.strictEqual(group.getTitle(), "Secondary Group");
 			test.done();
 		},
@@ -80,6 +88,24 @@ module.exports = {
 			groups.forEach(function(group) {
 				test.ok(group instanceof ManagedGroup, "Groups should be ManagedGroup instances");
 			});
+			test.done();
+		}
+
+	},
+
+	getTrashGroup: {
+
+		testReturnsNullIfNotPresent: function(test) {
+			var trashGroup = this.archiveA.getTrashGroup();
+			test.strictEqual(trashGroup, null, "No trash group should be present");
+			test.done();
+		},
+
+		testReturnsGroupIfPresent: function(test) {
+			var group = this.archiveA.getGroupByID(this.group3ID);
+			group.setAttribute(ManagedGroup.Attributes.Role, "trash");
+			var trashGroup = this.archiveA.getTrashGroup();
+			test.strictEqual(trashGroup.getID(), group.getID(), "Trash group should be present");
 			test.done();
 		}
 

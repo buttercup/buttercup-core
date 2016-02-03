@@ -133,12 +133,24 @@
 	};
 
 	/**
+	 * Check if the current group is used for trash
+	 * @returns {boolean}
+	 * @memberof ManagedGroup
+	 */
+	ManagedGroup.prototype.isTrash = function() {
+		return this.getAttribute(ManagedGroup.Attributes.Role) === "trash";
+	};
+
+	/**
 	 * Move the group into another
 	 * @param {ManagedGroup} group The target group (new parent)
 	 * @returns {ManagedGroup} Returns self
 	 * @memberof ManagedGroup
 	 */
 	ManagedGroup.prototype.moveToGroup = function(group) {
+		if (this.isTrash()) {
+			throw new Error("Trash group cannot be moved");
+		}
 		var targetID = group.getID();
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.MoveGroup)
@@ -204,6 +216,10 @@
 		};
 	};
 
+	ManagedGroup.prototype.toString = function() {
+		return JSON.stringify(this.toObject());
+	};
+
 	/**
 	 * Get the remotely-managed object (group)
 	 * @protected
@@ -223,6 +239,10 @@
 	ManagedGroup.prototype._getWestley = function() {
 		return this._westley;
 	};
+
+	ManagedGroup.Attributes = Object.freeze({
+		Role:		"bc_group_role"
+	});
 
 	/**
 	 * Create a new ManagedGroup with a delta-manager and parent group ID

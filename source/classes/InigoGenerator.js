@@ -17,7 +17,7 @@
 			throw new Error("Too many arguments for command");
 		}
 		if (!newArgRule.test.test(arg)) {
-			throw new Error("Argument is of invalid format");
+			throw new Error("Argument " + newArgIndex + " is of invalid format");
 		}
 		this._commandArgs.push(newArgRule.wrap(arg));
 		return this;

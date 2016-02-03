@@ -78,6 +78,21 @@
 	};
 
 	/**
+	 * Get the trash group
+	 * @returns {ManagedGroup|null}
+	 * @memberof Archive
+	 */
+	Archive.prototype.getTrashGroup = function() {
+		var groups = this.getGroups();
+		for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
+			if (groups[i].isTrash()) {
+				return groups[i];
+			}
+		}
+		return null;
+	};
+
+	/**
 	 * Perform archive optimisations
 	 * @memberof Archive
 	 */
@@ -96,6 +111,21 @@
 	 */
 	Archive.prototype._getWestley = function() {
 		return this._westley;
+	};
+
+	/**
+	 * Create an Archive with the default template
+	 * @returns {Archive} The new archive
+	 * @memberof Archive
+	 * @static
+	 */
+	Archive.createWithDefaults = function() {
+		var archive = new Archive(),
+			generalGroup = archive.createGroup("General"),
+			trashGroup = archive
+				.createGroup("Trash")
+					.setAttribute(ManagedGroup.Attributes.Role, "trash");
+		return archive;
 	};
 
 	module.exports = Archive;
