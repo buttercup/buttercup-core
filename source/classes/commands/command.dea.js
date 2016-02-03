@@ -2,12 +2,11 @@
 
 	"use strict";
 
-	var Searching = require("__buttercup/tools/searching.js"),
-		Entry = require("__buttercup/tools/entry.js");
+	var searching = require("__buttercup/tools/searching.js");
 
 	module.exports = function(obj, entryID, attributeName) {
 		obj.groups = obj.groups || [];
-		var entry = Searching.findEntryByID(obj.groups, entryID);
+		var entry = searching.findEntryByID(obj.groups, entryID);
 		if (!entry) {
 			throw new Error("Entry not found for ID");
 		}

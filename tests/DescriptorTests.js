@@ -39,7 +39,10 @@ module.exports = {
 								id: subGroupID,
 								title: "Sub"
 							}
-						]
+						],
+						attributes: {
+							"testAttr": "groupAttrValue"
+						}
 					}
 				]
 			};
@@ -54,6 +57,7 @@ module.exports = {
 			test.ok(description.indexOf("sea " + entryID + " \"my attribute\" \"attr value\"") >= 0, "Entry should have attribute");
 			test.ok(description.indexOf("cgr " + groupID + " " + subGroupID) >= 0, "Sub-group should be created");
 			test.ok(description.indexOf("tgr " + subGroupID + " \"Sub\"") >= 0, "Sub-group should be titled");
+			test.ok(description.indexOf("sga " + groupID + " \"testAttr\" \"groupAttrValue\"") >= 0, "Group should have an attribute");
 			test.done();
 		}
 

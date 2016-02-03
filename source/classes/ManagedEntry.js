@@ -47,8 +47,26 @@
 	};
 
 	/**
+	 * Delete an attribute
+	 * @param {string} attr The attribute name
+	 * @throws {Error} Throws if the attribute doesn't exist, or cannot be deleted
+	 * @returns {ManagedEntry}
+	 * @memberof ManagedEntry
+	 */
+	ManagedEntry.prototype.deleteAttribute = function(attr) {
+		this._getWestley().execute(
+			Inigo.create(Inigo.Command.DeleteEntryAttribute)
+				.addArgument(this.getID())
+				.addArgument(attr)
+				.generateCommand()
+		);
+		this._getWestley().pad();
+		return this;
+	};
+
+	/**
 	 * Delete a meta item
-	 * @param {String} property The property name
+	 * @param {string} property The property name
 	 * @throws {Error} Throws if property doesn't exist, or cannot be deleted
 	 * @returns {ManagedEntry}
 	 * @memberof ManagedEntry

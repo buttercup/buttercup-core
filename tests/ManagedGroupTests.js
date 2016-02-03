@@ -8,9 +8,76 @@ module.exports = {
 		this.id = encoding.getUniqueID();
 		this.group = new ManagedGroup(null, {
 			id: this.id,
-			title: "My group"
+			title: "My group",
+			attributes: {
+				"test": "value"
+			}
 		});
+
+		var groupTestArchive = new Archive(),
+			groupTestID = encoding.getUniqueID(),
+			groupTestEntryID = encoding.getUniqueID();
+		[
+			'cgr 0 ' + groupTestID,
+			'tgr ' + groupTestID + ' "Main"',
+			'sga ' + groupTestID + ' testAttr testValue',
+			'cen ' + groupTestID + ' ' + groupTestEntryID,
+			'sep ' + groupTestEntryID + ' title "My entry"'
+		].forEach(function(command) {
+			groupTestArchive._getWestley().execute(command);
+		});
+		this.group2 = groupTestArchive.getGroups()[0];
+		this.group2ID = groupTestID;
+
 		(cb)();
+	},
+
+	getAttribute: {
+
+		testGetsAttribute: function(test) {
+			test.strictEqual(this.group2.getAttribute("testAttr"), "testValue", "Attribute value should be correct");
+			test.strictEqual(this.group2.getAttribute("nothere"), undefined, "Non-existent should return undefined");
+			test.done();
+		}
+
+	},
+
+	getEntries: {
+
+		testGetsEntries: function(test) {
+			var entries = this.group2.getEntries();
+			test.strictEqual(entries.length, 1, "One entry should be returned");
+			test.done();
+		}
+
+	},
+
+	getID: {
+
+		testGetsID: function(test) {
+			test.strictEqual(this.group2.getID(), this.group2ID, "ID should be correct");
+			test.done();
+		}
+
+	},
+
+	getTitle: {
+
+		testGetsTitle: function(test) {
+			test.strictEqual(this.group2.getTitle(), "Main", "Title should be correct");
+			test.done();
+		}
+
+	},
+
+	setAttribute: {
+
+		testSetsAttribute: function(test) {
+			this.group2.setAttribute("number", "two");
+			test.strictEqual(this.group2.getAttribute("number"), "two", "Attribute should be set to the correct value");
+			test.done();
+		}
+
 	},
 
 	toObject: {
@@ -19,7 +86,8 @@ module.exports = {
 			var obj = this.group.toObject();
 			test.strictEqual(obj.id, this.id, "Should transfer id");
 			test.strictEqual(obj.title, "My group", "Should transfer title");
-			test.strictEqual(Object.keys(obj).length, 2, "Only necessary properties should be transferred");
+			test.strictEqual(Object.keys(obj).length, 3, "Only necessary properties should be transferred");
+			test.strictEqual(obj.attributes.test, "value", "Attributes should be transferred");
 			test.done();
 		}
 
