@@ -34,6 +34,29 @@ module.exports = {
 		(cb)();
 	},
 
+	delete: {
+
+		testDeletesGroup: function(test) {
+			var target = this.group2.createGroup("To delete");
+			test.strictEqual(this.group2.getGroups().length, 1, "Target group should be a child");
+			target.delete();
+			test.strictEqual(this.group2.getGroups().length, 0, "Target group should have been deleted");
+			test.done();
+		},
+
+		testThrowsForTrashGroup: function(test) {
+			var target = this.group2
+				.createGroup("To delete")
+					.setAttribute(ManagedGroup.Attributes.Role, "trash");
+			test.throws(function() {
+				target.delete();
+			}, null, "delete should throw an error");
+			test.strictEqual(this.group2.getGroups().length, 1, "Target group should not have been deleted");
+			test.done();
+		}
+
+	},
+
 	getAttribute: {
 
 		testGetsAttribute: function(test) {

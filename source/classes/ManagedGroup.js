@@ -51,6 +51,9 @@
 	 * @memberof ManagedGroup
 	 */
 	ManagedGroup.prototype.delete = function() {
+		if (this.isTrash()) {
+			throw new Error("Trash group cannot be deleted");
+		}
 		this._getWestley().execute(
 			Inigo.create(Inigo.Command.DeleteGroup)
 				.addArgument(this.getID())
