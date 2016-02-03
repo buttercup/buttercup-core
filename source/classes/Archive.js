@@ -31,12 +31,12 @@
 
 	/**
 	 * Create a new group
-	 * @param {String=} title The title for the group
+	 * @param {string=} title The title for the group
 	 * @returns {ManagedGroup}
 	 * @memberof Archive
 	 */
 	Archive.prototype.createGroup = function(title) {
-		var managedGroup = ManagedGroup.createNew(this._getWestley());
+		var managedGroup = ManagedGroup.createNew(this);
 		if (title) {
 			managedGroup.setTitle(title);
 		}
@@ -51,7 +51,7 @@
 	Archive.prototype.getEntryByID = function(entryID) {
 		var westley = this._getWestley();
 		var entryRaw = searching.findEntryByID(westley.getDataset().groups, entryID);
-		return (entryRaw === null) ? null : new ManagedEntry(westley, entryRaw);
+		return (entryRaw === null) ? null : new ManagedEntry(this, entryRaw);
 	};
 
 	/**
@@ -62,7 +62,7 @@
 	Archive.prototype.getGroupByID = function(groupID) {
 		var westley = this._getWestley();
 		var groupRaw = searching.findGroupByID(westley.getDataset().groups, groupID);
-		return (groupRaw === null) ? null : new ManagedGroup(westley, groupRaw);
+		return (groupRaw === null) ? null : new ManagedGroup(this, groupRaw);
 	};
 
 	/**
@@ -71,9 +71,10 @@
 	 * @memberof Archive
 	 */
 	Archive.prototype.getGroups = function() {
-		var westley = this._getWestley();
+		var archive = this,
+			westley = this._getWestley();
 		return (westley.getDataset().groups || []).map(function(rawGroup) {
-			return new ManagedGroup(westley, rawGroup);
+			return new ManagedGroup(archive, rawGroup);
 		});
 	};
 

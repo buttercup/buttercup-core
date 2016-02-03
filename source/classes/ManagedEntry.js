@@ -23,11 +23,12 @@
 	/**
 	 * Managed entry class
 	 * @class ManagedEntry
-	 * @param {Westley} westley The Westley instance
+	 * @param {Archive} archive The main archive instance
 	 * @param {Object} remoteObj The remote object reference
 	 */
-	var ManagedEntry = function(westley, remoteObj) {
-		this._westley = westley;
+	var ManagedEntry = function(archive, remoteObj) {
+		this._archive = archive;
+		this._westley = archive._getWestley();
 		this._remoteObject = remoteObj;
 	};
 
@@ -117,6 +118,7 @@
 	 * @memberof ManagedEntry
 	 */
 	ManagedEntry.prototype.getGroup = function() {
+		// @todo move to a new searching library
 		var parentInfo = searching.findGroupContainingEntryID(
 				this._getWestley().getDataset().groups || [],
 				this.getID()
@@ -124,7 +126,7 @@
 		if (parentInfo && parentInfo.group) {
 			// require ManagedGroup here due to circular references:
 			var ManagedGroup = require("__buttercup/classes/ManagedGroup.js");
-			return new ManagedGroup(this._getWestley(), parentInfo.group);
+			return new ManagedGroup(this._getArchive(), parentInfo.group);
 		}
 		return null;
 	};
@@ -269,6 +271,10 @@
 		return JSON.stringify(this.toObject());
 	};
 
+	ManagedEntry.prototype._getArchive = function() {
+		return this._archive;
+	};
+
 	ManagedEntry.prototype._getRemoteObject = function() {
 		return this._remoteObject;
 	};
@@ -282,8 +288,17 @@
 		Icon:				"bc_entry_icon"
 	});
 
-	ManagedEntry.createNew = function(westley, groupID) {
-		var id = encoding.getUniqueID();
+	/**
+	 * Create a new entry
+	 * @param {Archive} archive The archive
+	 * @param {string} groupID The ID of the target group
+	 * @returns {ManagedEntry}
+	 * @static
+	 * @memberof ManagedEntry
+	 */
+	ManagedEntry.createNew = function(archive, groupID) {
+		var id = encoding.getUniqueID(),
+			westley = archive._getWestley();
 		westley.execute(
 			Inigo.create(Inigo.Command.CreateEntry)
 				.addArgument(groupID)
@@ -291,7 +306,7 @@
 				.generateCommand()
 		);
 		var entry = searching.findEntryByID(westley.getDataset().groups, id);
-		return new ManagedEntry(westley, entry);
+		return new ManagedEntry(archive, entry);
 	};
 
 	module.exports = ManagedEntry;

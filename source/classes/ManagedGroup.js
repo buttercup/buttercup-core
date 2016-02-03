@@ -10,22 +10,23 @@
 	/**
 	 * Managed group class
 	 * @class ManagedGroup
-	 * @param {Westley} westley The Westley instance
+	 * @param {Archive} archive The archive instance
 	 * @param {Object} remoteObj The remote object reference
 	 */
-	var ManagedGroup = function(westley, remoteObj) {
-		this._westley = westley;
+	var ManagedGroup = function(archive, remoteObj) {
+		this._archive = archive;
+		this._westley = archive._getWestley();
 		this._remoteObject = remoteObj;
 	};
 
 	/**
 	 * Create a new entry with a title
-	 * @param {String=} title
+	 * @param {string=} title
 	 * @returns {ManagedEntry} The new entry
 	 * @memberof ManagedGroup
 	 */
 	ManagedGroup.prototype.createEntry = function(title) {
-		var managedEntry = ManagedEntry.createNew(this._getWestley(), this.getID());
+		var managedEntry = ManagedEntry.createNew(this._getArchive(), this.getID());
 		if (title) {
 			managedEntry.setProperty("title", title);
 		}
@@ -39,7 +40,7 @@
 	 * @memberof ManagedGroup
 	 */
 	ManagedGroup.prototype.createGroup = function(title) {
-		var group = ManagedGroup.createNew(this._getWestley(), this.getID());
+		var group = ManagedGroup.createNew(this._getArchive(), this.getID());
 		if (title) {
 			group.setTitle(title);
 		}
@@ -99,9 +100,9 @@
 	 * @memberof ManagedGroup
 	 */
 	ManagedGroup.prototype.getEntries = function() {
-		var westley = this._getWestley();
+		var archive = this._getArchive();
 		return (this._getRemoteObject().entries || []).map(function(rawEntry) {
-			return new ManagedEntry(westley, rawEntry);
+			return new ManagedEntry(archive, rawEntry);
 		});
 	};
 
@@ -111,9 +112,9 @@
 	 * @memberof ManagedGroup
 	 */
 	ManagedGroup.prototype.getGroups = function() {
-		var westley = this._getWestley();
+		var archive = this._getArchive();
 		return (this._getRemoteObject().groups || []).map(function(rawGroup) {
-			return new ManagedGroup(westley, rawGroup);
+			return new ManagedGroup(archive, rawGroup);
 		});
 	};
 
@@ -224,6 +225,16 @@
 	};
 
 	/**
+	 * Get the archive instance reference
+	 * @protected
+	 * @returns {Archive}
+	 * @memberof ManagedGroup
+	 */
+	ManagedGroup.prototype._getArchive = function() {
+		return this._archive;
+	};
+
+	/**
 	 * Get the remotely-managed object (group)
 	 * @protected
 	 * @returns {Object}
@@ -251,13 +262,14 @@
 	 * Create a new ManagedGroup with a delta-manager and parent group ID
 	 * @static
 	 * @memberof ManagedGroup
-	 * @param {Westley}
-	 * @param {string=} The parent group ID (default is root)
+	 * @param {Archive} archive
+	 * @param {string=} parentID The parent group ID (default is root)
 	 * @returns {ManagedGroup} A new group
 	 */
-	ManagedGroup.createNew = function(westley, parentID) {
+	ManagedGroup.createNew = function(archive, parentID) {
 		parentID = parentID || "0";
-		var id = encoding.getUniqueID();
+		var id = encoding.getUniqueID(),
+			westley = archive._getWestley();
 		westley.execute(
 			Inigo.create(Inigo.Command.CreateGroup)
 				.addArgument(parentID)
@@ -265,7 +277,7 @@
 				.generateCommand()
 		);
 		var group = searching.findGroupByID(westley.getDataset().groups, id);
-		return new ManagedGroup(westley, group);
+		return new ManagedGroup(archive, group);
 	};
 
 	module.exports = ManagedGroup;

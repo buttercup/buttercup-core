@@ -1,12 +1,13 @@
 var lib = require("__buttercup/module.js"),
 	encoding = require("__buttercup/tools/encoding.js"),
-	ManagedGroup = lib.ManagedGroup;
+	ManagedGroup = lib.ManagedGroup,
+	Archive = lib.Archive;
 
 module.exports = {
 
 	setUp: function(cb) {
 		this.id = encoding.getUniqueID();
-		this.group = new ManagedGroup(null, {
+		this.group = new ManagedGroup(new Archive(), {
 			id: this.id,
 			title: "My group",
 			attributes: {
