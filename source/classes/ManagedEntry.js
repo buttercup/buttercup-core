@@ -83,15 +83,6 @@
 	};
 
 	/**
-	 * Get the entry ID
-	 * @returns {String}
-	 * @memberof ManagedEntry
-	 */
-	ManagedEntry.prototype.getID = function() {
-		return this._getRemoteObject().id;
-	};
-
-	/**
 	 * Get an attribute
 	 * @params {String} attributeName The name of the attribute
 	 * @returns {String|undefined}
@@ -118,6 +109,33 @@
 	ManagedEntry.prototype.getDisplayInfo = function() {
 		var displayType = this.getAttribute(ManagedEntry.Attributes.DisplayType) || "default";
 		return __displayTypes[displayType];
+	};
+
+	/**
+	 * Get the containing group for the entry
+	 * @returns {ManagedGroup|null}
+	 * @memberof ManagedEntry
+	 */
+	ManagedEntry.prototype.getGroup = function() {
+		var parentInfo = searching.findGroupContainingEntryID(
+				this._getWestley().getDataset().groups || [],
+				this.getID()
+			);
+		if (parentInfo && parentInfo.group) {
+			// require ManagedGroup here due to circular references:
+			var ManagedGroup = require("__buttercup/classes/ManagedGroup.js");
+			return new ManagedGroup(this._getWestley(), parentInfo.group);
+		}
+		return null;
+	};
+
+	/**
+	 * Get the entry ID
+	 * @returns {String}
+	 * @memberof ManagedEntry
+	 */
+	ManagedEntry.prototype.getID = function() {
+		return this._getRemoteObject().id;
 	};
 
 	/**

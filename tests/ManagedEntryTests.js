@@ -18,6 +18,7 @@ module.exports = {
 			.setAttribute(ManagedEntry.Attributes.DisplayType, "credit-card");
 		this.id = entry.getID();
 		this.entry = entry;
+		this.group = group;
 		(cb)();
 	},
 
@@ -68,6 +69,17 @@ module.exports = {
 			test.strictEqual(dInfo.title, "Name on card");
 			test.strictEqual(dInfo.username, "Card number");
 			test.strictEqual(dInfo.password, "CVV");
+			test.done();
+		}
+
+	},
+
+	getGroup: {
+
+		testGetsGroup: function(test) {
+			var parent = this.entry.getGroup();
+			test.strictEqual(parent.getTitle(), "test group", "Parent title should be correct");
+			test.strictEqual(parent.getEntries()[0].getID(), this.entry.getID(), "Parent should be correct");
 			test.done();
 		}
 
