@@ -190,6 +190,10 @@ Flatten archives
         * [.setMeta(prop, value)](#ManagedEntry+setMeta) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
         * [.setProperty(prop, value)](#ManagedEntry+setProperty) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
         * [.toObject()](#ManagedEntry+toObject) ⇒ <code>Object</code>
+        * [.toString()](#ManagedEntry+toString) ⇒ <code>string</code>
+        * [._getArchive()](#ManagedEntry+_getArchive) ⇒ <code>[Archive](#Archive)</code>
+        * [._getRemoteObject()](#ManagedEntry+_getRemoteObject) ⇒ <code>Object</code>
+        * [._getWestley()](#ManagedEntry+_getWestley) ⇒ <code>[Westley](#Westley)</code>
     * _static_
         * [.createNew(archive, groupID)](#ManagedEntry.createNew) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
 
@@ -323,6 +327,26 @@ Set a property on the entry
 <a name="ManagedEntry+toObject"></a>
 ### managedEntry.toObject() ⇒ <code>Object</code>
 Export entry to object
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+<a name="ManagedEntry+toString"></a>
+### managedEntry.toString() ⇒ <code>string</code>
+toString override
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+<a name="ManagedEntry+_getArchive"></a>
+### managedEntry._getArchive() ⇒ <code>[Archive](#Archive)</code>
+Get the archive reference
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+<a name="ManagedEntry+_getRemoteObject"></a>
+### managedEntry._getRemoteObject() ⇒ <code>Object</code>
+Get the remote object that mirrors the data represented here
+
+**Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
+<a name="ManagedEntry+_getWestley"></a>
+### managedEntry._getWestley() ⇒ <code>[Westley](#Westley)</code>
+Get the Westley reference
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 <a name="ManagedEntry.createNew"></a>

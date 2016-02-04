@@ -279,18 +279,38 @@
 		};
 	};
 
+	/**
+	 * toString override
+	 * @returns {string}
+	 * @memberof ManagedEntry
+	 */
 	ManagedEntry.prototype.toString = function() {
 		return JSON.stringify(this.toObject());
 	};
 
+	/**
+	 * Get the archive reference
+	 * @returns {Archive}
+	 * @memberof ManagedEntry
+	 */
 	ManagedEntry.prototype._getArchive = function() {
 		return this._archive;
 	};
 
+	/**
+	 * Get the remote object that mirrors the data represented here
+	 * @returns {Object}
+	 * @memberof ManagedEntry
+	 */
 	ManagedEntry.prototype._getRemoteObject = function() {
 		return this._remoteObject;
 	};
 
+	/**
+	 * Get the Westley reference
+	 * @returns {Westley}
+	 * @memberof ManagedEntry
+	 */
 	ManagedEntry.prototype._getWestley = function() {
 		return this._westley;
 	};
