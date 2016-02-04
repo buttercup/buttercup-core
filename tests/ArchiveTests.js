@@ -41,6 +41,25 @@ module.exports = {
 		cb();
 	},
 
+	createWithDefaults: {
+
+		testCreatesGeneralGroup: function(test) {
+			var archive = Archive.createWithDefaults(),
+				firstGroup = archive.getGroups()[0];
+			test.strictEqual(firstGroup.getTitle(), "General", "First group should be 'General'");
+			test.done();
+		},
+
+		testCreatesTrashGroup: function(test) {
+			var archive = Archive.createWithDefaults(),
+				firstGroup = archive.getGroups()[1];
+			test.strictEqual(firstGroup.getTitle(), "Trash", "First group should be 'Trash'");
+			test.strictEqual(firstGroup.isTrash(), true, "First group should be of type 'trash'");
+			test.done();
+		}
+
+	},
+
 	getEntryByID: {
 
 		testGetsEntryIfExists: function(test) {
