@@ -12,6 +12,7 @@
 		dea: 		require("__buttercup/classes/commands/command.dea.js"),
 		dem: 		require("__buttercup/classes/commands/command.dem.js"),
 		den: 		require("__buttercup/classes/commands/command.den.js"),
+		dga: 		require("__buttercup/classes/commands/command.dga.js"),
 		dgr: 		require("__buttercup/classes/commands/command.dgr.js"),
 		fmt: 		require("__buttercup/classes/commands/command.fmt.js"),
 		men: 		require("__buttercup/classes/commands/command.men.js"),
@@ -20,6 +21,7 @@
 		sea: 		require("__buttercup/classes/commands/command.sea.js"),
 		sem: 		require("__buttercup/classes/commands/command.sem.js"),
 		sep: 		require("__buttercup/classes/commands/command.sep.js"),
+		sga: 		require("__buttercup/classes/commands/command.sga.js"),
 		tgr: 		require("__buttercup/classes/commands/command.tgr.js")
 	};
 

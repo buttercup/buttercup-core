@@ -25,7 +25,13 @@ module.exports = {
 						test.strictEqual(groups[0].getTitle(), "1 2 3", "Group should have the correct title");
 						fs.unlinkSync("./test-archive.bcup");
 						test.done();
+					})
+					.catch(function(err) {
+						console.error(err);
 					});
+			})
+			.catch(function(err) {
+				console.error(err);
 			});
 	}
 

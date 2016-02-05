@@ -11,7 +11,7 @@
 	 * @param {String} parentGroupID
 	 * @returns {Array}
 	 * @module Descriptor
-	 * @type {Function} 
+	 * @type {Function}
 	 */
 	module.exports = function describe(dataset, parentGroupID) {
 		var currentGroupID = dataset.id || "0",
@@ -46,6 +46,20 @@
 						.addArgument(dataset.title)
 						.generateCommand()
 				);
+			}
+			if (dataset.attributes) {
+				for (var attributeName in dataset.attributes) {
+					if (dataset.attributes.hasOwnProperty(attributeName)) {
+						commands.push(
+							Inigo
+								.create(Commands.SetGroupAttribute)
+								.addArgument(currentGroupID)
+								.addArgument(attributeName)
+								.addArgument(dataset.attributes[attributeName])
+								.generateCommand()
+						);
+					}
+				}
 			}
 			commands.push(Inigo.generatePaddingCommand());
 		}

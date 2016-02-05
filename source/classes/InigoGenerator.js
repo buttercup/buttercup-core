@@ -17,7 +17,7 @@
 			throw new Error("Too many arguments for command");
 		}
 		if (!newArgRule.test.test(arg)) {
-			throw new Error("Argument is of invalid format");
+			throw new Error("Argument " + newArgIndex + " is of invalid format");
 		}
 		this._commandArgs.push(newArgRule.wrap(arg));
 		return this;
@@ -55,6 +55,7 @@
 		DeleteEntryAttribute: 		{ s:"dea", args:[ARG.ItemID, ARG.StringValue] },
 		DeleteEntryMeta: 			{ s:"dem", args:[ARG.ItemID, ARG.StringValue] },
 		DeleteGroup: 				{ s:"dgr", args:[ARG.ItemID] },
+		DeleteGroupAttribute: 		{ s:"dga", args:[ARG.ItemID, ARG.StringValue] },
 		Format: 					{ s:"fmt", args:[ARG.StringValue] },
 		MoveEntry: 					{ s:"men", args:[ARG.ItemID, ARG.ItemID] },
 		MoveGroup: 					{ s:"mgr", args:[ARG.ItemID, ARG.ItemIDOrRoot] },
@@ -62,6 +63,7 @@
 		SetEntryAttribute: 			{ s:"sea", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
 		SetEntryMeta: 				{ s:"sem", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
 		SetEntryProperty: 			{ s:"sep", args:[ARG.ItemID, ARG.StringKey, ARG.StringValue] },
+		SetGroupAttribute:			{ s:"sga", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
 		SetGroupTitle: 				{ s:"tgr", args:[ARG.ItemID, ARG.StringValue] }
 	};
 

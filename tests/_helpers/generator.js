@@ -1,5 +1,5 @@
 (function(module) {
-	
+
 	"use strict";
 
 	var Buttercup = require("__buttercup/module.js"),
@@ -11,16 +11,17 @@
 
 	// action setup
 	var _ACTIONS = {
-			"new-entry": 		8,
-			"new-group": 		4,
-			"delete-entry": 	2,
-			"delete-group": 	1,
-			"move-entry": 		2,
-			"move-group": 		1,
-			"set-prop": 		15,
-			"set-meta": 		12,
-			"set-attribute": 	7,
-			"title-group": 		3
+			"new-entry": 			8,
+			"new-group": 			4,
+			"delete-entry": 		2,
+			"delete-group": 		1,
+			"move-entry": 			2,
+			"move-group": 			1,
+			"set-prop": 			15,
+			"set-meta": 			12,
+			"set-entry-attribute": 	7,
+			"title-group": 			3,
+			"set-group-attribute": 	7
 		},
 		ACTIONS = [],
 		ACTIONS_COUNT;
@@ -129,7 +130,7 @@
 					.addArgument(getRandomValue())
 					.generateCommand();
 			}
-		} else if (action === "set-attribute") {
+		} else if (action === "set-entry-attribute") {
 			entryID = getRandomEntryID(dataset);
 			if (entryID) {
 				return Inigo
@@ -145,6 +146,16 @@
 				return Inigo
 					.create(Commands.SetGroupTitle)
 					.addArgument(groupID)
+					.addArgument(getRandomValue())
+					.generateCommand();
+			}
+		} else if (action === "set-group-attribute") {
+			groupID = getRandomGroupID(dataset);
+			if (groupID) {
+				return Inigo
+					.create(Commands.SetGroupAttribute)
+					.addArgument(groupID)
+					.addArgument(getRandomKey().toUpperCase())
 					.addArgument(getRandomValue())
 					.generateCommand();
 			}

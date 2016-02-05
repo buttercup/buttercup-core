@@ -9,7 +9,8 @@
 
 	function mustBePreserved(command) {
 		var commandName = command.substr(0, 3);
-		return ["cmm"].indexOf(commandName) >= 0; 
+		// Note: "fmt" is generated automatically and does not need to be preserved
+		return ["cmm"].indexOf(commandName) >= 0;
 	}
 
 	/**
