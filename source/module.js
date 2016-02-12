@@ -9,6 +9,9 @@
 		Inigo: require("__buttercup/classes/InigoGenerator.js"),
 		Workspace: require("__buttercup/classes/Workspace.js"),
 
+		Credentials: require("__buttercup/classes/Credentials.js"),
+		Model: require("__buttercup/classes/Model.js"),
+
 		ManagedGroup: require("__buttercup/classes/ManagedGroup.js"),
 		ManagedEntry: require("__buttercup/classes/ManagedEntry.js"),
 
@@ -25,7 +28,8 @@
 		Decryption: require("__buttercup/encryption/decrypt.js"),
 
 		tools: {
-			design: require("__buttercup/tools/design.js")
+			design: require("__buttercup/tools/design.js"),
+			signing: require("__buttercup/tools/signing.js")
 		}
 
 	};

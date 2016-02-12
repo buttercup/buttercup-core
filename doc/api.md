@@ -19,6 +19,8 @@
 <dd></dd>
 <dt><a href="#Comparator">Comparator</a></dt>
 <dd></dd>
+<dt><a href="#Credentials">Credentials</a></dt>
+<dd></dd>
 <dt><a href="#Flattener">Flattener</a></dt>
 <dd></dd>
 <dt><a href="#ManagedEntry">ManagedEntry</a></dt>
@@ -157,6 +159,74 @@ Calculate the differences, in commands, between the two archives
 **Kind**: instance method of <code>[Comparator](#Comparator)</code>  
 **Returns**: <code>Object</code> &#124; <code>Boolean</code> - Returns false if no common base
 		is found, or the command differences as two arrays  
+<a name="Credentials"></a>
+## Credentials
+**Kind**: global class  
+
+* [Credentials](#Credentials)
+    * [new Credentials(data)](#new_Credentials_new)
+    * _instance_
+        * [.setIdentity(username, password)](#Credentials+setIdentity) ⇒ <code>[Credentials](#Credentials)</code>
+        * [.setType(type)](#Credentials+setType) ⇒ <code>[Credentials](#Credentials)</code>
+        * [.toSecure(masterPassword)](#Credentials+toSecure) ⇒ <code>string</code>
+    * _static_
+        * [.fromSecureContent(content, password)](#Credentials.fromSecureContent) ⇒ <code>[Credentials](#Credentials)</code>
+
+<a name="new_Credentials_new"></a>
+### new Credentials(data)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>Object</code> &#124; <code>Model</code> | The initialisation data |
+
+<a name="Credentials+setIdentity"></a>
+### credentials.setIdentity(username, password) ⇒ <code>[Credentials](#Credentials)</code>
+Set identity information
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>[Credentials](#Credentials)</code> - Self  
+
+| Param | Type |
+| --- | --- |
+| username | <code>string</code> | 
+| password | <code>string</code> | 
+
+<a name="Credentials+setType"></a>
+### credentials.setType(type) ⇒ <code>[Credentials](#Credentials)</code>
+Set the credentials type (eg. webdav/owncloud etc.)
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>[Credentials](#Credentials)</code> - Self  
+
+| Param | Type |
+| --- | --- |
+| type | <code>string</code> | 
+
+<a name="Credentials+toSecure"></a>
+### credentials.toSecure(masterPassword) ⇒ <code>string</code>
+Convert the credentials to an encrypted string, for storage
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>string</code> - The encrypted credentials  
+**See**: signEncryptedContent  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| masterPassword | <code>string</code> | The password for encrypting |
+
+<a name="Credentials.fromSecureContent"></a>
+### Credentials.fromSecureContent(content, password) ⇒ <code>[Credentials](#Credentials)</code>
+Create a new Credentials instance from encrypted information
+
+**Kind**: static method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>[Credentials](#Credentials)</code> - A new Credentials instance  
+**Access:** public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>string</code> | The encrypted content |
+| password | <code>string</code> | The master password to decrypt with |
+
 <a name="Flattener"></a>
 ## Flattener
 **Kind**: global class  
