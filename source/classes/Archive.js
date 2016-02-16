@@ -70,7 +70,7 @@
 	 * @param {String} The group's title
 	 * @returns {true|false}
 	 */
-	Archive.prototype.hasGroup = function(groupTitle) {
+	Archive.prototype.containsGroupWithTitle = function(groupTitle) {
 		var westley = this._getWestley();
 		var groupRaw = searching.findGroupByTitle(westley.getDataset().groups, groupTitle);
 		return (groupRaw === null) ? false : true;
