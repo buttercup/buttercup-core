@@ -45,6 +45,12 @@
 			});
 		},
 
+		findGroupByTitle: function(groups, title) {
+			return searching.findGroupByCheck(groups, function(group) {
+				return group.title === title;
+			});
+		},
+
 		findGroupContainingEntryID: function(groups, id) {
 			for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
 				var group = groups[i];

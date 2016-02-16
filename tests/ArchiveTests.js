@@ -128,6 +128,22 @@ module.exports = {
 			test.done();
 		}
 
+	},
+
+	hasGroup: {
+
+		testReturnsTrueForMainGroup: function(test) {
+			var hasMainGroup = this.archiveA.hasGroup('Main Group');
+			test.strictEqual(hasMainGroup, true, "Archive should have group 'Main Group'");
+			test.done();
+		},
+
+		testReturnsFalseForNonExistentTestGroup: function(test) {
+			var hasNonExistentTestGroup = this.archiveA.hasGroup('Non Existent Test Group');
+			test.strictEqual(hasNonExistentTestGroup, false, "Archive should not have group 'Non Existent Test Group'");
+			test.done();
+		}
+
 	}
 
 };
