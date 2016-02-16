@@ -138,6 +138,12 @@ module.exports = {
 			test.done();
 		},
 
+		testReturnsTrueForSecondaryGroup: function(test) {
+			var hasSecondaryGroup = this.archiveA.containsGroupWithTitle('Secondary Group');
+			test.strictEqual(hasSecondaryGroup, true, "Archive should have group 'Secondary Group'");
+			test.done();
+		},
+
 		testReturnsFalseForNonExistentTestGroup: function(test) {
 			var hasNonExistentTestGroup = this.archiveA.containsGroupWithTitle('Non Existent Test Group');
 			test.strictEqual(hasNonExistentTestGroup, false, "Archive should not have group 'Non Existent Test Group'");
