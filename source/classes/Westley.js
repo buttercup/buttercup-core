@@ -14,7 +14,7 @@
 		dem: 		new (require("__buttercup/classes/commands/command.dem.js"))(searching),
 		den: 		new (require("__buttercup/classes/commands/command.den.js"))(searching),
 		dga: 		new (require("__buttercup/classes/commands/command.dga.js"))(searching),
-		dgr: 		require("__buttercup/classes/commands/command.dgr.js"),
+		dgr: 		new (require("__buttercup/classes/commands/command.dgr.js"))(searching),
 		fmt: 		require("__buttercup/classes/commands/command.fmt.js"),
 		men: 		require("__buttercup/classes/commands/command.men.js"),
 		mgr: 		require("__buttercup/classes/commands/command.mgr.js"),
