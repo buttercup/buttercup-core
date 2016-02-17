@@ -8,7 +8,7 @@
 
 	var availableCommands = {
 		cen: 		new (require("__buttercup/classes/commands/command.cen.js"))(searching),
-		cgr: 		require("__buttercup/classes/commands/command.cgr.js"),
+		cgr: 		new (require("__buttercup/classes/commands/command.cgr.js"))(searching),
 		cmm: 		require("__buttercup/classes/commands/command.cmm.js"),
 		dea: 		require("__buttercup/classes/commands/command.dea.js"),
 		dem: 		require("__buttercup/classes/commands/command.dem.js"),
@@ -74,7 +74,7 @@
 		var commandToExecute = availableCommands[commandKey];
 		this._history.push(command);
 
-		if (commandKey === 'tgr' || commandKey === 'cen') {
+		if (commandKey === 'tgr' || commandKey === 'cen' || commandKey === 'cgr') {
 			commandToExecute.execute.apply(commandToExecute, [this._dataset].concat(commandComponents));
 		} else {
 			commandToExecute.apply(commandToExecute, [this._dataset].concat(commandComponents));
