@@ -157,8 +157,7 @@ Check if the current archives differ in any way
 Calculate the differences, in commands, between the two archives
 
 **Kind**: instance method of <code>[Comparator](#Comparator)</code>  
-**Returns**: <code>Object</code> &#124; <code>Boolean</code> - Returns false if no common base
-		is found, or the command differences as two arrays  
+**Returns**: <code>Object</code> &#124; <code>Boolean</code> - Returns false if no common base		is found, or the command differences as two arrays  
 <a name="Credentials"></a>
 ## Credentials
 **Kind**: global class  
@@ -279,10 +278,7 @@ Managed entry class
 
 <a name="ManagedEntry+delete"></a>
 ### managedEntry.delete()
-Delete the entry - either trashes the entry, or removes it completely.
-If the entry is in the trash already, it is removed (including if there is no
-	trash group). If the entry is in a normal group and a trash group exists, it
- is moved there instead of being deleted.
+Delete the entry - either trashes the entry, or removes it completely.If the entry is in the trash already, it is removed (including if there is no	trash group). If the entry is in a normal group and a trash group exists, it is moved there instead of being deleted.
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 **See**
@@ -627,8 +623,7 @@ Datasource for Owncloud connections
 
 <a name="new_Westley_new"></a>
 ### new Westley()
-Westley. Archive object dataset and history manager. Handles parsing and
-revenge for the princess.
+Westley. Archive object dataset and history manager. Handles parsing andrevenge for the princess.
 
 <a name="Westley+clear"></a>
 ### westley.clear() ⇒ <code>[Westley](#Westley)</code>

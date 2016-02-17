@@ -66,6 +66,17 @@
 	};
 
 	/**
+	 * Whether or not this archive has a group with the given title.
+	 * @param {String} The group's title
+	 * @returns {true|false}
+	 */
+	Archive.prototype.containsGroupWithTitle = function(groupTitle) {
+		var westley = this._getWestley();
+		var groupRaw = searching.findGroupByTitle(westley.getDataset().groups, groupTitle);
+		return (groupRaw === null) ? false : true;
+	};
+
+	/**
 	 * Get all groups (root) in the archive
 	 * @returns {ManagedGroups[]} An array of ManagedGroups
 	 * @memberof Archive
