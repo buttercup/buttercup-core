@@ -3,7 +3,9 @@
 	"use strict";
 
 	var Inigo = require("__buttercup/classes/InigoGenerator.js"),
-		commandTools = require("__buttercup/tools/command.js");
+		commandTools = require("__buttercup/tools/command.js"),
+		searching = require("__buttercup/tools/searching.js"),
+		TitleGroupCommand = require("__buttercup/classes/commands/command.tgr.js");
 
 	var availableCommands = {
 		cen: 		require("__buttercup/classes/commands/command.cen.js"),
@@ -22,7 +24,7 @@
 		sem: 		require("__buttercup/classes/commands/command.sem.js"),
 		sep: 		require("__buttercup/classes/commands/command.sep.js"),
 		sga: 		require("__buttercup/classes/commands/command.sga.js"),
-		tgr: 		require("__buttercup/classes/commands/command.tgr.js")
+		tgr: 		new TitleGroupCommand(searching)
 	};
 
 	var VALID_COMMAND_EXP = 			/^[a-z]{3}[ ].+$/;
@@ -69,9 +71,15 @@
 		// } catch (err) {
 		// 	throw new Error("Unrecognised command: " + commandKey);
 		// }
+
 		var commandToExecute = availableCommands[commandKey];
 		this._history.push(command);
-		commandToExecute.apply(commandToExecute, [this._dataset].concat(commandComponents));
+
+		if (commandKey === 'tgr') {
+			commandToExecute.execute.apply(commandToExecute, [this._dataset].concat(commandComponents));
+		} else {
+			commandToExecute.apply(commandToExecute, [this._dataset].concat(commandComponents));
+		}
 		return this;
 	};
 
