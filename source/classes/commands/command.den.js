@@ -2,11 +2,13 @@
 
 	"use strict";
 
-	var searching = require("__buttercup/tools/searching.js");
+	var DeleteEntryCommand = function(searching) {
+		this.searching = searching;
+	}
 
-	module.exports = function(obj, entryID) {
+	DeleteEntryCommand.prototype.execute = function(obj, entryID) {
 		obj.groups = obj.groups || [];
-		var location = searching.findGroupContainingEntryID(obj.groups, entryID),
+		var location = this.searching.findGroupContainingEntryID(obj.groups, entryID),
 			containerGroup = location.group,
 			containerIndex = location.index;
 		if (!containerGroup) {
@@ -14,5 +16,7 @@
 		}
 		containerGroup.entries.splice(containerIndex, 1)[0];
 	};
+
+	module.exports = DeleteEntryCommand;
 
 })(module);
