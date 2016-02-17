@@ -49,8 +49,16 @@
 		return this;
 	};
 
+	/**
+	 * Gets a command by its key from the cache with its dependencies injected
+	 * @param {String} commandKey The key of the command
+	 * @returns {Command} Returns the command
+	 * @memberof Westley
+	 */
 	Westley.prototype._getCommandForName = function(commandKey) {
+		// If the command doesn't exist in the cache
 		if (this._cachedCommands[commandKey] === undefined) {
+			// Get the command object and inject its dependencies
 			var requirement = new (require("__buttercup/classes/commands/command." + commandKey + ".js"))();
 
 			if (requirement.injectSearching !== undefined) {
@@ -61,6 +69,7 @@
 				requirement.injectEntry(entry);
 			}
 
+			// Store it in the cache
 			this._cachedCommands[commandKey] = requirement;
 		}
 
