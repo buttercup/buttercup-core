@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var TitleGroupCommand = function (searching) {
-		this.searching = searching;
+	var TitleGroupCommand = function () {
+		this.searching = undefined;
 	}
 
 	TitleGroupCommand.prototype.execute = function (obj, groupID, title) {
@@ -13,6 +13,10 @@
 			throw new Error("Group not found for ID");
 		}
 		group.title = title;
+	}
+
+	TitleGroupCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
 	}
 
 	module.exports = TitleGroupCommand;

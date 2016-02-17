@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var DeleteGroupCommand = function(searching) {
-		this.searching = searching;
+	var DeleteGroupCommand = function() {
+		this.searching = undefined;
 	}
 
 	DeleteGroupCommand.prototype.execute = function(obj, groupID) {
@@ -16,6 +16,10 @@
 		}
 		containerGroup.groups.splice(containerIndex, 1)[0];
 	};
+
+	DeleteGroupCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
 
 	module.exports = DeleteGroupCommand;
 

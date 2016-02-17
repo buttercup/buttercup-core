@@ -2,9 +2,9 @@
 
 	"use strict";
 
-	var SetPropertyCommand = function(searching, entry) {
-		this.searching = searching;
-		this.entry = entry;
+	var SetPropertyCommand = function() {
+		this.searching = undefined;
+		this.entry = undefined;
 	}
 
 	SetPropertyCommand.prototype.execute = function(obj, entryID, propertyName, value) {
@@ -18,6 +18,14 @@
 		}
 		entry[propertyName] = value;
 	};
+
+	SetPropertyCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
+
+	SetPropertyCommand.prototype.injectEntry = function(entry) {
+		this.entry = entry;
+	}
 
 	module.exports = SetPropertyCommand;
 

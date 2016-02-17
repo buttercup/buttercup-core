@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var DeleteEntryCommand = function(searching) {
-		this.searching = searching;
+	var DeleteEntryCommand = function() {
+		this.searching = undefined;
 	}
 
 	DeleteEntryCommand.prototype.execute = function(obj, entryID) {
@@ -16,6 +16,10 @@
 		}
 		containerGroup.entries.splice(containerIndex, 1)[0];
 	};
+
+	DeleteEntryCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
 
 	module.exports = DeleteEntryCommand;
 

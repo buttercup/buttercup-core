@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var CreateGroupCommand = function(searching) {
-		this.searching = searching;
+	var CreateGroupCommand = function() {
+		this.searching = undefined;
 	}
 
 	CreateGroupCommand.prototype.execute = function(obj, parentID, newID) {
@@ -23,6 +23,10 @@
 			parentGroup.groups.push(group);
 		}
 	};
+
+	CreateGroupCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
 
 	module.exports = CreateGroupCommand;
 

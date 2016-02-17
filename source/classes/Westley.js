@@ -7,26 +7,6 @@
 		searching = require("__buttercup/tools/searching.js"),
 		entry = require("__buttercup/tools/entry.js");
 
-	var availableCommands = {
-		cen: 		new (require("__buttercup/classes/commands/command.cen.js"))(searching),
-		cgr: 		new (require("__buttercup/classes/commands/command.cgr.js"))(searching),
-		cmm: 		new (require("__buttercup/classes/commands/command.cmm.js"))(),
-		dea: 		new (require("__buttercup/classes/commands/command.dea.js"))(searching),
-		dem: 		new (require("__buttercup/classes/commands/command.dem.js"))(searching),
-		den: 		new (require("__buttercup/classes/commands/command.den.js"))(searching),
-		dga: 		new (require("__buttercup/classes/commands/command.dga.js"))(searching),
-		dgr: 		new (require("__buttercup/classes/commands/command.dgr.js"))(searching),
-		fmt: 		new (require("__buttercup/classes/commands/command.fmt.js"))(),
-		men: 		new (require("__buttercup/classes/commands/command.men.js"))(searching),
-		mgr: 		new (require("__buttercup/classes/commands/command.mgr.js"))(searching),
-		pad: 		new (require("__buttercup/classes/commands/command.pad.js"))(),
-		sea: 		new (require("__buttercup/classes/commands/command.sea.js"))(searching),
-		sem: 		new (require("__buttercup/classes/commands/command.sem.js"))(searching),
-		sep: 		new (require("__buttercup/classes/commands/command.sep.js"))(searching, entry),
-		sga: 		new (require("__buttercup/classes/commands/command.sga.js"))(searching),
-		tgr: 		new (require("__buttercup/classes/commands/command.tgr.js"))(searching)
-	};
-
 	var VALID_COMMAND_EXP = 			/^[a-z]{3}[ ].+$/;
 
 	/**
@@ -60,23 +40,27 @@
 			throw new Error("Invalid command");
 		}
 		var commandComponents = commandTools.extractCommandComponents(command),
-			commandKey = commandComponents.shift();//,
-			//commandFilename = "command." + commandKey + ".js",
-			//commandExecute;
-		if (!availableCommands.hasOwnProperty(commandKey)) {
-			throw new Error("Unrecognised command: " + commandKey);
-		}
-		// try {
-		// 	commandExecute = require("__buttercup/classes/commands/" + commandFilename);
-		// } catch (err) {
-		// 	throw new Error("Unrecognised command: " + commandKey);
-		// }
+			commandKey = commandComponents.shift();
 
-		var commandToExecute = availableCommands[commandKey];
+		var commandObject = this._getCommandForName(commandKey);
 		this._history.push(command);
-		commandToExecute.execute.apply(commandToExecute, [this._dataset].concat(commandComponents));
+		commandObject.execute.apply(commandObject, [this._dataset].concat(commandComponents));
 		return this;
 	};
+
+	Westley.prototype._getCommandForName = function(commandKey) {
+		var requirement = new (require("__buttercup/classes/commands/command." + commandKey + ".js"));
+
+		if (requirement.injectSearching !== undefined) {
+			requirement.injectSearching(searching);
+		}
+
+		if (requirement.injectEntry !== undefined) {
+			requirement.injectEntry(entry);
+		}
+
+		return requirement;
+	}
 
 	/**
 	 * Insert a padding in the archive (used for delta tracking)

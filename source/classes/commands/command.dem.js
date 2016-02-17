@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var DeleteMetaPropertyCommand = function(searching) {
-		this.searching = searching;
+	var DeleteMetaPropertyCommand = function() {
+		this.searching = undefined;
 	}
 
 	DeleteMetaPropertyCommand.prototype.execute = function(obj, entryID, propertyName) {
@@ -18,6 +18,10 @@
 			throw new Error("Failed deleting meta property");
 		}
 	};
+
+	DeleteMetaPropertyCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
 
 	module.exports = DeleteMetaPropertyCommand;
 

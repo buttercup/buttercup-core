@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var SetGroupAttributeCommand = function(searching) {
-		this.searching = searching;
+	var SetGroupAttributeCommand = function() {
+		this.searching = undefined;
 	}
 
 	SetGroupAttributeCommand.prototype.execute = function(obj, groupID, attributeName, value) {
@@ -15,6 +15,10 @@
 		group.attributes = group.attributes || {};
 		group.attributes[attributeName] = value;
 	};
+
+	SetGroupAttributeCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
 
 	module.exports = SetGroupAttributeCommand;
 

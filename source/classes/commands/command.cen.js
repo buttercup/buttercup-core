@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var CreateEntryCommand = function(searching) {
-		this.searching = searching;
+	var CreateEntryCommand = function() {
+		this.searching = undefined;
 	}
 
 	CreateEntryCommand.prototype.execute = function(obj, groupID, entryID) {
@@ -19,6 +19,10 @@
 		group.entries = group.entries || [];
 		group.entries.push(entry);
 	};
+
+	CreateEntryCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
 
 	module.exports = CreateEntryCommand;
 

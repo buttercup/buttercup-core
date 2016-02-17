@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var MoveGroupCommand = function(searching) {
-		this.searching = searching;
+	var MoveGroupCommand = function() {
+		this.searching = undefined;
 	}
 
 	MoveGroupCommand.prototype.execute = function(obj, groupID, targetGroupID) {
@@ -23,6 +23,10 @@
 		targetGroup.groups = targetGroup.groups || [];
 		targetGroup.groups.push(movedGroup);
 	};
+
+	MoveGroupCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
 
 	module.exports = MoveGroupCommand;
 

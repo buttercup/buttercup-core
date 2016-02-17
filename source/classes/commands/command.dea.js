@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var DeleteAttributeCommand = function(searching) {
-		this.searching = searching;
+	var DeleteAttributeCommand = function() {
+		this.searching = undefined;
 	}
 
 	DeleteAttributeCommand.prototype.execute = function(obj, entryID, attributeName) {
@@ -18,6 +18,10 @@
 			throw new Error("Failed deleting attribute");
 		}
 	};
+
+	DeleteAttributeCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
 
 	module.exports = DeleteAttributeCommand;
 

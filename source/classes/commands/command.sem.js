@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var SetMetaPropertyCommand = function(searching) {
-		this.searching = searching;
+	var SetMetaPropertyCommand = function() {
+		this.searching = undefined;
 	}
 
 	SetMetaPropertyCommand.prototype.execute = function(obj, entryID, propertyName, value) {
@@ -15,6 +15,10 @@
 		entry.meta = entry.meta || {};
 		entry.meta[propertyName] = value;
 	};
+
+	SetMetaPropertyCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
 
 	module.exports = SetMetaPropertyCommand;
 

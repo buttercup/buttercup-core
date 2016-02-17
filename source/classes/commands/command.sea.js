@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var SetAttributeCommand = function(searching) {
-		this.searching = searching;
+	var SetAttributeCommand = function() {
+		this.searching = undefined;
 	}
 
 	SetAttributeCommand.prototype.execute = function(obj, entryID, attributeName, value) {
@@ -15,6 +15,10 @@
 		entry.attributes = entry.attributes || {};
 		entry.attributes[attributeName] = value;
 	};
+
+	SetAttributeCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
 
 	module.exports = SetAttributeCommand;
 
