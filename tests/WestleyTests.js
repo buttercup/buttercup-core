@@ -13,8 +13,8 @@ module.exports = {
     cachesCommandWhenCalledTwice: function(test) {
       var testCommandKey = 'tgr';
 
-      var firstCall = this.westley._getCommandForName(testCommandKey),
-        secondCall = this.westley._getCommandForName(testCommandKey);
+      var firstCall = this.westley._getCommandForKey(testCommandKey),
+        secondCall = this.westley._getCommandForKey(testCommandKey);
 
       firstCall.randomvariable = 'bla';
 
@@ -25,9 +25,9 @@ module.exports = {
     cachesCommandWhenCalledThrice: function(test) {
       var testCommandKey = 'tgr';
 
-      var firstCall = this.westley._getCommandForName(testCommandKey),
-        secondCall = this.westley._getCommandForName(testCommandKey),
-        thirdCall = this.westley._getCommandForName(testCommandKey);
+      var firstCall = this.westley._getCommandForKey(testCommandKey),
+        secondCall = this.westley._getCommandForKey(testCommandKey),
+        thirdCall = this.westley._getCommandForKey(testCommandKey);
 
       firstCall.randomvariable = 'bla';
 

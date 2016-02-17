@@ -43,7 +43,7 @@
 		var commandComponents = commandTools.extractCommandComponents(command),
 			commandKey = commandComponents.shift();
 
-		var commandObject = this._getCommandForName(commandKey);
+		var commandObject = this._getCommandForKey(commandKey);
 		this._history.push(command);
 		commandObject.execute.apply(commandObject, [this._dataset].concat(commandComponents));
 		return this;
@@ -55,7 +55,7 @@
 	 * @returns {Command} Returns the command
 	 * @memberof Westley
 	 */
-	Westley.prototype._getCommandForName = function(commandKey) {
+	Westley.prototype._getCommandForKey = function(commandKey) {
 		// If the command doesn't exist in the cache
 		if (this._cachedCommands[commandKey] === undefined) {
 			// Get the command object and inject its dependencies
