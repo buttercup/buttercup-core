@@ -74,12 +74,7 @@
 
 		var commandToExecute = availableCommands[commandKey];
 		this._history.push(command);
-
-		if (commandToExecute.execute !== undefined) {
-			commandToExecute.execute.apply(commandToExecute, [this._dataset].concat(commandComponents));
-		} else {
-			commandToExecute.apply(commandToExecute, [this._dataset].concat(commandComponents));
-		}
+		commandToExecute.execute.apply(commandToExecute, [this._dataset].concat(commandComponents));
 		return this;
 	};
 
