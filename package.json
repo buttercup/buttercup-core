@@ -17,7 +17,8 @@
     "build:images": "node resources/prepare-images.js",
     "install": "node scripts/link.js",
     "test": "node node_modules/nodeunit/bin/nodeunit tests tests/integration",
-    "test:junit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration --reporter junit --output build"
+    "test:junit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration --reporter junit --output build",
+		"test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests tests/integration"
   },
   "repository": {
     "type": "git",
