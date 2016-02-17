@@ -2,17 +2,19 @@
 
 	"use strict";
 
-	var searching = require("__buttercup/tools/searching.js");
+	var MoveEntryCommand = function(searching) {
+		this.searching = searching;
+	}
 
-	module.exports = function(obj, entryID, targetGroupID) {
+	MoveEntryCommand.prototype.execute = function(obj, entryID, targetGroupID) {
 		obj.groups = obj.groups || [];
-		var location = searching.findGroupContainingEntryID(obj.groups, entryID),
+		var location = this.searching.findGroupContainingEntryID(obj.groups, entryID),
 			originGroup = location.group,
 			originIndex = location.index;
 		if (!originGroup) {
 			throw new Error("Invalid entry ID");
 		}
-		var targetGroup = searching.findGroupByID(obj.groups, targetGroupID);
+		var targetGroup = this.searching.findGroupByID(obj.groups, targetGroupID);
 		if (!targetGroup) {
 			throw new Error("Invalid group ID");
 		}
@@ -20,5 +22,7 @@
 		targetGroup.entries = targetGroup.entries || [];
 		targetGroup.entries.push(movedEntry);
 	};
+
+	module.exports = MoveEntryCommand;
 
 })(module);
