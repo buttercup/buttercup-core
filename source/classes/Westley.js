@@ -4,11 +4,10 @@
 
 	var Inigo = require("__buttercup/classes/InigoGenerator.js"),
 		commandTools = require("__buttercup/tools/command.js"),
-		searching = require("__buttercup/tools/searching.js"),
-		TitleGroupCommand = require("__buttercup/classes/commands/command.tgr.js");
+		searching = require("__buttercup/tools/searching.js");
 
 	var availableCommands = {
-		cen: 		require("__buttercup/classes/commands/command.cen.js"),
+		cen: 		new (require("__buttercup/classes/commands/command.cen.js"))(searching),
 		cgr: 		require("__buttercup/classes/commands/command.cgr.js"),
 		cmm: 		require("__buttercup/classes/commands/command.cmm.js"),
 		dea: 		require("__buttercup/classes/commands/command.dea.js"),
@@ -24,7 +23,7 @@
 		sem: 		require("__buttercup/classes/commands/command.sem.js"),
 		sep: 		require("__buttercup/classes/commands/command.sep.js"),
 		sga: 		require("__buttercup/classes/commands/command.sga.js"),
-		tgr: 		new TitleGroupCommand(searching)
+		tgr: 		new (require("__buttercup/classes/commands/command.tgr.js"))(searching)
 	};
 
 	var VALID_COMMAND_EXP = 			/^[a-z]{3}[ ].+$/;
@@ -75,7 +74,7 @@
 		var commandToExecute = availableCommands[commandKey];
 		this._history.push(command);
 
-		if (commandKey === 'tgr') {
+		if (commandKey === 'tgr' || commandKey === 'cen') {
 			commandToExecute.execute.apply(commandToExecute, [this._dataset].concat(commandComponents));
 		} else {
 			commandToExecute.apply(commandToExecute, [this._dataset].concat(commandComponents));
