@@ -4,7 +4,8 @@
 
 	var Inigo = require("__buttercup/classes/InigoGenerator.js"),
 		commandTools = require("__buttercup/tools/command.js"),
-		searching = require("__buttercup/tools/searching.js");
+		searching = require("__buttercup/tools/searching.js"),
+		entry = require("__buttercup/tools/entry.js");
 
 	var availableCommands = {
 		cen: 		new (require("__buttercup/classes/commands/command.cen.js"))(searching),
@@ -21,7 +22,7 @@
 		pad: 		new (require("__buttercup/classes/commands/command.pad.js"))(),
 		sea: 		new (require("__buttercup/classes/commands/command.sea.js"))(searching),
 		sem: 		new (require("__buttercup/classes/commands/command.sem.js"))(searching),
-		sep: 		require("__buttercup/classes/commands/command.sep.js"),
+		sep: 		new (require("__buttercup/classes/commands/command.sep.js"))(searching, entry),
 		sga: 		require("__buttercup/classes/commands/command.sga.js"),
 		tgr: 		new (require("__buttercup/classes/commands/command.tgr.js"))(searching)
 	};
