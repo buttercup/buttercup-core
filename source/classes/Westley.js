@@ -26,6 +26,7 @@
 	Westley.prototype.clear = function() {
 		this._dataset = {};
 		this._history = [];
+		this._cachedCommands = {};
 		return this;
 	};
 
@@ -49,17 +50,21 @@
 	};
 
 	Westley.prototype._getCommandForName = function(commandKey) {
-		var requirement = new (require("__buttercup/classes/commands/command." + commandKey + ".js"))();
+		if (this._cachedCommands[commandKey] === undefined) {
+			var requirement = new (require("__buttercup/classes/commands/command." + commandKey + ".js"))();
 
-		if (requirement.injectSearching !== undefined) {
-			requirement.injectSearching(searching);
+			if (requirement.injectSearching !== undefined) {
+				requirement.injectSearching(searching);
+			}
+
+			if (requirement.injectEntry !== undefined) {
+				requirement.injectEntry(entry);
+			}
+
+			this._cachedCommands[commandKey] = requirement;
 		}
 
-		if (requirement.injectEntry !== undefined) {
-			requirement.injectEntry(entry);
-		}
-
-		return requirement;
+		return this._cachedCommands[commandKey];
 	};
 
 	/**
