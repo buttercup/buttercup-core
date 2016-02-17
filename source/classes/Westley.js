@@ -10,7 +10,7 @@
 		cen: 		new (require("__buttercup/classes/commands/command.cen.js"))(searching),
 		cgr: 		new (require("__buttercup/classes/commands/command.cgr.js"))(searching),
 		cmm: 		new (require("__buttercup/classes/commands/command.cmm.js"))(),
-		dea: 		require("__buttercup/classes/commands/command.dea.js"),
+		dea: 		new (require("__buttercup/classes/commands/command.dea.js"))(searching),
 		dem: 		require("__buttercup/classes/commands/command.dem.js"),
 		den: 		require("__buttercup/classes/commands/command.den.js"),
 		dga: 		require("__buttercup/classes/commands/command.dga.js"),
