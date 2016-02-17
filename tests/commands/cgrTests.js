@@ -51,6 +51,32 @@ module.exports = {
 
       test.strictEqual(fakeObj.groups.length, expectedLength, '2 in object groups when no parent and one initially');
       test.done();
+    },
+
+    correctIdWhenGroupAddedWithIdOne: function(test) {
+      var expectedId = 1;
+
+      var fakeObj = {
+        groups: []
+      };
+
+      this.command.execute(fakeObj, 0, expectedId);
+
+      test.strictEqual(fakeObj.groups[0].id, expectedId, 'New group has correct id when added with id ' + expectedId);
+      test.done();
+    },
+
+    correctIdWhenGroupAddedWithIdFifty: function(test) {
+      var expectedId = 50;
+
+      var fakeObj = {
+        groups: []
+      };
+
+      this.command.execute(fakeObj, 0, expectedId);
+
+      test.strictEqual(fakeObj.groups[0].id, expectedId, 'New group has correct id when added with id ' + expectedId);
+      test.done();
     }
   }
 };
