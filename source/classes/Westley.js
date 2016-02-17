@@ -9,7 +9,7 @@
 	var availableCommands = {
 		cen: 		new (require("__buttercup/classes/commands/command.cen.js"))(searching),
 		cgr: 		new (require("__buttercup/classes/commands/command.cgr.js"))(searching),
-		cmm: 		require("__buttercup/classes/commands/command.cmm.js"),
+		cmm: 		new (require("__buttercup/classes/commands/command.cmm.js"))(),
 		dea: 		require("__buttercup/classes/commands/command.dea.js"),
 		dem: 		require("__buttercup/classes/commands/command.dem.js"),
 		den: 		require("__buttercup/classes/commands/command.den.js"),
