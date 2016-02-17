@@ -74,7 +74,7 @@
 		var commandToExecute = availableCommands[commandKey];
 		this._history.push(command);
 
-		if (commandKey === 'tgr' || commandKey === 'cen' || commandKey === 'cgr') {
+		if (commandToExecute.execute !== undefined) {
 			commandToExecute.execute.apply(commandToExecute, [this._dataset].concat(commandComponents));
 		} else {
 			commandToExecute.apply(commandToExecute, [this._dataset].concat(commandComponents));
