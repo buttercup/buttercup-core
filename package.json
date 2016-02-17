@@ -16,7 +16,7 @@
 	"scripts": {
 		"build:images": "node resources/prepare-images.js",
 		"install": "node scripts/link.js",
-		"test": "node node_modules/nodeunit/bin/nodeunit tests tests/integration",
+		"test": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
 		"test:junit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration --reporter junit --output build"
 	},
 	"repository": {
