@@ -1,21 +1,24 @@
 var tgr = require("__buttercup/classes/commands/command.tgr.js");
 
 module.exports = {
+  setUp: function(cb) {
+    this.command = new tgr();
+    (cb)();
+  },
+
   errors: {
     groupNotFoundThrowsError: function (test) {
-      var command = new tgr();
-
       var fakeSearching = {
         findGroupByID: function (a, b) {
           return false;
         }
       };
 
-      command.injectSearching(fakeSearching);
+      this.command.injectSearching(fakeSearching);
 
       test.throws(function() {
-        command.execute({ }, 1, 'a');
-      }, 'Group not found for ID', 'An error was thrown when no group found');
+        this.command.execute({ }, 1, 'a');
+      }.bind(this), 'Group not found for ID', 'An error was thrown when no group found');
       test.done();
     }
   },
@@ -35,9 +38,9 @@ module.exports = {
         }
       };
 
-      command.injectSearching(fakeSearching);
+      this.command.injectSearching(fakeSearching);
 
-      command.execute({ }, 1, expectedTitle);
+      this.command.execute({ }, 1, expectedTitle);
 
       test.strictEqual(fakeGroup.title, expectedTitle, 'The title was set to ' + expectedTitle + ' correctly');
       test.done();
