@@ -27,7 +27,7 @@
 		this._dataset = {};
 		this._history = [];
 		return this;
-	}
+	};
 
 	/**
 	 * Execute a command - stored in history and modifies the dataset
@@ -49,7 +49,7 @@
 	};
 
 	Westley.prototype._getCommandForName = function(commandKey) {
-		var requirement = new (require("__buttercup/classes/commands/command." + commandKey + ".js"));
+		var requirement = new (require("__buttercup/classes/commands/command." + commandKey + ".js"))();
 
 		if (requirement.injectSearching !== undefined) {
 			requirement.injectSearching(searching);
@@ -60,7 +60,7 @@
 		}
 
 		return requirement;
-	}
+	};
 
 	/**
 	 * Insert a padding in the archive (used for delta tracking)
