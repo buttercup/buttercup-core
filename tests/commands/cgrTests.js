@@ -21,5 +21,36 @@ module.exports = {
       }.bind(this), 'Invalid parent group ID: not found', 'An error was thrown when no group found');
       test.done();
     }
+  },
+
+  withoutParentId: {
+    oneInObjectGroupsWhenZeroInitially: function(test) {
+      var expectedLength = 1;
+
+      var fakeObj = {
+        groups: []
+      };
+
+      this.command.execute(fakeObj, 0, 1);
+
+      test.strictEqual(fakeObj.groups.length, expectedLength, '1 in object groups when no parent and zero initially');
+      test.done();
+    },
+
+    twoInObjectGroupsWhenOneInitially: function(test) {
+      var expectedLength = 2;
+
+      var fakeObj = {
+        groups: [{
+          id: 1,
+          title: 'bla'
+        }]
+      };
+
+      this.command.execute(fakeObj, 0, 1);
+
+      test.strictEqual(fakeObj.groups.length, expectedLength, '2 in object groups when no parent and one initially');
+      test.done();
+    }
   }
 };
