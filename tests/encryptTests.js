@@ -41,7 +41,8 @@ module.exports = {
 		testProducesSameOutput: function(test) {
 			var components1 = Encryption.generateDerivedKey("humperdinck"),
 				salt = components1.salt,
-				components2 = Encryption.generateDerivedKey("humperdinck", salt);
+				rounds = components1.rounds,
+				components2 = Encryption.generateDerivedKey("humperdinck", salt, rounds);
 			test.strictEqual(components1.key.toString("hex"), components2.key.toString("hex"), "Keys should match");
 			test.strictEqual(components1.hmac.toString("hex"), components2.hmac.toString("hex"), "HMACs should match");
 			test.strictEqual(components1.salt, components2.salt, "Salts should match");
@@ -79,15 +80,17 @@ module.exports = {
 	packEncryptedContent: {
 
 		testPacksText: function(test) {
-			var packed = Encryption.packEncryptedContent("!encrypted!", "(iv)", ".salt.", "+hmac+"),
+			var packed = Encryption.packEncryptedContent("!encrypted!", "(iv)", ".salt.", "+hmac+", "123456"),
 				indEnc = packed.indexOf("!encrypted!"),
 				indIV = packed.indexOf("(iv)"),
 				indSalt = packed.indexOf(".salt."),
-				indHmac = packed.indexOf("+hmac+");
+				indHmac = packed.indexOf("+hmac+"),
+				indRounds = packed.indexOf("123456");
 			test.ok(indEnc === 0, "Encrypted content should be first");
 			test.ok(indIV > indEnc, "IV should be after encrypted content");
 			test.ok(indSalt > indIV, "Salt should be after IV");
 			test.ok(indHmac > indSalt, "HMAC should be after salt");
+			test.ok(indRounds > indHmac, "PBKDF2 rounds should be after HMAC");
 			test.done();
 		}
 
