@@ -78,5 +78,51 @@ module.exports = {
       test.strictEqual(fakeObj.groups[0].id, expectedId, 'New group has correct id when added with id ' + expectedId);
       test.done();
     }
+  },
+
+  withParentId: {
+    searchesForParentIdWhenParentIdOne: function(test) {
+      var submittedParentId = 1;
+      var searchingCalled = false;
+
+      var fakeSearching = {
+        findGroupByID: function(groups, id) {
+          if (id === submittedParentId) {
+            searchingCalled = true;
+          }
+
+          return {};
+        }
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, submittedParentId, 5);
+
+      test.strictEqual(searchingCalled, true, 'Searched for parent id ' + submittedParentId);
+      test.done();
+    },
+
+    searchesForParentIdWhenParentIdTwenty: function(test) {
+      var submittedParentId = 20;
+      var searchingCalled = false;
+
+      var fakeSearching = {
+        findGroupByID: function(groups, id) {
+          if (id === submittedParentId) {
+            searchingCalled = true;
+          }
+
+          return {};
+        }
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, submittedParentId, 5);
+
+      test.strictEqual(searchingCalled, true, 'Searched for parent id ' + submittedParentId);
+      test.done();
+    }
   }
 };
