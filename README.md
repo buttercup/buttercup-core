@@ -28,14 +28,15 @@ Buttercup manages credentials in an encrypted archive. The archive utilises a de
 
  - AES 256 bit CBC encryption (w/ HMAC-sha256)
  - Archive change delta tracking
- - WebDAV remote file support
+ - WebDAV/ownCloud remote file support
  - Text compression with GZIP
+ - 200-250k PBKDF2 round derived keys
 
 ## Usage
 
 Buttercup can be easily used as a component, allowing for powerful and secure data storage within projects.
 
-You can read the [API documentation here](doc/api.md).
+You can read the [API documentation here](doc/api.md), and the [change-log here](CHANGELOG.md).
 
 ### Creating, saving and loading
 
