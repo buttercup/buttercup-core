@@ -12,7 +12,7 @@
 		if (!originGroup) {
 			throw new Error("Invalid group ID");
 		}
-		var targetGroup = (parseInt(targetGroupID, 10) === 0) ?
+		var targetGroup = (targetGroupID.length === 1 && parseInt(targetGroupID, 10) === 0) ?
 			obj : searching.findGroupByID(obj.groups, targetGroupID);
 		if (!targetGroup) {
 			throw new Error("Invalid group ID");

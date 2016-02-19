@@ -58,17 +58,10 @@
 			throw new Error("Invalid command");
 		}
 		var commandComponents = commandTools.extractCommandComponents(command),
-			commandKey = commandComponents.shift();//,
-			//commandFilename = "command." + commandKey + ".js",
-			//commandExecute;
+			commandKey = commandComponents.shift();
 		if (!availableCommands.hasOwnProperty(commandKey)) {
 			throw new Error("Unrecognised command: " + commandKey);
 		}
-		// try {
-		// 	commandExecute = require("__buttercup/classes/commands/" + commandFilename);
-		// } catch (err) {
-		// 	throw new Error("Unrecognised command: " + commandKey);
-		// }
 		var commandToExecute = availableCommands[commandKey];
 		this._history.push(command);
 		commandToExecute.apply(commandToExecute, [this._dataset].concat(commandComponents));
