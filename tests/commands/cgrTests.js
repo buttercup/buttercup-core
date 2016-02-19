@@ -161,6 +161,48 @@ module.exports = {
 
       test.strictEqual(fakeParent.groups.length, 3, 'Three group in the parent when executed on a group with two');
       test.done();
+    },
+
+    groupInParentHasCorrectIdWhenAddedWithIdOne: function(test) {
+      var expectedGroupId = 1;
+
+      var fakeParent = {
+        groups: []
+      };
+
+      var fakeSearching = {
+        findGroupByID: function(groups, id) {
+          return fakeParent;
+        }
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, 1, expectedGroupId);
+
+      test.strictEqual(fakeParent.groups[0].id, expectedGroupId, 'Group in parent has correct id when added with id ' + expectedGroupId);
+      test.done();
+    },
+
+    groupInParentHasCorrectIdWhenAddedWithIdTen: function(test) {
+      var expectedGroupId = 10;
+
+      var fakeParent = {
+        groups: []
+      };
+
+      var fakeSearching = {
+        findGroupByID: function(groups, id) {
+          return fakeParent;
+        }
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, 1, expectedGroupId);
+
+      test.strictEqual(fakeParent.groups[0].id, expectedGroupId, 'Group in parent has correct id when added with id ' + expectedGroupId);
+      test.done();
     }
   }
 };
