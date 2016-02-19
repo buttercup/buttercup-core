@@ -1,0 +1,29 @@
+# git files and directories
+.git
+.gitignore
+
+# our development node_modules - these will be installed by users through npm
+node_modules
+
+# this contains test information, not needed for a user
+build
+
+# api documentation, can be found on our repo and therefore isnt distributed
+doc
+
+# our unit tests
+tests
+
+# our development helper scripts
+scripts
+generate-docs
+
+# codeclimate configuration
+.codeclimate.yml
+
+# eslint configuration
+.eslintignore
+.eslintrc
+
+# travis configuration
+.travis.yml
