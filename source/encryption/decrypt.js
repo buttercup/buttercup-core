@@ -14,7 +14,6 @@
 			return false;
 		}
 
-
 		for (var i = 0; i <= (val1.length - 1); i += 1) {
 			sentinel |= val1.charCodeAt(i) ^ val2.charCodeAt(i);
 		}
@@ -32,7 +31,7 @@
 				salt = components.salt,
 				hmacData = components.hmac;
 			// Get the key
-			var keyDerivationInfo = Encryption.generateDerivedKey(password, salt),
+			var keyDerivationInfo = Encryption.generateDerivedKey(password, salt, components.rounds),
 				hmacTool = Crypto.createHmac(config.HMAC_ALGORITHM, keyDerivationInfo.hmac);
 			// Generate the hmac
 			hmacTool.update(encryptedContent);
@@ -51,14 +50,18 @@
 
 		unpackEncryptedContent: function(encryptedContent) {
 			var components = encryptedContent.split("$");
-			if (components.length !== config.COMPONENTS_COUNT) {
+			// There will be 4 components for pre 0.15.0 archives, and 5 in newer archives. The 5th component
+			// is the pbkdf2 round count, which is optional.
+			if (components.length < 4 || components.length > 5) {
 				throw new Error("Decryption error - unexpected number of encrypted components");
 			}
+			var pbkdf2Rounds = (components.length > 4) ? parseInt(components[4], 10) : config.PBKDF2_ROUND_DEFAULT;
 			return {
 				content: components[0],
 				iv: components[1],
 				salt: components[2],
-				hmac: components[3]
+				hmac: components[3],
+				rounds: pbkdf2Rounds
 			};
 		}
 

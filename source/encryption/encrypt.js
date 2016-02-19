@@ -8,6 +8,10 @@
 
 	var encoding = require("__buttercup/tools/encoding.js");
 
+	function getRandomInRange(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
 	var lib = module.exports = {
 
 		encrypt: function(text, password) {
@@ -16,7 +20,8 @@
 				ivHex = iv.toString("hex");
 			var encryptTool = Crypto.createCipheriv(config.ENC_ALGORITHM, keyDerivationInfo.key, iv),
 				hmacTool = Crypto.createHmac(config.HMAC_ALGORITHM, keyDerivationInfo.hmac),
-				saltHex = keyDerivationInfo.salt.toString("hex");
+				saltHex = keyDerivationInfo.salt.toString("hex"),
+				pbkdf2Rounds = keyDerivationInfo.rounds;
 			// Perform encryption
 			var encryptedContent = encryptTool.update(text, "utf8", "base64");
 			encryptedContent += encryptTool.final("base64");
@@ -30,16 +35,21 @@
 				encryptedContent,
 				ivHex,
 				saltHex,
-				hmacHex
+				hmacHex,
+				pbkdf2Rounds
 			);
 		},
 
-		generateDerivedKey: function(password, usedSalt) {
+		generateDerivedKey: function(password, usedSalt, rounds) {
+			rounds = rounds || getRandomInRange(
+				config.DERIVED_KEY_ITERATIONS_MIN,
+				config.DERIVED_KEY_ITERATIONS_MAX
+			);
 			var salt = usedSalt || lib.generateSalt(config.SALT_LENGTH),
 				derivedKey = pbkdf2.pbkdf2Sync(
 					password,
 					salt,
-					config.DERIVED_KEY_ITERATIONS,
+					rounds,
 					config.PASSWORD_KEY_SIZE + config.HMAC_KEY_SIZE, // size
 					config.DERIVED_KEY_ALGORITHM
 				);
@@ -51,7 +61,8 @@
 			return {
 				salt: salt,
 				key: keyBuffer,
-				hmac: hmacBuffer
+				hmac: hmacBuffer,
+				rounds: rounds
 			};
 		},
 
@@ -64,8 +75,8 @@
 			return Crypto.randomBytes(genLen / 2).toString("hex").substring(0, length);
 		},
 
-		packEncryptedContent: function(encryptedContent, iv, salt, hmacFinal) {
-			return [encryptedContent, iv, salt, hmacFinal].join("$");
+		packEncryptedContent: function(encryptedContent, iv, salt, hmacFinal, rounds) {
+			return [encryptedContent, iv, salt, hmacFinal, rounds].join("$");
 		}
 
 	};
