@@ -123,6 +123,44 @@ module.exports = {
 
       test.strictEqual(searchingCalled, true, 'Searched for parent id ' + submittedParentId);
       test.done();
+    },
+
+    oneGroupInParentWhenInitiallyEmpty: function(test) {
+      var fakeParent = {
+        groups: []
+      };
+
+      var fakeSearching = {
+        findGroupByID: function(groups, id) {
+          return fakeParent;
+        }
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, 1, 1);
+
+      test.strictEqual(fakeParent.groups.length, 1, 'One group in the parent when executed on an empty group');
+      test.done();
+    },
+
+    threeGroupsInParentWhenInitiallyTwo: function(test) {
+      var fakeParent = {
+        groups: [{}, {}]
+      };
+
+      var fakeSearching = {
+        findGroupByID: function(groups, id) {
+          return fakeParent;
+        }
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, 1, 1);
+
+      test.strictEqual(fakeParent.groups.length, 3, 'Three group in the parent when executed on a group with two');
+      test.done();
     }
   }
 };
