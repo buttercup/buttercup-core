@@ -1,12 +1,12 @@
 ecmaFeatures:
   modules: true
-  jsx: true
+  jsx: false
 
 env:
   amd: true
   browser: true
   es6: true
-  jquery: true
+  jquery: false
   node: true
 
 # http://eslint.org/docs/rules/
@@ -140,7 +140,7 @@ rules:
   func-style: 0
   id-length: 0
   id-match: 0
-  indent: 0
+  indent: [2, 4, {"SwitchCase": 1}]
   jsx-quotes: 0
   key-spacing: 0
   linebreak-style: 0

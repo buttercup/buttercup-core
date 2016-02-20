@@ -19,7 +19,8 @@
     "install": "node scripts/link.js",
     "test": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
     "test:junit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands --reporter junit --output build",
-	  "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands"
+    "test:lint": "node node_modules/eslint/bin/eslint.js source/",
+    "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands"
   },
   "repository": {
     "type": "git",
@@ -49,6 +50,7 @@
   },
   "devDependencies": {
     "base64-img": "~1.0.3",
+    "eslint": "^2.2.0",
     "istanbul": "~0.4.2",
     "jsdoc-to-markdown": "~1.2.0",
     "nodeunit": "~0.9.1",
