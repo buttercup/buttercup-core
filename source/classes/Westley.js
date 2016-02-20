@@ -62,8 +62,9 @@
 		}
 		var commandComponents = commandTools.extractCommandComponents(command),
 			commandKey = commandComponents.shift();
-
+			
 		var commandObject = this._getCommandForKey(commandKey);
+
 		this._history.push(command);
 		commandObject.execute.apply(commandObject, [this._dataset].concat(commandComponents));
 		return this;
