@@ -8,14 +8,8 @@ node_modules
 # this contains test information, not needed for a user
 build
 
-# api documentation, can be found on our repo and therefore isnt distributed
-doc
-
 # our unit tests
 tests
-
-# our development helper scripts
-generate-docs
 
 # codeclimate configuration
 .codeclimate.yml
