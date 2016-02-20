@@ -79,7 +79,7 @@
 		// If the command doesn't exist in the cache
 		if (this._cachedCommands[commandKey] === undefined) {
 			// Get the command object and inject its dependencies
-			var requirement = new (require("__buttercup/classes/commands/command." + commandKey + ".js"))();
+			var requirement = new (commandClasses[commandKey])();
 
 			if (requirement.injectSearching !== undefined) {
 				requirement.injectSearching(searching);
