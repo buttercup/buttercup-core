@@ -9,6 +9,26 @@
 
 	var VALID_COMMAND_EXP = 			/^[a-z]{3}[ ].+$/;
 
+	var commandClasses = {
+		cen: require("__buttercup/classes/commands/command.cen.js"),
+		cgr: require("__buttercup/classes/commands/command.cgr.js"),
+		cmm: require("__buttercup/classes/commands/command.cmm.js"),
+		dea: require("__buttercup/classes/commands/command.dea.js"),
+		dem: require("__buttercup/classes/commands/command.dem.js"),
+		den: require("__buttercup/classes/commands/command.den.js"),
+		dga: require("__buttercup/classes/commands/command.dga.js"),
+		dgr: require("__buttercup/classes/commands/command.dgr.js"),
+		fmt: require("__buttercup/classes/commands/command.fmt.js"),
+		men: require("__buttercup/classes/commands/command.men.js"),
+		mgr: require("__buttercup/classes/commands/command.mgr.js"),
+		pad: require("__buttercup/classes/commands/command.pad.js"),
+		sea: require("__buttercup/classes/commands/command.sea.js"),
+		sem: require("__buttercup/classes/commands/command.sem.js"),
+		sep: require("__buttercup/classes/commands/command.sep.js"),
+		sga: require("__buttercup/classes/commands/command.sga.js"),
+		tgr: require("__buttercup/classes/commands/command.tgr.js")
+	};
+
 	/**
 	 * Westley. Archive object dataset and history manager. Handles parsing and
 	 * revenge for the princess.
