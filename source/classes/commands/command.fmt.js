@@ -1,15 +1,15 @@
 (function(module) {
 
-	"use strict";
+    "use strict";
 
-	var FormatCommand = function() {
+    var FormatCommand = function() {
 
-	}
+    }
 
-	FormatCommand.prototype.execute = function(obj, format) {
-		obj.format = format;
-	};
+    FormatCommand.prototype.execute = function(obj, format) {
+        obj.format = format;
+    };
 
-	module.exports = FormatCommand;
+    module.exports = FormatCommand;
 
 })(module);

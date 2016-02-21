@@ -1,15 +1,15 @@
 (function(module) {
 
-	"use strict";
+    "use strict";
 
-	var PadCommand = function() {
+    var PadCommand = function() {
 
-	}
+    }
 
-	PadCommand.prototype.execute = function(obj, padID) {
+    PadCommand.prototype.execute = function(obj, padID) {
 
-	};
+    };
 
-	module.exports = PadCommand;
+    module.exports = PadCommand;
 
 })(module);
