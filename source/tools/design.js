@@ -1,6 +1,6 @@
 (function(module) {
 
-	"use strict";
+    "use strict";
 
     var ManagedEntry = require("__buttercup/classes/ManagedEntry.js"),
         ManagedGroup = require("__buttercup/classes/ManagedGroup.js"),
@@ -8,13 +8,13 @@
 
     var ENTRY_DEFAULT_IMAGE =                   "key";
 
-	/**
-	 * Design related tools
-	 * @module design
-	 */
-	var design = module.exports = {
+    /**
+     * Design related tools
+     * @module design
+     */
+    var design = module.exports = {
 
-		getEntryImageDetails: function(entry) {
+        getEntryImageDetails: function(entry) {
             if (entry && entry.getAttribute) {
                 var imageName = entry.getAttribute(ManagedEntry.Attributes.Icon) || ENTRY_DEFAULT_IMAGE;
                 return design.getImageData(imageName);
@@ -38,6 +38,6 @@
             return Object.keys(images);
         }
 
-	};
+    };
 
 })(module);

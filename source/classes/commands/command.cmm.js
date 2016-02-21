@@ -1,15 +1,15 @@
 (function(module) {
 
-	"use strict";
+    "use strict";
 
-	var CommentCommand = function() {
+    var CommentCommand = function() {
 
-	}
+    }
 
-	CommentCommand.prototype.execute = function(obj, comment) {
-		//console.log(" COMMENT -> " + comment);
-	}
+    CommentCommand.prototype.execute = function(obj, comment) {
+        //console.log(" COMMENT -> " + comment);
+    }
 
-	module.exports = CommentCommand;
+    module.exports = CommentCommand;
 
 })(module);

@@ -1,36 +1,36 @@
 (function(module) {
 
-	"use strict";
+    "use strict";
 
-	var EntryProperty = {
-		Password: 					"password",
-		Title: 						"title",
-		Username: 					"username"
-	};
+    var EntryProperty = {
+        Password:                     "password",
+        Title:                         "title",
+        Username:                     "username"
+    };
 
-	module.exports = {
+    module.exports = {
 
-		getValidProperties: function() {
-			var props = [];
-			for (var keyName in EntryProperty) {
-				if (EntryProperty.hasOwnProperty(keyName)) {
-					props.push(EntryProperty[keyName]);
-				}
-			}
-			return props;
-		},
+        getValidProperties: function() {
+            var props = [];
+            for (var keyName in EntryProperty) {
+                if (EntryProperty.hasOwnProperty(keyName)) {
+                    props.push(EntryProperty[keyName]);
+                }
+            }
+            return props;
+        },
 
-		isValidProperty: function(name) {
-			for (var keyName in EntryProperty) {
-				if (EntryProperty.hasOwnProperty(keyName)) {
-					if (EntryProperty[keyName] === name) {
-						return true;
-					}
-				}
-			}
-			return false;
-		}
+        isValidProperty: function(name) {
+            for (var keyName in EntryProperty) {
+                if (EntryProperty.hasOwnProperty(keyName)) {
+                    if (EntryProperty[keyName] === name) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
-	};
+    };
 
 })(module);

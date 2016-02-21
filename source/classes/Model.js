@@ -2,7 +2,7 @@
 
     "use strict";
 
-    var PROPERTY_NOT_FOUND = new String("NOT_FOUND");
+    var PROPERTY_NOT_FOUND = new String("NOT_FOUND"); //eslint-disable-line no-new-wrappers
 
     function resolveProperty(data, key) {
         var keyParts = Array.isArray(key) ? key : key.split("."),

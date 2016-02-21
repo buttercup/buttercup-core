@@ -111,8 +111,8 @@
      * @returns {Credentials} A new Credentials instance
      */
     Credentials.fromSecureContent = function(content, password) {
-        var content = Decryption.decrypt(unsignEncryptedContent(content), password);
-        return new Credentials(JSON.parse(content));
+        var decryptedContent = Decryption.decrypt(unsignEncryptedContent(content), password);
+        return new Credentials(JSON.parse(decryptedContent));
     };
 
     module.exports = Credentials;
