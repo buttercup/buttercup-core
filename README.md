@@ -1,5 +1,7 @@
 # Buttercup core library
 
+[![Join the chat at https://gitter.im/buttercup-pw/buttercup-core](https://badges.gitter.im/buttercup-pw/buttercup-core.svg)](https://gitter.im/buttercup-pw/buttercup-core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A NodeJS password vault.
 
 [![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC-red.svg)](https://tools.ietf.org/html/rfc3602)
