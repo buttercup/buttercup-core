@@ -45,7 +45,7 @@
     "pbkdf2": "~3.0.4",
     "promise-polyfill": "~2.1.0",
     "uuid": "~2.0.1",
-    "webdav-fs": "~0.3.0"
+    "webdav-fs": "~0.4.0"
   },
   "devDependencies": {
     "base64-img": "~1.0.3",
