@@ -144,8 +144,8 @@ Archive comparison class
 
 | Param | Type |
 | --- | --- |
-| originalArchive | <code>[Archive](#Archive)</code> | 
-| secondaryArchive | <code>[Archive](#Archive)</code> | 
+| originalArchive | <code>[Archive](#Archive)</code> |
+| secondaryArchive | <code>[Archive](#Archive)</code> |
 
 <a name="Comparator+archivesDiffer"></a>
 ### comparator.archivesDiffer() ⇒ <code>Boolean</code>
@@ -187,8 +187,8 @@ Set identity information
 
 | Param | Type |
 | --- | --- |
-| username | <code>string</code> | 
-| password | <code>string</code> | 
+| username | <code>string</code> |
+| password | <code>string</code> |
 
 <a name="Credentials+setType"></a>
 ### credentials.setType(type) ⇒ <code>[Credentials](#Credentials)</code>
@@ -199,7 +199,7 @@ Set the credentials type (eg. webdav/owncloud etc.)
 
 | Param | Type |
 | --- | --- |
-| type | <code>string</code> | 
+| type | <code>string</code> |
 
 <a name="Credentials+toSecure"></a>
 ### credentials.toSecure(masterPassword) ⇒ <code>string</code>
@@ -236,7 +236,7 @@ Flatten archives
 
 | Param | Type |
 | --- | --- |
-| westley | <code>[Westley](#Westley)</code> | 
+| westley | <code>[Westley](#Westley)</code> |
 
 <a name="ManagedEntry"></a>
 ## ManagedEntry
@@ -471,7 +471,7 @@ Create a new entry with a title
 
 | Param | Type |
 | --- | --- |
-| [title] | <code>string</code> | 
+| [title] | <code>string</code> |
 
 <a name="ManagedGroup+createGroup"></a>
 ### managedGroup.createGroup([title]) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
@@ -720,7 +720,7 @@ Set the archive instance
 
 | Param | Type |
 | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | 
+| archive | <code>[Archive](#Archive)</code> |
 
 <a name="Workspace+setDatasource"></a>
 ### workspace.setDatasource(datasource) ⇒ <code>[Workspace](#Workspace)</code>
@@ -731,7 +731,7 @@ Set the datasource instance
 
 | Param | Type |
 | --- | --- |
-| datasource | <code>Object</code> | 
+| datasource | <code>Object</code> |
 
 <a name="Workspace+setPassword"></a>
 ### workspace.setPassword(password) ⇒ <code>[Workspace](#Workspace)</code>
@@ -742,7 +742,7 @@ Set the password
 
 | Param | Type |
 | --- | --- |
-| password | <code>String</code> | 
+| password | <code>String</code> |
 
 <a name="DisplayInfo"></a>
 ## DisplayInfo
@@ -754,4 +754,3 @@ Set the password
 | title | <code>string</code> | The text to replace "title" |
 | username | <code>string</code> | The text to replace "username" |
 | password | <code>string</code> | The text to replace "password" |
-

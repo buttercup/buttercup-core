@@ -2,16 +2,24 @@
 
 	"use strict";
 
-	var searching = require("__buttercup/tools/searching.js");
+	var SetAttributeCommand = function() {
+		this.searching = undefined;
+	}
 
-	module.exports = function(obj, entryID, attributeName, value) {
+	SetAttributeCommand.prototype.execute = function(obj, entryID, attributeName, value) {
 		obj.groups = obj.groups || [];
-		var entry = searching.findEntryByID(obj.groups, entryID);
+		var entry = this.searching.findEntryByID(obj.groups, entryID);
 		if (!entry) {
 			throw new Error("Entry not found for ID");
 		}
 		entry.attributes = entry.attributes || {};
 		entry.attributes[attributeName] = value;
 	};
+
+	SetAttributeCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
+
+	module.exports = SetAttributeCommand;
 
 })(module);

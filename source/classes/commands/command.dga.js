@@ -2,11 +2,13 @@
 
 	"use strict";
 
-	var searching = require("__buttercup/tools/searching.js");
+	var DeleteGroupAttributeCommand = function() {
+		this.searching = undefined;
+	}
 
-	module.exports = function(obj, groupID, attributeName) {
+	DeleteGroupAttributeCommand.prototype.execute = function(obj, groupID, attributeName) {
 		obj.groups = obj.groups || [];
-        var group = searching.findGroupByID(obj.groups, groupID);
+        var group = this.searching.findGroupByID(obj.groups, groupID);
 		if (!group) {
 			throw new Error("Group not found for ID");
 		}
@@ -16,5 +18,11 @@
 			throw new Error("Failed deleting attribute");
 		}
 	};
+
+	DeleteGroupAttributeCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
+
+	module.exports = DeleteGroupAttributeCommand;
 
 })(module);

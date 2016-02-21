@@ -2,8 +2,14 @@
 
 	"use strict";
 
-	module.exports = function(obj, comment) {
+	var CommentCommand = function() {
+
+	}
+
+	CommentCommand.prototype.execute = function(obj, comment) {
 		//console.log(" COMMENT -> " + comment);
-	};
+	}
+
+	module.exports = CommentCommand;
 
 })(module);

@@ -2,11 +2,13 @@
 
 	"use strict";
 
-	var searching = require("__buttercup/tools/searching.js");
+	var DeleteGroupCommand = function() {
+		this.searching = undefined;
+	}
 
-	module.exports = function(obj, groupID) {
+	DeleteGroupCommand.prototype.execute = function(obj, groupID) {
 		obj.groups = obj.groups || [];
-		var location = searching.findGroupContainingGroupID(obj, groupID),
+		var location = this.searching.findGroupContainingGroupID(obj, groupID),
 			containerGroup = location.group,
 			containerIndex = location.index;
 		if (!containerGroup) {
@@ -14,5 +16,11 @@
 		}
 		containerGroup.groups.splice(containerIndex, 1)[0];
 	};
+
+	DeleteGroupCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
+
+	module.exports = DeleteGroupCommand;
 
 })(module);

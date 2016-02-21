@@ -2,19 +2,31 @@
 
 	"use strict";
 
-	var Searching = require("__buttercup/tools/searching.js"),
-		Entry = require("__buttercup/tools/entry.js");
+	var SetPropertyCommand = function() {
+		this.searching = undefined;
+		this.entry = undefined;
+	}
 
-	module.exports = function(obj, entryID, propertyName, value) {
+	SetPropertyCommand.prototype.execute = function(obj, entryID, propertyName, value) {
 		obj.groups = obj.groups || [];
-		if (!Entry.isValidProperty(propertyName)) {
+		if (!this.entry.isValidProperty(propertyName)) {
 			throw new Error("Invalid property name for entry: " + propertyName);
 		}
-		var entry = Searching.findEntryByID(obj.groups, entryID);
+		var entry = this.searching.findEntryByID(obj.groups, entryID);
 		if (!entry) {
 			throw new Error("Entry not found for ID");
 		}
 		entry[propertyName] = value;
 	};
+
+	SetPropertyCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
+
+	SetPropertyCommand.prototype.injectEntry = function(entry) {
+		this.entry = entry;
+	}
+
+	module.exports = SetPropertyCommand;
 
 })(module);

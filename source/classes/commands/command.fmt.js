@@ -2,8 +2,14 @@
 
 	"use strict";
 
-	module.exports = function(obj, format) {
+	var FormatCommand = function() {
+
+	}
+
+	FormatCommand.prototype.execute = function(obj, format) {
 		obj.format = format;
 	};
+
+	module.exports = FormatCommand;
 
 })(module);

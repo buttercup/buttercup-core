@@ -2,9 +2,11 @@
 
 	"use strict";
 
-	var searching = require("__buttercup/tools/searching.js");
+	var CreateGroupCommand = function() {
+		this.searching = undefined;
+	}
 
-	module.exports = function(obj, parentID, newID) {
+	CreateGroupCommand.prototype.execute = function(obj, parentID, newID) {
 		obj.groups = obj.groups || [];
 		var group = {
 			id: newID,
@@ -13,7 +15,7 @@
 		if ("" + parentID === "0") {
 			obj.groups.push(group);
 		} else {
-			var parentGroup = searching.findGroupByID(obj.groups, parentID);
+			var parentGroup = this.searching.findGroupByID(obj.groups, parentID);
 			if (!parentGroup) {
 				throw new Error("Invalid parent group ID: not found");
 			}
@@ -21,5 +23,11 @@
 			parentGroup.groups.push(group);
 		}
 	};
+
+	CreateGroupCommand.prototype.injectSearching = function(searching) {
+		this.searching = searching;
+	}
+
+	module.exports = CreateGroupCommand;
 
 })(module);

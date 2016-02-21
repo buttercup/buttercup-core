@@ -1,0 +1,118 @@
+var cen = require("__buttercup/classes/commands/command.cen.js");
+
+module.exports = {
+  setUp: function(cb) {
+    this.command = new cen();
+    (cb)();
+  },
+
+  errors: {
+    groupNotFoundThrowsError: function (test) {
+      var fakeSearching = {
+        findGroupByID: function (a, b) {
+          return false;
+        }
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      test.throws(function() {
+        this.command.execute({ }, 1, 1);
+      }.bind(this), 'Invalid group ID', 'An error was thrown when no group found');
+      test.done();
+    }
+  },
+
+  entry: {
+    oneEntryWhenInitiallyEmpty: function (test) {
+      var fakeGroup = {
+        entries: []
+      };
+
+      var fakeSearching = {
+        findGroupByID: function (a, b) {
+          return fakeGroup;
+        }
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, 1, 1);
+
+      test.strictEqual(fakeGroup.entries.length, 1, 'One entry when initially empty');
+      test.done();
+    },
+
+    twoEntriesWhenInitiallyOne: function (test) {
+      var fakeGroup = {
+        entries: [{
+          id: 1,
+    			title: "a test entry"
+        }]
+      };
+
+      var fakeSearching = {
+        findGroupByID: function (a, b) {
+          return fakeGroup;
+        }
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, 1, 2);
+
+      test.strictEqual(fakeGroup.entries.length, 2, 'Two entries when initially one');
+      test.done();
+    },
+
+    expectedIdWhenGiven1: function (test) {
+      var expectedId = 1;
+      var fakeGroup = {
+        entries: []
+      };
+
+      var fakeSearching = {
+        findGroupByID: function (a, b) {
+          return fakeGroup;
+        }
+      };
+
+      var pushedId;
+      fakeGroup.entries.push = function (entry) {
+        pushedId = entry.id;
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, 1, expectedId);
+
+      test.strictEqual(pushedId, expectedId, 'Entry pushed with expected id of ' + expectedId);
+      test.done();
+    },
+
+    expectedIdWhenGiven50: function (test) {
+      var expectedId = 50;
+      var fakeGroup = {
+        entries: []
+      };
+
+      var fakeSearching = {
+        findGroupByID: function (a, b) {
+          return fakeGroup;
+        }
+      };
+
+      var pushedId;
+      fakeGroup.entries.push = function (entry) {
+        pushedId = entry.id;
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, 1, expectedId);
+
+      test.strictEqual(pushedId, expectedId, 'Entry pushed with expected id of ' + expectedId);
+      test.done();
+    }
+  }
+};

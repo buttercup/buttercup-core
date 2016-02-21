@@ -3,29 +3,31 @@
 	"use strict";
 
 	var Inigo = require("__buttercup/classes/InigoGenerator.js"),
-		commandTools = require("__buttercup/tools/command.js");
-
-	var availableCommands = {
-		cen: 		require("__buttercup/classes/commands/command.cen.js"),
-		cgr: 		require("__buttercup/classes/commands/command.cgr.js"),
-		cmm: 		require("__buttercup/classes/commands/command.cmm.js"),
-		dea: 		require("__buttercup/classes/commands/command.dea.js"),
-		dem: 		require("__buttercup/classes/commands/command.dem.js"),
-		den: 		require("__buttercup/classes/commands/command.den.js"),
-		dga: 		require("__buttercup/classes/commands/command.dga.js"),
-		dgr: 		require("__buttercup/classes/commands/command.dgr.js"),
-		fmt: 		require("__buttercup/classes/commands/command.fmt.js"),
-		men: 		require("__buttercup/classes/commands/command.men.js"),
-		mgr: 		require("__buttercup/classes/commands/command.mgr.js"),
-		pad: 		require("__buttercup/classes/commands/command.pad.js"),
-		sea: 		require("__buttercup/classes/commands/command.sea.js"),
-		sem: 		require("__buttercup/classes/commands/command.sem.js"),
-		sep: 		require("__buttercup/classes/commands/command.sep.js"),
-		sga: 		require("__buttercup/classes/commands/command.sga.js"),
-		tgr: 		require("__buttercup/classes/commands/command.tgr.js")
-	};
+		commandTools = require("__buttercup/tools/command.js"),
+		searching = require("__buttercup/tools/searching.js"),
+		entry = require("__buttercup/tools/entry.js");
 
 	var VALID_COMMAND_EXP = 			/^[a-z]{3}[ ].+$/;
+
+	var commandClasses = {
+		cen: require("__buttercup/classes/commands/command.cen.js"),
+		cgr: require("__buttercup/classes/commands/command.cgr.js"),
+		cmm: require("__buttercup/classes/commands/command.cmm.js"),
+		dea: require("__buttercup/classes/commands/command.dea.js"),
+		dem: require("__buttercup/classes/commands/command.dem.js"),
+		den: require("__buttercup/classes/commands/command.den.js"),
+		dga: require("__buttercup/classes/commands/command.dga.js"),
+		dgr: require("__buttercup/classes/commands/command.dgr.js"),
+		fmt: require("__buttercup/classes/commands/command.fmt.js"),
+		men: require("__buttercup/classes/commands/command.men.js"),
+		mgr: require("__buttercup/classes/commands/command.mgr.js"),
+		pad: require("__buttercup/classes/commands/command.pad.js"),
+		sea: require("__buttercup/classes/commands/command.sea.js"),
+		sem: require("__buttercup/classes/commands/command.sem.js"),
+		sep: require("__buttercup/classes/commands/command.sep.js"),
+		sga: require("__buttercup/classes/commands/command.sga.js"),
+		tgr: require("__buttercup/classes/commands/command.tgr.js")
+	};
 
 	/**
 	 * Westley. Archive object dataset and history manager. Handles parsing and
@@ -44,8 +46,9 @@
 	Westley.prototype.clear = function() {
 		this._dataset = {};
 		this._history = [];
+		this._cachedCommands = {};
 		return this;
-	}
+	};
 
 	/**
 	 * Execute a command - stored in history and modifies the dataset
@@ -59,13 +62,39 @@
 		}
 		var commandComponents = commandTools.extractCommandComponents(command),
 			commandKey = commandComponents.shift();
-		if (!availableCommands.hasOwnProperty(commandKey)) {
-			throw new Error("Unrecognised command: " + commandKey);
-		}
-		var commandToExecute = availableCommands[commandKey];
+
+		var commandObject = this._getCommandForKey(commandKey);
+
 		this._history.push(command);
-		commandToExecute.apply(commandToExecute, [this._dataset].concat(commandComponents));
+		commandObject.execute.apply(commandObject, [this._dataset].concat(commandComponents));
 		return this;
+	};
+
+	/**
+	 * Gets a command by its key from the cache with its dependencies injected
+	 * @param {String} commandKey The key of the command
+	 * @returns {Command} Returns the command
+	 * @memberof Westley
+	 */
+	Westley.prototype._getCommandForKey = function(commandKey) {
+		// If the command doesn't exist in the cache
+		if (this._cachedCommands[commandKey] === undefined) {
+			// Get the command object and inject its dependencies
+			var requirement = new (commandClasses[commandKey])();
+
+			if (requirement.injectSearching !== undefined) {
+				requirement.injectSearching(searching);
+			}
+
+			if (requirement.injectEntry !== undefined) {
+				requirement.injectEntry(entry);
+			}
+
+			// Store it in the cache
+			this._cachedCommands[commandKey] = requirement;
+		}
+
+		return this._cachedCommands[commandKey];
 	};
 
 	/**

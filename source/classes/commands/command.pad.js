@@ -2,8 +2,14 @@
 
 	"use strict";
 
-	module.exports = function(obj, padID) {
-		
+	var PadCommand = function() {
+
+	}
+
+	PadCommand.prototype.execute = function(obj, padID) {
+
 	};
+
+	module.exports = PadCommand;
 
 })(module);
