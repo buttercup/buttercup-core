@@ -27,6 +27,8 @@
 <dd></dd>
 <dt><a href="#ManagedGroup">ManagedGroup</a></dt>
 <dd></dd>
+<dt><a href="#Model">Model</a></dt>
+<dd></dd>
 <dt><a href="#OwnCloudDatasource">OwnCloudDatasource</a></dt>
 <dd></dd>
 <dt><a href="#Westley">Westley</a></dt>
@@ -144,8 +146,8 @@ Archive comparison class
 
 | Param | Type |
 | --- | --- |
-| originalArchive | <code>[Archive](#Archive)</code> |
-| secondaryArchive | <code>[Archive](#Archive)</code> |
+| originalArchive | <code>[Archive](#Archive)</code> | 
+| secondaryArchive | <code>[Archive](#Archive)</code> | 
 
 <a name="Comparator+archivesDiffer"></a>
 ### comparator.archivesDiffer() ⇒ <code>Boolean</code>
@@ -157,7 +159,8 @@ Check if the current archives differ in any way
 Calculate the differences, in commands, between the two archives
 
 **Kind**: instance method of <code>[Comparator](#Comparator)</code>  
-**Returns**: <code>Object</code> &#124; <code>Boolean</code> - Returns false if no common base		is found, or the command differences as two arrays  
+**Returns**: <code>Object</code> &#124; <code>Boolean</code> - Returns false if no common base
+       is found, or the command differences as two arrays  
 <a name="Credentials"></a>
 ## Credentials
 **Kind**: global class  
@@ -176,7 +179,7 @@ Calculate the differences, in commands, between the two archives
 
 | Param | Type | Description |
 | --- | --- | --- |
-| data | <code>Object</code> &#124; <code>Model</code> | The initialisation data |
+| data | <code>Object</code> &#124; <code>[Model](#Model)</code> | The initialisation data |
 
 <a name="Credentials+setIdentity"></a>
 ### credentials.setIdentity(username, password) ⇒ <code>[Credentials](#Credentials)</code>
@@ -187,8 +190,8 @@ Set identity information
 
 | Param | Type |
 | --- | --- |
-| username | <code>string</code> |
-| password | <code>string</code> |
+| username | <code>string</code> | 
+| password | <code>string</code> | 
 
 <a name="Credentials+setType"></a>
 ### credentials.setType(type) ⇒ <code>[Credentials](#Credentials)</code>
@@ -199,7 +202,7 @@ Set the credentials type (eg. webdav/owncloud etc.)
 
 | Param | Type |
 | --- | --- |
-| type | <code>string</code> |
+| type | <code>string</code> | 
 
 <a name="Credentials+toSecure"></a>
 ### credentials.toSecure(masterPassword) ⇒ <code>string</code>
@@ -236,7 +239,7 @@ Flatten archives
 
 | Param | Type |
 | --- | --- |
-| westley | <code>[Westley](#Westley)</code> |
+| westley | <code>[Westley](#Westley)</code> | 
 
 <a name="ManagedEntry"></a>
 ## ManagedEntry
@@ -278,7 +281,10 @@ Managed entry class
 
 <a name="ManagedEntry+delete"></a>
 ### managedEntry.delete()
-Delete the entry - either trashes the entry, or removes it completely.If the entry is in the trash already, it is removed (including if there is no	trash group). If the entry is in a normal group and a trash group exists, it is moved there instead of being deleted.
+Delete the entry - either trashes the entry, or removes it completely.
+If the entry is in the trash already, it is removed (including if there is no
+   trash group). If the entry is in a normal group and a trash group exists, it
+ is moved there instead of being deleted.
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 **See**
@@ -471,7 +477,7 @@ Create a new entry with a title
 
 | Param | Type |
 | --- | --- |
-| [title] | <code>string</code> |
+| [title] | <code>string</code> | 
 
 <a name="ManagedGroup+createGroup"></a>
 ### managedGroup.createGroup([title]) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
@@ -594,6 +600,57 @@ Create a new ManagedGroup with a delta-manager and parent group ID
 | archive | <code>[Archive](#Archive)</code> |  |
 | [parentID] | <code>string</code> | The parent group ID (default is root) |
 
+<a name="Model"></a>
+## Model
+**Kind**: global class  
+
+* [Model](#Model)
+    * [new Model(data)](#new_Model_new)
+    * [.get(key, [defaultValue])](#Model+get) ⇒ <code>\*</code>
+    * [.getData()](#Model+getData) ⇒ <code>Object</code>
+    * [.set(key, value)](#Model+set) ⇒ <code>[Model](#Model)</code>
+
+<a name="new_Model_new"></a>
+### new Model(data)
+Data modelling helper
+
+
+| Param | Type |
+| --- | --- |
+| data | <code>Object</code> | 
+
+<a name="Model+get"></a>
+### model.get(key, [defaultValue]) ⇒ <code>\*</code>
+Get a value for a property.
+ eg. model.get("some.deep.property", 19);
+
+**Kind**: instance method of <code>[Model](#Model)</code>  
+**Access:** public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>string</code> | The key to get the value for. Splits by period '.' for sub-objects. |
+| [defaultValue] | <code>\*</code> | A default value to return if the property is not found |
+
+<a name="Model+getData"></a>
+### model.getData() ⇒ <code>Object</code>
+Get the wrapped object
+
+**Kind**: instance method of <code>[Model](#Model)</code>  
+**Access:** public  
+<a name="Model+set"></a>
+### model.set(key, value) ⇒ <code>[Model](#Model)</code>
+Set a property
+
+**Kind**: instance method of <code>[Model](#Model)</code>  
+**Returns**: <code>[Model](#Model)</code> - Returns self  
+**Access:** public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>string</code> | The location (property) at which to set a value (eg. "some.nested.prop") |
+| value | <code>string</code> &#124; <code>number</code> &#124; <code>Object</code> &#124; <code>\*</code> | The value to set |
+
 <a name="OwnCloudDatasource"></a>
 ## OwnCloudDatasource
 **Kind**: global class  
@@ -617,13 +674,15 @@ Datasource for Owncloud connections
     * [new Westley()](#new_Westley_new)
     * [.clear()](#Westley+clear) ⇒ <code>[Westley](#Westley)</code>
     * [.execute(command)](#Westley+execute) ⇒ <code>[Westley](#Westley)</code>
+    * [._getCommandForKey(commandKey)](#Westley+_getCommandForKey) ⇒ <code>Command</code>
     * [.pad()](#Westley+pad) ⇒ <code>[Westley](#Westley)</code>
     * [.getDataset()](#Westley+getDataset) ⇒ <code>Object</code>
     * [.getHistory()](#Westley+getHistory) ⇒ <code>Array.&lt;String&gt;</code>
 
 <a name="new_Westley_new"></a>
 ### new Westley()
-Westley. Archive object dataset and history manager. Handles parsing andrevenge for the princess.
+Westley. Archive object dataset and history manager. Handles parsing and
+revenge for the princess.
 
 <a name="Westley+clear"></a>
 ### westley.clear() ⇒ <code>[Westley](#Westley)</code>
@@ -641,6 +700,17 @@ Execute a command - stored in history and modifies the dataset
 | Param | Type | Description |
 | --- | --- | --- |
 | command | <code>String</code> | The command to execute |
+
+<a name="Westley+_getCommandForKey"></a>
+### westley._getCommandForKey(commandKey) ⇒ <code>Command</code>
+Gets a command by its key from the cache with its dependencies injected
+
+**Kind**: instance method of <code>[Westley](#Westley)</code>  
+**Returns**: <code>Command</code> - Returns the command  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| commandKey | <code>String</code> | The key of the command |
 
 <a name="Westley+pad"></a>
 ### westley.pad() ⇒ <code>[Westley](#Westley)</code>
@@ -720,7 +790,7 @@ Set the archive instance
 
 | Param | Type |
 | --- | --- |
-| archive | <code>[Archive](#Archive)</code> |
+| archive | <code>[Archive](#Archive)</code> | 
 
 <a name="Workspace+setDatasource"></a>
 ### workspace.setDatasource(datasource) ⇒ <code>[Workspace](#Workspace)</code>
@@ -731,7 +801,7 @@ Set the datasource instance
 
 | Param | Type |
 | --- | --- |
-| datasource | <code>Object</code> |
+| datasource | <code>Object</code> | 
 
 <a name="Workspace+setPassword"></a>
 ### workspace.setPassword(password) ⇒ <code>[Workspace](#Workspace)</code>
@@ -742,7 +812,7 @@ Set the password
 
 | Param | Type |
 | --- | --- |
-| password | <code>String</code> |
+| password | <code>String</code> | 
 
 <a name="DisplayInfo"></a>
 ## DisplayInfo
@@ -754,3 +824,4 @@ Set the password
 | title | <code>string</code> | The text to replace "title" |
 | username | <code>string</code> | The text to replace "username" |
 | password | <code>string</code> | The text to replace "password" |
+

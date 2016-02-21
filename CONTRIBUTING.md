@@ -38,3 +38,51 @@ When adding dependencies, consider the nature of Buttercup and the required leve
 Please write tests. So many things can go wrong when functionality isn't covered by tests. Keep your tests at the same standard as your code.
 
 Document your functions, classes and variables with JSDoc blocks. Before making a PR, run `./generate-docs` to regenerate API documentation.
+
+### JSDoc
+When documenting a private property (static), the block should resemble this:
+```
+/**
+ * My variable that does something
+ * @type {string|number}
+ * @private
+ * @static
+ * @memberof ClassInThisFile
+ */
+var __myProp = 10;
+```
+
+When documenting a constructor/class:
+```
+/**
+ * My class that does something
+ * @class MyClass
+ * @param {Object} paramName Class takes this property
+ */
+var MyClass = function(paramName) {
+```
+
+When documenting a class method:
+```
+/**
+ * Do something on the class instance
+ * @param {string} action Action to take
+ * @param {string=} something Something else to do (optional)
+ * @returns {number} Returns a number
+ * @throws {Error} Throws if you do something wrong
+ * @memberof MyClass
+ * @public
+ * @instance
+ */
+MyClass.prototype.doSomething = function(action, something) {
+```
+
+A "protected" (not to be used externally) method:
+```
+/**
+ * Do something privately
+ * (JSDoc properties as per normal functions minus @public)
+ * @protected
+ */
+MyClass.prototype._doPrivately = function() {
+```
