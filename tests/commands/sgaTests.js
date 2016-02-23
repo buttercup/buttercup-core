@@ -32,7 +32,7 @@ module.exports = {
     }
   },
 
-  setAttribute: {
+  setAttributeOnGroupWithAttributes: {
     setUp: function(cb) {
       fakeGroup = {
         attributes: {}
