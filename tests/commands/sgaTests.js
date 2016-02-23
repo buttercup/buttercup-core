@@ -3,124 +3,124 @@ var sga = require("__buttercup/classes/commands/command.sga.js");
 var fakeGroup;
 
 module.exports = {
-  setUp: function(cb) {
-    this.command = new sga();
-    (cb)();
-  },
-
-  errors: {
-    groupNotFoundForId: function(test) {
-      var fakeSearching = {
-        findGroupByID: function(a, b) {
-          return false;
-        }
-      };
-
-      this.command.injectSearching(fakeSearching);
-
-      var errorThrown = false;
-      try {
-        this.command.execute({ }, 0, '', '');
-      } catch (e) {
-        if (e.message === 'Group not found for ID') {
-          errorThrown = true;
-        }
-      } finally {
-        test.strictEqual(errorThrown, true, 'Error thrown');
-        test.done();
-      }
-    }
-  },
-
-  setAttributeOnGroupWithAttributes: {
     setUp: function(cb) {
-      fakeGroup = {
-        attributes: {}
-      };
-
-      (cb)();
+        this.command = new sga();
+        (cb)();
     },
 
-    setsAttributeValueValForNameNam: function(test) {
-      var attributeName = 'Nam',
-          attributeValue = 'Val';
+    errors: {
+        groupNotFoundForId: function(test) {
+            var fakeSearching = {
+                findGroupByID: function(a, b) {
+                    return false;
+                }
+            };
 
-      var fakeSearching = {
-        findGroupByID: function(a, b) {
-          return fakeGroup;
+            this.command.injectSearching(fakeSearching);
+
+            var errorThrown = false;
+            try {
+                this.command.execute({ }, 0, '', '');
+            } catch (e) {
+                if (e.message === 'Group not found for ID') {
+                    errorThrown = true;
+                }
+            } finally {
+                test.strictEqual(errorThrown, true, 'Error thrown');
+                test.done();
+            }
         }
-      };
-
-      this.command.injectSearching(fakeSearching);
-
-      this.command.execute({ }, 0, attributeName, attributeValue);
-
-      test.strictEqual(fakeGroup.attributes[attributeName], attributeValue, 'Attribute value is correctly set. ([' + attributeName + '] = ' + attributeValue + ')');
-      test.done();
     },
 
-    setsAttributeValueFooForNameBar: function(test) {
-      var attributeName = 'Bar',
-          attributeValue = 'Foo';
+    setAttributeOnGroupWithAttributes: {
+        setUp: function(cb) {
+            fakeGroup = {
+                attributes: {}
+            };
 
-      var fakeSearching = {
-        findGroupByID: function(a, b) {
-          return fakeGroup;
+            (cb)();
+        },
+
+        setsAttributeValueValForNameNam: function(test) {
+            var attributeName = 'Nam',
+                    attributeValue = 'Val';
+
+            var fakeSearching = {
+                findGroupByID: function(a, b) {
+                    return fakeGroup;
+                }
+            };
+
+            this.command.injectSearching(fakeSearching);
+
+            this.command.execute({ }, 0, attributeName, attributeValue);
+
+            test.strictEqual(fakeGroup.attributes[attributeName], attributeValue, 'Attribute value is correctly set. ([' + attributeName + '] = ' + attributeValue + ')');
+            test.done();
+        },
+
+        setsAttributeValueFooForNameBar: function(test) {
+            var attributeName = 'Bar',
+                    attributeValue = 'Foo';
+
+            var fakeSearching = {
+                findGroupByID: function(a, b) {
+                    return fakeGroup;
+                }
+            };
+
+            this.command.injectSearching(fakeSearching);
+
+            this.command.execute({ }, 0, attributeName, attributeValue);
+
+            test.strictEqual(fakeGroup.attributes[attributeName], attributeValue, 'Attribute value is correctly set. ([' + attributeName + '] = ' + attributeValue + ')');
+            test.done();
         }
-      };
+    },
 
-      this.command.injectSearching(fakeSearching);
+    setAttributeOnGroupWithoutAttributes: {
+        setUp: function(cb) {
+            fakeGroup = {
+                attributes: undefined
+            };
 
-      this.command.execute({ }, 0, attributeName, attributeValue);
+            (cb)();
+        },
 
-      test.strictEqual(fakeGroup.attributes[attributeName], attributeValue, 'Attribute value is correctly set. ([' + attributeName + '] = ' + attributeValue + ')');
-      test.done();
+        setsAttributeValueValForNameNam: function(test) {
+            var attributeName = 'Nam',
+                    attributeValue = 'Val';
+
+            var fakeSearching = {
+                findGroupByID: function(a, b) {
+                    return fakeGroup;
+                }
+            };
+
+            this.command.injectSearching(fakeSearching);
+
+            this.command.execute({ }, 0, attributeName, attributeValue);
+
+            test.strictEqual(fakeGroup.attributes[attributeName], attributeValue, 'Attribute value is correctly set. ([' + attributeName + '] = ' + attributeValue + ')');
+            test.done();
+        },
+
+        setsAttributeValueFooForNameBar: function(test) {
+            var attributeName = 'Bar',
+                    attributeValue = 'Foo';
+
+            var fakeSearching = {
+                findGroupByID: function(a, b) {
+                    return fakeGroup;
+                }
+            };
+
+            this.command.injectSearching(fakeSearching);
+
+            this.command.execute({ }, 0, attributeName, attributeValue);
+
+            test.strictEqual(fakeGroup.attributes[attributeName], attributeValue, 'Attribute value is correctly set. ([' + attributeName + '] = ' + attributeValue + ')');
+            test.done();
+        }
     }
-  },
-
-  setAttributeOnGroupWithoutAttributes: {
-    setUp: function(cb) {
-      fakeGroup = {
-        attributes: undefined
-      };
-
-      (cb)();
-    },
-
-    setsAttributeValueValForNameNam: function(test) {
-      var attributeName = 'Nam',
-          attributeValue = 'Val';
-
-      var fakeSearching = {
-        findGroupByID: function(a, b) {
-          return fakeGroup;
-        }
-      };
-
-      this.command.injectSearching(fakeSearching);
-
-      this.command.execute({ }, 0, attributeName, attributeValue);
-
-      test.strictEqual(fakeGroup.attributes[attributeName], attributeValue, 'Attribute value is correctly set. ([' + attributeName + '] = ' + attributeValue + ')');
-      test.done();
-    },
-
-    setsAttributeValueFooForNameBar: function(test) {
-      var attributeName = 'Bar',
-          attributeValue = 'Foo';
-
-      var fakeSearching = {
-        findGroupByID: function(a, b) {
-          return fakeGroup;
-        }
-      };
-
-      this.command.injectSearching(fakeSearching);
-
-      this.command.execute({ }, 0, attributeName, attributeValue);
-
-      test.strictEqual(fakeGroup.attributes[attributeName], attributeValue, 'Attribute value is correctly set. ([' + attributeName + '] = ' + attributeValue + ')');
-      test.done();
-    }
-  }
 };
