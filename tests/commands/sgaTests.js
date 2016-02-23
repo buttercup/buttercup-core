@@ -1,5 +1,7 @@
 var sga = require("__buttercup/classes/commands/command.sga.js");
 
+var fakeGroup;
+
 module.exports = {
   setUp: function(cb) {
     this.command = new sga();
@@ -31,13 +33,17 @@ module.exports = {
   },
 
   setAttribute: {
+    setUp: function(cb) {
+      fakeGroup = {
+        attributes: {}
+      };
+
+      (cb)();
+    },
+
     setsAttributeValueValForNameNam: function(test) {
       var attributeName = 'Nam',
           attributeValue = 'Val';
-
-      var fakeGroup = {
-        attributes: {}
-      };
 
       var fakeSearching = {
         findGroupByID: function(a, b) {
@@ -56,10 +62,6 @@ module.exports = {
     setsAttributeValueFooForNameBar: function(test) {
       var attributeName = 'Bar',
           attributeValue = 'Foo';
-
-      var fakeGroup = {
-        attributes: {}
-      };
 
       var fakeSearching = {
         findGroupByID: function(a, b) {
