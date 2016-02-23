@@ -29,4 +29,28 @@ module.exports = {
       }
     }
   },
+
+  setAttribute: {
+    setsAttributeValueValForNameNam: function(test) {
+      var attributeName = 'Nam',
+          attributeValue = 'Val';
+
+      var fakeGroup = {
+        attributes: {}
+      };
+
+      var fakeSearching = {
+        findGroupByID: function(a, b) {
+          return fakeGroup;
+        }
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, 0, attributeName, attributeValue);
+
+      test.strictEqual(fakeGroup.attributes[attributeName], attributeValue, 'Attribute value is correctly set. ([' + attributeName + '] = ' + attributeValue + ')');
+      test.done();
+    }
+  }
 };
