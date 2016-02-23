@@ -76,5 +76,51 @@ module.exports = {
       test.strictEqual(fakeGroup.attributes[attributeName], attributeValue, 'Attribute value is correctly set. ([' + attributeName + '] = ' + attributeValue + ')');
       test.done();
     }
+  },
+
+  setAttributeOnGroupWithoutAttributes: {
+    setUp: function(cb) {
+      fakeGroup = {
+        attributes: undefined
+      };
+
+      (cb)();
+    },
+
+    setsAttributeValueValForNameNam: function(test) {
+      var attributeName = 'Nam',
+          attributeValue = 'Val';
+
+      var fakeSearching = {
+        findGroupByID: function(a, b) {
+          return fakeGroup;
+        }
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, 0, attributeName, attributeValue);
+
+      test.strictEqual(fakeGroup.attributes[attributeName], attributeValue, 'Attribute value is correctly set. ([' + attributeName + '] = ' + attributeValue + ')');
+      test.done();
+    },
+
+    setsAttributeValueFooForNameBar: function(test) {
+      var attributeName = 'Bar',
+          attributeValue = 'Foo';
+
+      var fakeSearching = {
+        findGroupByID: function(a, b) {
+          return fakeGroup;
+        }
+      };
+
+      this.command.injectSearching(fakeSearching);
+
+      this.command.execute({ }, 0, attributeName, attributeValue);
+
+      test.strictEqual(fakeGroup.attributes[attributeName], attributeValue, 'Attribute value is correctly set. ([' + attributeName + '] = ' + attributeValue + ')');
+      test.done();
+    }
   }
 };
