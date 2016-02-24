@@ -4,7 +4,7 @@
 
     var EntryProperty = {
         Password:                     "password",
-        Title:                         "title",
+        Title:                        "title",
         Username:                     "username"
     };
 

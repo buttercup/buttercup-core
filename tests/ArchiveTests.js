@@ -38,6 +38,11 @@ module.exports = {
 		this.group2ID = secondaryGroupID;
 		this.group3ID = thirdGroupID;
 
+        this.archiveB = new Archive();
+        this.archiveBgroup1 = this.archiveB.createGroup("parent");
+        this.archiveBgroup1.createGroup("child1");
+        this.archiveBgroup1.createGroup("child2");
+
 		cb();
 	},
 
@@ -59,6 +64,40 @@ module.exports = {
 		}
 
 	},
+
+    findGroupsByTitle: {
+
+        testFindsParentByString: function(test) {
+            var groups = this.archiveB.findGroupsByTitle("parent");
+            test.strictEqual(groups.length, 1, "Only parent should be found");
+            test.strictEqual(groups[0].getTitle(), this.archiveBgroup1.getTitle(),
+                "Found group should be parent");
+            test.done();
+        },
+
+        testFindsChildByPartialString: function(test) {
+            var groups = this.archiveB.findGroupsByTitle("ild2");
+            test.strictEqual(groups.length, 1, "Only child2 should be found");
+            test.strictEqual(groups[0].getTitle(), "child2", "Found group should be child2");
+            test.done();
+        },
+
+        testFindsNothing: function(test) {
+            var groups1 = this.archiveB.findGroupsByTitle("-"),
+                groups2 = this.archiveB.findGroupsByTitle(/abc/i);
+            test.strictEqual(groups1.length, 0, "No groups should be found for non-matching string");
+            test.strictEqual(groups2.length, 0, "No groups should be found for non-matching RegExp");
+            test.done();
+        },
+
+        testFindsChildrenByRegExp: function(test) {
+            var groups = this.archiveB.findGroupsByTitle(/child[12]/i);
+            test.strictEqual(groups.length, 2, "Both children should be found");
+            test.ok(groups.indexOf(this.archiveBgroup1) < 0, "Parent should not be in results");
+            test.done();
+        }
+
+    },
 
 	getEntryByID: {
 
