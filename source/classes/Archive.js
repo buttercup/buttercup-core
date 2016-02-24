@@ -9,7 +9,7 @@
         ManagedEntry = require("__buttercup/classes/ManagedEntry.js");
 
     var signing = require("__buttercup/tools/signing.js"),
-        searching = require("__buttercup/tools/searching.js");
+        searching = require("__buttercup/tools/searching-raw.js");
 
     /**
      * The base Buttercup Archive class

@@ -4,7 +4,7 @@
 
     var Inigo = require("__buttercup/classes/InigoGenerator.js"),
         encoding = require("__buttercup/tools/encoding.js"),
-        searching = require("__buttercup/tools/searching.js"),
+        searching = require("__buttercup/tools/searching-raw.js"),
         entryTools = require("__buttercup/tools/entry.js");
 
     var __displayTypes = {
