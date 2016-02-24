@@ -48,6 +48,7 @@
      * Find all groups within the archive that match a title
      * @param {RegExp|string} title The title to search for, either a string (contained within
      *  a target group's title) or a RegExp to test against the title.
+     * @returns {Array.<managedGroup>}
      */
     Archive.prototype.findGroupsByTitle = function(title) {
         return instanceSearching.findGroupsByCheck(
