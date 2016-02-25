@@ -40,8 +40,15 @@ module.exports = {
 
         this.archiveB = new Archive();
         this.archiveBgroup1 = this.archiveB.createGroup("parent");
-        this.archiveBgroup1.createGroup("child1");
-        this.archiveBgroup1.createGroup("child2");
+        var archiveBChild1 = this.archiveBgroup1.createGroup("child1");
+        var archiveBChild2 = this.archiveBgroup1.createGroup("child2");
+
+        var archiveBChild1Entry1 = archiveBChild1.createEntry("abc123");
+        archiveBChild1Entry1.setProperty("username", "5595 696");
+        archiveBChild1Entry1.setProperty("password", "amazing");
+        var archiveBChild1Entry2 = archiveBChild2.createEntry("def123");
+        archiveBChild1Entry2.setProperty("username", "5595696");
+        archiveBChild1Entry2.setProperty("password", "terrific");
 
 		cb();
 	},
@@ -64,6 +71,31 @@ module.exports = {
 		}
 
 	},
+
+    findEntriesByProperty: {
+
+        testFindsEntriesByString: function(test) {
+            var entries = this.archiveB.findEntriesByProperty("title", "abc12");
+            test.strictEqual(entries.length, 1, "1 entry should be found");
+            test.strictEqual(entries[0].getProperty("title"), "abc123");
+            test.done();
+        },
+
+        testFindsEntriesByRegExp: function(test) {
+            var entries = this.archiveB.findEntriesByProperty("username", /\d \d/);
+            test.strictEqual(entries.length, 1, "1 entry should be found");
+            test.strictEqual(entries[0].getProperty("title"), "abc123");
+            test.strictEqual(entries[0].getProperty("password"), "amazing");
+            test.done();
+        },
+
+        testFindsMultipleEntriesByPasswordRegExp: function(test) {
+            var entries = this.archiveB.findEntriesByProperty("password", /(amazing|terrific)/);
+            test.strictEqual(entries.length, 2, "Both entries should be found");
+            test.done();
+        }
+
+    },
 
     findGroupsByTitle: {
 

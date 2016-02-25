@@ -5,6 +5,29 @@
     var searching = module.exports = {
 
         /**
+         * Find entry instances by filtering with a compare function
+         * @param {Array.<ManagedGroup>} groups
+         * @param {Function} compareFn The callback comparison function, return true to keep and false
+         *  to strip
+         * @returns {Array.<ManagedEntry>}
+         */
+        findEntriesByCheck: function(groups, compareFn) {
+            var foundEntries = [],
+                newEntries;
+            groups.forEach(function(group) {
+                newEntries = group.getEntries().filter(compareFn);
+                if (newEntries.length > 0) {
+                    foundEntries = foundEntries.concat(newEntries);
+                }
+                newEntries = searching.findEntriesByCheck(group.getGroups(), compareFn);
+                if (newEntries.length > 0) {
+                    foundEntries = foundEntries.concat(newEntries);
+                }
+            });
+            return foundEntries;
+        },
+
+        /**
          * Find group instances within groups that satisfy some check
          * @param {Array.<ManagedGroup>} groups
          * @param {Function} compareFn A comparision function - return true to keep, false to strip
@@ -17,30 +40,8 @@
                 if (subFound.length > 0) {
                     foundGroups = foundGroups.concat(subFound);
                 }
-                // var subGroups = group.getGroups(),
-                //     subLen = subGroups.length;
-                // if (subLen > 0) {
-                //     var subFound = searching.findGroupsByCheck(subGroups, compareFn);
-                //     if ()
-                // }
             });
             return foundGroups;
-            // return []
-            //     // Filter out any non-matching groups
-            //     .concat(groups.filter(compareFn))
-            //     // Map each group to a recursive search of its subgroups
-            //     .concat(groups
-            //         .map(function(group) {
-            //             var subGroups = group.getGroups();
-            //             return (subGroups.length > 0) ?
-            //                 // Subgroups exist, recurse
-            //                 searching.findGroupsByCheck(subGroups, compareFn) :
-            //                 null;
-            //         })
-            //         .filter(function(subGroups) {
-            //             return subGroups !== null;
-            //         })
-            //     );
         }
 
     };

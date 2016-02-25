@@ -45,10 +45,32 @@
     };
 
     /**
+     * Find all entries that match a certain property
+     * @param {string} property The property to search with
+     * @param {RegExp|string} value The value to search for
+     * @returns {Array.<ManagedEntry>}
+     * @memberof Archive
+     */
+    Archive.prototype.findEntriesByProperty = function(property, value) {
+        return instanceSearching.findEntriesByCheck(
+            this.getGroups(),
+            function(entry) {
+                var propValue = entry.getProperty(property) || "";
+                if (value instanceof RegExp) {
+                    return value.test(propValue);
+                } else {
+                    return propValue.indexOf(value) >= 0;
+                }
+            }
+        );
+    };
+
+    /**
      * Find all groups within the archive that match a title
      * @param {RegExp|string} title The title to search for, either a string (contained within
      *  a target group's title) or a RegExp to test against the title.
      * @returns {Array.<managedGroup>}
+     * @memberof Archive
      */
     Archive.prototype.findGroupsByTitle = function(title) {
         return instanceSearching.findGroupsByCheck(
@@ -67,6 +89,7 @@
      * Find an entry by its ID
      * @param {String} The entry's ID
      * @returns {ManagedEntry|null}
+     * @memberof Archive
      */
     Archive.prototype.getEntryByID = function(entryID) {
         var westley = this._getWestley();
@@ -78,6 +101,7 @@
      * Find a group by its ID
      * @param {String} The group's ID
      * @returns {ManagedGroup|null}
+     * @memberof Archive
      */
     Archive.prototype.getGroupByID = function(groupID) {
         var westley = this._getWestley();
