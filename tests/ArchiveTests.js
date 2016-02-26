@@ -46,9 +46,11 @@ module.exports = {
         var archiveBChild1Entry1 = archiveBChild1.createEntry("abc123");
         archiveBChild1Entry1.setProperty("username", "5595 696");
         archiveBChild1Entry1.setProperty("password", "amazing");
+        archiveBChild1Entry1.setMeta("some meta", "1987");
         var archiveBChild1Entry2 = archiveBChild2.createEntry("def123");
         archiveBChild1Entry2.setProperty("username", "5595696");
         archiveBChild1Entry2.setProperty("password", "terrific");
+        archiveBChild1Entry2.setMeta("some meta", "1986");
 
 		cb();
 	},
@@ -71,6 +73,24 @@ module.exports = {
 		}
 
 	},
+
+    findEntriesByMeta: {
+
+        testFindsEntriesByString: function(test) {
+            var entries = this.archiveB.findEntriesByMeta("some meta", "86");
+            test.strictEqual(entries.length, 1, "1 entry should be found");
+            test.strictEqual(entries[0].getProperty("title"), "def123");
+            test.strictEqual(entries[0].getMeta("some meta"), "1986");
+            test.done();
+        },
+
+        testFindsEntriesByRegExp: function(test) {
+            var entries = this.archiveB.findEntriesByMeta("some meta", /^198[67]$/);
+            test.strictEqual(entries.length, 2, "Both entries should be found");
+            test.done();
+        }
+
+    },
 
     findEntriesByProperty: {
 

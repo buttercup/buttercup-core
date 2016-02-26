@@ -81,6 +81,7 @@ Design related tools
     * [new Archive()](#new_Archive_new)
     * _instance_
         * [.createGroup([title])](#Archive+createGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
+        * [.findEntriesByMeta(metaName, value)](#Archive+findEntriesByMeta) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
         * [.findEntriesByProperty(property, value)](#Archive+findEntriesByProperty) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
         * [.findGroupsByTitle(title)](#Archive+findGroupsByTitle) ⇒ <code>Array.&lt;managedGroup&gt;</code>
         * [.getEntryByID(The)](#Archive+getEntryByID) ⇒ <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code>
@@ -105,6 +106,17 @@ Create a new group
 | Param | Type | Description |
 | --- | --- | --- |
 | [title] | <code>string</code> | The title for the group |
+
+<a name="Archive+findEntriesByMeta"></a>
+### archive.findEntriesByMeta(metaName, value) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
+Find entries that match a certain meta property
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| metaName | <code>string</code> | The meta property to search for |
+| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
 
 <a name="Archive+findEntriesByProperty"></a>
 ### archive.findEntriesByProperty(property, value) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>

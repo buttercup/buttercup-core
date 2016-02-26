@@ -13,6 +13,33 @@
         instanceSearching = require("__buttercup/tools/searching-instance.js");
 
     /**
+     * Find entries by searching properties/meta
+     * @param {Archive} archive
+     * @param {string} check Information to check (property/meta)
+     * @param {string} key The key (property/meta-value) to search with
+     * @param {RegExp|string} value The value to search for
+     * @returns {Array.<ManagedEntry>}
+     * @private
+     * @static
+     * @memberof Archive
+     */
+    function findEntriesByCheck(archive, check, key, value) {
+        return instanceSearching.findEntriesByCheck(
+            archive.getGroups(),
+            function(entry) {
+                var itemValue = (check === "property") ?
+                    entry.getProperty(key) || "" :
+                    entry.getMeta(key) || "";
+                if (value instanceof RegExp) {
+                    return value.test(itemValue);
+                } else {
+                    return itemValue.indexOf(value) >= 0;
+                }
+            }
+        );
+    }
+
+    /**
      * The base Buttercup Archive class
      * @class Archive
      */
@@ -45,6 +72,17 @@
     };
 
     /**
+     * Find entries that match a certain meta property
+     * @param {string} metaName The meta property to search for
+     * @param {RegExp|string} value The value to search for
+     * @returns {Array.<ManagedEntry>}
+     * @memberof Archive
+     */
+    Archive.prototype.findEntriesByMeta = function(metaName, value) {
+        return findEntriesByCheck(this, "meta", metaName, value);
+    };
+
+    /**
      * Find all entries that match a certain property
      * @param {string} property The property to search with
      * @param {RegExp|string} value The value to search for
@@ -52,17 +90,7 @@
      * @memberof Archive
      */
     Archive.prototype.findEntriesByProperty = function(property, value) {
-        return instanceSearching.findEntriesByCheck(
-            this.getGroups(),
-            function(entry) {
-                var propValue = entry.getProperty(property) || "";
-                if (value instanceof RegExp) {
-                    return value.test(propValue);
-                } else {
-                    return propValue.indexOf(value) >= 0;
-                }
-            }
-        );
+        return findEntriesByCheck(this, "property", property, value);
     };
 
     /**
