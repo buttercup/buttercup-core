@@ -88,6 +88,16 @@ module.exports = {
             var entries = this.archiveB.findEntriesByMeta("some meta", /^198[67]$/);
             test.strictEqual(entries.length, 2, "Both entries should be found");
             test.done();
+        },
+
+        testFindsNone: function(test) {
+            var entries1 = this.archiveB.findEntriesByMeta("not here", "1"),
+                entries2 = this.archiveB.findEntriesByMeta("some meta", "1234"),
+                entries3 = this.archiveB.findEntriesByMeta("some meta", /^\d{5,}$/);
+            test.strictEqual(entries1.length, 0, "No entries should be found for non-existent key");
+            test.strictEqual(entries2.length, 0, "No entries should be found for non-existent value");
+            test.strictEqual(entries3.length, 0, "No entries should be found for non-existent value-regex");
+            test.done();
         }
 
     },
@@ -112,6 +122,16 @@ module.exports = {
         testFindsMultipleEntriesByPasswordRegExp: function(test) {
             var entries = this.archiveB.findEntriesByProperty("password", /(amazing|terrific)/);
             test.strictEqual(entries.length, 2, "Both entries should be found");
+            test.done();
+        },
+
+        testFindsNone: function(test) {
+            var entries1 = this.archiveB.findEntriesByProperty("not here", "abc123"),
+                entries2 = this.archiveB.findEntriesByProperty("username", "not here"),
+                entries3 = this.archiveB.findEntriesByProperty("password", /^\d{7,}$/);
+            test.strictEqual(entries1.length, 0, "No entries should be found for non-existent property");
+            test.strictEqual(entries2.length, 0, "No entries should be found for non-existent value");
+            test.strictEqual(entries3.length, 0, "No entries should be found for non-existent value-regex");
             test.done();
         }
 
