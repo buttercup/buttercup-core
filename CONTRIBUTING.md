@@ -39,6 +39,19 @@ Please write tests. So many things can go wrong when functionality isn't covered
 
 Document your functions, classes and variables with JSDoc blocks. Before making a PR, run `./generate-docs` to regenerate API documentation.
 
+Tests should be grouped by the method that they're testing, and test functions should begin with the word "test":
+```
+module.exports = {
+
+    getSomething: {
+
+        testGetsSomething: function(test) {}
+
+    }
+
+};
+```
+
 ### JSDoc
 When documenting a private property (static), the block should resemble this:
 ```
