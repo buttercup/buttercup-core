@@ -5,7 +5,7 @@
     var Inigo = require("__buttercup/classes/InigoGenerator.js"),
         ManagedEntry = require("__buttercup/classes/ManagedEntry.js"),
         encoding = require("__buttercup/tools/encoding.js"),
-        searching = require("__buttercup/tools/searching.js");
+        searching = require("__buttercup/tools/searching-raw.js");
 
     /**
      * Managed group class

@@ -38,6 +38,20 @@ module.exports = {
 		this.group2ID = secondaryGroupID;
 		this.group3ID = thirdGroupID;
 
+        this.archiveB = new Archive();
+        this.archiveBgroup1 = this.archiveB.createGroup("parent");
+        var archiveBChild1 = this.archiveBgroup1.createGroup("child1");
+        var archiveBChild2 = this.archiveBgroup1.createGroup("child2");
+
+        var archiveBChild1Entry1 = archiveBChild1.createEntry("abc123");
+        archiveBChild1Entry1.setProperty("username", "5595 696");
+        archiveBChild1Entry1.setProperty("password", "amazing");
+        archiveBChild1Entry1.setMeta("some meta", "1987");
+        var archiveBChild1Entry2 = archiveBChild2.createEntry("def123");
+        archiveBChild1Entry2.setProperty("username", "5595696");
+        archiveBChild1Entry2.setProperty("password", "terrific");
+        archiveBChild1Entry2.setMeta("some meta", "1986");
+
 		cb();
 	},
 
@@ -59,6 +73,103 @@ module.exports = {
 		}
 
 	},
+
+    findEntriesByMeta: {
+
+        testFindsEntriesByString: function(test) {
+            var entries = this.archiveB.findEntriesByMeta("some meta", "86");
+            test.strictEqual(entries.length, 1, "1 entry should be found");
+            test.strictEqual(entries[0].getProperty("title"), "def123");
+            test.strictEqual(entries[0].getMeta("some meta"), "1986");
+            test.done();
+        },
+
+        testFindsEntriesByRegExp: function(test) {
+            var entries = this.archiveB.findEntriesByMeta("some meta", /^198[67]$/);
+            test.strictEqual(entries.length, 2, "Both entries should be found");
+            test.done();
+        },
+
+        testFindsNone: function(test) {
+            var entries1 = this.archiveB.findEntriesByMeta("not here", "1"),
+                entries2 = this.archiveB.findEntriesByMeta("some meta", "1234"),
+                entries3 = this.archiveB.findEntriesByMeta("some meta", /^\d{5,}$/);
+            test.strictEqual(entries1.length, 0, "No entries should be found for non-existent key");
+            test.strictEqual(entries2.length, 0, "No entries should be found for non-existent value");
+            test.strictEqual(entries3.length, 0, "No entries should be found for non-existent value-regex");
+            test.done();
+        }
+
+    },
+
+    findEntriesByProperty: {
+
+        testFindsEntriesByString: function(test) {
+            var entries = this.archiveB.findEntriesByProperty("title", "abc12");
+            test.strictEqual(entries.length, 1, "1 entry should be found");
+            test.strictEqual(entries[0].getProperty("title"), "abc123");
+            test.done();
+        },
+
+        testFindsEntriesByRegExp: function(test) {
+            var entries = this.archiveB.findEntriesByProperty("username", /\d \d/);
+            test.strictEqual(entries.length, 1, "1 entry should be found");
+            test.strictEqual(entries[0].getProperty("title"), "abc123");
+            test.strictEqual(entries[0].getProperty("password"), "amazing");
+            test.done();
+        },
+
+        testFindsMultipleEntriesByPasswordRegExp: function(test) {
+            var entries = this.archiveB.findEntriesByProperty("password", /(amazing|terrific)/);
+            test.strictEqual(entries.length, 2, "Both entries should be found");
+            test.done();
+        },
+
+        testFindsNone: function(test) {
+            var entries1 = this.archiveB.findEntriesByProperty("not here", "abc123"),
+                entries2 = this.archiveB.findEntriesByProperty("username", "not here"),
+                entries3 = this.archiveB.findEntriesByProperty("password", /^\d{7,}$/);
+            test.strictEqual(entries1.length, 0, "No entries should be found for non-existent property");
+            test.strictEqual(entries2.length, 0, "No entries should be found for non-existent value");
+            test.strictEqual(entries3.length, 0, "No entries should be found for non-existent value-regex");
+            test.done();
+        }
+
+    },
+
+    findGroupsByTitle: {
+
+        testFindsParentByString: function(test) {
+            var groups = this.archiveB.findGroupsByTitle("parent");
+            test.strictEqual(groups.length, 1, "Only parent should be found");
+            test.strictEqual(groups[0].getTitle(), this.archiveBgroup1.getTitle(),
+                "Found group should be parent");
+            test.done();
+        },
+
+        testFindsChildByPartialString: function(test) {
+            var groups = this.archiveB.findGroupsByTitle("ild2");
+            test.strictEqual(groups.length, 1, "Only child2 should be found");
+            test.strictEqual(groups[0].getTitle(), "child2", "Found group should be child2");
+            test.done();
+        },
+
+        testFindsNothing: function(test) {
+            var groups1 = this.archiveB.findGroupsByTitle("-"),
+                groups2 = this.archiveB.findGroupsByTitle(/abc/i);
+            test.strictEqual(groups1.length, 0, "No groups should be found for non-matching string");
+            test.strictEqual(groups2.length, 0, "No groups should be found for non-matching RegExp");
+            test.done();
+        },
+
+        testFindsChildrenByRegExp: function(test) {
+            var groups = this.archiveB.findGroupsByTitle(/child[12]/i);
+            test.strictEqual(groups.length, 2, "Both children should be found");
+            test.ok(groups.indexOf(this.archiveBgroup1) < 0, "Parent should not be in results");
+            test.done();
+        }
+
+    },
 
 	getEntryByID: {
 

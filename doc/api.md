@@ -81,6 +81,11 @@ Design related tools
     * [new Archive()](#new_Archive_new)
     * _instance_
         * [.createGroup([title])](#Archive+createGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
+        * [.findEntriesByMeta(metaName, value)](#Archive+findEntriesByMeta) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
+        * [.findEntriesByProperty(property, value)](#Archive+findEntriesByProperty) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
+        * [.findGroupsByTitle(title)](#Archive+findGroupsByTitle) ⇒ <code>Array.&lt;managedGroup&gt;</code>
+        * [.getEntryByID(The)](#Archive+getEntryByID) ⇒ <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code>
+        * [.getGroupByID(The)](#Archive+getGroupByID) ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
         * [.getGroups()](#Archive+getGroups) ⇒ <code>Array.&lt;ManagedGroups&gt;</code>
         * [.getTrashGroup()](#Archive+getTrashGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
         * [.optimise()](#Archive+optimise)
@@ -101,6 +106,58 @@ Create a new group
 | Param | Type | Description |
 | --- | --- | --- |
 | [title] | <code>string</code> | The title for the group |
+
+<a name="Archive+findEntriesByMeta"></a>
+### archive.findEntriesByMeta(metaName, value) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
+Find entries that match a certain meta property
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| metaName | <code>string</code> | The meta property to search for |
+| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+
+<a name="Archive+findEntriesByProperty"></a>
+### archive.findEntriesByProperty(property, value) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
+Find all entries that match a certain property
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| property | <code>string</code> | The property to search with |
+| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+
+<a name="Archive+findGroupsByTitle"></a>
+### archive.findGroupsByTitle(title) ⇒ <code>Array.&lt;managedGroup&gt;</code>
+Find all groups within the archive that match a title
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| title | <code>RegExp</code> &#124; <code>string</code> | The title to search for, either a string (contained within  a target group's title) or a RegExp to test against the title. |
+
+<a name="Archive+getEntryByID"></a>
+### archive.getEntryByID(The) ⇒ <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code>
+Find an entry by its ID
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| The | <code>String</code> | entry's ID |
+
+<a name="Archive+getGroupByID"></a>
+### archive.getGroupByID(The) ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
+Find a group by its ID
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| The | <code>String</code> | group's ID |
 
 <a name="Archive+getGroups"></a>
 ### archive.getGroups() ⇒ <code>Array.&lt;ManagedGroups&gt;</code>

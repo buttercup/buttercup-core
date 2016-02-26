@@ -6,7 +6,7 @@
 		Archive = Buttercup.Archive,
 		Inigo = require("__buttercup/classes/InigoGenerator.js"),
 		Commands = Inigo.Command,
-		searching = require("__buttercup/tools/searching.js"),
+		searching = require("__buttercup/tools/searching-raw.js"),
 		encoding = require("__buttercup/tools/encoding.js");
 
 	// action setup

@@ -4,7 +4,7 @@
 
     var Inigo = require("__buttercup/classes/InigoGenerator.js"),
         commandTools = require("__buttercup/tools/command.js"),
-        searching = require("__buttercup/tools/searching.js"),
+        searching = require("__buttercup/tools/searching-raw.js"),
         entry = require("__buttercup/tools/entry.js");
 
     var VALID_COMMAND_EXP =             /^[a-z]{3}[ ].+$/;

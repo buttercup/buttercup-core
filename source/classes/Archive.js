@@ -9,7 +9,35 @@
         ManagedEntry = require("__buttercup/classes/ManagedEntry.js");
 
     var signing = require("__buttercup/tools/signing.js"),
-        searching = require("__buttercup/tools/searching.js");
+        rawSearching = require("__buttercup/tools/searching-raw.js"),
+        instanceSearching = require("__buttercup/tools/searching-instance.js");
+
+    /**
+     * Find entries by searching properties/meta
+     * @param {Archive} archive
+     * @param {string} check Information to check (property/meta)
+     * @param {string} key The key (property/meta-value) to search with
+     * @param {RegExp|string} value The value to search for
+     * @returns {Array.<ManagedEntry>}
+     * @private
+     * @static
+     * @memberof Archive
+     */
+    function findEntriesByCheck(archive, check, key, value) {
+        return instanceSearching.findEntriesByCheck(
+            archive.getGroups(),
+            function(entry) {
+                var itemValue = (check === "property") ?
+                    entry.getProperty(key) || "" :
+                    entry.getMeta(key) || "";
+                if (value instanceof RegExp) {
+                    return value.test(itemValue);
+                } else {
+                    return itemValue.indexOf(value) >= 0;
+                }
+            }
+        );
+    }
 
     /**
      * The base Buttercup Archive class
@@ -44,13 +72,56 @@
     };
 
     /**
+     * Find entries that match a certain meta property
+     * @param {string} metaName The meta property to search for
+     * @param {RegExp|string} value The value to search for
+     * @returns {Array.<ManagedEntry>}
+     * @memberof Archive
+     */
+    Archive.prototype.findEntriesByMeta = function(metaName, value) {
+        return findEntriesByCheck(this, "meta", metaName, value);
+    };
+
+    /**
+     * Find all entries that match a certain property
+     * @param {string} property The property to search with
+     * @param {RegExp|string} value The value to search for
+     * @returns {Array.<ManagedEntry>}
+     * @memberof Archive
+     */
+    Archive.prototype.findEntriesByProperty = function(property, value) {
+        return findEntriesByCheck(this, "property", property, value);
+    };
+
+    /**
+     * Find all groups within the archive that match a title
+     * @param {RegExp|string} title The title to search for, either a string (contained within
+     *  a target group's title) or a RegExp to test against the title.
+     * @returns {Array.<managedGroup>}
+     * @memberof Archive
+     */
+    Archive.prototype.findGroupsByTitle = function(title) {
+        return instanceSearching.findGroupsByCheck(
+            this.getGroups(),
+            function(group) {
+                if (title instanceof RegExp) {
+                    return title.test(group.getTitle());
+                } else {
+                    return group.getTitle().indexOf(title) >= 0;
+                }
+            }
+        );
+    };
+
+    /**
      * Find an entry by its ID
      * @param {String} The entry's ID
      * @returns {ManagedEntry|null}
+     * @memberof Archive
      */
     Archive.prototype.getEntryByID = function(entryID) {
         var westley = this._getWestley();
-        var entryRaw = searching.findEntryByID(westley.getDataset().groups, entryID);
+        var entryRaw = rawSearching.findEntryByID(westley.getDataset().groups, entryID);
         return (entryRaw === null) ? null : new ManagedEntry(this, entryRaw);
     };
 
@@ -58,10 +129,11 @@
      * Find a group by its ID
      * @param {String} The group's ID
      * @returns {ManagedGroup|null}
+     * @memberof Archive
      */
     Archive.prototype.getGroupByID = function(groupID) {
         var westley = this._getWestley();
-        var groupRaw = searching.findGroupByID(westley.getDataset().groups, groupID);
+        var groupRaw = rawSearching.findGroupByID(westley.getDataset().groups, groupID);
         return (groupRaw === null) ? null : new ManagedGroup(this, groupRaw);
     };
 
@@ -72,7 +144,7 @@
      */
     Archive.prototype.containsGroupWithTitle = function(groupTitle) {
         var westley = this._getWestley();
-        var groupRaw = searching.findGroupByTitle(westley.getDataset().groups, groupTitle);
+        var groupRaw = rawSearching.findGroupByTitle(westley.getDataset().groups, groupTitle);
         return (groupRaw === null) ? false : true;
     };
 
