@@ -80,13 +80,14 @@ Design related tools
 * [Archive](#Archive)
     * [new Archive()](#new_Archive_new)
     * _instance_
+        * ~~[.containsGroupWithTitle(The)](#Archive+containsGroupWithTitle) ⇒ <code>true</code> &#124; <code>false</code>~~
         * [.createGroup([title])](#Archive+createGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
         * [.findEntriesByMeta(metaName, value)](#Archive+findEntriesByMeta) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
         * [.findEntriesByProperty(property, value)](#Archive+findEntriesByProperty) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
         * [.findGroupsByTitle(title)](#Archive+findGroupsByTitle) ⇒ <code>Array.&lt;managedGroup&gt;</code>
         * [.getEntryByID(The)](#Archive+getEntryByID) ⇒ <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code>
         * [.getGroupByID(The)](#Archive+getGroupByID) ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
-        * [.getGroups()](#Archive+getGroups) ⇒ <code>Array.&lt;ManagedGroups&gt;</code>
+        * [.getGroups()](#Archive+getGroups) ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
         * [.getTrashGroup()](#Archive+getTrashGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
         * [.optimise()](#Archive+optimise)
         * [._getWestley()](#Archive+_getWestley) ⇒ <code>[Westley](#Westley)</code>
@@ -96,6 +97,19 @@ Design related tools
 <a name="new_Archive_new"></a>
 ### new Archive()
 The base Buttercup Archive class
+
+<a name="Archive+containsGroupWithTitle"></a>
+### ~~archive.containsGroupWithTitle(The) ⇒ <code>true</code> &#124; <code>false</code>~~
+***Deprecated***
+
+Whether or not this archive has a group with the given title.
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**See**: findGroupsByTitle  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| The | <code>String</code> | group's title |
 
 <a name="Archive+createGroup"></a>
 ### archive.createGroup([title]) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
@@ -160,11 +174,11 @@ Find a group by its ID
 | The | <code>String</code> | group's ID |
 
 <a name="Archive+getGroups"></a>
-### archive.getGroups() ⇒ <code>Array.&lt;ManagedGroups&gt;</code>
+### archive.getGroups() ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
 Get all groups (root) in the archive
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>Array.&lt;ManagedGroups&gt;</code> - An array of ManagedGroups  
+**Returns**: <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code> - An array of ManagedGroups  
 <a name="Archive+getTrashGroup"></a>
 ### archive.getTrashGroup() ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
 Get the trash group
