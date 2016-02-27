@@ -84,7 +84,7 @@ Design related tools
         * [.createGroup([title])](#Archive+createGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
         * [.findEntriesByMeta(metaName, value)](#Archive+findEntriesByMeta) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
         * [.findEntriesByProperty(property, value)](#Archive+findEntriesByProperty) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
-        * [.findGroupsByTitle(title)](#Archive+findGroupsByTitle) ⇒ <code>Array.&lt;managedGroup&gt;</code>
+        * [.findGroupsByTitle(title)](#Archive+findGroupsByTitle) ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
         * [.getEntryByID(The)](#Archive+getEntryByID) ⇒ <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code>
         * [.getGroupByID(The)](#Archive+getGroupByID) ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
         * [.getGroups()](#Archive+getGroups) ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
@@ -144,7 +144,7 @@ Find all entries that match a certain property
 | value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
 
 <a name="Archive+findGroupsByTitle"></a>
-### archive.findGroupsByTitle(title) ⇒ <code>Array.&lt;managedGroup&gt;</code>
+### archive.findGroupsByTitle(title) ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
 Find all groups within the archive that match a title
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
