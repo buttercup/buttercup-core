@@ -114,6 +114,21 @@ workspace.archiveDiffersFromDatasource()
 
 Merging is especially helpful for situations where archives can be modified at any time, such as with cloud storage.
 
+### Searching for things
+
+You can search within archives for certain entries or groups:
+```
+archive
+    .findEntriesByProperty("title", /^Home-[a-z]+$/i)
+    .forEach(function(entry) {
+        // Do something with entry
+    });
+
+archive
+    .findGroupsByTitle("banking")
+    .forEach(function(group) {});
+```
+
 ### Importing
 
 You can import from other password archive formats, such as KeePass. Checkout the [Buttercup Importer](https://github.com/perry-mitchell/buttercup-importer) project.
