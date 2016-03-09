@@ -44,10 +44,12 @@
      * @class Archive
      */
     var Archive = function() {
+        var date = new Date(),
+            ts = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
         this._westley = new Westley();
         this._getWestley().execute(
             Inigo.create(Inigo.Command.Comment)
-                .addArgument('Buttercup archive created (todo: date)')
+                .addArgument('Buttercup archive created (' + ts + ')')
                 .generateCommand()
         );
         this._getWestley().execute(
