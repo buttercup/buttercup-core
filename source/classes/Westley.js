@@ -92,7 +92,7 @@
 
             if (requirement.injectCommentCallback !== undefined) {
                 requirement.injectCommentCallback(function (comment) {
-                    console.log(" COMMENT -> " + comment);
+                    //console.log(" COMMENT -> " + comment);
                 });
             }
 
