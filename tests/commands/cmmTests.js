@@ -35,6 +35,23 @@ module.exports = {
 
             test.strictEqual(callbackCalled, true, "Calls into callback with correct comment (test case one)");
             test.done();
+        },
+
+        callsToCallbackWithCommentTestCaseTwo: function(test) {
+            var providedComment = "The second test case, that is what I am";
+
+            var callbackCalled = false;
+            var callback = function(comment) {
+                if (comment === providedComment) {
+                    callbackCalled = true;
+                }
+            };
+
+            this.command.injectCommentCallback(callback);
+            this.command.execute({}, providedComment);
+
+            test.strictEqual(callbackCalled, true, "Calls into callback with correct comment (test case two)");
+            test.done();
         }
     }
 };
