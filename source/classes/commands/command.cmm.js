@@ -3,7 +3,7 @@
     "use strict";
 
     var CommentCommand = function() {
-        this.commentCallback = function (comment) { };
+        this.commentCallback = function(comment) { };
     }
 
     CommentCommand.prototype.execute = function(obj, comment) {
