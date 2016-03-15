@@ -90,6 +90,12 @@
                 requirement.injectEntry(entry);
             }
 
+            if (requirement.injectCommentCallback !== undefined) {
+                requirement.injectCommentCallback(function (comment) {
+                    //console.log(" COMMENT -> " + comment);
+                });
+            }
+
             // Store it in the cache
             this._cachedCommands[commandKey] = requirement;
         }

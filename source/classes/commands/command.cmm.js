@@ -3,11 +3,15 @@
     "use strict";
 
     var CommentCommand = function() {
-
+        this.commentCallback = function(comment) { };
     }
 
     CommentCommand.prototype.execute = function(obj, comment) {
-        //console.log(" COMMENT -> " + comment);
+        this.commentCallback(comment);
+    }
+
+    CommentCommand.prototype.injectCommentCallback = function(callback) {
+        this.commentCallback = callback;
     }
 
     module.exports = CommentCommand;
