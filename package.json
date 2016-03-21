@@ -16,12 +16,13 @@
   "scripts": {
     "build:images": "node resources/prepare-images.js",
     "generate:archive": "node scripts/generate_test_archive.js",
-    "install": "node scripts/link.js",
+    "install": "npm run symlink",
     "test": "npm run test:lint && npm run test:nodeunit",
     "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
     "test:junit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands --reporter junit --output build",
     "test:lint": "node node_modules/eslint/bin/eslint.js source/",
-    "test:nodeunit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands"
+    "test:nodeunit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
+    "symlink": "node scripts/link.js"
   },
   "repository": {
     "type": "git",
