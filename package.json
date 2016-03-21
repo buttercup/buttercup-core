@@ -22,7 +22,7 @@
     "test:junit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands --reporter junit --output build",
     "test:lint": "node node_modules/eslint/bin/eslint.js source/",
     "test:nodeunit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
-    "symlink": "node scripts/link.js"
+    "symlink": "node node_modules/modulink/modulink --name=__buttercup --target=source"
   },
   "repository": {
     "type": "git",
