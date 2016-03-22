@@ -3,7 +3,7 @@
     "use strict";
 
     var webdavFS = require("webdav-fs"),
-        TextDatasource = require("__buttercup/classes/TextDatasource.js");
+        TextDatasource = require("./TextDatasource.js");
 
     var WebDAV = function(endpoint, path, username, password) {
         var endpointLen = endpoint.length;

@@ -2,7 +2,7 @@
 
     "use strict";
 
-    var encoding = require("__buttercup/tools/encoding.js");
+    var encoding = require("../tools/encoding.js");
 
     var InigoCommand = function(cmdKey) {
         this._commandKey = cmdKey;
