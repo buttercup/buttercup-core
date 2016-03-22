@@ -4,9 +4,9 @@
 
     var Crypto = require("crypto"),
         pbkdf2 = require("pbkdf2"),
-        config = require("__buttercup/encryption/encryptionConfig.js");
+        config = require("./encryptionConfig.js");
 
-    var encoding = require("__buttercup/tools/encoding.js");
+    var encoding = require("../tools/encoding.js");
 
     function getRandomInRange(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
