@@ -2,7 +2,7 @@
 
     "use strict";
 
-    var Inigo = require("__buttercup/classes/InigoGenerator.js");
+    var Inigo = require("./InigoGenerator.js");
 
     var Commands = Inigo.Command;
 

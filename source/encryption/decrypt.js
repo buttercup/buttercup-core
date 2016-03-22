@@ -4,8 +4,8 @@
 
     var Crypto = require("crypto"),
         pbkdf2 = require("pbkdf2"),
-        Encryption = require("__buttercup/encryption/encrypt.js"),
-        config = require("__buttercup/encryption/encryptionConfig.js");
+        Encryption = require("./encrypt.js"),
+        config = require("./encryptionConfig.js");
 
     var constantTimeCompare = function(val1, val2) {
         var sentinel;
