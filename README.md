@@ -30,7 +30,6 @@ Buttercup manages credentials in an encrypted archive. The archive utilises a de
  - Archive change delta tracking
  - WebDAV/ownCloud remote file support
  - Text compression with GZIP
- - 6-8k PBKDF2 round derived keys
 
 ## Usage
 
