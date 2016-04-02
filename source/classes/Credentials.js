@@ -2,10 +2,10 @@
 
     "use strict";
 
+    const iocane = require("iocane").crypto;
+
     var Model = require("__buttercup/classes/Model.js"),
-        Signing = require("__buttercup/tools/signing.js"),
-        Encryption = require("__buttercup/encryption/encrypt.js"),
-        Decryption = require("__buttercup/encryption/decrypt.js");
+        Signing = require("__buttercup/tools/signing.js");
 
     /**
      * The signature of encrypted credentials
@@ -88,17 +88,16 @@
     /**
      * Convert the credentials to an encrypted string, for storage
      * @param {string} masterPassword The password for encrypting
-     * @returns {string} The encrypted credentials
+     * @returns {Promise} A promise that resolves with the encrypted credentials
      * @memberof Credentials
      * @see signEncryptedContent
      */
-    Credentials.prototype.toSecure = function(masterPassword) {
+    Credentials.prototype.convertToSecureContent = function(masterPassword) {
         if (typeof masterPassword !== "string") {
             throw new Error("Master password must be a string");
         }
-        return signEncryptedContent(
-            Encryption.encrypt(JSON.stringify(this.model.getData()), masterPassword)
-        );
+        return iocane.encryptWithPassword(JSON.stringify(this.model.getData()), masterPassword)
+            .then(signEncryptedContent);
     };
 
     /**
@@ -108,11 +107,11 @@
      * @memberof Credentials
      * @static
      * @public
-     * @returns {Credentials} A new Credentials instance
+     * @returns {Promise} A promise resolving with the new Credentials instance
      */
-    Credentials.fromSecureContent = function(content, password) {
-        var decryptedContent = Decryption.decrypt(unsignEncryptedContent(content), password);
-        return new Credentials(JSON.parse(decryptedContent));
+    Credentials.createFromSecureContent = function(content, password) {
+        return iocane.decryptWithPassword(unsignEncryptedContent(content), password)
+            .then((decryptedContent) => new Credentials(JSON.parse(decryptedContent)));
     };
 
     module.exports = Credentials;

@@ -2,7 +2,6 @@ var lib = require("../../source/module.js"),
     archivesDir = __dirname + "/../_archives",
     FileDatasource = lib.FileDatasource,
     path = require("path"),
-    Promise = require("promise-polyfill"),
     walk = require("walk");
 
 var archiveFilenames;

@@ -45,6 +45,7 @@
 </dl>
 
 <a name="module_Descriptor"></a>
+
 ## Descriptor ⇒ <code>Array</code>
 Describe an archive dataset - to history commands
 
@@ -55,10 +56,12 @@ Describe an archive dataset - to history commands
 | parentGroupID | <code>String</code> |  |
 
 <a name="module_command"></a>
+
 ## command
 Command related tools
 
 <a name="module_command.extractCommandComponents"></a>
+
 ### command.extractCommandComponents(command) ⇒ <code>Array.&lt;String&gt;</code>
 Extract command components from a string
 
@@ -70,10 +73,12 @@ Extract command components from a string
 | command | <code>String</code> | The command to extract from |
 
 <a name="module_design"></a>
+
 ## design
 Design related tools
 
 <a name="Archive"></a>
+
 ## Archive
 **Kind**: global class  
 
@@ -95,10 +100,12 @@ Design related tools
         * [.createWithDefaults()](#Archive.createWithDefaults) ⇒ <code>[Archive](#Archive)</code>
 
 <a name="new_Archive_new"></a>
+
 ### new Archive()
 The base Buttercup Archive class
 
 <a name="Archive+containsGroupWithTitle"></a>
+
 ### ~~archive.containsGroupWithTitle(The) ⇒ <code>true</code> &#124; <code>false</code>~~
 ***Deprecated***
 
@@ -112,6 +119,7 @@ Whether or not this archive has a group with the given title.
 | The | <code>String</code> | group's title |
 
 <a name="Archive+createGroup"></a>
+
 ### archive.createGroup([title]) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
 Create a new group
 
@@ -122,6 +130,7 @@ Create a new group
 | [title] | <code>string</code> | The title for the group |
 
 <a name="Archive+findEntriesByMeta"></a>
+
 ### archive.findEntriesByMeta(metaName, value) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
 Find entries that match a certain meta property
 
@@ -133,6 +142,7 @@ Find entries that match a certain meta property
 | value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
 
 <a name="Archive+findEntriesByProperty"></a>
+
 ### archive.findEntriesByProperty(property, value) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
 Find all entries that match a certain property
 
@@ -144,6 +154,7 @@ Find all entries that match a certain property
 | value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
 
 <a name="Archive+findGroupsByTitle"></a>
+
 ### archive.findGroupsByTitle(title) ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
 Find all groups within the archive that match a title
 
@@ -154,6 +165,7 @@ Find all groups within the archive that match a title
 | title | <code>RegExp</code> &#124; <code>string</code> | The title to search for, either a string (contained within  a target group's title) or a RegExp to test against the title. |
 
 <a name="Archive+getEntryByID"></a>
+
 ### archive.getEntryByID(The) ⇒ <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code>
 Find an entry by its ID
 
@@ -164,6 +176,7 @@ Find an entry by its ID
 | The | <code>String</code> | entry's ID |
 
 <a name="Archive+getGroupByID"></a>
+
 ### archive.getGroupByID(The) ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
 Find a group by its ID
 
@@ -174,34 +187,40 @@ Find a group by its ID
 | The | <code>String</code> | group's ID |
 
 <a name="Archive+getGroups"></a>
+
 ### archive.getGroups() ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
 Get all groups (root) in the archive
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Returns**: <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code> - An array of ManagedGroups  
 <a name="Archive+getTrashGroup"></a>
+
 ### archive.getTrashGroup() ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
 Get the trash group
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 <a name="Archive+optimise"></a>
+
 ### archive.optimise()
 Perform archive optimisations
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 <a name="Archive+_getWestley"></a>
+
 ### archive._getWestley() ⇒ <code>[Westley](#Westley)</code>
 Get the underlying Westley instance
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Access:** protected  
 <a name="Archive.createWithDefaults"></a>
+
 ### Archive.createWithDefaults() ⇒ <code>[Archive](#Archive)</code>
 Create an Archive with the default template
 
 **Kind**: static method of <code>[Archive](#Archive)</code>  
 **Returns**: <code>[Archive](#Archive)</code> - The new archive  
 <a name="Comparator"></a>
+
 ## Comparator
 **Kind**: global class  
 
@@ -211,6 +230,7 @@ Create an Archive with the default template
     * [.calculateDifferences()](#Comparator+calculateDifferences) ⇒ <code>Object</code> &#124; <code>Boolean</code>
 
 <a name="new_Comparator_new"></a>
+
 ### new Comparator(originalArchive, secondaryArchive)
 Archive comparison class
 
@@ -221,11 +241,13 @@ Archive comparison class
 | secondaryArchive | <code>[Archive](#Archive)</code> | 
 
 <a name="Comparator+archivesDiffer"></a>
+
 ### comparator.archivesDiffer() ⇒ <code>Boolean</code>
 Check if the current archives differ in any way
 
 **Kind**: instance method of <code>[Comparator](#Comparator)</code>  
 <a name="Comparator+calculateDifferences"></a>
+
 ### comparator.calculateDifferences() ⇒ <code>Object</code> &#124; <code>Boolean</code>
 Calculate the differences, in commands, between the two archives
 
@@ -233,6 +255,7 @@ Calculate the differences, in commands, between the two archives
 **Returns**: <code>Object</code> &#124; <code>Boolean</code> - Returns false if no common base
        is found, or the command differences as two arrays  
 <a name="Credentials"></a>
+
 ## Credentials
 **Kind**: global class  
 
@@ -241,11 +264,12 @@ Calculate the differences, in commands, between the two archives
     * _instance_
         * [.setIdentity(username, password)](#Credentials+setIdentity) ⇒ <code>[Credentials](#Credentials)</code>
         * [.setType(type)](#Credentials+setType) ⇒ <code>[Credentials](#Credentials)</code>
-        * [.toSecure(masterPassword)](#Credentials+toSecure) ⇒ <code>string</code>
+        * [.convertToSecureContent(masterPassword)](#Credentials+convertToSecureContent) ⇒ <code>Promise</code>
     * _static_
-        * [.fromSecureContent(content, password)](#Credentials.fromSecureContent) ⇒ <code>[Credentials](#Credentials)</code>
+        * [.createFromSecureContent(content, password)](#Credentials.createFromSecureContent) ⇒ <code>Promise</code>
 
 <a name="new_Credentials_new"></a>
+
 ### new Credentials(data)
 
 | Param | Type | Description |
@@ -253,6 +277,7 @@ Calculate the differences, in commands, between the two archives
 | data | <code>Object</code> &#124; <code>[Model](#Model)</code> | The initialisation data |
 
 <a name="Credentials+setIdentity"></a>
+
 ### credentials.setIdentity(username, password) ⇒ <code>[Credentials](#Credentials)</code>
 Set identity information
 
@@ -265,6 +290,7 @@ Set identity information
 | password | <code>string</code> | 
 
 <a name="Credentials+setType"></a>
+
 ### credentials.setType(type) ⇒ <code>[Credentials](#Credentials)</code>
 Set the credentials type (eg. webdav/owncloud etc.)
 
@@ -275,24 +301,26 @@ Set the credentials type (eg. webdav/owncloud etc.)
 | --- | --- |
 | type | <code>string</code> | 
 
-<a name="Credentials+toSecure"></a>
-### credentials.toSecure(masterPassword) ⇒ <code>string</code>
+<a name="Credentials+convertToSecureContent"></a>
+
+### credentials.convertToSecureContent(masterPassword) ⇒ <code>Promise</code>
 Convert the credentials to an encrypted string, for storage
 
 **Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>string</code> - The encrypted credentials  
+**Returns**: <code>Promise</code> - A promise that resolves with the encrypted credentials  
 **See**: signEncryptedContent  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | masterPassword | <code>string</code> | The password for encrypting |
 
-<a name="Credentials.fromSecureContent"></a>
-### Credentials.fromSecureContent(content, password) ⇒ <code>[Credentials](#Credentials)</code>
+<a name="Credentials.createFromSecureContent"></a>
+
+### Credentials.createFromSecureContent(content, password) ⇒ <code>Promise</code>
 Create a new Credentials instance from encrypted information
 
 **Kind**: static method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>[Credentials](#Credentials)</code> - A new Credentials instance  
+**Returns**: <code>Promise</code> - A promise resolving with the new Credentials instance  
 **Access:** public  
 
 | Param | Type | Description |
@@ -301,9 +329,18 @@ Create a new Credentials instance from encrypted information
 | password | <code>string</code> | The master password to decrypt with |
 
 <a name="Flattener"></a>
+
 ## Flattener
 **Kind**: global class  
+
+* [Flattener](#Flattener)
+    * [new Flattener(westley)](#new_Flattener_new)
+    * [.canBeFlattened()](#Flattener+canBeFlattened) ⇒ <code>Boolean</code>
+    * [.flatten([force])](#Flattener+flatten) ⇒ <code>Boolean</code>
+    * [.getPreservationCount()](#Flattener+getPreservationCount) ⇒ <code>Number</code>
+
 <a name="new_Flattener_new"></a>
+
 ### new Flattener(westley)
 Flatten archives
 
@@ -312,7 +349,38 @@ Flatten archives
 | --- | --- |
 | westley | <code>[Westley](#Westley)</code> | 
 
+<a name="Flattener+canBeFlattened"></a>
+
+### flattener.canBeFlattened() ⇒ <code>Boolean</code>
+Check if the dataset can be flattened
+
+**Kind**: instance method of <code>[Flattener](#Flattener)</code>  
+**Returns**: <code>Boolean</code> - True if it can be flattened  
+**Access:** public  
+<a name="Flattener+flatten"></a>
+
+### flattener.flatten([force]) ⇒ <code>Boolean</code>
+Flatten a dataset
+
+**Kind**: instance method of <code>[Flattener](#Flattener)</code>  
+**Returns**: <code>Boolean</code> - True if flattening occurred, false otherwise  
+**Access:** public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [force] | <code>Boolean</code> | Force flattening even if it is detected to be unnecessary |
+
+<a name="Flattener+getPreservationCount"></a>
+
+### flattener.getPreservationCount() ⇒ <code>Number</code>
+Get the number of lines to preserve by default
+
+**Kind**: instance method of <code>[Flattener](#Flattener)</code>  
+**Returns**: <code>Number</code> - The number of lines  
+**Access:** public  
+**See**: PRESERVE_LAST_LINES  
 <a name="ManagedEntry"></a>
+
 ## ManagedEntry
 **Kind**: global class  
 
@@ -341,6 +409,7 @@ Flatten archives
         * [.createNew(archive, groupID)](#ManagedEntry.createNew) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
 
 <a name="new_ManagedEntry_new"></a>
+
 ### new ManagedEntry(archive, remoteObj)
 Managed entry class
 
@@ -351,6 +420,7 @@ Managed entry class
 | remoteObj | <code>Object</code> | The remote object reference |
 
 <a name="ManagedEntry+delete"></a>
+
 ### managedEntry.delete()
 Delete the entry - either trashes the entry, or removes it completely.
 If the entry is in the trash already, it is removed (including if there is no
@@ -364,6 +434,7 @@ If the entry is in the trash already, it is removed (including if there is no
 - Archive.getTrashGroup
 
 <a name="ManagedEntry+deleteAttribute"></a>
+
 ### managedEntry.deleteAttribute(attr) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
 Delete an attribute
 
@@ -378,6 +449,7 @@ Delete an attribute
 | attr | <code>string</code> | The attribute name |
 
 <a name="ManagedEntry+deleteMeta"></a>
+
 ### managedEntry.deleteMeta(property) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
 Delete a meta item
 
@@ -392,39 +464,46 @@ Delete a meta item
 | property | <code>string</code> | The property name |
 
 <a name="ManagedEntry+getAttribute"></a>
+
 ### managedEntry.getAttribute() ⇒ <code>String</code> &#124; <code>undefined</code>
 Get an attribute
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 **Params**: <code>String</code> attributeName The name of the attribute  
 <a name="ManagedEntry+getDisplayInfo"></a>
+
 ### managedEntry.getDisplayInfo() ⇒ <code>[DisplayInfo](#DisplayInfo)</code> &#124; <code>undefined</code>
 Get the display information for the entry
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 <a name="ManagedEntry+getGroup"></a>
+
 ### managedEntry.getGroup() ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
 Get the containing group for the entry
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 <a name="ManagedEntry+getID"></a>
+
 ### managedEntry.getID() ⇒ <code>String</code>
 Get the entry ID
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 <a name="ManagedEntry+getMeta"></a>
+
 ### managedEntry.getMeta() ⇒ <code>String</code> &#124; <code>undefined</code>
 Get a meta value
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 **Params**: <code>String</code> property The name of the meta property  
 <a name="ManagedEntry+getProperty"></a>
+
 ### managedEntry.getProperty() ⇒ <code>String</code> &#124; <code>undefined</code>
 Get a property value
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 **Params**: <code>String</code> property The name of the meta property  
 <a name="ManagedEntry+moveToGroup"></a>
+
 ### managedEntry.moveToGroup() ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
 Move the entry to another group
 
@@ -432,6 +511,7 @@ Move the entry to another group
 **Returns**: <code>[ManagedEntry](#ManagedEntry)</code> - Returns self  
 **Params**: <code>[ManagedGroup](#ManagedGroup)</code> group The target group  
 <a name="ManagedEntry+setAttribute"></a>
+
 ### managedEntry.setAttribute(attributeName, value) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
 Set an attribute on the entry
 
@@ -444,6 +524,7 @@ Set an attribute on the entry
 | value | <code>String</code> | The value to set |
 
 <a name="ManagedEntry+setMeta"></a>
+
 ### managedEntry.setMeta(prop, value) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
 Set a meta value on the entry
 
@@ -456,6 +537,7 @@ Set a meta value on the entry
 | value | <code>String</code> | The value to set |
 
 <a name="ManagedEntry+setProperty"></a>
+
 ### managedEntry.setProperty(prop, value) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
 Set a property on the entry
 
@@ -468,31 +550,37 @@ Set a property on the entry
 | value | <code>String</code> | The property value |
 
 <a name="ManagedEntry+toObject"></a>
+
 ### managedEntry.toObject() ⇒ <code>Object</code>
 Export entry to object
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 <a name="ManagedEntry+toString"></a>
+
 ### managedEntry.toString() ⇒ <code>string</code>
 toString override
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 <a name="ManagedEntry+_getArchive"></a>
+
 ### managedEntry._getArchive() ⇒ <code>[Archive](#Archive)</code>
 Get the archive reference
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 <a name="ManagedEntry+_getRemoteObject"></a>
+
 ### managedEntry._getRemoteObject() ⇒ <code>Object</code>
 Get the remote object that mirrors the data represented here
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 <a name="ManagedEntry+_getWestley"></a>
+
 ### managedEntry._getWestley() ⇒ <code>[Westley](#Westley)</code>
 Get the Westley reference
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 <a name="ManagedEntry.createNew"></a>
+
 ### ManagedEntry.createNew(archive, groupID) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
 Create a new entry
 
@@ -504,6 +592,7 @@ Create a new entry
 | groupID | <code>string</code> | The ID of the target group |
 
 <a name="ManagedGroup"></a>
+
 ## ManagedGroup
 **Kind**: global class  
 
@@ -530,6 +619,7 @@ Create a new entry
         * [.createNew(archive, [parentID])](#ManagedGroup.createNew) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
 
 <a name="new_ManagedGroup_new"></a>
+
 ### new ManagedGroup(archive, remoteObj)
 Managed group class
 
@@ -540,6 +630,7 @@ Managed group class
 | remoteObj | <code>Object</code> | The remote object reference |
 
 <a name="ManagedGroup+createEntry"></a>
+
 ### managedGroup.createEntry([title]) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
 Create a new entry with a title
 
@@ -551,6 +642,7 @@ Create a new entry with a title
 | [title] | <code>string</code> | 
 
 <a name="ManagedGroup+createGroup"></a>
+
 ### managedGroup.createGroup([title]) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
 Create a child group
 
@@ -562,11 +654,13 @@ Create a child group
 | [title] | <code>string</code> | Optionally set a title |
 
 <a name="ManagedGroup+delete"></a>
+
 ### managedGroup.delete()
 Delete the group
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
 <a name="ManagedGroup+deleteAttribute"></a>
+
 ### managedGroup.deleteAttribute(attr) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
 Delete an attribute
 
@@ -578,6 +672,7 @@ Delete an attribute
 | attr | <code>string</code> | The name of the attribute |
 
 <a name="ManagedGroup+getAttribute"></a>
+
 ### managedGroup.getAttribute(attributeName) ⇒ <code>string</code> &#124; <code>undefined</code>
 Get an attribute
 
@@ -589,31 +684,37 @@ Get an attribute
 | attributeName | <code>string</code> | The name of the attribute |
 
 <a name="ManagedGroup+getEntries"></a>
+
 ### managedGroup.getEntries() ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
 Get the entries within the group
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
 <a name="ManagedGroup+getGroups"></a>
+
 ### managedGroup.getGroups() ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
 Get the groups within the group
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
 <a name="ManagedGroup+getID"></a>
+
 ### managedGroup.getID() ⇒ <code>string</code>
 Get the group ID
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
 <a name="ManagedGroup+getTitle"></a>
+
 ### managedGroup.getTitle() ⇒ <code>string</code>
 Get the group title
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
 <a name="ManagedGroup+isTrash"></a>
+
 ### managedGroup.isTrash() ⇒ <code>boolean</code>
 Check if the current group is used for trash
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
 <a name="ManagedGroup+moveToGroup"></a>
+
 ### managedGroup.moveToGroup(group) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
 Move the group into another
 
@@ -625,6 +726,7 @@ Move the group into another
 | group | <code>[ManagedGroup](#ManagedGroup)</code> | The target group (new parent) |
 
 <a name="ManagedGroup+setAttribute"></a>
+
 ### managedGroup.setAttribute(attributeName, value) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
 Set an attribute
 
@@ -637,29 +739,34 @@ Set an attribute
 | value | <code>string</code> | The value to set |
 
 <a name="ManagedGroup+toObject"></a>
+
 ### managedGroup.toObject() ⇒ <code>Object</code>
 Export group to object
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
 <a name="ManagedGroup+_getArchive"></a>
+
 ### managedGroup._getArchive() ⇒ <code>[Archive](#Archive)</code>
 Get the archive instance reference
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
 **Access:** protected  
 <a name="ManagedGroup+_getRemoteObject"></a>
+
 ### managedGroup._getRemoteObject() ⇒ <code>Object</code>
 Get the remotely-managed object (group)
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
 **Access:** protected  
 <a name="ManagedGroup+_getWestley"></a>
+
 ### managedGroup._getWestley() ⇒ <code>[Westley](#Westley)</code>
 Get the delta managing instance for the archive
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
 **Access:** protected  
 <a name="ManagedGroup.createNew"></a>
+
 ### ManagedGroup.createNew(archive, [parentID]) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
 Create a new ManagedGroup with a delta-manager and parent group ID
 
@@ -672,6 +779,7 @@ Create a new ManagedGroup with a delta-manager and parent group ID
 | [parentID] | <code>string</code> | The parent group ID (default is root) |
 
 <a name="Model"></a>
+
 ## Model
 **Kind**: global class  
 
@@ -682,6 +790,7 @@ Create a new ManagedGroup with a delta-manager and parent group ID
     * [.set(key, value)](#Model+set) ⇒ <code>[Model](#Model)</code>
 
 <a name="new_Model_new"></a>
+
 ### new Model(data)
 Data modelling helper
 
@@ -691,6 +800,7 @@ Data modelling helper
 | data | <code>Object</code> | 
 
 <a name="Model+get"></a>
+
 ### model.get(key, [defaultValue]) ⇒ <code>\*</code>
 Get a value for a property.
  eg. model.get("some.deep.property", 19);
@@ -704,12 +814,14 @@ Get a value for a property.
 | [defaultValue] | <code>\*</code> | A default value to return if the property is not found |
 
 <a name="Model+getData"></a>
+
 ### model.getData() ⇒ <code>Object</code>
 Get the wrapped object
 
 **Kind**: instance method of <code>[Model](#Model)</code>  
 **Access:** public  
 <a name="Model+set"></a>
+
 ### model.set(key, value) ⇒ <code>[Model](#Model)</code>
 Set a property
 
@@ -723,9 +835,11 @@ Set a property
 | value | <code>string</code> &#124; <code>number</code> &#124; <code>Object</code> &#124; <code>\*</code> | The value to set |
 
 <a name="OwnCloudDatasource"></a>
+
 ## OwnCloudDatasource
 **Kind**: global class  
 <a name="new_OwnCloudDatasource_new"></a>
+
 ### new OwnCloudDatasource(owncloudURL, path, username, password)
 Datasource for Owncloud connections
 
@@ -738,6 +852,7 @@ Datasource for Owncloud connections
 | password | <code>String</code> | The password for owncloud |
 
 <a name="Westley"></a>
+
 ## Westley
 **Kind**: global class  
 
@@ -751,17 +866,20 @@ Datasource for Owncloud connections
     * [.getHistory()](#Westley+getHistory) ⇒ <code>Array.&lt;String&gt;</code>
 
 <a name="new_Westley_new"></a>
+
 ### new Westley()
 Westley. Archive object dataset and history manager. Handles parsing and
 revenge for the princess.
 
 <a name="Westley+clear"></a>
+
 ### westley.clear() ⇒ <code>[Westley](#Westley)</code>
 Clear the dataset and history
 
 **Kind**: instance method of <code>[Westley](#Westley)</code>  
 **Returns**: <code>[Westley](#Westley)</code> - Returns self  
 <a name="Westley+execute"></a>
+
 ### westley.execute(command) ⇒ <code>[Westley](#Westley)</code>
 Execute a command - stored in history and modifies the dataset
 
@@ -773,6 +891,7 @@ Execute a command - stored in history and modifies the dataset
 | command | <code>String</code> | The command to execute |
 
 <a name="Westley+_getCommandForKey"></a>
+
 ### westley._getCommandForKey(commandKey) ⇒ <code>Command</code>
 Gets a command by its key from the cache with its dependencies injected
 
@@ -784,22 +903,26 @@ Gets a command by its key from the cache with its dependencies injected
 | commandKey | <code>String</code> | The key of the command |
 
 <a name="Westley+pad"></a>
+
 ### westley.pad() ⇒ <code>[Westley](#Westley)</code>
 Insert a padding in the archive (used for delta tracking)
 
 **Kind**: instance method of <code>[Westley](#Westley)</code>  
 **Returns**: <code>[Westley](#Westley)</code> - Returns self  
 <a name="Westley+getDataset"></a>
+
 ### westley.getDataset() ⇒ <code>Object</code>
 Get the core dataset
 
 **Kind**: instance method of <code>[Westley](#Westley)</code>  
 <a name="Westley+getHistory"></a>
+
 ### westley.getHistory() ⇒ <code>Array.&lt;String&gt;</code>
 Get the history (deltas)
 
 **Kind**: instance method of <code>[Westley](#Westley)</code>  
 <a name="Workspace"></a>
+
 ## Workspace
 **Kind**: global class  
 
@@ -816,43 +939,51 @@ Get the history (deltas)
     * [.setPassword(password)](#Workspace+setPassword) ⇒ <code>[Workspace](#Workspace)</code>
 
 <a name="new_Workspace_new"></a>
+
 ### new Workspace()
 Workspace: handling archive loading, saving and merging
 
 <a name="Workspace+archiveDiffersFromDatasource"></a>
+
 ### workspace.archiveDiffersFromDatasource() ⇒ <code>Promise</code>
 Check if the archive differs from the one in the datasource
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
 **See**: stageArchiveFromDatasource  
 <a name="Workspace+getArchive"></a>
+
 ### workspace.getArchive() ⇒ <code>[Archive](#Archive)</code>
 Get the archive instance
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
 <a name="Workspace+getDatasource"></a>
+
 ### workspace.getDatasource() ⇒ <code>Object</code>
 Get the datasource instance
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
 **Returns**: <code>Object</code> - A datasource instance (FileDatasource/TextDatasource etc.)  
 <a name="Workspace+getPassword"></a>
+
 ### workspace.getPassword() ⇒ <code>String</code>
 Get the stored password
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
 <a name="Workspace+mergeFromDatasource"></a>
+
 ### workspace.mergeFromDatasource() ⇒ <code>Promise</code>
 Perform a merge against the remote datasource
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
 <a name="Workspace+save"></a>
+
 ### workspace.save() ⇒ <code>[Workspace](#Workspace)</code>
 Save the archive to the datasource
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
 **Returns**: <code>[Workspace](#Workspace)</code> - Self  
 <a name="Workspace+setArchive"></a>
+
 ### workspace.setArchive(archive) ⇒ <code>[Workspace](#Workspace)</code>
 Set the archive instance
 
@@ -864,6 +995,7 @@ Set the archive instance
 | archive | <code>[Archive](#Archive)</code> | 
 
 <a name="Workspace+setDatasource"></a>
+
 ### workspace.setDatasource(datasource) ⇒ <code>[Workspace](#Workspace)</code>
 Set the datasource instance
 
@@ -875,6 +1007,7 @@ Set the datasource instance
 | datasource | <code>Object</code> | 
 
 <a name="Workspace+setPassword"></a>
+
 ### workspace.setPassword(password) ⇒ <code>[Workspace](#Workspace)</code>
 Set the password
 
@@ -886,6 +1019,7 @@ Set the password
 | password | <code>String</code> | 
 
 <a name="DisplayInfo"></a>
+
 ## DisplayInfo
 **Kind**: global typedef  
 **Properties**

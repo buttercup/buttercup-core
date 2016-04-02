@@ -7,7 +7,7 @@
      * @private
      * @static
      */
-    var PROPERTY_NOT_FOUND = new String("NOT_FOUND"); //eslint-disable-line no-new-wrappers
+    const PROPERTY_NOT_FOUND = new String("NOT_FOUND"); //eslint-disable-line no-new-wrappers
 
     /**
      * Resolve a property on an object (key resolution)
@@ -58,49 +58,53 @@
      * @class Model
      * @param {Object} data
      */
-    var Model = function(data) {
-        this._data = data || {};
-    };
+    class Model {
 
-    /**
-     * Get a value for a property.
-     *  eg. model.get("some.deep.property", 19);
-     * @param {string} key The key to get the value for. Splits by period '.' for sub-objects.
-     * @param {*=} defaultValue A default value to return if the property is not found
-     * @returns {*}
-     * @memberof Model
-     * @public
-     * @instance
-     */
-    Model.prototype.get = function(key, defaultValue) {
-        var value = resolveProperty(this._data, key);
-        return value === PROPERTY_NOT_FOUND ? defaultValue : value;
-    };
+        constructor(data) {
+            this._data = data || {};
+        }
 
-    /**
-     * Get the wrapped object
-     * @returns {Object}
-     * @memberof Model
-     * @public
-     * @instance
-     */
-    Model.prototype.getData = function() {
-        return this._data;
-    };
+        /**
+         * Get a value for a property.
+         *  eg. model.get("some.deep.property", 19);
+         * @param {string} key The key to get the value for. Splits by period '.' for sub-objects.
+         * @param {*=} defaultValue A default value to return if the property is not found
+         * @returns {*}
+         * @memberof Model
+         * @public
+         * @instance
+         */
+        get(key, defaultValue) {
+            var value = resolveProperty(this.getData(), key);
+            return value === PROPERTY_NOT_FOUND ? defaultValue : value;
+        }
 
-    /**
-     * Set a property
-     * @param {string} key The location (property) at which to set a value (eg. "some.nested.prop")
-     * @param {string|number|Object|*} value The value to set
-     * @returns {Model} Returns self
-     * @memberof Model
-     * @public
-     * @instance
-     */
-    Model.prototype.set = function(key, value) {
-        setProperty(this._data, key, value);
-        return this;
-    };
+        /**
+         * Get the wrapped object
+         * @returns {Object}
+         * @memberof Model
+         * @public
+         * @instance
+         */
+        getData() {
+            return this._data;
+        }
+
+        /**
+         * Set a property
+         * @param {string} key The location (property) at which to set a value (eg. "some.nested.prop")
+         * @param {string|number|Object|*} value The value to set
+         * @returns {Model} Returns self
+         * @memberof Model
+         * @public
+         * @instance
+         */
+        set(key, value) {
+            setProperty(this._data, key, value);
+            return this;
+        }
+
+    }
 
     module.exports = Model;
 
