@@ -332,6 +332,13 @@ Create a new Credentials instance from encrypted information
 
 ## Flattener
 **Kind**: global class  
+
+* [Flattener](#Flattener)
+    * [new Flattener(westley)](#new_Flattener_new)
+    * [.canBeFlattened()](#Flattener+canBeFlattened) ⇒ <code>Boolean</code>
+    * [.flatten([force])](#Flattener+flatten) ⇒ <code>Boolean</code>
+    * [.getPreservationCount()](#Flattener+getPreservationCount) ⇒ <code>Number</code>
+
 <a name="new_Flattener_new"></a>
 
 ### new Flattener(westley)
@@ -342,6 +349,36 @@ Flatten archives
 | --- | --- |
 | westley | <code>[Westley](#Westley)</code> | 
 
+<a name="Flattener+canBeFlattened"></a>
+
+### flattener.canBeFlattened() ⇒ <code>Boolean</code>
+Check if the dataset can be flattened
+
+**Kind**: instance method of <code>[Flattener](#Flattener)</code>  
+**Returns**: <code>Boolean</code> - True if it can be flattened  
+**Access:** public  
+<a name="Flattener+flatten"></a>
+
+### flattener.flatten([force]) ⇒ <code>Boolean</code>
+Flatten a dataset
+
+**Kind**: instance method of <code>[Flattener](#Flattener)</code>  
+**Returns**: <code>Boolean</code> - True if flattening occurred, false otherwise  
+**Access:** public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [force] | <code>Boolean</code> | Force flattening even if it is detected to be unnecessary |
+
+<a name="Flattener+getPreservationCount"></a>
+
+### flattener.getPreservationCount() ⇒ <code>Number</code>
+Get the number of lines to preserve by default
+
+**Kind**: instance method of <code>[Flattener](#Flattener)</code>  
+**Returns**: <code>Number</code> - The number of lines  
+**Access:** public  
+**See**: PRESERVE_LAST_LINES  
 <a name="ManagedEntry"></a>
 
 ## ManagedEntry
