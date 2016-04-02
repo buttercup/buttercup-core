@@ -2,7 +2,7 @@
 
 A NodeJS password vault.
 
-[![Buttercup](buttercup.svg)](https://buttercup.pw) [![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC-red.svg)](https://tools.ietf.org/html/rfc3602) [![Join the chat at https://gitter.im/buttercup-pw/buttercup-core](https://badges.gitter.im/buttercup-pw/buttercup-core.svg)](https://gitter.im/buttercup-pw/buttercup-core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Buttercup](https://buttercup.pw/buttercup.svg)](https://buttercup.pw) [![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC-red.svg)](https://tools.ietf.org/html/rfc3602) [![Join the chat at https://gitter.im/buttercup-pw/buttercup-core](https://badges.gitter.im/buttercup-pw/buttercup-core.svg)](https://gitter.im/buttercup-pw/buttercup-core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![Build Status](https://travis-ci.org/buttercup-pw/buttercup-core.svg?branch=master)](https://travis-ci.org/buttercup-pw/buttercup-core) [![Code Climate](https://codeclimate.com/github/buttercup-pw/buttercup-core/badges/gpa.svg)](https://codeclimate.com/github/buttercup-pw/buttercup-core)
 
