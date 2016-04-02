@@ -9,17 +9,23 @@ module.exports = {
 		(cb)();
 	},
 
-    fromSecureContent: {
+    createFromSecureContent: {
 
         testEncryptsAndDecrypts: function(test) {
             this.credentials.setIdentity("user", "pass");
-            var secureContent = this.credentials.toSecure("monkey");
-            test.ok(secureContent.indexOf("user") < 0);
-            test.ok(secureContent.indexOf("pass") < 0);
-            var newCred = Credentials.fromSecureContent(secureContent, "monkey");
-            test.deepEqual(newCred.model.getData(), this.credentials.model.getData(),
-                "Newly created credentials should contain the same content");
-            test.done();
+            this.credentials.convertToSecureContent("monkey")
+                .then((secureContent) => {
+                    test.ok(secureContent.indexOf("user") < 0);
+                    test.ok(secureContent.indexOf("pass") < 0);
+                    return Credentials.createFromSecureContent(secureContent, "monkey").then((newCred) => {
+                        test.deepEqual(newCred.model.getData(), this.credentials.model.getData(),
+                            "Newly created credentials should contain the same content");
+                        test.done();
+                    });
+                })
+                .catch(function(err) {
+                    console.error(err);
+                });
         }
 
     },
@@ -42,17 +48,27 @@ module.exports = {
     toSecure: {
 
         testContainsSignature: function(test) {
-            var signature = Signing.getSignature() + "cred.",
-                secure = this.credentials.toSecure("test");
-            test.strictEqual(secure.indexOf(signature), 0, "Signature should be the first piece of content");
-            test.done();
+            var signature = Signing.getSignature() + "cred.";
+            this.credentials.convertToSecureContent("test")
+                .then(function(secure) {
+                    test.strictEqual(secure.indexOf(signature), 0, "Signature should be the first piece of content");
+                    test.done();
+                })
+                .catch(function(err) {
+                    console.error(err);
+                });
         },
 
         testEncryptsContent: function(test) {
             this.credentials.setIdentity("user", "pass");
-            var secure = this.credentials.toSecure("passw0rd");
-            test.ok(secure.indexOf("user") < 0, "Content should be encrypted");
-            test.done();
+            this.credentials.convertToSecureContent("passw0rd")
+                .then(function(secure) {
+                    test.ok(secure.indexOf("user") < 0, "Content should be encrypted");
+                    test.done();
+                })
+                .catch(function(err) {
+                    console.error(err);
+                });
         }
 
     }

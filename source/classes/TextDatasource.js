@@ -2,9 +2,9 @@
 
     "use strict";
 
-    var Encryption = require("__buttercup/encryption/encrypt.js"),
-        Decryption = require("__buttercup/encryption/decrypt.js"),
-        Archive = require("__buttercup/classes/Archive.js"),
+    const iocane = require("iocane").crypto;
+
+    var Archive = require("__buttercup/classes/Archive.js"),
         signing = require("__buttercup/tools/signing.js"),
         encoding = require("__buttercup/tools/encoding.js");
 
@@ -19,7 +19,8 @@
             }
             return signing.stripSignature(data);
         }).then(function(encryptedData) {
-            var decrypted = Decryption.decrypt(encryptedData, password);
+            return iocane.decryptWithPassword(encryptedData, password);
+        }).then(function(decrypted) {
             if (decrypted && decrypted.length > 0) {
                 var decompressed = encoding.decompress(decrypted);
                 if (decompressed) {
@@ -38,9 +39,9 @@
 
     TextDatasource.prototype.save = function(archive, password) {
         var history = archive._getWestley().getHistory().join("\n"),
-            compressed = encoding.compress(history),
-            encrypted = signing.sign(Encryption.encrypt(compressed, password));
-        return Promise.resolve(encrypted);
+            compressed = encoding.compress(history);
+        return iocane.encryptWithPassword(compressed, password)
+            .then(signing.sign);
     };
 
     module.exports = TextDatasource;
