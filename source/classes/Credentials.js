@@ -4,8 +4,8 @@
 
     const iocane = require("iocane").crypto;
 
-    var Model = require("__buttercup/classes/Model.js"),
-        Signing = require("__buttercup/tools/signing.js");
+    var Model = require("./Model.js"),
+        Signing = require("../tools/signing.js");
 
     /**
      * The signature of encrypted credentials

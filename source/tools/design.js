@@ -2,9 +2,9 @@
 
     "use strict";
 
-    var ManagedEntry = require("__buttercup/classes/ManagedEntry.js"),
-        ManagedGroup = require("__buttercup/classes/ManagedGroup.js"),
-        images = require("__buttercup/data/images.js");
+    var ManagedEntry = require("../classes/ManagedEntry.js"),
+        ManagedGroup = require("../classes/ManagedGroup.js"),
+        images = require("../data/images.js");
 
     var ENTRY_DEFAULT_IMAGE =                   "key";
 
