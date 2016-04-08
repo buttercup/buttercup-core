@@ -1,4 +1,4 @@
-var lib = require("__buttercup/module.js"),
+var lib = require("../source/module.js"),
 	Credentials = lib.Credentials,
     Signing = lib.tools.signing;
 

@@ -1,4 +1,4 @@
-var gen = require(__dirname + "/../_helpers/generator.js")
+var gen = require("../_helpers/generator.js")
 
 module.exports = {
 

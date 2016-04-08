@@ -1,4 +1,4 @@
-var tgr = require("__buttercup/classes/commands/command.tgr.js");
+var tgr = require("../../source/classes/commands/command.tgr.js");
 
 module.exports = {
     setUp: function(cb) {
@@ -56,7 +56,7 @@ module.exports = {
             var fakeGroup = {
                 title: ''
             };
-            
+
             var fakeSearching = {
                 findGroupByID: function (a, b) {
                     return fakeGroup;

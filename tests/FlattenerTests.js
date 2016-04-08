@@ -1,4 +1,4 @@
-var lib = require("__buttercup/module.js"),
+var lib = require("../source/module.js"),
 	generate = require("./_helpers/generator.js");
 	Archive = lib.Archive,
 	Flattener = lib.Flattener;
