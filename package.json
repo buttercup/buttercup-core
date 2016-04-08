@@ -41,7 +41,6 @@
     "homepage": "https://github.com/buttercup-pw/buttercup-core#readme",
     "dependencies": {
         "clone": "~1.0.2",
-        "fs-symlink": "~1.2.1",
         "gzip-js": "~0.3.2",
         "iocane": "~0.2.0",
         "uuid": "~2.0.1",
