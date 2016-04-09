@@ -1,6 +1,6 @@
 {
     "name": "buttercup",
-    "version": "0.18.0",
+    "version": "0.19.0",
     "description": "A NodeJS password vault.",
     "main": "source/module.js",
     "contributors": [
@@ -42,7 +42,7 @@
     "dependencies": {
         "clone": "~1.0.2",
         "gzip-js": "~0.3.2",
-        "iocane": "~0.2.0",
+        "iocane": "~0.3.0",
         "uuid": "~2.0.1",
         "webdav-fs": "~0.4.0"
     },
