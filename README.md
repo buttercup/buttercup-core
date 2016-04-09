@@ -132,6 +132,17 @@ archive
 
 You can import from other password archive formats, such as KeePass. Checkout the [Buttercup Importer](https://github.com/perry-mitchell/buttercup-importer) project.
 
+### Performance and web support
+
+Some things in Buttercup are best run purely on Node, such has password-based key derivation. When preparing this for the web (such as with Webpack or Browserify), things can move **very** slowly. There are implementations for functions, such as PBKDF2, that exist for web use that are many times faster than the output of such build utilities.
+
+You can override PBKDF2 by doing the following ([documented on iocane](https://github.com/perry-mitchell/iocane#overriding-the-built-in-pbkdf2-function)):
+```
+var Buttercup = require("buttercup");
+Buttercup.vendor.iocane.components.setPBKDF2(newPBKDF2Function);
+// Where 'newPBKDF2Function' is a function that returns a Promise with the hash in a Buffer
+```
+
 ### Attributes & Media
 
 Entries and groups have attributes, describing how they should be treated by the various interfaces that interact with the archive. Attributes are not visible to the users and can contain a variety of different properties.
