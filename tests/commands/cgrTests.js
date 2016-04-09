@@ -1,4 +1,4 @@
-var cgr = require("__buttercup/classes/commands/command.cgr.js");
+var cgr = require("../../source/classes/commands/command.cgr.js");
 
 module.exports = {
     setUp: function(cb) {

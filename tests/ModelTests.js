@@ -1,4 +1,4 @@
-var lib = require("__buttercup/module.js"),
+var lib = require("../source/module.js"),
 	Model = lib.Model;
 
 module.exports = {

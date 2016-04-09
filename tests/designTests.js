@@ -1,4 +1,4 @@
-var designTools = require("__buttercup/tools/design.js");
+var designTools = require("../source/tools/design.js");
 
 module.exports = {
 

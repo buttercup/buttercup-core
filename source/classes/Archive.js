@@ -2,15 +2,15 @@
 
     "use strict";
 
-    var Westley = require("__buttercup/classes/Westley.js"),
-        Inigo = require("__buttercup/classes/InigoGenerator.js"),
-        Flattener = require("__buttercup/classes/Flattener.js"),
-        ManagedGroup = require("__buttercup/classes/ManagedGroup.js"),
-        ManagedEntry = require("__buttercup/classes/ManagedEntry.js");
+    var Westley = require("./Westley.js"),
+        Inigo = require("./InigoGenerator.js"),
+        Flattener = require("./Flattener.js"),
+        ManagedGroup = require("./ManagedGroup.js"),
+        ManagedEntry = require("./ManagedEntry.js");
 
-    var signing = require("__buttercup/tools/signing.js"),
-        rawSearching = require("__buttercup/tools/searching-raw.js"),
-        instanceSearching = require("__buttercup/tools/searching-instance.js");
+    var signing = require("../tools/signing.js"),
+        rawSearching = require("../tools/searching-raw.js"),
+        instanceSearching = require("../tools/searching-instance.js");
 
     /**
      * Find entries by searching properties/meta

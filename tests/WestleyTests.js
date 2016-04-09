@@ -1,4 +1,4 @@
-var lib = require("__buttercup/module.js"),
+var lib = require("../source/module.js"),
     Westley = lib.Westley;
 
 module.exports = {

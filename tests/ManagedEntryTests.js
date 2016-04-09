@@ -1,6 +1,6 @@
-var lib = require("__buttercup/module.js"),
-	encoding = require("__buttercup/tools/encoding.js"),
-	entryTools = require("__buttercup/tools/entry.js"),
+var lib = require("../source/module.js"),
+	encoding = require("../source/tools/encoding.js"),
+	entryTools = require("../source/tools/entry.js"),
 	Archive = lib.Archive,
 	ManagedGroup = lib.ManagedGroup,
 	ManagedEntry = lib.ManagedEntry;
