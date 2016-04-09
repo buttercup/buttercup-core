@@ -2,6 +2,8 @@
 
     "use strict";
 
+    var iocane = require("iocane");
+
     module.exports = {
 
         Archive: require("__buttercup/classes/Archive.js"),
@@ -26,6 +28,10 @@
         tools: {
             design: require("__buttercup/tools/design.js"),
             signing: require("__buttercup/tools/signing.js")
+        },
+
+        vendor: {
+            iocane: iocane
         }
 
     };
