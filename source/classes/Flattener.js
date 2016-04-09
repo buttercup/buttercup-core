@@ -10,8 +10,8 @@
      */
     var PRESERVE_LAST_LINES =                         1000;
 
-    const describe = require("__buttercup/classes/Descriptor.js"),
-        Westley = require("__buttercup/classes/Westley.js");
+    const describe = require("./Descriptor.js"),
+        Westley = require("./Westley.js");
 
     /**
      * Check if a command should be preserved (not flattened)

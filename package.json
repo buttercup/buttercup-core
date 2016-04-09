@@ -16,7 +16,6 @@
     "scripts": {
         "build:images": "node resources/prepare-images.js",
         "generate:archive": "node scripts/generate_test_archive.js",
-        "install": "node scripts/link.js",
         "test": "npm run test:lint && npm run test:nodeunit",
         "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
         "test:junit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands --reporter junit --output build",
@@ -42,7 +41,6 @@
     "homepage": "https://github.com/buttercup-pw/buttercup-core#readme",
     "dependencies": {
         "clone": "~1.0.2",
-        "fs-symlink": "~1.2.1",
         "gzip-js": "~0.3.2",
         "iocane": "~0.3.0",
         "uuid": "~2.0.1",

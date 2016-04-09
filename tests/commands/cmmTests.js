@@ -1,4 +1,4 @@
-var cmm = require("__buttercup/classes/commands/command.cmm.js");
+var cmm = require("../../source/classes/commands/command.cmm.js");
 
 module.exports = {
     setUp: function(cb) {

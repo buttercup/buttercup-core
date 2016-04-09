@@ -2,12 +2,12 @@
 
 	"use strict";
 
-	var Buttercup = require("__buttercup/module.js"),
+	var Buttercup = require("../../source/module.js"),
 		Archive = Buttercup.Archive,
-		Inigo = require("__buttercup/classes/InigoGenerator.js"),
+		Inigo = require("../../source/classes/InigoGenerator.js"),
 		Commands = Inigo.Command,
-		searching = require("__buttercup/tools/searching-raw.js"),
-		encoding = require("__buttercup/tools/encoding.js");
+		searching = require("../../source/tools/searching-raw.js"),
+		encoding = require("../../source/tools/encoding.js");
 
 	// action setup
 	var _ACTIONS = {

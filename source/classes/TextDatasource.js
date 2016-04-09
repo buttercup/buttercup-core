@@ -4,9 +4,9 @@
 
     const iocane = require("iocane").crypto;
 
-    var Archive = require("__buttercup/classes/Archive.js"),
-        signing = require("__buttercup/tools/signing.js"),
-        encoding = require("__buttercup/tools/encoding.js");
+    var Archive = require("./Archive.js"),
+        signing = require("../tools/signing.js"),
+        encoding = require("../tools/encoding.js");
 
     var TextDatasource = function(content) {
         this._content = content;
