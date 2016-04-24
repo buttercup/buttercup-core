@@ -27,6 +27,7 @@
 
         tools: {
             design: require("./tools/design.js"),
+            export: require("./tools/export.js"),
             signing: require("./tools/signing.js")
         },
 

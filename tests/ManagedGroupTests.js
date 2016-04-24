@@ -142,7 +142,7 @@ module.exports = {
 			var obj = this.group.toObject();
 			test.strictEqual(obj.id, this.id, "Should transfer id");
 			test.strictEqual(obj.title, "My group", "Should transfer title");
-			test.strictEqual(Object.keys(obj).length, 3, "Only necessary properties should be transferred");
+			test.strictEqual(Object.keys(obj).length, 4, "Only necessary properties should be transferred");
 			test.strictEqual(obj.attributes.test, "value", "Attributes should be transferred");
 			test.done();
 		}

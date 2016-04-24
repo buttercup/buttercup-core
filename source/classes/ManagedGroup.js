@@ -218,10 +218,18 @@
         return {
             id: this.getID(),
             title: this.getTitle(),
-            attributes: attributes
+            attributes: attributes,
+            entries: this
+                .getEntries()
+                .map((entry) => entry.toObject())
         };
     };
 
+    /**
+     * Export the group to a JSON string
+     * @returns {string} The group (and entries) in JSON string format
+     * @memberof ManagedGroup
+     */
     ManagedGroup.prototype.toString = function() {
         return JSON.stringify(this.toObject());
     };

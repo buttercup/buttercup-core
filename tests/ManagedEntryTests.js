@@ -132,7 +132,7 @@ module.exports = {
 			test.strictEqual(obj.properties.title, "My entry", "Should transfer title");
 			test.strictEqual(obj.properties.username, "some-user", "Should transfer username");
 			test.strictEqual(obj.properties.password, "passw0rd", "Should transfer password");
-			test.strictEqual(Object.keys(obj).length, 3, "Only id, properties and meta should be transferred");
+			test.strictEqual(Object.keys(obj).length, 4, "Only id, properties, attributes and meta should be transferred");
 			test.done();
 		},
 
