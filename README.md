@@ -107,7 +107,7 @@ workspace.archiveDiffersFromDatasource()
     })
     .then(function() {
         // Save the archive
-        workspace.save();
+        return workspace.save();
     });
 ```
 
