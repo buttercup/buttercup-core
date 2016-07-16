@@ -16,6 +16,7 @@
     "scripts": {
         "build:images": "node resources/prepare-images.js",
         "generate:archive": "node scripts/generate_test_archive.js",
+        "generate:docs": "./scripts/generate-docs",
         "test": "npm run test:lint && npm run test:nodeunit",
         "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
         "test:junit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands --reporter junit --output build",
