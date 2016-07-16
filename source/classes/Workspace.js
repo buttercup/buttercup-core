@@ -136,12 +136,14 @@
     /**
      * Save the archive to the datasource
      * @memberof Workspace
-     * @returns {Workspace} Self
+     * @returns {Promise} A promise that resolves when the saving has completed
      */
     Workspace.prototype.save = function() {
         checkWorkspace(this);
-        this.getDatasource().save(this.getArchive(), this.getPassword());
-        return this;
+        return this.getDatasource().save(
+            this.getArchive(),
+            this.getPassword()
+        );
     };
 
     /**
