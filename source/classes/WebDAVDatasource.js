@@ -23,9 +23,9 @@
             var endpointLen = endpoint.length;
             endpoint = (endpoint[endpointLen - 1] === "/") ? endpoint : endpoint + "/";
             webDAVPath = (webDAVPath[0] === "/") ? webDAVPath : "/" + webDAVPath;
+            super("");
             this._wfs = webdavFS(endpoint, username, password);
             this._path = webDAVPath;
-            super("");
         }
 
         /**
