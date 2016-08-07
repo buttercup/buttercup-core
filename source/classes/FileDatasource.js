@@ -68,6 +68,17 @@
                 });
         }
 
+        /**
+         * Output the datasource configuration as a string
+         * @returns {string}
+         */
+        toString() {
+            return [
+                "ds=file",
+                `path=${this._filename}`
+            ].join(",");
+        }
+
     }
 
     module.exports = FileDatasource;

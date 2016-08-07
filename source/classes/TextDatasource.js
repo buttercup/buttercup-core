@@ -80,6 +80,14 @@
             return this;
         }
 
+        /**
+         * Output the datasource configuration as a string
+         * @returns {string}
+         */
+        toString() {
+            return "ds=text";
+        }
+
     }
 
     module.exports = TextDatasource;

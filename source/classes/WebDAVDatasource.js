@@ -20,11 +20,11 @@
          * @param {string} password Password for the WebDAV service
          */
         constructor(endpoint, webDAVPath, username, password) {
-            var endpointLen = endpoint.length;
-            endpoint = (endpoint[endpointLen - 1] === "/") ? endpoint : endpoint + "/";
-            webDAVPath = (webDAVPath[0] === "/") ? webDAVPath : "/" + webDAVPath;
             super("");
-            this._wfs = webdavFS(endpoint, username, password);
+            var endpointLen = endpoint.length;
+            this._endpoint = (endpoint[endpointLen - 1] === "/") ? endpoint : endpoint + "/";
+            webDAVPath = (webDAVPath[0] === "/") ? webDAVPath : "/" + webDAVPath;
+            this._wfs = webdavFS(this._endpoint, username, password);
             this._path = webDAVPath;
         }
 
@@ -76,6 +76,18 @@
                         });
                     });
                 });
+        }
+
+        /**
+         * Output the datasource configuration as a string (no credentials included)
+         * @returns {string}
+         */
+        toString() {
+            return [
+                "ds=webdav",
+                `endpoint=${this._endpoint}`,
+                `path=${this._path}`
+            ].join(",");
         }
 
     }

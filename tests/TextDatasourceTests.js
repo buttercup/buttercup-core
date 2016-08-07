@@ -2,7 +2,8 @@ var lib = require("../source/module.js");
 
 var Archive = lib.Archive,
     TextDatasource = lib.TextDatasource,
-    signing = lib.tools.signing;
+    signing = lib.tools.signing,
+    datasourceTools = lib.tools.datasource;
 
 module.exports = {
 
@@ -51,6 +52,18 @@ module.exports = {
                 .catch(function(err) {
                     console.error(err);
                 });
+        }
+
+    },
+
+    toString: {
+
+        outputsCorrectType: function(test) {
+            var tds = new TextDatasource(""),
+                str = tds.toString();
+            var props = datasourceTools.extractDSStrProps(str);
+            test.strictEqual(props.ds, "text", "Datasource type should match");
+            test.done();
         }
 
     }

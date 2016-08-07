@@ -3,7 +3,8 @@ var lib = require("../source/module.js");
 var Archive = lib.Archive,
     WebDAVDatasource = lib.WebDAVDatasource,
     TextDatasource = lib.TextDatasource,
-    signing = lib.tools.signing;
+    signing = lib.tools.signing,
+    datasourceTools = lib.tools.datasource;
 
 var WebDAVFSMock = function(endpoint, username, password) {
     this.endpoint = endpoint;
@@ -75,6 +76,17 @@ module.exports = {
                 .catch(function(err) {
                     console.error(err);
                 });
+        }
+
+    },
+
+    toString: {
+
+        outputsCorrectType: function(test) {
+            var str = this.datasource.toString();
+            var props = datasourceTools.extractDSStrProps(str);
+            test.strictEqual(props.ds, "webdav", "Datasource type should match");
+            test.done();
         }
 
     }
