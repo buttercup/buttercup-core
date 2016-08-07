@@ -61,6 +61,18 @@
     };
 
     /**
+     * Get identity information
+     * @returns {{ username: string|undefined, password: string|undefined }}
+     * @memberof Credentials
+     */
+    Credentials.prototype.getIdentity = function() {
+        return {
+            username: this.model.get("username"),
+            password: this.model.get("password")
+        };
+    };
+
+    /**
      * Set identity information
      * @param {string} username
      * @param {string} password
