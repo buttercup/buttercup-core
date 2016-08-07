@@ -12,3 +12,4 @@ node_modules
 .history
 
 source/test.js
+coverage
