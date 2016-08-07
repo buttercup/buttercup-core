@@ -22,6 +22,14 @@
         }
 
         /**
+         * Get the path of the archive
+         * @returns {string}
+         */
+        getArchivePath() {
+            return this._filename;
+        }
+
+        /**
          * Load from the filename specified in the constructor using a password
          * @param {string} password The password for decryption
          * @returns {Promise<Archive>} A promise resolving with the opened archive

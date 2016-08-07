@@ -29,6 +29,22 @@
         }
 
         /**
+         * Get the path of the archive on the server
+         * @returns {string}
+         */
+        getArchivePath() {
+            return this._path;
+        }
+
+        /**
+         * Get the remote endpoint URI (no resource path)
+         * @returns {string}
+         */
+        getRemoteEndpoint() {
+            return this._endpoint;
+        }
+
+        /**
          * Load the archive using a password
          * @param {string} password The password for archive decryption
          * @returns {Promise.<Archive>} A promise resolving with the opened archive
