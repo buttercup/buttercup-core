@@ -259,7 +259,9 @@
     ManagedEntry.prototype.toObject = function() {
         var properties = {},
             meta = {},
+            attributes = {},
             remoteMeta = this._getRemoteObject().meta || {},
+            remoteAttrs = this._getRemoteObject().attributes || {},
             _this = this;
         entryTools.getValidProperties().forEach(function(propName) {
             var val = _this.getProperty(propName);
@@ -272,10 +274,16 @@
                 meta[metaName] = remoteMeta[metaName];
             }
         }
+        for (var attrName in remoteAttrs) {
+            if (remoteAttrs.hasOwnProperty(attrName)) {
+                attributes[attrName] = remoteAttrs[attrName];
+            }
+        }
         return {
+            attributes: attributes,
             id: this.getID(),
-            properties: properties,
-            meta: meta
+            meta: meta,
+            properties: properties
         };
     };
 

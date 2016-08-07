@@ -25,6 +25,16 @@
             super(owncloudURL, resourcePath, username, password);
         }
 
+        /**
+         * Output the datasource configuration as a string (no credentials included)
+         * @returns {string}
+         */
+        toString() {
+            let webdavParts = super.toString().split(",");
+            webdavParts[0] = webdavParts[0].replace("webdav", "owncloud");
+            return webdavParts.join(",");
+        }
+
     }
 
     module.exports = OwnCloudDatasource;

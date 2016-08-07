@@ -140,6 +140,15 @@
     };
 
     /**
+     * Get the archive format
+     * @returns {string} The format of the archive
+     * @memberof Archive
+     */
+    Archive.prototype.getFormat = function() {
+        return this._getWestley().getDataset().format;
+    };
+
+    /**
      * Find a group by its ID
      * @param {String} The group's ID
      * @returns {ManagedGroup|null}
