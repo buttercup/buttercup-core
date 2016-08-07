@@ -19,6 +19,11 @@ module.exports = {
         (done)();
     },
 
+    testExportsType: function(test) {
+        test.strictEqual(this.exported.type, "buttercup-archive", "Export type should match");
+        test.done();
+    },
+
     testExportsFormat: function(test) {
         test.strictEqual(this.exported.format, signing.getFormat(), "Signature format should match");
         test.done();

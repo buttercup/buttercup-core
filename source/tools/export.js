@@ -8,6 +8,7 @@ module.exports = {
      */
     exportArchiveToJSON: function(archive) {
         return {
+            type: "buttercup-archive",
             exported: Date.now(),
             format: archive.getFormat(),
             groups: archive
