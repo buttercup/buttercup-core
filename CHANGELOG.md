@@ -2,6 +2,7 @@
 
 | Version | Release date | Changes                                             |
 |---------|--------------|-----------------------------------------------------|
+| 0.21.0  | 07/08/2016   | JSON exporting, datasource to-and-from strings      |
 | 0.20.1  | 17/07/2016   | Datasource classes, workspace save async            |
 | 0.19.0  | 09/04/2016   | iocane external PBKDF2 override support             |
 | 0.18.0  | 03/04/2016   | iocane integration, ES6 support, dropped Node 0.12  |
