@@ -73,6 +73,22 @@
     };
 
     /**
+     * Get the key file path
+     * @returns {string|undefined} Key file path or undefined
+     */
+    Credentials.prototype.getKeyFile = function() {
+        return this.model.get("keyfile");
+    };
+
+    /**
+     * Get the password
+     * @returns {string|undefined} Password or undefined
+     */
+    Credentials.prototype.getPassword = function() {
+        return this.model.get("password");
+    };
+
+    /**
      * Set identity information
      * @param {string} username
      * @param {string} password
@@ -87,13 +103,45 @@
     };
 
     /**
+     * Set a key file.
+     * Credentials that use a keyfile with or instead of a password will allow for
+     * alternate means of authentication
+     * @param {string} keyFilePath The path to the key file
+     * @returns {Credentials} Self
+     */
+    Credentials.prototype.setKeyFile = function(keyFilePath) {
+        this.model.set("keyfile", keyFilePath);
+        return this;
+    };
+
+    /**
+     * Set the password
+     * @param {string} password The password to set
+     * @returns {Credentials} Self
+     */
+    Credentials.prototype.setPassword = function(password) {
+        this.model.set("password", password);
+        return this;
+    };
+
+    /**
      * Set the credentials type (eg. webdav/owncloud etc.)
-     * @param {string} type
+     * @param {string} type The type of credentials
      * @returns {Credentials} Self
      * @memberof Credentials
      */
     Credentials.prototype.setType = function(type) {
         this.model.set("type", type);
+        return this;
+    };
+
+    /**
+     * Set the username
+     * @param {string} username The username to set
+     * @returns {Credentials} Self
+     */
+    Credentials.prototype.setUsername= function(username) {
+        this.model.set("username", username);
         return this;
     };
 
