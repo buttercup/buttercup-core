@@ -34,7 +34,7 @@ module.exports = {
     gettingData: {
 
         getsData: function(test) {
-            let credentials = new Credentials({
+            var credentials = new Credentials({
                 password: "my pass",
                 keyfile: "datafile.bin"
             });
@@ -44,7 +44,7 @@ module.exports = {
         },
 
         getsUndefined: function(test) {
-            let credentials = new Credentials();
+            var credentials = new Credentials();
             test.strictEqual(credentials.getPassword(), undefined, "Password should be undefined");
             test.strictEqual(credentials.getKeyFile(), undefined, "Key file should be undefined");
             test.done();

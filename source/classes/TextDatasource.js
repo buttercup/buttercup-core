@@ -56,7 +56,9 @@
          * @returns {Promise.<Archive>} A promise that resolves with an open archive
          */
         load(credentials) {
-            let { password, keyfile } = processCredentials(credentials);
+            let credentialsData = processCredentials(credentials),
+                password = credentialsData.password,
+                keyfile = credentialsData.keyfile;
             return Promise.resolve(this._content)
                 .then(function(data) {
                     if (!signing.hasValidSignature(data)) {
@@ -101,7 +103,9 @@
          * @returns {Promise.<string>} A promise resolving with the encrypted content
          */
         save(archive, credentials) {
-            let { password, keyfile } = processCredentials(credentials);
+            let credentialsData = processCredentials(credentials),
+                password = credentialsData.password,
+                keyfile = credentialsData.keyfile;
             let history = archive._getWestley().getHistory().join("\n"),
                 compressed = encoding.compress(history);
             return Promise
