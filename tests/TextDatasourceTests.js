@@ -1,8 +1,6 @@
-"use strict";
+var lib = require("../source/module.js");
 
-const lib = require("../source/module.js");
-
-const path = require("path");
+var path = require("path");
 
 var Archive = lib.Archive,
     TextDatasource = lib.TextDatasource,
@@ -10,25 +8,26 @@ var Archive = lib.Archive,
     signing = lib.tools.signing,
     datasourceTools = lib.tools.datasource;
 
-const binFilePath = path.resolve(__dirname, "./_helpers/test.bin");
+var binFilePath = path.resolve(__dirname, "./_helpers/test.bin");
 
 module.exports = {
 
     setUp: function(cb) {
+        var _this = this;
         this.archive = new Archive();
         var group = this.archive.createGroup("main");
         var datasource = new TextDatasource();
         datasource.save(this.archive, "abc123")
-            .then((data) => {
-                this.contentFromPassword = data;
-                return datasource.save(this.archive, new Credentials({ keyfile: binFilePath }));
+            .then(function(data) {
+                _this.contentFromPassword = data;
+                return datasource.save(_this.archive, new Credentials({ keyfile: binFilePath }));
             })
-            .then((data) => {
-                this.contentFromKeyfile = data;
-                return datasource.save(this.archive, new Credentials({ password: "abc123", keyfile: binFilePath }));
+            .then(function(data) {
+                _this.contentFromKeyfile = data;
+                return datasource.save(_this.archive, new Credentials({ password: "abc123", keyfile: binFilePath }));
             })
-            .then((data) => {
-                this.contentFromBoth = data;
+            .then(function(data) {
+                _this.contentFromBoth = data;
             })
             .then(cb)
             .catch(function(err) {
