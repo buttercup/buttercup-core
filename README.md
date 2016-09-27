@@ -79,6 +79,8 @@ var archive = new Buttercup.Archive(),
 datasource.save(archive, creds);
 ```
 
+> Key files can also be passed as buffers.
+
 ### Using a workspace
 
 Workspaces are designed to help manage the necessary archive management tasks that come from creating a user-friendly password management application. Features like remote update merging need to be handled internally, and so the workspace helps manage such complex tasks.

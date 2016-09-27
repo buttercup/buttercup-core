@@ -73,11 +73,11 @@
     };
 
     /**
-     * Get the key file path
-     * @returns {string|undefined} Key file path or undefined
+     * Get the key file path or buffer
+     * @returns {string|Buffer|undefined} Key file path, data buffer, or undefined
      */
     Credentials.prototype.getKeyFile = function() {
-        return this.model.get("keyfile");
+        return this._keyFile ? this._keyFile : this.model.get("keyfile");
     };
 
     /**
@@ -103,14 +103,18 @@
     };
 
     /**
-     * Set a key file.
+     * Set a key file
      * Credentials that use a keyfile with or instead of a password will allow for
-     * alternate means of authentication
-     * @param {string} keyFilePath The path to the key file
+     * alternate means of authentication.
+     * @param {string|Buffer} pathOrBuffer The path to the key file or a buffer with its contents
      * @returns {Credentials} Self
      */
-    Credentials.prototype.setKeyFile = function(keyFilePath) {
-        this.model.set("keyfile", keyFilePath);
+    Credentials.prototype.setKeyFile = function(pathOrBuffer) {
+        if (typeof pathOrBuffer === "string") {
+            this.model.set("keyfile", pathOrBuffer);
+        } else {
+            this._keyFile = pathOrBuffer;
+        }
         return this;
     };
 
