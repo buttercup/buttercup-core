@@ -326,9 +326,9 @@ Set the credentials type (eg. webdav/owncloud etc.)
 **Kind**: instance method of <code>[Credentials](#Credentials)</code>  
 **Returns**: <code>[Credentials](#Credentials)</code> - Self  
 
-| Param | Type |
-| --- | --- |
-| type | <code>string</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| type | <code>string</code> | The type of credentials |
 
 <a name="Credentials+convertToSecureContent"></a>
 
@@ -1195,8 +1195,8 @@ Save an archive with a password to the WebDAV service
 * [TextDatasource](#TextDatasource)
     * [new TextDatasource()](#new_TextDatasource_new)
     * [new TextDatasource(content)](#new_TextDatasource_new)
-    * [.load(password)](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, password)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+    * [.load(credentials)](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>string</code>
 
@@ -1217,7 +1217,7 @@ Constructor for the text datasource
 
 <a name="TextDatasource+load"></a>
 
-### textDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### textDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load from the stored content using a password to decrypt
 
 **Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
@@ -1225,11 +1225,11 @@ Load from the stored content using a password to decrypt
 
 | Param | Type | Description |
 | --- | --- | --- |
-| password | <code>string</code> | The password to decrypt with |
+| credentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or Credentials instance to decrypt with |
 
 <a name="TextDatasource+save"></a>
 
-### textDatasource.save(archive, password) ⇒ <code>Promise.&lt;string&gt;</code>
+### textDatasource.save(archive, credentials) ⇒ <code>Promise.&lt;string&gt;</code>
 Save an archive with a password
 
 **Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
@@ -1238,7 +1238,7 @@ Save an archive with a password
 | Param | Type | Description |
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
-| password | <code>string</code> | The password to encrypt with |
+| credentials | <code>string</code> | The password or Credentials instance to encrypt with |
 
 <a name="TextDatasource+setContent"></a>
 
@@ -1266,8 +1266,8 @@ Output the datasource configuration as a string
 * [TextDatasource](#TextDatasource)
     * [new TextDatasource()](#new_TextDatasource_new)
     * [new TextDatasource(content)](#new_TextDatasource_new)
-    * [.load(password)](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, password)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+    * [.load(credentials)](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>string</code>
 
@@ -1288,7 +1288,7 @@ Constructor for the text datasource
 
 <a name="TextDatasource+load"></a>
 
-### textDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### textDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load from the stored content using a password to decrypt
 
 **Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
@@ -1296,11 +1296,11 @@ Load from the stored content using a password to decrypt
 
 | Param | Type | Description |
 | --- | --- | --- |
-| password | <code>string</code> | The password to decrypt with |
+| credentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or Credentials instance to decrypt with |
 
 <a name="TextDatasource+save"></a>
 
-### textDatasource.save(archive, password) ⇒ <code>Promise.&lt;string&gt;</code>
+### textDatasource.save(archive, credentials) ⇒ <code>Promise.&lt;string&gt;</code>
 Save an archive with a password
 
 **Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
@@ -1309,7 +1309,7 @@ Save an archive with a password
 | Param | Type | Description |
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
-| password | <code>string</code> | The password to encrypt with |
+| credentials | <code>string</code> | The password or Credentials instance to encrypt with |
 
 <a name="TextDatasource+setContent"></a>
 
