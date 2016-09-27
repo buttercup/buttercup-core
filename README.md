@@ -69,6 +69,18 @@ datasource.load("my archive password").then(function(archive) {
 });
 ```
 
+Archives also support saving and loading via key-files, and these can be used instead-of or in combination-with passwords:
+
+```
+var archive = new Buttercup.Archive(),
+    datasource = new Buttercup.FileDatasource("~/myArchive.bcup"),
+    creds = new Buttercup.Credentials({ password: "my password", keyfile: "/home/user/example.bin" });
+
+datasource.save(archive, creds);
+```
+
+> Key files can also be passed as buffers.
+
 ### Using a workspace
 
 Workspaces are designed to help manage the necessary archive management tasks that come from creating a user-friendly password management application. Features like remote update merging need to be handled internally, and so the workspace helps manage such complex tasks.

@@ -73,6 +73,22 @@
     };
 
     /**
+     * Get the key file path or buffer
+     * @returns {string|Buffer|undefined} Key file path, data buffer, or undefined
+     */
+    Credentials.prototype.getKeyFile = function() {
+        return this._keyFile ? this._keyFile : this.model.get("keyfile");
+    };
+
+    /**
+     * Get the password
+     * @returns {string|undefined} Password or undefined
+     */
+    Credentials.prototype.getPassword = function() {
+        return this.model.get("password");
+    };
+
+    /**
      * Set identity information
      * @param {string} username
      * @param {string} password
@@ -87,13 +103,49 @@
     };
 
     /**
+     * Set a key file
+     * Credentials that use a keyfile with or instead of a password will allow for
+     * alternate means of authentication.
+     * @param {string|Buffer} pathOrBuffer The path to the key file or a buffer with its contents
+     * @returns {Credentials} Self
+     */
+    Credentials.prototype.setKeyFile = function(pathOrBuffer) {
+        if (typeof pathOrBuffer === "string") {
+            this.model.set("keyfile", pathOrBuffer);
+        } else {
+            this._keyFile = pathOrBuffer;
+        }
+        return this;
+    };
+
+    /**
+     * Set the password
+     * @param {string} password The password to set
+     * @returns {Credentials} Self
+     */
+    Credentials.prototype.setPassword = function(password) {
+        this.model.set("password", password);
+        return this;
+    };
+
+    /**
      * Set the credentials type (eg. webdav/owncloud etc.)
-     * @param {string} type
+     * @param {string} type The type of credentials
      * @returns {Credentials} Self
      * @memberof Credentials
      */
     Credentials.prototype.setType = function(type) {
         this.model.set("type", type);
+        return this;
+    };
+
+    /**
+     * Set the username
+     * @param {string} username The username to set
+     * @returns {Credentials} Self
+     */
+    Credentials.prototype.setUsername= function(username) {
+        this.model.set("username", username);
         return this;
     };
 
