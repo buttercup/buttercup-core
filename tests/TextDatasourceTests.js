@@ -1,6 +1,7 @@
 var lib = require("../source/module.js");
 
-var path = require("path");
+var path = require("path"),
+    fs = require("fs");
 
 var Archive = lib.Archive,
     TextDatasource = lib.TextDatasource,
@@ -66,6 +67,20 @@ module.exports = {
         loadsFromContentWithBothPasswordAndKeyfile: function(test) {
             var tds = new TextDatasource(this.contentFromBoth);
             tds.load(new Credentials({ password: "abc123", keyfile: binFilePath }))
+                .then(function(archive) {
+                    test.ok(archive instanceof Archive, "Should return an archive");
+                    test.strictEqual(archive.getGroups()[0].getTitle(), "main", "Should contain correct group");
+                    test.done();
+                })
+                .catch(function(err) {
+                    console.error(err);
+                });
+        },
+
+        loadsFromContentWithKeyfileData: function(test) {
+            var keyFileData = fs.readFileSync(binFilePath);
+            var tds = new TextDatasource(this.contentFromKeyfile);
+            tds.load(new Credentials({ keyfile: keyFileData }))
                 .then(function(archive) {
                     test.ok(archive instanceof Archive, "Should return an archive");
                     test.strictEqual(archive.getGroups()[0].getTitle(), "main", "Should contain correct group");
