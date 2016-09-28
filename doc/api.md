@@ -7,9 +7,6 @@
 <dt><a href="#module_command">command</a></dt>
 <dd><p>Command related tools</p>
 </dd>
-<dt><a href="#module_design">design</a></dt>
-<dd><p>Design related tools</p>
-</dd>
 </dl>
 
 ## Classes
@@ -85,11 +82,6 @@ Extract command components from a string
 | Param | Type | Description |
 | --- | --- | --- |
 | command | <code>String</code> | The command to extract from |
-
-<a name="module_design"></a>
-
-## design
-Design related tools
 
 <a name="Archive"></a>
 

@@ -27,7 +27,6 @@
 
         tools: {
             datasource: require("./tools/datasource.js"),
-            design: require("./tools/design.js"),
             encoding: require("./tools/encoding.js"),
             export: require("./tools/export.js"),
             signing: require("./tools/signing.js")

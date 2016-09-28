@@ -14,7 +14,6 @@
         }
     ],
     "scripts": {
-        "build:images": "node resources/prepare-images.js",
         "generate:archive": "node scripts/generate_test_archive.js",
         "generate:docs": "./scripts/generate-docs",
         "test": "npm run test:lint && npm run test:istanbul",
@@ -48,7 +47,6 @@
         "webdav-fs": "~0.4.0"
     },
     "devDependencies": {
-        "base64-img": "~1.0.3",
         "eslint": "^2.2.0",
         "istanbul": "~0.4.2",
         "jsdoc-to-markdown": "~1.2.0",

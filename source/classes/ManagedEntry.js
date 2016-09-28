@@ -324,8 +324,7 @@
     };
 
     ManagedEntry.Attributes = Object.freeze({
-        DisplayType:        "bc_entry_display_type",
-        Icon:                "bc_entry_icon"
+        DisplayType:            "bc_entry_display_type"
     });
 
     /**

@@ -159,25 +159,7 @@ Buttercup.vendor.iocane.components.setPBKDF2(newPBKDF2Function);
 
 Entries and groups have attributes, describing how they should be treated by the various interfaces that interact with the archive. Attributes are not visible to the users and can contain a variety of different properties.
 
-One such use for attributes is the description of how to present the groups and entries to the user - like with item icons.
-
-You can view all of the icons stored in Buttercup by running the following:
-
+For instance, you could get the role of a group like so:
 ```
-var Buttercup = require("buttercup"),
-    images = Buttercup.tools.design
-        .getImageNames()
-        .map(Buttercup.tools.design.getImageData);
-
-images[0] // { "name": "about", "image": "data:image/svg;base64..." }
-```
-
-You can get the various display options for an entry by using the following methods:
-
-```
-var imageDetails = Buttercup.tools.design.getEntryImageDetails(entry);
-// imageDetails === { "name": "key", "image": "data:image..." }
-
-var displayInfo = entry.getDisplayInfo();
-// displayInfo === { "title": "Title", "username": "Username", "password": "Password" }
+let groupRole = group.getAttribute(ManagedGroup.Attributes.Role);
 ```
