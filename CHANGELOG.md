@@ -2,6 +2,7 @@
 
 | Version | Release date | Changes                                             |
 |---------|--------------|-----------------------------------------------------|
+| 0.22.0  | 27/09/2016   | Key file support for encryption & decryption        |
 | 0.21.0  | 07/08/2016   | JSON exporting, datasource to-and-from strings      |
 | 0.20.1  | 17/07/2016   | Datasource classes, workspace save async            |
 | 0.19.0  | 09/04/2016   | iocane external PBKDF2 override support             |
