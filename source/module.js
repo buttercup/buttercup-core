@@ -21,6 +21,7 @@
         FileDatasource: require("./classes/FileDatasource.js"),
         OwnCloudDatasource: require("./classes/OwnCloudDatasource.js"),
         WebDAVDatasource: require("./classes/WebDAVDatasource.js"),
+        ButtercupServerDatasource : require("./classes/ButtercupServerDatasource.js"),
 
         Flattener: require("./classes/Flattener.js"),
         Descriptor: require("./classes/Descriptor.js"),
