@@ -53,16 +53,23 @@
         /**
          * Load from the stored content using a password to decrypt
          * @param {string|Credentials} credentials The password or Credentials instance to decrypt with
+         * @param {Boolean=} emptyCreatesNew Create a new Archive instance if text contents are empty (defaults to false)
          * @returns {Promise.<Archive>} A promise that resolves with an open archive
          */
-        load(credentials) {
+        load(credentials, emptyCreatesNew) {
+            emptyCreatesNew = (emptyCreatesNew === undefined) ? false : emptyCreatesNew;
             let credentialsData = processCredentials(credentials),
                 password = credentialsData.password,
                 keyfile = credentialsData.keyfile;
+            if (this._content.trim().length <= 0) {
+                return emptyCreatesNew ?
+                    new Archive() :
+                    Promise.reject(new Error("Unable to load archive: contents empty"));
+            }
             return Promise.resolve(this._content)
                 .then(function(data) {
                     if (!signing.hasValidSignature(data)) {
-                        return Promise.reject("No valid signature in archive");
+                        return Promise.reject(new Error("No valid signature in archive"));
                     }
                     return signing.stripSignature(data);
                 })

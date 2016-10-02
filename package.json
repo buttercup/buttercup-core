@@ -1,56 +1,57 @@
 {
-    "name": "buttercup",
-    "version": "0.22.0",
-    "description": "A NodeJS password vault.",
-    "main": "source/module.js",
-    "contributors": [
-        {
-            "name": "Perry Mitchell",
-            "email": "perry@perrymitchell.net"
-        },
-        {
-            "name": "Sallar Kaboli",
-            "email": "sallar.kaboli@gmail.com"
-        }
-    ],
-    "scripts": {
-        "generate:archive": "node scripts/generate_test_archive.js",
-        "generate:docs": "./scripts/generate-docs",
-        "test": "npm run test:lint && npm run test:istanbul",
-        "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
-        "test:junit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands --reporter junit --output build",
-        "test:lint": "node node_modules/eslint/bin/eslint.js source/",
-        "test:nodeunit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands"
+  "name": "buttercup",
+  "version": "0.22.0",
+  "description": "A NodeJS password vault.",
+  "main": "source/module.js",
+  "contributors": [
+    {
+      "name": "Perry Mitchell",
+      "email": "perry@perrymitchell.net"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/buttercup-pw/buttercup-core"
-    },
-    "keywords": [
-        "password",
-        "vault",
-        "credentials",
-        "login",
-        "secure"
-    ],
-    "author": "Perry Mitchell <perry@perrymitchell.net>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/buttercup-pw/buttercup-core/issues"
-    },
-    "homepage": "https://github.com/buttercup-pw/buttercup-core#readme",
-    "dependencies": {
-        "clone": "~1.0.2",
-        "gzip-js": "~0.3.2",
-        "iocane": "~0.4.0",
-        "uuid": "~2.0.1",
-        "webdav-fs": "~0.4.0"
-    },
-    "devDependencies": {
-        "eslint": "^2.2.0",
-        "istanbul": "~0.4.2",
-        "jsdoc-to-markdown": "~1.2.0",
-        "nodeunit": "~0.9.1",
-        "walk": "~2.3.9"
+    {
+      "name": "Sallar Kaboli",
+      "email": "sallar.kaboli@gmail.com"
     }
+  ],
+  "scripts": {
+    "generate:archive": "node scripts/generate_test_archive.js",
+    "generate:docs": "./scripts/generate-docs",
+    "test": "npm run test:lint && npm run test:istanbul",
+    "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
+    "test:junit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands --reporter junit --output build",
+    "test:lint": "node node_modules/eslint/bin/eslint.js source/",
+    "test:nodeunit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buttercup-pw/buttercup-core"
+  },
+  "keywords": [
+    "password",
+    "vault",
+    "credentials",
+    "login",
+    "secure"
+  ],
+  "author": "Perry Mitchell <perry@perrymitchell.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/buttercup-pw/buttercup-core/issues"
+  },
+  "homepage": "https://github.com/buttercup-pw/buttercup-core#readme",
+  "dependencies": {
+    "clone": "~1.0.2",
+    "gzip-js": "~0.3.2",
+    "iocane": "~0.4.0",
+    "node-fetch": "~1.6.3",
+    "uuid": "~2.0.1",
+    "webdav-fs": "~0.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^2.2.0",
+    "istanbul": "~0.4.2",
+    "jsdoc-to-markdown": "~1.2.0",
+    "nodeunit": "~0.9.1",
+    "walk": "~2.3.9"
+  }
 }
