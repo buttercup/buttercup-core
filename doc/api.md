@@ -16,6 +16,10 @@
 <dd></dd>
 <dt><a href="#Comparator">Comparator</a></dt>
 <dd></dd>
+<dt><a href="#ButtercupServerDatasource">ButtercupServerDatasource</a> ⇐ <code><a href="#TextDatasource">TextDatasource</a></code></dt>
+<dd></dd>
+<dt><a href="#ButtercupServerDatasource">ButtercupServerDatasource</a></dt>
+<dd></dd>
 <dt><a href="#Credentials">Credentials</a></dt>
 <dd></dd>
 <dt><a href="#FileDatasource">FileDatasource</a> ⇐ <code><a href="#TextDatasource">TextDatasource</a></code></dt>
@@ -268,6 +272,161 @@ Calculate the differences, in commands, between the two archives
 **Kind**: instance method of <code>[Comparator](#Comparator)</code>  
 **Returns**: <code>Object</code> &#124; <code>Boolean</code> - Returns false if no common base
        is found, or the command differences as two arrays  
+<a name="ButtercupServerDatasource"></a>
+
+## ButtercupServerDatasource ⇐ <code>[TextDatasource](#TextDatasource)</code>
+**Kind**: global class  
+**Extends:** <code>[TextDatasource](#TextDatasource)</code>  
+
+* [ButtercupServerDatasource](#ButtercupServerDatasource) ⇐ <code>[TextDatasource](#TextDatasource)</code>
+    * [new ButtercupServerDatasource()](#new_ButtercupServerDatasource_new)
+    * [new ButtercupServerDatasource(address, email, password)](#new_ButtercupServerDatasource_new)
+    * [.load(passwordOrCredentials)](#ButtercupServerDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.save(archive, passwordOrCredentials)](#ButtercupServerDatasource+save) ⇒ <code>Promise</code>
+    * [.toString()](#ButtercupServerDatasource+toString) ⇒ <code>string</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+
+<a name="new_ButtercupServerDatasource_new"></a>
+
+### new ButtercupServerDatasource()
+Datasource for Buttercup server connections
+
+<a name="new_ButtercupServerDatasource_new"></a>
+
+### new ButtercupServerDatasource(address, email, password)
+Constructor for the datasource
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| address | <code>string</code> | The remote address of the server |
+| email | <code>string</code> | The user's email address |
+| password | <code>string</code> | The account password |
+
+<a name="ButtercupServerDatasource+load"></a>
+
+### buttercupServerDatasource.load(passwordOrCredentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+Load an archive
+
+**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
+**Overrides:** <code>[load](#TextDatasource+load)</code>  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A Promise that resolves with an Archive  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| passwordOrCredentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The credentials or password for the archive |
+
+<a name="ButtercupServerDatasource+save"></a>
+
+### buttercupServerDatasource.save(archive, passwordOrCredentials) ⇒ <code>Promise</code>
+Save an archive
+
+**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
+**Overrides:** <code>[save](#TextDatasource+save)</code>  
+**Returns**: <code>Promise</code> - A Promise that resolves when saving is complete  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
+| passwordOrCredentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or credentials for the archive |
+
+<a name="ButtercupServerDatasource+toString"></a>
+
+### buttercupServerDatasource.toString() ⇒ <code>string</code>
+Convert the datasource to a string
+
+**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
+**Overrides:** <code>[toString](#TextDatasource+toString)</code>  
+**Returns**: <code>string</code> - The string representation of the datasource  
+<a name="TextDatasource+setContent"></a>
+
+### buttercupServerDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+Set the text content
+
+**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
+**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>string</code> | The new text content |
+
+<a name="ButtercupServerDatasource"></a>
+
+## ButtercupServerDatasource
+**Kind**: global class  
+
+* [ButtercupServerDatasource](#ButtercupServerDatasource)
+    * [new ButtercupServerDatasource()](#new_ButtercupServerDatasource_new)
+    * [new ButtercupServerDatasource(address, email, password)](#new_ButtercupServerDatasource_new)
+    * [.load(passwordOrCredentials)](#ButtercupServerDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.save(archive, passwordOrCredentials)](#ButtercupServerDatasource+save) ⇒ <code>Promise</code>
+    * [.toString()](#ButtercupServerDatasource+toString) ⇒ <code>string</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+
+<a name="new_ButtercupServerDatasource_new"></a>
+
+### new ButtercupServerDatasource()
+Datasource for Buttercup server connections
+
+<a name="new_ButtercupServerDatasource_new"></a>
+
+### new ButtercupServerDatasource(address, email, password)
+Constructor for the datasource
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| address | <code>string</code> | The remote address of the server |
+| email | <code>string</code> | The user's email address |
+| password | <code>string</code> | The account password |
+
+<a name="ButtercupServerDatasource+load"></a>
+
+### buttercupServerDatasource.load(passwordOrCredentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+Load an archive
+
+**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
+**Overrides:** <code>[load](#TextDatasource+load)</code>  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A Promise that resolves with an Archive  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| passwordOrCredentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The credentials or password for the archive |
+
+<a name="ButtercupServerDatasource+save"></a>
+
+### buttercupServerDatasource.save(archive, passwordOrCredentials) ⇒ <code>Promise</code>
+Save an archive
+
+**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
+**Overrides:** <code>[save](#TextDatasource+save)</code>  
+**Returns**: <code>Promise</code> - A Promise that resolves when saving is complete  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
+| passwordOrCredentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or credentials for the archive |
+
+<a name="ButtercupServerDatasource+toString"></a>
+
+### buttercupServerDatasource.toString() ⇒ <code>string</code>
+Convert the datasource to a string
+
+**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
+**Overrides:** <code>[toString](#TextDatasource+toString)</code>  
+**Returns**: <code>string</code> - The string representation of the datasource  
+<a name="TextDatasource+setContent"></a>
+
+### buttercupServerDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+Set the text content
+
+**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
+**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>string</code> | The new text content |
+
 <a name="Credentials"></a>
 
 ## Credentials
@@ -1187,7 +1346,7 @@ Save an archive with a password to the WebDAV service
 * [TextDatasource](#TextDatasource)
     * [new TextDatasource()](#new_TextDatasource_new)
     * [new TextDatasource(content)](#new_TextDatasource_new)
-    * [.load(credentials)](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>string</code>
@@ -1209,7 +1368,7 @@ Constructor for the text datasource
 
 <a name="TextDatasource+load"></a>
 
-### textDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### textDatasource.load(credentials, [emptyCreatesNew]) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load from the stored content using a password to decrypt
 
 **Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
@@ -1218,6 +1377,7 @@ Load from the stored content using a password to decrypt
 | Param | Type | Description |
 | --- | --- | --- |
 | credentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or Credentials instance to decrypt with |
+| [emptyCreatesNew] | <code>Boolean</code> | Create a new Archive instance if text contents are empty (defaults to false) |
 
 <a name="TextDatasource+save"></a>
 
@@ -1258,7 +1418,7 @@ Output the datasource configuration as a string
 * [TextDatasource](#TextDatasource)
     * [new TextDatasource()](#new_TextDatasource_new)
     * [new TextDatasource(content)](#new_TextDatasource_new)
-    * [.load(credentials)](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>string</code>
@@ -1280,7 +1440,7 @@ Constructor for the text datasource
 
 <a name="TextDatasource+load"></a>
 
-### textDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### textDatasource.load(credentials, [emptyCreatesNew]) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load from the stored content using a password to decrypt
 
 **Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
@@ -1289,6 +1449,7 @@ Load from the stored content using a password to decrypt
 | Param | Type | Description |
 | --- | --- | --- |
 | credentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or Credentials instance to decrypt with |
+| [emptyCreatesNew] | <code>Boolean</code> | Create a new Archive instance if text contents are empty (defaults to false) |
 
 <a name="TextDatasource+save"></a>
 
