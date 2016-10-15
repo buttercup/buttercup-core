@@ -120,7 +120,7 @@
 
     /**
      * Get the group ID
-     * @returns {string}
+     * @returns {string} The ID of the group
      * @memberof ManagedGroup
      */
     ManagedGroup.prototype.getID = function() {
@@ -129,7 +129,7 @@
 
     /**
      * Get the group title
-     * @returns {string}
+     * @returns {string} The title of the group
      * @memberof ManagedGroup
      */
     ManagedGroup.prototype.getTitle = function() {
@@ -203,10 +203,23 @@
 
     /**
      * Export group to object
-     * @returns {Object}
+     * @param {Number} outputFlags Bitwise options for outputting entries and child groups
+     * @returns {Object} The group, in raw object form
      * @memberof ManagedGroup
+     * @example
+     *      // output defaults (entries and sub groups)
+     *      group.toObject()
+     * @example
+     *      // output only entries
+     *      group.toObject(ManagedGroup.OutputFlag.Entries)
+     * @example
+     *      // output only the group info
+     *      group.toObject(ManagedGroup.OutputFlag.OnlyGroup)
      */
-    ManagedGroup.prototype.toObject = function() {
+    ManagedGroup.prototype.toObject = function(outputFlags) {
+        outputFlags = (outputFlags === undefined) ?
+            (ManagedGroup.OutputFlag.Entries | ManagedGroup.OutputFlag.Groups) :
+            outputFlags;
         // @todo use object cloning
         var attributes = {},
             groupAttributes = this._remoteObject.attributes || {};
@@ -215,14 +228,22 @@
                 attributes[attrKey] = groupAttributes[attrKey];
             }
         }
-        return {
+        let output = {
             id: this.getID(),
             title: this.getTitle(),
-            attributes: attributes,
-            entries: this
-                .getEntries()
-                .map((entry) => entry.toObject())
+            attributes: attributes
         };
+        if (outputFlags & ManagedGroup.OutputFlag.Entries) {
+            output.entries = this
+                .getEntries()
+                .map(entry => entry.toObject());
+        }
+        if (outputFlags & ManagedGroup.OutputFlag.Groups) {
+            output.groups = this
+                .getGroups()
+                .map(group => group.toObject())
+        }
+        return output;
     };
 
     /**
@@ -257,7 +278,7 @@
     /**
      * Get the delta managing instance for the archive
      * @protected
-     * @returns {Westley}
+     * @returns {Westley} The internal Westley object
      * @memberof ManagedGroup
      */
     ManagedGroup.prototype._getWestley = function() {
@@ -269,10 +290,24 @@
     });
 
     /**
+     * Bitwise output flags for `toObject` and `toString`
+     * @see toObject
+     * @see toString
+     * @memberof ManagedGroup
+     * @static
+     * @name OutputFlag
+     */
+    ManagedGroup.OutputFlag = Object.freeze({
+        OnlyGroup:  0,
+        Entries:    1,
+        Groups:     2
+    });
+
+    /**
      * Create a new ManagedGroup with a delta-manager and parent group ID
      * @static
      * @memberof ManagedGroup
-     * @param {Archive} archive
+     * @param {Archive} archive The archive to create the group in
      * @param {string=} parentID The parent group ID (default is root)
      * @returns {ManagedGroup} A new group
      */
