@@ -239,7 +239,7 @@ ManagedGroup.prototype.toObject = function(outputFlags) {
     if (outputFlags & ManagedGroup.OutputFlag.Groups) {
         output.groups = this
             .getGroups()
-            .map(group => group.toObject())
+            .map(group => group.toObject(outputFlags))
     }
     return output;
 };
@@ -266,7 +266,7 @@ ManagedGroup.prototype._getArchive = function() {
 /**
  * Get the remotely-managed object (group)
  * @protected
- * @returns {Object}
+ * @returns {Object} The object instance for the group
  * @memberof ManagedGroup
  */
 ManagedGroup.prototype._getRemoteObject = function() {
