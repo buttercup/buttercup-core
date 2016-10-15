@@ -1,5 +1,5 @@
 language: node_js
-script: npm test:ci
+script: npm run test:ci
 node_js:
   - "6.3"
   - "6.2"
