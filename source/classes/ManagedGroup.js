@@ -246,11 +246,13 @@ ManagedGroup.prototype.toObject = function(outputFlags) {
 
 /**
  * Export the group to a JSON string
+ * @param {Number} outputFlags Output configuration flags to pass to `toObject`
  * @returns {string} The group (and entries) in JSON string format
  * @memberof ManagedGroup
+ * @see toObject
  */
-ManagedGroup.prototype.toString = function() {
-    return JSON.stringify(this.toObject());
+ManagedGroup.prototype.toString = function(outputFlags) {
+    return JSON.stringify(this.toObject(outputFlags));
 };
 
 /**
