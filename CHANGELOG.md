@@ -2,6 +2,7 @@
 
 | Version | Release date | Changes                                             |
 |---------|--------------|-----------------------------------------------------|
+| 0.24.0  | 15/10/2016   | Group `toObject` upgrade for deep output            |
 | 0.23.0  | 02/10/2016   | Buttercup server integration (datasource)           |
 | 0.22.0  | 27/09/2016   | Key file support for encryption & decryption        |
 | 0.21.0  | 07/08/2016   | JSON exporting, datasource to-and-from strings      |
