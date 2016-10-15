@@ -239,18 +239,20 @@ ManagedGroup.prototype.toObject = function(outputFlags) {
     if (outputFlags & ManagedGroup.OutputFlag.Groups) {
         output.groups = this
             .getGroups()
-            .map(group => group.toObject())
+            .map(group => group.toObject(outputFlags))
     }
     return output;
 };
 
 /**
  * Export the group to a JSON string
+ * @param {Number} outputFlags Output configuration flags to pass to `toObject`
  * @returns {string} The group (and entries) in JSON string format
  * @memberof ManagedGroup
+ * @see toObject
  */
-ManagedGroup.prototype.toString = function() {
-    return JSON.stringify(this.toObject());
+ManagedGroup.prototype.toString = function(outputFlags) {
+    return JSON.stringify(this.toObject(outputFlags));
 };
 
 /**
@@ -266,7 +268,7 @@ ManagedGroup.prototype._getArchive = function() {
 /**
  * Get the remotely-managed object (group)
  * @protected
- * @returns {Object}
+ * @returns {Object} The object instance for the group
  * @memberof ManagedGroup
  */
 ManagedGroup.prototype._getRemoteObject = function() {
