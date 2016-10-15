@@ -62,7 +62,7 @@
     /**
      * Create a new group
      * @param {string=} title The title for the group
-     * @returns {ManagedGroup}
+     * @returns {ManagedGroup} The newly created group
      * @memberof Archive
      */
     Archive.prototype.createGroup = function(title) {
@@ -77,7 +77,7 @@
      * Find entries that match a certain meta property
      * @param {string} metaName The meta property to search for
      * @param {RegExp|string} value The value to search for
-     * @returns {Array.<ManagedEntry>}
+     * @returns {Array.<ManagedEntry>} An array of found entries
      * @memberof Archive
      */
     Archive.prototype.findEntriesByMeta = function(metaName, value) {
@@ -88,7 +88,7 @@
      * Find all entries that match a certain property
      * @param {string} property The property to search with
      * @param {RegExp|string} value The value to search for
-     * @returns {Array.<ManagedEntry>}
+     * @returns {Array.<ManagedEntry>} An array of found extries
      * @memberof Archive
      */
     Archive.prototype.findEntriesByProperty = function(property, value) {
@@ -99,7 +99,7 @@
      * Find all groups within the archive that match a title
      * @param {RegExp|string} title The title to search for, either a string (contained within
      *  a target group's title) or a RegExp to test against the title.
-     * @returns {Array.<ManagedGroup>}
+     * @returns {Array.<ManagedGroup>} An array of found groups
      * @memberof Archive
      */
     Archive.prototype.findGroupsByTitle = function(title) {
@@ -117,8 +117,8 @@
 
     /**
      * Find an entry by its ID
-     * @param {String} The entry's ID
-     * @returns {ManagedEntry|null}
+     * @param {String} entryID The entry's ID
+     * @returns {ManagedEntry|null} The found entry or null
      * @memberof Archive
      */
     Archive.prototype.getEntryByID = function(entryID) {
