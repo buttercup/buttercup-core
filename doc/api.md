@@ -95,12 +95,11 @@ Extract command components from a string
 * [Archive](#Archive)
     * [new Archive()](#new_Archive_new)
     * _instance_
-        * ~~[.containsGroupWithTitle(The)](#Archive+containsGroupWithTitle) ⇒ <code>true</code> &#124; <code>false</code>~~
         * [.createGroup([title])](#Archive+createGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
         * [.findEntriesByMeta(metaName, value)](#Archive+findEntriesByMeta) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
         * [.findEntriesByProperty(property, value)](#Archive+findEntriesByProperty) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
         * [.findGroupsByTitle(title)](#Archive+findGroupsByTitle) ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
-        * [.getEntryByID(The)](#Archive+getEntryByID) ⇒ <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code>
+        * [.getEntryByID(entryID)](#Archive+getEntryByID) ⇒ <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code>
         * [.getFormat()](#Archive+getFormat) ⇒ <code>string</code>
         * [.getGroupByID(The)](#Archive+getGroupByID) ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
         * [.getGroups()](#Archive+getGroups) ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
@@ -115,26 +114,13 @@ Extract command components from a string
 ### new Archive()
 The base Buttercup Archive class
 
-<a name="Archive+containsGroupWithTitle"></a>
-
-### ~~archive.containsGroupWithTitle(The) ⇒ <code>true</code> &#124; <code>false</code>~~
-***Deprecated***
-
-Whether or not this archive has a group with the given title.
-
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**See**: findGroupsByTitle  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| The | <code>String</code> | group's title |
-
 <a name="Archive+createGroup"></a>
 
 ### archive.createGroup([title]) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
 Create a new group
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[ManagedGroup](#ManagedGroup)</code> - The newly created group  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -146,6 +132,7 @@ Create a new group
 Find entries that match a certain meta property
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code> - An array of found entries  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -158,6 +145,7 @@ Find entries that match a certain meta property
 Find all entries that match a certain property
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code> - An array of found extries  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -170,6 +158,7 @@ Find all entries that match a certain property
 Find all groups within the archive that match a title
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code> - An array of found groups  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -177,14 +166,15 @@ Find all groups within the archive that match a title
 
 <a name="Archive+getEntryByID"></a>
 
-### archive.getEntryByID(The) ⇒ <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code>
+### archive.getEntryByID(entryID) ⇒ <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code>
 Find an entry by its ID
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code> - The found entry or null  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| The | <code>String</code> | entry's ID |
+| entryID | <code>String</code> | The entry's ID |
 
 <a name="Archive+getFormat"></a>
 
@@ -954,12 +944,14 @@ Create a new entry
         * [.isTrash()](#ManagedGroup+isTrash) ⇒ <code>boolean</code>
         * [.moveToGroup(group)](#ManagedGroup+moveToGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
         * [.setAttribute(attributeName, value)](#ManagedGroup+setAttribute) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
-        * [.toObject()](#ManagedGroup+toObject) ⇒ <code>Object</code>
+        * [.setTitle(title)](#ManagedGroup+setTitle) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
+        * [.toObject(outputFlags)](#ManagedGroup+toObject) ⇒ <code>Object</code>
         * [.toString()](#ManagedGroup+toString) ⇒ <code>string</code>
         * [._getArchive()](#ManagedGroup+_getArchive) ⇒ <code>[Archive](#Archive)</code>
         * [._getRemoteObject()](#ManagedGroup+_getRemoteObject) ⇒ <code>Object</code>
         * [._getWestley()](#ManagedGroup+_getWestley) ⇒ <code>[Westley](#Westley)</code>
     * _static_
+        * [.OutputFlag](#ManagedGroup.OutputFlag)
         * [.createNew(archive, [parentID])](#ManagedGroup.createNew) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
 
 <a name="new_ManagedGroup_new"></a>
@@ -1045,12 +1037,14 @@ Get the groups within the group
 Get the group ID
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
+**Returns**: <code>string</code> - The ID of the group  
 <a name="ManagedGroup+getTitle"></a>
 
 ### managedGroup.getTitle() ⇒ <code>string</code>
 Get the group title
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
+**Returns**: <code>string</code> - The title of the group  
 <a name="ManagedGroup+isTrash"></a>
 
 ### managedGroup.isTrash() ⇒ <code>boolean</code>
@@ -1082,12 +1076,45 @@ Set an attribute
 | attributeName | <code>string</code> | The name of the attribute |
 | value | <code>string</code> | The value to set |
 
+<a name="ManagedGroup+setTitle"></a>
+
+### managedGroup.setTitle(title) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
+Set the group title
+
+**Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
+**Returns**: <code>[ManagedGroup](#ManagedGroup)</code> - Returns self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| title | <code>string</code> | The title of the group |
+
 <a name="ManagedGroup+toObject"></a>
 
-### managedGroup.toObject() ⇒ <code>Object</code>
+### managedGroup.toObject(outputFlags) ⇒ <code>Object</code>
 Export group to object
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
+**Returns**: <code>Object</code> - The group, in raw object form  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| outputFlags | <code>Number</code> | Bitwise options for outputting entries and child groups |
+
+**Example**  
+```js
+// output defaults (entries and sub groups)
+     group.toObject()
+```
+**Example**  
+```js
+// output only entries
+     group.toObject(ManagedGroup.OutputFlag.Entries)
+```
+**Example**  
+```js
+// output only the group info
+     group.toObject(ManagedGroup.OutputFlag.OnlyGroup)
+```
 <a name="ManagedGroup+toString"></a>
 
 ### managedGroup.toString() ⇒ <code>string</code>
@@ -1115,7 +1142,19 @@ Get the remotely-managed object (group)
 Get the delta managing instance for the archive
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
+**Returns**: <code>[Westley](#Westley)</code> - The internal Westley object  
 **Access:** protected  
+<a name="ManagedGroup.OutputFlag"></a>
+
+### ManagedGroup.OutputFlag
+Bitwise output flags for `toObject` and `toString`
+
+**Kind**: static property of <code>[ManagedGroup](#ManagedGroup)</code>  
+**See**
+
+- toObject
+- toString
+
 <a name="ManagedGroup.createNew"></a>
 
 ### ManagedGroup.createNew(archive, [parentID]) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
@@ -1126,7 +1165,7 @@ Create a new ManagedGroup with a delta-manager and parent group ID
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> |  |
+| archive | <code>[Archive](#Archive)</code> | The archive to create the group in |
 | [parentID] | <code>string</code> | The parent group ID (default is root) |
 
 <a name="Model"></a>
