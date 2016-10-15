@@ -60,18 +60,6 @@
     };
 
     /**
-     * Whether or not this archive has a group with the given title.
-     * @param {String} The group's title
-     * @returns {true|false}
-     * @deprecated Use findGroupsByTitle instead
-     * @see findGroupsByTitle
-     * @memberof Archive
-     */
-    Archive.prototype.containsGroupWithTitle = function(groupTitle) {
-        return this.findGroupsByTitle(groupTitle).length > 0;
-    };
-
-    /**
      * Create a new group
      * @param {string=} title The title for the group
      * @returns {ManagedGroup}
