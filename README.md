@@ -4,7 +4,7 @@ A NodeJS password vault.
 
 [![Buttercup](https://buttercup.pw/buttercup.svg)](https://buttercup.pw) [![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) ![node min version](https://img.shields.io/badge/node-%3E%3D%204.4-lightgrey.svg) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC-red.svg)](https://tools.ietf.org/html/rfc3602) [![Join the chat at https://gitter.im/buttercup-pw/buttercup-core](https://badges.gitter.im/buttercup-pw/buttercup-core.svg)](https://gitter.im/buttercup-pw/buttercup-core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Build Status](https://travis-ci.org/buttercup-pw/buttercup-core.svg?branch=master)](https://travis-ci.org/buttercup-pw/buttercup-core) [![Code Climate](https://codeclimate.com/github/buttercup-pw/buttercup-core/badges/gpa.svg)](https://codeclimate.com/github/buttercup-pw/buttercup-core)
+[![Build Status](https://travis-ci.org/buttercup-pw/buttercup-core.svg?branch=master)](https://travis-ci.org/buttercup-pw/buttercup-core) [![Code Climate](https://codeclimate.com/github/buttercup-pw/buttercup-core/badges/gpa.svg)](https://codeclimate.com/github/buttercup-pw/buttercup-core) [![Test Coverage](https://codeclimate.com/github/buttercup-pw/buttercup-core/badges/coverage.svg)](https://codeclimate.com/github/buttercup-pw/buttercup-core/coverage)
 
 [![NPM](https://nodei.co/npm/buttercup.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/buttercup/)
 [![NPM](https://nodei.co/npm-dl/buttercup.png?months=3)](https://nodei.co/npm/buttercup/)
