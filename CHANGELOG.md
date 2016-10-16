@@ -1,5 +1,13 @@
 # Buttercup-core release change-log
 
+## v0.25.0
+_2016-10-16_
+
+ * Entry deletion improved (trash and then deleted)
+ * Group deletion improved (trash and then deleted)
+ * Fixed group `toObject` not passing options to recursive calls
+ * Group `toString` takes `toObject` output options
+
 ## v0.24.0
 _2016-10-15_
 
