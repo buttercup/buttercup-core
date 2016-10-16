@@ -43,20 +43,24 @@
      */
     ManagedEntry.prototype.delete = function() {
         var trashGroup = this._getArchive().getTrashGroup(),
-            parentGroup = this.getGroup();
-        if (trashGroup && parentGroup && !parentGroup.isTrash()) {
+            parentGroup = this.getGroup(),
+            canTrash = (trashGroup && parentGroup) &&
+                (!parentGroup.isTrash() && !parentGroup.isInTrash());
+        if (canTrash) {
             // trash it
             this.moveToGroup(trashGroup);
-        } else {
-            this._getWestley().execute(
-                Inigo.create(Inigo.Command.DeleteEntry)
-                    .addArgument(this.getID())
-                    .generateCommand()
-            );
-            this._getWestley().pad();
-            delete this._westley;
-            delete this._remoteObject;
+            return false;
         }
+        // delete it
+        this._getWestley().execute(
+            Inigo.create(Inigo.Command.DeleteEntry)
+                .addArgument(this.getID())
+                .generateCommand()
+        );
+        this._getWestley().pad();
+        delete this._westley;
+        delete this._remoteObject;
+        return true;
     };
 
     /**
