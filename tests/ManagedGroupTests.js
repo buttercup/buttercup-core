@@ -33,8 +33,8 @@ module.exports = {
 
         this.moveGroup = groupTestArchive.createGroup("Mover");
 
-        var group3Archive = new Archive();
-        this.group3 = group3Archive.createGroup("My group");
+        this.group3Archive = Archive.createWithDefaults();
+        this.group3 = this.group3Archive.createGroup("My group");
         this.group3.createGroup("sub1");
         this.group3.createGroup("sub2");
         this.group3.createEntry("entry1");
@@ -44,7 +44,7 @@ module.exports = {
 
     delete: {
 
-        testDeletesGroup: function(test) {
+        deletesGroup: function(test) {
             var target = this.group2.createGroup("To delete");
             test.strictEqual(this.group2.getGroups().length, 1, "Target group should be a child");
             target.delete();
@@ -52,7 +52,7 @@ module.exports = {
             test.done();
         },
 
-        testThrowsForTrashGroup: function(test) {
+        throwsForTrashGroup: function(test) {
             var target = this.group2
                 .createGroup("To delete")
                     .setAttribute(ManagedGroup.Attributes.Role, "trash");
@@ -60,6 +60,15 @@ module.exports = {
                 target.delete();
             }, null, "delete should throw an error");
             test.strictEqual(this.group2.getGroups().length, 1, "Target group should not have been deleted");
+            test.done();
+        },
+
+        movesToTrashThenDeletes: function(test) {
+            var deleted = this.group3.delete();
+            test.strictEqual(deleted, false, "Should not have deleted");
+            test.strictEqual(this.group3.isInTrash(), true, "Should have been moved to trash");
+            deleted = this.group3.delete();
+            test.strictEqual(deleted, true, "Should have been deleted");
             test.done();
         }
 
@@ -85,6 +94,17 @@ module.exports = {
 
     },
 
+    getGroupByID: {
+
+        getsASubGroup: function(test) {
+            var newGroup = this.group3.createGroup("sub");
+            var foundGroup = this.group3.getGroupByID(newGroup.getID());
+            test.strictEqual(foundGroup.getID(), newGroup.getID(), "Group should be found");
+            test.done();
+        }
+
+    },
+
     getID: {
 
         testGetsID: function(test) {
@@ -98,6 +118,30 @@ module.exports = {
 
         testGetsTitle: function(test) {
             test.strictEqual(this.group2.getTitle(), "Main", "Title should be correct");
+            test.done();
+        }
+
+    },
+
+    isInTrash: {
+
+        detectsWhenInTrash: function(test) {
+            var mainGroup = this.group3,
+                trash = this.group3Archive.getTrashGroup();
+            test.strictEqual(mainGroup.isInTrash(), false, "Should not be in trash first up");
+            mainGroup.moveToGroup(trash);
+            test.strictEqual(mainGroup.isInTrash(), true, "Should be in trash after moving");
+            test.done();
+        }
+
+    },
+
+    isTrash: {
+
+        returnsCorrectly: function(test) {
+            test.strictEqual(this.group2.isTrash(), false, "Group should not be trash yet");
+            this.group2.setAttribute(ManagedGroup.Attributes.Role, "trash");
+            test.strictEqual(this.group2.isTrash(), true, "Group should be trash");
             test.done();
         }
 
@@ -117,17 +161,6 @@ module.exports = {
             test.throws(function() {
                 this.moveGroup.moveToGroup(this.group2);
             }, null, "Should throw when trying to move");
-            test.done();
-        }
-
-    },
-
-    isTrash: {
-
-        returnsCorrectly: function(test) {
-            test.strictEqual(this.group2.isTrash(), false, "Group should not be trash yet");
-            this.group2.setAttribute(ManagedGroup.Attributes.Role, "trash");
-            test.strictEqual(this.group2.isTrash(), true, "Group should be trash");
             test.done();
         }
 

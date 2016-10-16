@@ -49,12 +49,24 @@ class ManagedGroup {
 
     /**
      * Delete the group
+     * If there is a trash group available, the group is moved there. If the group
+     * is already in the trash, it is deleted permanently.
      * @memberof ManagedGroup
+     * @returns {Boolean} True when deleted, false when moved to trash
      */
     delete() {
         if (this.isTrash()) {
             throw new Error("Trash group cannot be deleted");
         }
+        var trashGroup = this._getArchive().getTrashGroup(),
+            hasTrash = (trashGroup !== null),
+            inTrash = this.isInTrash();
+        if (!inTrash && hasTrash) {
+            // Not in trash, and a trash group exists, so move it there
+            this.moveToGroup(trashGroup);
+            return false;
+        }
+        // No trash or already in trash, so just delete
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteGroup)
                 .addArgument(this.getID())
@@ -63,6 +75,7 @@ class ManagedGroup {
         this._getWestley().pad();
         delete this._westley;
         delete this._remoteObject;
+        return true;
     }
 
     /**
@@ -107,8 +120,20 @@ class ManagedGroup {
     }
 
     /**
+     * Get a child group (deep) by its ID
+     * @param {String} groupID The ID of the group to get
+     * @returns {ManagedGroup|null} The found group or null
+     * @memberof ManagedGroup
+     */
+    getGroupByID(groupID) {
+        let groupRaw = searching
+            .findGroupByID((this._getRemoteObject().groups || []), groupID);
+        return (groupRaw === null) ? null : new ManagedGroup(this._getArchive(), groupRaw);
+    }
+
+    /**
      * Get the groups within the group
-     * @returns {Array.<ManagedGroup>}
+     * @returns {Array.<ManagedGroup>} An array of child groups
      * @memberof ManagedGroup
      */
     getGroups() {
@@ -137,8 +162,21 @@ class ManagedGroup {
     }
 
     /**
-     * Check if the current group is used for trash
-     * @returns {boolean}
+     * Check if the group is in the trash
+     * @returns {Boolean} Whether or not the group is within the trash group
+     */
+    isInTrash() {
+        let trash = this._getArchive().getTrashGroup();
+        if (trash) {
+            let thisGroup = trash.getGroupByID(this.getID());
+            return (thisGroup !== null);
+        }
+        return false;
+    }
+
+    /**
+     * Check if the group is used for trash
+     * @returns {Boolean} Whether or not the group is the trash group
      * @memberof ManagedGroup
      */
     isTrash() {
