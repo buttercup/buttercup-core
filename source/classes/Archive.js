@@ -1,49 +1,45 @@
-(function(module) {
+"use strict";
 
-    "use strict";
+var Westley = require("./Westley.js"),
+    Inigo = require("./InigoGenerator.js"),
+    Flattener = require("./Flattener.js"),
+    ManagedGroup = require("./ManagedGroup.js"),
+    ManagedEntry = require("./ManagedEntry.js");
 
-    var Westley = require("./Westley.js"),
-        Inigo = require("./InigoGenerator.js"),
-        Flattener = require("./Flattener.js"),
-        ManagedGroup = require("./ManagedGroup.js"),
-        ManagedEntry = require("./ManagedEntry.js");
+var signing = require("../tools/signing.js"),
+    rawSearching = require("../tools/searching-raw.js"),
+    instanceSearching = require("../tools/searching-instance.js");
 
-    var signing = require("../tools/signing.js"),
-        rawSearching = require("../tools/searching-raw.js"),
-        instanceSearching = require("../tools/searching-instance.js");
-
-    /**
-     * Find entries by searching properties/meta
-     * @param {Archive} archive
-     * @param {string} check Information to check (property/meta)
-     * @param {string} key The key (property/meta-value) to search with
-     * @param {RegExp|string} value The value to search for
-     * @returns {Array.<ManagedEntry>}
-     * @private
-     * @static
-     * @memberof Archive
-     */
-    function findEntriesByCheck(archive, check, key, value) {
-        return instanceSearching.findEntriesByCheck(
-            archive.getGroups(),
-            function(entry) {
-                var itemValue = (check === "property") ?
-                    entry.getProperty(key) || "" :
-                    entry.getMeta(key) || "";
-                if (value instanceof RegExp) {
-                    return value.test(itemValue);
-                } else {
-                    return itemValue.indexOf(value) >= 0;
-                }
+/**
+ * Find entries by searching properties/meta
+ * @param {Archive} archive
+ * @param {string} check Information to check (property/meta)
+ * @param {string} key The key (property/meta-value) to search with
+ * @param {RegExp|string} value The value to search for
+ * @returns {Array.<ManagedEntry>} An array of found entries
+ * @private
+ * @static
+ * @memberof Archive
+ */
+function findEntriesByCheck(archive, check, key, value) {
+    return instanceSearching.findEntriesByCheck(
+        archive.getGroups(),
+        function(entry) {
+            var itemValue = (check === "property") ?
+                entry.getProperty(key) || "" :
+                entry.getMeta(key) || "";
+            if (value instanceof RegExp) {
+                return value.test(itemValue);
+            } else {
+                return itemValue.indexOf(value) >= 0;
             }
-        );
-    }
+        }
+    );
+}
 
-    /**
-     * The base Buttercup Archive class
-     * @class Archive
-     */
-    var Archive = function() {
+class Archive {
+
+    constructor() {
         var date = new Date(),
             ts = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
         this._westley = new Westley();
@@ -57,7 +53,7 @@
                 .addArgument(signing.getFormat())
                 .generateCommand()
         );
-    };
+    }
 
     /**
      * Create a new group
@@ -65,13 +61,13 @@
      * @returns {ManagedGroup} The newly created group
      * @memberof Archive
      */
-    Archive.prototype.createGroup = function(title) {
+    createGroup(title) {
         var managedGroup = ManagedGroup.createNew(this);
         if (title) {
             managedGroup.setTitle(title);
         }
         return managedGroup;
-    };
+    }
 
     /**
      * Find entries that match a certain meta property
@@ -80,9 +76,9 @@
      * @returns {Array.<ManagedEntry>} An array of found entries
      * @memberof Archive
      */
-    Archive.prototype.findEntriesByMeta = function(metaName, value) {
+    findEntriesByMeta(metaName, value) {
         return findEntriesByCheck(this, "meta", metaName, value);
-    };
+    }
 
     /**
      * Find all entries that match a certain property
@@ -91,9 +87,9 @@
      * @returns {Array.<ManagedEntry>} An array of found extries
      * @memberof Archive
      */
-    Archive.prototype.findEntriesByProperty = function(property, value) {
+    findEntriesByProperty(property, value) {
         return findEntriesByCheck(this, "property", property, value);
-    };
+    }
 
     /**
      * Find all groups within the archive that match a title
@@ -102,7 +98,7 @@
      * @returns {Array.<ManagedGroup>} An array of found groups
      * @memberof Archive
      */
-    Archive.prototype.findGroupsByTitle = function(title) {
+    findGroupsByTitle(title) {
         return instanceSearching.findGroupsByCheck(
             this.getGroups(),
             function(group) {
@@ -113,7 +109,7 @@
                 }
             }
         );
-    };
+    }
 
     /**
      * Find an entry by its ID
@@ -121,20 +117,20 @@
      * @returns {ManagedEntry|null} The found entry or null
      * @memberof Archive
      */
-    Archive.prototype.getEntryByID = function(entryID) {
-        var westley = this._getWestley();
-        var entryRaw = rawSearching.findEntryByID(westley.getDataset().groups, entryID);
+    getEntryByID(entryID) {
+        var westley = this._getWestley(),
+            entryRaw = rawSearching.findEntryByID(westley.getDataset().groups, entryID);
         return (entryRaw === null) ? null : new ManagedEntry(this, entryRaw);
-    };
+    }
 
     /**
      * Get the archive format
      * @returns {string} The format of the archive
      * @memberof Archive
      */
-    Archive.prototype.getFormat = function() {
+    getFormat() {
         return this._getWestley().getDataset().format;
-    };
+    }
 
     /**
      * Find a group by its ID
@@ -142,31 +138,31 @@
      * @returns {ManagedGroup|null}
      * @memberof Archive
      */
-    Archive.prototype.getGroupByID = function(groupID) {
-        var westley = this._getWestley();
-        var groupRaw = rawSearching.findGroupByID(westley.getDataset().groups, groupID);
+    getGroupByID(groupID) {
+        var westley = this._getWestley(),
+            groupRaw = rawSearching.findGroupByID(westley.getDataset().groups, groupID);
         return (groupRaw === null) ? null : new ManagedGroup(this, groupRaw);
-    };
+    }
 
     /**
      * Get all groups (root) in the archive
      * @returns {ManagedGroup[]} An array of ManagedGroups
      * @memberof Archive
      */
-    Archive.prototype.getGroups = function() {
+    getGroups() {
         var archive = this,
             westley = this._getWestley();
         return (westley.getDataset().groups || []).map(function(rawGroup) {
             return new ManagedGroup(archive, rawGroup);
         });
-    };
+    }
 
     /**
      * Get the trash group
      * @returns {ManagedGroup|null}
      * @memberof Archive
      */
-    Archive.prototype.getTrashGroup = function() {
+    getTrashGroup() {
         var groups = this.getGroups();
         for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
             if (groups[i].isTrash()) {
@@ -174,18 +170,18 @@
             }
         }
         return null;
-    };
+    }
 
     /**
      * Perform archive optimisations
      * @memberof Archive
      */
-    Archive.prototype.optimise = function() {
+    optimise() {
         var flattener = new Flattener(this._getWestley());
         if (flattener.canBeFlattened()) {
             flattener.flatten();
         }
-    };
+    }
 
     /**
      * Get the underlying Westley instance
@@ -193,25 +189,25 @@
      * @returns {Westley}
      * @memberof Archive
      */
-    Archive.prototype._getWestley = function() {
+    _getWestley() {
         return this._westley;
-    };
+    }
 
-    /**
-     * Create an Archive with the default template
-     * @returns {Archive} The new archive
-     * @memberof Archive
-     * @static
-     */
-    Archive.createWithDefaults = function() {
-        var archive = new Archive(),
-            generalGroup = archive.createGroup("General"),
-            trashGroup = archive
-                .createGroup("Trash")
-                    .setAttribute(ManagedGroup.Attributes.Role, "trash");
-        return archive;
-    };
+}
 
-    module.exports = Archive;
+/**
+ * Create an Archive with the default template
+ * @returns {Archive} The new archive
+ * @memberof Archive
+ * @static
+ */
+Archive.createWithDefaults = function() {
+    var archive = new Archive(),
+        generalGroup = archive.createGroup("General"),
+        trashGroup = archive
+            .createGroup("Trash")
+                .setAttribute(ManagedGroup.Attributes.Role, "trash");
+    return archive;
+};
 
-})(module);
+module.exports = Archive;
