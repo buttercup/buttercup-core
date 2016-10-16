@@ -49,12 +49,24 @@ class ManagedGroup {
 
     /**
      * Delete the group
+     * If there is a trash group available, the group is moved there. If the group
+     * is already in the trash, it is deleted permanently.
      * @memberof ManagedGroup
+     * @returns {Boolean} True when deleted, false when moved to trash
      */
     delete() {
         if (this.isTrash()) {
             throw new Error("Trash group cannot be deleted");
         }
+        var trashGroup = this._getArchive().getTrashGroup(),
+            hasTrash = (trashGroup !== null),
+            inTrash = this.isInTrash();
+        if (!inTrash && hasTrash) {
+            // Not in trash, and a trash group exists, so move it there
+            this.moveToGroup(trashGroup);
+            return false;
+        }
+        // No trash or already in trash, so just delete
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteGroup)
                 .addArgument(this.getID())
@@ -63,6 +75,7 @@ class ManagedGroup {
         this._getWestley().pad();
         delete this._westley;
         delete this._remoteObject;
+        return true;
     }
 
     /**

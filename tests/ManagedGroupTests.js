@@ -44,7 +44,7 @@ module.exports = {
 
     delete: {
 
-        testDeletesGroup: function(test) {
+        deletesGroup: function(test) {
             var target = this.group2.createGroup("To delete");
             test.strictEqual(this.group2.getGroups().length, 1, "Target group should be a child");
             target.delete();
@@ -52,7 +52,7 @@ module.exports = {
             test.done();
         },
 
-        testThrowsForTrashGroup: function(test) {
+        throwsForTrashGroup: function(test) {
             var target = this.group2
                 .createGroup("To delete")
                     .setAttribute(ManagedGroup.Attributes.Role, "trash");
@@ -60,6 +60,15 @@ module.exports = {
                 target.delete();
             }, null, "delete should throw an error");
             test.strictEqual(this.group2.getGroups().length, 1, "Target group should not have been deleted");
+            test.done();
+        },
+
+        movesToTrashThenDeletes: function(test) {
+            var deleted = this.group3.delete();
+            test.strictEqual(deleted, false, "Should not have deleted");
+            test.strictEqual(this.group3.isInTrash(), true, "Should have been moved to trash");
+            deleted = this.group3.delete();
+            test.strictEqual(deleted, true, "Should have been deleted");
             test.done();
         }
 
