@@ -134,8 +134,8 @@ class Archive {
 
     /**
      * Find a group by its ID
-     * @param {String} The group's ID
-     * @returns {ManagedGroup|null}
+     * @param {String} groupID The group's ID
+     * @returns {ManagedGroup|null} The group with the provided ID
      * @memberof Archive
      */
     getGroupByID(groupID) {

@@ -33,8 +33,8 @@ module.exports = {
 
         this.moveGroup = groupTestArchive.createGroup("Mover");
 
-        var group3Archive = new Archive();
-        this.group3 = group3Archive.createGroup("My group");
+        this.group3Archive = Archive.createWithDefaults();
+        this.group3 = this.group3Archive.createGroup("My group");
         this.group3.createGroup("sub1");
         this.group3.createGroup("sub2");
         this.group3.createEntry("entry1");
@@ -85,6 +85,17 @@ module.exports = {
 
     },
 
+    getGroupByID: {
+
+        getsASubGroup: function(test) {
+            var newGroup = this.group3.createGroup("sub");
+            var foundGroup = this.group3.getGroupByID(newGroup.getID());
+            test.strictEqual(foundGroup.getID(), newGroup.getID(), "Group should be found");
+            test.done();
+        }
+
+    },
+
     getID: {
 
         testGetsID: function(test) {
@@ -98,6 +109,30 @@ module.exports = {
 
         testGetsTitle: function(test) {
             test.strictEqual(this.group2.getTitle(), "Main", "Title should be correct");
+            test.done();
+        }
+
+    },
+
+    isInTrash: {
+
+        detectsWhenInTrash: function(test) {
+            var mainGroup = this.group3,
+                trash = this.group3Archive.getTrashGroup();
+            test.strictEqual(mainGroup.isInTrash(), false, "Should not be in trash first up");
+            mainGroup.moveToGroup(trash);
+            test.strictEqual(mainGroup.isInTrash(), true, "Should be in trash after moving");
+            test.done();
+        }
+
+    },
+
+    isTrash: {
+
+        returnsCorrectly: function(test) {
+            test.strictEqual(this.group2.isTrash(), false, "Group should not be trash yet");
+            this.group2.setAttribute(ManagedGroup.Attributes.Role, "trash");
+            test.strictEqual(this.group2.isTrash(), true, "Group should be trash");
             test.done();
         }
 
@@ -117,17 +152,6 @@ module.exports = {
             test.throws(function() {
                 this.moveGroup.moveToGroup(this.group2);
             }, null, "Should throw when trying to move");
-            test.done();
-        }
-
-    },
-
-    isTrash: {
-
-        returnsCorrectly: function(test) {
-            test.strictEqual(this.group2.isTrash(), false, "Group should not be trash yet");
-            this.group2.setAttribute(ManagedGroup.Attributes.Role, "trash");
-            test.strictEqual(this.group2.isTrash(), true, "Group should be trash");
             test.done();
         }
 
