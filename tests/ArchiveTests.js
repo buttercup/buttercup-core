@@ -28,6 +28,10 @@ module.exports = {
                 'cmm "after pad"',
                 'cgr 0 ' + thirdGroupID,
                 'tgr ' + thirdGroupID + ' "Websites"',
+                'pad ' + encoding.getUniqueID(),
+                'saa "my key" "my value"',
+                'saa "notHere" "12345"',
+                'daa "notHere"',
                 'pad ' + encoding.getUniqueID()
             ];
         commonCommands.forEach(function(command) {
@@ -70,6 +74,16 @@ module.exports = {
                 firstGroup = archive.getGroups()[1];
             test.strictEqual(firstGroup.getTitle(), "Trash", "First group should be 'Trash'");
             test.strictEqual(firstGroup.isTrash(), true, "First group should be of type 'trash'");
+            test.done();
+        }
+
+    },
+
+    deleteAttribute: {
+
+        deletesAttributes: function(test) {
+            this.archiveA.deleteAttribute("my key");
+            test.strictEqual(this.archiveA.getAttribute("my key"), undefined, "Attribute should have been deleted");
             test.done();
         }
 
@@ -172,6 +186,24 @@ module.exports = {
 
     },
 
+    getAttribute: {
+
+        getsAttributeValue: function(test) {
+            var attrValue = this.archiveA.getAttribute("my key");
+            test.strictEqual(attrValue, "my value", "Attribute should have correct value");
+            test.done();
+        },
+
+        getsUndefinedWhenNotSet: function(test) {
+            var attr1 = this.archiveA.getAttribute("doesnt-exist"),
+                attr2 = this.archiveA.getAttribute("notHere");
+            test.strictEqual(attr1, undefined, "Should receive undefined for unset attributes");
+            test.strictEqual(attr2, undefined, "Should receive undefined for deleted attributes");
+            test.done();
+        }
+
+    },
+
     getEntryByID: {
 
         testGetsEntryIfExists: function(test) {
@@ -237,6 +269,25 @@ module.exports = {
             group.setAttribute(ManagedGroup.Attributes.Role, "trash");
             var trashGroup = this.archiveA.getTrashGroup();
             test.strictEqual(trashGroup.getID(), group.getID(), "Trash group should be present");
+            test.done();
+        }
+
+    },
+
+    setAttribute: {
+
+        setsAttributes: function(test) {
+            var archive = this.archiveA;
+            test.strictEqual(archive.getAttribute("abc"), undefined, "Non-set attribute should be undefined");
+            archive.setAttribute("abc", "123");
+            test.strictEqual(archive.getAttribute("abc"), "123", "Newly-set attribute should have correct value");
+            test.done();
+        },
+
+        overridesAttributes: function(test) {
+            var archive = this.archiveA;
+            archive.setAttribute("my key", "new value");
+            test.strictEqual(archive.getAttribute("my key"), "new value", "Attribute should contain new value");
             test.done();
         }
 

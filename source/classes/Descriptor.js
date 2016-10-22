@@ -20,13 +20,27 @@
                 [] :
                 (dataset.entries || []);
         var commands = [];
-        if (currentGroupID === "0" && dataset.format) {
-            commands.push(
-                Inigo
-                    .create(Commands.Format)
-                    .addArgument(dataset.format)
-                    .generateCommand()
-            );
+        if (currentGroupID === "0") {
+            // Archive
+            if (dataset.format) {
+                commands.push(
+                    Inigo
+                        .create(Commands.Format)
+                        .addArgument(dataset.format)
+                        .generateCommand()
+                );
+            }
+            if (dataset.attributes) {
+                Object.keys(dataset.attributes).forEach(function(attributeName) {
+                    commands.push(
+                        Inigo
+                            .create(Commands.SetArchiveAttribute)
+                            .addArgument(attributeName)
+                            .addArgument(dataset.attributes[attributeName])
+                            .generateCommand()
+                    );
+                });
+            }
         }
         if (currentGroupID !== "0") {
             if (!parentGroupID) {
