@@ -2,8 +2,19 @@
 
 const BaseCommand = require("./BaseCommand.js");
 
+/**
+ * Command for the moving of entries
+ * @class MoveEntryCommand
+ * @augments BaseCommand
+ */
 class MoveEntryCommand extends BaseCommand {
 
+    /**
+     * Execute the move
+     * @param {ArchiveDataset} obj The archive dataset
+     * @param {String} entryID The ID of the entry to move
+     * @param {String} targetGroupID The ID of the group to move the entry to
+     */
     execute(obj, entryID, targetGroupID) {
         obj.groups = obj.groups || [];
         var location = this.searchTools.findGroupContainingEntryID(obj.groups, entryID),

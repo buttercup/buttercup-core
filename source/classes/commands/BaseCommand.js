@@ -1,6 +1,13 @@
 "use strict";
 
 /**
+ * @typedef {Object} ArchiveDataset
+ * @property {Array.<Object>} groups Array of groups
+ * @property {Array.<Object>} entries Array of entries
+ * @property {Object} attributes Archive attributes
+ */
+
+/**
  * Base command class
  * @class BaseCommand
  */
