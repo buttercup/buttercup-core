@@ -15,7 +15,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             test.throws(function() {
                 this.command.execute({ }, 1, 'a');
@@ -41,7 +41,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 1, expectedTitle);
 
@@ -63,7 +63,7 @@ module.exports = {
                 }
             };
 
-            command.injectSearching(fakeSearching);
+            command.searchTools = fakeSearching;
 
             command.execute({ }, 1, expectedTitle);
 

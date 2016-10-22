@@ -1,26 +1,18 @@
-(function(module) {
+const BaseCommand = require("./BaseCommand.js");
 
-    "use strict";
+class DeleteGroupCommand extends BaseCommand {
 
-    var DeleteGroupCommand = function() {
-        this.searching = undefined;
-    }
-
-    DeleteGroupCommand.prototype.execute = function(obj, groupID) {
+    execute(obj, groupID) {
         obj.groups = obj.groups || [];
-        var location = this.searching.findGroupContainingGroupID(obj, groupID),
+        var location = this.searchTools.findGroupContainingGroupID(obj, groupID),
             containerGroup = location.group,
             containerIndex = location.index;
         if (!containerGroup) {
             throw new Error("Invalid group ID");
         }
         containerGroup.groups.splice(containerIndex, 1);
-    };
-
-    DeleteGroupCommand.prototype.injectSearching = function(searching) {
-        this.searching = searching;
     }
 
-    module.exports = DeleteGroupCommand;
+}
 
-})(module);
+module.exports = DeleteGroupCommand;

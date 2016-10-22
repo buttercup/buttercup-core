@@ -1,15 +1,9 @@
-(function(module) {
+const BaseCommand = require("./BaseCommand.js");
 
-    "use strict";
+class PadCommand extends BaseCommand {
 
-    var PadCommand = function() {
+    execute(/*obj, padID*/) { }
 
-    }
+}
 
-    PadCommand.prototype.execute = function(obj, padID) {
-
-    };
-
-    module.exports = PadCommand;
-
-})(module);
+module.exports = PadCommand;

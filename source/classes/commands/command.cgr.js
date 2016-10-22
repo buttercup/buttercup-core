@@ -1,12 +1,8 @@
-(function(module) {
+const BaseCommand = require("./BaseCommand.js");
 
-    "use strict";
+class CreateGroupCommand extends BaseCommand {
 
-    var CreateGroupCommand = function() {
-        this.searching = undefined;
-    }
-
-    CreateGroupCommand.prototype.execute = function(obj, parentID, newID) {
+    execute(obj, parentID, newID) {
         obj.groups = obj.groups || [];
         var group = {
             id: newID,
@@ -15,19 +11,15 @@
         if ("" + parentID === "0") {
             obj.groups.push(group);
         } else {
-            var parentGroup = this.searching.findGroupByID(obj.groups, parentID);
+            var parentGroup = this.searchTools.findGroupByID(obj.groups, parentID);
             if (!parentGroup) {
                 throw new Error("Invalid parent group ID: not found");
             }
             parentGroup.groups = parentGroup.groups || [];
             parentGroup.groups.push(group);
         }
-    };
-
-    CreateGroupCommand.prototype.injectSearching = function(searching) {
-        this.searching = searching;
     }
 
-    module.exports = CreateGroupCommand;
+}
 
-})(module);
+module.exports = CreateGroupCommand;

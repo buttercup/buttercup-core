@@ -2,14 +2,14 @@
 
     "use strict";
 
-    var Inigo = require("./InigoGenerator.js"),
-        commandTools = require("../tools/command.js"),
-        searching = require("../tools/searching-raw.js"),
-        entry = require("../tools/entry.js");
+    const Inigo = require("./InigoGenerator.js");
+    const commandTools = require("../tools/command.js");
+    const searchingTools = require("../tools/searching-raw.js");
+    const entryTools = require("../tools/entry.js");
 
-    var VALID_COMMAND_EXP =             /^[a-z]{3}[ ].+$/;
+    const VALID_COMMAND_EXP =             /^[a-z]{3}[ ].+$/;
 
-    var commandClasses = {
+    const commandClasses = {
         cen: require("./commands/command.cen.js"),
         cgr: require("./commands/command.cgr.js"),
         cmm: require("./commands/command.cmm.js"),
@@ -83,22 +83,12 @@
             let CommandClass = commandClasses[commandKey],
                 command = new CommandClass();
 
-            command.searchTools = searching;
-            command.entryTools = entry;
+            command.searchTools = searchingTools;
+            command.entryTools = entryTools;
 
-            if (command.injectSearching !== undefined) {
-                command.injectSearching(searching);
-            }
-
-            if (command.injectEntry !== undefined) {
-                command.injectEntry(entry);
-            }
-
-            if (command.injectCommentCallback !== undefined) {
-                command.injectCommentCallback(function (comment) {
-                    //console.log(" COMMENT -> " + comment);
-                });
-            }
+            command.setCallback("comment", function(comment) {
+                // handle comment
+            });
 
             // Store it in the cache
             this._cachedCommands[commandKey] = command;

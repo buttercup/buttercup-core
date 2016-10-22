@@ -7,6 +7,7 @@ class BaseCommand {
     constructor() {
         this._searchTools = null;
         this._entryTools = null;
+        this._callbacks = {};
     }
 
     /**
@@ -42,6 +43,33 @@ class BaseCommand {
     }
 
     execute() {}
+
+    /**
+     * Execute all callbacks under a key
+     * Arguments passed after the key are provided to each callback
+     * @param {String} key The callback name
+     * @example
+     *      executeCallbacks("functionName", 1, 2, "three")
+     */
+    executeCallbacks(key /* , [...args] */) {
+        let args = Array.prototype.slice.call(arguments),
+            callbacks = this._callbacks[key] || [];
+        // Take the key out
+        args.shift();
+        callbacks.forEach(function(cb) {
+            cb.apply(null, args);
+        });
+    }
+
+    /**
+     * Add a callback for a key
+     * @param {String} key The callback name
+     * @param {Function} fn The callback function
+     */
+    setCallback(key, fn) {
+        this._callbacks[key] = this._callbacks[key] || [];
+        this._callbacks[key].push(fn);
+    }
 
 }
 

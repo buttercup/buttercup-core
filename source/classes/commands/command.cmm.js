@@ -1,19 +1,11 @@
-(function(module) {
+const BaseCommand = require("./BaseCommand.js");
 
-    "use strict";
+class CommentCommand extends BaseCommand {
 
-    var CommentCommand = function() {
-        this.commentCallback = function(comment) { };
+    execute(obj, comment) {
+        this.executeCallbacks("comment", comment);
     }
 
-    CommentCommand.prototype.execute = function(obj, comment) {
-        this.commentCallback(comment);
-    }
+}
 
-    CommentCommand.prototype.injectCommentCallback = function(callback) {
-        this.commentCallback = callback;
-    }
-
-    module.exports = CommentCommand;
-
-})(module);
+module.exports = CommentCommand;

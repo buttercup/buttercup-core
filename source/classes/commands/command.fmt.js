@@ -1,15 +1,11 @@
-(function(module) {
+const BaseCommand = require("./BaseCommand.js");
 
-    "use strict";
+class FormatCommand extends BaseCommand {
 
-    var FormatCommand = function() {
-
+    execute(obj, format) {
+        obj.format = format;
     }
 
-    FormatCommand.prototype.execute = function(obj, format) {
-        obj.format = format;
-    };
+}
 
-    module.exports = FormatCommand;
-
-})(module);
+module.exports = FormatCommand;

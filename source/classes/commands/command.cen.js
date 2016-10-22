@@ -1,29 +1,21 @@
-(function(module) {
+const BaseCommand = require("./BaseCommand.js");
 
-    "use strict";
+class CreateEntryCommand extends BaseCommand {
 
-    var CreateEntryCommand = function() {
-        this.searching = undefined;
-    }
-
-    CreateEntryCommand.prototype.execute = function(obj, groupID, entryID) {
+    execute(obj, groupID, entryID) {
         obj.groups = obj.groups || [];
         var entry = {
             id: entryID,
             title: ""
         };
-        var group = this.searching.findGroupByID(obj.groups, groupID);
+        var group = this.searchTools.findGroupByID(obj.groups, groupID);
         if (!group) {
             throw new Error("Invalid group ID");
         }
         group.entries = group.entries || [];
         group.entries.push(entry);
-    };
-
-    CreateEntryCommand.prototype.injectSearching = function(searching) {
-        this.searching = searching;
     }
 
-    module.exports = CreateEntryCommand;
+}
 
-})(module);
+module.exports = CreateEntryCommand;

@@ -1,25 +1,17 @@
-(function(module) {
+const BaseCommand = require("./BaseCommand.js");
 
-    "use strict";
+class SetEntryAttributeCommand extends BaseCommand {
 
-    var SetAttributeCommand = function() {
-        this.searching = undefined;
-    }
-
-    SetAttributeCommand.prototype.execute = function(obj, entryID, attributeName, value) {
+    execute(obj, entryID, attributeName, value) {
         obj.groups = obj.groups || [];
-        var entry = this.searching.findEntryByID(obj.groups, entryID);
+        var entry = this.searchTools.findEntryByID(obj.groups, entryID);
         if (!entry) {
             throw new Error("Entry not found for ID");
         }
         entry.attributes = entry.attributes || {};
         entry.attributes[attributeName] = value;
-    };
-
-    SetAttributeCommand.prototype.injectSearching = function(searching) {
-        this.searching = searching;
     }
 
-    module.exports = SetAttributeCommand;
+}
 
-})(module);
+module.exports = SetEntryAttributeCommand;

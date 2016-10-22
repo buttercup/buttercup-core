@@ -1,14 +1,10 @@
-(function(module) {
+const BaseCommand = require("./BaseCommand.js");
 
-    "use strict";
+class MoveGroupCommand extends BaseCommand {
 
-    var MoveGroupCommand = function() {
-        this.searching = undefined;
-    }
-
-    MoveGroupCommand.prototype.execute = function(obj, groupID, targetGroupID) {
+    execute(obj, groupID, targetGroupID) {
         obj.groups = obj.groups || [];
-        var location = this.searching.findGroupContainingGroupID(obj, groupID),
+        var location = this.searchTools.findGroupContainingGroupID(obj, groupID),
             originGroup = location.group,
             originIndex = location.index;
         if (!originGroup) {
@@ -16,7 +12,7 @@
         }
 
         var targetGroup = (targetGroupID.length === 1 && parseInt(targetGroupID, 10) === 0) ?
-            obj : this.searching.findGroupByID(obj.groups, targetGroupID);
+            obj : this.searchTools.findGroupByID(obj.groups, targetGroupID);
 
         if (!targetGroup) {
             throw new Error("Invalid group ID");
@@ -24,12 +20,8 @@
         var movedGroup = originGroup.groups.splice(originIndex, 1)[0];
         targetGroup.groups = targetGroup.groups || [];
         targetGroup.groups.push(movedGroup);
-    };
-
-    MoveGroupCommand.prototype.injectSearching = function(searching) {
-        this.searching = searching;
     }
 
-    module.exports = MoveGroupCommand;
+}
 
-})(module);
+module.exports = MoveGroupCommand;
