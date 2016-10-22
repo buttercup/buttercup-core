@@ -52,19 +52,19 @@
         CreateEntry:                 { s:"cen", args:[ARG.ItemID, ARG.ItemID] },
         CreateGroup:                 { s:"cgr", args:[ARG.ItemIDOrRoot, ARG.ItemID] },
         DeleteEntry:                 { s:"den", args:[ARG.ItemID] },
-        DeleteEntryAttribute:         { s:"dea", args:[ARG.ItemID, ARG.StringValue] },
+        DeleteEntryAttribute:        { s:"dea", args:[ARG.ItemID, ARG.StringValue] },
         DeleteEntryMeta:             { s:"dem", args:[ARG.ItemID, ARG.StringValue] },
         DeleteGroup:                 { s:"dgr", args:[ARG.ItemID] },
-        DeleteGroupAttribute:         { s:"dga", args:[ARG.ItemID, ARG.StringValue] },
-        Format:                     { s:"fmt", args:[ARG.StringValue] },
-        MoveEntry:                     { s:"men", args:[ARG.ItemID, ARG.ItemID] },
-        MoveGroup:                     { s:"mgr", args:[ARG.ItemID, ARG.ItemIDOrRoot] },
+        DeleteGroupAttribute:        { s:"dga", args:[ARG.ItemID, ARG.StringValue] },
+        Format:                      { s:"fmt", args:[ARG.StringValue] },
+        MoveEntry:                   { s:"men", args:[ARG.ItemID, ARG.ItemID] },
+        MoveGroup:                   { s:"mgr", args:[ARG.ItemID, ARG.ItemIDOrRoot] },
         Pad:                         { s:"pad", args:[ARG.ItemID] },
-        SetEntryAttribute:             { s:"sea", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
-        SetEntryMeta:                 { s:"sem", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
-        SetEntryProperty:             { s:"sep", args:[ARG.ItemID, ARG.StringKey, ARG.StringValue] },
-        SetGroupAttribute:            { s:"sga", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
-        SetGroupTitle:                 { s:"tgr", args:[ARG.ItemID, ARG.StringValue] }
+        SetEntryAttribute:           { s:"sea", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
+        SetEntryMeta:                { s:"sem", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
+        SetEntryProperty:            { s:"sep", args:[ARG.ItemID, ARG.StringKey, ARG.StringValue] },
+        SetGroupAttribute:           { s:"sga", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
+        SetGroupTitle:               { s:"tgr", args:[ARG.ItemID, ARG.StringValue] }
     };
 
     InigoCommand.create = function(cmd) {

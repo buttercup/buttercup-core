@@ -80,24 +80,28 @@
         // If the command doesn't exist in the cache
         if (this._cachedCommands[commandKey] === undefined) {
             // Get the command object and inject its dependencies
-            var requirement = new (commandClasses[commandKey])();
+            let CommandClass = commandClasses[commandKey],
+                command = new CommandClass();
 
-            if (requirement.injectSearching !== undefined) {
-                requirement.injectSearching(searching);
+            command.searchTools = searching;
+            command.entryTools = entry;
+
+            if (command.injectSearching !== undefined) {
+                command.injectSearching(searching);
             }
 
-            if (requirement.injectEntry !== undefined) {
-                requirement.injectEntry(entry);
+            if (command.injectEntry !== undefined) {
+                command.injectEntry(entry);
             }
 
-            if (requirement.injectCommentCallback !== undefined) {
-                requirement.injectCommentCallback(function (comment) {
+            if (command.injectCommentCallback !== undefined) {
+                command.injectCommentCallback(function (comment) {
                     //console.log(" COMMENT -> " + comment);
                 });
             }
 
             // Store it in the cache
-            this._cachedCommands[commandKey] = requirement;
+            this._cachedCommands[commandKey] = command;
         }
 
         return this._cachedCommands[commandKey];
