@@ -1,3 +1,5 @@
+"use strict";
+
 const BaseCommand = require("./BaseCommand.js");
 
 class MoveGroupCommand extends BaseCommand {

@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Base command class
  * @class BaseCommand
