@@ -1,4 +1,4 @@
-var cen = require("../../source/classes/commands/command.cen.js");
+var cen = require("../../source/classes/commands/CreateEntryCommand.js");
 
 module.exports = {
 

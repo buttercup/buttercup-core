@@ -1,4 +1,4 @@
-var cmm = require("../../source/classes/commands/command.cmm.js");
+var cmm = require("../../source/classes/commands/CommentCommand.js");
 
 module.exports = {
     setUp: function(cb) {

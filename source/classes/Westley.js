@@ -8,24 +8,44 @@ const entryTools = require("../tools/entry.js");
 const VALID_COMMAND_EXP =             /^[a-z]{3}[ ].+$/;
 
 const commandClasses = {
-    cen: require("./commands/command.cen.js"),
-    cgr: require("./commands/command.cgr.js"),
-    cmm: require("./commands/command.cmm.js"),
-    dea: require("./commands/command.dea.js"),
-    dem: require("./commands/command.dem.js"),
-    den: require("./commands/command.den.js"),
-    dga: require("./commands/command.dga.js"),
-    dgr: require("./commands/command.dgr.js"),
-    fmt: require("./commands/command.fmt.js"),
-    men: require("./commands/command.men.js"),
-    mgr: require("./commands/command.mgr.js"),
-    pad: require("./commands/command.pad.js"),
-    sea: require("./commands/command.sea.js"),
-    sem: require("./commands/command.sem.js"),
-    sep: require("./commands/command.sep.js"),
-    sga: require("./commands/command.sga.js"),
-    tgr: require("./commands/command.tgr.js")
+    cen: require("./commands/CreateEntryCommand.js"),
+    cgr: require("./commands/CreateGroupCommand.js"),
+    cmm: require("./commands/CommentCommand.js"),
+    dea: require("./commands/DeleteEntryAttributeCommand.js"),
+    dem: require("./commands/DeleteEntryMetaCommand.js"),
+    den: require("./commands/DeleteEntryCommand.js"),
+    dga: require("./commands/DeleteGroupAttributeCommand.js"),
+    dgr: require("./commands/DeleteGroupCommand.js"),
+    fmt: require("./commands/FormatCommand.js"),
+    men: require("./commands/MoveEntryCommand.js"),
+    mgr: require("./commands/MoveGroupCommand.js"),
+    pad: require("./commands/PadCommand.js"),
+    sea: require("./commands/SetEntryAttributeCommand.js"),
+    sem: require("./commands/SetEntryMetaCommand.js"),
+    sep: require("./commands/SetEntryPropertyCommand.js"),
+    sga: require("./commands/SetGroupAttributeCommand.js"),
+    tgr: require("./commands/TitleGroupCommand.js")
 };
+
+// const commandClasses = {
+//     cen: require("./commands/command.cen.js"),
+//     cgr: require("./commands/command.cgr.js"),
+//     cmm: require("./commands/command.cmm.js"),
+//     dea: require("./commands/command.dea.js"),
+//     dem: require("./commands/command.dem.js"),
+//     den: require("./commands/command.den.js"),
+//     dga: require("./commands/command.dga.js"),
+//     dgr: require("./commands/command.dgr.js"),
+//     fmt: require("./commands/command.fmt.js"),
+//     men: require("./commands/command.men.js"),
+//     mgr: require("./commands/command.mgr.js"),
+//     pad: require("./commands/command.pad.js"),
+//     sea: require("./commands/command.sea.js"),
+//     sem: require("./commands/command.sem.js"),
+//     sep: require("./commands/command.sep.js"),
+//     sga: require("./commands/command.sga.js"),
+//     tgr: require("./commands/command.tgr.js")
+// };
 
 /**
  * Westley. Archive object dataset and history manager. Handles parsing and
