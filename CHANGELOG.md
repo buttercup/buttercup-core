@@ -1,5 +1,10 @@
 # Buttercup-core release change-log
 
+## v0.26.0
+_2016-10-23_
+
+ * Attributes for archives
+
 ## v0.25.0
 _2016-10-16_
 
