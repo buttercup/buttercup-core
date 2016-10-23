@@ -1,4 +1,4 @@
-var cen = require("../../source/classes/commands/command.cen.js");
+var cen = require("../../source/classes/commands/CreateEntryCommand.js");
 
 module.exports = {
 
@@ -16,7 +16,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             test.throws(
                 function() {
@@ -43,7 +43,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 1, 1);
 
@@ -65,7 +65,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 1, 2);
 
@@ -90,7 +90,7 @@ module.exports = {
                 pushedId = entry.id;
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 1, expectedId);
 
@@ -115,7 +115,7 @@ module.exports = {
                 pushedId = entry.id;
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 1, expectedId);
 

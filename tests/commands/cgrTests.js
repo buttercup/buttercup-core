@@ -1,4 +1,4 @@
-var cgr = require("../../source/classes/commands/command.cgr.js");
+var cgr = require("../../source/classes/commands/CreateGroupCommand.js");
 
 module.exports = {
     setUp: function(cb) {
@@ -95,7 +95,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, submittedParentId, 5);
 
@@ -117,7 +117,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, submittedParentId, 5);
 
@@ -136,7 +136,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 1, 1);
 
@@ -155,7 +155,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 1, 1);
 
@@ -176,7 +176,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 1, expectedGroupId);
 
@@ -197,7 +197,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 1, expectedGroupId);
 

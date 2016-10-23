@@ -70,6 +70,21 @@ class Archive {
     }
 
     /**
+     * Delete an attribute
+     * @param {String} attributeName The name of the attribute to delete
+     * @returns {Archive} Self
+     */
+    deleteAttribute(attributeName) {
+        this._getWestley().execute(
+            Inigo.create(Inigo.Command.DeleteArchiveAttribute)
+                .addArgument(attributeName)
+                .generateCommand()
+        );
+        this._getWestley().pad();
+        return this;
+    }
+
+    /**
      * Find entries that match a certain meta property
      * @param {string} metaName The meta property to search for
      * @param {RegExp|string} value The value to search for
@@ -109,6 +124,20 @@ class Archive {
                 }
             }
         );
+    }
+
+    /**
+     * Get the value of an attribute
+     * @param {String} attributeName The attribute to get
+     * @returns {undefined|String} The value of the attribute or undefined if not set
+     * @memberof Archive
+     */
+    getAttribute(attributeName) {
+        let dataset = this._getWestley().getDataset();
+        if (dataset.attributes && dataset.attributes.hasOwnProperty(attributeName)) {
+            return dataset.attributes[attributeName];
+        }
+        return undefined;
     }
 
     /**
@@ -159,7 +188,7 @@ class Archive {
 
     /**
      * Get the trash group
-     * @returns {ManagedGroup|null}
+     * @returns {ManagedGroup|null} The trash group if found, null otherwise
      * @memberof Archive
      */
     getTrashGroup() {
@@ -175,18 +204,37 @@ class Archive {
     /**
      * Perform archive optimisations
      * @memberof Archive
+     * @returns {Archive} Self
      */
     optimise() {
         var flattener = new Flattener(this._getWestley());
         if (flattener.canBeFlattened()) {
             flattener.flatten();
         }
+        return this;
+    }
+
+    /**
+     * Set an attribute on the archive
+     * @param {String} attributeName The attribute to set
+     * @param {String} value The value to set for the attribute
+     * @returns {Archive} Self
+     */
+    setAttribute(attributeName, value) {
+        this._getWestley().execute(
+            Inigo.create(Inigo.Command.SetArchiveAttribute)
+                .addArgument(attributeName)
+                .addArgument(value)
+                .generateCommand()
+        );
+        this._getWestley().pad();
+        return this;
     }
 
     /**
      * Get the underlying Westley instance
      * @protected
-     * @returns {Westley}
+     * @returns {Westley} The Westley instance
      * @memberof Archive
      */
     _getWestley() {

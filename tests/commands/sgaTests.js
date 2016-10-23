@@ -1,4 +1,4 @@
-var sga = require("../../source/classes/commands/command.sga.js");
+var sga = require("../../source/classes/commands/SetGroupAttributeCommand.js");
 
 var fakeGroup;
 
@@ -9,6 +9,7 @@ module.exports = {
     },
 
     errors: {
+
         groupNotFoundForId: function(test) {
             var fakeSearching = {
                 findGroupByID: function(a, b) {
@@ -16,7 +17,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             var errorThrown = false;
             try {
@@ -30,6 +31,7 @@ module.exports = {
                 test.done();
             }
         }
+
     },
 
     setAttributeOnGroupWithAttributes: {
@@ -43,7 +45,7 @@ module.exports = {
 
         setsAttributeValueValForNameNam: function(test) {
             var attributeName = 'Nam',
-                    attributeValue = 'Val';
+                attributeValue = 'Val';
 
             var fakeSearching = {
                 findGroupByID: function(a, b) {
@@ -51,7 +53,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 0, attributeName, attributeValue);
 
@@ -61,7 +63,7 @@ module.exports = {
 
         setsAttributeValueFooForNameBar: function(test) {
             var attributeName = 'Bar',
-                    attributeValue = 'Foo';
+                attributeValue = 'Foo';
 
             var fakeSearching = {
                 findGroupByID: function(a, b) {
@@ -69,7 +71,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 0, attributeName, attributeValue);
 
@@ -89,7 +91,7 @@ module.exports = {
 
         setsAttributeValueValForNameNam: function(test) {
             var attributeName = 'Nam',
-                    attributeValue = 'Val';
+                attributeValue = 'Val';
 
             var fakeSearching = {
                 findGroupByID: function(a, b) {
@@ -97,7 +99,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 0, attributeName, attributeValue);
 
@@ -107,7 +109,7 @@ module.exports = {
 
         setsAttributeValueFooForNameBar: function(test) {
             var attributeName = 'Bar',
-                    attributeValue = 'Foo';
+                attributeValue = 'Foo';
 
             var fakeSearching = {
                 findGroupByID: function(a, b) {
@@ -115,7 +117,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectSearching(fakeSearching);
+            this.command.searchTools = fakeSearching;
 
             this.command.execute({ }, 0, attributeName, attributeValue);
 

@@ -1,4 +1,4 @@
-var cmm = require("../../source/classes/commands/command.cmm.js");
+var cmm = require("../../source/classes/commands/CommentCommand.js");
 
 module.exports = {
     setUp: function(cb) {
@@ -13,7 +13,7 @@ module.exports = {
                 callbackCalled = true;
             };
 
-            this.command.injectCommentCallback(callback);
+            this.command.setCallback("comment", callback);
             this.command.execute({}, "");
 
             test.strictEqual(callbackCalled, true, "Calls into callback");
@@ -30,7 +30,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectCommentCallback(callback);
+            this.command.setCallback("comment", callback);
             this.command.execute({}, providedComment);
 
             test.strictEqual(callbackCalled, true, "Calls into callback with correct comment (test case one)");
@@ -47,7 +47,7 @@ module.exports = {
                 }
             };
 
-            this.command.injectCommentCallback(callback);
+            this.command.setCallback("comment", callback);
             this.command.execute({}, providedComment);
 
             test.strictEqual(callbackCalled, true, "Calls into callback with correct comment (test case two)");
