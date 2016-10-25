@@ -37,6 +37,10 @@ function findEntriesByCheck(archive, check, key, value) {
     );
 }
 
+/**
+ * Buttercup Archive
+ * @class Archive
+ */
 class Archive {
 
     constructor() {

@@ -12,6 +12,8 @@
 ## Classes
 
 <dl>
+<dt><a href="#Archive">Archive</a></dt>
+<dd></dd>
 <dt><a href="#Comparator">Comparator</a></dt>
 <dd></dd>
 <dt><a href="#ButtercupServerDatasource">ButtercupServerDatasource</a> ⇐ <code><a href="#TextDatasource">TextDatasource</a></code></dt>
@@ -127,6 +129,190 @@ Extract command components from a string
 | --- | --- | --- |
 | command | <code>String</code> | The command to extract from |
 
+<a name="Archive"></a>
+
+## Archive
+**Kind**: global class  
+
+* [Archive](#Archive)
+    * [new Archive()](#new_Archive_new)
+    * _instance_
+        * [.createGroup([title])](#Archive+createGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
+        * [.deleteAttribute(attributeName)](#Archive+deleteAttribute) ⇒ <code>[Archive](#Archive)</code>
+        * [.findEntriesByMeta(metaName, value)](#Archive+findEntriesByMeta) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
+        * [.findEntriesByProperty(property, value)](#Archive+findEntriesByProperty) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
+        * [.findGroupsByTitle(title)](#Archive+findGroupsByTitle) ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
+        * [.getAttribute(attributeName)](#Archive+getAttribute) ⇒ <code>undefined</code> &#124; <code>String</code>
+        * [.getEntryByID(entryID)](#Archive+getEntryByID) ⇒ <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code>
+        * [.getFormat()](#Archive+getFormat) ⇒ <code>string</code>
+        * [.getGroupByID(groupID)](#Archive+getGroupByID) ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
+        * [.getGroups()](#Archive+getGroups) ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
+        * [.getTrashGroup()](#Archive+getTrashGroup) ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
+        * [.optimise()](#Archive+optimise) ⇒ <code>[Archive](#Archive)</code>
+        * [.setAttribute(attributeName, value)](#Archive+setAttribute) ⇒ <code>[Archive](#Archive)</code>
+        * [._getWestley()](#Archive+_getWestley) ⇒ <code>[Westley](#Westley)</code>
+    * _static_
+        * [.createWithDefaults()](#Archive.createWithDefaults) ⇒ <code>[Archive](#Archive)</code>
+
+<a name="new_Archive_new"></a>
+
+### new Archive()
+Buttercup Archive
+
+<a name="Archive+createGroup"></a>
+
+### archive.createGroup([title]) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
+Create a new group
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[ManagedGroup](#ManagedGroup)</code> - The newly created group  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [title] | <code>string</code> | The title for the group |
+
+<a name="Archive+deleteAttribute"></a>
+
+### archive.deleteAttribute(attributeName) ⇒ <code>[Archive](#Archive)</code>
+Delete an attribute
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Archive](#Archive)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attributeName | <code>String</code> | The name of the attribute to delete |
+
+<a name="Archive+findEntriesByMeta"></a>
+
+### archive.findEntriesByMeta(metaName, value) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
+Find entries that match a certain meta property
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code> - An array of found entries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| metaName | <code>string</code> | The meta property to search for |
+| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+
+<a name="Archive+findEntriesByProperty"></a>
+
+### archive.findEntriesByProperty(property, value) ⇒ <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code>
+Find all entries that match a certain property
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Array.&lt;ManagedEntry&gt;](#ManagedEntry)</code> - An array of found extries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| property | <code>string</code> | The property to search with |
+| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+
+<a name="Archive+findGroupsByTitle"></a>
+
+### archive.findGroupsByTitle(title) ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
+Find all groups within the archive that match a title
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code> - An array of found groups  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| title | <code>RegExp</code> &#124; <code>string</code> | The title to search for, either a string (contained within  a target group's title) or a RegExp to test against the title. |
+
+<a name="Archive+getAttribute"></a>
+
+### archive.getAttribute(attributeName) ⇒ <code>undefined</code> &#124; <code>String</code>
+Get the value of an attribute
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>undefined</code> &#124; <code>String</code> - The value of the attribute or undefined if not set  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attributeName | <code>String</code> | The attribute to get |
+
+<a name="Archive+getEntryByID"></a>
+
+### archive.getEntryByID(entryID) ⇒ <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code>
+Find an entry by its ID
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[ManagedEntry](#ManagedEntry)</code> &#124; <code>null</code> - The found entry or null  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entryID | <code>String</code> | The entry's ID |
+
+<a name="Archive+getFormat"></a>
+
+### archive.getFormat() ⇒ <code>string</code>
+Get the archive format
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>string</code> - The format of the archive  
+<a name="Archive+getGroupByID"></a>
+
+### archive.getGroupByID(groupID) ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
+Find a group by its ID
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code> - The group with the provided ID  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| groupID | <code>String</code> | The group's ID |
+
+<a name="Archive+getGroups"></a>
+
+### archive.getGroups() ⇒ <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code>
+Get all groups (root) in the archive
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Array.&lt;ManagedGroup&gt;](#ManagedGroup)</code> - An array of ManagedGroups  
+<a name="Archive+getTrashGroup"></a>
+
+### archive.getTrashGroup() ⇒ <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code>
+Get the trash group
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[ManagedGroup](#ManagedGroup)</code> &#124; <code>null</code> - The trash group if found, null otherwise  
+<a name="Archive+optimise"></a>
+
+### archive.optimise() ⇒ <code>[Archive](#Archive)</code>
+Perform archive optimisations
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Archive](#Archive)</code> - Self  
+<a name="Archive+setAttribute"></a>
+
+### archive.setAttribute(attributeName, value) ⇒ <code>[Archive](#Archive)</code>
+Set an attribute on the archive
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Archive](#Archive)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attributeName | <code>String</code> | The attribute to set |
+| value | <code>String</code> | The value to set for the attribute |
+
+<a name="Archive+_getWestley"></a>
+
+### archive._getWestley() ⇒ <code>[Westley](#Westley)</code>
+Get the underlying Westley instance
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Westley](#Westley)</code> - The Westley instance  
+**Access:** protected  
+<a name="Archive.createWithDefaults"></a>
+
+### Archive.createWithDefaults() ⇒ <code>[Archive](#Archive)</code>
+Create an Archive with the default template
+
+**Kind**: static method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Archive](#Archive)</code> - The new archive  
 <a name="Comparator"></a>
 
 ## Comparator
@@ -145,8 +331,8 @@ Archive comparison class
 
 | Param | Type |
 | --- | --- |
-| originalArchive | <code>Archive</code> | 
-| secondaryArchive | <code>Archive</code> | 
+| originalArchive | <code>[Archive](#Archive)</code> | 
+| secondaryArchive | <code>[Archive](#Archive)</code> | 
 
 <a name="Comparator+archivesDiffer"></a>
 
@@ -171,7 +357,7 @@ Calculate the differences, in commands, between the two archives
 * [ButtercupServerDatasource](#ButtercupServerDatasource) ⇐ <code>[TextDatasource](#TextDatasource)</code>
     * [new ButtercupServerDatasource()](#new_ButtercupServerDatasource_new)
     * [new ButtercupServerDatasource(address, email, password)](#new_ButtercupServerDatasource_new)
-    * [.load(passwordOrCredentials)](#ButtercupServerDatasource+load) ⇒ <code>Promise.&lt;Archive&gt;</code>
+    * [.load(passwordOrCredentials)](#ButtercupServerDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, passwordOrCredentials)](#ButtercupServerDatasource+save) ⇒ <code>Promise</code>
     * [.toString()](#ButtercupServerDatasource+toString) ⇒ <code>string</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -195,12 +381,12 @@ Constructor for the datasource
 
 <a name="ButtercupServerDatasource+load"></a>
 
-### buttercupServerDatasource.load(passwordOrCredentials) ⇒ <code>Promise.&lt;Archive&gt;</code>
+### buttercupServerDatasource.load(passwordOrCredentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load an archive
 
 **Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
 **Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>Promise.&lt;Archive&gt;</code> - A Promise that resolves with an Archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A Promise that resolves with an Archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -217,7 +403,7 @@ Save an archive
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive to save |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
 | passwordOrCredentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or credentials for the archive |
 
 <a name="ButtercupServerDatasource+toString"></a>
@@ -248,7 +434,7 @@ Set the text content
 * [ButtercupServerDatasource](#ButtercupServerDatasource)
     * [new ButtercupServerDatasource()](#new_ButtercupServerDatasource_new)
     * [new ButtercupServerDatasource(address, email, password)](#new_ButtercupServerDatasource_new)
-    * [.load(passwordOrCredentials)](#ButtercupServerDatasource+load) ⇒ <code>Promise.&lt;Archive&gt;</code>
+    * [.load(passwordOrCredentials)](#ButtercupServerDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, passwordOrCredentials)](#ButtercupServerDatasource+save) ⇒ <code>Promise</code>
     * [.toString()](#ButtercupServerDatasource+toString) ⇒ <code>string</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -272,12 +458,12 @@ Constructor for the datasource
 
 <a name="ButtercupServerDatasource+load"></a>
 
-### buttercupServerDatasource.load(passwordOrCredentials) ⇒ <code>Promise.&lt;Archive&gt;</code>
+### buttercupServerDatasource.load(passwordOrCredentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load an archive
 
 **Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
 **Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>Promise.&lt;Archive&gt;</code> - A Promise that resolves with an Archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A Promise that resolves with an Archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -294,7 +480,7 @@ Save an archive
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive to save |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
 | passwordOrCredentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or credentials for the archive |
 
 <a name="ButtercupServerDatasource+toString"></a>
@@ -1882,7 +2068,7 @@ Create a new Credentials instance from encrypted information
     * [new FileDatasource()](#new_FileDatasource_new)
     * [new FileDatasource(filename)](#new_FileDatasource_new)
     * [.getArchivePath()](#FileDatasource+getArchivePath) ⇒ <code>string</code>
-    * [.load(password)](#FileDatasource+load) ⇒ <code>Promise.&lt;Archive&gt;</code>
+    * [.load(password)](#FileDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#FileDatasource+save) ⇒ <code>Promise</code>
     * [.toString()](#FileDatasource+toString) ⇒ <code>string</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -1910,12 +2096,12 @@ Get the path of the archive
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
 <a name="FileDatasource+load"></a>
 
-### fileDatasource.load(password) ⇒ <code>Promise.&lt;Archive&gt;</code>
+### fileDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load from the filename specified in the constructor using a password
 
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
 **Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>Promise.&lt;Archive&gt;</code> - A promise resolving with the opened archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the opened archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1932,7 +2118,7 @@ Save an archive to a file using a password for encryption
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive to save |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
 | password | <code>string</code> | The password to save with |
 
 <a name="FileDatasource+toString"></a>
@@ -1963,7 +2149,7 @@ Set the text content
     * [new FileDatasource()](#new_FileDatasource_new)
     * [new FileDatasource(filename)](#new_FileDatasource_new)
     * [.getArchivePath()](#FileDatasource+getArchivePath) ⇒ <code>string</code>
-    * [.load(password)](#FileDatasource+load) ⇒ <code>Promise.&lt;Archive&gt;</code>
+    * [.load(password)](#FileDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#FileDatasource+save) ⇒ <code>Promise</code>
     * [.toString()](#FileDatasource+toString) ⇒ <code>string</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -1991,12 +2177,12 @@ Get the path of the archive
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
 <a name="FileDatasource+load"></a>
 
-### fileDatasource.load(password) ⇒ <code>Promise.&lt;Archive&gt;</code>
+### fileDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load from the filename specified in the constructor using a password
 
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
 **Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>Promise.&lt;Archive&gt;</code> - A promise resolving with the opened archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the opened archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2013,7 +2199,7 @@ Save an archive to a file using a password for encryption
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive to save |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
 | password | <code>string</code> | The password to save with |
 
 <a name="FileDatasource+toString"></a>
@@ -2109,7 +2295,7 @@ Get the number of lines to preserve by default
         * [.setProperty(prop, value)](#ManagedEntry+setProperty) ⇒ <code>[ManagedEntry](#ManagedEntry)</code>
         * [.toObject()](#ManagedEntry+toObject) ⇒ <code>Object</code>
         * [.toString()](#ManagedEntry+toString) ⇒ <code>string</code>
-        * [._getArchive()](#ManagedEntry+_getArchive) ⇒ <code>Archive</code>
+        * [._getArchive()](#ManagedEntry+_getArchive) ⇒ <code>[Archive](#Archive)</code>
         * [._getRemoteObject()](#ManagedEntry+_getRemoteObject) ⇒ <code>Object</code>
         * [._getWestley()](#ManagedEntry+_getWestley) ⇒ <code>[Westley](#Westley)</code>
     * _static_
@@ -2123,7 +2309,7 @@ Managed entry class
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The main archive instance |
+| archive | <code>[Archive](#Archive)</code> | The main archive instance |
 | remoteObj | <code>Object</code> | The remote object reference |
 
 <a name="ManagedEntry+delete"></a>
@@ -2270,7 +2456,7 @@ toString override
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
 <a name="ManagedEntry+_getArchive"></a>
 
-### managedEntry._getArchive() ⇒ <code>Archive</code>
+### managedEntry._getArchive() ⇒ <code>[Archive](#Archive)</code>
 Get the archive reference
 
 **Kind**: instance method of <code>[ManagedEntry](#ManagedEntry)</code>  
@@ -2295,7 +2481,7 @@ Create a new entry
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive |
+| archive | <code>[Archive](#Archive)</code> | The archive |
 | groupID | <code>string</code> | The ID of the target group |
 
 <a name="ManagedGroup"></a>
@@ -2323,7 +2509,7 @@ Create a new entry
         * [.setTitle(title)](#ManagedGroup+setTitle) ⇒ <code>[ManagedGroup](#ManagedGroup)</code>
         * [.toObject(outputFlags)](#ManagedGroup+toObject) ⇒ <code>Object</code>
         * [.toString(outputFlags)](#ManagedGroup+toString) ⇒ <code>string</code>
-        * [._getArchive()](#ManagedGroup+_getArchive) ⇒ <code>Archive</code>
+        * [._getArchive()](#ManagedGroup+_getArchive) ⇒ <code>[Archive](#Archive)</code>
         * [._getRemoteObject()](#ManagedGroup+_getRemoteObject) ⇒ <code>Object</code>
         * [._getWestley()](#ManagedGroup+_getWestley) ⇒ <code>[Westley](#Westley)</code>
     * _static_
@@ -2338,7 +2524,7 @@ Managed group class
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive instance |
+| archive | <code>[Archive](#Archive)</code> | The archive instance |
 | remoteObj | <code>Object</code> | The remote object reference |
 
 <a name="ManagedGroup+createEntry"></a>
@@ -2530,7 +2716,7 @@ Export the group to a JSON string
 
 <a name="ManagedGroup+_getArchive"></a>
 
-### managedGroup._getArchive() ⇒ <code>Archive</code>
+### managedGroup._getArchive() ⇒ <code>[Archive](#Archive)</code>
 Get the archive instance reference
 
 **Kind**: instance method of <code>[ManagedGroup](#ManagedGroup)</code>  
@@ -2572,7 +2758,7 @@ Create a new ManagedGroup with a delta-manager and parent group ID
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive to create the group in |
+| archive | <code>[Archive](#Archive)</code> | The archive to create the group in |
 | [parentID] | <code>string</code> | The parent group ID (default is root) |
 
 <a name="Model"></a>
@@ -2643,7 +2829,7 @@ Set a property
     * [.toString()](#OwnCloudDatasource+toString) ⇒ <code>string</code>
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(password)](#WebDAVDatasource+load) ⇒ <code>Promise.&lt;Archive&gt;</code>
+    * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
 
 <a name="new_OwnCloudDatasource_new"></a>
@@ -2685,11 +2871,11 @@ Get the remote endpoint URI (no resource path)
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
 <a name="WebDAVDatasource+load"></a>
 
-### ownCloudDatasource.load(password) ⇒ <code>Promise.&lt;Archive&gt;</code>
+### ownCloudDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load the archive using a password
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>Promise.&lt;Archive&gt;</code> - A promise resolving with the opened archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the opened archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2705,7 +2891,7 @@ Save an archive with a password to the WebDAV service
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive to save |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
 | password | <code>string</code> | The password for encryption |
 
 <a name="OwnCloudDatasource"></a>
@@ -2719,7 +2905,7 @@ Save an archive with a password to the WebDAV service
     * [.toString()](#OwnCloudDatasource+toString) ⇒ <code>string</code>
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(password)](#WebDAVDatasource+load) ⇒ <code>Promise.&lt;Archive&gt;</code>
+    * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
 
 <a name="new_OwnCloudDatasource_new"></a>
@@ -2761,11 +2947,11 @@ Get the remote endpoint URI (no resource path)
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
 <a name="WebDAVDatasource+load"></a>
 
-### ownCloudDatasource.load(password) ⇒ <code>Promise.&lt;Archive&gt;</code>
+### ownCloudDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load the archive using a password
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>Promise.&lt;Archive&gt;</code> - A promise resolving with the opened archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the opened archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2781,7 +2967,7 @@ Save an archive with a password to the WebDAV service
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive to save |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
 | password | <code>string</code> | The password for encryption |
 
 <a name="TextDatasource"></a>
@@ -2792,7 +2978,7 @@ Save an archive with a password to the WebDAV service
 * [TextDatasource](#TextDatasource)
     * [new TextDatasource()](#new_TextDatasource_new)
     * [new TextDatasource(content)](#new_TextDatasource_new)
-    * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>Promise.&lt;Archive&gt;</code>
+    * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>string</code>
@@ -2814,11 +3000,11 @@ Constructor for the text datasource
 
 <a name="TextDatasource+load"></a>
 
-### textDatasource.load(credentials, [emptyCreatesNew]) ⇒ <code>Promise.&lt;Archive&gt;</code>
+### textDatasource.load(credentials, [emptyCreatesNew]) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load from the stored content using a password to decrypt
 
 **Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
-**Returns**: <code>Promise.&lt;Archive&gt;</code> - A promise that resolves with an open archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise that resolves with an open archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2835,7 +3021,7 @@ Save an archive with a password
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive to save |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
 | credentials | <code>string</code> | The password or Credentials instance to encrypt with |
 
 <a name="TextDatasource+setContent"></a>
@@ -2864,7 +3050,7 @@ Output the datasource configuration as a string
 * [TextDatasource](#TextDatasource)
     * [new TextDatasource()](#new_TextDatasource_new)
     * [new TextDatasource(content)](#new_TextDatasource_new)
-    * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>Promise.&lt;Archive&gt;</code>
+    * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>string</code>
@@ -2886,11 +3072,11 @@ Constructor for the text datasource
 
 <a name="TextDatasource+load"></a>
 
-### textDatasource.load(credentials, [emptyCreatesNew]) ⇒ <code>Promise.&lt;Archive&gt;</code>
+### textDatasource.load(credentials, [emptyCreatesNew]) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load from the stored content using a password to decrypt
 
 **Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
-**Returns**: <code>Promise.&lt;Archive&gt;</code> - A promise that resolves with an open archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise that resolves with an open archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2907,7 +3093,7 @@ Save an archive with a password
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive to save |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
 | credentials | <code>string</code> | The password or Credentials instance to encrypt with |
 
 <a name="TextDatasource+setContent"></a>
@@ -2939,7 +3125,7 @@ Output the datasource configuration as a string
     * [new WebDAVDatasource(endpoint, webDAVPath, username, password)](#new_WebDAVDatasource_new)
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(password)](#WebDAVDatasource+load) ⇒ <code>Promise.&lt;Archive&gt;</code>
+    * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
     * [.toString()](#WebDAVDatasource+toString) ⇒ <code>string</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -2976,12 +3162,12 @@ Get the remote endpoint URI (no resource path)
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
 <a name="WebDAVDatasource+load"></a>
 
-### webDAVDatasource.load(password) ⇒ <code>Promise.&lt;Archive&gt;</code>
+### webDAVDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load the archive using a password
 
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
 **Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>Promise.&lt;Archive&gt;</code> - A promise resolving with the opened archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the opened archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2998,7 +3184,7 @@ Save an archive with a password to the WebDAV service
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive to save |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
 | password | <code>string</code> | The password for encryption |
 
 <a name="WebDAVDatasource+toString"></a>
@@ -3030,7 +3216,7 @@ Set the text content
     * [new WebDAVDatasource(endpoint, webDAVPath, username, password)](#new_WebDAVDatasource_new)
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(password)](#WebDAVDatasource+load) ⇒ <code>Promise.&lt;Archive&gt;</code>
+    * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
     * [.toString()](#WebDAVDatasource+toString) ⇒ <code>string</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -3067,12 +3253,12 @@ Get the remote endpoint URI (no resource path)
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
 <a name="WebDAVDatasource+load"></a>
 
-### webDAVDatasource.load(password) ⇒ <code>Promise.&lt;Archive&gt;</code>
+### webDAVDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load the archive using a password
 
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
 **Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>Promise.&lt;Archive&gt;</code> - A promise resolving with the opened archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the opened archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3089,7 +3275,7 @@ Save an archive with a password to the WebDAV service
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>Archive</code> | The archive to save |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
 | password | <code>string</code> | The password for encryption |
 
 <a name="WebDAVDatasource+toString"></a>
@@ -3189,7 +3375,7 @@ Get the history (deltas)
 * [Workspace](#Workspace)
     * [new Workspace()](#new_Workspace_new)
     * [.archiveDiffersFromDatasource()](#Workspace+archiveDiffersFromDatasource) ⇒ <code>Promise</code>
-    * [.getArchive()](#Workspace+getArchive) ⇒ <code>Archive</code>
+    * [.getArchive()](#Workspace+getArchive) ⇒ <code>[Archive](#Archive)</code>
     * [.getDatasource()](#Workspace+getDatasource) ⇒ <code>Object</code>
     * [.getPassword()](#Workspace+getPassword) ⇒ <code>String</code>
     * [.mergeFromDatasource()](#Workspace+mergeFromDatasource) ⇒ <code>Promise</code>
@@ -3212,7 +3398,7 @@ Check if the archive differs from the one in the datasource
 **See**: stageArchiveFromDatasource  
 <a name="Workspace+getArchive"></a>
 
-### workspace.getArchive() ⇒ <code>Archive</code>
+### workspace.getArchive() ⇒ <code>[Archive](#Archive)</code>
 Get the archive instance
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
@@ -3252,7 +3438,7 @@ Set the archive instance
 
 | Param | Type |
 | --- | --- |
-| archive | <code>Archive</code> | 
+| archive | <code>[Archive](#Archive)</code> | 
 
 <a name="Workspace+setDatasource"></a>
 
