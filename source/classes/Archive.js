@@ -9,8 +9,7 @@ var Westley = require("./Westley.js"),
     EntryCollectionDecorator = require("../decorators/EntryCollection.js");
 
 var signing = require("../tools/signing.js"),
-    rawSearching = require("../tools/searching-raw.js"),
-    instanceSearching = require("../tools/searching-instance.js");
+    rawSearching = require("../tools/searching-raw.js");
 
 /**
  * Buttercup Archive
