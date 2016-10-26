@@ -22,11 +22,11 @@
 
     /**
      * Managed entry class
-     * @class ManagedEntry
+     * @class Entry
      * @param {Archive} archive The main archive instance
      * @param {Object} remoteObj The remote object reference
      */
-    var ManagedEntry = function(archive, remoteObj) {
+    var Entry = function(archive, remoteObj) {
         this._archive = archive;
         this._westley = archive._getWestley();
         this._remoteObject = remoteObj;
@@ -37,11 +37,11 @@
      * If the entry is in the trash already, it is removed (including if there is no
       *    trash group). If the entry is in a normal group and a trash group exists, it
      *  is moved there instead of being deleted.
-     * @memberof ManagedEntry
+     * @memberof Entry
      * @see moveToGroup
      * @see Archive.getTrashGroup
      */
-    ManagedEntry.prototype.delete = function() {
+    Entry.prototype.delete = function() {
         var trashGroup = this._getArchive().getTrashGroup(),
             parentGroup = this.getGroup(),
             canTrash = (trashGroup && parentGroup) &&
@@ -67,10 +67,10 @@
      * Delete an attribute
      * @param {string} attr The attribute name
      * @throws {Error} Throws if the attribute doesn't exist, or cannot be deleted
-     * @returns {ManagedEntry}
-     * @memberof ManagedEntry
+     * @returns {Entry}
+     * @memberof Entry
      */
-    ManagedEntry.prototype.deleteAttribute = function(attr) {
+    Entry.prototype.deleteAttribute = function(attr) {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteEntryAttribute)
                 .addArgument(this.getID())
@@ -85,10 +85,10 @@
      * Delete a meta item
      * @param {string} property The property name
      * @throws {Error} Throws if property doesn't exist, or cannot be deleted
-     * @returns {ManagedEntry}
-     * @memberof ManagedEntry
+     * @returns {Entry}
+     * @memberof Entry
      */
-    ManagedEntry.prototype.deleteMeta = function(property) {
+    Entry.prototype.deleteMeta = function(property) {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteEntryMeta)
                 .addArgument(this.getID())
@@ -103,9 +103,9 @@
      * Get an attribute
      * @params {String} attributeName The name of the attribute
      * @returns {String|undefined}
-     * @memberof ManagedEntry
+     * @memberof Entry
      */
-    ManagedEntry.prototype.getAttribute = function(attributeName) {
+    Entry.prototype.getAttribute = function(attributeName) {
         var raw = this._getRemoteObject();
         return raw.attributes && raw.attributes.hasOwnProperty(attributeName) ?
             raw.attributes[attributeName] : undefined;
@@ -121,28 +121,28 @@
     /**
      * Get the display information for the entry
      * @returns {DisplayInfo|undefined}
-     * @memberof ManagedEntry
+     * @memberof Entry
      */
-    ManagedEntry.prototype.getDisplayInfo = function() {
-        var displayType = this.getAttribute(ManagedEntry.Attributes.DisplayType) || "default";
+    Entry.prototype.getDisplayInfo = function() {
+        var displayType = this.getAttribute(Entry.Attributes.DisplayType) || "default";
         return __displayTypes[displayType];
     };
 
     /**
      * Get the containing group for the entry
-     * @returns {ManagedGroup|null}
-     * @memberof ManagedEntry
+     * @returns {Group|null}
+     * @memberof Entry
      */
-    ManagedEntry.prototype.getGroup = function() {
+    Entry.prototype.getGroup = function() {
         // @todo move to a new searching library
         var parentInfo = searching.findGroupContainingEntryID(
                 this._getWestley().getDataset().groups || [],
                 this.getID()
             );
         if (parentInfo && parentInfo.group) {
-            // require ManagedGroup here due to circular references:
-            var ManagedGroup = require("./ManagedGroup.js");
-            return new ManagedGroup(this._getArchive(), parentInfo.group);
+            // require Group here due to circular references:
+            var Group = require("./Group.js");
+            return new Group(this._getArchive(), parentInfo.group);
         }
         return null;
     };
@@ -150,9 +150,9 @@
     /**
      * Get the entry ID
      * @returns {String}
-     * @memberof ManagedEntry
+     * @memberof Entry
      */
-    ManagedEntry.prototype.getID = function() {
+    Entry.prototype.getID = function() {
         return this._getRemoteObject().id;
     };
 
@@ -160,9 +160,9 @@
      * Get a meta value
      * @params {String} property The name of the meta property
      * @returns {String|undefined}
-     * @memberof ManagedEntry
+     * @memberof Entry
      */
-    ManagedEntry.prototype.getMeta = function(property) {
+    Entry.prototype.getMeta = function(property) {
         var raw = this._getRemoteObject();
         return raw.meta && raw.meta.hasOwnProperty(property) ?
             raw.meta[property] : undefined;
@@ -172,9 +172,9 @@
      * Get a property value
      * @params {String} property The name of the meta property
      * @returns {String|undefined}
-     * @memberof ManagedEntry
+     * @memberof Entry
      */
-    ManagedEntry.prototype.getProperty = function(property) {
+    Entry.prototype.getProperty = function(property) {
         var raw = this._getRemoteObject();
         return raw.hasOwnProperty(property) && entryTools.isValidProperty(property) ?
             raw[property] : undefined;
@@ -182,11 +182,11 @@
 
     /**
      * Move the entry to another group
-     * @params {ManagedGroup} group The target group
-     * @returns {ManagedEntry} Returns self
-     * @memberof ManagedEntry
+     * @params {Group} group The target group
+     * @returns {Entry} Returns self
+     * @memberof Entry
      */
-    ManagedEntry.prototype.moveToGroup = function(group) {
+    Entry.prototype.moveToGroup = function(group) {
         var targetID = group.getID();
         this._getWestley().execute(
             Inigo.create(Inigo.Command.MoveEntry)
@@ -202,10 +202,10 @@
      * Set an attribute on the entry
      * @param {String} attributeName The name of the attribute
      * @param {String} value The value to set
-     * @returns {ManagedEntry} Returns self
-     * @memberof ManagedEntry
+     * @returns {Entry} Returns self
+     * @memberof Entry
      */
-    ManagedEntry.prototype.setAttribute = function(attributeName, value) {
+    Entry.prototype.setAttribute = function(attributeName, value) {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetEntryAttribute)
                 .addArgument(this.getID())
@@ -221,10 +221,10 @@
      * Set a meta value on the entry
      * @param {String} prop The meta name
      * @param {String} value The value to set
-     * @returns {ManagedEntry} Returns self
-     * @memberof ManagedEntry
+     * @returns {Entry} Returns self
+     * @memberof Entry
      */
-    ManagedEntry.prototype.setMeta = function(prop, value) {
+    Entry.prototype.setMeta = function(prop, value) {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetEntryMeta)
                 .addArgument(this.getID())
@@ -240,10 +240,10 @@
      * Set a property on the entry
      * @param {String} prop The property name
      * @param {String} value The property value
-     * @returns {ManagedEntry} Returns self
-     * @memberof ManagedEntry
+     * @returns {Entry} Returns self
+     * @memberof Entry
      */
-    ManagedEntry.prototype.setProperty = function(prop, value) {
+    Entry.prototype.setProperty = function(prop, value) {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetEntryProperty)
                 .addArgument(this.getID())
@@ -258,9 +258,9 @@
     /**
      * Export entry to object
      * @returns {Object}
-     * @memberof ManagedEntry
+     * @memberof Entry
      */
-    ManagedEntry.prototype.toObject = function() {
+    Entry.prototype.toObject = function() {
         var properties = {},
             meta = {},
             attributes = {},
@@ -294,40 +294,40 @@
     /**
      * toString override
      * @returns {string}
-     * @memberof ManagedEntry
+     * @memberof Entry
      */
-    ManagedEntry.prototype.toString = function() {
+    Entry.prototype.toString = function() {
         return JSON.stringify(this.toObject());
     };
 
     /**
      * Get the archive reference
      * @returns {Archive}
-     * @memberof ManagedEntry
+     * @memberof Entry
      */
-    ManagedEntry.prototype._getArchive = function() {
+    Entry.prototype._getArchive = function() {
         return this._archive;
     };
 
     /**
      * Get the remote object that mirrors the data represented here
      * @returns {Object}
-     * @memberof ManagedEntry
+     * @memberof Entry
      */
-    ManagedEntry.prototype._getRemoteObject = function() {
+    Entry.prototype._getRemoteObject = function() {
         return this._remoteObject;
     };
 
     /**
      * Get the Westley reference
      * @returns {Westley}
-     * @memberof ManagedEntry
+     * @memberof Entry
      */
-    ManagedEntry.prototype._getWestley = function() {
+    Entry.prototype._getWestley = function() {
         return this._westley;
     };
 
-    ManagedEntry.Attributes = Object.freeze({
+    Entry.Attributes = Object.freeze({
         DisplayType:            "bc_entry_display_type"
     });
 
@@ -335,11 +335,11 @@
      * Create a new entry
      * @param {Archive} archive The archive
      * @param {string} groupID The ID of the target group
-     * @returns {ManagedEntry}
+     * @returns {Entry}
      * @static
-     * @memberof ManagedEntry
+     * @memberof Entry
      */
-    ManagedEntry.createNew = function(archive, groupID) {
+    Entry.createNew = function(archive, groupID) {
         var id = encoding.getUniqueID(),
             westley = archive._getWestley();
         westley.execute(
@@ -349,9 +349,9 @@
                 .generateCommand()
         );
         var entry = searching.findEntryByID(westley.getDataset().groups, id);
-        return new ManagedEntry(archive, entry);
+        return new Entry(archive, entry);
     };
 
-    module.exports = ManagedEntry;
+    module.exports = Entry;
 
 })(module);

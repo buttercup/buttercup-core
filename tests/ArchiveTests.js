@@ -2,7 +2,7 @@ var lib = require("../source/module.js"),
     encoding = require("../source/tools/encoding.js");
     
 var Archive = lib.Archive,
-    ManagedGroup = lib.ManagedGroup;
+    Group = lib.Group;
 
 module.exports = {
 
@@ -249,7 +249,7 @@ module.exports = {
         testGroupTypes: function(test) {
             var groups = this.archiveA.getGroups();
             groups.forEach(function(group) {
-                test.ok(group instanceof ManagedGroup, "Groups should be ManagedGroup instances");
+                test.ok(group instanceof Group, "Groups should be Group instances");
             });
             test.done();
         }
@@ -266,7 +266,7 @@ module.exports = {
 
         testReturnsGroupIfPresent: function(test) {
             var group = this.archiveA.getGroupByID(this.group3ID);
-            group.setAttribute(ManagedGroup.Attributes.Role, "trash");
+            group.setAttribute(Group.Attributes.Role, "trash");
             var trashGroup = this.archiveA.getTrashGroup();
             test.strictEqual(trashGroup.getID(), group.getID(), "Trash group should be present");
             test.done();

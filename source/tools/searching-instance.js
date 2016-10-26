@@ -6,10 +6,10 @@
 
         /**
          * Find entry instances by filtering with a compare function
-         * @param {Array.<ManagedGroup>} groups
+         * @param {Array.<Group>} groups
          * @param {Function} compareFn The callback comparison function, return true to keep and false
          *  to strip
-         * @returns {Array.<ManagedEntry>}
+         * @returns {Array.<Entry>}
          */
         findEntriesByCheck: function(groups, compareFn) {
             var foundEntries = [],
@@ -29,9 +29,9 @@
 
         /**
          * Find group instances within groups that satisfy some check
-         * @param {Array.<ManagedGroup>} groups
+         * @param {Array.<Group>} groups
          * @param {Function} compareFn A comparision function - return true to keep, false to strip
-         * @returns {Array.<ManagedGroup>}
+         * @returns {Array.<Group>}
          */
         findGroupsByCheck: function(groups, compareFn) {
             var foundGroups = groups.filter(compareFn);

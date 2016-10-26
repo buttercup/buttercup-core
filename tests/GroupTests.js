@@ -1,14 +1,14 @@
 var lib = require("../source/module.js"),
     encoding = require("../source/tools/encoding.js");
 
-var ManagedGroup = lib.ManagedGroup,
+var Group = lib.Group,
     Archive = lib.Archive;
 
 module.exports = {
 
     setUp: function(cb) {
         this.id = encoding.getUniqueID();
-        this.group = new ManagedGroup(new Archive(), {
+        this.group = new Group(new Archive(), {
             id: this.id,
             title: "My group",
             attributes: {
@@ -55,7 +55,7 @@ module.exports = {
         throwsForTrashGroup: function(test) {
             var target = this.group2
                 .createGroup("To delete")
-                    .setAttribute(ManagedGroup.Attributes.Role, "trash");
+                    .setAttribute(Group.Attributes.Role, "trash");
             test.throws(function() {
                 target.delete();
             }, null, "delete should throw an error");
@@ -140,7 +140,7 @@ module.exports = {
 
         returnsCorrectly: function(test) {
             test.strictEqual(this.group2.isTrash(), false, "Group should not be trash yet");
-            this.group2.setAttribute(ManagedGroup.Attributes.Role, "trash");
+            this.group2.setAttribute(Group.Attributes.Role, "trash");
             test.strictEqual(this.group2.isTrash(), true, "Group should be trash");
             test.done();
         }
@@ -157,7 +157,7 @@ module.exports = {
         },
 
         testThrowsForTrashGroup: function(test) {
-            this.moveGroup.setAttribute(ManagedGroup.Attributes.Role, "trash");
+            this.moveGroup.setAttribute(Group.Attributes.Role, "trash");
             test.throws(function() {
                 this.moveGroup.moveToGroup(this.group2);
             }, null, "Should throw when trying to move");
@@ -195,7 +195,7 @@ module.exports = {
 
         outputsGroupsAndEntriesByFlags: function(test) {
             var obj = this.group3.toObject(
-                ManagedGroup.OutputFlag.Entries | ManagedGroup.OutputFlag.Groups
+                Group.OutputFlag.Entries | Group.OutputFlag.Groups
             );
             test.strictEqual(obj.entries.length, 1, "Should output entries");
             test.strictEqual(obj.groups.length, 2, "Should output groups");
@@ -203,21 +203,21 @@ module.exports = {
         },
 
         outputsEntriesOnlyByFlag: function(test) {
-            var obj = this.group3.toObject(ManagedGroup.OutputFlag.Entries);
+            var obj = this.group3.toObject(Group.OutputFlag.Entries);
             test.strictEqual(obj.entries.length, 1, "Should output entries");
             test.ok(!obj.hasOwnProperty("groups"), "Should not output groups");
             test.done();
         },
 
         outputsGroupsOnlyByFlag: function(test) {
-            var obj = this.group3.toObject(ManagedGroup.OutputFlag.Groups);
+            var obj = this.group3.toObject(Group.OutputFlag.Groups);
             test.strictEqual(obj.groups.length, 2, "Should output groups");
             test.ok(!obj.hasOwnProperty("entries"), "Should not output entries");
             test.done();
         },
 
         outputsNeitherEntriesNorGroupsForFlag: function(test) {
-            var obj = this.group3.toObject(ManagedGroup.OutputFlag.OnlyGroup);
+            var obj = this.group3.toObject(Group.OutputFlag.OnlyGroup);
             test.ok(!obj.hasOwnProperty("groups"), "Should not output groups");
             test.ok(!obj.hasOwnProperty("entries"), "Should not output entries");
             test.done();

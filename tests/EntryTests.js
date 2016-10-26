@@ -3,8 +3,8 @@ var lib = require("../source/module.js"),
     entryTools = require("../source/tools/entry.js");
 
 var Archive = lib.Archive,
-    ManagedGroup = lib.ManagedGroup,
-    ManagedEntry = lib.ManagedEntry;
+    Group = lib.Group,
+    Entry = lib.Entry;
 
 module.exports = {
 
@@ -17,7 +17,7 @@ module.exports = {
             .setProperty("password", "passw0rd")
             .setMeta("accessKey", "12345")
             .setMeta("user prop", "user val")
-            .setAttribute(ManagedEntry.Attributes.DisplayType, "credit-card");
+            .setAttribute(Entry.Attributes.DisplayType, "credit-card");
         this.id = entry.getID();
         this.archive = archive;
         this.entry = entry;
@@ -36,7 +36,7 @@ module.exports = {
         movesToTrash: function(test) {
             var trash = this.archive
                 .createGroup("Trash")
-                    .setAttribute(ManagedGroup.Attributes.Role, "trash");
+                    .setAttribute(Group.Attributes.Role, "trash");
             this.entry.delete();
             test.strictEqual(trash.getEntries().length, 1, "Entry should be in trash");
             this.entry.delete();
@@ -47,7 +47,7 @@ module.exports = {
         deletesWhenInTrash: function(test) {
             var trash = this.archive
                 .createGroup("Trash")
-                    .setAttribute(ManagedGroup.Attributes.Role, "trash");
+                    .setAttribute(Group.Attributes.Role, "trash");
             var deleted = this.entry.delete();
             test.strictEqual(deleted, false, "Should move to trash first");
             deleted = this.entry.delete();
@@ -59,7 +59,7 @@ module.exports = {
         deletesWhenInGroupWithinTrash: function(test) {
             var trash = this.archive
                 .createGroup("Trash")
-                    .setAttribute(ManagedGroup.Attributes.Role, "trash");
+                    .setAttribute(Group.Attributes.Role, "trash");
             this.group.moveToGroup(trash);
             var deleted = this.entry.delete();
             test.strictEqual(trash.getEntries().length, 0, "Entry should be gone from trash");
@@ -98,7 +98,7 @@ module.exports = {
     getAttribute: {
 
         testGetsAttribute: function(test) {
-            test.strictEqual(this.entry.getAttribute(ManagedEntry.Attributes.DisplayType), "credit-card", "Entry should contain attribute");
+            test.strictEqual(this.entry.getAttribute(Entry.Attributes.DisplayType), "credit-card", "Entry should contain attribute");
             test.done();
         },
 
