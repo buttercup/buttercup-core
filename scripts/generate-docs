@@ -2,4 +2,8 @@
 
 JSDOC2MD="./node_modules/jsdoc-to-markdown/bin/cli.js"
 
+if [ -e doc/api.md ]; then
+    rm doc/api.md
+fi
+
 node "$JSDOC2MD" --verbose "source/**/*.js" > doc/api.md

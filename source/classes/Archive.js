@@ -5,43 +5,18 @@ var Westley = require("./Westley.js"),
     Flattener = require("./Flattener.js"),
     Group = require("./Group.js"),
     Entry = require("./Entry.js"),
-    GroupCollectionDecorator = require("../decorators/GroupCollection.js");
+    GroupCollectionDecorator = require("../decorators/GroupCollection.js"),
+    EntryCollectionDecorator = require("../decorators/EntryCollection.js");
 
 var signing = require("../tools/signing.js"),
     rawSearching = require("../tools/searching-raw.js"),
     instanceSearching = require("../tools/searching-instance.js");
 
 /**
- * Find entries by searching properties/meta
- * @param {Archive} archive
- * @param {string} check Information to check (property/meta)
- * @param {string} key The key (property/meta-value) to search with
- * @param {RegExp|string} value The value to search for
- * @returns {Array.<Entry>} An array of found entries
- * @private
- * @static
- * @memberof Archive
- */
-function findEntriesByCheck(archive, check, key, value) {
-    return instanceSearching.findEntriesByCheck(
-        archive.getGroups(),
-        function(entry) {
-            var itemValue = (check === "property") ?
-                entry.getProperty(key) || "" :
-                entry.getMeta(key) || "";
-            if (value instanceof RegExp) {
-                return value.test(itemValue);
-            } else {
-                return itemValue.indexOf(value) >= 0;
-            }
-        }
-    );
-}
-
-/**
  * Buttercup Archive
  * @class Archive
  * @mixes GroupCollection
+ * @mixes EntryCollection
  */
 class Archive {
 
@@ -63,6 +38,8 @@ class Archive {
         );
         // add group searching
         GroupCollectionDecorator.decorate(this);
+        // add entry searching
+        EntryCollectionDecorator.decorateDeep(this);
     }
 
     /**
@@ -92,28 +69,6 @@ class Archive {
         );
         this._getWestley().pad();
         return this;
-    }
-
-    /**
-     * Find entries that match a certain meta property
-     * @param {string} metaName The meta property to search for
-     * @param {RegExp|string} value The value to search for
-     * @returns {Array.<Entry>} An array of found entries
-     * @memberof Archive
-     */
-    findEntriesByMeta(metaName, value) {
-        return findEntriesByCheck(this, "meta", metaName, value);
-    }
-
-    /**
-     * Find all entries that match a certain property
-     * @param {string} property The property to search with
-     * @param {RegExp|string} value The value to search for
-     * @returns {Array.<Entry>} An array of found extries
-     * @memberof Archive
-     */
-    findEntriesByProperty(property, value) {
-        return findEntriesByCheck(this, "property", property, value);
     }
 
     /**
