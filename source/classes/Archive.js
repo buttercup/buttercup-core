@@ -4,7 +4,8 @@ var Westley = require("./Westley.js"),
     Inigo = require("./InigoGenerator.js"),
     Flattener = require("./Flattener.js"),
     Group = require("./Group.js"),
-    Entry = require("./Entry.js");
+    Entry = require("./Entry.js"),
+    GroupCollectionDecorator = require("../decorators/GroupCollection.js");
 
 var signing = require("../tools/signing.js"),
     rawSearching = require("../tools/searching-raw.js"),
@@ -40,23 +41,28 @@ function findEntriesByCheck(archive, check, key, value) {
 /**
  * Buttercup Archive
  * @class Archive
+ * @mixes GroupCollection
  */
 class Archive {
 
     constructor() {
+        this._westley = new Westley();
+        // comment created date
         var date = new Date(),
             ts = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-        this._westley = new Westley();
         this._getWestley().execute(
             Inigo.create(Inigo.Command.Comment)
                 .addArgument('Buttercup archive created (' + ts + ')')
                 .generateCommand()
         );
+        // set format
         this._getWestley().execute(
             Inigo.create(Inigo.Command.Format)
                 .addArgument(signing.getFormat())
                 .generateCommand()
         );
+        // add group searching
+        GroupCollectionDecorator.decorate(this);
     }
 
     /**
@@ -108,26 +114,6 @@ class Archive {
      */
     findEntriesByProperty(property, value) {
         return findEntriesByCheck(this, "property", property, value);
-    }
-
-    /**
-     * Find all groups within the archive that match a title
-     * @param {RegExp|string} title The title to search for, either a string (contained within
-     *  a target group's title) or a RegExp to test against the title.
-     * @returns {Array.<Group>} An array of found groups
-     * @memberof Archive
-     */
-    findGroupsByTitle(title) {
-        return instanceSearching.findGroupsByCheck(
-            this.getGroups(),
-            function(group) {
-                if (title instanceof RegExp) {
-                    return title.test(group.getTitle());
-                } else {
-                    return group.getTitle().indexOf(title) >= 0;
-                }
-            }
-        );
     }
 
     /**
