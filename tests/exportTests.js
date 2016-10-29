@@ -1,5 +1,6 @@
-var lib = require("../source/module.js"),
-    Archive = lib.Archive,
+var lib = require("../source/module.js");
+
+var Archive = lib.Archive,
     exporter = lib.tools.export,
     signing = lib.tools.signing;
 

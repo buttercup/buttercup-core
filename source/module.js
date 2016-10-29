@@ -14,8 +14,8 @@
         Credentials: require("./classes/Credentials.js"),
         Model: require("./classes/Model.js"),
 
-        ManagedGroup: require("./classes/ManagedGroup.js"),
-        ManagedEntry: require("./classes/ManagedEntry.js"),
+        Group: require("./classes/Group.js"),
+        Entry: require("./classes/Entry.js"),
 
         TextDatasource: require("./classes/TextDatasource.js"),
         FileDatasource: require("./classes/FileDatasource.js"),

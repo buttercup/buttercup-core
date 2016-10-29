@@ -1,13 +1,9 @@
-(function(module) {
+"use strict";
 
-    "use strict";
+module.exports = {
 
-    var lib = module.exports = {
+    isArray: function(item) {
+        return Object.prototype.toString.call(item) === "[object Array]";
+    }
 
-        isArray: function(item) {
-            return Object.prototype.toString.call(item) === "[object Array]";
-        }
-
-    };
-
-})(module);
+};

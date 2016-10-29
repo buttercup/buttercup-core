@@ -3,74 +3,56 @@
 var Westley = require("./Westley.js"),
     Inigo = require("./InigoGenerator.js"),
     Flattener = require("./Flattener.js"),
-    ManagedGroup = require("./ManagedGroup.js"),
-    ManagedEntry = require("./ManagedEntry.js");
+    Group = require("./Group.js"),
+    Entry = require("./Entry.js"),
+    GroupCollectionDecorator = require("../decorators/GroupCollection.js"),
+    EntryCollectionDecorator = require("../decorators/EntryCollection.js");
 
 var signing = require("../tools/signing.js"),
-    rawSearching = require("../tools/searching-raw.js"),
-    instanceSearching = require("../tools/searching-instance.js");
-
-/**
- * Find entries by searching properties/meta
- * @param {Archive} archive
- * @param {string} check Information to check (property/meta)
- * @param {string} key The key (property/meta-value) to search with
- * @param {RegExp|string} value The value to search for
- * @returns {Array.<ManagedEntry>} An array of found entries
- * @private
- * @static
- * @memberof Archive
- */
-function findEntriesByCheck(archive, check, key, value) {
-    return instanceSearching.findEntriesByCheck(
-        archive.getGroups(),
-        function(entry) {
-            var itemValue = (check === "property") ?
-                entry.getProperty(key) || "" :
-                entry.getMeta(key) || "";
-            if (value instanceof RegExp) {
-                return value.test(itemValue);
-            } else {
-                return itemValue.indexOf(value) >= 0;
-            }
-        }
-    );
-}
+    rawSearching = require("../tools/searching-raw.js");
 
 /**
  * Buttercup Archive
  * @class Archive
+ * @mixes GroupCollection
+ * @mixes EntryCollection
  */
 class Archive {
 
     constructor() {
+        this._westley = new Westley();
+        // comment created date
         var date = new Date(),
             ts = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-        this._westley = new Westley();
         this._getWestley().execute(
             Inigo.create(Inigo.Command.Comment)
                 .addArgument('Buttercup archive created (' + ts + ')')
                 .generateCommand()
         );
+        // set format
         this._getWestley().execute(
             Inigo.create(Inigo.Command.Format)
                 .addArgument(signing.getFormat())
                 .generateCommand()
         );
+        // add group searching
+        GroupCollectionDecorator.decorate(this);
+        // add entry searching
+        EntryCollectionDecorator.decorate(this);
     }
 
     /**
      * Create a new group
      * @param {string=} title The title for the group
-     * @returns {ManagedGroup} The newly created group
+     * @returns {Group} The newly created group
      * @memberof Archive
      */
     createGroup(title) {
-        var managedGroup = ManagedGroup.createNew(this);
+        var group = Group.createNew(this);
         if (title) {
-            managedGroup.setTitle(title);
+            group.setTitle(title);
         }
-        return managedGroup;
+        return group;
     }
 
     /**
@@ -86,48 +68,6 @@ class Archive {
         );
         this._getWestley().pad();
         return this;
-    }
-
-    /**
-     * Find entries that match a certain meta property
-     * @param {string} metaName The meta property to search for
-     * @param {RegExp|string} value The value to search for
-     * @returns {Array.<ManagedEntry>} An array of found entries
-     * @memberof Archive
-     */
-    findEntriesByMeta(metaName, value) {
-        return findEntriesByCheck(this, "meta", metaName, value);
-    }
-
-    /**
-     * Find all entries that match a certain property
-     * @param {string} property The property to search with
-     * @param {RegExp|string} value The value to search for
-     * @returns {Array.<ManagedEntry>} An array of found extries
-     * @memberof Archive
-     */
-    findEntriesByProperty(property, value) {
-        return findEntriesByCheck(this, "property", property, value);
-    }
-
-    /**
-     * Find all groups within the archive that match a title
-     * @param {RegExp|string} title The title to search for, either a string (contained within
-     *  a target group's title) or a RegExp to test against the title.
-     * @returns {Array.<ManagedGroup>} An array of found groups
-     * @memberof Archive
-     */
-    findGroupsByTitle(title) {
-        return instanceSearching.findGroupsByCheck(
-            this.getGroups(),
-            function(group) {
-                if (title instanceof RegExp) {
-                    return title.test(group.getTitle());
-                } else {
-                    return group.getTitle().indexOf(title) >= 0;
-                }
-            }
-        );
     }
 
     /**
@@ -147,13 +87,13 @@ class Archive {
     /**
      * Find an entry by its ID
      * @param {String} entryID The entry's ID
-     * @returns {ManagedEntry|null} The found entry or null
+     * @returns {Entry|null} The found entry or null
      * @memberof Archive
      */
     getEntryByID(entryID) {
         var westley = this._getWestley(),
             entryRaw = rawSearching.findEntryByID(westley.getDataset().groups, entryID);
-        return (entryRaw === null) ? null : new ManagedEntry(this, entryRaw);
+        return (entryRaw === null) ? null : new Entry(this, entryRaw);
     }
 
     /**
@@ -168,31 +108,33 @@ class Archive {
     /**
      * Find a group by its ID
      * @param {String} groupID The group's ID
-     * @returns {ManagedGroup|null} The group with the provided ID
+     * @returns {Group|null} The group with the provided ID
      * @memberof Archive
+     * @deprecated To be removed
+     * @see findGroupByID
      */
     getGroupByID(groupID) {
         var westley = this._getWestley(),
             groupRaw = rawSearching.findGroupByID(westley.getDataset().groups, groupID);
-        return (groupRaw === null) ? null : new ManagedGroup(this, groupRaw);
+        return (groupRaw === null) ? null : new Group(this, groupRaw);
     }
 
     /**
      * Get all groups (root) in the archive
-     * @returns {ManagedGroup[]} An array of ManagedGroups
+     * @returns {Group[]} An array of Groups
      * @memberof Archive
      */
     getGroups() {
         var archive = this,
             westley = this._getWestley();
         return (westley.getDataset().groups || []).map(function(rawGroup) {
-            return new ManagedGroup(archive, rawGroup);
+            return new Group(archive, rawGroup);
         });
     }
 
     /**
      * Get the trash group
-     * @returns {ManagedGroup|null} The trash group if found, null otherwise
+     * @returns {Group|null} The trash group if found, null otherwise
      * @memberof Archive
      */
     getTrashGroup() {
@@ -258,7 +200,7 @@ Archive.createWithDefaults = function() {
         generalGroup = archive.createGroup("General"),
         trashGroup = archive
             .createGroup("Trash")
-                .setAttribute(ManagedGroup.Attributes.Role, "trash");
+                .setAttribute(Group.Attributes.Role, "trash");
     return archive;
 };
 
