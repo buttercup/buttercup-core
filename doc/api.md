@@ -2633,9 +2633,9 @@ Create a new entry with a title
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Entry](#Entry)</code> - The new entry  
 
-| Param | Type |
-| --- | --- |
-| [title] | <code>string</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| [title] | <code>string</code> | The title of the new entry |
 
 <a name="Group+createGroup"></a>
 
@@ -2978,9 +2978,9 @@ Create a new entry with a title
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Entry](#Entry)</code> - The new entry  
 
-| Param | Type |
-| --- | --- |
-| [title] | <code>string</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| [title] | <code>string</code> | The title of the new entry |
 
 <a name="Group+createGroup"></a>
 
