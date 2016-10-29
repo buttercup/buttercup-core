@@ -17,9 +17,9 @@ class Group {
 
     /**
      * Managed group class
-     * @class Group
      * @param {Archive} archive The archive instance
      * @param {Object} remoteObj The remote object reference
+     * @constructor
      */
     constructor(archive, remoteObj) {
         this._archive = archive;
@@ -33,7 +33,7 @@ class Group {
 
     /**
      * Create a new entry with a title
-     * @param {string=} title
+     * @param {string=} title The title of the new entry
      * @returns {Entry} The new entry
      * @memberof Group
      */
