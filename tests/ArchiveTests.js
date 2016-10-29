@@ -152,6 +152,22 @@ module.exports = {
 
     },
 
+    findGroupByID: {
+
+        findsNestedGroup: function(test) {
+            var group = this.archiveA.findGroupByID(this.group2ID);
+            test.strictEqual(group.getTitle(), "Secondary Group", "Should find group with its ID");
+            test.done();
+        },
+
+        returnsNullForNotFound: function(test) {
+            var group = this.archiveA.findGroupByID("12345");
+            test.strictEqual(group, null, "Should not find non-existing group");
+            test.done();
+        }
+
+    },
+
     findGroupsByTitle: {
 
         testFindsParentByString: function(test) {

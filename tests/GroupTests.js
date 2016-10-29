@@ -51,6 +51,15 @@ module.exports = {
         this.group4.createGroup("findGroupsSub2");
         this.group4.createGroup("findGroupsSub3");
 
+        this.group5 = Archive
+            .createWithDefaults()
+                .createGroup("Group 5");
+        this.group5BottomID = this.group5
+            .createGroup("sub1")
+                .createGroup("sub2")
+                    .createGroup("sub3")
+                        .getID();
+
         (cb)();
     },
 
@@ -141,6 +150,22 @@ module.exports = {
             test.strictEqual(entries1.length, 0, "No entries should be found for non-existent property");
             test.strictEqual(entries2.length, 0, "No entries should be found for non-existent value");
             test.strictEqual(entries3.length, 0, "No entries should be found for non-existent value-regex");
+            test.done();
+        }
+
+    },
+
+    findGroupByID: {
+
+        findsNestedGroup: function(test) {
+            var group = this.group5.findGroupByID(this.group5BottomID);
+            test.strictEqual(group.getTitle(), "sub3", "Should find group with its ID");
+            test.done();
+        },
+
+        returnsNullForNotFound: function(test) {
+            var group = this.group5.findGroupByID("12345");
+            test.strictEqual(group, null, "Should not find non-existing group");
             test.done();
         }
 

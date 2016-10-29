@@ -136,6 +136,8 @@ class Group {
      * @param {String} groupID The ID of the group to get
      * @returns {Group|null} The found group or null
      * @memberof Group
+     * @deprecated To be removed
+     * @see findGroupByID
      */
     getGroupByID(groupID) {
         let groupRaw = searching

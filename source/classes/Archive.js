@@ -110,6 +110,8 @@ class Archive {
      * @param {String} groupID The group's ID
      * @returns {Group|null} The group with the provided ID
      * @memberof Archive
+     * @deprecated To be removed
+     * @see findGroupByID
      */
     getGroupByID(groupID) {
         var westley = this._getWestley(),

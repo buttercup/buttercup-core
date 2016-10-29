@@ -12,6 +12,23 @@ module.exports = {
     decorate: function(inst) {
 
         /**
+         * Find a group by its ID
+         * @returns {Group|null} The group or null if not found
+         * @memberof GroupCollection
+         * @param {String} id The group ID to search for
+         * @name findGroupByID
+         */
+        inst.findGroupByID = function findGroupByID(id) {
+            let foundGroups = instanceSearching.findGroupsByCheck(
+                inst.getGroups(),
+                function(group) {
+                    return (group.getID() === id);
+                }
+            );
+            return (foundGroups && foundGroups.length === 1) ? foundGroups[0] : null;
+        };
+
+        /**
          * Find groups by their title
          * @name findGroupsByTitle
          * @memberof GroupCollection
