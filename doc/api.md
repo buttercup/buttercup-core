@@ -72,6 +72,8 @@
 <dd></dd>
 <dt><a href="#Group">Group</a></dt>
 <dd></dd>
+<dt><a href="#Group">Group</a></dt>
+<dd></dd>
 <dt><a href="#Model">Model</a></dt>
 <dd></dd>
 <dt><a href="#OwnCloudDatasource">OwnCloudDatasource</a> ⇐ <code><a href="#WebDAVDatasource">WebDAVDatasource</a></code></dt>
@@ -2090,8 +2092,8 @@ Create a new Credentials instance from encrypted information
         * [.getProperty()](#Entry+getProperty) ⇒ <code>String</code> &#124; <code>undefined</code>
         * [.moveToGroup()](#Entry+moveToGroup) ⇒ <code>[Entry](#Entry)</code>
         * [.setAttribute(attributeName, value)](#Entry+setAttribute) ⇒ <code>[Entry](#Entry)</code>
-        * [.setMeta(prop, value)](#Entry+setMeta) ⇒ <code>[Entry](#Entry)</code>
-        * [.setProperty(prop, value)](#Entry+setProperty) ⇒ <code>[Entry](#Entry)</code>
+        * [.setMeta(prop, [value])](#Entry+setMeta) ⇒ <code>[Entry](#Entry)</code>
+        * [.setProperty(prop, [value])](#Entry+setProperty) ⇒ <code>[Entry](#Entry)</code>
         * [.toObject()](#Entry+toObject) ⇒ <code>Object</code>
         * [.toString()](#Entry+toString) ⇒ <code>string</code>
         * [._getArchive()](#Entry+_getArchive) ⇒ <code>[Archive](#Archive)</code>
@@ -2217,7 +2219,7 @@ Set an attribute on the entry
 
 <a name="Entry+setMeta"></a>
 
-### entry.setMeta(prop, value) ⇒ <code>[Entry](#Entry)</code>
+### entry.setMeta(prop, [value]) ⇒ <code>[Entry](#Entry)</code>
 Set a meta value on the entry
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
@@ -2226,11 +2228,11 @@ Set a meta value on the entry
 | Param | Type | Description |
 | --- | --- | --- |
 | prop | <code>String</code> | The meta name |
-| value | <code>String</code> | The value to set |
+| [value] | <code>String</code> | The value to set |
 
 <a name="Entry+setProperty"></a>
 
-### entry.setProperty(prop, value) ⇒ <code>[Entry](#Entry)</code>
+### entry.setProperty(prop, [value]) ⇒ <code>[Entry](#Entry)</code>
 Set a property on the entry
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
@@ -2239,7 +2241,7 @@ Set a property on the entry
 | Param | Type | Description |
 | --- | --- | --- |
 | prop | <code>String</code> | The property name |
-| value | <code>String</code> | The property value |
+| [value] | <code>String</code> | The property value |
 
 <a name="Entry+toObject"></a>
 
@@ -2247,6 +2249,7 @@ Set a property on the entry
 Export entry to object
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>Object</code> - The entry in object-form  
 <a name="Entry+toString"></a>
 
 ### entry.toString() ⇒ <code>string</code>
@@ -2501,10 +2504,15 @@ Get the number of lines to preserve by default
 
 ## Group
 **Kind**: global class  
+**Mixes**: <code>[GroupCollection](#GroupCollection)</code>, <code>[EntryCollection](#EntryCollection)</code>  
 
 * [Group](#Group)
+    * [new Group()](#new_Group_new)
     * [new Group(archive, remoteObj)](#new_Group_new)
     * _instance_
+        * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+        * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+        * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
         * [.createEntry([title])](#Group+createEntry) ⇒ <code>[Entry](#Entry)</code>
         * [.createGroup([title])](#Group+createGroup) ⇒ <code>[Group](#Group)</code>
         * [.delete()](#Group+delete) ⇒ <code>Boolean</code>
@@ -2531,6 +2539,11 @@ Get the number of lines to preserve by default
 
 <a name="new_Group_new"></a>
 
+### new Group()
+Buttercup Group
+
+<a name="new_Group_new"></a>
+
 ### new Group(archive, remoteObj)
 Managed group class
 
@@ -2539,6 +2552,47 @@ Managed group class
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive instance |
 | remoteObj | <code>Object</code> | The remote object reference |
+
+<a name="Group+findGroupsByTitle"></a>
+
+### group.findGroupsByTitle ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+Find groups by their title
+
+**Kind**: instance property of <code>[Group](#Group)</code>  
+**Mixes**: <code>[findGroupsByTitle](#GroupCollection.findGroupsByTitle)</code>  
+**Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of groups  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| title | <code>String</code> &#124; <code>RegExp</code> | The group title |
+
+<a name="Group+findEntriesByMeta"></a>
+
+### group.findEntriesByMeta ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+Find entries that match a certain meta property
+
+**Kind**: instance property of <code>[Group](#Group)</code>  
+**Mixes**: <code>[findEntriesByMeta](#EntryCollection.findEntriesByMeta)</code>  
+**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found entries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| metaName | <code>string</code> | The meta property to search for |
+| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+
+<a name="Group+findEntriesByProperty"></a>
+
+### group.findEntriesByProperty ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+Find all entries that match a certain property
+
+**Kind**: instance property of <code>[Group](#Group)</code>  
+**Mixes**: <code>[findEntriesByProperty](#EntryCollection.findEntriesByProperty)</code>  
+**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found extries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| property | <code>string</code> | The property to search with |
+| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
 
 <a name="Group+createEntry"></a>
 
@@ -2603,6 +2657,335 @@ Get an attribute
 Get the entries within the group
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of entries  
+<a name="Group+getGroupByID"></a>
+
+### group.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+Get a child group (deep) by its ID
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The found group or null  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| groupID | <code>String</code> | The ID of the group to get |
+
+<a name="Group+getGroups"></a>
+
+### group.getGroups() ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+Get the groups within the group
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of child groups  
+<a name="Group+getID"></a>
+
+### group.getID() ⇒ <code>string</code>
+Get the group ID
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>string</code> - The ID of the group  
+<a name="Group+getTitle"></a>
+
+### group.getTitle() ⇒ <code>string</code>
+Get the group title
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>string</code> - The title of the group  
+<a name="Group+isInTrash"></a>
+
+### group.isInTrash() ⇒ <code>Boolean</code>
+Check if the group is in the trash
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>Boolean</code> - Whether or not the group is within the trash group  
+<a name="Group+isTrash"></a>
+
+### group.isTrash() ⇒ <code>Boolean</code>
+Check if the group is used for trash
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>Boolean</code> - Whether or not the group is the trash group  
+<a name="Group+moveToGroup"></a>
+
+### group.moveToGroup(group) ⇒ <code>[Group](#Group)</code>
+Move the group into another
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Group](#Group)</code> - Returns self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| group | <code>[Group](#Group)</code> | The target group (new parent) |
+
+<a name="Group+setAttribute"></a>
+
+### group.setAttribute(attributeName, value) ⇒ <code>[Group](#Group)</code>
+Set an attribute
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Group](#Group)</code> - Returns self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attributeName | <code>string</code> | The name of the attribute |
+| value | <code>string</code> | The value to set |
+
+<a name="Group+setTitle"></a>
+
+### group.setTitle(title) ⇒ <code>[Group](#Group)</code>
+Set the group title
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Group](#Group)</code> - Returns self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| title | <code>string</code> | The title of the group |
+
+<a name="Group+toObject"></a>
+
+### group.toObject(outputFlags) ⇒ <code>Object</code>
+Export group to object
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>Object</code> - The group, in raw object form  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| outputFlags | <code>Number</code> | Bitwise options for outputting entries and child groups |
+
+**Example**  
+```js
+// output defaults (entries and sub groups)
+     group.toObject()
+```
+**Example**  
+```js
+// output only entries
+     group.toObject(Group.OutputFlag.Entries)
+```
+**Example**  
+```js
+// output only the group info
+     group.toObject(Group.OutputFlag.OnlyGroup)
+```
+<a name="Group+toString"></a>
+
+### group.toString(outputFlags) ⇒ <code>string</code>
+Export the group to a JSON string
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>string</code> - The group (and entries) in JSON string format  
+**See**: toObject  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| outputFlags | <code>Number</code> | Output configuration flags to pass to `toObject` |
+
+<a name="Group+_getArchive"></a>
+
+### group._getArchive() ⇒ <code>[Archive](#Archive)</code>
+Get the archive instance reference
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Access:** protected  
+<a name="Group+_getRemoteObject"></a>
+
+### group._getRemoteObject() ⇒ <code>Object</code>
+Get the remotely-managed object (group)
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>Object</code> - The object instance for the group  
+**Access:** protected  
+<a name="Group+_getWestley"></a>
+
+### group._getWestley() ⇒ <code>[Westley](#Westley)</code>
+Get the delta managing instance for the archive
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Westley](#Westley)</code> - The internal Westley object  
+**Access:** protected  
+<a name="Group.OutputFlag"></a>
+
+### Group.OutputFlag
+Bitwise output flags for `toObject` and `toString`
+
+**Kind**: static property of <code>[Group](#Group)</code>  
+**See**
+
+- toObject
+- toString
+
+<a name="Group.createNew"></a>
+
+### Group.createNew(archive, [parentID]) ⇒ <code>[Group](#Group)</code>
+Create a new Group with a delta-manager and parent group ID
+
+**Kind**: static method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Group](#Group)</code> - A new group  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| archive | <code>[Archive](#Archive)</code> | The archive to create the group in |
+| [parentID] | <code>string</code> | The parent group ID (default is root) |
+
+<a name="Group"></a>
+
+## Group
+**Kind**: global class  
+
+* [Group](#Group)
+    * [new Group()](#new_Group_new)
+    * [new Group(archive, remoteObj)](#new_Group_new)
+    * _instance_
+        * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+        * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+        * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+        * [.createEntry([title])](#Group+createEntry) ⇒ <code>[Entry](#Entry)</code>
+        * [.createGroup([title])](#Group+createGroup) ⇒ <code>[Group](#Group)</code>
+        * [.delete()](#Group+delete) ⇒ <code>Boolean</code>
+        * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ <code>[Group](#Group)</code>
+        * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> &#124; <code>undefined</code>
+        * [.getEntries()](#Group+getEntries) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+        * [.getGroupByID(groupID)](#Group+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+        * [.getGroups()](#Group+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+        * [.getID()](#Group+getID) ⇒ <code>string</code>
+        * [.getTitle()](#Group+getTitle) ⇒ <code>string</code>
+        * [.isInTrash()](#Group+isInTrash) ⇒ <code>Boolean</code>
+        * [.isTrash()](#Group+isTrash) ⇒ <code>Boolean</code>
+        * [.moveToGroup(group)](#Group+moveToGroup) ⇒ <code>[Group](#Group)</code>
+        * [.setAttribute(attributeName, value)](#Group+setAttribute) ⇒ <code>[Group](#Group)</code>
+        * [.setTitle(title)](#Group+setTitle) ⇒ <code>[Group](#Group)</code>
+        * [.toObject(outputFlags)](#Group+toObject) ⇒ <code>Object</code>
+        * [.toString(outputFlags)](#Group+toString) ⇒ <code>string</code>
+        * [._getArchive()](#Group+_getArchive) ⇒ <code>[Archive](#Archive)</code>
+        * [._getRemoteObject()](#Group+_getRemoteObject) ⇒ <code>Object</code>
+        * [._getWestley()](#Group+_getWestley) ⇒ <code>[Westley](#Westley)</code>
+    * _static_
+        * [.OutputFlag](#Group.OutputFlag)
+        * [.createNew(archive, [parentID])](#Group.createNew) ⇒ <code>[Group](#Group)</code>
+
+<a name="new_Group_new"></a>
+
+### new Group()
+Buttercup Group
+
+<a name="new_Group_new"></a>
+
+### new Group(archive, remoteObj)
+Managed group class
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| archive | <code>[Archive](#Archive)</code> | The archive instance |
+| remoteObj | <code>Object</code> | The remote object reference |
+
+<a name="Group+findGroupsByTitle"></a>
+
+### group.findGroupsByTitle ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+Find groups by their title
+
+**Kind**: instance property of <code>[Group](#Group)</code>  
+**Mixes**: <code>[findGroupsByTitle](#GroupCollection.findGroupsByTitle)</code>  
+**Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of groups  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| title | <code>String</code> &#124; <code>RegExp</code> | The group title |
+
+<a name="Group+findEntriesByMeta"></a>
+
+### group.findEntriesByMeta ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+Find entries that match a certain meta property
+
+**Kind**: instance property of <code>[Group](#Group)</code>  
+**Mixes**: <code>[findEntriesByMeta](#EntryCollection.findEntriesByMeta)</code>  
+**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found entries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| metaName | <code>string</code> | The meta property to search for |
+| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+
+<a name="Group+findEntriesByProperty"></a>
+
+### group.findEntriesByProperty ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+Find all entries that match a certain property
+
+**Kind**: instance property of <code>[Group](#Group)</code>  
+**Mixes**: <code>[findEntriesByProperty](#EntryCollection.findEntriesByProperty)</code>  
+**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found extries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| property | <code>string</code> | The property to search with |
+| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+
+<a name="Group+createEntry"></a>
+
+### group.createEntry([title]) ⇒ <code>[Entry](#Entry)</code>
+Create a new entry with a title
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Entry](#Entry)</code> - The new entry  
+
+| Param | Type |
+| --- | --- |
+| [title] | <code>string</code> | 
+
+<a name="Group+createGroup"></a>
+
+### group.createGroup([title]) ⇒ <code>[Group](#Group)</code>
+Create a child group
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Group](#Group)</code> - The new child group  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [title] | <code>string</code> | Optionally set a title |
+
+<a name="Group+delete"></a>
+
+### group.delete() ⇒ <code>Boolean</code>
+Delete the group
+If there is a trash group available, the group is moved there. If the group
+is already in the trash, it is deleted permanently.
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>Boolean</code> - True when deleted, false when moved to trash  
+<a name="Group+deleteAttribute"></a>
+
+### group.deleteAttribute(attr) ⇒ <code>[Group](#Group)</code>
+Delete an attribute
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Group](#Group)</code> - Returns self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attr | <code>string</code> | The name of the attribute |
+
+<a name="Group+getAttribute"></a>
+
+### group.getAttribute(attributeName) ⇒ <code>string</code> &#124; <code>undefined</code>
+Get an attribute
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>string</code> &#124; <code>undefined</code> - Returns the attribute or undefined if not found  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attributeName | <code>string</code> | The name of the attribute |
+
+<a name="Group+getEntries"></a>
+
+### group.getEntries() ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+Get the entries within the group
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of entries  
 <a name="Group+getGroupByID"></a>
 
 ### group.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>

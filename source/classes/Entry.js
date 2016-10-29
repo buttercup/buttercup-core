@@ -220,11 +220,12 @@
     /**
      * Set a meta value on the entry
      * @param {String} prop The meta name
-     * @param {String} value The value to set
+     * @param {String=} value The value to set
      * @returns {Entry} Returns self
      * @memberof Entry
      */
     Entry.prototype.setMeta = function(prop, value) {
+        value = value || "";
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetEntryMeta)
                 .addArgument(this.getID())
@@ -239,11 +240,12 @@
     /**
      * Set a property on the entry
      * @param {String} prop The property name
-     * @param {String} value The property value
+     * @param {String=} value The property value
      * @returns {Entry} Returns self
      * @memberof Entry
      */
     Entry.prototype.setProperty = function(prop, value) {
+        value = value || "";
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetEntryProperty)
                 .addArgument(this.getID())
@@ -257,7 +259,7 @@
 
     /**
      * Export entry to object
-     * @returns {Object}
+     * @returns {Object} The entry in object-form
      * @memberof Entry
      */
     Entry.prototype.toObject = function() {

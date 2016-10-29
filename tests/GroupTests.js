@@ -35,9 +35,21 @@ module.exports = {
 
         this.group3Archive = Archive.createWithDefaults();
         this.group3 = this.group3Archive.createGroup("My group");
-        this.group3.createGroup("sub1");
+        this.group3.createGroup("sub1")
+            .createEntry("sub1entry1")
+                .setProperty("username", "fred")
+                .setMeta("random", "value");
         this.group3.createGroup("sub2");
-        this.group3.createEntry("entry1");
+        this.group3.createEntry("entry1")
+            .setProperty("username", "freddy")
+            .setMeta("random", "val");
+        
+        this.group4 = Archive
+            .createWithDefaults()
+                .createGroup("Group 4");
+        this.group4.createGroup("findGroupsSub1");
+        this.group4.createGroup("findGroupsSub2");
+        this.group4.createGroup("findGroupsSub3");
 
         (cb)();
     },
@@ -69,6 +81,97 @@ module.exports = {
             test.strictEqual(this.group3.isInTrash(), true, "Should have been moved to trash");
             deleted = this.group3.delete();
             test.strictEqual(deleted, true, "Should have been deleted");
+            test.done();
+        }
+
+    },
+
+    findEntriesByMeta: {
+
+        findsEntriesByString: function(test) {
+            var entries = this.group3.findEntriesByMeta("random", "value");
+            test.strictEqual(entries.length, 1, "1 entry should be found");
+            test.strictEqual(entries[0].getProperty("title"), "sub1entry1");
+            test.strictEqual(entries[0].getMeta("random"), "value");
+            test.done();
+        },
+
+        findsEntriesByRegExp: function(test) {
+            var entries = this.group3.findEntriesByMeta("random", /^val/);
+            test.strictEqual(entries.length, 2, "Both entries should be found");
+            test.done();
+        },
+
+        testFindsNone: function(test) {
+            var entries1 = this.group3.findEntriesByMeta("not here", "1"),
+                entries2 = this.group3.findEntriesByMeta("some meta", "1234"),
+                entries3 = this.group3.findEntriesByMeta("some meta", /^\d{5,}$/);
+            test.strictEqual(entries1.length, 0, "No entries should be found for non-existent key");
+            test.strictEqual(entries2.length, 0, "No entries should be found for non-existent value");
+            test.strictEqual(entries3.length, 0, "No entries should be found for non-existent value-regex");
+            test.done();
+        }
+
+    },
+
+    findEntriesByProperty: {
+
+        testFindsEntriesByString: function(test) {
+            var entries = this.group3.findEntriesByProperty("username", "freddy");
+            test.strictEqual(entries.length, 1, "1 entry should be found");
+            test.strictEqual(entries[0].getProperty("title"), "entry1");
+            test.done();
+        },
+
+        testFindsEntriesByRegExp: function(test) {
+            var entries = this.group3.findEntriesByProperty("username", /^fred(dy)?$/),
+                usernames = entries.map(function(entry) {
+                    return entry.getProperty("username");
+                });
+            test.strictEqual(entries.length, 2, "2 entries should be found");
+            test.ok(usernames.indexOf("fred") >= 0, "Both entries should be found");
+            test.ok(usernames.indexOf("freddy") >= 0, "Both entries should be found");
+            test.done();
+        },
+
+        testFindsNone: function(test) {
+            var entries1 = this.group3.findEntriesByProperty("not here", "abc123"),
+                entries2 = this.group3.findEntriesByProperty("username", "not here"),
+                entries3 = this.group3.findEntriesByProperty("password", /^\d{7,}$/);
+            test.strictEqual(entries1.length, 0, "No entries should be found for non-existent property");
+            test.strictEqual(entries2.length, 0, "No entries should be found for non-existent value");
+            test.strictEqual(entries3.length, 0, "No entries should be found for non-existent value-regex");
+            test.done();
+        }
+
+    },
+
+    findGroupsByTitle: {
+
+        testFindsParentByString: function(test) {
+            var groups = this.group4.findGroupsByTitle("findGroupsSub2");
+            test.strictEqual(groups.length, 1, "Only 1 group should be found");
+            test.strictEqual(groups[0].getTitle(), "findGroupsSub2", "Found group should be correct");
+            test.done();
+        },
+
+        testFindsChildByPartialString: function(test) {
+            var groups = this.group4.findGroupsByTitle("findGroupsSub");
+            test.strictEqual(groups.length, 3, "All sub groups should be found");
+            test.done();
+        },
+
+        testFindsNothing: function(test) {
+            var groups1 = this.group4.findGroupsByTitle("-"),
+                groups2 = this.group4.findGroupsByTitle(/abc/i);
+            test.strictEqual(groups1.length, 0, "No groups should be found for non-matching string");
+            test.strictEqual(groups2.length, 0, "No groups should be found for non-matching RegExp");
+            test.done();
+        },
+
+        testFindsChildrenByRegExp: function(test) {
+            var groups = this.group4.findGroupsByTitle(/findGroupsSub(1|2)/i);
+            test.strictEqual(groups.length, 2, "Only 2 children should be found");
             test.done();
         }
 

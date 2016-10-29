@@ -3,8 +3,16 @@
 var Inigo = require("./InigoGenerator.js"),
     Entry = require("./Entry.js"),
     encoding = require("../tools/encoding.js"),
-    searching = require("../tools/searching-raw.js");
+    searching = require("../tools/searching-raw.js"),
+    GroupCollectionDecorator = require("../decorators/GroupCollection.js"),
+    EntryCollectionDecorator = require("../decorators/EntryCollection.js");
 
+/**
+ * Buttercup Group
+ * @class Group
+ * @mixes GroupCollection
+ * @mixes EntryCollection
+ */
 class Group {
 
     /**
@@ -17,6 +25,10 @@ class Group {
         this._archive = archive;
         this._westley = archive._getWestley();
         this._remoteObject = remoteObj;
+        // add group searching
+        GroupCollectionDecorator.decorate(this);
+        // add entry searching
+        EntryCollectionDecorator.decorate(this);
     }
 
     /**
@@ -109,7 +121,7 @@ class Group {
 
     /**
      * Get the entries within the group
-     * @returns {Array.<Entry>}
+     * @returns {Array.<Entry>} An array of entries
      * @memberof Group
      */
     getEntries() {

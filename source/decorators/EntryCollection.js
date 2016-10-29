@@ -2,7 +2,8 @@ var instanceSearching = require("../tools/searching-instance.js");
 
 /**
  * Find entries by searching properties/meta
- * @param {Archive} archive The target archive
+ * When used within a group, that group's entries are also searched'
+ * @param {Archive|Group} groupParent The target archive or group
  * @param {string} check Information to check (property/meta)
  * @param {string} key The key (property/meta-value) to search with
  * @param {RegExp|string} value The value to search for
@@ -11,9 +12,14 @@ var instanceSearching = require("../tools/searching-instance.js");
  * @static
  * @memberof EntryCollection
  */
-function findEntriesByCheck(archive, check, key, value) {
+function findEntriesByCheck(groupParent, check, key, value) {
+    // If the groupParent object is a Group, use it as the only search group,
+    // otherwise just take the children groups (groupParent is probably an
+    // Archive instance):
+    let groups = (groupParent.getEntries) ?
+        [groupParent] : groupParent.getGroups();
     return instanceSearching.findEntriesByCheck(
-        archive.getGroups(),
+        groups,
         function(entry) {
             var itemValue = (check === "property") ?
                 entry.getProperty(key) || "" :
@@ -34,7 +40,7 @@ function findEntriesByCheck(archive, check, key, value) {
 
 module.exports = {
 
-    decorateDeep: function(inst) {
+    decorate: function(inst) {
 
         /**
          * Find entries that match a certain meta property

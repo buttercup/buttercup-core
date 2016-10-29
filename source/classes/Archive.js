@@ -38,7 +38,7 @@ class Archive {
         // add group searching
         GroupCollectionDecorator.decorate(this);
         // add entry searching
-        EntryCollectionDecorator.decorateDeep(this);
+        EntryCollectionDecorator.decorate(this);
     }
 
     /**
