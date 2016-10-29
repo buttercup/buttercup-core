@@ -149,6 +149,7 @@ Extract command components from a string
 * [Archive](#Archive)
     * [new Archive()](#new_Archive_new)
     * _instance_
+        * [.findGroupByID](#Archive+findGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.findGroupsByTitle](#Archive+findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.findEntriesByMeta](#Archive+findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
         * [.findEntriesByProperty](#Archive+findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
@@ -157,7 +158,7 @@ Extract command components from a string
         * [.getAttribute(attributeName)](#Archive+getAttribute) ⇒ <code>undefined</code> &#124; <code>String</code>
         * [.getEntryByID(entryID)](#Archive+getEntryByID) ⇒ <code>[Entry](#Entry)</code> &#124; <code>null</code>
         * [.getFormat()](#Archive+getFormat) ⇒ <code>string</code>
-        * [.getGroupByID(groupID)](#Archive+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+        * ~~[.getGroupByID(groupID)](#Archive+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
         * [.getGroups()](#Archive+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.getTrashGroup()](#Archive+getTrashGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.optimise()](#Archive+optimise) ⇒ <code>[Archive](#Archive)</code>
@@ -170,6 +171,19 @@ Extract command components from a string
 
 ### new Archive()
 Buttercup Archive
+
+<a name="Archive+findGroupByID"></a>
+
+### archive.findGroupByID ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+Find a group by its ID
+
+**Kind**: instance property of <code>[Archive](#Archive)</code>  
+**Mixes**: <code>[findGroupByID](#GroupCollection.findGroupByID)</code>  
+**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The group or null if not found  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The group ID to search for |
 
 <a name="Archive+findGroupsByTitle"></a>
 
@@ -269,11 +283,14 @@ Get the archive format
 **Returns**: <code>string</code> - The format of the archive  
 <a name="Archive+getGroupByID"></a>
 
-### archive.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+### ~~archive.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
+***Deprecated***
+
 Find a group by its ID
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The group with the provided ID  
+**See**: findGroupByID  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2510,6 +2527,7 @@ Get the number of lines to preserve by default
     * [new Group()](#new_Group_new)
     * [new Group(archive, remoteObj)](#new_Group_new)
     * _instance_
+        * [.findGroupByID](#Group+findGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
         * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
@@ -2519,7 +2537,7 @@ Get the number of lines to preserve by default
         * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ <code>[Group](#Group)</code>
         * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> &#124; <code>undefined</code>
         * [.getEntries()](#Group+getEntries) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
-        * [.getGroupByID(groupID)](#Group+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+        * ~~[.getGroupByID(groupID)](#Group+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
         * [.getGroups()](#Group+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.getID()](#Group+getID) ⇒ <code>string</code>
         * [.getTitle()](#Group+getTitle) ⇒ <code>string</code>
@@ -2552,6 +2570,19 @@ Managed group class
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive instance |
 | remoteObj | <code>Object</code> | The remote object reference |
+
+<a name="Group+findGroupByID"></a>
+
+### group.findGroupByID ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+Find a group by its ID
+
+**Kind**: instance property of <code>[Group](#Group)</code>  
+**Mixes**: <code>[findGroupByID](#GroupCollection.findGroupByID)</code>  
+**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The group or null if not found  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The group ID to search for |
 
 <a name="Group+findGroupsByTitle"></a>
 
@@ -2660,11 +2691,14 @@ Get the entries within the group
 **Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of entries  
 <a name="Group+getGroupByID"></a>
 
-### group.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+### ~~group.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
+***Deprecated***
+
 Get a child group (deep) by its ID
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The found group or null  
+**See**: findGroupByID  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2838,6 +2872,7 @@ Create a new Group with a delta-manager and parent group ID
     * [new Group()](#new_Group_new)
     * [new Group(archive, remoteObj)](#new_Group_new)
     * _instance_
+        * [.findGroupByID](#Group+findGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
         * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
@@ -2847,7 +2882,7 @@ Create a new Group with a delta-manager and parent group ID
         * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ <code>[Group](#Group)</code>
         * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> &#124; <code>undefined</code>
         * [.getEntries()](#Group+getEntries) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
-        * [.getGroupByID(groupID)](#Group+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+        * ~~[.getGroupByID(groupID)](#Group+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
         * [.getGroups()](#Group+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.getID()](#Group+getID) ⇒ <code>string</code>
         * [.getTitle()](#Group+getTitle) ⇒ <code>string</code>
@@ -2880,6 +2915,19 @@ Managed group class
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive instance |
 | remoteObj | <code>Object</code> | The remote object reference |
+
+<a name="Group+findGroupByID"></a>
+
+### group.findGroupByID ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+Find a group by its ID
+
+**Kind**: instance property of <code>[Group](#Group)</code>  
+**Mixes**: <code>[findGroupByID](#GroupCollection.findGroupByID)</code>  
+**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The group or null if not found  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The group ID to search for |
 
 <a name="Group+findGroupsByTitle"></a>
 
@@ -2988,11 +3036,14 @@ Get the entries within the group
 **Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of entries  
 <a name="Group+getGroupByID"></a>
 
-### group.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+### ~~group.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
+***Deprecated***
+
 Get a child group (deep) by its ID
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The found group or null  
+**See**: findGroupByID  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3899,6 +3950,23 @@ Find all entries that match a certain property
 
 ## GroupCollection : <code>Object</code>
 **Kind**: global mixin  
+
+* [GroupCollection](#GroupCollection) : <code>Object</code>
+    * [.findGroupByID](#GroupCollection.findGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+    * [.findGroupsByTitle](#GroupCollection.findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+
+<a name="GroupCollection.findGroupByID"></a>
+
+### GroupCollection.findGroupByID ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+Find a group by its ID
+
+**Kind**: static property of <code>[GroupCollection](#GroupCollection)</code>  
+**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The group or null if not found  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The group ID to search for |
+
 <a name="GroupCollection.findGroupsByTitle"></a>
 
 ### GroupCollection.findGroupsByTitle ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
