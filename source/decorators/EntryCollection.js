@@ -1,3 +1,5 @@
+"use strict";
+
 var instanceSearching = require("../tools/searching-instance.js");
 
 /**
