@@ -138,6 +138,8 @@ archive
 archive
     .findGroupsByTitle("banking")
     .forEach(function(group) {});
+
+group.findEntriesByMeta("postcode", /^0\d{4}$/);
 ```
 
 ### Importing

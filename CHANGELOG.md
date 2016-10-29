@@ -1,5 +1,13 @@
 # Buttercup-core release change-log
 
+## v0.27.0
+_2016-10-30_
+
+ * Group & Entry searching decorators for Archives and Groups
+ * Renamed ManagedGroup to Group
+ * Renamed ManagedEntry to Entry
+ * Deprecated `Archive.getGroupByID` and `Group.getGroupByID` in favour of `findGroupByID`
+
 ## v0.26.0
 _2016-10-23_
 

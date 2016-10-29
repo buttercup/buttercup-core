@@ -1,6 +1,6 @@
 {
   "name": "buttercup",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "description": "A NodeJS password vault.",
   "main": "source/module.js",
   "contributors": [
@@ -33,7 +33,8 @@
     "vault",
     "credentials",
     "login",
-    "secure"
+    "secure",
+    "buttercup"
   ],
   "author": "Perry Mitchell <perry@perrymitchell.net>",
   "license": "MIT",
