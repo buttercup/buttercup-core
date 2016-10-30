@@ -34,95 +34,99 @@ const commandClasses = {
  * revenge for the princess.
  * @class Westley
  */
-var Westley = function() {
-    this.clear();
-};
+class Westley {
 
-/**
- * Clear the dataset and history
- * @returns {Westley} Returns self
- * @memberof Westley
- */
-Westley.prototype.clear = function() {
-    this._dataset = {};
-    this._history = [];
-    this._cachedCommands = {};
-    return this;
-};
-
-/**
- * Execute a command - stored in history and modifies the dataset
- * @param {String} command The command to execute
- * @returns {Westley} Returns self
- * @memberof Westley
- */
-Westley.prototype.execute = function(command) {
-    if (!VALID_COMMAND_EXP.test(command)) {
-        throw new Error("Invalid command");
-    }
-    var commandComponents = commandTools.extractCommandComponents(command),
-        commandKey = commandComponents.shift();
-
-    var commandObject = this._getCommandForKey(commandKey);
-
-    this._history.push(command);
-    commandObject.execute.apply(commandObject, [this._dataset].concat(commandComponents));
-    return this;
-};
-
-/**
- * Gets a command by its key from the cache with its dependencies injected
- * @param {String} commandKey The key of the command
- * @returns {Command} Returns the command
- * @memberof Westley
- */
-Westley.prototype._getCommandForKey = function(commandKey) {
-    // If the command doesn't exist in the cache
-    if (this._cachedCommands[commandKey] === undefined) {
-        // Get the command object and inject its dependencies
-        let CommandClass = commandClasses[commandKey],
-            command = new CommandClass();
-
-        command.searchTools = searchingTools;
-        command.entryTools = entryTools;
-
-        command.setCallback("comment", function(comment) {
-            // handle comment
-        });
-
-        // Store it in the cache
-        this._cachedCommands[commandKey] = command;
+    constructor() {
+        this.clear();
     }
 
-    return this._cachedCommands[commandKey];
-};
+    /**
+     * Clear the dataset and history
+     * @returns {Westley} Returns self
+     * @memberof Westley
+     */
+    clear() {
+        this._dataset = {};
+        this._history = [];
+        this._cachedCommands = {};
+        return this;
+    }
 
-/**
- * Insert a padding in the archive (used for delta tracking)
- * @returns {Westley} Returns self
- * @memberof Westley
- */
-Westley.prototype.pad = function() {
-    this.execute(Inigo.generatePaddingCommand());
-    return this;
-};
+    /**
+     * Execute a command - stored in history and modifies the dataset
+     * @param {String} command The command to execute
+     * @returns {Westley} Returns self
+     * @memberof Westley
+     */
+    execute(command) {
+        if (!VALID_COMMAND_EXP.test(command)) {
+            throw new Error("Invalid command");
+        }
+        var commandComponents = commandTools.extractCommandComponents(command),
+            commandKey = commandComponents.shift();
 
-/**
- * Get the core dataset
- * @returns {Object}
- * @memberof Westley
- */
-Westley.prototype.getDataset = function() {
-    return this._dataset;
-};
+        var commandObject = this._getCommandForKey(commandKey);
 
-/**
- * Get the history (deltas)
- * @returns {String[]}
- * @memberof Westley
- */
-Westley.prototype.getHistory = function() {
-    return this._history;
-};
+        this._history.push(command);
+        commandObject.execute.apply(commandObject, [this._dataset].concat(commandComponents));
+        return this;
+    }
+
+    /**
+     * Get the core dataset
+     * @returns {Object} The dataset object
+     * @memberof Westley
+     */
+    getDataset() {
+        return this._dataset;
+    }
+
+    /**
+     * Get the history (deltas)
+     * @returns {String[]} The command array (history)
+     * @memberof Westley
+     */
+    getHistory() {
+        return this._history;
+    }
+
+    /**
+     * Insert a padding in the archive (used for delta tracking)
+     * @returns {Westley} Returns self
+     * @memberof Westley
+     */
+    pad() {
+        this.execute(Inigo.generatePaddingCommand());
+        return this;
+    }
+
+    /**
+     * Gets a command by its key from the cache with its dependencies injected
+     * @param {String} commandKey The key of the command
+     * @returns {Command} Returns the command
+     * @memberof Westley
+     */
+    _getCommandForKey(commandKey) {
+        // If the command doesn't exist in the cache
+        if (this._cachedCommands[commandKey] === undefined) {
+            // Get the command object and inject its dependencies
+            let CommandClass = commandClasses[commandKey],
+                command = new CommandClass();
+
+            command.searchTools = searchingTools;
+            command.entryTools = entryTools;
+
+            command.setCallback("comment", function(comment) {
+                // handle comment
+            });
+
+            // Store it in the cache
+            this._cachedCommands[commandKey] = command;
+        }
+
+        return this._cachedCommands[commandKey];
+    }
+
+}
 
 module.exports = Westley;
