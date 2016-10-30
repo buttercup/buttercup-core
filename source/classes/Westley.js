@@ -81,6 +81,9 @@ class Westley {
         if (!VALID_COMMAND_EXP.test(command)) {
             throw new Error("Invalid command");
         }
+        if (this.readOnly) {
+            throw new Error("Cannot execute command: instance is read-only");
+        }
         var commandComponents = commandTools.extractCommandComponents(command),
             commandKey = commandComponents.shift();
 

@@ -303,6 +303,19 @@ module.exports = {
             archive._getWestley().readOnly = true;
             test.ok(archive.readOnly === true, "Archive should be read-only");
             test.done();
+        },
+
+        failsToWriteInROMode: function(test) {
+            var archive = new Archive();
+            archive._getWestley().readOnly = true;
+            test.throws(
+                function() {
+                    archive.createGroup("Test");
+                },
+                Error,
+                "Should throw when trying to mutate the history"
+            );
+            test.done();
         }
 
     },
