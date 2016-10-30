@@ -42,6 +42,21 @@ class Archive {
     }
 
     /**
+     * Whether the archive is read only or not
+     * @property {Boolean} readOnly
+     * @memberof Archive
+     * @instance
+     * @readonly
+     */
+    get readOnly() {
+        return this._getWestley().readOnly;
+    }
+
+    set readOnly(ro) { // eslint-disable-line
+        throw new Error("readOnly is read-only");
+    }
+
+    /**
      * Create a new group
      * @param {string=} title The title for the group
      * @returns {Group} The newly created group

@@ -290,6 +290,23 @@ module.exports = {
 
     },
 
+    readOnly: {
+
+        isReadWriteByDefault: function(test) {
+            var archive = new Archive();
+            test.ok(archive.readOnly === false, "Archive should be read-write");
+            test.done();
+        },
+
+        canBeSetToReadOnly: function(test) {
+            var archive = new Archive();
+            archive._getWestley().readOnly = true;
+            test.ok(archive.readOnly === true, "Archive should be read-only");
+            test.done();
+        }
+
+    },
+
     setAttribute: {
 
         setsAttributes: function(test) {

@@ -38,6 +38,25 @@ class Westley {
 
     constructor() {
         this.clear();
+        this._readOnly = false;
+    }
+
+    /**
+     * @property {Boolean} readOnly
+     * @memberof Westley
+     * @instance
+     * @public
+     */
+    get readOnly() {
+        return this._readOnly;
+    }
+
+    /**
+     * Set the read only value
+     * @param {Boolean} newRO The new value
+     */
+    set readOnly(newRO) {
+        this._readOnly = (newRO === true);
     }
 
     /**
