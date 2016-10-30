@@ -294,6 +294,22 @@ module.exports = {
 
     },
 
+    readOnly: {
+
+        failsToWriteInROMode: function(test) {
+            this.group2._getWestley().readOnly = true;
+            test.throws(
+                function() {
+                    this.group2.setTitle("New title");
+                },
+                Error,
+                "Should throw when trying to change group in read-only archive"
+            );
+            test.done();
+        }
+
+    },
+
     setAttribute: {
 
         setsAttribute: function(test) {
