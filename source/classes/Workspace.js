@@ -35,17 +35,21 @@ function stageArchiveFromDatasource(workspace) {
 }
 
 function stripDestructiveCommands(history) {
+    let destructiveSlugs = Object
+        .keys(Inigo.Command)
+        .map((key) => Inigo.Command[key])
+        .filter((command) => command.d)
+        .map((command) => command.s);
     return history.filter(function(command) {
-        return [
-            Inigo.Command.DeleteEntry.s,
-            Inigo.Command.DeleteGroup.s
-        ].indexOf(getCommandType(command)) < 0;
+        return destructiveSlugs.indexOf(getCommandType(command)) < 0;
     });
 }
 
 /**
  * Workspace: handling archive loading, saving and merging
+ * Use `SharedWorkspace` instead
  * @class Workspace
+ * @deprecated
  */
 var Workspace = function() {
     this._archive = null;
@@ -73,7 +77,7 @@ Workspace.prototype.archiveDiffersFromDatasource = function() {
 
 /**
  * Get the archive instance
- * @returns {Archive}
+ * @returns {Archive} The archive instance
  * @memberof Workspace
  */
 Workspace.prototype.getArchive = function() {
@@ -91,7 +95,7 @@ Workspace.prototype.getDatasource = function() {
 
 /**
  * Get the stored password
- * @returns {String}
+ * @returns {String} The password
  * @memberof Workspace
  */
 Workspace.prototype.getPassword = function() {
