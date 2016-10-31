@@ -10,6 +10,7 @@
         Westley: require("./classes/Westley.js"),
         Inigo: require("./classes/InigoGenerator.js"),
         Workspace: require("./classes/Workspace.js"),
+        SharedWorkspace: require("./classes/SharedWorkspace.js"),
 
         Credentials: require("./classes/Credentials.js"),
         Model: require("./classes/Model.js"),
