@@ -95,6 +95,7 @@ class TextDatasource {
             .then(function(history) {
                 var archive = new Archive(),
                     westley = archive._getWestley();
+                westley.clear();
                 history.forEach(westley.execute.bind(westley));
                 return archive;
             });
