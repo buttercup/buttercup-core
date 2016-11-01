@@ -41,7 +41,7 @@ You can read the [API documentation here](doc/api.md), and the [change-log here]
 
 Create an archive and a data source: The datasource is where the archive will be written to.
 
-```
+``` js
 var Buttercup = require("buttercup");
 
 var archive = new Buttercup.Archive(),
@@ -52,7 +52,7 @@ datasource.save(archive, "my secure password");
 
 Using the same system, you can also load an archive:
 
-```
+``` js
 var Buttercup = require("buttercup");
 
 var datasource = new Buttercup.OwnCloudDatasource(
@@ -71,7 +71,7 @@ datasource.load("my archive password").then(function(archive) {
 
 Archives also support saving and loading via key-files, and these can be used instead-of or in combination-with passwords:
 
-```
+``` js
 var archive = new Buttercup.Archive(),
     datasource = new Buttercup.FileDatasource("~/myArchive.bcup"),
     creds = new Buttercup.Credentials({ password: "my password", keyfile: "/home/user/example.bin" });
@@ -87,7 +87,7 @@ Workspaces are designed to help manage the necessary archive management tasks th
 
 In reality, the workspace is just a container:
 
-```
+``` js
 var Buttercup = require("buttercup");
 
 var workspace = new Buttercup.Workspace(),
@@ -108,7 +108,7 @@ The workspace can handle some complex operations like merge conflicts - for inst
 
 _A merge is quite basic, in that the remote commands (that differ) are run first, and then the local run next. All deletion commands that could cause conflicts are stripped, so the resulting merge will still contain items that were deleted in the differing portions before the merge._
 
-```
+``` js
 // Check for differences
 workspace.archiveDiffersFromDatasource()
     .then(function(differs) {
@@ -128,7 +128,7 @@ Merging is especially helpful for situations where archives can be modified at a
 ### Searching for things
 
 You can search within archives for certain entries or groups:
-```
+``` js
 archive
     .findEntriesByProperty("title", /^Home-[a-z]+$/i)
     .forEach(function(entry) {
@@ -151,7 +151,7 @@ You can import from other password archive formats, such as KeePass. Checkout th
 Some things in Buttercup are best run purely on Node, such has password-based key derivation. When preparing this for the web (such as with Webpack or Browserify), things can move **very** slowly. There are implementations for functions, such as PBKDF2, that exist for web use that are many times faster than the output of such build utilities.
 
 You can override PBKDF2 by doing the following ([documented on iocane](https://github.com/perry-mitchell/iocane#overriding-the-built-in-pbkdf2-function)):
-```
+``` js
 var Buttercup = require("buttercup");
 Buttercup.vendor.iocane.components.setPBKDF2(newPBKDF2Function);
 // Where 'newPBKDF2Function' is a function that returns a Promise with the hash in a Buffer
@@ -162,6 +162,6 @@ Buttercup.vendor.iocane.components.setPBKDF2(newPBKDF2Function);
 Entries and groups have attributes, describing how they should be treated by the various interfaces that interact with the archive. Attributes are not visible to the users and can contain a variety of different properties.
 
 For instance, you could get the role of a group like so:
-```
+``` js
 let groupRole = group.getAttribute(ManagedGroup.Attributes.Role);
 ```
