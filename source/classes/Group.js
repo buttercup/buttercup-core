@@ -189,6 +189,14 @@ class Group {
     }
 
     /**
+     * Check if the group is shared
+     * @returns {Boolean} True if the group is a shared group
+     */
+    isShared() {
+        return this.getAttribute(Group.Attributes.Role) === "shared";
+    }
+
+    /**
      * Check if the group is used for trash
      * @returns {Boolean} Whether or not the group is the trash group
      * @memberof Group
@@ -312,7 +320,7 @@ class Group {
     /**
      * Get the archive instance reference
      * @protected
-     * @returns {Archive}
+     * @returns {Archive} The archive instance
      * @memberof Group
      */
     _getArchive() {
@@ -341,6 +349,13 @@ class Group {
 
 }
 
+/**
+ * Group attribute names
+ * @memberof Group
+ * @name Attributes
+ * @enum {String}
+ * @static
+ */
 Group.Attributes = Object.freeze({
     Role:        "bc_group_role"
 });
@@ -352,6 +367,7 @@ Group.Attributes = Object.freeze({
  * @memberof Group
  * @static
  * @name OutputFlag
+ * @enum {Number}
  */
 Group.OutputFlag = Object.freeze({
     OnlyGroup:  0,

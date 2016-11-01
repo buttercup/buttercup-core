@@ -119,6 +119,33 @@ class SharedWorkspace {
     }
 
     /**
+     * Imbue the primary archive with shared groups from all of the other archives
+     * @throws {Error} Throws if the primary archive is not set
+     * @returns {SharedWorkspace} Self
+     */
+    imbue() {
+        let items = this.getAllItems(),
+            // take the primary off the front
+            primary = items.shift();
+        if (!primary) {
+            throw new Error("No primary archive");
+        }
+        let primaryArchive = primary.archive;
+        // clear first
+        primaryArchive.discardSharedGroups();
+        items.forEach(function(item) {
+            item.archive
+                .getGroups()
+                .filter((group) => group.isShared())
+                .forEach(function(group) {
+                    // add each shared group
+                    primaryArchive.sharedGroups.push(group);
+                });
+        });
+        return this;
+    }
+
+    /**
      * Detect whether the local archives (in memory) differ from their remote copies
      * Fetches the remote copies from their datasources and detects differences between
      * them and their local counterparts. Does not change/update the local items.
@@ -178,14 +205,20 @@ class SharedWorkspace {
     /**
      * Merge all saveable remote copies into their local counterparts
      * @see mergeItemFromRemote
+     * @see embue
      * @returns {Promise.<Archive[]>} A promise that resolves with an array of merged Archives
      */
     mergeSaveablesFromRemote() {
-        return Promise.all(
-            this.getSaveableItems().map((item) => {
-                return this.mergeItemFromRemote(item);
-            })
-        );
+        return Promise
+            .all(
+                this.getSaveableItems().map((item) => {
+                    return this.mergeItemFromRemote(item);
+                })
+            )
+            .then((archives) => {
+                this.imbue();
+                return archives;
+            });
     }
 
     /**

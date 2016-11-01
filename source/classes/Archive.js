@@ -35,6 +35,8 @@ class Archive {
                 .addArgument(signing.getFormat())
                 .generateCommand()
         );
+        // shared groups
+        this._sharedGroups = [];
         // add group searching
         GroupCollectionDecorator.decorate(this);
         // add entry searching
@@ -54,6 +56,15 @@ class Archive {
 
     set readOnly(ro) { // eslint-disable-line
         throw new Error("readOnly is read-only");
+    }
+
+    /**
+     * An array of shared groups
+     * @property {Array.<Group>} sharedGroups
+     * @instance
+     */
+    get sharedGroups() {
+        return this._sharedGroups;
     }
 
     /**
@@ -82,6 +93,15 @@ class Archive {
                 .generateCommand()
         );
         this._getWestley().pad();
+        return this;
+    }
+
+    /**
+     * Clear the shared groups array
+     * @returns {Archive} Self
+     */
+    discardSharedGroups() {
+        this._sharedGroups = [];
         return this;
     }
 
@@ -142,9 +162,11 @@ class Archive {
     getGroups() {
         var archive = this,
             westley = this._getWestley();
-        return (westley.getDataset().groups || []).map(function(rawGroup) {
-            return new Group(archive, rawGroup);
-        });
+        return (westley.getDataset().groups || [])
+            .map(function(rawGroup) {
+                return new Group(archive, rawGroup);
+            })
+            .concat(this.sharedGroups);
     }
 
     /**
