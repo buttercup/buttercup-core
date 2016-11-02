@@ -138,6 +138,8 @@ class SharedWorkspace {
                 .getGroups()
                 .filter((group) => group.isShared())
                 .forEach(function(group) {
+                    // mark as foreign
+                    group._getRemoteObject()._foreign = true;
                     // add each shared group
                     primaryArchive.sharedGroups.push(group);
                 });

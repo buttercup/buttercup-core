@@ -7,8 +7,8 @@ var Commands = Inigo.Command;
 /**
  * Describe an archive dataset - to history commands
  * @param {Object} dataset The archive dataset
- * @param {String} parentGroupID
- * @returns {Array}
+ * @param {String} parentGroupID The ID of the parent group
+ * @returns {Array.<String>} An array of commands
  * @module Descriptor
  * @type {Function}
  */

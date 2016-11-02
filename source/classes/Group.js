@@ -4,6 +4,7 @@ var Inigo = require("./InigoGenerator.js"),
     Entry = require("./Entry.js"),
     encoding = require("../tools/encoding.js"),
     searching = require("../tools/searching-raw.js"),
+    sharing = require("../tools/sharing.js"),
     GroupCollectionDecorator = require("../decorators/GroupCollection.js"),
     EntryCollectionDecorator = require("../decorators/EntryCollection.js");
 
@@ -25,6 +26,7 @@ class Group {
         this._archive = archive;
         this._westley = archive._getWestley();
         this._remoteObject = remoteObj;
+        this._remoteObject._foreign = false;
         // add group searching
         GroupCollectionDecorator.decorate(this);
         // add entry searching
@@ -64,16 +66,18 @@ class Group {
      * If there is a trash group available, the group is moved there. If the group
      * is already in the trash, it is deleted permanently.
      * @memberof Group
+     * @param {Boolean=} skipTrash Skip the trash
      * @returns {Boolean} True when deleted, false when moved to trash
      */
-    delete() {
+    delete(skipTrash) {
+        skipTrash = (skipTrash === undefined) ? false : skipTrash;
         if (this.isTrash()) {
             throw new Error("Trash group cannot be deleted");
         }
         var trashGroup = this._getArchive().getTrashGroup(),
             hasTrash = (trashGroup !== null),
             inTrash = this.isInTrash();
-        if (!inTrash && hasTrash) {
+        if (!inTrash && hasTrash && !skipTrash) {
             // Not in trash, and a trash group exists, so move it there
             this.moveToGroup(trashGroup);
             return false;
@@ -176,6 +180,15 @@ class Group {
     }
 
     /**
+     * Check if the group is foreign (from another archive)
+     * @returns {Boolean} True if it is foreign
+     * @memberof Group
+     */
+    isForeign() {
+        return this._getRemoteObject()._foreign === true;
+    }
+
+    /**
      * Check if the group is in the trash
      * @returns {Boolean} Whether or not the group is within the trash group
      */
@@ -215,14 +228,18 @@ class Group {
         if (this.isTrash()) {
             throw new Error("Trash group cannot be moved");
         }
-        var targetID = group.getID();
-        this._getWestley().execute(
-            Inigo.create(Inigo.Command.MoveGroup)
-                .addArgument(this.getID())
-                .addArgument(targetID)
-                .generateCommand()
-        );
-        this._getWestley().pad();
+        if (group._getArchive() !== this._getArchive()) {
+            sharing.moveGroupBetweenArchives(this, group);
+        } else {
+            var targetID = group.getID();
+            this._getWestley().execute(
+                Inigo.create(Inigo.Command.MoveGroup)
+                    .addArgument(this.getID())
+                    .addArgument(targetID)
+                    .generateCommand()
+            );
+            this._getWestley().pad();
+        }
         return this;
     }
 

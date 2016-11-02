@@ -67,6 +67,44 @@ module.exports = {
             test.done();
         }
 
+    },
+
+    moving: {
+
+        movesFromSharedToMain: function(test) {
+            var targetGroup = this.main.findGroupsByTitle("Sub1")[0],
+                sharedGroupID = this.sharedGroup.getID();
+            test.ok(this.shared.findGroupByID(sharedGroupID), "Shared group should be in its original archive");
+            this.sharedGroup.moveToGroup(targetGroup);
+            test.ok(!this.shared.findGroupByID(sharedGroupID), "Shared group should not be in its original archive");
+            test.ok(targetGroup.findGroupByID(sharedGroupID), "Shared group should be in the target group");
+            test.ok(this.main.findGroupByID(sharedGroupID), "Shared group should be in the target archive");
+            test.done();
+        },
+
+        removesFromSharedGroups: function(test) {
+            this.workspace.imbue();
+            var targetGroup = this.main.findGroupsByTitle("Sub1")[0],
+                sharedGroupID = this.sharedGroup.getID(),
+                sharedIDs = this.main.sharedGroups.map(group => group.getID());
+            test.ok(sharedIDs.indexOf(sharedGroupID) >= 0, "Shared group should be in shared groups array");
+            this.sharedGroup.moveToGroup(targetGroup);
+            sharedIDs = this.main.sharedGroups.map(group => group.getID());
+            test.ok(sharedIDs.indexOf(sharedGroupID) < 0, "Shared group should not be in shared groups array anymore");
+            test.done();
+        }
+
+    },
+
+    foreignness: {
+
+        detectsIsForeignCorrectly: function(test) {
+            test.ok(!this.sharedGroup.isForeign(), "Shared should not be recognised as foreign before imbuing");
+            this.workspace.imbue();
+            test.ok(this.sharedGroup.isForeign(), "Shared should be recognised as foreign after imbuing");
+            test.done();
+        }
+
     }
 
 };
