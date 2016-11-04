@@ -327,6 +327,8 @@ module.exports = {
             test.strictEqual(obj.id, this.id, "Should transfer id");
             test.strictEqual(obj.title, "My group", "Should transfer title");
             test.strictEqual(obj.attributes.test, "value", "Attributes should be transferred");
+            test.strictEqual(obj.shared, false, "Should not be `shared`");
+            test.strictEqual(obj.foreign, false, "Should not be `foreign`");
             test.done();
         },
 

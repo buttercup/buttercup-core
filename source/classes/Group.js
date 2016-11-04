@@ -330,9 +330,11 @@ class Group {
             }
         }
         let output = {
-            id: this.getID(),
-            title: this.getTitle(),
-            attributes: attributes
+            id:         this.getID(),
+            title:      this.getTitle(),
+            attributes: attributes,
+            foreign:    this.isForeign(),
+            shared:     this.isShared()
         };
         if (outputFlags & Group.OutputFlag.Entries) {
             output.entries = this

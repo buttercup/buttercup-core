@@ -116,6 +116,18 @@ module.exports = {
             test.done();
         }
 
+    },
+
+    output: {
+
+        hasCorrectPropertiesOnToObject: function(test) {
+            this.workspace.imbue();
+            var output = this.sharedGroup.toObject();
+            test.strictEqual(output.shared, true, "Output should have `shared` set to true");
+            test.strictEqual(output.foreign, true, "Output should have `foreign` set to true");
+            test.done();
+        }
+
     }
 
 };
