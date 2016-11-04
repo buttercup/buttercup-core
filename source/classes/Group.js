@@ -219,28 +219,52 @@ class Group {
     }
 
     /**
-     * Move the group into another
-     * @param {Group} group The target group (new parent)
-     * @returns {Group} Returns self
+     * Move the group to another group or archive
+     * @param {Group|Archive} target The destination Group or Archive instance
+     * @returns {Group} Self
      * @memberof Group
      */
-    moveToGroup(group) {
+    moveTo(target) {
         if (this.isTrash()) {
             throw new Error("Trash group cannot be moved");
         }
-        if (group._getArchive() !== this._getArchive()) {
-            sharing.moveGroupBetweenArchives(this, group);
+        let targetArchive,
+            targetGroupID;
+        if (target instanceof Group) {
+            // moving to a group
+            targetArchive = target._getArchive();
+            targetGroupID = target.getID();
         } else {
-            var targetID = group.getID();
+            // moving to an archive
+            targetArchive = target;
+            targetGroupID = "0";
+        }
+        if (this._getArchive() !== targetArchive) { // @todo this should not be by reference
+            // target is in another archive, so move there
+            sharing.moveGroupBetweenArchives(this, target);
+        } else {
+            // target is local, to create commands here
             this._getWestley().execute(
                 Inigo.create(Inigo.Command.MoveGroup)
                     .addArgument(this.getID())
-                    .addArgument(targetID)
+                    .addArgument(targetGroupID)
                     .generateCommand()
             );
             this._getWestley().pad();
         }
         return this;
+    }
+
+    /**
+     * Move the group into another
+     * @param {Group} group The target group (new parent)
+     * @returns {Group} Returns self
+     * @memberof Group
+     * @deprecated Use `moveTo` instead
+     * @see moveTo
+     */
+    moveToGroup(group) {
+        return this.moveTo(group);
     }
 
     /**

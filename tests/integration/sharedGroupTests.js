@@ -92,6 +92,17 @@ module.exports = {
             sharedIDs = this.main.sharedGroups.map(group => group.getID());
             test.ok(sharedIDs.indexOf(sharedGroupID) < 0, "Shared group should not be in shared groups array anymore");
             test.done();
+        },
+
+        movesFromSharedToMainArchive: function(test) {
+            var target = this.main,
+                sharedGroupID = this.sharedGroup.getID();
+            test.ok(this.shared.findGroupByID(sharedGroupID), "Shared group should be in its original archive");
+            this.sharedGroup.moveTo(target);
+            test.ok(!this.shared.findGroupByID(sharedGroupID), "Shared group should not be in its original archive");
+            test.ok(target.findGroupByID(sharedGroupID), "Shared group should be in the target group");
+            test.ok(this.main.findGroupByID(sharedGroupID), "Shared group should be in the target archive");
+            test.done();
         }
 
     },
