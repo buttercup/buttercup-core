@@ -47,7 +47,6 @@
     "gzip-js": "~0.3.2",
     "iocane": "~0.4.0",
     "node-fetch": "~1.6.3",
-    "object-compare": "^1.0.1",
     "uuid": "~2.0.1",
     "webdav-fs": "~0.4.0"
   },

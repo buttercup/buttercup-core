@@ -1,8 +1,7 @@
 "use strict";
 
-var compareObjects = require("object-compare");
-
-var encoding = require("../tools/encoding.js");
+var encoding = require("../tools/encoding.js"),
+    compare = require("../tools/compare.js");
 
 /**
  * Calculate the common command indexes between 2 archives.
@@ -91,7 +90,7 @@ var Comparator = function(originalArchive, secondaryArchive) {
 Comparator.prototype.archivesDiffer = function archivesDiffer() {
     let objA = this._archiveA.toObject(),
         objB = this._archiveB.toObject();
-    return !compareObjects(objA, objB);
+    return compare.objectsDiffer(objA, objB);
 };
 
 /**
