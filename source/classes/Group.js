@@ -239,6 +239,12 @@ class Group {
             targetArchive = target;
             targetGroupID = "0";
         }
+        if (this._getArchive().readOnly) {
+            throw new Error("Cannot move group: origin archive is read-only");
+        }
+        if (targetArchive.readOnly) {
+            throw new Error("Cannot move group: target archive is read-only");
+        }
         if (this._getArchive().equals(targetArchive)) {
             // target is local, so create commands here
             this._getWestley().execute(

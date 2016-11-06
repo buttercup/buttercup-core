@@ -275,20 +275,41 @@ module.exports = {
 
     },
 
-    moveToGroup: {
+    moveTo: {
 
-        testMovesToAnotherGroup: function(test) {
+        movesToAnotherGroup: function(test) {
             test.ok(this.group2.getGroups().length === 0, "Target group should have no children yet");
-            this.moveGroup.moveToGroup(this.group2);
+            this.moveGroup.moveTo(this.group2);
             test.ok(this.group2.getGroups().length === 1, "Target group should have the new child group");
             test.done();
         },
 
-        testThrowsForTrashGroup: function(test) {
+        throwsForTrashGroup: function(test) {
             this.moveGroup.setAttribute(Group.Attributes.Role, "trash");
             test.throws(function() {
-                this.moveGroup.moveToGroup(this.group2);
+                this.moveGroup.moveTo(this.group2);
             }, null, "Should throw when trying to move");
+            test.done();
+        },
+
+        movesToRoot: function(test) {
+            var parent = this.moveGroup,
+                archive = parent._getArchive(),
+                child = parent.createGroup("Child");
+            test.ok(parent.findGroupByID(child.getID()) instanceof Group, "Should find child");
+            child.moveTo(archive);
+            test.ok(parent.findGroupByID(child.getID()) instanceof Group === false, "Should not find child");
+            test.ok(archive.getGroups().some(function(group) {
+                return group.getID() === child.getID();
+            }), "Group should be in root");
+            test.done();
+        },
+
+        failsIfOriginReadOnly: function(test) {
+            this.moveGroup._getArchive()._getWestley().readOnly = true;
+            test.throws(() => {
+                this.moveGroup.moveTo(this.group2);
+            }, Error, "Should throw for moving within read-only archives");
             test.done();
         }
 
