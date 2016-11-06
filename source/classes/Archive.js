@@ -114,15 +114,15 @@ class Archive {
     }
 
     /**
-     * Check if the archive is equal to another
+     * Check if the archive is equal to another (by ID)
      * @param {Archive} archive Another archive instance
      * @returns {Boolean} True if they are equal
      * @memberof Archive;
-     * @see ArchiveComparator
      */
     equals(archive) {
-        let comparator = new ArchiveComparator(this, archive);
-        return (comparator.archivesDiffer() === false);
+        let thisID = this.getID(),
+            remoteID = archive.getID();
+        return (thisID === remoteID);
     }
 
     /**
