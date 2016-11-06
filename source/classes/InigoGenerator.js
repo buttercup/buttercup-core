@@ -51,6 +51,7 @@ var ARG = InigoCommand.CommandArgument;
 //      args - arguments accepted by the command
 
 InigoCommand.Command = {
+    ArchiveID:                   { s:"aid", d:false,    args:[ARG.ItemID] },
     Comment:                     { s:"cmm", d:false,    args:[ARG.StringValue] },
     CreateEntry:                 { s:"cen", d:false,    args:[ARG.ItemID, ARG.ItemID] },
     CreateGroup:                 { s:"cgr", d:false,    args:[ARG.ItemIDOrRoot, ARG.ItemID] },

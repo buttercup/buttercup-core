@@ -15,8 +15,10 @@ module.exports = {
         testDescribesBasicStructures: function(test) {
             var groupID = getUniqueID(),
                 subGroupID = getUniqueID(),
-                entryID = getUniqueID();
+                entryID = getUniqueID(),
+                archiveID = getUniqueID();
             var dataset = {
+                archiveID: archiveID,
                 attributes: {
                     status: "ro"
                 },
@@ -63,6 +65,7 @@ module.exports = {
             test.ok(description.indexOf("tgr " + subGroupID + " \"Sub\"") >= 0, "Sub-group should be titled");
             test.ok(description.indexOf("sga " + groupID + " \"testAttr\" \"groupAttrValue\"") >= 0, "Group should have an attribute");
             test.ok(description.indexOf('saa "status" "ro"') >= 0, "Archive should have attributes");
+            test.ok(description.indexOf("aid " + archiveID) >= 0, "Archive ID should be set");
             test.done();
         }
 

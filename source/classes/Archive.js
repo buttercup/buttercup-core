@@ -10,7 +10,8 @@ var Westley = require("./Westley.js"),
     ArchiveComparator = require("./ArchiveComparator.js");
 
 var signing = require("../tools/signing.js"),
-    rawSearching = require("../tools/searching-raw.js");
+    rawSearching = require("../tools/searching-raw.js"),
+    encoding = require("../tools/encoding.js");
 
 /**
  * Buttercup Archive
@@ -34,6 +35,12 @@ class Archive {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.Format)
                 .addArgument(signing.getFormat())
+                .generateCommand()
+        );
+        // set ID
+        this._getWestley().execute(
+            Inigo.create(Inigo.Command.ArchiveID)
+                .addArgument(encoding.getUniqueID())
                 .generateCommand()
         );
         // shared groups
@@ -106,9 +113,16 @@ class Archive {
         return this;
     }
 
+    /**
+     * Check if the archive is equal to another (by ID)
+     * @param {Archive} archive Another archive instance
+     * @returns {Boolean} True if they are equal
+     * @memberof Archive;
+     */
     equals(archive) {
-        let comparator = new ArchiveComparator(this, archive);
-        return (comparator.archivesDiffer() === false);
+        let thisID = this.getID(),
+            remoteID = archive.getID();
+        return (thisID === remoteID);
     }
 
     /**
@@ -176,6 +190,14 @@ class Archive {
     }
 
     /**
+     * Get the archive ID
+     * @returns {String} The ID or an empty string if not set
+     */
+    getID() {
+        return this._getWestley().getDataset().archiveID || "";
+    }
+
+    /**
      * Get the trash group
      * @returns {Group|null} The trash group if found, null otherwise
      * @memberof Archive
@@ -228,6 +250,7 @@ class Archive {
      */
     toObject(groupOutputFlags) {
         return {
+            archiveID: this.getID(),
             format: this.getFormat(),
             groups: this.getGroups().map(group => group.toObject(groupOutputFlags))
         };

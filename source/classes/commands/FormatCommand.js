@@ -15,6 +15,9 @@ class FormatCommand extends BaseCommand {
      * @param {String} format The archive format
      */
     execute(obj, format) {
+        if (obj.format) {
+            throw new Error("Format already set");
+        }
         obj.format = format;
     }
 

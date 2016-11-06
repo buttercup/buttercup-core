@@ -239,11 +239,8 @@ class Group {
             targetArchive = target;
             targetGroupID = "0";
         }
-        if (this._getArchive() !== targetArchive) { // @todo this should not be by reference
-            // target is in another archive, so move there
-            sharing.moveGroupBetweenArchives(this, target);
-        } else {
-            // target is local, to create commands here
+        if (this._getArchive().equals(targetArchive)) {
+            // target is local, so create commands here
             this._getWestley().execute(
                 Inigo.create(Inigo.Command.MoveGroup)
                     .addArgument(this.getID())
@@ -251,6 +248,9 @@ class Group {
                     .generateCommand()
             );
             this._getWestley().pad();
+        } else {
+            // target is in another archive, so move there
+            sharing.moveGroupBetweenArchives(this, target);
         }
         return this;
     }

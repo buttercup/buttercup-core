@@ -90,6 +90,9 @@ var Comparator = function(originalArchive, secondaryArchive) {
 Comparator.prototype.archivesDiffer = function archivesDiffer() {
     let objA = this._archiveA.toObject(),
         objB = this._archiveB.toObject();
+    // ignore the IDs
+    delete objA.archiveID;
+    delete objB.archiveID;
     return compare.objectsDiffer(objA, objB);
 };
 

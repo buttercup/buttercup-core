@@ -25,7 +25,7 @@ module.exports = {
         (cb)();
     },
 
-    testDescribesGenerated: function(test) {
+    describesGenerated: function(test) {
         generate(500, this.archive);
         var originalDataset = this.archive._getWestley().getDataset(),
             description = describe(originalDataset),
@@ -33,6 +33,18 @@ module.exports = {
         stripEmptyArrays(originalDataset);
         description.forEach(newWestley.execute.bind(newWestley));
         test.deepEqual(newWestley.getDataset(), originalDataset, "Datasets should be the same");
+        test.done();
+    },
+
+    preservesArchiveID: function(test) {
+        generate(500, this.archive);
+        var archiveID = this.archive.getID(),
+            originalDataset = this.archive._getWestley().getDataset(),
+            description = describe(originalDataset),
+            newWestley = new Westley();
+        stripEmptyArrays(originalDataset);
+        description.forEach(newWestley.execute.bind(newWestley));
+        test.strictEqual(newWestley.getDataset().archiveID, archiveID, "Archive ID should be present");
         test.done();
     }
 

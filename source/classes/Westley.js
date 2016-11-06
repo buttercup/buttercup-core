@@ -8,6 +8,7 @@ const entryTools = require("../tools/entry.js");
 const VALID_COMMAND_EXP =             /^[a-z]{3}[ ].+$/;
 
 const commandClasses = {
+    aid: require("./commands/ArchiveIDCommand.js"),
     cen: require("./commands/CreateEntryCommand.js"),
     cgr: require("./commands/CreateGroupCommand.js"),
     cmm: require("./commands/CommentCommand.js"),

@@ -51,6 +51,7 @@ module.exports = {
                             "Entry username should be correct (" + version + ")");
                         test.strictEqual(testEntry.getMeta("test-meta"), "test-value 8",
                             "Entry meta value should be correct (" + version + ")");
+                        test.ok(archive.getID().length > 0, "Old archives should have an ID");
                     })
                     .catch(function(err) {
                         console.error("Failed reading archive at version: " + version);

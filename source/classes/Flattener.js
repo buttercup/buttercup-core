@@ -21,7 +21,7 @@ const describe = require("./Descriptor.js"),
  */
 function mustBePreserved(command) {
     var commandName = command.substr(0, 3);
-    // Note: "fmt" is generated automatically and does not need to be preserved
+    // Note: "fmt" and "aid" are generated automatically and does not need to be preserved
     return ["cmm"].indexOf(commandName) >= 0;
 }
 
@@ -81,7 +81,7 @@ class Flattener {
         cleanHistory = describe(tempWestley.getDataset());
         // prepare to replay
         var newHistory = []
-            .concat(preservedLines)                    // preserved commands that cannot be stripped
+            .concat(preservedLines)                   // preserved commands that cannot be stripped
             .concat(cleanHistory)                    // the newly flattened description commands
             .concat(history.slice(availableLines)); // the existing history minus the flattened portion
         // clear the system
