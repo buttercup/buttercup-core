@@ -28,6 +28,14 @@ module.exports = function describe(dataset, parentGroupID) { //eslint-disable-li
                     .generateCommand()
             );
         }
+        if (dataset.archiveID) {
+            commands.push(
+                Inigo
+                    .create(Commands.ArchiveID)
+                    .addArgument(dataset.archiveID)
+                    .generateCommand()
+            );
+        }
         if (dataset.attributes) {
             Object.keys(dataset.attributes).forEach(function(attributeName) {
                 commands.push(

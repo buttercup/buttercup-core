@@ -10,7 +10,8 @@ var Westley = require("./Westley.js"),
     ArchiveComparator = require("./ArchiveComparator.js");
 
 var signing = require("../tools/signing.js"),
-    rawSearching = require("../tools/searching-raw.js");
+    rawSearching = require("../tools/searching-raw.js"),
+    encoding = require("../tools/encoding.js");
 
 /**
  * Buttercup Archive
@@ -34,6 +35,12 @@ class Archive {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.Format)
                 .addArgument(signing.getFormat())
+                .generateCommand()
+        );
+        // set ID
+        this._getWestley().execute(
+            Inigo.create(Inigo.Command.ArchiveID)
+                .addArgument(encoding.getUniqueID())
                 .generateCommand()
         );
         // shared groups
@@ -173,6 +180,14 @@ class Archive {
                 return new Group(archive, rawGroup);
             })
             .concat(this.sharedGroups);
+    }
+
+    /**
+     * Get the archive ID
+     * @returns {String} The ID or an empty string if not set
+     */
+    getID() {
+        return westley.getDataset().archiveID || "";
     }
 
     /**
