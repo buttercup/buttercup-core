@@ -113,6 +113,13 @@ class Archive {
         return this;
     }
 
+    /**
+     * Check if the archive is equal to another
+     * @param {Archive} archive Another archive instance
+     * @returns {Boolean} True if they are equal
+     * @memberof Archive;
+     * @see ArchiveComparator
+     */
     equals(archive) {
         let comparator = new ArchiveComparator(this, archive);
         return (comparator.archivesDiffer() === false);
@@ -187,7 +194,7 @@ class Archive {
      * @returns {String} The ID or an empty string if not set
      */
     getID() {
-        return westley.getDataset().archiveID || "";
+        return this._getWestley().getDataset().archiveID || "";
     }
 
     /**
@@ -243,6 +250,7 @@ class Archive {
      */
     toObject(groupOutputFlags) {
         return {
+            archiveID: this.getID(),
             format: this.getFormat(),
             groups: this.getGroups().map(group => group.toObject(groupOutputFlags))
         };
