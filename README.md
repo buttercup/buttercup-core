@@ -11,157 +11,89 @@ A NodeJS password vault.
 
 **Please be aware** that breaking changes _will occur_ during 0.* (alpha) development. Until 1.0 is released, assume that every minor version contains breaking changes to encryption, structure and API.
 
-## This library
-
-This repository holds the core system functionality:
-
- - Archive reading/writing
- - Encryption/decryption
- - Low-level processing and manipulation
- - Archive format handling
-
 ## About
 
-Buttercup manages credentials in an encrypted archive. The archive utilises a delta-based (history) archive description method to load and save data. This allows for more robust saving and loading whilst protecting against external file changes by allowing some degree of merging.
+Buttercup is a password manager written in JavaScript for NodeJS ([and the browser!](https://github.com/buttercup-pw/buttercup-core-web)). It's based around `Archive`s that contain `Group`s and `Entry`s. Together, in a nested structure, these items act as a secure store for a user's credentials (much like standard managers these days). Entries allow you to store a credential's username and password, along with other miscellaneous properties (meta) and invisible functional info (attributes).
 
-## Features
+Buttercup archives sit in memory as an Object instance that is built from delta-style commands that modify the structure. As changes are made to the archive, new delta commands are added to the history and saved to the archive's `Datasource`. Archives are compressed and encrypted before being saved.
 
- - AES 256 bit CBC encryption (w/ HMAC-sha256)
- - Archive change delta tracking
- - WebDAV/ownCloud remote file support
- - Text compression with GZIP
+### Features
+
+The core of the system, this **Buttercup Core**, boasts a few awesome features:
+
+ * Deltas for storing archive history
+ * Conflict resolution and archive merging
+ * 256bit AES-CBC encryption
+ * SHA-256 keys using PBKDF2 derivation
+ * SHA-256 HMAC authentication
+ * GZip text compression
+
+This library also supports a variety of datasources for loading from and saving to:
+
+ * WebDAV
+ * [OwnCloud](https://owncloud.org/)
+ * Files
+ * [Buttercup server](https://github.com/buttercup-pw/buttercup-server)
+
+You may want to read the [API documentation](https://github.com/buttercup-pw/buttercup-core/blob/master/doc/api.md) and [changelog](https://github.com/buttercup-pw/buttercup-core/blob/master/CHANGELOG.md). Please read our [guide to contributing](https://github.com/buttercup-pw/buttercup-core/blob/master/CONTRIBUTING.md) before creating any issues or pull requests.
+
+### Buttercup suite
+
+This core library fuels the processing for several other libraries, such as the [desktop application](https://github.com/buttercup-pw/buttercup), [core library for use in browsers](https://github.com/buttercup-pw/buttercup-core-web), [server for hosting archives](https://github.com/buttercup-pw/buttercup-server) and [command-line application](https://github.com/buttercup-pw/buttercup-cli).
 
 ## Usage
 
-Buttercup can be easily used as a component, allowing for powerful and secure data storage within projects.
+Buttercup can easily be imported and used in NodeJS applications from version **4.x and upwards**:
 
-You can read the [API documentation here](doc/api.md), and the [change-log here](CHANGELOG.md). Please read our [contribution style guide](CONTRIBUTING.md) before making any issues or pull-requests.
-
-### Creating, saving and loading
-
-Create an archive and a data source: The datasource is where the archive will be written to.
-
-```
-var Buttercup = require("buttercup");
-
-var archive = new Buttercup.Archive(),
-    datasource = new Buttercup.FileDatasource("~/myArchive.bcup");
-
-datasource.save(archive, "my secure password");
+```javascript
+const Buttercup = require("buttercup"); // buttercup-core is "buttercup" on npm
 ```
 
-Using the same system, you can also load an archive:
+### Creating content
 
-```
-var Buttercup = require("buttercup");
+Archives are easily created by making a new instance:
 
-var datasource = new Buttercup.OwnCloudDatasource(
-    "http://www.mycloud.com",
-    "/personal/security/passwords.bcup",
-    "inigo",
-    "montoya1987"
-);
+```javascript
+const Archive = Buttercup.Archive;
 
-// `load()` returns a promise
-datasource.load("my archive password").then(function(archive) {
-    // `archive` is the archive, loaded from remote. Saving on this datasource will
-    // write back to the remote.
-});
+let myArchive = new Archive();
 ```
 
-Archives also support saving and loading via key-files, and these can be used instead-of or in combination-with passwords:
+Groups can be created within **other groups** or **archives**:
 
-```
-var archive = new Buttercup.Archive(),
-    datasource = new Buttercup.FileDatasource("~/myArchive.bcup"),
-    creds = new Buttercup.Credentials({ password: "my password", keyfile: "/home/user/example.bin" });
+```javascript
+let websitesGroup = myArchive.createGroup("Websites");
 
-datasource.save(archive, creds);
+let bankingGroup = websitesGroup.createGroup("Banking");
 ```
 
-> Key files can also be passed as buffers.
+Entries can be created within **groups**, which hold authentication information:
 
-### Using a workspace
+```javascript
+let worldBank = bankingGroup.createEntry("World bank");
 
-Workspaces are designed to help manage the necessary archive management tasks that come from creating a user-friendly password management application. Features like remote update merging need to be handled internally, and so the workspace helps manage such complex tasks.
-
-In reality, the workspace is just a container:
-
-```
-var Buttercup = require("buttercup");
-
-var workspace = new Buttercup.Workspace(),
-    archive = new Buttercup.Archive(),
-    datasource = new Buttercup.FileDatasource("~/myArchive.bcup");
-
-datasource
-    .load("password")
-    .then(function(archive) {
-        workspace
-            .setArchive(archive)
-            .setDatasource(datasource)
-            .setPassword("Fezzik, tear his arms off");
-    });
+worldBank
+    .setProperty("username", "johnSmith87")
+    .setProperty("password", "3mX*7m, #jP0")
+    .setMeta("URL", "www.world-bank.com");
 ```
 
-The workspace can handle some complex operations like merge conflicts - for instance, if a user has an archive open, and remotely the archive is modified, the workspace can help perform a merge between the two.
+Entries can be moved to other groups, and groups to other groups or archives:
 
-_A merge is quite basic, in that the remote commands (that differ) are run first, and then the local run next. All deletion commands that could cause conflicts are stripped, so the resulting merge will still contain items that were deleted in the differing portions before the merge._
+```javascript
+worldBank.moveToGroup(websitesGroup);
 
-```
-// Check for differences
-workspace.archiveDiffersFromDatasource()
-    .then(function(differs) {
-        if (differs) {
-            // Merge differences first
-            return workspace.mergeFromDatasource();
-        }
-    })
-    .then(function() {
-        // Save the archive
-        return workspace.save();
-    });
+bankingGroup.moveTo(myArchive); // move up to the root level
 ```
 
-Merging is especially helpful for situations where archives can be modified at any time, such as with cloud storage.
+### Deleting content
 
-### Searching for things
+Groups and entries can easily be deleted:
 
-You can search within archives for certain entries or groups:
-```
-archive
-    .findEntriesByProperty("title", /^Home-[a-z]+$/i)
-    .forEach(function(entry) {
-        // Do something with entry
-    });
+```javascript
+myEntry.delete(); // `myEntry` reference no longer valid
 
-archive
-    .findGroupsByTitle("banking")
-    .forEach(function(group) {});
-
-group.findEntriesByMeta("postcode", /^0\d{4}$/);
+myGroup.delete(); // `myGroup` reference no longer valid
 ```
 
-### Importing
-
-You can import from other password archive formats, such as KeePass. Checkout the [Buttercup Importer](https://github.com/perry-mitchell/buttercup-importer) project.
-
-### Performance and web support
-
-Some things in Buttercup are best run purely on Node, such has password-based key derivation. When preparing this for the web (such as with Webpack or Browserify), things can move **very** slowly. There are implementations for functions, such as PBKDF2, that exist for web use that are many times faster than the output of such build utilities.
-
-You can override PBKDF2 by doing the following ([documented on iocane](https://github.com/perry-mitchell/iocane#overriding-the-built-in-pbkdf2-function)):
-```
-var Buttercup = require("buttercup");
-Buttercup.vendor.iocane.components.setPBKDF2(newPBKDF2Function);
-// Where 'newPBKDF2Function' is a function that returns a Promise with the hash in a Buffer
-```
-
-### Attributes & Media
-
-Entries and groups have attributes, describing how they should be treated by the various interfaces that interact with the archive. Attributes are not visible to the users and can contain a variety of different properties.
-
-For instance, you could get the role of a group like so:
-```
-let groupRole = group.getAttribute(ManagedGroup.Attributes.Role);
-```
+> It's important to note that just because a group or entry is deleted, does not mean that its corresponding information has. Historical commands are still stored in the archive dataset until they are flattened (after several thousand following commands).
