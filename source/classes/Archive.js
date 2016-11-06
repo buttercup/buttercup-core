@@ -6,7 +6,8 @@ var Westley = require("./Westley.js"),
     Group = require("./Group.js"),
     Entry = require("./Entry.js"),
     GroupCollectionDecorator = require("../decorators/GroupCollection.js"),
-    EntryCollectionDecorator = require("../decorators/EntryCollection.js");
+    EntryCollectionDecorator = require("../decorators/EntryCollection.js"),
+    ArchiveComparator = require("./ArchiveComparator.js");
 
 var signing = require("../tools/signing.js"),
     rawSearching = require("../tools/searching-raw.js");
@@ -103,6 +104,11 @@ class Archive {
     discardSharedGroups() {
         this._sharedGroups = [];
         return this;
+    }
+
+    equals(archive) {
+        let comparator = new ArchiveComparator(this, archive);
+        return (comparator.archivesDiffer() === false);
     }
 
     /**
@@ -212,6 +218,19 @@ class Archive {
         );
         this._getWestley().pad();
         return this;
+    }
+
+    /**
+     * Convert the archive to an object
+     * @param {Number} groupOutputFlags Bitwise flags for `Group.toObject`
+     * @returns {Object} The archive in object form
+     * @see Group.toObject
+     */
+    toObject(groupOutputFlags) {
+        return {
+            format: this.getFormat(),
+            groups: this.getGroups().map(group => group.toObject(groupOutputFlags))
+        };
     }
 
     /**

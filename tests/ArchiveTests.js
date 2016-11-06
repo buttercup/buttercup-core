@@ -337,6 +337,17 @@ module.exports = {
             test.done();
         }
 
+    },
+
+    toObject: {
+
+        outputsCorrectProperties: function(test) {
+            var obj = this.archiveA.toObject();
+            test.ok(obj.format, "Format should be set");
+            test.ok(Array.isArray(obj.groups), "Groups should be an array");
+            test.done();
+        }
+
     }
 
 };
