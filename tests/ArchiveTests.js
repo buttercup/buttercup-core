@@ -290,6 +290,36 @@ module.exports = {
 
     },
 
+    readOnly: {
+
+        isReadWriteByDefault: function(test) {
+            var archive = new Archive();
+            test.ok(archive.readOnly === false, "Archive should be read-write");
+            test.done();
+        },
+
+        canBeSetToReadOnly: function(test) {
+            var archive = new Archive();
+            archive._getWestley().readOnly = true;
+            test.ok(archive.readOnly === true, "Archive should be read-only");
+            test.done();
+        },
+
+        failsToWriteInROMode: function(test) {
+            var archive = new Archive();
+            archive._getWestley().readOnly = true;
+            test.throws(
+                function() {
+                    archive.createGroup("Test");
+                },
+                Error,
+                "Should throw when trying to mutate the history"
+            );
+            test.done();
+        }
+
+    },
+
     setAttribute: {
 
         setsAttributes: function(test) {
@@ -304,6 +334,17 @@ module.exports = {
             var archive = this.archiveA;
             archive.setAttribute("my key", "new value");
             test.strictEqual(archive.getAttribute("my key"), "new value", "Attribute should contain new value");
+            test.done();
+        }
+
+    },
+
+    toObject: {
+
+        outputsCorrectProperties: function(test) {
+            var obj = this.archiveA.toObject();
+            test.ok(obj.format, "Format should be set");
+            test.ok(Array.isArray(obj.groups), "Groups should be an array");
             test.done();
         }
 

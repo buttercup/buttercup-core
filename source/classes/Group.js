@@ -4,6 +4,7 @@ var Inigo = require("./InigoGenerator.js"),
     Entry = require("./Entry.js"),
     encoding = require("../tools/encoding.js"),
     searching = require("../tools/searching-raw.js"),
+    sharing = require("../tools/sharing.js"),
     GroupCollectionDecorator = require("../decorators/GroupCollection.js"),
     EntryCollectionDecorator = require("../decorators/EntryCollection.js");
 
@@ -25,6 +26,7 @@ class Group {
         this._archive = archive;
         this._westley = archive._getWestley();
         this._remoteObject = remoteObj;
+        this._remoteObject._foreign = false;
         // add group searching
         GroupCollectionDecorator.decorate(this);
         // add entry searching
@@ -64,16 +66,18 @@ class Group {
      * If there is a trash group available, the group is moved there. If the group
      * is already in the trash, it is deleted permanently.
      * @memberof Group
+     * @param {Boolean=} skipTrash Skip the trash
      * @returns {Boolean} True when deleted, false when moved to trash
      */
-    delete() {
+    delete(skipTrash) {
+        skipTrash = (skipTrash === undefined) ? false : skipTrash;
         if (this.isTrash()) {
             throw new Error("Trash group cannot be deleted");
         }
         var trashGroup = this._getArchive().getTrashGroup(),
             hasTrash = (trashGroup !== null),
             inTrash = this.isInTrash();
-        if (!inTrash && hasTrash) {
+        if (!inTrash && hasTrash && !skipTrash) {
             // Not in trash, and a trash group exists, so move it there
             this.moveToGroup(trashGroup);
             return false;
@@ -176,6 +180,15 @@ class Group {
     }
 
     /**
+     * Check if the group is foreign (from another archive)
+     * @returns {Boolean} True if it is foreign
+     * @memberof Group
+     */
+    isForeign() {
+        return this._getRemoteObject()._foreign === true;
+    }
+
+    /**
      * Check if the group is in the trash
      * @returns {Boolean} Whether or not the group is within the trash group
      */
@@ -189,6 +202,14 @@ class Group {
     }
 
     /**
+     * Check if the group is shared
+     * @returns {Boolean} True if the group is a shared group
+     */
+    isShared() {
+        return this.getAttribute(Group.Attributes.Role) === "shared";
+    }
+
+    /**
      * Check if the group is used for trash
      * @returns {Boolean} Whether or not the group is the trash group
      * @memberof Group
@@ -198,24 +219,58 @@ class Group {
     }
 
     /**
+     * Move the group to another group or archive
+     * @param {Group|Archive} target The destination Group or Archive instance
+     * @returns {Group} Self
+     * @memberof Group
+     */
+    moveTo(target) {
+        if (this.isTrash()) {
+            throw new Error("Trash group cannot be moved");
+        }
+        let targetArchive,
+            targetGroupID;
+        if (target instanceof Group) {
+            // moving to a group
+            targetArchive = target._getArchive();
+            targetGroupID = target.getID();
+        } else {
+            // moving to an archive
+            targetArchive = target;
+            targetGroupID = "0";
+        }
+        if (this._getArchive().readOnly) {
+            throw new Error("Cannot move group: origin archive is read-only");
+        }
+        if (targetArchive.readOnly) {
+            throw new Error("Cannot move group: target archive is read-only");
+        }
+        if (this._getArchive().equals(targetArchive)) {
+            // target is local, so create commands here
+            this._getWestley().execute(
+                Inigo.create(Inigo.Command.MoveGroup)
+                    .addArgument(this.getID())
+                    .addArgument(targetGroupID)
+                    .generateCommand()
+            );
+            this._getWestley().pad();
+        } else {
+            // target is in another archive, so move there
+            sharing.moveGroupBetweenArchives(this, target);
+        }
+        return this;
+    }
+
+    /**
      * Move the group into another
      * @param {Group} group The target group (new parent)
      * @returns {Group} Returns self
      * @memberof Group
+     * @deprecated Use `moveTo` instead
+     * @see moveTo
      */
     moveToGroup(group) {
-        if (this.isTrash()) {
-            throw new Error("Trash group cannot be moved");
-        }
-        var targetID = group.getID();
-        this._getWestley().execute(
-            Inigo.create(Inigo.Command.MoveGroup)
-                .addArgument(this.getID())
-                .addArgument(targetID)
-                .generateCommand()
-        );
-        this._getWestley().pad();
-        return this;
+        return this.moveTo(group);
     }
 
     /**
@@ -281,9 +336,11 @@ class Group {
             }
         }
         let output = {
-            id: this.getID(),
-            title: this.getTitle(),
-            attributes: attributes
+            id:         this.getID(),
+            title:      this.getTitle(),
+            attributes: attributes,
+            foreign:    this.isForeign(),
+            shared:     this.isShared()
         };
         if (outputFlags & Group.OutputFlag.Entries) {
             output.entries = this
@@ -312,7 +369,7 @@ class Group {
     /**
      * Get the archive instance reference
      * @protected
-     * @returns {Archive}
+     * @returns {Archive} The archive instance
      * @memberof Group
      */
     _getArchive() {
@@ -341,6 +398,13 @@ class Group {
 
 }
 
+/**
+ * Group attribute names
+ * @memberof Group
+ * @name Attributes
+ * @enum {String}
+ * @static
+ */
 Group.Attributes = Object.freeze({
     Role:        "bc_group_role"
 });
@@ -352,6 +416,7 @@ Group.Attributes = Object.freeze({
  * @memberof Group
  * @static
  * @name OutputFlag
+ * @enum {Number}
  */
 Group.OutputFlag = Object.freeze({
     OnlyGroup:  0,

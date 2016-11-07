@@ -1,5 +1,13 @@
 # Buttercup-core release change-log
 
+## v0.28.0
+_2016-11-07_
+
+ * Read-only archives
+ * Shared groups
+ * Added `SharedWorkspace` for managing several archives
+ * Support for moving groups between archives
+
 ## v0.27.0
 _2016-10-30_
 

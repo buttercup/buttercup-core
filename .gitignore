@@ -13,3 +13,5 @@ node_modules
 
 source/test.js
 coverage
+
+*.test.bcup

@@ -6,10 +6,12 @@ var Westley = require("./Westley.js"),
     Group = require("./Group.js"),
     Entry = require("./Entry.js"),
     GroupCollectionDecorator = require("../decorators/GroupCollection.js"),
-    EntryCollectionDecorator = require("../decorators/EntryCollection.js");
+    EntryCollectionDecorator = require("../decorators/EntryCollection.js"),
+    ArchiveComparator = require("./ArchiveComparator.js");
 
 var signing = require("../tools/signing.js"),
-    rawSearching = require("../tools/searching-raw.js");
+    rawSearching = require("../tools/searching-raw.js"),
+    encoding = require("../tools/encoding.js");
 
 /**
  * Buttercup Archive
@@ -35,10 +37,42 @@ class Archive {
                 .addArgument(signing.getFormat())
                 .generateCommand()
         );
+        // set ID
+        this._getWestley().execute(
+            Inigo.create(Inigo.Command.ArchiveID)
+                .addArgument(encoding.getUniqueID())
+                .generateCommand()
+        );
+        // shared groups
+        this._sharedGroups = [];
         // add group searching
         GroupCollectionDecorator.decorate(this);
         // add entry searching
         EntryCollectionDecorator.decorate(this);
+    }
+
+    /**
+     * Whether the archive is read only or not
+     * @property {Boolean} readOnly
+     * @memberof Archive
+     * @instance
+     * @readonly
+     */
+    get readOnly() {
+        return this._getWestley().readOnly;
+    }
+
+    set readOnly(ro) { // eslint-disable-line
+        throw new Error("readOnly is read-only");
+    }
+
+    /**
+     * An array of shared groups
+     * @property {Array.<Group>} sharedGroups
+     * @instance
+     */
+    get sharedGroups() {
+        return this._sharedGroups;
     }
 
     /**
@@ -68,6 +102,27 @@ class Archive {
         );
         this._getWestley().pad();
         return this;
+    }
+
+    /**
+     * Clear the shared groups array
+     * @returns {Archive} Self
+     */
+    discardSharedGroups() {
+        this._sharedGroups = [];
+        return this;
+    }
+
+    /**
+     * Check if the archive is equal to another (by ID)
+     * @param {Archive} archive Another archive instance
+     * @returns {Boolean} True if they are equal
+     * @memberof Archive;
+     */
+    equals(archive) {
+        let thisID = this.getID(),
+            remoteID = archive.getID();
+        return (thisID === remoteID);
     }
 
     /**
@@ -127,9 +182,19 @@ class Archive {
     getGroups() {
         var archive = this,
             westley = this._getWestley();
-        return (westley.getDataset().groups || []).map(function(rawGroup) {
-            return new Group(archive, rawGroup);
-        });
+        return (westley.getDataset().groups || [])
+            .map(function(rawGroup) {
+                return new Group(archive, rawGroup);
+            })
+            .concat(this.sharedGroups);
+    }
+
+    /**
+     * Get the archive ID
+     * @returns {String} The ID or an empty string if not set
+     */
+    getID() {
+        return this._getWestley().getDataset().archiveID || "";
     }
 
     /**
@@ -175,6 +240,20 @@ class Archive {
         );
         this._getWestley().pad();
         return this;
+    }
+
+    /**
+     * Convert the archive to an object
+     * @param {Number} groupOutputFlags Bitwise flags for `Group.toObject`
+     * @returns {Object} The archive in object form
+     * @see Group.toObject
+     */
+    toObject(groupOutputFlags) {
+        return {
+            archiveID: this.getID(),
+            format: this.getFormat(),
+            groups: this.getGroups().map(group => group.toObject(groupOutputFlags))
+        };
     }
 
     /**

@@ -11,9 +11,9 @@ var Archive = lib.Archive,
 
 module.exports = {
 
-	setUp: function(cb) {
-		(cb)();
-	},
+    setUp: function(cb) {
+        (cb)();
+    },
 
     extractDSStrProps: {
 

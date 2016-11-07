@@ -45,26 +45,32 @@ InigoCommand.CommandArgument = {
 };
 var ARG = InigoCommand.CommandArgument;
 
+// Commands:
+//      s - command slug
+//      d - destructive
+//      args - arguments accepted by the command
+
 InigoCommand.Command = {
-    Comment:                     { s:"cmm", args:[ARG.StringValue] },
-    CreateEntry:                 { s:"cen", args:[ARG.ItemID, ARG.ItemID] },
-    CreateGroup:                 { s:"cgr", args:[ARG.ItemIDOrRoot, ARG.ItemID] },
-    DeleteArchiveAttribute:      { s:"daa", args:[ARG.StringValue] },
-    DeleteEntry:                 { s:"den", args:[ARG.ItemID] },
-    DeleteEntryAttribute:        { s:"dea", args:[ARG.ItemID, ARG.StringValue] },
-    DeleteEntryMeta:             { s:"dem", args:[ARG.ItemID, ARG.StringValue] },
-    DeleteGroup:                 { s:"dgr", args:[ARG.ItemID] },
-    DeleteGroupAttribute:        { s:"dga", args:[ARG.ItemID, ARG.StringValue] },
-    Format:                      { s:"fmt", args:[ARG.StringValue] },
-    MoveEntry:                   { s:"men", args:[ARG.ItemID, ARG.ItemID] },
-    MoveGroup:                   { s:"mgr", args:[ARG.ItemID, ARG.ItemIDOrRoot] },
-    Pad:                         { s:"pad", args:[ARG.ItemID] },
-    SetArchiveAttribute:         { s:"saa", args:[ARG.StringValue, ARG.StringValue] },
-    SetEntryAttribute:           { s:"sea", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
-    SetEntryMeta:                { s:"sem", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
-    SetEntryProperty:            { s:"sep", args:[ARG.ItemID, ARG.StringKey, ARG.StringValue] },
-    SetGroupAttribute:           { s:"sga", args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
-    SetGroupTitle:               { s:"tgr", args:[ARG.ItemID, ARG.StringValue] }
+    ArchiveID:                   { s:"aid", d:false,    args:[ARG.ItemID] },
+    Comment:                     { s:"cmm", d:false,    args:[ARG.StringValue] },
+    CreateEntry:                 { s:"cen", d:false,    args:[ARG.ItemID, ARG.ItemID] },
+    CreateGroup:                 { s:"cgr", d:false,    args:[ARG.ItemIDOrRoot, ARG.ItemID] },
+    DeleteArchiveAttribute:      { s:"daa", d:true,     args:[ARG.StringValue] },
+    DeleteEntry:                 { s:"den", d:true,     args:[ARG.ItemID] },
+    DeleteEntryAttribute:        { s:"dea", d:true,     args:[ARG.ItemID, ARG.StringValue] },
+    DeleteEntryMeta:             { s:"dem", d:true,     args:[ARG.ItemID, ARG.StringValue] },
+    DeleteGroup:                 { s:"dgr", d:true,     args:[ARG.ItemID] },
+    DeleteGroupAttribute:        { s:"dga", d:true,     args:[ARG.ItemID, ARG.StringValue] },
+    Format:                      { s:"fmt", d:false,    args:[ARG.StringValue] },
+    MoveEntry:                   { s:"men", d:false,    args:[ARG.ItemID, ARG.ItemID] },
+    MoveGroup:                   { s:"mgr", d:false,    args:[ARG.ItemID, ARG.ItemIDOrRoot] },
+    Pad:                         { s:"pad", d:false,    args:[ARG.ItemID] },
+    SetArchiveAttribute:         { s:"saa", d:false,    args:[ARG.StringValue, ARG.StringValue] },
+    SetEntryAttribute:           { s:"sea", d:false,    args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
+    SetEntryMeta:                { s:"sem", d:false,    args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
+    SetEntryProperty:            { s:"sep", d:false,    args:[ARG.ItemID, ARG.StringKey, ARG.StringValue] },
+    SetGroupAttribute:           { s:"sga", d:false,    args:[ARG.ItemID, ARG.StringValue, ARG.StringValue] },
+    SetGroupTitle:               { s:"tgr", d:false,    args:[ARG.ItemID, ARG.StringValue] }
 };
 
 InigoCommand.create = function(cmd) {

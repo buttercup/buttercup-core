@@ -148,6 +148,22 @@ module.exports = {
 
     },
 
+    readOnly: {
+
+        failsToWriteInROMode: function(test) {
+            this.entry._getWestley().readOnly = true;
+            test.throws(
+                function() {
+                    this.entry.setProperty("username", "Attacker");
+                },
+                Error,
+                "Should throw when trying to change entry in read-only archive"
+            );
+            test.done();
+        }
+
+    },
+
     toObject: {
 
         testTransfersProperties: function(test) {

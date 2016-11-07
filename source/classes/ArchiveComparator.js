@@ -1,6 +1,7 @@
 "use strict";
 
-var encoding = require("../tools/encoding.js");
+var encoding = require("../tools/encoding.js"),
+    compare = require("../tools/compare.js");
 
 /**
  * Calculate the common command indexes between 2 archives.
@@ -10,8 +11,8 @@ var encoding = require("../tools/encoding.js");
  * we can assume that at that point, the archives produce the same structure.
  * Because the archives may be different in the future, we use the newest
  * matching pad ID to create a common link between the 2 histories.
- * @param {Archive} archiveA
- * @param {Archive} archiveB
+ * @param {Archive} archiveA The original archive
+ * @param {Archive} archiveB The secondary archive
  * @returns {Boolean|{ a: Number, b: Number, historyA: Array, historyB: Array }} Returns
  *        false if no common point, or an object with the common information. `a` and `b`
  *        are the indexes where the common padding occurs, and historyA and historyB are
@@ -73,8 +74,8 @@ function getPaddingID(command) {
 /**
  * Archive comparison class
  * @class Comparator
- * @param {Archive} originalArchive
- * @param {Archive} secondaryArchive
+ * @param {Archive} originalArchive The primary archive
+ * @param {Archive} secondaryArchive The secondary archive
  */
 var Comparator = function(originalArchive, secondaryArchive) {
     this._archiveA = originalArchive;
@@ -82,16 +83,17 @@ var Comparator = function(originalArchive, secondaryArchive) {
 };
 
 /**
- * Check if the current archives differ in any way
- * @returns {Boolean}
+ * Check if the current archives differ
+ * @returns {Boolean} True if the archives are different
  * @memberof Comparator
  */
 Comparator.prototype.archivesDiffer = function archivesDiffer() {
-    var historyA = this._archiveA._getWestley().getHistory().join("\n"),
-        historyB = this._archiveB._getWestley().getHistory().join("\n"),
-        hashA = encoding.hashText(historyA).toString("base64"),
-        hashB = encoding.hashText(historyB).toString("base64");
-    return (hashA !== hashB);
+    let objA = this._archiveA.toObject(),
+        objB = this._archiveB.toObject();
+    // ignore the IDs
+    delete objA.archiveID;
+    delete objB.archiveID;
+    return compare.objectsDiffer(objA, objB);
 };
 
 /**
