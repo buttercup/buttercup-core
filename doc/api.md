@@ -1,7 +1,7 @@
 ## Modules
 
 <dl>
-<dt><a href="#module_Descriptor">Descriptor</a> ⇒ <code>Array</code></dt>
+<dt><a href="#module_Descriptor">Descriptor</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
 <dd><p>Describe an archive dataset - to history commands</p>
 </dd>
 <dt><a href="#module_command">command</a></dt>
@@ -19,6 +19,8 @@
 <dt><a href="#ButtercupServerDatasource">ButtercupServerDatasource</a> ⇐ <code><a href="#TextDatasource">TextDatasource</a></code></dt>
 <dd></dd>
 <dt><a href="#ButtercupServerDatasource">ButtercupServerDatasource</a></dt>
+<dd></dd>
+<dt><a href="#FormatCommand">FormatCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
 <dd></dd>
 <dt><a href="#BaseCommand">BaseCommand</a></dt>
 <dd></dd>
@@ -80,6 +82,8 @@
 <dd></dd>
 <dt><a href="#OwnCloudDatasource">OwnCloudDatasource</a></dt>
 <dd></dd>
+<dt><a href="#SharedWorkspace">SharedWorkspace</a></dt>
+<dd></dd>
 <dt><a href="#TextDatasource">TextDatasource</a></dt>
 <dd></dd>
 <dt><a href="#TextDatasource">TextDatasource</a></dt>
@@ -90,7 +94,7 @@
 <dd></dd>
 <dt><a href="#Westley">Westley</a></dt>
 <dd></dd>
-<dt><a href="#Workspace">Workspace</a></dt>
+<dt><del><a href="#Workspace">Workspace</a></del></dt>
 <dd></dd>
 </dl>
 
@@ -103,6 +107,14 @@
 <dd></dd>
 </dl>
 
+## Functions
+
+<dl>
+<dt><a href="#dedupe">dedupe(arr)</a> ⇒ <code>Array</code></dt>
+<dd><p>De-dupe an array</p>
+</dd>
+</dl>
+
 ## Typedefs
 
 <dl>
@@ -110,18 +122,22 @@
 <dd></dd>
 <dt><a href="#DisplayInfo">DisplayInfo</a></dt>
 <dd></dd>
+<dt><a href="#SharedWorkspaceItem">SharedWorkspaceItem</a> : <code>Object</code></dt>
+<dd><p>Shared workspace item</p>
+</dd>
 </dl>
 
 <a name="module_Descriptor"></a>
 
-## Descriptor ⇒ <code>Array</code>
+## Descriptor ⇒ <code>Array.&lt;String&gt;</code>
 Describe an archive dataset - to history commands
 
+**Returns**: <code>Array.&lt;String&gt;</code> - An array of commands  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | dataset | <code>Object</code> | The archive dataset |
-| parentGroupID | <code>String</code> |  |
+| parentGroupID | <code>String</code> | The ID of the parent group |
 
 <a name="module_command"></a>
 
@@ -149,20 +165,25 @@ Extract command components from a string
 * [Archive](#Archive)
     * [new Archive()](#new_Archive_new)
     * _instance_
+        * [.readOnly](#Archive+readOnly)
+        * [.sharedGroups](#Archive+sharedGroups)
         * [.findGroupByID](#Archive+findGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.findGroupsByTitle](#Archive+findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.findEntriesByMeta](#Archive+findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
         * [.findEntriesByProperty](#Archive+findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
         * [.createGroup([title])](#Archive+createGroup) ⇒ <code>[Group](#Group)</code>
         * [.deleteAttribute(attributeName)](#Archive+deleteAttribute) ⇒ <code>[Archive](#Archive)</code>
+        * [.discardSharedGroups()](#Archive+discardSharedGroups) ⇒ <code>[Archive](#Archive)</code>
         * [.getAttribute(attributeName)](#Archive+getAttribute) ⇒ <code>undefined</code> &#124; <code>String</code>
         * [.getEntryByID(entryID)](#Archive+getEntryByID) ⇒ <code>[Entry](#Entry)</code> &#124; <code>null</code>
         * [.getFormat()](#Archive+getFormat) ⇒ <code>string</code>
         * ~~[.getGroupByID(groupID)](#Archive+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
         * [.getGroups()](#Archive+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+        * [.getID()](#Archive+getID) ⇒ <code>String</code>
         * [.getTrashGroup()](#Archive+getTrashGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.optimise()](#Archive+optimise) ⇒ <code>[Archive](#Archive)</code>
         * [.setAttribute(attributeName, value)](#Archive+setAttribute) ⇒ <code>[Archive](#Archive)</code>
+        * [.toObject(groupOutputFlags)](#Archive+toObject) ⇒ <code>Object</code>
         * [._getWestley()](#Archive+_getWestley) ⇒ <code>[Westley](#Westley)</code>
     * _static_
         * [.createWithDefaults()](#Archive.createWithDefaults) ⇒ <code>[Archive](#Archive)</code>
@@ -171,6 +192,31 @@ Extract command components from a string
 
 ### new Archive()
 Buttercup Archive
+
+<a name="Archive+readOnly"></a>
+
+### archive.readOnly
+Whether the archive is read only or not
+
+**Kind**: instance property of <code>[Archive](#Archive)</code>  
+**Read only**: true  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| readOnly | <code>Boolean</code> | 
+
+<a name="Archive+sharedGroups"></a>
+
+### archive.sharedGroups
+An array of shared groups
+
+**Kind**: instance property of <code>[Archive](#Archive)</code>  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| sharedGroups | <code>[Array.&lt;Group&gt;](#Group)</code> | 
 
 <a name="Archive+findGroupByID"></a>
 
@@ -250,6 +296,13 @@ Delete an attribute
 | --- | --- | --- |
 | attributeName | <code>String</code> | The name of the attribute to delete |
 
+<a name="Archive+discardSharedGroups"></a>
+
+### archive.discardSharedGroups() ⇒ <code>[Archive](#Archive)</code>
+Clear the shared groups array
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Archive](#Archive)</code> - Self  
 <a name="Archive+getAttribute"></a>
 
 ### archive.getAttribute(attributeName) ⇒ <code>undefined</code> &#124; <code>String</code>
@@ -303,6 +356,13 @@ Get all groups (root) in the archive
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of Groups  
+<a name="Archive+getID"></a>
+
+### archive.getID() ⇒ <code>String</code>
+Get the archive ID
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>String</code> - The ID or an empty string if not set  
 <a name="Archive+getTrashGroup"></a>
 
 ### archive.getTrashGroup() ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
@@ -329,6 +389,19 @@ Set an attribute on the archive
 | --- | --- | --- |
 | attributeName | <code>String</code> | The attribute to set |
 | value | <code>String</code> | The value to set for the attribute |
+
+<a name="Archive+toObject"></a>
+
+### archive.toObject(groupOutputFlags) ⇒ <code>Object</code>
+Convert the archive to an object
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>Object</code> - The archive in object form  
+**See**: Group.toObject  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| groupOutputFlags | <code>Number</code> | Bitwise flags for `Group.toObject` |
 
 <a name="Archive+_getWestley"></a>
 
@@ -361,17 +434,18 @@ Create an Archive with the default template
 Archive comparison class
 
 
-| Param | Type |
-| --- | --- |
-| originalArchive | <code>[Archive](#Archive)</code> | 
-| secondaryArchive | <code>[Archive](#Archive)</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| originalArchive | <code>[Archive](#Archive)</code> | The primary archive |
+| secondaryArchive | <code>[Archive](#Archive)</code> | The secondary archive |
 
 <a name="Comparator+archivesDiffer"></a>
 
 ### comparator.archivesDiffer() ⇒ <code>Boolean</code>
-Check if the current archives differ in any way
+Check if the current archives differ
 
 **Kind**: instance method of <code>[Comparator](#Comparator)</code>  
+**Returns**: <code>Boolean</code> - True if the archives are different  
 <a name="Comparator+calculateDifferences"></a>
 
 ### comparator.calculateDifferences() ⇒ <code>Object</code> &#124; <code>Boolean</code>
@@ -534,6 +608,87 @@ Set the text content
 | Param | Type | Description |
 | --- | --- | --- |
 | content | <code>string</code> | The new text content |
+
+<a name="FormatCommand"></a>
+
+## FormatCommand ⇐ <code>[BaseCommand](#BaseCommand)</code>
+**Kind**: global class  
+**Extends:** <code>[BaseCommand](#BaseCommand)</code>  
+
+* [FormatCommand](#FormatCommand) ⇐ <code>[BaseCommand](#BaseCommand)</code>
+    * [new FormatCommand()](#new_FormatCommand_new)
+    * [new FormatCommand()](#new_FormatCommand_new)
+    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
+    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
+    * [.execute(obj, format)](#FormatCommand+execute)
+    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
+    * [.setCallback(key, fn)](#BaseCommand+setCallback)
+
+<a name="new_FormatCommand_new"></a>
+
+### new FormatCommand()
+Command for setting the archive ID
+
+<a name="new_FormatCommand_new"></a>
+
+### new FormatCommand()
+Command for setting the archive format
+
+<a name="BaseCommand+entryTools"></a>
+
+### formatCommand.entryTools : <code>Object</code>
+Entry tools module
+
+**Kind**: instance property of <code>[FormatCommand](#FormatCommand)</code>  
+**Overrides:** <code>[entryTools](#BaseCommand+entryTools)</code>  
+<a name="BaseCommand+searchTools"></a>
+
+### formatCommand.searchTools : <code>Object</code>
+Search tools module
+
+**Kind**: instance property of <code>[FormatCommand](#FormatCommand)</code>  
+**Overrides:** <code>[searchTools](#BaseCommand+searchTools)</code>  
+<a name="FormatCommand+execute"></a>
+
+### formatCommand.execute(obj, format)
+Execute the setting of the format
+
+**Kind**: instance method of <code>[FormatCommand](#FormatCommand)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| obj | <code>[ArchiveDataset](#ArchiveDataset)</code> | The archive dataset |
+| format | <code>String</code> | The archive format |
+
+<a name="BaseCommand+executeCallbacks"></a>
+
+### formatCommand.executeCallbacks(key)
+Execute all callbacks under a key
+Arguments passed after the key are provided to each callback
+
+**Kind**: instance method of <code>[FormatCommand](#FormatCommand)</code>  
+**Overrides:** <code>[executeCallbacks](#BaseCommand+executeCallbacks)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>String</code> | The callback name |
+
+**Example**  
+```js
+executeCallbacks("functionName", 1, 2, "three")
+```
+<a name="BaseCommand+setCallback"></a>
+
+### formatCommand.setCallback(key, fn)
+Add a callback for a key
+
+**Kind**: instance method of <code>[FormatCommand](#FormatCommand)</code>  
+**Overrides:** <code>[setCallback](#BaseCommand+setCallback)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>String</code> | The callback name |
+| fn | <code>function</code> | The callback function |
 
 <a name="BaseCommand"></a>
 
@@ -1287,11 +1442,17 @@ Add a callback for a key
 
 * [FormatCommand](#FormatCommand) ⇐ <code>[BaseCommand](#BaseCommand)</code>
     * [new FormatCommand()](#new_FormatCommand_new)
+    * [new FormatCommand()](#new_FormatCommand_new)
     * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
     * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
     * [.execute(obj, format)](#FormatCommand+execute)
     * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
     * [.setCallback(key, fn)](#BaseCommand+setCallback)
+
+<a name="new_FormatCommand_new"></a>
+
+### new FormatCommand()
+Command for setting the archive ID
 
 <a name="new_FormatCommand_new"></a>
 
@@ -1331,6 +1492,7 @@ Execute all callbacks under a key
 Arguments passed after the key are provided to each callback
 
 **Kind**: instance method of <code>[FormatCommand](#FormatCommand)</code>  
+**Overrides:** <code>[executeCallbacks](#BaseCommand+executeCallbacks)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1346,6 +1508,7 @@ executeCallbacks("functionName", 1, 2, "three")
 Add a callback for a key
 
 **Kind**: instance method of <code>[FormatCommand](#FormatCommand)</code>  
+**Overrides:** <code>[setCallback](#BaseCommand+setCallback)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2018,8 +2181,13 @@ Add a callback for a key
     * [new Credentials(data)](#new_Credentials_new)
     * _instance_
         * [.getIdentity()](#Credentials+getIdentity) ⇒ <code>Object</code>
+        * [.getKeyFile()](#Credentials+getKeyFile) ⇒ <code>string</code> &#124; <code>Buffer</code> &#124; <code>undefined</code>
+        * [.getPassword()](#Credentials+getPassword) ⇒ <code>string</code> &#124; <code>undefined</code>
         * [.setIdentity(username, password)](#Credentials+setIdentity) ⇒ <code>[Credentials](#Credentials)</code>
+        * [.setKeyFile(pathOrBuffer)](#Credentials+setKeyFile) ⇒ <code>[Credentials](#Credentials)</code>
+        * [.setPassword(password)](#Credentials+setPassword) ⇒ <code>[Credentials](#Credentials)</code>
         * [.setType(type)](#Credentials+setType) ⇒ <code>[Credentials](#Credentials)</code>
+        * [.setUsername(username)](#Credentials+setUsername) ⇒ <code>[Credentials](#Credentials)</code>
         * [.convertToSecureContent(masterPassword)](#Credentials+convertToSecureContent) ⇒ <code>Promise</code>
     * _static_
         * [.createFromSecureContent(content, password)](#Credentials.createFromSecureContent) ⇒ <code>Promise</code>
@@ -2038,6 +2206,20 @@ Add a callback for a key
 Get identity information
 
 **Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+<a name="Credentials+getKeyFile"></a>
+
+### credentials.getKeyFile() ⇒ <code>string</code> &#124; <code>Buffer</code> &#124; <code>undefined</code>
+Get the key file path or buffer
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>string</code> &#124; <code>Buffer</code> &#124; <code>undefined</code> - Key file path, data buffer, or undefined  
+<a name="Credentials+getPassword"></a>
+
+### credentials.getPassword() ⇒ <code>string</code> &#124; <code>undefined</code>
+Get the password
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>string</code> &#124; <code>undefined</code> - Password or undefined  
 <a name="Credentials+setIdentity"></a>
 
 ### credentials.setIdentity(username, password) ⇒ <code>[Credentials](#Credentials)</code>
@@ -2051,6 +2233,32 @@ Set identity information
 | username | <code>string</code> | 
 | password | <code>string</code> | 
 
+<a name="Credentials+setKeyFile"></a>
+
+### credentials.setKeyFile(pathOrBuffer) ⇒ <code>[Credentials](#Credentials)</code>
+Set a key file
+Credentials that use a keyfile with or instead of a password will allow for
+alternate means of authentication.
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>[Credentials](#Credentials)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| pathOrBuffer | <code>string</code> &#124; <code>Buffer</code> | The path to the key file or a buffer with its contents |
+
+<a name="Credentials+setPassword"></a>
+
+### credentials.setPassword(password) ⇒ <code>[Credentials](#Credentials)</code>
+Set the password
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>[Credentials](#Credentials)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| password | <code>string</code> | The password to set |
+
 <a name="Credentials+setType"></a>
 
 ### credentials.setType(type) ⇒ <code>[Credentials](#Credentials)</code>
@@ -2062,6 +2270,18 @@ Set the credentials type (eg. webdav/owncloud etc.)
 | Param | Type | Description |
 | --- | --- | --- |
 | type | <code>string</code> | The type of credentials |
+
+<a name="Credentials+setUsername"></a>
+
+### credentials.setUsername(username) ⇒ <code>[Credentials](#Credentials)</code>
+Set the username
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>[Credentials](#Credentials)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| username | <code>string</code> | The username to set |
 
 <a name="Credentials+convertToSecureContent"></a>
 
@@ -2312,10 +2532,10 @@ Create a new entry
 * [FileDatasource](#FileDatasource) ⇐ <code>[TextDatasource](#TextDatasource)</code>
     * [new FileDatasource()](#new_FileDatasource_new)
     * [new FileDatasource(filename)](#new_FileDatasource_new)
-    * [.getArchivePath()](#FileDatasource+getArchivePath) ⇒ <code>string</code>
+    * [.getArchivePath()](#FileDatasource+getArchivePath) ⇒ <code>String</code>
     * [.load(password)](#FileDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#FileDatasource+save) ⇒ <code>Promise</code>
-    * [.toString()](#FileDatasource+toString) ⇒ <code>string</code>
+    * [.toString()](#FileDatasource+toString) ⇒ <code>String</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
 
 <a name="new_FileDatasource_new"></a>
@@ -2335,10 +2555,11 @@ Constructor for the file datasource
 
 <a name="FileDatasource+getArchivePath"></a>
 
-### fileDatasource.getArchivePath() ⇒ <code>string</code>
+### fileDatasource.getArchivePath() ⇒ <code>String</code>
 Get the path of the archive
 
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
+**Returns**: <code>String</code> - The file path  
 <a name="FileDatasource+load"></a>
 
 ### fileDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
@@ -2368,11 +2589,12 @@ Save an archive to a file using a password for encryption
 
 <a name="FileDatasource+toString"></a>
 
-### fileDatasource.toString() ⇒ <code>string</code>
+### fileDatasource.toString() ⇒ <code>String</code>
 Output the datasource configuration as a string
 
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
 **Overrides:** <code>[toString](#TextDatasource+toString)</code>  
+**Returns**: <code>String</code> - The string representation  
 <a name="TextDatasource+setContent"></a>
 
 ### fileDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -2393,10 +2615,10 @@ Set the text content
 * [FileDatasource](#FileDatasource)
     * [new FileDatasource()](#new_FileDatasource_new)
     * [new FileDatasource(filename)](#new_FileDatasource_new)
-    * [.getArchivePath()](#FileDatasource+getArchivePath) ⇒ <code>string</code>
+    * [.getArchivePath()](#FileDatasource+getArchivePath) ⇒ <code>String</code>
     * [.load(password)](#FileDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#FileDatasource+save) ⇒ <code>Promise</code>
-    * [.toString()](#FileDatasource+toString) ⇒ <code>string</code>
+    * [.toString()](#FileDatasource+toString) ⇒ <code>String</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
 
 <a name="new_FileDatasource_new"></a>
@@ -2416,10 +2638,11 @@ Constructor for the file datasource
 
 <a name="FileDatasource+getArchivePath"></a>
 
-### fileDatasource.getArchivePath() ⇒ <code>string</code>
+### fileDatasource.getArchivePath() ⇒ <code>String</code>
 Get the path of the archive
 
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
+**Returns**: <code>String</code> - The file path  
 <a name="FileDatasource+load"></a>
 
 ### fileDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
@@ -2449,11 +2672,12 @@ Save an archive to a file using a password for encryption
 
 <a name="FileDatasource+toString"></a>
 
-### fileDatasource.toString() ⇒ <code>string</code>
+### fileDatasource.toString() ⇒ <code>String</code>
 Output the datasource configuration as a string
 
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
 **Overrides:** <code>[toString](#TextDatasource+toString)</code>  
+**Returns**: <code>String</code> - The string representation  
 <a name="TextDatasource+setContent"></a>
 
 ### fileDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -2483,9 +2707,9 @@ Set the text content
 Flatten archives
 
 
-| Param | Type |
-| --- | --- |
-| westley | <code>[Westley](#Westley)</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| westley | <code>[Westley](#Westley)</code> | The Westley instance |
 
 <a name="Flattener+canBeFlattened"></a>
 
@@ -2533,7 +2757,7 @@ Get the number of lines to preserve by default
         * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
         * [.createEntry([title])](#Group+createEntry) ⇒ <code>[Entry](#Entry)</code>
         * [.createGroup([title])](#Group+createGroup) ⇒ <code>[Group](#Group)</code>
-        * [.delete()](#Group+delete) ⇒ <code>Boolean</code>
+        * [.delete([skipTrash])](#Group+delete) ⇒ <code>Boolean</code>
         * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ <code>[Group](#Group)</code>
         * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> &#124; <code>undefined</code>
         * [.getEntries()](#Group+getEntries) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
@@ -2541,9 +2765,12 @@ Get the number of lines to preserve by default
         * [.getGroups()](#Group+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.getID()](#Group+getID) ⇒ <code>string</code>
         * [.getTitle()](#Group+getTitle) ⇒ <code>string</code>
+        * [.isForeign()](#Group+isForeign) ⇒ <code>Boolean</code>
         * [.isInTrash()](#Group+isInTrash) ⇒ <code>Boolean</code>
+        * [.isShared()](#Group+isShared) ⇒ <code>Boolean</code>
         * [.isTrash()](#Group+isTrash) ⇒ <code>Boolean</code>
-        * [.moveToGroup(group)](#Group+moveToGroup) ⇒ <code>[Group](#Group)</code>
+        * [.moveTo(target)](#Group+moveTo) ⇒ <code>[Group](#Group)</code>
+        * ~~[.moveToGroup(group)](#Group+moveToGroup) ⇒ <code>[Group](#Group)</code>~~
         * [.setAttribute(attributeName, value)](#Group+setAttribute) ⇒ <code>[Group](#Group)</code>
         * [.setTitle(title)](#Group+setTitle) ⇒ <code>[Group](#Group)</code>
         * [.toObject(outputFlags)](#Group+toObject) ⇒ <code>Object</code>
@@ -2552,7 +2779,8 @@ Get the number of lines to preserve by default
         * [._getRemoteObject()](#Group+_getRemoteObject) ⇒ <code>Object</code>
         * [._getWestley()](#Group+_getWestley) ⇒ <code>[Westley](#Westley)</code>
     * _static_
-        * [.OutputFlag](#Group.OutputFlag)
+        * [.Attributes](#Group.Attributes) : <code>enum</code>
+        * [.OutputFlag](#Group.OutputFlag) : <code>enum</code>
         * [.createNew(archive, [parentID])](#Group.createNew) ⇒ <code>[Group](#Group)</code>
 
 <a name="new_Group_new"></a>
@@ -2651,13 +2879,18 @@ Create a child group
 
 <a name="Group+delete"></a>
 
-### group.delete() ⇒ <code>Boolean</code>
+### group.delete([skipTrash]) ⇒ <code>Boolean</code>
 Delete the group
 If there is a trash group available, the group is moved there. If the group
 is already in the trash, it is deleted permanently.
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>Boolean</code> - True when deleted, false when moved to trash  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [skipTrash] | <code>Boolean</code> | Skip the trash |
+
 <a name="Group+deleteAttribute"></a>
 
 ### group.deleteAttribute(attr) ⇒ <code>[Group](#Group)</code>
@@ -2725,6 +2958,13 @@ Get the group title
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>string</code> - The title of the group  
+<a name="Group+isForeign"></a>
+
+### group.isForeign() ⇒ <code>Boolean</code>
+Check if the group is foreign (from another archive)
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>Boolean</code> - True if it is foreign  
 <a name="Group+isInTrash"></a>
 
 ### group.isInTrash() ⇒ <code>Boolean</code>
@@ -2732,6 +2972,13 @@ Check if the group is in the trash
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>Boolean</code> - Whether or not the group is within the trash group  
+<a name="Group+isShared"></a>
+
+### group.isShared() ⇒ <code>Boolean</code>
+Check if the group is shared
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>Boolean</code> - True if the group is a shared group  
 <a name="Group+isTrash"></a>
 
 ### group.isTrash() ⇒ <code>Boolean</code>
@@ -2739,13 +2986,28 @@ Check if the group is used for trash
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>Boolean</code> - Whether or not the group is the trash group  
+<a name="Group+moveTo"></a>
+
+### group.moveTo(target) ⇒ <code>[Group](#Group)</code>
+Move the group to another group or archive
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Group](#Group)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>[Group](#Group)</code> &#124; <code>[Archive](#Archive)</code> | The destination Group or Archive instance |
+
 <a name="Group+moveToGroup"></a>
 
-### group.moveToGroup(group) ⇒ <code>[Group](#Group)</code>
+### ~~group.moveToGroup(group) ⇒ <code>[Group](#Group)</code>~~
+***Deprecated***
+
 Move the group into another
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Group](#Group)</code> - Returns self  
+**See**: moveTo  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2822,6 +3084,7 @@ Export the group to a JSON string
 Get the archive instance reference
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Archive](#Archive)</code> - The archive instance  
 **Access:** protected  
 <a name="Group+_getRemoteObject"></a>
 
@@ -2839,12 +3102,18 @@ Get the delta managing instance for the archive
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Westley](#Westley)</code> - The internal Westley object  
 **Access:** protected  
+<a name="Group.Attributes"></a>
+
+### Group.Attributes : <code>enum</code>
+Group attribute names
+
+**Kind**: static enum property of <code>[Group](#Group)</code>  
 <a name="Group.OutputFlag"></a>
 
-### Group.OutputFlag
+### Group.OutputFlag : <code>enum</code>
 Bitwise output flags for `toObject` and `toString`
 
-**Kind**: static property of <code>[Group](#Group)</code>  
+**Kind**: static enum property of <code>[Group](#Group)</code>  
 **See**
 
 - toObject
@@ -2878,7 +3147,7 @@ Create a new Group with a delta-manager and parent group ID
         * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
         * [.createEntry([title])](#Group+createEntry) ⇒ <code>[Entry](#Entry)</code>
         * [.createGroup([title])](#Group+createGroup) ⇒ <code>[Group](#Group)</code>
-        * [.delete()](#Group+delete) ⇒ <code>Boolean</code>
+        * [.delete([skipTrash])](#Group+delete) ⇒ <code>Boolean</code>
         * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ <code>[Group](#Group)</code>
         * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> &#124; <code>undefined</code>
         * [.getEntries()](#Group+getEntries) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
@@ -2886,9 +3155,12 @@ Create a new Group with a delta-manager and parent group ID
         * [.getGroups()](#Group+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.getID()](#Group+getID) ⇒ <code>string</code>
         * [.getTitle()](#Group+getTitle) ⇒ <code>string</code>
+        * [.isForeign()](#Group+isForeign) ⇒ <code>Boolean</code>
         * [.isInTrash()](#Group+isInTrash) ⇒ <code>Boolean</code>
+        * [.isShared()](#Group+isShared) ⇒ <code>Boolean</code>
         * [.isTrash()](#Group+isTrash) ⇒ <code>Boolean</code>
-        * [.moveToGroup(group)](#Group+moveToGroup) ⇒ <code>[Group](#Group)</code>
+        * [.moveTo(target)](#Group+moveTo) ⇒ <code>[Group](#Group)</code>
+        * ~~[.moveToGroup(group)](#Group+moveToGroup) ⇒ <code>[Group](#Group)</code>~~
         * [.setAttribute(attributeName, value)](#Group+setAttribute) ⇒ <code>[Group](#Group)</code>
         * [.setTitle(title)](#Group+setTitle) ⇒ <code>[Group](#Group)</code>
         * [.toObject(outputFlags)](#Group+toObject) ⇒ <code>Object</code>
@@ -2897,7 +3169,8 @@ Create a new Group with a delta-manager and parent group ID
         * [._getRemoteObject()](#Group+_getRemoteObject) ⇒ <code>Object</code>
         * [._getWestley()](#Group+_getWestley) ⇒ <code>[Westley](#Westley)</code>
     * _static_
-        * [.OutputFlag](#Group.OutputFlag)
+        * [.Attributes](#Group.Attributes) : <code>enum</code>
+        * [.OutputFlag](#Group.OutputFlag) : <code>enum</code>
         * [.createNew(archive, [parentID])](#Group.createNew) ⇒ <code>[Group](#Group)</code>
 
 <a name="new_Group_new"></a>
@@ -2996,13 +3269,18 @@ Create a child group
 
 <a name="Group+delete"></a>
 
-### group.delete() ⇒ <code>Boolean</code>
+### group.delete([skipTrash]) ⇒ <code>Boolean</code>
 Delete the group
 If there is a trash group available, the group is moved there. If the group
 is already in the trash, it is deleted permanently.
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>Boolean</code> - True when deleted, false when moved to trash  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [skipTrash] | <code>Boolean</code> | Skip the trash |
+
 <a name="Group+deleteAttribute"></a>
 
 ### group.deleteAttribute(attr) ⇒ <code>[Group](#Group)</code>
@@ -3070,6 +3348,13 @@ Get the group title
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>string</code> - The title of the group  
+<a name="Group+isForeign"></a>
+
+### group.isForeign() ⇒ <code>Boolean</code>
+Check if the group is foreign (from another archive)
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>Boolean</code> - True if it is foreign  
 <a name="Group+isInTrash"></a>
 
 ### group.isInTrash() ⇒ <code>Boolean</code>
@@ -3077,6 +3362,13 @@ Check if the group is in the trash
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>Boolean</code> - Whether or not the group is within the trash group  
+<a name="Group+isShared"></a>
+
+### group.isShared() ⇒ <code>Boolean</code>
+Check if the group is shared
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>Boolean</code> - True if the group is a shared group  
 <a name="Group+isTrash"></a>
 
 ### group.isTrash() ⇒ <code>Boolean</code>
@@ -3084,13 +3376,28 @@ Check if the group is used for trash
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>Boolean</code> - Whether or not the group is the trash group  
+<a name="Group+moveTo"></a>
+
+### group.moveTo(target) ⇒ <code>[Group](#Group)</code>
+Move the group to another group or archive
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Group](#Group)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>[Group](#Group)</code> &#124; <code>[Archive](#Archive)</code> | The destination Group or Archive instance |
+
 <a name="Group+moveToGroup"></a>
 
-### group.moveToGroup(group) ⇒ <code>[Group](#Group)</code>
+### ~~group.moveToGroup(group) ⇒ <code>[Group](#Group)</code>~~
+***Deprecated***
+
 Move the group into another
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Group](#Group)</code> - Returns self  
+**See**: moveTo  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3167,6 +3474,7 @@ Export the group to a JSON string
 Get the archive instance reference
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Archive](#Archive)</code> - The archive instance  
 **Access:** protected  
 <a name="Group+_getRemoteObject"></a>
 
@@ -3184,12 +3492,18 @@ Get the delta managing instance for the archive
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Westley](#Westley)</code> - The internal Westley object  
 **Access:** protected  
+<a name="Group.Attributes"></a>
+
+### Group.Attributes : <code>enum</code>
+Group attribute names
+
+**Kind**: static enum property of <code>[Group](#Group)</code>  
 <a name="Group.OutputFlag"></a>
 
-### Group.OutputFlag
+### Group.OutputFlag : <code>enum</code>
 Bitwise output flags for `toObject` and `toString`
 
-**Kind**: static property of <code>[Group](#Group)</code>  
+**Kind**: static enum property of <code>[Group](#Group)</code>  
 **See**
 
 - toObject
@@ -3278,6 +3592,7 @@ Set a property
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
     * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
 
 <a name="new_OwnCloudDatasource_new"></a>
 
@@ -3340,6 +3655,18 @@ Save an archive with a password to the WebDAV service
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
 | password | <code>string</code> | The password for encryption |
+
+<a name="TextDatasource+setContent"></a>
+
+### ownCloudDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+Set the text content
+
+**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>string</code> | The new text content |
 
 <a name="OwnCloudDatasource"></a>
 
@@ -3354,6 +3681,7 @@ Save an archive with a password to the WebDAV service
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
     * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
 
 <a name="new_OwnCloudDatasource_new"></a>
 
@@ -3416,6 +3744,146 @@ Save an archive with a password to the WebDAV service
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
 | password | <code>string</code> | The password for encryption |
+
+<a name="TextDatasource+setContent"></a>
+
+### ownCloudDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+Set the text content
+
+**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>string</code> | The new text content |
+
+<a name="SharedWorkspace"></a>
+
+## SharedWorkspace
+**Kind**: global class  
+
+* [SharedWorkspace](#SharedWorkspace)
+    * [new SharedWorkspace()](#new_SharedWorkspace_new)
+    * [.primary](#SharedWorkspace+primary) : <code>[SharedWorkspaceItem](#SharedWorkspaceItem)</code>
+    * [.addSharedArchive(archive, datasource, password, [saveable])](#SharedWorkspace+addSharedArchive) ⇒ <code>[SharedWorkspace](#SharedWorkspace)</code>
+    * [.getAllItems()](#SharedWorkspace+getAllItems) ⇒ <code>[Array.&lt;SharedWorkspaceItem&gt;](#SharedWorkspaceItem)</code>
+    * [.getSaveableItems()](#SharedWorkspace+getSaveableItems) ⇒ <code>[Array.&lt;SharedWorkspaceItem&gt;](#SharedWorkspaceItem)</code>
+    * [.imbue()](#SharedWorkspace+imbue) ⇒ <code>[SharedWorkspace](#SharedWorkspace)</code>
+    * [.localDiffersFromRemote()](#SharedWorkspace+localDiffersFromRemote) ⇒ <code>Promise.&lt;Boolean&gt;</code>
+    * [.mergeItemFromRemote(item)](#SharedWorkspace+mergeItemFromRemote) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.mergeSaveablesFromRemote()](#SharedWorkspace+mergeSaveablesFromRemote) ⇒ <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code>
+    * [.save()](#SharedWorkspace+save) ⇒ <code>Promise</code>
+    * [.setPrimaryArchive(archive, datasource, password)](#SharedWorkspace+setPrimaryArchive) ⇒ <code>[SharedWorkspace](#SharedWorkspace)</code>
+
+<a name="new_SharedWorkspace_new"></a>
+
+### new SharedWorkspace()
+Workspace
+
+<a name="SharedWorkspace+primary"></a>
+
+### sharedWorkspace.primary : <code>[SharedWorkspaceItem](#SharedWorkspaceItem)</code>
+The primary archive item
+
+**Kind**: instance property of <code>[SharedWorkspace](#SharedWorkspace)</code>  
+**Access:** public  
+<a name="SharedWorkspace+addSharedArchive"></a>
+
+### sharedWorkspace.addSharedArchive(archive, datasource, password, [saveable]) ⇒ <code>[SharedWorkspace](#SharedWorkspace)</code>
+Add a shared archive item
+
+**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
+**Returns**: <code>[SharedWorkspace](#SharedWorkspace)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| archive | <code>[Archive](#Archive)</code> | The archive instance |
+| datasource | <code>[TextDatasource](#TextDatasource)</code> | The datasource instance |
+| password | <code>String</code> | The master password |
+| [saveable] | <code>Boolean</code> | Whether the archive is remotely saveable or not (default: true) |
+
+<a name="SharedWorkspace+getAllItems"></a>
+
+### sharedWorkspace.getAllItems() ⇒ <code>[Array.&lt;SharedWorkspaceItem&gt;](#SharedWorkspaceItem)</code>
+Get all archive items
+
+**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
+**Returns**: <code>[Array.&lt;SharedWorkspaceItem&gt;](#SharedWorkspaceItem)</code> - All of the items  
+<a name="SharedWorkspace+getSaveableItems"></a>
+
+### sharedWorkspace.getSaveableItems() ⇒ <code>[Array.&lt;SharedWorkspaceItem&gt;](#SharedWorkspaceItem)</code>
+Get all the saveable items
+
+**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
+**Returns**: <code>[Array.&lt;SharedWorkspaceItem&gt;](#SharedWorkspaceItem)</code> - All of the saveable items  
+<a name="SharedWorkspace+imbue"></a>
+
+### sharedWorkspace.imbue() ⇒ <code>[SharedWorkspace](#SharedWorkspace)</code>
+Imbue the primary archive with shared groups from all of the other archives
+
+**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
+**Returns**: <code>[SharedWorkspace](#SharedWorkspace)</code> - Self  
+**Throws**:
+
+- <code>Error</code> Throws if the primary archive is not set
+
+<a name="SharedWorkspace+localDiffersFromRemote"></a>
+
+### sharedWorkspace.localDiffersFromRemote() ⇒ <code>Promise.&lt;Boolean&gt;</code>
+Detect whether the local archives (in memory) differ from their remote copies
+Fetches the remote copies from their datasources and detects differences between
+them and their local counterparts. Does not change/update the local items.
+
+**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
+**Returns**: <code>Promise.&lt;Boolean&gt;</code> - A promise that resolves with a boolean - true if
+     there are differences, false if there is not  
+<a name="SharedWorkspace+mergeItemFromRemote"></a>
+
+### sharedWorkspace.mergeItemFromRemote(item) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+Merge an item from its remote counterpart
+Detects differences between a local and a remote item, and merges the
+two copies together.
+
+**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise that resolves with the newly merged archive -
+     This archive is automatically saved over the original local copy.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| item | <code>[SharedWorkspaceItem](#SharedWorkspaceItem)</code> | The local item |
+
+<a name="SharedWorkspace+mergeSaveablesFromRemote"></a>
+
+### sharedWorkspace.mergeSaveablesFromRemote() ⇒ <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code>
+Merge all saveable remote copies into their local counterparts
+
+**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
+**Returns**: <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code> - A promise that resolves with an array of merged Archives  
+**See**
+
+- mergeItemFromRemote
+- embue
+
+<a name="SharedWorkspace+save"></a>
+
+### sharedWorkspace.save() ⇒ <code>Promise</code>
+Save all saveable archives to their remotes
+
+**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
+**Returns**: <code>Promise</code> - A promise that resolves when all saveable archives have been saved  
+<a name="SharedWorkspace+setPrimaryArchive"></a>
+
+### sharedWorkspace.setPrimaryArchive(archive, datasource, password) ⇒ <code>[SharedWorkspace](#SharedWorkspace)</code>
+Set the primary archive
+
+**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
+**Returns**: <code>[SharedWorkspace](#SharedWorkspace)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| archive | <code>[Archive](#Archive)</code> | The Archive instance |
+| datasource | <code>[TextDatasource](#TextDatasource)</code> | The datasource instance |
+| password | <code>String</code> | The master password |
 
 <a name="TextDatasource"></a>
 
@@ -3751,18 +4219,42 @@ Set the text content
 
 * [Westley](#Westley)
     * [new Westley()](#new_Westley_new)
+    * [.readOnly](#Westley+readOnly)
+    * [.readOnly](#Westley+readOnly)
     * [.clear()](#Westley+clear) ⇒ <code>[Westley](#Westley)</code>
     * [.execute(command)](#Westley+execute) ⇒ <code>[Westley](#Westley)</code>
-    * [._getCommandForKey(commandKey)](#Westley+_getCommandForKey) ⇒ <code>Command</code>
-    * [.pad()](#Westley+pad) ⇒ <code>[Westley](#Westley)</code>
     * [.getDataset()](#Westley+getDataset) ⇒ <code>Object</code>
     * [.getHistory()](#Westley+getHistory) ⇒ <code>Array.&lt;String&gt;</code>
+    * [.pad()](#Westley+pad) ⇒ <code>[Westley](#Westley)</code>
+    * [._getCommandForKey(commandKey)](#Westley+_getCommandForKey) ⇒ <code>Command</code>
 
 <a name="new_Westley_new"></a>
 
 ### new Westley()
 Westley. Archive object dataset and history manager. Handles parsing and
 revenge for the princess.
+
+<a name="Westley+readOnly"></a>
+
+### westley.readOnly
+**Kind**: instance property of <code>[Westley](#Westley)</code>  
+**Access:** public  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| readOnly | <code>Boolean</code> | 
+
+<a name="Westley+readOnly"></a>
+
+### westley.readOnly
+Set the read only value
+
+**Kind**: instance property of <code>[Westley](#Westley)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| newRO | <code>Boolean</code> | The new value |
 
 <a name="Westley+clear"></a>
 
@@ -3783,6 +4275,27 @@ Execute a command - stored in history and modifies the dataset
 | --- | --- | --- |
 | command | <code>String</code> | The command to execute |
 
+<a name="Westley+getDataset"></a>
+
+### westley.getDataset() ⇒ <code>Object</code>
+Get the core dataset
+
+**Kind**: instance method of <code>[Westley](#Westley)</code>  
+**Returns**: <code>Object</code> - The dataset object  
+<a name="Westley+getHistory"></a>
+
+### westley.getHistory() ⇒ <code>Array.&lt;String&gt;</code>
+Get the history (deltas)
+
+**Kind**: instance method of <code>[Westley](#Westley)</code>  
+**Returns**: <code>Array.&lt;String&gt;</code> - The command array (history)  
+<a name="Westley+pad"></a>
+
+### westley.pad() ⇒ <code>[Westley](#Westley)</code>
+Insert a padding in the archive (used for delta tracking)
+
+**Kind**: instance method of <code>[Westley](#Westley)</code>  
+**Returns**: <code>[Westley](#Westley)</code> - Returns self  
 <a name="Westley+_getCommandForKey"></a>
 
 ### westley._getCommandForKey(commandKey) ⇒ <code>Command</code>
@@ -3795,31 +4308,14 @@ Gets a command by its key from the cache with its dependencies injected
 | --- | --- | --- |
 | commandKey | <code>String</code> | The key of the command |
 
-<a name="Westley+pad"></a>
-
-### westley.pad() ⇒ <code>[Westley](#Westley)</code>
-Insert a padding in the archive (used for delta tracking)
-
-**Kind**: instance method of <code>[Westley](#Westley)</code>  
-**Returns**: <code>[Westley](#Westley)</code> - Returns self  
-<a name="Westley+getDataset"></a>
-
-### westley.getDataset() ⇒ <code>Object</code>
-Get the core dataset
-
-**Kind**: instance method of <code>[Westley](#Westley)</code>  
-<a name="Westley+getHistory"></a>
-
-### westley.getHistory() ⇒ <code>Array.&lt;String&gt;</code>
-Get the history (deltas)
-
-**Kind**: instance method of <code>[Westley](#Westley)</code>  
 <a name="Workspace"></a>
 
-## Workspace
+## ~~Workspace~~
+***Deprecated***
+
 **Kind**: global class  
 
-* [Workspace](#Workspace)
+* ~~[Workspace](#Workspace)~~
     * [new Workspace()](#new_Workspace_new)
     * [.archiveDiffersFromDatasource()](#Workspace+archiveDiffersFromDatasource) ⇒ <code>Promise</code>
     * [.getArchive()](#Workspace+getArchive) ⇒ <code>[Archive](#Archive)</code>
@@ -3835,6 +4331,7 @@ Get the history (deltas)
 
 ### new Workspace()
 Workspace: handling archive loading, saving and merging
+Use `SharedWorkspace` instead
 
 <a name="Workspace+archiveDiffersFromDatasource"></a>
 
@@ -3849,6 +4346,7 @@ Check if the archive differs from the one in the datasource
 Get the archive instance
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>[Archive](#Archive)</code> - The archive instance  
 <a name="Workspace+getDatasource"></a>
 
 ### workspace.getDatasource() ⇒ <code>Object</code>
@@ -3862,6 +4360,7 @@ Get the datasource instance
 Get the stored password
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>String</code> - The password  
 <a name="Workspace+mergeFromDatasource"></a>
 
 ### workspace.mergeFromDatasource() ⇒ <code>Promise</code>
@@ -3979,6 +4478,18 @@ Find groups by their title
 | --- | --- | --- |
 | title | <code>String</code> &#124; <code>RegExp</code> | The group title |
 
+<a name="dedupe"></a>
+
+## dedupe(arr) ⇒ <code>Array</code>
+De-dupe an array
+
+**Kind**: global function  
+**Returns**: <code>Array</code> - The de-duped array  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| arr | <code>Array</code> | The array |
+
 <a name="ArchiveDataset"></a>
 
 ## ArchiveDataset : <code>Object</code>
@@ -4002,4 +4513,18 @@ Find groups by their title
 | title | <code>string</code> | The text to replace "title" |
 | username | <code>string</code> | The text to replace "username" |
 | password | <code>string</code> | The text to replace "password" |
+
+<a name="SharedWorkspaceItem"></a>
+
+## SharedWorkspaceItem : <code>Object</code>
+Shared workspace item
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| archive | <code>[Archive](#Archive)</code> | An archive instance |
+| password | <code>String</code> | The master password |
+| datasource | <code>[TextDatasource](#TextDatasource)</code> | A datasource instance |
 
