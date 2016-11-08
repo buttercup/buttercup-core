@@ -1,3 +1,11 @@
+<h1 align="center">
+  <br/>
+  <img src="https://dl.dropboxusercontent.com/u/16657557/Works/Buttercup/buttercup-core.svg" alt="Buttercup Desktop">
+  <br/>
+  <br/>
+  <br/>
+</h1>
+
 # Buttercup core library
 
 A NodeJS password vault.
