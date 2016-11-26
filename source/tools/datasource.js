@@ -20,9 +20,11 @@ var datasourceTools = module.exports = {
     stringToDatasource: function(str, credentials) {
         let properties = datasourceTools.extractDSStrProps(str),
             datasourceType = properties.ds,
-            identity;
+            username,
+            password;
         if (credentials) {
-            identity = credentials.getIdentity();
+            username = credentials.username;
+            password = credentials.password;
         }
         switch(datasourceType) {
             case "text": {
@@ -40,8 +42,8 @@ var datasourceTools = module.exports = {
                 return new WebDAVDatasource(
                     properties.endpoint,
                     properties.path,
-                    identity.username,
-                    identity.password
+                    username,
+                    password
                 );
             }
 
@@ -50,8 +52,8 @@ var datasourceTools = module.exports = {
                 return new OwnCloudDatasource(
                     properties.endpoint,
                     properties.path,
-                    identity.username,
-                    identity.password
+                    username,
+                    password
                 );
             }
 

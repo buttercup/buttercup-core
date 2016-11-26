@@ -13,16 +13,19 @@ module.exports = {
     createFromSecureContent: {
 
         encryptsAndDecrypts: function(test) {
-            this.credentials.setIdentity("user", "pass");
+            this.credentials.username = "user";
+            this.credentials.password = "pass";
             this.credentials.convertToSecureContent("monkey")
                 .then((secureContent) => {
                     test.ok(secureContent.indexOf("user") < 0);
                     test.ok(secureContent.indexOf("pass") < 0);
-                    return Credentials.createFromSecureContent(secureContent, "monkey").then((newCred) => {
-                        test.deepEqual(newCred.model.getData(), this.credentials.model.getData(),
-                            "Newly created credentials should contain the same content");
-                        test.done();
-                    });
+                    return Credentials
+                        .createFromSecureContent(secureContent, "monkey")
+                        .then((newCred) => {
+                            test.deepEqual(newCred.model.getData(), this.credentials.model.getData(),
+                                "Newly created credentials should contain the same content");
+                            test.done();
+                        });
                 })
                 .catch(function(err) {
                     console.error(err);
@@ -38,15 +41,15 @@ module.exports = {
                 password: "my pass",
                 keyfile: "datafile.bin"
             });
-            test.strictEqual(credentials.getPassword(), "my pass", "Password should be correct");
-            test.strictEqual(credentials.getKeyFile(), "datafile.bin", "Key file should be correct");
+            test.strictEqual(credentials.password, "my pass", "Password should be correct");
+            test.strictEqual(credentials.keyFile, "datafile.bin", "Key file should be correct");
             test.done();
         },
 
         getsUndefined: function(test) {
             var credentials = new Credentials();
-            test.strictEqual(credentials.getPassword(), undefined, "Password should be undefined");
-            test.strictEqual(credentials.getKeyFile(), undefined, "Key file should be undefined");
+            test.strictEqual(credentials.password, undefined, "Password should be undefined");
+            test.strictEqual(credentials.keyFile, undefined, "Key file should be undefined");
             test.done();
         }
 
@@ -55,10 +58,10 @@ module.exports = {
     settingData: {
 
         setsData: function(test) {
-            this.credentials
-                .setIdentity("user", "pass")
-                .setKeyFile("/home/user/example.dat")
-                .setType("webdav");
+            this.credentials.username = "user";
+            this.credentials.password = "pass";
+            this.credentials.keyFile = "/home/user/example.dat";
+            this.credentials.type = "webdav";
             var data = this.credentials.model.getData();
             test.strictEqual(data.username, "user", "Username should be set");
             test.strictEqual(data.password, "pass", "Password should be set");
@@ -73,7 +76,8 @@ module.exports = {
 
         containsSignature: function(test) {
             var signature = Signing.getSignature() + "cred.";
-            this.credentials.convertToSecureContent("test")
+            this.credentials
+                .convertToSecureContent("test")
                 .then(function(secure) {
                     test.strictEqual(secure.indexOf(signature), 0, "Signature should be the first piece of content");
                     test.done();
@@ -84,8 +88,10 @@ module.exports = {
         },
 
         encryptsContent: function(test) {
-            this.credentials.setIdentity("user", "pass");
-            this.credentials.convertToSecureContent("passw0rd")
+            this.credentials.username = "user";
+            this.credentials.password = "pass";
+            this.credentials
+                .convertToSecureContent("passw0rd")
                 .then(function(secure) {
                     test.ok(secure.indexOf("user") < 0, "Content should be encrypted");
                     test.done();

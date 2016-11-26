@@ -18,7 +18,8 @@ module.exports = {
         this.archive = new Archive();
         var group = this.archive.createGroup("main");
         var datasource = new TextDatasource();
-        datasource.save(this.archive, "abc123")
+        datasource
+            .save(this.archive, "abc123")
             .then(function(data) {
                 _this.contentFromPassword = data;
                 return datasource.save(_this.archive, new Credentials({ keyfile: binFilePath }));

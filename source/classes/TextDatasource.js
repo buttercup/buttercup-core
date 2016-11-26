@@ -20,11 +20,11 @@ function processCredentials(credentials) {
         // credentials is a password, so convert to an instance
         let pass = credentials;
         credentials = new Credentials();
-        credentials.setPassword(pass);
+        credentials.password = pass;
     }
     // either might be undefined, but at least one needs to be defined
-    let password = credentials.getPassword(),
-        keyfile = credentials.getKeyFile();
+    let password = credentials.password,
+        keyfile = credentials.keyFile;
     if (!password && !keyfile) {
         throw new Error("Neither a password or key-file was provided");
     }
