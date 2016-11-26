@@ -10,6 +10,7 @@ node_modules
 
 .DS_Store
 .history
+.vscode
 
 source/test.js
 coverage

@@ -33,12 +33,13 @@ var Entry = function(archive, remoteObj) {
 /**
  * Delete the entry - either trashes the entry, or removes it completely.
  * If the entry is in the trash already, it is removed (including if there is no
-     *    trash group). If the entry is in a normal group and a trash group exists, it
-    *  is moved there instead of being deleted.
-    * @memberof Entry
-    * @see moveToGroup
-    * @see Archive.getTrashGroup
-    */
+ *    trash group). If the entry is in a normal group and a trash group exists, it
+ *  is moved there instead of being deleted.
+ * @memberof Entry
+ * @see moveToGroup
+ * @see Archive.getTrashGroup
+ * @returns {Boolean} Whether or not the item was deleted
+ */
 Entry.prototype.delete = function() {
     var trashGroup = this._getArchive().getTrashGroup(),
         parentGroup = this.getGroup(),
@@ -67,6 +68,7 @@ Entry.prototype.delete = function() {
  * @throws {Error} Throws if the attribute doesn't exist, or cannot be deleted
  * @returns {Entry}
  * @memberof Entry
+ * @returns {Entry} Self
  */
 Entry.prototype.deleteAttribute = function(attr) {
     this._getWestley().execute(
@@ -85,6 +87,7 @@ Entry.prototype.deleteAttribute = function(attr) {
  * @throws {Error} Throws if property doesn't exist, or cannot be deleted
  * @returns {Entry}
  * @memberof Entry
+ * @returns {Entry} Self
  */
 Entry.prototype.deleteMeta = function(property) {
     this._getWestley().execute(
@@ -100,7 +103,8 @@ Entry.prototype.deleteMeta = function(property) {
 /**
  * Get an attribute
  * @params {String} attributeName The name of the attribute
- * @returns {String|undefined}
+ * @returns {String|undefined} The attribute value
+ * @param {String} attributeName The name of the attribute to fetch
  * @memberof Entry
  */
 Entry.prototype.getAttribute = function(attributeName) {
@@ -118,7 +122,7 @@ Entry.prototype.getAttribute = function(attributeName) {
 
 /**
  * Get the display information for the entry
- * @returns {DisplayInfo|undefined}
+ * @returns {DisplayInfo|undefined} The display info
  * @memberof Entry
  */
 Entry.prototype.getDisplayInfo = function() {
@@ -128,7 +132,7 @@ Entry.prototype.getDisplayInfo = function() {
 
 /**
  * Get the containing group for the entry
- * @returns {Group|null}
+ * @returns {Group|null} The parent group
  * @memberof Entry
  */
 Entry.prototype.getGroup = function() {
@@ -147,7 +151,7 @@ Entry.prototype.getGroup = function() {
 
 /**
  * Get the entry ID
- * @returns {String}
+ * @returns {String} The entry's ID
  * @memberof Entry
  */
 Entry.prototype.getID = function() {
@@ -157,7 +161,8 @@ Entry.prototype.getID = function() {
 /**
  * Get a meta value
  * @params {String} property The name of the meta property
- * @returns {String|undefined}
+ * @returns {String|undefined} The meta value
+ * @param {String} property The meta item to get
  * @memberof Entry
  */
 Entry.prototype.getMeta = function(property) {
@@ -169,7 +174,8 @@ Entry.prototype.getMeta = function(property) {
 /**
  * Get a property value
  * @params {String} property The name of the meta property
- * @returns {String|undefined}
+ * @returns {String|undefined} The property value
+ * @param {String} property The name of the property to fetch
  * @memberof Entry
  */
 Entry.prototype.getProperty = function(property) {
