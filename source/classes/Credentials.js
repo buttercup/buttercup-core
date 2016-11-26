@@ -129,10 +129,21 @@ class Credentials {
             .then(signEncryptedContent);
     }
 
+    /**
+     * Get a meta value
+     * @returns {String|*} The value or default if it doesn't exist
+     * @param {String} name The meta property name
+     * @param {undefined|*=} defaultValue The value to return if the item doesn't exist
+     */
     getMeta(name, defaultValue) {
         return this.model.get(`meta.${name}`, defaultValue);
     }
 
+    /**
+     * Set a meta property
+     * @param {String} name The property to set
+     * @param {String|*} value The value to set
+     */
     setMeta(name, value) {
         this.model.set(`meta.${name}`, value);
         return this;
