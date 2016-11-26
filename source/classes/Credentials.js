@@ -129,6 +129,15 @@ class Credentials {
             .then(signEncryptedContent);
     }
 
+    getMeta(name, defaultValue) {
+        return this.model.get(`meta.${name}`, defaultValue);
+    }
+
+    setMeta(name, value) {
+        this.model.set(`meta.${name}`, value);
+        return this;
+    }
+
 }
 
 /**

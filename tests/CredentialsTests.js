@@ -55,6 +55,48 @@ module.exports = {
 
     },
 
+    getMeta: {
+
+        getsValues: function(test) {
+            var credentials = new Credentials();
+            credentials.model.set("meta.test", 123);
+            test.strictEqual(credentials.getMeta("test"), 123, "Should return correct value");
+            test.done();
+        },
+
+        getsNestedValues: function(test) {
+            var credentials = new Credentials();
+            credentials.model.set("meta.test.secondary", 123);
+            test.strictEqual(credentials.getMeta("test.secondary"), 123, "Should return correct value");
+            test.done();
+        },
+
+        returnsDefault: function(test) {
+            var credentials = new Credentials();
+            test.strictEqual(credentials.getMeta("test", false), false, "Should return default value");
+            test.done();
+        }
+
+    },
+
+    setMeta: {
+
+        setsValues: function(test) {
+            var credentials = new Credentials();
+            credentials.setMeta("some-meta", 19.5);
+            test.strictEqual(credentials.model.get("meta.some-meta"), 19.5, "Should have set correct value");
+            test.done();
+        },
+
+        setsNestedValues: function(test) {
+            var credentials = new Credentials();
+            credentials.setMeta("crazy.some-meta", 0);
+            test.strictEqual(credentials.model.get("meta.crazy.some-meta"), 0, "Should have set correct value");
+            test.done();
+        }
+
+    },
+
     settingData: {
 
         setsData: function(test) {
