@@ -2180,15 +2180,13 @@ Add a callback for a key
 * [Credentials](#Credentials)
     * [new Credentials(data)](#new_Credentials_new)
     * _instance_
-        * [.getIdentity()](#Credentials+getIdentity) ⇒ <code>Object</code>
-        * [.getKeyFile()](#Credentials+getKeyFile) ⇒ <code>string</code> &#124; <code>Buffer</code> &#124; <code>undefined</code>
-        * [.getPassword()](#Credentials+getPassword) ⇒ <code>string</code> &#124; <code>undefined</code>
-        * [.setIdentity(username, password)](#Credentials+setIdentity) ⇒ <code>[Credentials](#Credentials)</code>
-        * [.setKeyFile(pathOrBuffer)](#Credentials+setKeyFile) ⇒ <code>[Credentials](#Credentials)</code>
-        * [.setPassword(password)](#Credentials+setPassword) ⇒ <code>[Credentials](#Credentials)</code>
-        * [.setType(type)](#Credentials+setType) ⇒ <code>[Credentials](#Credentials)</code>
-        * [.setUsername(username)](#Credentials+setUsername) ⇒ <code>[Credentials](#Credentials)</code>
+        * [.keyFile](#Credentials+keyFile) : <code>string</code> &#124; <code>Buffer</code> &#124; <code>undefined</code>
+        * [.password](#Credentials+password) : <code>String</code> &#124; <code>undefined</code>
+        * [.type](#Credentials+type) : <code>String</code> &#124; <code>undefined</code>
+        * [.username](#Credentials+username) : <code>String</code> &#124; <code>undefined</code>
         * [.convertToSecureContent(masterPassword)](#Credentials+convertToSecureContent) ⇒ <code>Promise</code>
+        * [.getMeta(name, defaultValue)](#Credentials+getMeta) ⇒ <code>String</code> &#124; <code>\*</code>
+        * [.setMeta(name, value)](#Credentials+setMeta)
     * _static_
         * [.createFromSecureContent(content, password)](#Credentials.createFromSecureContent) ⇒ <code>Promise</code>
 
@@ -2200,89 +2198,31 @@ Add a callback for a key
 | --- | --- | --- |
 | data | <code>Object</code> &#124; <code>[Model](#Model)</code> | The initialisation data |
 
-<a name="Credentials+getIdentity"></a>
+<a name="Credentials+keyFile"></a>
 
-### credentials.getIdentity() ⇒ <code>Object</code>
-Get identity information
-
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-<a name="Credentials+getKeyFile"></a>
-
-### credentials.getKeyFile() ⇒ <code>string</code> &#124; <code>Buffer</code> &#124; <code>undefined</code>
+### credentials.keyFile : <code>string</code> &#124; <code>Buffer</code> &#124; <code>undefined</code>
 Get the key file path or buffer
+Key file path, data buffer, or undefined
 
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>string</code> &#124; <code>Buffer</code> &#124; <code>undefined</code> - Key file path, data buffer, or undefined  
-<a name="Credentials+getPassword"></a>
+**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
+<a name="Credentials+password"></a>
 
-### credentials.getPassword() ⇒ <code>string</code> &#124; <code>undefined</code>
+### credentials.password : <code>String</code> &#124; <code>undefined</code>
 Get the password
 
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>string</code> &#124; <code>undefined</code> - Password or undefined  
-<a name="Credentials+setIdentity"></a>
+**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
+<a name="Credentials+type"></a>
 
-### credentials.setIdentity(username, password) ⇒ <code>[Credentials](#Credentials)</code>
-Set identity information
+### credentials.type : <code>String</code> &#124; <code>undefined</code>
+Get the type of credentials
 
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>[Credentials](#Credentials)</code> - Self  
+**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
+<a name="Credentials+username"></a>
 
-| Param | Type |
-| --- | --- |
-| username | <code>string</code> | 
-| password | <code>string</code> | 
+### credentials.username : <code>String</code> &#124; <code>undefined</code>
+Get the username
 
-<a name="Credentials+setKeyFile"></a>
-
-### credentials.setKeyFile(pathOrBuffer) ⇒ <code>[Credentials](#Credentials)</code>
-Set a key file
-Credentials that use a keyfile with or instead of a password will allow for
-alternate means of authentication.
-
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>[Credentials](#Credentials)</code> - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| pathOrBuffer | <code>string</code> &#124; <code>Buffer</code> | The path to the key file or a buffer with its contents |
-
-<a name="Credentials+setPassword"></a>
-
-### credentials.setPassword(password) ⇒ <code>[Credentials](#Credentials)</code>
-Set the password
-
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>[Credentials](#Credentials)</code> - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| password | <code>string</code> | The password to set |
-
-<a name="Credentials+setType"></a>
-
-### credentials.setType(type) ⇒ <code>[Credentials](#Credentials)</code>
-Set the credentials type (eg. webdav/owncloud etc.)
-
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>[Credentials](#Credentials)</code> - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| type | <code>string</code> | The type of credentials |
-
-<a name="Credentials+setUsername"></a>
-
-### credentials.setUsername(username) ⇒ <code>[Credentials](#Credentials)</code>
-Set the username
-
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>[Credentials](#Credentials)</code> - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| username | <code>string</code> | The username to set |
-
+**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
 <a name="Credentials+convertToSecureContent"></a>
 
 ### credentials.convertToSecureContent(masterPassword) ⇒ <code>Promise</code>
@@ -2290,11 +2230,40 @@ Convert the credentials to an encrypted string, for storage
 
 **Kind**: instance method of <code>[Credentials](#Credentials)</code>  
 **Returns**: <code>Promise</code> - A promise that resolves with the encrypted credentials  
+**Throws**:
+
+- <code>Error</code> Throws when masterPassword is not a string
+
 **See**: signEncryptedContent  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | masterPassword | <code>string</code> | The password for encrypting |
+
+<a name="Credentials+getMeta"></a>
+
+### credentials.getMeta(name, defaultValue) ⇒ <code>String</code> &#124; <code>\*</code>
+Get a meta value
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>String</code> &#124; <code>\*</code> - The value or default if it doesn't exist  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The meta property name |
+| defaultValue | <code>undefined</code> &#124; <code>\*</code> | The value to return if the item doesn't exist |
+
+<a name="Credentials+setMeta"></a>
+
+### credentials.setMeta(name, value)
+Set a meta property
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The property to set |
+| value | <code>String</code> &#124; <code>\*</code> | The value to set |
 
 <a name="Credentials.createFromSecureContent"></a>
 
@@ -2318,21 +2287,21 @@ Create a new Credentials instance from encrypted information
 * [Entry](#Entry)
     * [new Entry(archive, remoteObj)](#new_Entry_new)
     * _instance_
-        * [.delete()](#Entry+delete)
+        * [.delete()](#Entry+delete) ⇒ <code>Boolean</code>
         * [.deleteAttribute(attr)](#Entry+deleteAttribute) ⇒ <code>[Entry](#Entry)</code>
         * [.deleteMeta(property)](#Entry+deleteMeta) ⇒ <code>[Entry](#Entry)</code>
-        * [.getAttribute()](#Entry+getAttribute) ⇒ <code>String</code> &#124; <code>undefined</code>
+        * [.getAttribute(attributeName)](#Entry+getAttribute) ⇒ <code>String</code> &#124; <code>undefined</code>
         * [.getDisplayInfo()](#Entry+getDisplayInfo) ⇒ <code>[DisplayInfo](#DisplayInfo)</code> &#124; <code>undefined</code>
         * [.getGroup()](#Entry+getGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.getID()](#Entry+getID) ⇒ <code>String</code>
-        * [.getMeta()](#Entry+getMeta) ⇒ <code>String</code> &#124; <code>undefined</code>
-        * [.getProperty()](#Entry+getProperty) ⇒ <code>String</code> &#124; <code>undefined</code>
-        * [.moveToGroup()](#Entry+moveToGroup) ⇒ <code>[Entry](#Entry)</code>
+        * [.getMeta(property)](#Entry+getMeta) ⇒ <code>String</code> &#124; <code>undefined</code>
+        * [.getProperty(property)](#Entry+getProperty) ⇒ <code>String</code> &#124; <code>undefined</code>
+        * [.moveToGroup(group)](#Entry+moveToGroup) ⇒ <code>[Entry](#Entry)</code>
         * [.setAttribute(attributeName, value)](#Entry+setAttribute) ⇒ <code>[Entry](#Entry)</code>
         * [.setMeta(prop, [value])](#Entry+setMeta) ⇒ <code>[Entry](#Entry)</code>
         * [.setProperty(prop, [value])](#Entry+setProperty) ⇒ <code>[Entry](#Entry)</code>
         * [.toObject()](#Entry+toObject) ⇒ <code>Object</code>
-        * [.toString()](#Entry+toString) ⇒ <code>string</code>
+        * [.toString()](#Entry+toString) ⇒ <code>String</code>
         * [._getArchive()](#Entry+_getArchive) ⇒ <code>[Archive](#Archive)</code>
         * [._getRemoteObject()](#Entry+_getRemoteObject) ⇒ <code>Object</code>
         * [._getWestley()](#Entry+_getWestley) ⇒ <code>[Westley](#Westley)</code>
@@ -2352,13 +2321,14 @@ Managed entry class
 
 <a name="Entry+delete"></a>
 
-### entry.delete()
+### entry.delete() ⇒ <code>Boolean</code>
 Delete the entry - either trashes the entry, or removes it completely.
 If the entry is in the trash already, it is removed (including if there is no
    trash group). If the entry is in a normal group and a trash group exists, it
  is moved there instead of being deleted.
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>Boolean</code> - Whether or not the item was deleted  
 **See**
 
 - moveToGroup
@@ -2370,6 +2340,7 @@ If the entry is in the trash already, it is removed (including if there is no
 Delete an attribute
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>[Entry](#Entry)</code> - Self  
 **Throws**:
 
 - <code>Error</code> Throws if the attribute doesn't exist, or cannot be deleted
@@ -2377,7 +2348,7 @@ Delete an attribute
 
 | Param | Type | Description |
 | --- | --- | --- |
-| attr | <code>string</code> | The attribute name |
+| attr | <code>String</code> | The attribute name |
 
 <a name="Entry+deleteMeta"></a>
 
@@ -2385,6 +2356,7 @@ Delete an attribute
 Delete a meta item
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>[Entry](#Entry)</code> - Self  
 **Throws**:
 
 - <code>Error</code> Throws if property doesn't exist, or cannot be deleted
@@ -2392,55 +2364,81 @@ Delete a meta item
 
 | Param | Type | Description |
 | --- | --- | --- |
-| property | <code>string</code> | The property name |
+| property | <code>String</code> | The meta property to delete |
 
 <a name="Entry+getAttribute"></a>
 
-### entry.getAttribute() ⇒ <code>String</code> &#124; <code>undefined</code>
+### entry.getAttribute(attributeName) ⇒ <code>String</code> &#124; <code>undefined</code>
 Get an attribute
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>String</code> &#124; <code>undefined</code> - The attribute value  
 **Params**: <code>String</code> attributeName The name of the attribute  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attributeName | <code>String</code> | The name of the attribute to fetch |
+
 <a name="Entry+getDisplayInfo"></a>
 
 ### entry.getDisplayInfo() ⇒ <code>[DisplayInfo](#DisplayInfo)</code> &#124; <code>undefined</code>
 Get the display information for the entry
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>[DisplayInfo](#DisplayInfo)</code> &#124; <code>undefined</code> - The display info  
 <a name="Entry+getGroup"></a>
 
 ### entry.getGroup() ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
 Get the containing group for the entry
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The parent group  
 <a name="Entry+getID"></a>
 
 ### entry.getID() ⇒ <code>String</code>
 Get the entry ID
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>String</code> - The entry's ID  
 <a name="Entry+getMeta"></a>
 
-### entry.getMeta() ⇒ <code>String</code> &#124; <code>undefined</code>
+### entry.getMeta(property) ⇒ <code>String</code> &#124; <code>undefined</code>
 Get a meta value
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>String</code> &#124; <code>undefined</code> - The meta value  
 **Params**: <code>String</code> property The name of the meta property  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| property | <code>String</code> | The meta item to get |
+
 <a name="Entry+getProperty"></a>
 
-### entry.getProperty() ⇒ <code>String</code> &#124; <code>undefined</code>
+### entry.getProperty(property) ⇒ <code>String</code> &#124; <code>undefined</code>
 Get a property value
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>String</code> &#124; <code>undefined</code> - The property value  
 **Params**: <code>String</code> property The name of the meta property  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| property | <code>String</code> | The name of the property to fetch |
+
 <a name="Entry+moveToGroup"></a>
 
-### entry.moveToGroup() ⇒ <code>[Entry](#Entry)</code>
+### entry.moveToGroup(group) ⇒ <code>[Entry](#Entry)</code>
 Move the entry to another group
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
 **Returns**: <code>[Entry](#Entry)</code> - Returns self  
 **Params**: <code>[Group](#Group)</code> group The target group  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| group | <code>[Group](#Group)</code> | The target group |
+
 <a name="Entry+setAttribute"></a>
 
 ### entry.setAttribute(attributeName, value) ⇒ <code>[Entry](#Entry)</code>
@@ -2489,34 +2487,39 @@ Export entry to object
 **Returns**: <code>Object</code> - The entry in object-form  
 <a name="Entry+toString"></a>
 
-### entry.toString() ⇒ <code>string</code>
+### entry.toString() ⇒ <code>String</code>
 toString override
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>String</code> - The string representation of the Entry  
 <a name="Entry+_getArchive"></a>
 
 ### entry._getArchive() ⇒ <code>[Archive](#Archive)</code>
 Get the archive reference
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>[Archive](#Archive)</code> - The Archive reference  
 <a name="Entry+_getRemoteObject"></a>
 
 ### entry._getRemoteObject() ⇒ <code>Object</code>
 Get the remote object that mirrors the data represented here
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>Object</code> - The remote object (in-memory copy)  
 <a name="Entry+_getWestley"></a>
 
 ### entry._getWestley() ⇒ <code>[Westley](#Westley)</code>
 Get the Westley reference
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>[Westley](#Westley)</code> - The internal Westley reference  
 <a name="Entry.createNew"></a>
 
 ### Entry.createNew(archive, groupID) ⇒ <code>[Entry](#Entry)</code>
 Create a new entry
 
 **Kind**: static method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>[Entry](#Entry)</code> - The new entry  
 
 | Param | Type | Description |
 | --- | --- | --- |
