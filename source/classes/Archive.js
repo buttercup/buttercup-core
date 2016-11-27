@@ -292,7 +292,7 @@ class Archive {
  * @static
  */
 Archive.createWithDefaults = function() {
-    debug("new archive (defaults)");
+    debug("create archive (defaults)");
     var archive = new Archive(),
         generalGroup = archive.createGroup("General"),
         trashGroup = archive
