@@ -5,12 +5,15 @@ const iocane = require("iocane").crypto;
 var Archive = require("./Archive.js"),
     Credentials = require("./Credentials.js"),
     signing = require("../tools/signing.js"),
-    encoding = require("../tools/encoding.js");
+    encoding = require("../tools/encoding.js"),
+    createDebug = require("../tools/debug.js");
+
+const debug = createDebug("text-datasource");
 
 /**
  * Pre-process credentials data
- * @param {string|Credentials} credentials Password or Credentials instance
- * @returns {{ password: string|undefined, keyfile: string|undefined }} Credential data
+ * @param {String|Credentials} credentials Password or Credentials instance
+ * @returns {{ password: (String|undefined), keyfile: (String|undefined) }} Credential data
  * @throws {Error} Throws if both password and keyfile are undefined
  * @private
  * @memberof TextDatasource
@@ -45,6 +48,7 @@ class TextDatasource {
      * @param {string} content The content to load from
      */
     constructor(content) {
+        debug("new text datasource");
         this._content = content;
     }
 
@@ -55,6 +59,7 @@ class TextDatasource {
      * @returns {Promise.<Archive>} A promise that resolves with an open archive
      */
     load(credentials, emptyCreatesNew) {
+        debug("load archive");
         emptyCreatesNew = (emptyCreatesNew === undefined) ? false : emptyCreatesNew;
         let credentialsData = processCredentials(credentials),
             password = credentialsData.password,
@@ -90,7 +95,7 @@ class TextDatasource {
                         return decompressed.split("\n");
                     }
                 }
-                return Promise.reject("Decryption failed");
+                return Promise.reject(new Error("Decryption failed"));
             })
             .then(function(history) {
                 var archive = new Archive(),
@@ -108,6 +113,7 @@ class TextDatasource {
      * @returns {Promise.<string>} A promise resolving with the encrypted content
      */
     save(archive, credentials) {
+        debug("save archive");
         let credentialsData = processCredentials(credentials),
             password = credentialsData.password,
             keyfile = credentialsData.keyfile;
@@ -134,15 +140,17 @@ class TextDatasource {
      * @returns {TextDatasource} Self
      */
     setContent(content) {
+        debug("set content");
         this._content = content;
         return this;
     }
 
     /**
      * Output the datasource configuration as a string
-     * @returns {string}
+     * @returns {String} The string representation of the datasource
      */
     toString() {
+        debug("to string");
         return "ds=text";
     }
 

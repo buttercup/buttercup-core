@@ -1,7 +1,10 @@
 "use strict";
 
 var TextDatasource = require("./TextDatasource.js"),
-    fs = require("fs");
+    fs = require("fs"),
+    createDebug = require("../tools/debug.js");
+
+const debug = createDebug("file-datasource");
 
 /**
  * File datasource for loading and saving files
@@ -15,6 +18,7 @@ class FileDatasource extends TextDatasource {
      * @param {string} filename The filename to load and save
      */
     constructor(filename) {
+        debug("new file datasource");
         super("");
         this._filename = filename;
     }
@@ -33,6 +37,7 @@ class FileDatasource extends TextDatasource {
      * @returns {Promise<Archive>} A promise resolving with the opened archive
      */
     load(password) {
+        debug("load archive");
         var filename = this._filename;
         return (new Promise(function(resolve, reject) {
             fs.readFile(filename, "utf8", function(error, data) {
@@ -42,13 +47,10 @@ class FileDatasource extends TextDatasource {
                     (resolve)(data);
                 }
             });
-        })).then((data) => {
+        }))
+        .then((data) => {
             this.setContent(data);
             return super.load(password);
-        }).catch(function(error) {
-            var errorMsg = "Failed opening archive: " + error;
-            console.error(errorMsg);
-            throw error;
         });
     }
 
@@ -59,6 +61,7 @@ class FileDatasource extends TextDatasource {
      * @returns {Promise} A promise that resolves when saving is complete
      */
     save(archive, password) {
+        debug("save archive");
         return super
             .save(archive, password)
             .then((encrypted) => {
@@ -79,6 +82,7 @@ class FileDatasource extends TextDatasource {
      * @returns {String} The string representation
      */
     toString() {
+        debug("to string");
         return [
             "ds=file",
             `path=${this._filename}`

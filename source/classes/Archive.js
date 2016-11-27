@@ -11,7 +11,10 @@ var Westley = require("./Westley.js"),
 
 var signing = require("../tools/signing.js"),
     rawSearching = require("../tools/searching-raw.js"),
-    encoding = require("../tools/encoding.js");
+    encoding = require("../tools/encoding.js"),
+    createDebug = require("../tools/debug.js");
+
+const debug = createDebug("archive");
 
 /**
  * Buttercup Archive
@@ -22,6 +25,8 @@ var signing = require("../tools/signing.js"),
 class Archive {
 
     constructor() {
+        debug("new archive");
+        // create Westley instance
         this._westley = new Westley();
         // comment created date
         var date = new Date(),
@@ -82,6 +87,7 @@ class Archive {
      * @memberof Archive
      */
     createGroup(title) {
+        debug("new group");
         var group = Group.createNew(this);
         if (title) {
             group.setTitle(title);
@@ -95,6 +101,7 @@ class Archive {
      * @returns {Archive} Self
      */
     deleteAttribute(attributeName) {
+        debug("delete attribute");
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteArchiveAttribute)
                 .addArgument(attributeName)
@@ -109,6 +116,7 @@ class Archive {
      * @returns {Archive} Self
      */
     discardSharedGroups() {
+        debug("discard shared groups");
         this._sharedGroups = [];
         return this;
     }
@@ -132,6 +140,7 @@ class Archive {
      * @memberof Archive
      */
     getAttribute(attributeName) {
+        debug("fetch attribute");
         let dataset = this._getWestley().getDataset();
         if (dataset.attributes && dataset.attributes.hasOwnProperty(attributeName)) {
             return dataset.attributes[attributeName];
@@ -146,6 +155,7 @@ class Archive {
      * @memberof Archive
      */
     getEntryByID(entryID) {
+        debug("fetch entry by ID");
         var westley = this._getWestley(),
             entryRaw = rawSearching.findEntryByID(westley.getDataset().groups, entryID);
         return (entryRaw === null) ? null : new Entry(this, entryRaw);
@@ -169,6 +179,7 @@ class Archive {
      * @see findGroupByID
      */
     getGroupByID(groupID) {
+        debug("fetch group by ID");
         var westley = this._getWestley(),
             groupRaw = rawSearching.findGroupByID(westley.getDataset().groups, groupID);
         return (groupRaw === null) ? null : new Group(this, groupRaw);
@@ -180,6 +191,7 @@ class Archive {
      * @memberof Archive
      */
     getGroups() {
+        debug("get groups");
         var archive = this,
             westley = this._getWestley();
         return (westley.getDataset().groups || [])
@@ -203,6 +215,7 @@ class Archive {
      * @memberof Archive
      */
     getTrashGroup() {
+        debug("fetch trash group");
         var groups = this.getGroups();
         for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
             if (groups[i].isTrash()) {
@@ -218,8 +231,10 @@ class Archive {
      * @returns {Archive} Self
      */
     optimise() {
+        debug("flatten (check)");
         var flattener = new Flattener(this._getWestley());
         if (flattener.canBeFlattened()) {
+            debug("flatten (valid)");
             flattener.flatten();
         }
         return this;
@@ -232,6 +247,7 @@ class Archive {
      * @returns {Archive} Self
      */
     setAttribute(attributeName, value) {
+        debug("set attribute");
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetArchiveAttribute)
                 .addArgument(attributeName)
@@ -249,6 +265,7 @@ class Archive {
      * @see Group.toObject
      */
     toObject(groupOutputFlags) {
+        debug("to object");
         return {
             archiveID: this.getID(),
             format: this.getFormat(),
@@ -275,6 +292,7 @@ class Archive {
  * @static
  */
 Archive.createWithDefaults = function() {
+    debug("create archive (defaults)");
     var archive = new Archive(),
         generalGroup = archive.createGroup("General"),
         trashGroup = archive
