@@ -1,3 +1,5 @@
+"use strict";
+
 const debug = require("debug");
 
 module.exports = function __createDebug(name) {
