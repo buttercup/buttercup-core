@@ -202,3 +202,24 @@ For instance, you could get the role of a group like so:
 ```javascript
 let groupRole = group.getAttribute(ManagedGroup.Attributes.Role);
 ```
+
+## Debugging
+Buttercup supports the [DEBUG](https://github.com/visionmedia/debug) environment variable. You can debug an application using Buttercup like so:
+
+```bash
+DEBUG=buttercupcore:* ./app
+```
+
+This also works when running the tests:
+
+```bash
+DEBUG=buttercupcore:* npm test
+```
+
+The iocane submodule also supports DEBUG:
+
+```bash
+DEBUG=buttercupcore:*,iocane ./app
+# or
+DEBUG=buttercupcore:*,iocane npm test
+```
