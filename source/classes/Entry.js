@@ -64,9 +64,8 @@ Entry.prototype.delete = function() {
 
 /**
  * Delete an attribute
- * @param {string} attr The attribute name
+ * @param {String} attr The attribute name
  * @throws {Error} Throws if the attribute doesn't exist, or cannot be deleted
- * @returns {Entry}
  * @memberof Entry
  * @returns {Entry} Self
  */
@@ -83,9 +82,8 @@ Entry.prototype.deleteAttribute = function(attr) {
 
 /**
  * Delete a meta item
- * @param {string} property The property name
  * @throws {Error} Throws if property doesn't exist, or cannot be deleted
- * @returns {Entry}
+ * @param {String} property The meta property to delete
  * @memberof Entry
  * @returns {Entry} Self
  */
@@ -188,6 +186,7 @@ Entry.prototype.getProperty = function(property) {
  * Move the entry to another group
  * @params {Group} group The target group
  * @returns {Entry} Returns self
+ * @param {Group} group The target group
  * @memberof Entry
  */
 Entry.prototype.moveToGroup = function(group) {
@@ -299,7 +298,7 @@ Entry.prototype.toObject = function() {
 
 /**
  * toString override
- * @returns {string}
+ * @returns {String} The string representation of the Entry
  * @memberof Entry
  */
 Entry.prototype.toString = function() {
@@ -308,7 +307,7 @@ Entry.prototype.toString = function() {
 
 /**
  * Get the archive reference
- * @returns {Archive}
+ * @returns {Archive} The Archive reference
  * @memberof Entry
  */
 Entry.prototype._getArchive = function() {
@@ -317,7 +316,7 @@ Entry.prototype._getArchive = function() {
 
 /**
  * Get the remote object that mirrors the data represented here
- * @returns {Object}
+ * @returns {Object} The remote object (in-memory copy)
  * @memberof Entry
  */
 Entry.prototype._getRemoteObject = function() {
@@ -326,7 +325,7 @@ Entry.prototype._getRemoteObject = function() {
 
 /**
  * Get the Westley reference
- * @returns {Westley}
+ * @returns {Westley} The internal Westley reference
  * @memberof Entry
  */
 Entry.prototype._getWestley = function() {
@@ -341,7 +340,7 @@ Entry.Attributes = Object.freeze({
  * Create a new entry
  * @param {Archive} archive The archive
  * @param {string} groupID The ID of the target group
- * @returns {Entry}
+ * @returns {Entry} The new entry
  * @static
  * @memberof Entry
  */
