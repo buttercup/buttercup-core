@@ -3899,7 +3899,7 @@ Set the primary archive
     * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-    * [.toString()](#TextDatasource+toString) ⇒ <code>string</code>
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_TextDatasource_new"></a>
 
@@ -3956,10 +3956,11 @@ Set the text content
 
 <a name="TextDatasource+toString"></a>
 
-### textDatasource.toString() ⇒ <code>string</code>
+### textDatasource.toString() ⇒ <code>String</code>
 Output the datasource configuration as a string
 
 **Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="TextDatasource"></a>
 
 ## TextDatasource
@@ -3971,7 +3972,7 @@ Output the datasource configuration as a string
     * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-    * [.toString()](#TextDatasource+toString) ⇒ <code>string</code>
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_TextDatasource_new"></a>
 
@@ -4028,10 +4029,11 @@ Set the text content
 
 <a name="TextDatasource+toString"></a>
 
-### textDatasource.toString() ⇒ <code>string</code>
+### textDatasource.toString() ⇒ <code>String</code>
 Output the datasource configuration as a string
 
 **Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="WebDAVDatasource"></a>
 
 ## WebDAVDatasource ⇐ <code>[TextDatasource](#TextDatasource)</code>
