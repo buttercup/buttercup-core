@@ -3,6 +3,8 @@
 var TextDatasource = require("./TextDatasource.js"),
     buildServerAdapter = require("./ButtercupServerAdapter.js");
 
+const { registerDatasource } = require("./DatasourceAdapter.js");
+
 /**
  * Datasource for Buttercup server connections
  * @class ButtercupServerDatasource
@@ -53,16 +55,18 @@ class ButtercupServerDatasource extends TextDatasource {
     }
 
     /**
-     * Convert the datasource to a string
-     * @returns {string} The string representation of the datasource
+     * Output the datasource as an object
+     * @returns {Object} An object describing the datasource
      */
-    toString() {
-        return [
-            "ds=butterupserver",
-            `address=${this._address}`
-        ].join(",");
+    toObject() {
+        return Object.assign(super.toObject(), {
+            type: "buttercupserver",
+            endpoint: this._address
+        });
     }
 
 }
+
+registerDatasource("buttercupserver", ButtercupServerDatasource);
 
 module.exports = ButtercupServerDatasource;

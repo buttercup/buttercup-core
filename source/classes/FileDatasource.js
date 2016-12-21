@@ -4,6 +4,8 @@ var TextDatasource = require("./TextDatasource.js"),
     fs = require("fs"),
     createDebug = require("../tools/debug.js");
 
+const { registerDatasource } = require("./DatasourceAdapter.js");
+
 const debug = createDebug("file-datasource");
 
 /**
@@ -78,17 +80,29 @@ class FileDatasource extends TextDatasource {
     }
 
     /**
-     * Output the datasource configuration as a string
-     * @returns {String} The string representation
+     * Output the datasource as an object
+     * @returns {Object} An object describing the datasource
      */
-    toString() {
-        debug("to string");
-        return [
-            "ds=file",
-            `path=${this._filename}`
-        ].join(",");
+    toObject() {
+        return Object.assign(super.toObject(), {
+            type: "file",
+            path: this._filename
+        });
     }
 
 }
+
+FileDatasource.fromObject = function fromObject(obj) {
+    if (obj.type === "file") {
+        return new FileDatasource(obj.path);
+    }
+    throw new Error(`Unknown or invalid type: ${obj.type}`);
+};
+
+FileDatasource.fromString = function fromString(str) {
+    return FileDatasource.fromObject(JSON.parse(str));
+};
+
+registerDatasource("file", FileDatasource);
 
 module.exports = FileDatasource;

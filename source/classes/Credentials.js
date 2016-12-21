@@ -166,4 +166,7 @@ Credentials.createFromSecureContent = function(content, password) {
         .then((decryptedContent) => new Credentials(JSON.parse(decryptedContent)));
 };
 
+// Definitions
+Credentials.DATASOURCE_META = "__toDatasource__";
+
 module.exports = Credentials;

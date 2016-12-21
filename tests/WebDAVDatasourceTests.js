@@ -3,8 +3,7 @@ var lib = require("../source/module.js");
 var Archive = lib.Archive,
     WebDAVDatasource = lib.WebDAVDatasource,
     TextDatasource = lib.TextDatasource,
-    signing = lib.tools.signing,
-    datasourceTools = lib.tools.datasource;
+    signing = lib.tools.signing;
 
 var WebDAVFSMock = function(endpoint, username, password) {
     this.endpoint = endpoint;
@@ -80,12 +79,32 @@ module.exports = {
 
     },
 
+    toObject: {
+
+        outputsAnObject: function(test) {
+            var props = this.datasource.toObject();
+            test.strictEqual(typeof props, "object", "Output should be an object");
+            test.done();
+        }
+
+    },
+
     toString: {
 
-        outputsCorrectType: function(test) {
-            var str = this.datasource.toString();
-            var props = datasourceTools.extractDSStrProps(str);
-            test.strictEqual(props.ds, "webdav", "Datasource type should match");
+        matchesToObject: function(test) {
+            test.strictEqual(
+                this.datasource.toString(),
+                JSON.stringify(this.datasource.toObject()),
+                "Contents should be identical"
+            );
+            test.done();
+        },
+
+        outputsCorrectContent: function(test) {
+            var props = JSON.parse(this.datasource.toString());
+            test.strictEqual(props.type, "webdav", "Datasource type should match");
+            test.strictEqual(props.endpoint, "/", "Endpoint should be correct");
+            test.strictEqual(props.path, "/", "Path should be correct");
             test.done();
         }
 

@@ -1,43 +1,39 @@
-(function(module) {
+"use strict";
 
-    "use strict";
+var iocane = require("iocane");
 
-    var iocane = require("iocane");
+module.exports = {
 
-    module.exports = {
+    Archive: require("./classes/Archive.js"),
+    Westley: require("./classes/Westley.js"),
+    Inigo: require("./classes/InigoGenerator.js"),
+    Workspace: require("./classes/Workspace.js"),
+    SharedWorkspace: require("./classes/SharedWorkspace.js"),
 
-        Archive: require("./classes/Archive.js"),
-        Westley: require("./classes/Westley.js"),
-        Inigo: require("./classes/InigoGenerator.js"),
-        Workspace: require("./classes/Workspace.js"),
-        SharedWorkspace: require("./classes/SharedWorkspace.js"),
+    Credentials: require("./classes/Credentials.js"),
+    Model: require("./classes/Model.js"),
 
-        Credentials: require("./classes/Credentials.js"),
-        Model: require("./classes/Model.js"),
+    Group: require("./classes/Group.js"),
+    Entry: require("./classes/Entry.js"),
 
-        Group: require("./classes/Group.js"),
-        Entry: require("./classes/Entry.js"),
+    DatasourceAdapter: require("./classes/DatasourceAdapter.js"),
+    TextDatasource: require("./classes/TextDatasource.js"),
+    FileDatasource: require("./classes/FileDatasource.js"),
+    OwnCloudDatasource: require("./classes/OwnCloudDatasource.js"),
+    WebDAVDatasource: require("./classes/WebDAVDatasource.js"),
+    ButtercupServerDatasource : require("./classes/ButtercupServerDatasource.js"),
 
-        TextDatasource: require("./classes/TextDatasource.js"),
-        FileDatasource: require("./classes/FileDatasource.js"),
-        OwnCloudDatasource: require("./classes/OwnCloudDatasource.js"),
-        WebDAVDatasource: require("./classes/WebDAVDatasource.js"),
-        ButtercupServerDatasource : require("./classes/ButtercupServerDatasource.js"),
+    Flattener: require("./classes/Flattener.js"),
+    Descriptor: require("./classes/Descriptor.js"),
 
-        Flattener: require("./classes/Flattener.js"),
-        Descriptor: require("./classes/Descriptor.js"),
+    tools: {
+        encoding: require("./tools/encoding.js"),
+        export: require("./tools/export.js"),
+        signing: require("./tools/signing.js")
+    },
 
-        tools: {
-            datasource: require("./tools/datasource.js"),
-            encoding: require("./tools/encoding.js"),
-            export: require("./tools/export.js"),
-            signing: require("./tools/signing.js")
-        },
+    vendor: {
+        iocane: iocane
+    }
 
-        vendor: {
-            iocane: iocane
-        }
-
-    };
-
-})(module);
+};
