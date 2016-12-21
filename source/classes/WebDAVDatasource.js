@@ -3,7 +3,7 @@
 var webdavFS = require("webdav-fs"),
     TextDatasource = require("./TextDatasource.js");
 
-const { registerDatasource } = require("./DatasourceAdapter.js");
+const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
 /**
  * WebDAV datasource for reading and writing remote archives

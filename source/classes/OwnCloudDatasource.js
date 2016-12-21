@@ -2,7 +2,7 @@
 
 var WebDAVDatasource = require("./WebDAVDatasource.js");
 
-const { registerDatasource } = require("./DatasourceAdapter.js");
+const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
 /**
  * Datasource for OwnCloud archives

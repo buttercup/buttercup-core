@@ -3,7 +3,7 @@
 var TextDatasource = require("./TextDatasource.js"),
     buildServerAdapter = require("./ButtercupServerAdapter.js");
 
-const { registerDatasource } = require("./DatasourceAdapter.js");
+const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
 /**
  * Datasource for Buttercup server connections

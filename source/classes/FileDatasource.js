@@ -4,7 +4,7 @@ var TextDatasource = require("./TextDatasource.js"),
     fs = require("fs"),
     createDebug = require("../tools/debug.js");
 
-const { registerDatasource } = require("./DatasourceAdapter.js");
+const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
 const debug = createDebug("file-datasource");
 
