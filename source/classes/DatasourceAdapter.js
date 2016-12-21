@@ -14,7 +14,7 @@ var adapter = module.exports = {
      * @returns {null|TextDatasource} A datasource instance or null of none found
      */
     objectToDatasource: function(obj, hostCredentials) {
-        let { type } = obj;
+        let type = obj.type;
         if (!type) {
             throw new Error("No type specified");
         }
