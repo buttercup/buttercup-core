@@ -35,7 +35,7 @@ var adapter = module.exports = {
      */
     registerDatasource: function(datasourceType, DSClass) {
         if (__datasources[datasourceType]) {
-            throw new Error(`Datasource already registered: ${datasourceType}`);
+            throw new Error("Datasource already registered: " + datasourceType);
         }
         __datasources[datasourceType] = DSClass;
     },
