@@ -1,3 +1,5 @@
+"use strict";
+
 let __datasources = {};
 
 let adapter = module.exports = {
