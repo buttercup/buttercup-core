@@ -1,8 +1,8 @@
 "use strict";
 
-let __datasources = {};
+var __datasources = {};
 
-let adapter = module.exports = {
+var adapter = module.exports = {
 
     /**
      * Create a datasource from an object
