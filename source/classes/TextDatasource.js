@@ -8,7 +8,7 @@ var Archive = require("./Archive.js"),
     encoding = require("../tools/encoding.js"),
     createDebug = require("../tools/debug.js");
 
-const { registerDatasource } = require("./DatasourceAdapter.js");
+const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
 const debug = createDebug("text-datasource");
 
