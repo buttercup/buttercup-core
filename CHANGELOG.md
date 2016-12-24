@@ -1,7 +1,7 @@
 # Buttercup-core release change-log
 
 ## v0.29.0
-_2016_11_30_
+_2016-11-30_
 
  * Credentials meta support
  * Debug support
