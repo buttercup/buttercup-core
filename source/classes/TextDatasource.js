@@ -104,6 +104,10 @@ class TextDatasource {
                     westley = archive._getWestley();
                 westley.clear();
                 history.forEach(westley.execute.bind(westley));
+                if (archive.getID() === "") {
+                    // generate a new ID
+                    archive._generateID();
+                }
                 return archive;
             });
     }

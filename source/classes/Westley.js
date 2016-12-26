@@ -75,10 +75,12 @@ class Westley {
     /**
      * Execute a command - stored in history and modifies the dataset
      * @param {String} command The command to execute
+     * @param {Boolean=} append Wether to append to the end of the history list (default true)
      * @returns {Westley} Returns self
      * @memberof Westley
      */
-    execute(command) {
+    execute(command, append) {
+        append = (append === false) ? false : true;
         if (!VALID_COMMAND_EXP.test(command)) {
             throw new Error("Invalid command");
         }
@@ -90,7 +92,12 @@ class Westley {
 
         var commandObject = this._getCommandForKey(commandKey);
 
-        this._history.push(command);
+        if (append) {
+            this._history.push(command);
+        } else {
+            // prepend
+            this._history.unshift(command);
+        }
         commandObject.execute.apply(commandObject, [this._dataset].concat(commandComponents));
         return this;
     }
