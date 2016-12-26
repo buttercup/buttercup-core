@@ -197,6 +197,16 @@ Entry.prototype.getProperty = function(property) {
 };
 
 /**
+ * Check if the entry is in the trash
+ * @returns {Boolean} Whether or not the entry is in the trash
+ * @memberof Entry
+ */
+Entry.prototype.isInTrash = function() {
+    debug("check if in trash");
+    return this.getGroup().isInTrash() || this.getGroup().isTrash();
+};
+
+/**
  * Move the entry to another group
  * @params {Group} group The target group
  * @returns {Entry} Returns self
