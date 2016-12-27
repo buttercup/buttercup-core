@@ -1,5 +1,17 @@
 # Buttercup-core release change-log
 
+## v0.30.0
+_2016-12-27_
+
+ * Ensure archive ID always generated
+ * Added Entry `isInTrash` method
+ * Datasource registration (support for 3rd party datasources)
+ * `TextDatasource` stores content when using `toObject` or `toString`
+ * Datasource tools removed (`Buttercup.tools.datasource`)
+ * **Breaking:**
+    * Datasource `toString` format rewrite
+    * Datasource `toObject`
+
 ## v0.29.0
 _2016-11-30_
 

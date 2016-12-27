@@ -184,6 +184,7 @@ Extract command components from a string
         * [.optimise()](#Archive+optimise) ⇒ <code>[Archive](#Archive)</code>
         * [.setAttribute(attributeName, value)](#Archive+setAttribute) ⇒ <code>[Archive](#Archive)</code>
         * [.toObject(groupOutputFlags)](#Archive+toObject) ⇒ <code>Object</code>
+        * [._generateID()](#Archive+_generateID)
         * [._getWestley()](#Archive+_getWestley) ⇒ <code>[Westley](#Westley)</code>
     * _static_
         * [.createWithDefaults()](#Archive.createWithDefaults) ⇒ <code>[Archive](#Archive)</code>
@@ -403,6 +404,13 @@ Convert the archive to an object
 | --- | --- | --- |
 | groupOutputFlags | <code>Number</code> | Bitwise flags for `Group.toObject` |
 
+<a name="Archive+_generateID"></a>
+
+### archive._generateID()
+Generate an archive ID
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Access:** protected  
 <a name="Archive+_getWestley"></a>
 
 ### archive._getWestley() ⇒ <code>[Westley](#Westley)</code>
@@ -465,8 +473,9 @@ Calculate the differences, in commands, between the two archives
     * [new ButtercupServerDatasource(address, email, password)](#new_ButtercupServerDatasource_new)
     * [.load(passwordOrCredentials)](#ButtercupServerDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, passwordOrCredentials)](#ButtercupServerDatasource+save) ⇒ <code>Promise</code>
-    * [.toString()](#ButtercupServerDatasource+toString) ⇒ <code>string</code>
+    * [.toObject()](#ButtercupServerDatasource+toObject) ⇒ <code>Object</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_ButtercupServerDatasource_new"></a>
 
@@ -512,14 +521,14 @@ Save an archive
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
 | passwordOrCredentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or credentials for the archive |
 
-<a name="ButtercupServerDatasource+toString"></a>
+<a name="ButtercupServerDatasource+toObject"></a>
 
-### buttercupServerDatasource.toString() ⇒ <code>string</code>
-Convert the datasource to a string
+### buttercupServerDatasource.toObject() ⇒ <code>Object</code>
+Output the datasource as an object
 
 **Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
-**Overrides:** <code>[toString](#TextDatasource+toString)</code>  
-**Returns**: <code>string</code> - The string representation of the datasource  
+**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Returns**: <code>Object</code> - An object describing the datasource  
 <a name="TextDatasource+setContent"></a>
 
 ### buttercupServerDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -532,6 +541,13 @@ Set the text content
 | --- | --- | --- |
 | content | <code>string</code> | The new text content |
 
+<a name="TextDatasource+toString"></a>
+
+### buttercupServerDatasource.toString() ⇒ <code>String</code>
+Output the datasource configuration as a string
+
+**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="ButtercupServerDatasource"></a>
 
 ## ButtercupServerDatasource
@@ -542,8 +558,9 @@ Set the text content
     * [new ButtercupServerDatasource(address, email, password)](#new_ButtercupServerDatasource_new)
     * [.load(passwordOrCredentials)](#ButtercupServerDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, passwordOrCredentials)](#ButtercupServerDatasource+save) ⇒ <code>Promise</code>
-    * [.toString()](#ButtercupServerDatasource+toString) ⇒ <code>string</code>
+    * [.toObject()](#ButtercupServerDatasource+toObject) ⇒ <code>Object</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_ButtercupServerDatasource_new"></a>
 
@@ -589,14 +606,14 @@ Save an archive
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
 | passwordOrCredentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or credentials for the archive |
 
-<a name="ButtercupServerDatasource+toString"></a>
+<a name="ButtercupServerDatasource+toObject"></a>
 
-### buttercupServerDatasource.toString() ⇒ <code>string</code>
-Convert the datasource to a string
+### buttercupServerDatasource.toObject() ⇒ <code>Object</code>
+Output the datasource as an object
 
 **Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
-**Overrides:** <code>[toString](#TextDatasource+toString)</code>  
-**Returns**: <code>string</code> - The string representation of the datasource  
+**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Returns**: <code>Object</code> - An object describing the datasource  
 <a name="TextDatasource+setContent"></a>
 
 ### buttercupServerDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -609,6 +626,13 @@ Set the text content
 | --- | --- | --- |
 | content | <code>string</code> | The new text content |
 
+<a name="TextDatasource+toString"></a>
+
+### buttercupServerDatasource.toString() ⇒ <code>String</code>
+Output the datasource configuration as a string
+
+**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="FormatCommand"></a>
 
 ## FormatCommand ⇐ <code>[BaseCommand](#BaseCommand)</code>
@@ -2296,6 +2320,7 @@ Create a new Credentials instance from encrypted information
         * [.getID()](#Entry+getID) ⇒ <code>String</code>
         * [.getMeta(property)](#Entry+getMeta) ⇒ <code>String</code> &#124; <code>undefined</code>
         * [.getProperty(property)](#Entry+getProperty) ⇒ <code>String</code> &#124; <code>undefined</code>
+        * [.isInTrash()](#Entry+isInTrash) ⇒ <code>Boolean</code>
         * [.moveToGroup(group)](#Entry+moveToGroup) ⇒ <code>[Entry](#Entry)</code>
         * [.setAttribute(attributeName, value)](#Entry+setAttribute) ⇒ <code>[Entry](#Entry)</code>
         * [.setMeta(prop, [value])](#Entry+setMeta) ⇒ <code>[Entry](#Entry)</code>
@@ -2426,6 +2451,13 @@ Get a property value
 | --- | --- | --- |
 | property | <code>String</code> | The name of the property to fetch |
 
+<a name="Entry+isInTrash"></a>
+
+### entry.isInTrash() ⇒ <code>Boolean</code>
+Check if the entry is in the trash
+
+**Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>Boolean</code> - Whether or not the entry is in the trash  
 <a name="Entry+moveToGroup"></a>
 
 ### entry.moveToGroup(group) ⇒ <code>[Entry](#Entry)</code>
@@ -2538,8 +2570,9 @@ Create a new entry
     * [.getArchivePath()](#FileDatasource+getArchivePath) ⇒ <code>String</code>
     * [.load(password)](#FileDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#FileDatasource+save) ⇒ <code>Promise</code>
-    * [.toString()](#FileDatasource+toString) ⇒ <code>String</code>
+    * [.toObject()](#FileDatasource+toObject) ⇒ <code>Object</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_FileDatasource_new"></a>
 
@@ -2590,14 +2623,14 @@ Save an archive to a file using a password for encryption
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
 | password | <code>string</code> | The password to save with |
 
-<a name="FileDatasource+toString"></a>
+<a name="FileDatasource+toObject"></a>
 
-### fileDatasource.toString() ⇒ <code>String</code>
-Output the datasource configuration as a string
+### fileDatasource.toObject() ⇒ <code>Object</code>
+Output the datasource as an object
 
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
-**Overrides:** <code>[toString](#TextDatasource+toString)</code>  
-**Returns**: <code>String</code> - The string representation  
+**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Returns**: <code>Object</code> - An object describing the datasource  
 <a name="TextDatasource+setContent"></a>
 
 ### fileDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -2610,6 +2643,13 @@ Set the text content
 | --- | --- | --- |
 | content | <code>string</code> | The new text content |
 
+<a name="TextDatasource+toString"></a>
+
+### fileDatasource.toString() ⇒ <code>String</code>
+Output the datasource configuration as a string
+
+**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="FileDatasource"></a>
 
 ## FileDatasource
@@ -2621,8 +2661,9 @@ Set the text content
     * [.getArchivePath()](#FileDatasource+getArchivePath) ⇒ <code>String</code>
     * [.load(password)](#FileDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#FileDatasource+save) ⇒ <code>Promise</code>
-    * [.toString()](#FileDatasource+toString) ⇒ <code>String</code>
+    * [.toObject()](#FileDatasource+toObject) ⇒ <code>Object</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_FileDatasource_new"></a>
 
@@ -2673,14 +2714,14 @@ Save an archive to a file using a password for encryption
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
 | password | <code>string</code> | The password to save with |
 
-<a name="FileDatasource+toString"></a>
+<a name="FileDatasource+toObject"></a>
 
-### fileDatasource.toString() ⇒ <code>String</code>
-Output the datasource configuration as a string
+### fileDatasource.toObject() ⇒ <code>Object</code>
+Output the datasource as an object
 
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
-**Overrides:** <code>[toString](#TextDatasource+toString)</code>  
-**Returns**: <code>String</code> - The string representation  
+**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Returns**: <code>Object</code> - An object describing the datasource  
 <a name="TextDatasource+setContent"></a>
 
 ### fileDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -2693,6 +2734,13 @@ Set the text content
 | --- | --- | --- |
 | content | <code>string</code> | The new text content |
 
+<a name="TextDatasource+toString"></a>
+
+### fileDatasource.toString() ⇒ <code>String</code>
+Output the datasource configuration as a string
+
+**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="Flattener"></a>
 
 ## Flattener
@@ -3590,12 +3638,13 @@ Set a property
 * [OwnCloudDatasource](#OwnCloudDatasource) ⇐ <code>[WebDAVDatasource](#WebDAVDatasource)</code>
     * [new OwnCloudDatasource()](#new_OwnCloudDatasource_new)
     * [new OwnCloudDatasource(owncloudURL, resourcePath, username, password)](#new_OwnCloudDatasource_new)
-    * [.toString()](#OwnCloudDatasource+toString) ⇒ <code>string</code>
+    * [.toObject()](#OwnCloudDatasource+toObject) ⇒ <code>Object</code>
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
     * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_OwnCloudDatasource_new"></a>
 
@@ -3615,25 +3664,28 @@ Datasource for Owncloud connections
 | username | <code>String</code> | The username for owncloud |
 | password | <code>String</code> | The password for owncloud |
 
-<a name="OwnCloudDatasource+toString"></a>
+<a name="OwnCloudDatasource+toObject"></a>
 
-### ownCloudDatasource.toString() ⇒ <code>string</code>
-Output the datasource configuration as a string (no credentials included)
+### ownCloudDatasource.toObject() ⇒ <code>Object</code>
+Output the datasource as an object
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Overrides:** <code>[toString](#WebDAVDatasource+toString)</code>  
+**Overrides:** <code>[toObject](#WebDAVDatasource+toObject)</code>  
+**Returns**: <code>Object</code> - An object describing the datasource  
 <a name="WebDAVDatasource+getArchivePath"></a>
 
 ### ownCloudDatasource.getArchivePath() ⇒ <code>string</code>
 Get the path of the archive on the server
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+**Returns**: <code>string</code> - The path  
 <a name="WebDAVDatasource+getRemoteEndpoint"></a>
 
 ### ownCloudDatasource.getRemoteEndpoint() ⇒ <code>string</code>
 Get the remote endpoint URI (no resource path)
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+**Returns**: <code>string</code> - The endpoint  
 <a name="WebDAVDatasource+load"></a>
 
 ### ownCloudDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
@@ -3671,6 +3723,13 @@ Set the text content
 | --- | --- | --- |
 | content | <code>string</code> | The new text content |
 
+<a name="TextDatasource+toString"></a>
+
+### ownCloudDatasource.toString() ⇒ <code>String</code>
+Output the datasource configuration as a string
+
+**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="OwnCloudDatasource"></a>
 
 ## OwnCloudDatasource
@@ -3679,12 +3738,13 @@ Set the text content
 * [OwnCloudDatasource](#OwnCloudDatasource)
     * [new OwnCloudDatasource()](#new_OwnCloudDatasource_new)
     * [new OwnCloudDatasource(owncloudURL, resourcePath, username, password)](#new_OwnCloudDatasource_new)
-    * [.toString()](#OwnCloudDatasource+toString) ⇒ <code>string</code>
+    * [.toObject()](#OwnCloudDatasource+toObject) ⇒ <code>Object</code>
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
     * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_OwnCloudDatasource_new"></a>
 
@@ -3704,25 +3764,28 @@ Datasource for Owncloud connections
 | username | <code>String</code> | The username for owncloud |
 | password | <code>String</code> | The password for owncloud |
 
-<a name="OwnCloudDatasource+toString"></a>
+<a name="OwnCloudDatasource+toObject"></a>
 
-### ownCloudDatasource.toString() ⇒ <code>string</code>
-Output the datasource configuration as a string (no credentials included)
+### ownCloudDatasource.toObject() ⇒ <code>Object</code>
+Output the datasource as an object
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Overrides:** <code>[toString](#WebDAVDatasource+toString)</code>  
+**Overrides:** <code>[toObject](#WebDAVDatasource+toObject)</code>  
+**Returns**: <code>Object</code> - An object describing the datasource  
 <a name="WebDAVDatasource+getArchivePath"></a>
 
 ### ownCloudDatasource.getArchivePath() ⇒ <code>string</code>
 Get the path of the archive on the server
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+**Returns**: <code>string</code> - The path  
 <a name="WebDAVDatasource+getRemoteEndpoint"></a>
 
 ### ownCloudDatasource.getRemoteEndpoint() ⇒ <code>string</code>
 Get the remote endpoint URI (no resource path)
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+**Returns**: <code>string</code> - The endpoint  
 <a name="WebDAVDatasource+load"></a>
 
 ### ownCloudDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
@@ -3760,6 +3823,13 @@ Set the text content
 | --- | --- | --- |
 | content | <code>string</code> | The new text content |
 
+<a name="TextDatasource+toString"></a>
+
+### ownCloudDatasource.toString() ⇒ <code>String</code>
+Output the datasource configuration as a string
+
+**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="SharedWorkspace"></a>
 
 ## SharedWorkspace
@@ -3899,6 +3969,7 @@ Set the primary archive
     * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.toObject()](#TextDatasource+toObject) ⇒ <code>Object</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_TextDatasource_new"></a>
@@ -3954,6 +4025,13 @@ Set the text content
 | --- | --- | --- |
 | content | <code>string</code> | The new text content |
 
+<a name="TextDatasource+toObject"></a>
+
+### textDatasource.toObject() ⇒ <code>Object</code>
+Output the datasource as an object
+
+**Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
+**Returns**: <code>Object</code> - The object representation  
 <a name="TextDatasource+toString"></a>
 
 ### textDatasource.toString() ⇒ <code>String</code>
@@ -3972,6 +4050,7 @@ Output the datasource configuration as a string
     * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.toObject()](#TextDatasource+toObject) ⇒ <code>Object</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_TextDatasource_new"></a>
@@ -4027,6 +4106,13 @@ Set the text content
 | --- | --- | --- |
 | content | <code>string</code> | The new text content |
 
+<a name="TextDatasource+toObject"></a>
+
+### textDatasource.toObject() ⇒ <code>Object</code>
+Output the datasource as an object
+
+**Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
+**Returns**: <code>Object</code> - The object representation  
 <a name="TextDatasource+toString"></a>
 
 ### textDatasource.toString() ⇒ <code>String</code>
@@ -4047,8 +4133,9 @@ Output the datasource configuration as a string
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
     * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
-    * [.toString()](#WebDAVDatasource+toString) ⇒ <code>string</code>
+    * [.toObject()](#WebDAVDatasource+toObject) ⇒ <code>Object</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_WebDAVDatasource_new"></a>
 
@@ -4074,12 +4161,14 @@ Constructor for the datasource
 Get the path of the archive on the server
 
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Returns**: <code>string</code> - The path  
 <a name="WebDAVDatasource+getRemoteEndpoint"></a>
 
 ### webDAVDatasource.getRemoteEndpoint() ⇒ <code>string</code>
 Get the remote endpoint URI (no resource path)
 
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Returns**: <code>string</code> - The endpoint  
 <a name="WebDAVDatasource+load"></a>
 
 ### webDAVDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
@@ -4107,13 +4196,14 @@ Save an archive with a password to the WebDAV service
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
 | password | <code>string</code> | The password for encryption |
 
-<a name="WebDAVDatasource+toString"></a>
+<a name="WebDAVDatasource+toObject"></a>
 
-### webDAVDatasource.toString() ⇒ <code>string</code>
-Output the datasource configuration as a string (no credentials included)
+### webDAVDatasource.toObject() ⇒ <code>Object</code>
+Output the datasource as an object
 
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
-**Overrides:** <code>[toString](#TextDatasource+toString)</code>  
+**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Returns**: <code>Object</code> - An object describing the datasource  
 <a name="TextDatasource+setContent"></a>
 
 ### webDAVDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -4126,6 +4216,13 @@ Set the text content
 | --- | --- | --- |
 | content | <code>string</code> | The new text content |
 
+<a name="TextDatasource+toString"></a>
+
+### webDAVDatasource.toString() ⇒ <code>String</code>
+Output the datasource configuration as a string
+
+**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="WebDAVDatasource"></a>
 
 ## WebDAVDatasource
@@ -4138,8 +4235,9 @@ Set the text content
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
     * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
-    * [.toString()](#WebDAVDatasource+toString) ⇒ <code>string</code>
+    * [.toObject()](#WebDAVDatasource+toObject) ⇒ <code>Object</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_WebDAVDatasource_new"></a>
 
@@ -4165,12 +4263,14 @@ Constructor for the datasource
 Get the path of the archive on the server
 
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Returns**: <code>string</code> - The path  
 <a name="WebDAVDatasource+getRemoteEndpoint"></a>
 
 ### webDAVDatasource.getRemoteEndpoint() ⇒ <code>string</code>
 Get the remote endpoint URI (no resource path)
 
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Returns**: <code>string</code> - The endpoint  
 <a name="WebDAVDatasource+load"></a>
 
 ### webDAVDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
@@ -4198,13 +4298,14 @@ Save an archive with a password to the WebDAV service
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
 | password | <code>string</code> | The password for encryption |
 
-<a name="WebDAVDatasource+toString"></a>
+<a name="WebDAVDatasource+toObject"></a>
 
-### webDAVDatasource.toString() ⇒ <code>string</code>
-Output the datasource configuration as a string (no credentials included)
+### webDAVDatasource.toObject() ⇒ <code>Object</code>
+Output the datasource as an object
 
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
-**Overrides:** <code>[toString](#TextDatasource+toString)</code>  
+**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Returns**: <code>Object</code> - An object describing the datasource  
 <a name="TextDatasource+setContent"></a>
 
 ### webDAVDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
@@ -4217,6 +4318,13 @@ Set the text content
 | --- | --- | --- |
 | content | <code>string</code> | The new text content |
 
+<a name="TextDatasource+toString"></a>
+
+### webDAVDatasource.toString() ⇒ <code>String</code>
+Output the datasource configuration as a string
+
+**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="Westley"></a>
 
 ## Westley
@@ -4227,7 +4335,7 @@ Set the text content
     * [.readOnly](#Westley+readOnly)
     * [.readOnly](#Westley+readOnly)
     * [.clear()](#Westley+clear) ⇒ <code>[Westley](#Westley)</code>
-    * [.execute(command)](#Westley+execute) ⇒ <code>[Westley](#Westley)</code>
+    * [.execute(command, [append])](#Westley+execute) ⇒ <code>[Westley](#Westley)</code>
     * [.getDataset()](#Westley+getDataset) ⇒ <code>Object</code>
     * [.getHistory()](#Westley+getHistory) ⇒ <code>Array.&lt;String&gt;</code>
     * [.pad()](#Westley+pad) ⇒ <code>[Westley](#Westley)</code>
@@ -4270,7 +4378,7 @@ Clear the dataset and history
 **Returns**: <code>[Westley](#Westley)</code> - Returns self  
 <a name="Westley+execute"></a>
 
-### westley.execute(command) ⇒ <code>[Westley](#Westley)</code>
+### westley.execute(command, [append]) ⇒ <code>[Westley](#Westley)</code>
 Execute a command - stored in history and modifies the dataset
 
 **Kind**: instance method of <code>[Westley](#Westley)</code>  
@@ -4279,6 +4387,7 @@ Execute a command - stored in history and modifies the dataset
 | Param | Type | Description |
 | --- | --- | --- |
 | command | <code>String</code> | The command to execute |
+| [append] | <code>Boolean</code> | Wether to append to the end of the history list (default true) |
 
 <a name="Westley+getDataset"></a>
 
