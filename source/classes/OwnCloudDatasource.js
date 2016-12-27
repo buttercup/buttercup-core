@@ -2,6 +2,8 @@
 
 var WebDAVDatasource = require("./WebDAVDatasource.js");
 
+const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
+
 /**
  * Datasource for OwnCloud archives
  * @class OwnCloudDatasource
@@ -24,15 +26,31 @@ class OwnCloudDatasource extends WebDAVDatasource {
     }
 
     /**
-     * Output the datasource configuration as a string (no credentials included)
-     * @returns {string}
+     * Output the datasource as an object
+     * @returns {Object} An object describing the datasource
      */
-    toString() {
-        let webdavParts = super.toString().split(",");
-        webdavParts[0] = webdavParts[0].replace("webdav", "owncloud");
-        return webdavParts.join(",");
+    toObject() {
+        return Object.assign(super.toObject(), {
+            type: "owncloud"
+        });
     }
 
 }
+
+OwnCloudDatasource.fromObject = function fromObject(obj, hostCredentials) {
+    if (!hostCredentials) {
+        throw new Error("Credentials required for OwnCloudDatasource instantiation");
+    }
+    if (obj.type === "webdav") {
+        return new OwnCloudDatasource(obj.endpoint, obj.path, hostCredentials.username, hostCredentials.password);
+    }
+    throw new Error(`Unknown or invalid type: ${obj.type}`);
+};
+
+OwnCloudDatasource.fromString = function fromString(str, hostCredentials) {
+    return OwnCloudDatasource.fromObject(JSON.parse(str), hostCredentials);
+};
+
+registerDatasource("owncloud", OwnCloudDatasource);
 
 module.exports = OwnCloudDatasource;

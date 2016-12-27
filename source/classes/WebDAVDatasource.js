@@ -3,6 +3,8 @@
 var webdavFS = require("webdav-fs"),
     TextDatasource = require("./TextDatasource.js");
 
+const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
+
 /**
  * WebDAV datasource for reading and writing remote archives
  * @class WebDAVDatasource
@@ -28,7 +30,7 @@ class WebDAVDatasource extends TextDatasource {
 
     /**
      * Get the path of the archive on the server
-     * @returns {string}
+     * @returns {string} The path
      */
     getArchivePath() {
         return this._path;
@@ -36,7 +38,7 @@ class WebDAVDatasource extends TextDatasource {
 
     /**
      * Get the remote endpoint URI (no resource path)
-     * @returns {string}
+     * @returns {string} The endpoint
      */
     getRemoteEndpoint() {
         return this._endpoint;
@@ -93,17 +95,33 @@ class WebDAVDatasource extends TextDatasource {
     }
 
     /**
-     * Output the datasource configuration as a string (no credentials included)
-     * @returns {string}
+     * Output the datasource as an object
+     * @returns {Object} An object describing the datasource
      */
-    toString() {
-        return [
-            "ds=webdav",
-            `endpoint=${this._endpoint}`,
-            `path=${this._path}`
-        ].join(",");
+    toObject() {
+        return Object.assign(super.toObject(), {
+            type: "webdav",
+            endpoint: this._endpoint,
+            path: this._path
+        });
     }
 
 }
+
+WebDAVDatasource.fromObject = function fromObject(obj, hostCredentials) {
+    if (!hostCredentials) {
+        throw new Error("Credentials required for WebDAVDatasource instantiation");
+    }
+    if (obj.type === "webdav") {
+        return new WebDAVDatasource(obj.endpoint, obj.path, hostCredentials.username, hostCredentials.password);
+    }
+    throw new Error(`Unknown or invalid type: ${obj.type}`);
+};
+
+WebDAVDatasource.fromString = function fromString(str, hostCredentials) {
+    return WebDAVDatasource.fromObject(JSON.parse(str), hostCredentials);
+};
+
+registerDatasource("webdav", WebDAVDatasource);
 
 module.exports = WebDAVDatasource;

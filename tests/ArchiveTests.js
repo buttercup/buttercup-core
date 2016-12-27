@@ -272,6 +272,16 @@ module.exports = {
 
     },
 
+    getID: {
+
+        newArchiveCreatedWithID: function(test) {
+            test.strictEqual(this.archiveA.getID().length, 36, "ID (a) should be set");
+            test.strictEqual((new Archive()).getID().length, 36, "ID (b) should be set");
+            test.done();
+        }
+
+    },
+
     getTrashGroup: {
 
         testReturnsNullIfNotPresent: function(test) {
@@ -345,6 +355,17 @@ module.exports = {
             var obj = this.archiveA.toObject();
             test.ok(obj.format, "Format should be set");
             test.ok(Array.isArray(obj.groups), "Groups should be an array");
+            test.done();
+        }
+
+    },
+
+    _generateID: {
+
+        throwsIfIDExists: function(test) {
+            test.throws(() => {
+                this.archiveA._generateID();
+            }, "Should throw when trying to set a new ID");
             test.done();
         }
 

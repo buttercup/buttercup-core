@@ -113,11 +113,22 @@ module.exports = {
 
     toString: {
 
-        outputsCorrectType: function(test) {
-            var tds = new TextDatasource(""),
+        matchesToObject: function(test) {
+            var tds = new TextDatasource("abc");
+            test.strictEqual(
+                tds.toString(),
+                JSON.stringify(tds.toObject()),
+                "Contents should be identical"
+            );
+            test.done();
+        },
+
+        outputsCorrectContent: function(test) {
+            var tds = new TextDatasource("abc"),
                 str = tds.toString();
-            var props = datasourceTools.extractDSStrProps(str);
-            test.strictEqual(props.ds, "text", "Datasource type should match");
+            var props = JSON.parse(str)
+            test.strictEqual(props.type, "text", "Datasource type should match");
+            test.strictEqual(props.content, "abc", "Content should be included");
             test.done();
         }
 

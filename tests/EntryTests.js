@@ -148,6 +148,30 @@ module.exports = {
 
     },
 
+    isInTrash: {
+
+        detectsCorrectlyWhenDeletedDirectly: function(test) {
+            test.strictEqual(this.entry.isInTrash(), false, "Entry should not be detected as in the trash");
+            var trash = this.archive
+                .createGroup("Trash")
+                    .setAttribute(Group.Attributes.Role, "trash");
+            this.entry.delete();
+            test.strictEqual(this.entry.isInTrash(), true, "Entry should be detected as being in the trash");
+            test.done();
+        },
+
+        detectsCorrectlyWhenInDeletedGroup: function(test) {
+            test.strictEqual(this.entry.isInTrash(), false, "Entry should not be detected as in the trash");
+            var trash = this.archive
+                .createGroup("Trash")
+                    .setAttribute(Group.Attributes.Role, "trash");
+            this.group.delete();
+            test.strictEqual(this.entry.isInTrash(), true, "Entry should be detected as being in the trash");
+            test.done();
+        }
+
+    },
+
     readOnly: {
 
         failsToWriteInROMode: function(test) {

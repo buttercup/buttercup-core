@@ -8,6 +8,8 @@ var Archive = require("./Archive.js"),
     encoding = require("../tools/encoding.js"),
     createDebug = require("../tools/debug.js");
 
+const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
+
 const debug = createDebug("text-datasource");
 
 /**
@@ -102,6 +104,10 @@ class TextDatasource {
                     westley = archive._getWestley();
                 westley.clear();
                 history.forEach(westley.execute.bind(westley));
+                if (archive.getID() === "") {
+                    // generate a new ID
+                    archive._generateID();
+                }
                 return archive;
             });
     }
@@ -146,14 +152,38 @@ class TextDatasource {
     }
 
     /**
+     * Output the datasource as an object
+     * @returns {Object} The object representation
+     */
+    toObject() {
+        return {
+            type: "text",
+            content: this._content
+        };
+    }
+
+    /**
      * Output the datasource configuration as a string
      * @returns {String} The string representation of the datasource
      */
     toString() {
         debug("to string");
-        return "ds=text";
+        return JSON.stringify(this.toObject());
     }
 
 }
+
+TextDatasource.fromObject = function fromObject(obj) {
+    if (obj.type === "text") {
+        return new TextDatasource(obj.content);
+    }
+    throw new Error(`Unknown or invalid type: ${obj.type}`);
+};
+
+TextDatasource.fromString = function fromString(str) {
+    return TextDatasource.fromObject(JSON.parse(str));
+};
+
+registerDatasource("text", TextDatasource);
 
 module.exports = TextDatasource;

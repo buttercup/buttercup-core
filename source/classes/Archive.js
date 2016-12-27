@@ -43,11 +43,7 @@ class Archive {
                 .generateCommand()
         );
         // set ID
-        this._getWestley().execute(
-            Inigo.create(Inigo.Command.ArchiveID)
-                .addArgument(encoding.getUniqueID())
-                .generateCommand()
-        );
+        this._generateID();
         // shared groups
         this._sharedGroups = [];
         // add group searching
@@ -271,6 +267,21 @@ class Archive {
             format: this.getFormat(),
             groups: this.getGroups().map(group => group.toObject(groupOutputFlags))
         };
+    }
+
+    /**
+     * Generate an archive ID
+     * @protected
+     * @memberof Archive
+     */
+    _generateID() {
+        debug("generate new ID");
+        this._getWestley().execute(
+            Inigo.create(Inigo.Command.ArchiveID)
+                .addArgument(encoding.getUniqueID())
+                .generateCommand(),
+            false // prepend to history
+        );
     }
 
     /**
