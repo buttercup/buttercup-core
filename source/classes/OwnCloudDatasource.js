@@ -20,6 +20,8 @@ class OwnCloudDatasource extends WebDAVDatasource {
      */
     constructor(owncloudURL, resourcePath, username, password) {
         var urlLen = owncloudURL.length;
+        this._owncloudURL = owncloudURL;
+        this._owncloudPath = resourcePath;
         owncloudURL = (owncloudURL[urlLen - 1] === "/") ? owncloudURL : owncloudURL + "/";
         owncloudURL += "remote.php/webdav/";
         super(owncloudURL, resourcePath, username, password);
@@ -30,9 +32,11 @@ class OwnCloudDatasource extends WebDAVDatasource {
      * @returns {Object} An object describing the datasource
      */
     toObject() {
-        return Object.assign(super.toObject(), {
-            type: "owncloud"
-        });
+        return {
+            type: "owncloud",
+            endpoint: this._owncloudURL,
+            path: this._owncloudPath
+        };
     }
 
 }
@@ -41,7 +45,7 @@ OwnCloudDatasource.fromObject = function fromObject(obj, hostCredentials) {
     if (!hostCredentials) {
         throw new Error("Credentials required for OwnCloudDatasource instantiation");
     }
-    if (obj.type === "webdav") {
+    if (obj.type === "owncloud") {
         return new OwnCloudDatasource(obj.endpoint, obj.path, hostCredentials.username, hostCredentials.password);
     }
     throw new Error(`Unknown or invalid type: ${obj.type}`);

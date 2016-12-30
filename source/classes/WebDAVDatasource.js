@@ -99,11 +99,11 @@ class WebDAVDatasource extends TextDatasource {
      * @returns {Object} An object describing the datasource
      */
     toObject() {
-        return Object.assign(super.toObject(), {
+        return {
             type: "webdav",
             endpoint: this._endpoint,
             path: this._path
-        });
+        };
     }
 
 }
