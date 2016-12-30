@@ -133,6 +133,31 @@ module.exports = {
                     test.ok(secondaryWrite.findGroupsByTitle("Another")[0], "Finds extra group in WRITE");
                 })
                 .then(test.done);
+        },
+
+        doesntLoseChanges: function(test) {
+            this.secondaryWrite.createGroup("NewGroup1");
+            Promise
+                .all([
+                    this.workspace.mergeSaveablesFromRemote(),
+                    Promise.resolve().then(() => {
+                        this.secondaryWrite.createGroup("NewGroup2");
+                    })
+                ])
+                .then(() => this.workspace.save())
+                .then(() => {
+                    test.strictEqual(
+                        this.secondaryWrite.findGroupsByTitle("NewGroup1").length,
+                        1,
+                        "Should find first group"    
+                    );
+                    test.strictEqual(
+                        this.secondaryWrite.findGroupsByTitle("NewGroup2").length,
+                        1,
+                        "Should find second group"    
+                    );
+                })
+                .then(test.done);
         }
 
     }
