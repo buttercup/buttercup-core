@@ -19,12 +19,12 @@ class OwnCloudDatasource extends WebDAVDatasource {
      * @param {String} password The password for owncloud
      */
     constructor(owncloudURL, resourcePath, username, password) {
-        var urlLen = owncloudURL.length;
-        this._owncloudURL = owncloudURL;
-        this._owncloudPath = resourcePath;
+        let urlLen = owncloudURL.length,
+            toObjectRefs = { owncloudURL, resourcePath };
         owncloudURL = (owncloudURL[urlLen - 1] === "/") ? owncloudURL : owncloudURL + "/";
         owncloudURL += "remote.php/webdav/";
         super(owncloudURL, resourcePath, username, password);
+        this._toObjectRefs = toObjectRefs;
     }
 
     /**
@@ -34,8 +34,8 @@ class OwnCloudDatasource extends WebDAVDatasource {
     toObject() {
         return {
             type: "owncloud",
-            endpoint: this._owncloudURL,
-            path: this._owncloudPath
+            endpoint: this._toObjectRefs.owncloudURL,
+            path: this._toObjectRefs.resourcePath
         };
     }
 

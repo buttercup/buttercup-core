@@ -1,6 +1,6 @@
 # Buttercup-core release change-log
 
-# v0.30.1
+# v0.30.2
 _2016-12-30_
 
  * Fix OwnCloudDatasource's [`fromObject` bug](https://github.com/buttercup-pw/buttercup-core/issues/129)
