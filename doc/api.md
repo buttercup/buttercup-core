@@ -186,6 +186,7 @@ Extract command components from a string
         * [.toObject(groupOutputFlags)](#Archive+toObject) ⇒ <code>Object</code>
         * [._generateID()](#Archive+_generateID)
         * [._getWestley()](#Archive+_getWestley) ⇒ <code>[Westley](#Westley)</code>
+        * [.inst.findEntryByID(id)](#Archive+findEntryByID) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
     * _static_
         * [.createWithDefaults()](#Archive.createWithDefaults) ⇒ <code>[Archive](#Archive)</code>
 
@@ -256,7 +257,7 @@ Find entries that match a certain meta property
 
 | Param | Type | Description |
 | --- | --- | --- |
-| metaName | <code>string</code> | The meta property to search for |
+| metaName | <code>String</code> | The meta property to search for |
 | value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
 
 <a name="Archive+findEntriesByProperty"></a>
@@ -419,6 +420,19 @@ Get the underlying Westley instance
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Returns**: <code>[Westley](#Westley)</code> - The Westley instance  
 **Access:** protected  
+<a name="Archive+findEntryByID"></a>
+
+### archive.inst.findEntryByID(id) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
+Find an entry by its ID
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Mixes**: <code>[inst.findEntryByID](#EntryCollection.inst.findEntryByID)</code>  
+**Returns**: <code>null</code> &#124; <code>[Entry](#Entry)</code> - Null if not found, or the Entry instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The ID to search for |
+
 <a name="Archive.createWithDefaults"></a>
 
 ### Archive.createWithDefaults() ⇒ <code>[Archive](#Archive)</code>
@@ -2552,6 +2566,12 @@ Create a new entry
 
 **Kind**: static method of <code>[Entry](#Entry)</code>  
 **Returns**: <code>[Entry](#Entry)</code> - The new entry  
+**Throws**:
+
+- <code>Error</code> Throws if the target group doesn't exist
+- <code>Error</code> Throws if the target group is the trash group,
+     or if the target group is in the trash
+
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2829,6 +2849,7 @@ Get the number of lines to preserve by default
         * [._getArchive()](#Group+_getArchive) ⇒ <code>[Archive](#Archive)</code>
         * [._getRemoteObject()](#Group+_getRemoteObject) ⇒ <code>Object</code>
         * [._getWestley()](#Group+_getWestley) ⇒ <code>[Westley](#Westley)</code>
+        * [.inst.findEntryByID(id)](#Group+findEntryByID) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
     * _static_
         * [.Attributes](#Group.Attributes) : <code>enum</code>
         * [.OutputFlag](#Group.OutputFlag) : <code>enum</code>
@@ -2887,7 +2908,7 @@ Find entries that match a certain meta property
 
 | Param | Type | Description |
 | --- | --- | --- |
-| metaName | <code>string</code> | The meta property to search for |
+| metaName | <code>String</code> | The meta property to search for |
 | value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
 
 <a name="Group+findEntriesByProperty"></a>
@@ -3153,6 +3174,19 @@ Get the delta managing instance for the archive
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Westley](#Westley)</code> - The internal Westley object  
 **Access:** protected  
+<a name="Group+findEntryByID"></a>
+
+### group.inst.findEntryByID(id) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
+Find an entry by its ID
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Mixes**: <code>[inst.findEntryByID](#EntryCollection.inst.findEntryByID)</code>  
+**Returns**: <code>null</code> &#124; <code>[Entry](#Entry)</code> - Null if not found, or the Entry instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The ID to search for |
+
 <a name="Group.Attributes"></a>
 
 ### Group.Attributes : <code>enum</code>
@@ -3177,6 +3211,12 @@ Create a new Group with a delta-manager and parent group ID
 
 **Kind**: static method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Group](#Group)</code> - A new group  
+**Throws**:
+
+- <code>Error</code> Throws if the target group doesn't exist
+- <code>Error</code> Throws if the target group is the trash group,
+     or if the target group is within the trash group
+
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3219,6 +3259,7 @@ Create a new Group with a delta-manager and parent group ID
         * [._getArchive()](#Group+_getArchive) ⇒ <code>[Archive](#Archive)</code>
         * [._getRemoteObject()](#Group+_getRemoteObject) ⇒ <code>Object</code>
         * [._getWestley()](#Group+_getWestley) ⇒ <code>[Westley](#Westley)</code>
+        * [.inst.findEntryByID(id)](#Group+findEntryByID) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
     * _static_
         * [.Attributes](#Group.Attributes) : <code>enum</code>
         * [.OutputFlag](#Group.OutputFlag) : <code>enum</code>
@@ -3277,7 +3318,7 @@ Find entries that match a certain meta property
 
 | Param | Type | Description |
 | --- | --- | --- |
-| metaName | <code>string</code> | The meta property to search for |
+| metaName | <code>String</code> | The meta property to search for |
 | value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
 
 <a name="Group+findEntriesByProperty"></a>
@@ -3543,6 +3584,19 @@ Get the delta managing instance for the archive
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Westley](#Westley)</code> - The internal Westley object  
 **Access:** protected  
+<a name="Group+findEntryByID"></a>
+
+### group.inst.findEntryByID(id) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
+Find an entry by its ID
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Mixes**: <code>[inst.findEntryByID](#EntryCollection.inst.findEntryByID)</code>  
+**Returns**: <code>null</code> &#124; <code>[Entry](#Entry)</code> - Null if not found, or the Entry instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The ID to search for |
+
 <a name="Group.Attributes"></a>
 
 ### Group.Attributes : <code>enum</code>
@@ -3567,6 +3621,12 @@ Create a new Group with a delta-manager and parent group ID
 
 **Kind**: static method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Group](#Group)</code> - A new group  
+**Throws**:
+
+- <code>Error</code> Throws if the target group doesn't exist
+- <code>Error</code> Throws if the target group is the trash group,
+     or if the target group is within the trash group
+
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -4532,6 +4592,7 @@ Set the password
 * [EntryCollection](#EntryCollection) : <code>Object</code>
     * [.findEntriesByMeta](#EntryCollection.findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
     * [.findEntriesByProperty](#EntryCollection.findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+    * [.inst.findEntryByID(id)](#EntryCollection.inst.findEntryByID) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
 
 <a name="EntryCollection.findEntriesByMeta"></a>
 
@@ -4543,7 +4604,7 @@ Find entries that match a certain meta property
 
 | Param | Type | Description |
 | --- | --- | --- |
-| metaName | <code>string</code> | The meta property to search for |
+| metaName | <code>String</code> | The meta property to search for |
 | value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
 
 <a name="EntryCollection.findEntriesByProperty"></a>
@@ -4558,6 +4619,18 @@ Find all entries that match a certain property
 | --- | --- | --- |
 | property | <code>string</code> | The property to search with |
 | value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+
+<a name="EntryCollection.inst.findEntryByID"></a>
+
+### EntryCollection.inst.findEntryByID(id) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
+Find an entry by its ID
+
+**Kind**: static method of <code>[EntryCollection](#EntryCollection)</code>  
+**Returns**: <code>null</code> &#124; <code>[Entry](#Entry)</code> - Null if not found, or the Entry instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The ID to search for |
 
 <a name="GroupCollection"></a>
 
