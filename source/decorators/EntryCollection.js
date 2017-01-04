@@ -7,7 +7,7 @@ var instanceSearching = require("../tools/searching-instance.js");
  * When used within a group, that group's entries are also searched'
  * @param {Archive|Group} groupParent The target archive or group
  * @param {string} check Information to check (id/property/meta)
- * @param {string} key The key (property/meta-value) to search with
+ * @param {string} key The key (property/meta-value) to search with (not needed for check=id)
  * @param {RegExp|string} value The value to search for
  * @returns {Array.<Entry>} An array of found entries
  * @private
@@ -57,6 +57,12 @@ module.exports = {
 
     decorate: function(inst) {
 
+        /**
+         * Find an entry by its ID
+         * @param {String} id The ID to search for
+         * @returns {null|Entry} Null if not found, or the Entry instance
+         * @memberof EntryCollection
+         */
         inst.findEntryByID = function findEntryByID(id) {
             let entries = findEntriesByCheck(inst, "id", null, id);
             return (entries && entries.length === 1) ? entries[0] : null;
@@ -65,7 +71,7 @@ module.exports = {
         /**
          * Find entries that match a certain meta property
          * @name findEntriesByMeta
-         * @param {string} metaName The meta property to search for
+         * @param {String} metaName The meta property to search for
          * @param {RegExp|string} value The value to search for
          * @returns {Array.<Entry>} An array of found entries
          * @memberof EntryCollection
