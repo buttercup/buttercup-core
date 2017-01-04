@@ -66,7 +66,7 @@ module.exports = {
     createNew: {
 
         createsNewGroup: function(test) {
-            let newGroup = Group.createNew(this.group3Archive, this.group3.getID());
+            var newGroup = Group.createNew(this.group3Archive, this.group3.getID());
             test.ok(newGroup instanceof Group, "New group should be an instance of Group");
             test.ok(
                 this.group3Archive.findGroupByID(newGroup.getID()),
