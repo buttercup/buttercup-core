@@ -455,10 +455,23 @@ Group.OutputFlag = Object.freeze({
  * @param {Archive} archive The archive to create the group in
  * @param {string=} parentID The parent group ID (default is root)
  * @returns {Group} A new group
+ * @throws {Error} Throws if the target group doesn't exist
+ * @throws {Error} Throws if the target group is the trash group,
+ *      or if the target group is within the trash group
  */
 Group.createNew = function(archive, parentID) {
     debug("create group");
     parentID = parentID || "0";
+    if (parentID !== "0") {
+        // check if group is trash/in-trash
+        let group = archive.findGroupByID(parentID);
+        if (!group) {
+            throw new Error(`Failed creating group: no group found for ID: ${parentID}`);
+        } else if (group.isTrash() || group.isInTrash()) {
+            throw new Error("Failed creating group: cannot create within Trash group");
+        }
+    }
+    // generate unique ID for the new Group
     var id = encoding.getUniqueID(),
         westley = archive._getWestley();
     westley.execute(

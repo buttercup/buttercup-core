@@ -63,6 +63,28 @@ module.exports = {
         (cb)();
     },
 
+    createNew: {
+
+        createsNewGroup: function(test) {
+            var newGroup = Group.createNew(this.group3Archive, this.group3.getID());
+            test.ok(newGroup instanceof Group, "New group should be an instance of Group");
+            test.ok(
+                this.group3Archive.findGroupByID(newGroup.getID()),
+                "New group should be found in archive"
+            );
+            test.done();
+        },
+
+        throwsWhenCreatingInTrash: function(test) {
+            this.group3.setAttribute(Group.Attributes.Role, "trash");
+            test.throws(() => {
+                var newGroup = Group.createNew(this.group3Archive, this.group3.getID());
+            }, "Should throw when creating in trash");
+            test.done();
+        }
+
+    },
+
     delete: {
 
         deletesGroup: function(test) {
