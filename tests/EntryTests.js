@@ -25,6 +25,28 @@ module.exports = {
         (cb)();
     },
 
+    createNew: {
+
+        createsNewEntry: function(test) {
+            let newEntry = Entry.createNew(this.archive, this.group.getID());
+            test.ok(newEntry instanceof Entry, "New entry should be an Entry instance");
+            test.ok(
+                this.archive.findEntryByID(newEntry.getID()),
+                "New entry should be found in archive"
+            );
+            test.done();
+        },
+
+        throwsWhenCreatingInTrash: function(test) {
+            this.group.setAttribute(Group.Attributes.Role, "trash");
+            test.throws(() => {
+                let newEntry = Entry.createNew(this.archive, this.group.getID());
+            }, "Should throw when creating in trash");
+            test.done();
+        }
+
+    },
+
     delete: {
 
         deletesWhenNoTrash: function(test) {

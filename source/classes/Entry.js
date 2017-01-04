@@ -373,9 +373,20 @@ Entry.Attributes = Object.freeze({
  * @returns {Entry} The new entry
  * @static
  * @memberof Entry
+ * @throws {Error} Throws if the target group doesn't exist
+ * @throws {Error} Throws if the target group is the trash group,
+ *      or if the target group is in the trash
  */
 Entry.createNew = function(archive, groupID) {
     debug("create entry");
+    // check if group is trash/in-trash
+    var group = archive.findGroupByID(groupID);
+    if (!group) {
+        throw new Error(`Failed creating entry: no group found for ID: ${groupID}`);
+    } else if (group.isTrash() || group.isInTrash()) {
+        throw new Error("Failed creating entry: cannot create within Trash group");
+    }
+    // generate a unique identifier for the new Entry
     var id = encoding.getUniqueID(),
         westley = archive._getWestley();
     westley.execute(
@@ -384,6 +395,7 @@ Entry.createNew = function(archive, groupID) {
             .addArgument(id)
             .generateCommand()
     );
+    // get the raw dataset for the new entry
     var entry = searching.findEntryByID(westley.getDataset().groups, id);
     return new Entry(archive, entry);
 };

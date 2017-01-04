@@ -6,7 +6,7 @@ var instanceSearching = require("../tools/searching-instance.js");
  * Find entries by searching properties/meta
  * When used within a group, that group's entries are also searched'
  * @param {Archive|Group} groupParent The target archive or group
- * @param {string} check Information to check (property/meta)
+ * @param {string} check Information to check (id/property/meta)
  * @param {string} key The key (property/meta-value) to search with
  * @param {RegExp|string} value The value to search for
  * @returns {Array.<Entry>} An array of found entries
@@ -23,9 +23,22 @@ function findEntriesByCheck(groupParent, check, key, value) {
     return instanceSearching.findEntriesByCheck(
         groups,
         function(entry) {
-            var itemValue = (check === "property") ?
-                entry.getProperty(key) || "" :
-                entry.getMeta(key) || "";
+            var itemValue;
+            switch(check) {
+                case "property": {
+                    itemValue = entry.getProperty(key) || "";
+                    break;
+                }
+                case "meta": {
+                    itemValue = entry.getMeta(key) || "";
+                    break;
+                }
+                case "id": {
+                    return value === entry.getID();
+                }
+                default:
+                    throw new Error(`Unknown check instruction: ${check}`);
+            }
             if (value instanceof RegExp) {
                 return value.test(itemValue);
             } else {
@@ -43,6 +56,11 @@ function findEntriesByCheck(groupParent, check, key, value) {
 module.exports = {
 
     decorate: function(inst) {
+
+        inst.findEntryByID = function findEntryByID(id) {
+            let entries = findEntriesByCheck(inst, "id", null, id);
+            return (entries && entries.length === 1) ? entries[0] : null;
+        };
 
         /**
          * Find entries that match a certain meta property
