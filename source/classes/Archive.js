@@ -118,6 +118,24 @@ class Archive {
     }
 
     /**
+     * Remove all entries and groups from the trash (permanent)
+     * @throws {Error} Throws if there is no trash group
+     */
+    emptyTrash() {
+        debug("empty trash");
+        let trash = this.getTrashGroup();
+        if (!trash) {
+            throw new Error("No trash group found");
+        }
+        trash.getGroups().forEach(function(group) {
+            group.delete(/* skip trash */ true);
+        });
+        trash.getEntries().forEach(function(entry) {
+            entry.delete();
+        });
+    }
+
+    /**
      * Check if the archive is equal to another (by ID)
      * @param {Archive} archive Another archive instance
      * @returns {Boolean} True if they are equal
