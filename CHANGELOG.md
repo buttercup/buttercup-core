@@ -1,5 +1,10 @@
 # Buttercup-core release change-log
 
+## v0.32.0
+_2017-01-06_
+
+ * Add `emptyTrash` method to `Archive`
+
 ## v0.31.0
 _2017-01-04_
 

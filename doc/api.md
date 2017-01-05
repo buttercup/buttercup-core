@@ -174,6 +174,7 @@ Extract command components from a string
         * [.createGroup([title])](#Archive+createGroup) ⇒ <code>[Group](#Group)</code>
         * [.deleteAttribute(attributeName)](#Archive+deleteAttribute) ⇒ <code>[Archive](#Archive)</code>
         * [.discardSharedGroups()](#Archive+discardSharedGroups) ⇒ <code>[Archive](#Archive)</code>
+        * [.emptyTrash()](#Archive+emptyTrash)
         * [.getAttribute(attributeName)](#Archive+getAttribute) ⇒ <code>undefined</code> &#124; <code>String</code>
         * [.getEntryByID(entryID)](#Archive+getEntryByID) ⇒ <code>[Entry](#Entry)</code> &#124; <code>null</code>
         * [.getFormat()](#Archive+getFormat) ⇒ <code>string</code>
@@ -305,6 +306,16 @@ Clear the shared groups array
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Returns**: <code>[Archive](#Archive)</code> - Self  
+<a name="Archive+emptyTrash"></a>
+
+### archive.emptyTrash()
+Remove all entries and groups from the trash (permanent)
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Throws**:
+
+- <code>Error</code> Throws if there is no trash group
+
 <a name="Archive+getAttribute"></a>
 
 ### archive.getAttribute(attributeName) ⇒ <code>undefined</code> &#124; <code>String</code>
