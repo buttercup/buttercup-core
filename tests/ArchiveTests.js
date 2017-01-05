@@ -89,6 +89,25 @@ module.exports = {
 
     },
 
+    emptyTrash: {
+
+        emptiesTrash: function(test) {
+            var archive = Archive.createWithDefaults(),
+                myGroup = archive.createGroup("Personal"),
+                myEntry = myGroup.createEntry("Test"),
+                trash = archive.getTrashGroup();
+            myEntry.delete();
+            myGroup.delete();
+            test.strictEqual(trash.getGroups().length, 1, "Trash should have 1 group");
+            test.strictEqual(trash.getEntries().length, 1, "Trash should have 1 entry");
+            archive.emptyTrash();
+            test.strictEqual(trash.getGroups().length, 0, "Trash should have no groups after emptying");
+            test.strictEqual(trash.getEntries().length, 0, "Trash should have no entries after emptying");
+            test.done();
+        }
+
+    },
+
     findEntriesByMeta: {
 
         testFindsEntriesByString: function(test) {
