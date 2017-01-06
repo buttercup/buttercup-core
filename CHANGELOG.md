@@ -8,7 +8,7 @@ _2017-01-06_
 ## v0.31.0
 _2017-01-04_
 
- * Add `findEntryByID` to `Entry` and `Group` classes
+ * Add `findEntryByID` to `Archive` and `Group` classes
  * Throw errors when creating entries/groups within trash
 
 ## v0.30.2
