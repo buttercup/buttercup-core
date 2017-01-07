@@ -99,17 +99,7 @@ class TextDatasource {
                 }
                 return Promise.reject(new Error("Decryption failed"));
             })
-            .then(function(history) {
-                var archive = new Archive(),
-                    westley = archive._getWestley();
-                westley.clear();
-                history.forEach(westley.execute.bind(westley));
-                if (archive.getID() === "") {
-                    // generate a new ID
-                    archive._generateID();
-                }
-                return archive;
-            });
+            .then(history => Archive.createFromHistory(history));
     }
 
     /**

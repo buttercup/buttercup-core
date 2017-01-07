@@ -216,6 +216,16 @@ class Archive {
     }
 
     /**
+     * Get the command array (history)
+     * Returned object can be quite large.
+     * @returns {Array.<String>} The command array
+     */
+    getHistory() {
+        let history = this._getWestley().getHistory();
+        return [].concat(history);
+    }
+
+    /**
      * Get the archive ID
      * @returns {String} The ID or an empty string if not set
      */
@@ -313,6 +323,25 @@ class Archive {
     }
 
 }
+
+/**
+ * Create a new archive instance from a list of commands (history)
+ * @param {Array.<String>} history The command list
+ * @returns {Archive} The archive instance
+ * @static
+ * @memberof Archive
+ */
+Archive.createFromHistory = function(history) {
+    var archive = new Archive(),
+        westley = archive._getWestley();
+    westley.clear();
+    history.forEach(westley.execute.bind(westley));
+    if (archive.getID() === "") {
+        // generate a new ID
+        archive._generateID();
+    }
+    return archive;
+};
 
 /**
  * Create an Archive with the default template
