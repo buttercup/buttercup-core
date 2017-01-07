@@ -1,5 +1,11 @@
 # Buttercup-core release change-log
 
+## v0.33.0
+_2017-01-07_
+
+ * Add `getHistory` method for `Archive` instances
+ * Add `createFromHistory` factory method to `Archive`
+
 ## v0.32.0
 _2017-01-06_
 
