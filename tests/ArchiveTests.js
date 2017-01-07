@@ -60,16 +60,28 @@ module.exports = {
         cb();
     },
 
+    createFromHistory: {
+
+        createsArchive: function(test) {
+            var history = this.archiveA.getHistory(),
+                newArchive = Archive.createFromHistory(history),
+                group3 = newArchive.findGroupByID(this.group3ID);
+            test.strictEqual(group3.getTitle(), "Websites", "Groups should be copied");
+            test.done();
+        }
+
+    },
+
     createWithDefaults: {
 
-        testCreatesGeneralGroup: function(test) {
+        createsGeneralGroup: function(test) {
             var archive = Archive.createWithDefaults(),
                 firstGroup = archive.getGroups()[0];
             test.strictEqual(firstGroup.getTitle(), "General", "First group should be 'General'");
             test.done();
         },
 
-        testCreatesTrashGroup: function(test) {
+        createsTrashGroup: function(test) {
             var archive = Archive.createWithDefaults(),
                 firstGroup = archive.getGroups()[1];
             test.strictEqual(firstGroup.getTitle(), "Trash", "First group should be 'Trash'");
@@ -286,6 +298,17 @@ module.exports = {
             groups.forEach(function(group) {
                 test.ok(group instanceof Group, "Groups should be Group instances");
             });
+            test.done();
+        }
+
+    },
+
+    getHistory: {
+
+        returnsHistory: function(test) {
+            var history = this.archiveA.getHistory();
+            test.ok(history.length > 0, "History should be a non-empty array");
+            test.strictEqual(typeof history[0], "string", "History should be an array of strings");
             test.done();
         }
 
