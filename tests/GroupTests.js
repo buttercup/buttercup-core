@@ -63,6 +63,19 @@ module.exports = {
         (cb)();
     },
 
+    _getters: {
+
+        type: {
+
+            hasCorrectType: function(test) {
+                test.strictEqual(this.group2.type, "Group");
+                test.done();
+            }
+
+        }
+
+    },
+
     createNew: {
 
         createsNewGroup: function(test) {

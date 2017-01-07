@@ -77,6 +77,14 @@ class Archive {
     }
 
     /**
+     * Get the instance type
+     * @type {String}
+     */
+    get type() {
+        return "Archive";
+    }
+
+    /**
      * Create a new group
      * @param {string=} title The title for the group
      * @returns {Group} The newly created group

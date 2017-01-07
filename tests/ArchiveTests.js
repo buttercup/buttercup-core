@@ -60,6 +60,19 @@ module.exports = {
         cb();
     },
 
+    _getters: {
+
+        type: {
+
+            hasCorrectType: function(test) {
+                test.strictEqual(this.archiveA.type, "Archive");
+                test.done();
+            }
+
+        }
+
+    },
+
     createFromHistory: {
 
         createsArchive: function(test) {

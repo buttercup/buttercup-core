@@ -167,6 +167,7 @@ Extract command components from a string
     * _instance_
         * [.readOnly](#Archive+readOnly)
         * [.sharedGroups](#Archive+sharedGroups)
+        * [.type](#Archive+type) : <code>String</code>
         * [.findGroupByID](#Archive+findGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.findGroupsByTitle](#Archive+findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.findEntriesByMeta](#Archive+findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
@@ -223,6 +224,12 @@ An array of shared groups
 | --- | --- |
 | sharedGroups | <code>[Array.&lt;Group&gt;](#Group)</code> | 
 
+<a name="Archive+type"></a>
+
+### archive.type : <code>String</code>
+Get the instance type
+
+**Kind**: instance property of <code>[Archive](#Archive)</code>  
 <a name="Archive+findGroupByID"></a>
 
 ### archive.findGroupByID ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
@@ -2855,6 +2862,7 @@ Get the number of lines to preserve by default
     * [new Group()](#new_Group_new)
     * [new Group(archive, remoteObj)](#new_Group_new)
     * _instance_
+        * [.type](#Group+type) : <code>String</code>
         * [.findGroupByID](#Group+findGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
@@ -2904,6 +2912,12 @@ Managed group class
 | archive | <code>[Archive](#Archive)</code> | The archive instance |
 | remoteObj | <code>Object</code> | The remote object reference |
 
+<a name="Group+type"></a>
+
+### group.type : <code>String</code>
+Get the instance type
+
+**Kind**: instance property of <code>[Group](#Group)</code>  
 <a name="Group+findGroupByID"></a>
 
 ### group.findGroupByID ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
@@ -3265,6 +3279,7 @@ Create a new Group with a delta-manager and parent group ID
     * [new Group()](#new_Group_new)
     * [new Group(archive, remoteObj)](#new_Group_new)
     * _instance_
+        * [.type](#Group+type) : <code>String</code>
         * [.findGroupByID](#Group+findGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
@@ -3314,6 +3329,12 @@ Managed group class
 | archive | <code>[Archive](#Archive)</code> | The archive instance |
 | remoteObj | <code>Object</code> | The remote object reference |
 
+<a name="Group+type"></a>
+
+### group.type : <code>String</code>
+Get the instance type
+
+**Kind**: instance property of <code>[Group](#Group)</code>  
 <a name="Group+findGroupByID"></a>
 
 ### group.findGroupByID ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>

@@ -38,6 +38,14 @@ class Group {
     }
 
     /**
+     * Get the instance type
+     * @type {String}
+     */
+    get type() {
+        return "Group";
+    }
+
+    /**
      * Create a new entry with a title
      * @param {string=} title The title of the new entry
      * @returns {Entry} The new entry
