@@ -254,16 +254,18 @@ class Group {
         }
         let targetArchive,
             targetGroupID;
-        if (target instanceof Group) {
+        if (target.type === "Group") {
             debug("move to group");
             // moving to a group
             targetArchive = target._getArchive();
             targetGroupID = target.getID();
-        } else {
+        } else if (target.type === "Archive") {
             debug("move to archive");
             // moving to an archive
             targetArchive = target;
             targetGroupID = "0";
+        } else {
+            throw new Error(`Unknown remote type: ${target.type}`);
         }
         if (this._getArchive().readOnly) {
             throw new Error("Cannot move group: origin archive is read-only");
