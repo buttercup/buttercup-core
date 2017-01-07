@@ -222,7 +222,7 @@ class Archive {
      */
     getHistory() {
         let history = this._getWestley().getHistory();
-        return [...history];
+        return [].concat(history);
     }
 
     /**
