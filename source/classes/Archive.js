@@ -328,6 +328,8 @@ class Archive {
  * Create a new archive instance from a list of commands (history)
  * @param {Array.<String>} history The command list
  * @returns {Archive} The archive instance
+ * @static
+ * @memberof Archive
  */
 Archive.createFromHistory = function(history) {
     var archive = new Archive(),

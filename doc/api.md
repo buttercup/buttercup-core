@@ -180,6 +180,7 @@ Extract command components from a string
         * [.getFormat()](#Archive+getFormat) ⇒ <code>string</code>
         * ~~[.getGroupByID(groupID)](#Archive+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
         * [.getGroups()](#Archive+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+        * [.getHistory()](#Archive+getHistory) ⇒ <code>Array.&lt;String&gt;</code>
         * [.getID()](#Archive+getID) ⇒ <code>String</code>
         * [.getTrashGroup()](#Archive+getTrashGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.optimise()](#Archive+optimise) ⇒ <code>[Archive](#Archive)</code>
@@ -189,6 +190,7 @@ Extract command components from a string
         * [._getWestley()](#Archive+_getWestley) ⇒ <code>[Westley](#Westley)</code>
         * [.inst.findEntryByID(id)](#Archive+findEntryByID) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
     * _static_
+        * [.createFromHistory(history)](#Archive.createFromHistory) ⇒ <code>[Archive](#Archive)</code>
         * [.createWithDefaults()](#Archive.createWithDefaults) ⇒ <code>[Archive](#Archive)</code>
 
 <a name="new_Archive_new"></a>
@@ -369,6 +371,14 @@ Get all groups (root) in the archive
 
 **Kind**: instance method of <code>[Archive](#Archive)</code>  
 **Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of Groups  
+<a name="Archive+getHistory"></a>
+
+### archive.getHistory() ⇒ <code>Array.&lt;String&gt;</code>
+Get the command array (history)
+Returned object can be quite large.
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>Array.&lt;String&gt;</code> - The command array  
 <a name="Archive+getID"></a>
 
 ### archive.getID() ⇒ <code>String</code>
@@ -443,6 +453,18 @@ Find an entry by its ID
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>String</code> | The ID to search for |
+
+<a name="Archive.createFromHistory"></a>
+
+### Archive.createFromHistory(history) ⇒ <code>[Archive](#Archive)</code>
+Create a new archive instance from a list of commands (history)
+
+**Kind**: static method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>[Archive](#Archive)</code> - The archive instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| history | <code>Array.&lt;String&gt;</code> | The command list |
 
 <a name="Archive.createWithDefaults"></a>
 
