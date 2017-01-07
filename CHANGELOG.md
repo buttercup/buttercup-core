@@ -1,5 +1,10 @@
 # Buttercup-core release change-log
 
+## v0.33.1
+_2017-01-07_
+
+ * Type checking getter `type` on `Archive` and `Group` instances
+
 ## v0.33.0
 _2017-01-07_
 
