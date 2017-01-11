@@ -1,6 +1,6 @@
 <h1 align="center">
   <br/>
-  <img src="https://dl.dropboxusercontent.com/u/16657557/Works/Buttercup/buttercup-core.svg" alt="Buttercup Desktop">
+  <img src="https://cdn.rawgit.com/sallar/buttercup-assets/054fc0fa/badge/core.svg" alt="Buttercup Core">
   <br/>
   <br/>
   <br/>
