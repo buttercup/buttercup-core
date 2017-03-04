@@ -10,7 +10,7 @@ module.exports = {
     Workspace: require("./system/Workspace.js"),
     SharedWorkspace: require("./system/SharedWorkspace.js"),
 
-    createCredentials: require("./system/Credentials.js"),
+    createCredentials: require("./system/credentials.js"),
     Model: require("./system/Model.js"),
 
     Group: require("./system/Group.js"),
