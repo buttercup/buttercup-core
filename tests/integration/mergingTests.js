@@ -2,7 +2,7 @@ var lib = require("../../source/module.js"),
 	Workspace = lib.Workspace,
 	Archive = lib.Archive;
 
-//var Comparator = require(GLOBAL.root + "/classes/ArchiveComparator.js");
+//var Comparator = require(GLOBAL.root + "/system/ArchiveComparator.js");
 
 module.exports = {
 

@@ -4,27 +4,27 @@ var iocane = require("iocane");
 
 module.exports = {
 
-    Archive: require("./classes/Archive.js"),
-    Westley: require("./classes/Westley.js"),
-    Inigo: require("./classes/InigoGenerator.js"),
-    Workspace: require("./classes/Workspace.js"),
-    SharedWorkspace: require("./classes/SharedWorkspace.js"),
+    Archive: require("./system/Archive.js"),
+    Westley: require("./system/Westley.js"),
+    Inigo: require("./system/InigoGenerator.js"),
+    Workspace: require("./system/Workspace.js"),
+    SharedWorkspace: require("./system/SharedWorkspace.js"),
 
-    Credentials: require("./classes/Credentials.js"),
-    Model: require("./classes/Model.js"),
+    Credentials: require("./system/Credentials.js"),
+    Model: require("./system/Model.js"),
 
-    Group: require("./classes/Group.js"),
-    Entry: require("./classes/Entry.js"),
+    Group: require("./system/Group.js"),
+    Entry: require("./system/Entry.js"),
 
-    DatasourceAdapter: require("./classes/DatasourceAdapter.js"),
-    TextDatasource: require("./classes/TextDatasource.js"),
-    FileDatasource: require("./classes/FileDatasource.js"),
-    OwnCloudDatasource: require("./classes/OwnCloudDatasource.js"),
-    WebDAVDatasource: require("./classes/WebDAVDatasource.js"),
-    ButtercupServerDatasource : require("./classes/ButtercupServerDatasource.js"),
+    DatasourceAdapter: require("./system/DatasourceAdapter.js"),
+    TextDatasource: require("./system/TextDatasource.js"),
+    FileDatasource: require("./system/FileDatasource.js"),
+    OwnCloudDatasource: require("./system/OwnCloudDatasource.js"),
+    WebDAVDatasource: require("./system/WebDAVDatasource.js"),
+    ButtercupServerDatasource : require("./system/ButtercupServerDatasource.js"),
 
-    Flattener: require("./classes/Flattener.js"),
-    Descriptor: require("./classes/Descriptor.js"),
+    Flattener: require("./system/Flattener.js"),
+    Descriptor: require("./system/Descriptor.js"),
 
     tools: {
         encoding: require("./tools/encoding.js"),

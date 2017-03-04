@@ -4,7 +4,7 @@
 
 	var Buttercup = require("../../source/module.js"),
 		Archive = Buttercup.Archive,
-		Inigo = require("../../source/classes/InigoGenerator.js"),
+		Inigo = require("../../source/system/InigoGenerator.js"),
 		Commands = Inigo.Command,
 		searching = require("../../source/tools/searching-raw.js"),
 		encoding = require("../../source/tools/encoding.js");
