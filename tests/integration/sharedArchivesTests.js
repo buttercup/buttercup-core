@@ -7,7 +7,8 @@ var path = require("path"),
 
 var Archive = lib.Archive,
     Workspace = lib.SharedWorkspace,
-    FileDatasource = lib.FileDatasource;
+    FileDatasource = lib.FileDatasource,
+    createCredentials = lib.createCredentials;
 
 var ARCHIVE_PATH_MAIN = path.resolve(__dirname, "./main.test.bcup"),
     ARCHIVE_PATH_WRITE = path.resolve(__dirname, "./secondary-write.test.bcup"),
@@ -51,23 +52,37 @@ module.exports = {
 
         Promise
             .all([
-                mainDS.save(this.mainArchive, "main"),
-                writeDS.save(this.secondaryWrite, "write1"),
-                readDS.save(this.secondaryRead, "read1")
+                mainDS.save(this.mainArchive, createCredentials.fromPassword("main")),
+                writeDS.save(this.secondaryWrite, createCredentials.fromPassword("write1")),
+                readDS.save(this.secondaryRead, createCredentials.fromPassword("read1"))
             ])
             .then(function() {
-                return writeDS.load("write1");
+                return writeDS.load(createCredentials.fromPassword("write1"));
             })
             .then((extendedSecondaryWrite) => {
                 extendArchive(extendedSecondaryWrite);
                 this.extendedSecondaryWrite = extendedSecondaryWrite;
-                return writeDS.save(this.extendedSecondaryWrite, "write1");
+                return writeDS.save(this.extendedSecondaryWrite, createCredentials.fromPassword("write1"));
             })
             .then(() => {
                 this.secondaryRead._getWestley().readOnly = true;
-                this.workspace.addSharedArchive(this.secondaryWrite, new FileDatasource(ARCHIVE_PATH_WRITE), "write1", true);
-                this.workspace.addSharedArchive(this.secondaryRead, new FileDatasource(ARCHIVE_PATH_READ), "read1", false);
-                this.workspace.setPrimaryArchive(this.mainArchive, new FileDatasource(ARCHIVE_PATH_MAIN), "main");
+                this.workspace.addSharedArchive(
+                    this.secondaryWrite,
+                    new FileDatasource(ARCHIVE_PATH_WRITE),
+                    createCredentials.fromPassword("write1"),
+                    true
+                );
+                this.workspace.addSharedArchive(
+                    this.secondaryRead,
+                    new FileDatasource(ARCHIVE_PATH_READ),
+                    createCredentials.fromPassword("read1"),
+                    false
+                );
+                this.workspace.setPrimaryArchive(
+                    this.mainArchive,
+                    new FileDatasource(ARCHIVE_PATH_MAIN),
+                    createCredentials.fromPassword("main")
+                );
             })
             .then(cb);
     },

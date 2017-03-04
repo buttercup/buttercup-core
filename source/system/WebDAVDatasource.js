@@ -16,15 +16,16 @@ class WebDAVDatasource extends TextDatasource {
      * Constructor for the datasource
      * @param {string} endpoint URL for the WebDAV service (without resource path)
      * @param {string} webDAVPath Resource path on the WebDAV service
-     * @param {string} username Username for the WebDAV service
-     * @param {string} password Password for the WebDAV service
+     * @param {Credentials=} credentials Credentials (username/password) for the WebDAV service
      */
-    constructor(endpoint, webDAVPath, username, password) {
+    constructor(endpoint, webDAVPath, credentials) {
         super("");
         var endpointLen = endpoint.length;
         this._endpoint = (endpoint[endpointLen - 1] === "/") ? endpoint : endpoint + "/";
         webDAVPath = (webDAVPath[0] === "/") ? webDAVPath : "/" + webDAVPath;
-        this._wfs = webdavFS(this._endpoint, username, password);
+        this._wfs = credentials ?
+            webdavFS(this._endpoint, credentials.username, credentials.password) :
+            webdavFS(this._endpoint);
         this._path = webDAVPath;
     }
 
@@ -45,24 +46,23 @@ class WebDAVDatasource extends TextDatasource {
     }
 
     /**
-     * Load the archive using a password
-     * @param {string} password The password for archive decryption
-     * @returns {Promise.<Archive>} A promise resolving with the opened archive
+     * Load the archive from the datasource
+     * @param {Credentials} credentials The credentials for archive decryption
+     * @returns {Promise.<Archive>} A promise resolving with the archive
      */
-    load(password) {
+    load(credentials) {
         var wfs = this._wfs,
             filePath = this._path;
         return (new Promise(function(resolve, reject) {
             wfs.readFile(filePath, "utf8", function(error, data) {
                 if (error) {
-                    (reject)(error);
-                } else {
-                    (resolve)(data);
+                    return reject(error);
                 }
+                return resolve(data);
             });
         })).then((content) => {
             this.setContent(content);
-            return super.load(password);
+            return super.load(credentials);
         }).catch(function(err) {
             var errorMsg = "Failed opening archive: " + err;
             console.error(errorMsg);
@@ -71,16 +71,16 @@ class WebDAVDatasource extends TextDatasource {
     }
 
     /**
-     * Save an archive with a password to the WebDAV service
+     * Save an archive to the WebDAV service
      * @param {Archive} archive The archive to save
-     * @param {string} password The password for encryption
+     * @param {Credentials} credentials The credentials for encryption
      * @returns {Promise} A promise resolving when the save is complete
      */
-    save(archive, password) {
+    save(archive, credentials) {
         var wfs = this._wfs,
             filePath = this._path;
         return super
-            .save(archive, password)
+            .save(archive, credentials)
             .then(function(encrypted) {
                 return new Promise(function(resolve, reject) {
                     wfs.writeFile(filePath, encrypted, "utf8", function(error) {
@@ -113,7 +113,7 @@ WebDAVDatasource.fromObject = function fromObject(obj, hostCredentials) {
         throw new Error("Credentials required for WebDAVDatasource instantiation");
     }
     if (obj.type === "webdav") {
-        return new WebDAVDatasource(obj.endpoint, obj.path, hostCredentials.username, hostCredentials.password);
+        return new WebDAVDatasource(obj.endpoint, obj.path, hostCredentials);
     }
     throw new Error(`Unknown or invalid type: ${obj.type}`);
 };

@@ -2,12 +2,13 @@ var fs = require("fs"),
     lib = require("../../source/module.js");
 
 var Archive = lib.Archive,
-    FileDatasource = lib.FileDatasource;
+    FileDatasource = lib.FileDatasource,
+    createCredentials = lib.createCredentials;
 
 module.exports = {
 
     setUp: function(cb) {
-        (cb)();
+        cb();
     },
 
     savesAndLoads: function(test) {
@@ -17,9 +18,9 @@ module.exports = {
         for (var i = 0; i < 100; i += 1) {
             mainGroupBefore.createEntry("Entry #" + i);
         }
-        fds.save(archiveBefore, "my pass12")
+        fds.save(archiveBefore, createCredentials.fromPassword("my pass12"))
             .then(function() {
-                return fds.load("my pass12")
+                return fds.load(createCredentials.fromPassword("my pass12"))
                     .then(function(archiveAfter) {
                         var groups = archiveAfter.getGroups();
                         test.strictEqual(groups.length, 1, "There should be 1 group");
@@ -40,9 +41,9 @@ module.exports = {
         var archive = new Archive(),
             id = archive.getID(),
             fds = new FileDatasource("./test-archive.bcup");
-        fds.save(archive, "passy")
+        fds.save(archive, createCredentials.fromPassword("passy"))
             .then(function() {
-                return fds.load("passy")
+                return fds.load(createCredentials.fromPassword("passy"))
                     .then(function(loadedArchive) {
                         test.strictEqual(loadedArchive.getID(), id, "IDs should be the same");
                         fs.unlinkSync("./test-archive.bcup");

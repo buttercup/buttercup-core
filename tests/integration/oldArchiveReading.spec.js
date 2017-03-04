@@ -1,27 +1,30 @@
-var lib = require("../../source/module.js"),
-    archivesDir = __dirname + "/../_archives",
-    FileDatasource = lib.FileDatasource,
-    path = require("path"),
-    walk = require("walk");
+"use strict";
 
-var archiveFilenames;
+var path = require("path"),
+    walk = require("walk");
+var lib = require("../../source/module.js");
+var FileDatasource = lib.FileDatasource,
+    createCredentials = lib.createCredentials;
+
+var archivesDir = path.resolve(__dirname, "../_archives"),
+    archiveFilenames;
 
 module.exports = {
 
-	setUp: function(cb) {
+    setUp: function(cb) {
         archiveFilenames = []
-		var walker  = walk.walk(archivesDir, { followLinks: false });
+        var walker  = walk.walk(archivesDir, { followLinks: false });
         walker.on('file', function(root, stat, next) {
-    		var extension = stat.name.split(".").pop().toLowerCase();
-    		if (extension === "bcup") {
-    			archiveFilenames.push(root + "/" + stat.name);
-    		}
-    		next();
-    	});
+            var extension = stat.name.split(".").pop().toLowerCase();
+            if (extension === "bcup") {
+                archiveFilenames.push(root + "/" + stat.name);
+            }
+            next();
+        });
         walker.on('end', function() {
-    		(cb)();
-    	});
-	},
+            (cb)();
+        });
+    },
 
     testOpensArchive: function(test) {
         Promise.all(
@@ -32,7 +35,7 @@ module.exports = {
                 console.log("Testing archive @ " + version + "...");
                 var datasource = new FileDatasource(archiveFilename);
                 datasource
-                    .load("this is a long password used for a test archive!")
+                    .load(createCredentials.fromPassword("this is a long password used for a test archive!"))
                     .then(function(archive) {
                         var groups = archive.getGroups(),
                             testGroup;

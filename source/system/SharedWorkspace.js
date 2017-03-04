@@ -82,11 +82,11 @@ class SharedWorkspace {
      * Add a shared archive item
      * @param {Archive} archive The archive instance
      * @param {TextDatasource} datasource The datasource instance
-     * @param {String} password The master password
+     * @param {Credentials} masterCredentials The master credentials (password)
      * @param {Boolean=} saveable Whether the archive is remotely saveable or not (default: true)
      * @returns {SharedWorkspace} Self
      */
-    addSharedArchive(archive, datasource, password, saveable) {
+    addSharedArchive(archive, datasource, masterCredentials, saveable) {
         saveable = (saveable === undefined) ? true : saveable;
         if (this._archives.length <= 0) {
             this._archives[0] = null;
@@ -94,7 +94,7 @@ class SharedWorkspace {
         this._archives.push({
             archive:        archive,
             datasource:     datasource,
-            password:       password,
+            credentials:    masterCredentials,
             saveable:       saveable
         });
         return this;
@@ -159,7 +159,7 @@ class SharedWorkspace {
             .all(
                 this.getSaveableItems().map(function(item) {
                     return item.datasource
-                        .load(item.password)
+                        .load(item.credentials)
                         .then(function(loadedItem) {
                             var comparator = new Comparator(item.archive, loadedItem);
                             return comparator.archivesDiffer();
@@ -184,7 +184,7 @@ class SharedWorkspace {
             throw new Error("Archive not writeable");
         }
         return item.datasource
-            .load(item.password)
+            .load(item.credentials)
             .then(function(stagedArchive) {
                 var comparator = new Comparator(item.archive, stagedArchive),
                     differences = comparator.calculateDifferences();
@@ -232,7 +232,7 @@ class SharedWorkspace {
             this.getSaveableItems().map(function(item) {
                 return item.datasource.save(
                     item.archive,
-                    item.password
+                    item.credentials
                 );
             })
         );
@@ -245,11 +245,11 @@ class SharedWorkspace {
      * @param {String} password The master password
      * @returns {SharedWorkspace} Self
      */
-    setPrimaryArchive(archive, datasource, password) {
+    setPrimaryArchive(archive, datasource, masterCredentials) {
         this._archives[0] = {
             archive:        archive,
             datasource:     datasource,
-            password:       password,
+            credentials:    masterCredentials,
             saveable:       true
         };
         return this;

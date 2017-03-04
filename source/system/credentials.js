@@ -179,6 +179,23 @@ function unsignEncryptedContent(content) {
     return content.substr(SIGNING_KEY.length);
 }
 
+/**
+ * Create a new credentials instance from a password
+ * @param {String} password The password to use
+ * @returns {Credentials} The credentials instance
+ * @static
+ */
+createCredentials.fromPassword = function fromPassword(password) {
+    return createCredentials("password", { password: password });
+};
+
+/**
+ * Create a new credentials instance from an encrypted string
+ * @param {String} content The encrypted form of a credentials store
+ * @param {String} password The password to use to decrypt the content
+ * @returns {Promise.<Credentials>} A promise that resolves with a credentials instance
+ * @static
+ */
 createCredentials.fromSecureString = function fromSecureString(content, password) {
     return iocane
         .decryptWithPassword(unsignEncryptedContent(content), password)

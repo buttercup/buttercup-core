@@ -14,24 +14,22 @@ const debug = createDebug("text-datasource");
 
 /**
  * Pre-process credentials data
- * @param {String|Credentials} credentials Password or Credentials instance
+ * @param {Credentials} credentials Password or Credentials instance
  * @returns {{ password: (String|undefined), keyfile: (String|undefined) }} Credential data
  * @throws {Error} Throws if both password and keyfile are undefined
+ * @throws {Error} Throws if credentials is not an object
  * @private
  * @memberof TextDatasource
  */
 function processCredentials(credentials) {
-    if (typeof credentials === "string") {
-        // credentials is a password, so convert to an instance
-        let pass = credentials;
-        credentials = new Credentials();
-        credentials.password = pass;
+    if (typeof credentials !== "object") {
+        throw new Error("Expected credentials object, got " + typeof credentials);
     }
     // either might be undefined, but at least one needs to be defined
     let password = credentials.password,
         keyfile = credentials.getValue("keyfile");
     if (!password && !keyfile) {
-        throw new Error("Neither a password or key-file was provided");
+        throw new Error("Neither a password nor key-file were provided");
     }
     return {
         password,
@@ -56,7 +54,7 @@ class TextDatasource {
 
     /**
      * Load from the stored content using a password to decrypt
-     * @param {string|Credentials} credentials The password or Credentials instance to decrypt with
+     * @param {Credentials} credentials The password or Credentials instance to decrypt with
      * @param {Boolean=} emptyCreatesNew Create a new Archive instance if text contents are empty (defaults to false)
      * @returns {Promise.<Archive>} A promise that resolves with an open archive
      */
@@ -105,7 +103,7 @@ class TextDatasource {
     /**
      * Save an archive with a password
      * @param {Archive} archive The archive to save
-     * @param {string} credentials The password or Credentials instance to encrypt with
+     * @param {Credentials} credentials The Credentials instance to encrypt with
      * @returns {Promise.<string>} A promise resolving with the encrypted content
      */
     save(archive, credentials) {
