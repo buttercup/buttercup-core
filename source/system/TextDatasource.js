@@ -29,7 +29,7 @@ function processCredentials(credentials) {
     }
     // either might be undefined, but at least one needs to be defined
     let password = credentials.password,
-        keyfile = credentials.keyFile;
+        keyfile = credentials.getValue("keyfile");
     if (!password && !keyfile) {
         throw new Error("Neither a password or key-file was provided");
     }
