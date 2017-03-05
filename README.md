@@ -127,12 +127,12 @@ ds.load("myPa55word")
     });
 ```
 
-Archives can be managed more easily using a `SharedWorkspace`. Workspaces are designed to handle a primary archive and potentially several shared archives, each with their own master password and datasource. When integrating with **Buttercup server**, workspaces allow you to handle multiple shared archives where groups can be handled by multiple users.
+Archives can be managed more easily using a `Workspace`. Workspaces are designed to handle a primary archive and potentially several shared archives, each with their own master password and datasource. When integrating with **Buttercup server**, workspaces allow you to handle multiple shared archives where groups can be handled by multiple users.
 
 ```javascript
-const { SharedWorkspace } = Buttercup;
+const { Workspace } = Buttercup;
 
-let workspace = new SharedWorkspace();
+let workspace = new Workspace();
 workspace
     .setPrimaryArchive(myArchive, myDatasource, "master password")
     .addSharedArchive(sharedArchive1, sharedDS1, "shared pass", /* saveable */ true);
