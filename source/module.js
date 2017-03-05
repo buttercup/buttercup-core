@@ -7,7 +7,6 @@ module.exports = {
     Archive: require("./system/Archive.js"),
     Westley: require("./system/Westley.js"),
     Inigo: require("./system/InigoGenerator.js"),
-    Workspace: require("./system/Workspace.js"),
     SharedWorkspace: require("./system/SharedWorkspace.js"),
 
     createCredentials: require("./system/credentials.js"),

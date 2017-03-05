@@ -3,7 +3,7 @@
 const iocane = require("iocane").crypto;
 
 var Archive = require("./Archive.js"),
-    Credentials = require("./Credentials.js"),
+    Credentials = require("./credentials.js"),
     signing = require("../tools/signing.js"),
     encoding = require("../tools/encoding.js"),
     createDebug = require("../tools/debug.js");
