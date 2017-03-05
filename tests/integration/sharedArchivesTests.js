@@ -6,7 +6,7 @@ var path = require("path"),
     rimraf = require("rimraf").sync;
 
 var Archive = lib.Archive,
-    Workspace = lib.SharedWorkspace,
+    Workspace = lib.Workspace,
     FileDatasource = lib.FileDatasource,
     createCredentials = lib.createCredentials;
 

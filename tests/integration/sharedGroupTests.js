@@ -3,7 +3,7 @@
 var lib = require("../../source/module.js");
 
 var Archive = lib.Archive,
-    Workspace = lib.SharedWorkspace,
+    Workspace = lib.Workspace,
     TextDatasource = lib.TextDatasource,
     Group = lib.Group;
 

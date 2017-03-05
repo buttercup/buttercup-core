@@ -1,5 +1,5 @@
 var lib = require("../../source/module.js");
-var SharedWorkspace = lib.SharedWorkspace,
+var Workspace = lib.Workspace,
     Archive = lib.Archive,
     createCredentials = lib.createCredentials;
 
@@ -56,7 +56,7 @@ module.exports = {
         this.diffArchiveA = diffArchiveA;
         this.diffArchiveB = diffArchiveB;
 
-        this.diffWorkspace = new SharedWorkspace();
+        this.diffWorkspace = new Workspace();
         this.diffWorkspace.setPrimaryArchive(
             diffArchiveB,
             {
