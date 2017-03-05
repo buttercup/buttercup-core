@@ -1,3 +1,5 @@
+"use strict";
+
 var chai = require("chai"),
     chaiAsPromised = require("chai-as-promised"),
     sinon = require("sinon"),
@@ -19,16 +21,3 @@ Object.assign(
     },
     Buttercup
 );
-
-// var context = require.context('./', true, /\.spec\.js$/);
-// context
-//     .keys()
-//     .forEach(filename => {
-//         const ns =
-//             filename
-//             .replace(/^\.\//, '')
-//             .replace(/\.spec\.js$/, '');
-//         describe(ns, () => {
-//             context(filename);
-//         });
-//     });

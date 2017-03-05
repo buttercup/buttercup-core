@@ -1,3 +1,5 @@
+"use strict";
+
 describe("Workspace", function() {
 
     beforeEach(function() {
