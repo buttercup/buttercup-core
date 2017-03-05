@@ -16,7 +16,6 @@
   "scripts": {
     "generate:archive": "node scripts/generate_test_archive.js",
     "generate:docs": "./scripts/generate-docs",
-    "prepublish": "npm test",
     "test": "npm run test:lint && npm run test:istanbul && npm run test:unit",
     "test:ci": "npm test && npm run test:codeclimate",
     "test:codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
