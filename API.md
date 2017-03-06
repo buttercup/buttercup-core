@@ -62,8 +62,6 @@
 <dd></dd>
 <dt><a href="#TitleGroupCommand">TitleGroupCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
 <dd></dd>
-<dt><a href="#Credentials">Credentials</a></dt>
-<dd></dd>
 <dt><a href="#Entry">Entry</a></dt>
 <dd></dd>
 <dt><a href="#FileDatasource">FileDatasource</a> ⇐ <code><a href="#TextDatasource">TextDatasource</a></code></dt>
@@ -82,8 +80,6 @@
 <dd></dd>
 <dt><a href="#OwnCloudDatasource">OwnCloudDatasource</a></dt>
 <dd></dd>
-<dt><a href="#SharedWorkspace">SharedWorkspace</a></dt>
-<dd></dd>
 <dt><a href="#TextDatasource">TextDatasource</a></dt>
 <dd></dd>
 <dt><a href="#TextDatasource">TextDatasource</a></dt>
@@ -94,7 +90,7 @@
 <dd></dd>
 <dt><a href="#Westley">Westley</a></dt>
 <dd></dd>
-<dt><del><a href="#Workspace">Workspace</a></del></dt>
+<dt><a href="#Workspace">Workspace</a></dt>
 <dd></dd>
 </dl>
 
@@ -110,6 +106,10 @@
 ## Functions
 
 <dl>
+<dt><a href="#createCredentials">createCredentials([type], [data])</a> ⇒ <code><a href="#Credentials">Credentials</a></code></dt>
+<dd><p>Create a credentials adapter
+Both <code>type</code> and <code>data</code> parameters are optional.</p>
+</dd>
 <dt><a href="#dedupe">dedupe(arr)</a> ⇒ <code>Array</code></dt>
 <dd><p>De-dupe an array</p>
 </dd>
@@ -120,9 +120,12 @@
 <dl>
 <dt><a href="#ArchiveDataset">ArchiveDataset</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#Credentials">Credentials</a> : <code>Object</code></dt>
+<dd><p>Credentials wrapper</p>
+</dd>
 <dt><a href="#DisplayInfo">DisplayInfo</a></dt>
 <dd></dd>
-<dt><a href="#SharedWorkspaceItem">SharedWorkspaceItem</a> : <code>Object</code></dt>
+<dt><a href="#WorkspaceItem">WorkspaceItem</a> : <code>Object</code></dt>
 <dd><p>Shared workspace item</p>
 </dd>
 </dl>
@@ -2250,113 +2253,6 @@ Add a callback for a key
 | key | <code>String</code> | The callback name |
 | fn | <code>function</code> | The callback function |
 
-<a name="Credentials"></a>
-
-## Credentials
-**Kind**: global class  
-
-* [Credentials](#Credentials)
-    * [new Credentials(data)](#new_Credentials_new)
-    * _instance_
-        * [.keyFile](#Credentials+keyFile) : <code>string</code> &#124; <code>Buffer</code> &#124; <code>undefined</code>
-        * [.password](#Credentials+password) : <code>String</code> &#124; <code>undefined</code>
-        * [.type](#Credentials+type) : <code>String</code> &#124; <code>undefined</code>
-        * [.username](#Credentials+username) : <code>String</code> &#124; <code>undefined</code>
-        * [.convertToSecureContent(masterPassword)](#Credentials+convertToSecureContent) ⇒ <code>Promise</code>
-        * [.getMeta(name, defaultValue)](#Credentials+getMeta) ⇒ <code>String</code> &#124; <code>\*</code>
-        * [.setMeta(name, value)](#Credentials+setMeta)
-    * _static_
-        * [.createFromSecureContent(content, password)](#Credentials.createFromSecureContent) ⇒ <code>Promise</code>
-
-<a name="new_Credentials_new"></a>
-
-### new Credentials(data)
-
-| Param | Type | Description |
-| --- | --- | --- |
-| data | <code>Object</code> &#124; <code>[Model](#Model)</code> | The initialisation data |
-
-<a name="Credentials+keyFile"></a>
-
-### credentials.keyFile : <code>string</code> &#124; <code>Buffer</code> &#124; <code>undefined</code>
-Get the key file path or buffer
-Key file path, data buffer, or undefined
-
-**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
-<a name="Credentials+password"></a>
-
-### credentials.password : <code>String</code> &#124; <code>undefined</code>
-Get the password
-
-**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
-<a name="Credentials+type"></a>
-
-### credentials.type : <code>String</code> &#124; <code>undefined</code>
-Get the type of credentials
-
-**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
-<a name="Credentials+username"></a>
-
-### credentials.username : <code>String</code> &#124; <code>undefined</code>
-Get the username
-
-**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
-<a name="Credentials+convertToSecureContent"></a>
-
-### credentials.convertToSecureContent(masterPassword) ⇒ <code>Promise</code>
-Convert the credentials to an encrypted string, for storage
-
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>Promise</code> - A promise that resolves with the encrypted credentials  
-**Throws**:
-
-- <code>Error</code> Throws when masterPassword is not a string
-
-**See**: signEncryptedContent  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| masterPassword | <code>string</code> | The password for encrypting |
-
-<a name="Credentials+getMeta"></a>
-
-### credentials.getMeta(name, defaultValue) ⇒ <code>String</code> &#124; <code>\*</code>
-Get a meta value
-
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>String</code> &#124; <code>\*</code> - The value or default if it doesn't exist  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| name | <code>String</code> | The meta property name |
-| defaultValue | <code>undefined</code> &#124; <code>\*</code> | The value to return if the item doesn't exist |
-
-<a name="Credentials+setMeta"></a>
-
-### credentials.setMeta(name, value)
-Set a meta property
-
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| name | <code>String</code> | The property to set |
-| value | <code>String</code> &#124; <code>\*</code> | The value to set |
-
-<a name="Credentials.createFromSecureContent"></a>
-
-### Credentials.createFromSecureContent(content, password) ⇒ <code>Promise</code>
-Create a new Credentials instance from encrypted information
-
-**Kind**: static method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>Promise</code> - A promise resolving with the new Credentials instance  
-**Access:** public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| content | <code>string</code> | The encrypted content |
-| password | <code>string</code> | The master password to decrypt with |
-
 <a name="Entry"></a>
 
 ## Entry
@@ -2628,8 +2524,8 @@ Create a new entry
     * [new FileDatasource()](#new_FileDatasource_new)
     * [new FileDatasource(filename)](#new_FileDatasource_new)
     * [.getArchivePath()](#FileDatasource+getArchivePath) ⇒ <code>String</code>
-    * [.load(password)](#FileDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, password)](#FileDatasource+save) ⇒ <code>Promise</code>
+    * [.load(credentials)](#FileDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.save(archive, credentials)](#FileDatasource+save) ⇒ <code>Promise</code>
     * [.toObject()](#FileDatasource+toObject) ⇒ <code>Object</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
@@ -2658,7 +2554,7 @@ Get the path of the archive
 **Returns**: <code>String</code> - The file path  
 <a name="FileDatasource+load"></a>
 
-### fileDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### fileDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load from the filename specified in the constructor using a password
 
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
@@ -2667,11 +2563,11 @@ Load from the filename specified in the constructor using a password
 
 | Param | Type | Description |
 | --- | --- | --- |
-| password | <code>string</code> | The password for decryption |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials for decryption |
 
 <a name="FileDatasource+save"></a>
 
-### fileDatasource.save(archive, password) ⇒ <code>Promise</code>
+### fileDatasource.save(archive, credentials) ⇒ <code>Promise</code>
 Save an archive to a file using a password for encryption
 
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
@@ -2681,7 +2577,7 @@ Save an archive to a file using a password for encryption
 | Param | Type | Description |
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
-| password | <code>string</code> | The password to save with |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials to save with |
 
 <a name="FileDatasource+toObject"></a>
 
@@ -2719,8 +2615,8 @@ Output the datasource configuration as a string
     * [new FileDatasource()](#new_FileDatasource_new)
     * [new FileDatasource(filename)](#new_FileDatasource_new)
     * [.getArchivePath()](#FileDatasource+getArchivePath) ⇒ <code>String</code>
-    * [.load(password)](#FileDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, password)](#FileDatasource+save) ⇒ <code>Promise</code>
+    * [.load(credentials)](#FileDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.save(archive, credentials)](#FileDatasource+save) ⇒ <code>Promise</code>
     * [.toObject()](#FileDatasource+toObject) ⇒ <code>Object</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
@@ -2749,7 +2645,7 @@ Get the path of the archive
 **Returns**: <code>String</code> - The file path  
 <a name="FileDatasource+load"></a>
 
-### fileDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### fileDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
 Load from the filename specified in the constructor using a password
 
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
@@ -2758,11 +2654,11 @@ Load from the filename specified in the constructor using a password
 
 | Param | Type | Description |
 | --- | --- | --- |
-| password | <code>string</code> | The password for decryption |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials for decryption |
 
 <a name="FileDatasource+save"></a>
 
-### fileDatasource.save(archive, password) ⇒ <code>Promise</code>
+### fileDatasource.save(archive, credentials) ⇒ <code>Promise</code>
 Save an archive to a file using a password for encryption
 
 **Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
@@ -2772,7 +2668,7 @@ Save an archive to a file using a password for encryption
 | Param | Type | Description |
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
-| password | <code>string</code> | The password to save with |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials to save with |
 
 <a name="FileDatasource+toObject"></a>
 
@@ -3751,12 +3647,12 @@ Set a property
 
 * [OwnCloudDatasource](#OwnCloudDatasource) ⇐ <code>[WebDAVDatasource](#WebDAVDatasource)</code>
     * [new OwnCloudDatasource()](#new_OwnCloudDatasource_new)
-    * [new OwnCloudDatasource(owncloudURL, resourcePath, username, password)](#new_OwnCloudDatasource_new)
+    * [new OwnCloudDatasource(owncloudURL, resourcePath, credentials)](#new_OwnCloudDatasource_new)
     * [.toObject()](#OwnCloudDatasource+toObject) ⇒ <code>Object</code>
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
+    * [.load(credentials)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
@@ -3767,7 +3663,7 @@ Datasource for OwnCloud archives
 
 <a name="new_OwnCloudDatasource_new"></a>
 
-### new OwnCloudDatasource(owncloudURL, resourcePath, username, password)
+### new OwnCloudDatasource(owncloudURL, resourcePath, credentials)
 Datasource for Owncloud connections
 
 
@@ -3775,8 +3671,7 @@ Datasource for Owncloud connections
 | --- | --- | --- |
 | owncloudURL | <code>String</code> | The URL to the owncloud instance, without "remote.php/webdav" etc. |
 | resourcePath | <code>String</code> | The file path |
-| username | <code>String</code> | The username for owncloud |
-| password | <code>String</code> | The password for owncloud |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials (username/password) for owncloud |
 
 <a name="OwnCloudDatasource+toObject"></a>
 
@@ -3802,20 +3697,20 @@ Get the remote endpoint URI (no resource path)
 **Returns**: <code>string</code> - The endpoint  
 <a name="WebDAVDatasource+load"></a>
 
-### ownCloudDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-Load the archive using a password
+### ownCloudDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+Load the archive from the datasource
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the opened archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| password | <code>string</code> | The password for archive decryption |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials for archive decryption |
 
 <a name="WebDAVDatasource+save"></a>
 
-### ownCloudDatasource.save(archive, password) ⇒ <code>Promise</code>
-Save an archive with a password to the WebDAV service
+### ownCloudDatasource.save(archive, credentials) ⇒ <code>Promise</code>
+Save an archive to the WebDAV service
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
 **Returns**: <code>Promise</code> - A promise resolving when the save is complete  
@@ -3823,7 +3718,7 @@ Save an archive with a password to the WebDAV service
 | Param | Type | Description |
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
-| password | <code>string</code> | The password for encryption |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials for encryption |
 
 <a name="TextDatasource+setContent"></a>
 
@@ -3851,12 +3746,12 @@ Output the datasource configuration as a string
 
 * [OwnCloudDatasource](#OwnCloudDatasource)
     * [new OwnCloudDatasource()](#new_OwnCloudDatasource_new)
-    * [new OwnCloudDatasource(owncloudURL, resourcePath, username, password)](#new_OwnCloudDatasource_new)
+    * [new OwnCloudDatasource(owncloudURL, resourcePath, credentials)](#new_OwnCloudDatasource_new)
     * [.toObject()](#OwnCloudDatasource+toObject) ⇒ <code>Object</code>
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
+    * [.load(credentials)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
@@ -3867,7 +3762,7 @@ Datasource for OwnCloud archives
 
 <a name="new_OwnCloudDatasource_new"></a>
 
-### new OwnCloudDatasource(owncloudURL, resourcePath, username, password)
+### new OwnCloudDatasource(owncloudURL, resourcePath, credentials)
 Datasource for Owncloud connections
 
 
@@ -3875,8 +3770,7 @@ Datasource for Owncloud connections
 | --- | --- | --- |
 | owncloudURL | <code>String</code> | The URL to the owncloud instance, without "remote.php/webdav" etc. |
 | resourcePath | <code>String</code> | The file path |
-| username | <code>String</code> | The username for owncloud |
-| password | <code>String</code> | The password for owncloud |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials (username/password) for owncloud |
 
 <a name="OwnCloudDatasource+toObject"></a>
 
@@ -3902,20 +3796,20 @@ Get the remote endpoint URI (no resource path)
 **Returns**: <code>string</code> - The endpoint  
 <a name="WebDAVDatasource+load"></a>
 
-### ownCloudDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-Load the archive using a password
+### ownCloudDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+Load the archive from the datasource
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the opened archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| password | <code>string</code> | The password for archive decryption |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials for archive decryption |
 
 <a name="WebDAVDatasource+save"></a>
 
-### ownCloudDatasource.save(archive, password) ⇒ <code>Promise</code>
-Save an archive with a password to the WebDAV service
+### ownCloudDatasource.save(archive, credentials) ⇒ <code>Promise</code>
+Save an archive to the WebDAV service
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
 **Returns**: <code>Promise</code> - A promise resolving when the save is complete  
@@ -3923,7 +3817,7 @@ Save an archive with a password to the WebDAV service
 | Param | Type | Description |
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
-| password | <code>string</code> | The password for encryption |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials for encryption |
 
 <a name="TextDatasource+setContent"></a>
 
@@ -3944,134 +3838,6 @@ Output the datasource configuration as a string
 
 **Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
 **Returns**: <code>String</code> - The string representation of the datasource  
-<a name="SharedWorkspace"></a>
-
-## SharedWorkspace
-**Kind**: global class  
-
-* [SharedWorkspace](#SharedWorkspace)
-    * [new SharedWorkspace()](#new_SharedWorkspace_new)
-    * [.primary](#SharedWorkspace+primary) : <code>[SharedWorkspaceItem](#SharedWorkspaceItem)</code>
-    * [.addSharedArchive(archive, datasource, password, [saveable])](#SharedWorkspace+addSharedArchive) ⇒ <code>[SharedWorkspace](#SharedWorkspace)</code>
-    * [.getAllItems()](#SharedWorkspace+getAllItems) ⇒ <code>[Array.&lt;SharedWorkspaceItem&gt;](#SharedWorkspaceItem)</code>
-    * [.getSaveableItems()](#SharedWorkspace+getSaveableItems) ⇒ <code>[Array.&lt;SharedWorkspaceItem&gt;](#SharedWorkspaceItem)</code>
-    * [.imbue()](#SharedWorkspace+imbue) ⇒ <code>[SharedWorkspace](#SharedWorkspace)</code>
-    * [.localDiffersFromRemote()](#SharedWorkspace+localDiffersFromRemote) ⇒ <code>Promise.&lt;Boolean&gt;</code>
-    * [.mergeItemFromRemote(item)](#SharedWorkspace+mergeItemFromRemote) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.mergeSaveablesFromRemote()](#SharedWorkspace+mergeSaveablesFromRemote) ⇒ <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code>
-    * [.save()](#SharedWorkspace+save) ⇒ <code>Promise</code>
-    * [.setPrimaryArchive(archive, datasource, password)](#SharedWorkspace+setPrimaryArchive) ⇒ <code>[SharedWorkspace](#SharedWorkspace)</code>
-
-<a name="new_SharedWorkspace_new"></a>
-
-### new SharedWorkspace()
-Workspace
-
-<a name="SharedWorkspace+primary"></a>
-
-### sharedWorkspace.primary : <code>[SharedWorkspaceItem](#SharedWorkspaceItem)</code>
-The primary archive item
-
-**Kind**: instance property of <code>[SharedWorkspace](#SharedWorkspace)</code>  
-**Access:** public  
-<a name="SharedWorkspace+addSharedArchive"></a>
-
-### sharedWorkspace.addSharedArchive(archive, datasource, password, [saveable]) ⇒ <code>[SharedWorkspace](#SharedWorkspace)</code>
-Add a shared archive item
-
-**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
-**Returns**: <code>[SharedWorkspace](#SharedWorkspace)</code> - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive instance |
-| datasource | <code>[TextDatasource](#TextDatasource)</code> | The datasource instance |
-| password | <code>String</code> | The master password |
-| [saveable] | <code>Boolean</code> | Whether the archive is remotely saveable or not (default: true) |
-
-<a name="SharedWorkspace+getAllItems"></a>
-
-### sharedWorkspace.getAllItems() ⇒ <code>[Array.&lt;SharedWorkspaceItem&gt;](#SharedWorkspaceItem)</code>
-Get all archive items
-
-**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
-**Returns**: <code>[Array.&lt;SharedWorkspaceItem&gt;](#SharedWorkspaceItem)</code> - All of the items  
-<a name="SharedWorkspace+getSaveableItems"></a>
-
-### sharedWorkspace.getSaveableItems() ⇒ <code>[Array.&lt;SharedWorkspaceItem&gt;](#SharedWorkspaceItem)</code>
-Get all the saveable items
-
-**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
-**Returns**: <code>[Array.&lt;SharedWorkspaceItem&gt;](#SharedWorkspaceItem)</code> - All of the saveable items  
-<a name="SharedWorkspace+imbue"></a>
-
-### sharedWorkspace.imbue() ⇒ <code>[SharedWorkspace](#SharedWorkspace)</code>
-Imbue the primary archive with shared groups from all of the other archives
-
-**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
-**Returns**: <code>[SharedWorkspace](#SharedWorkspace)</code> - Self  
-**Throws**:
-
-- <code>Error</code> Throws if the primary archive is not set
-
-<a name="SharedWorkspace+localDiffersFromRemote"></a>
-
-### sharedWorkspace.localDiffersFromRemote() ⇒ <code>Promise.&lt;Boolean&gt;</code>
-Detect whether the local archives (in memory) differ from their remote copies
-Fetches the remote copies from their datasources and detects differences between
-them and their local counterparts. Does not change/update the local items.
-
-**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
-**Returns**: <code>Promise.&lt;Boolean&gt;</code> - A promise that resolves with a boolean - true if
-     there are differences, false if there is not  
-<a name="SharedWorkspace+mergeItemFromRemote"></a>
-
-### sharedWorkspace.mergeItemFromRemote(item) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-Merge an item from its remote counterpart
-Detects differences between a local and a remote item, and merges the
-two copies together.
-
-**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise that resolves with the newly merged archive -
-     This archive is automatically saved over the original local copy.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| item | <code>[SharedWorkspaceItem](#SharedWorkspaceItem)</code> | The local item |
-
-<a name="SharedWorkspace+mergeSaveablesFromRemote"></a>
-
-### sharedWorkspace.mergeSaveablesFromRemote() ⇒ <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code>
-Merge all saveable remote copies into their local counterparts
-
-**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
-**Returns**: <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code> - A promise that resolves with an array of merged Archives  
-**See**
-
-- mergeItemFromRemote
-- embue
-
-<a name="SharedWorkspace+save"></a>
-
-### sharedWorkspace.save() ⇒ <code>Promise</code>
-Save all saveable archives to their remotes
-
-**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
-**Returns**: <code>Promise</code> - A promise that resolves when all saveable archives have been saved  
-<a name="SharedWorkspace+setPrimaryArchive"></a>
-
-### sharedWorkspace.setPrimaryArchive(archive, datasource, password) ⇒ <code>[SharedWorkspace](#SharedWorkspace)</code>
-Set the primary archive
-
-**Kind**: instance method of <code>[SharedWorkspace](#SharedWorkspace)</code>  
-**Returns**: <code>[SharedWorkspace](#SharedWorkspace)</code> - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The Archive instance |
-| datasource | <code>[TextDatasource](#TextDatasource)</code> | The datasource instance |
-| password | <code>String</code> | The master password |
-
 <a name="TextDatasource"></a>
 
 ## TextDatasource
@@ -4111,7 +3877,7 @@ Load from the stored content using a password to decrypt
 
 | Param | Type | Description |
 | --- | --- | --- |
-| credentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or Credentials instance to decrypt with |
+| credentials | <code>[Credentials](#Credentials)</code> | The password or Credentials instance to decrypt with |
 | [emptyCreatesNew] | <code>Boolean</code> | Create a new Archive instance if text contents are empty (defaults to false) |
 
 <a name="TextDatasource+save"></a>
@@ -4125,7 +3891,7 @@ Save an archive with a password
 | Param | Type | Description |
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>string</code> | The password or Credentials instance to encrypt with |
+| credentials | <code>[Credentials](#Credentials)</code> | The Credentials instance to encrypt with |
 
 <a name="TextDatasource+setContent"></a>
 
@@ -4192,7 +3958,7 @@ Load from the stored content using a password to decrypt
 
 | Param | Type | Description |
 | --- | --- | --- |
-| credentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or Credentials instance to decrypt with |
+| credentials | <code>[Credentials](#Credentials)</code> | The password or Credentials instance to decrypt with |
 | [emptyCreatesNew] | <code>Boolean</code> | Create a new Archive instance if text contents are empty (defaults to false) |
 
 <a name="TextDatasource+save"></a>
@@ -4206,7 +3972,7 @@ Save an archive with a password
 | Param | Type | Description |
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>string</code> | The password or Credentials instance to encrypt with |
+| credentials | <code>[Credentials](#Credentials)</code> | The Credentials instance to encrypt with |
 
 <a name="TextDatasource+setContent"></a>
 
@@ -4242,11 +4008,11 @@ Output the datasource configuration as a string
 
 * [WebDAVDatasource](#WebDAVDatasource) ⇐ <code>[TextDatasource](#TextDatasource)</code>
     * [new WebDAVDatasource()](#new_WebDAVDatasource_new)
-    * [new WebDAVDatasource(endpoint, webDAVPath, username, password)](#new_WebDAVDatasource_new)
+    * [new WebDAVDatasource(endpoint, webDAVPath, [credentials])](#new_WebDAVDatasource_new)
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
+    * [.load(credentials)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
     * [.toObject()](#WebDAVDatasource+toObject) ⇒ <code>Object</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
@@ -4258,7 +4024,7 @@ WebDAV datasource for reading and writing remote archives
 
 <a name="new_WebDAVDatasource_new"></a>
 
-### new WebDAVDatasource(endpoint, webDAVPath, username, password)
+### new WebDAVDatasource(endpoint, webDAVPath, [credentials])
 Constructor for the datasource
 
 
@@ -4266,8 +4032,7 @@ Constructor for the datasource
 | --- | --- | --- |
 | endpoint | <code>string</code> | URL for the WebDAV service (without resource path) |
 | webDAVPath | <code>string</code> | Resource path on the WebDAV service |
-| username | <code>string</code> | Username for the WebDAV service |
-| password | <code>string</code> | Password for the WebDAV service |
+| [credentials] | <code>[Credentials](#Credentials)</code> | Credentials (username/password) for the WebDAV service |
 
 <a name="WebDAVDatasource+getArchivePath"></a>
 
@@ -4285,21 +4050,21 @@ Get the remote endpoint URI (no resource path)
 **Returns**: <code>string</code> - The endpoint  
 <a name="WebDAVDatasource+load"></a>
 
-### webDAVDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-Load the archive using a password
+### webDAVDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+Load the archive from the datasource
 
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
 **Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the opened archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| password | <code>string</code> | The password for archive decryption |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials for archive decryption |
 
 <a name="WebDAVDatasource+save"></a>
 
-### webDAVDatasource.save(archive, password) ⇒ <code>Promise</code>
-Save an archive with a password to the WebDAV service
+### webDAVDatasource.save(archive, credentials) ⇒ <code>Promise</code>
+Save an archive to the WebDAV service
 
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
 **Overrides:** <code>[save](#TextDatasource+save)</code>  
@@ -4308,7 +4073,7 @@ Save an archive with a password to the WebDAV service
 | Param | Type | Description |
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
-| password | <code>string</code> | The password for encryption |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials for encryption |
 
 <a name="WebDAVDatasource+toObject"></a>
 
@@ -4344,11 +4109,11 @@ Output the datasource configuration as a string
 
 * [WebDAVDatasource](#WebDAVDatasource)
     * [new WebDAVDatasource()](#new_WebDAVDatasource_new)
-    * [new WebDAVDatasource(endpoint, webDAVPath, username, password)](#new_WebDAVDatasource_new)
+    * [new WebDAVDatasource(endpoint, webDAVPath, [credentials])](#new_WebDAVDatasource_new)
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(password)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, password)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
+    * [.load(credentials)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
     * [.toObject()](#WebDAVDatasource+toObject) ⇒ <code>Object</code>
     * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
@@ -4360,7 +4125,7 @@ WebDAV datasource for reading and writing remote archives
 
 <a name="new_WebDAVDatasource_new"></a>
 
-### new WebDAVDatasource(endpoint, webDAVPath, username, password)
+### new WebDAVDatasource(endpoint, webDAVPath, [credentials])
 Constructor for the datasource
 
 
@@ -4368,8 +4133,7 @@ Constructor for the datasource
 | --- | --- | --- |
 | endpoint | <code>string</code> | URL for the WebDAV service (without resource path) |
 | webDAVPath | <code>string</code> | Resource path on the WebDAV service |
-| username | <code>string</code> | Username for the WebDAV service |
-| password | <code>string</code> | Password for the WebDAV service |
+| [credentials] | <code>[Credentials](#Credentials)</code> | Credentials (username/password) for the WebDAV service |
 
 <a name="WebDAVDatasource+getArchivePath"></a>
 
@@ -4387,21 +4151,21 @@ Get the remote endpoint URI (no resource path)
 **Returns**: <code>string</code> - The endpoint  
 <a name="WebDAVDatasource+load"></a>
 
-### webDAVDatasource.load(password) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-Load the archive using a password
+### webDAVDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+Load the archive from the datasource
 
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
 **Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the opened archive  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| password | <code>string</code> | The password for archive decryption |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials for archive decryption |
 
 <a name="WebDAVDatasource+save"></a>
 
-### webDAVDatasource.save(archive, password) ⇒ <code>Promise</code>
-Save an archive with a password to the WebDAV service
+### webDAVDatasource.save(archive, credentials) ⇒ <code>Promise</code>
+Save an archive to the WebDAV service
 
 **Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
 **Overrides:** <code>[save](#TextDatasource+save)</code>  
@@ -4410,7 +4174,7 @@ Save an archive with a password to the WebDAV service
 | Param | Type | Description |
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
-| password | <code>string</code> | The password for encryption |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials for encryption |
 
 <a name="WebDAVDatasource+toObject"></a>
 
@@ -4538,105 +4302,131 @@ Gets a command by its key from the cache with its dependencies injected
 
 <a name="Workspace"></a>
 
-## ~~Workspace~~
-***Deprecated***
-
+## Workspace
 **Kind**: global class  
 
-* ~~[Workspace](#Workspace)~~
+* [Workspace](#Workspace)
     * [new Workspace()](#new_Workspace_new)
-    * [.archiveDiffersFromDatasource()](#Workspace+archiveDiffersFromDatasource) ⇒ <code>Promise</code>
-    * [.getArchive()](#Workspace+getArchive) ⇒ <code>[Archive](#Archive)</code>
-    * [.getDatasource()](#Workspace+getDatasource) ⇒ <code>Object</code>
-    * [.getPassword()](#Workspace+getPassword) ⇒ <code>String</code>
-    * [.mergeFromDatasource()](#Workspace+mergeFromDatasource) ⇒ <code>Promise</code>
+    * [.primary](#Workspace+primary) : <code>[WorkspaceItem](#WorkspaceItem)</code>
+    * [.addSharedArchive(archive, datasource, masterCredentials, [saveable])](#Workspace+addSharedArchive) ⇒ <code>[Workspace](#Workspace)</code>
+    * [.getAllItems()](#Workspace+getAllItems) ⇒ <code>[Array.&lt;WorkspaceItem&gt;](#WorkspaceItem)</code>
+    * [.getSaveableItems()](#Workspace+getSaveableItems) ⇒ <code>[Array.&lt;WorkspaceItem&gt;](#WorkspaceItem)</code>
+    * [.imbue()](#Workspace+imbue) ⇒ <code>[Workspace](#Workspace)</code>
+    * [.localDiffersFromRemote()](#Workspace+localDiffersFromRemote) ⇒ <code>Promise.&lt;Boolean&gt;</code>
+    * [.mergeItemFromRemote(item)](#Workspace+mergeItemFromRemote) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.mergeSaveablesFromRemote()](#Workspace+mergeSaveablesFromRemote) ⇒ <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code>
     * [.save()](#Workspace+save) ⇒ <code>Promise</code>
-    * [.setArchive(archive)](#Workspace+setArchive) ⇒ <code>[Workspace](#Workspace)</code>
-    * [.setDatasource(datasource)](#Workspace+setDatasource) ⇒ <code>[Workspace](#Workspace)</code>
-    * [.setPassword(password)](#Workspace+setPassword) ⇒ <code>[Workspace](#Workspace)</code>
+    * [.setPrimaryArchive(archive, datasource, masterCredentials)](#Workspace+setPrimaryArchive) ⇒ <code>[Workspace](#Workspace)</code>
 
 <a name="new_Workspace_new"></a>
 
 ### new Workspace()
-Workspace: handling archive loading, saving and merging
-Use `SharedWorkspace` instead
+Workspace
 
-<a name="Workspace+archiveDiffersFromDatasource"></a>
+<a name="Workspace+primary"></a>
 
-### workspace.archiveDiffersFromDatasource() ⇒ <code>Promise</code>
-Check if the archive differs from the one in the datasource
+### workspace.primary : <code>[WorkspaceItem](#WorkspaceItem)</code>
+The primary archive item
 
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**See**: stageArchiveFromDatasource  
-<a name="Workspace+getArchive"></a>
+**Kind**: instance property of <code>[Workspace](#Workspace)</code>  
+**Access:** public  
+<a name="Workspace+addSharedArchive"></a>
 
-### workspace.getArchive() ⇒ <code>[Archive](#Archive)</code>
-Get the archive instance
-
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>[Archive](#Archive)</code> - The archive instance  
-<a name="Workspace+getDatasource"></a>
-
-### workspace.getDatasource() ⇒ <code>Object</code>
-Get the datasource instance
+### workspace.addSharedArchive(archive, datasource, masterCredentials, [saveable]) ⇒ <code>[Workspace](#Workspace)</code>
+Add a shared archive item
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>Object</code> - A datasource instance (FileDatasource/TextDatasource etc.)  
-<a name="Workspace+getPassword"></a>
+**Returns**: <code>[Workspace](#Workspace)</code> - Self  
 
-### workspace.getPassword() ⇒ <code>String</code>
-Get the stored password
+| Param | Type | Description |
+| --- | --- | --- |
+| archive | <code>[Archive](#Archive)</code> | The archive instance |
+| datasource | <code>[TextDatasource](#TextDatasource)</code> | The datasource instance |
+| masterCredentials | <code>[Credentials](#Credentials)</code> | The master credentials (password) |
+| [saveable] | <code>Boolean</code> | Whether the archive is remotely saveable or not (default: true) |
+
+<a name="Workspace+getAllItems"></a>
+
+### workspace.getAllItems() ⇒ <code>[Array.&lt;WorkspaceItem&gt;](#WorkspaceItem)</code>
+Get all archive items
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>String</code> - The password  
-<a name="Workspace+mergeFromDatasource"></a>
+**Returns**: <code>[Array.&lt;WorkspaceItem&gt;](#WorkspaceItem)</code> - All of the items  
+<a name="Workspace+getSaveableItems"></a>
 
-### workspace.mergeFromDatasource() ⇒ <code>Promise</code>
-Perform a merge against the remote datasource
+### workspace.getSaveableItems() ⇒ <code>[Array.&lt;WorkspaceItem&gt;](#WorkspaceItem)</code>
+Get all the saveable items
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>[Array.&lt;WorkspaceItem&gt;](#WorkspaceItem)</code> - All of the saveable items  
+<a name="Workspace+imbue"></a>
+
+### workspace.imbue() ⇒ <code>[Workspace](#Workspace)</code>
+Imbue the primary archive with shared groups from all of the other archives
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>[Workspace](#Workspace)</code> - Self  
+**Throws**:
+
+- <code>Error</code> Throws if the primary archive is not set
+
+<a name="Workspace+localDiffersFromRemote"></a>
+
+### workspace.localDiffersFromRemote() ⇒ <code>Promise.&lt;Boolean&gt;</code>
+Detect whether the local archives (in memory) differ from their remote copies
+Fetches the remote copies from their datasources and detects differences between
+them and their local counterparts. Does not change/update the local items.
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>Promise.&lt;Boolean&gt;</code> - A promise that resolves with a boolean - true if
+     there are differences, false if there is not  
+<a name="Workspace+mergeItemFromRemote"></a>
+
+### workspace.mergeItemFromRemote(item) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+Merge an item from its remote counterpart
+Detects differences between a local and a remote item, and merges the
+two copies together.
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise that resolves with the newly merged archive -
+     This archive is automatically saved over the original local copy.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| item | <code>[WorkspaceItem](#WorkspaceItem)</code> | The local item |
+
+<a name="Workspace+mergeSaveablesFromRemote"></a>
+
+### workspace.mergeSaveablesFromRemote() ⇒ <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code>
+Merge all saveable remote copies into their local counterparts
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code> - A promise that resolves with an array of merged Archives  
+**See**
+
+- mergeItemFromRemote
+- embue
+
 <a name="Workspace+save"></a>
 
 ### workspace.save() ⇒ <code>Promise</code>
-Save the archive to the datasource
+Save all saveable archives to their remotes
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>Promise</code> - A promise that resolves when the saving has completed  
-<a name="Workspace+setArchive"></a>
+**Returns**: <code>Promise</code> - A promise that resolves when all saveable archives have been saved  
+<a name="Workspace+setPrimaryArchive"></a>
 
-### workspace.setArchive(archive) ⇒ <code>[Workspace](#Workspace)</code>
-Set the archive instance
-
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>[Workspace](#Workspace)</code> - Self  
-
-| Param | Type |
-| --- | --- |
-| archive | <code>[Archive](#Archive)</code> | 
-
-<a name="Workspace+setDatasource"></a>
-
-### workspace.setDatasource(datasource) ⇒ <code>[Workspace](#Workspace)</code>
-Set the datasource instance
+### workspace.setPrimaryArchive(archive, datasource, masterCredentials) ⇒ <code>[Workspace](#Workspace)</code>
+Set the primary archive
 
 **Kind**: instance method of <code>[Workspace](#Workspace)</code>  
 **Returns**: <code>[Workspace](#Workspace)</code> - Self  
 
-| Param | Type |
-| --- | --- |
-| datasource | <code>Object</code> | 
-
-<a name="Workspace+setPassword"></a>
-
-### workspace.setPassword(password) ⇒ <code>[Workspace](#Workspace)</code>
-Set the password
-
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>[Workspace](#Workspace)</code> - Self  
-
-| Param | Type |
-| --- | --- |
-| password | <code>String</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| archive | <code>[Archive](#Archive)</code> | The Archive instance |
+| datasource | <code>[TextDatasource](#TextDatasource)</code> | The datasource instance |
+| masterCredentials | <code>[Credentials](#Credentials)</code> | The master password |
 
 <a name="EntryCollection"></a>
 
@@ -4719,6 +4509,50 @@ Find groups by their title
 | --- | --- | --- |
 | title | <code>String</code> &#124; <code>RegExp</code> | The group title |
 
+<a name="createCredentials"></a>
+
+## createCredentials([type], [data]) ⇒ <code>[Credentials](#Credentials)</code>
+Create a credentials adapter
+Both `type` and `data` parameters are optional.
+
+**Kind**: global function  
+**Returns**: <code>[Credentials](#Credentials)</code> - A credentials adapter  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [type] | <code>String</code> | The type of credentials object |
+| [data] | <code>Object</code> | The credentials data |
+
+
+* [createCredentials([type], [data])](#createCredentials) ⇒ <code>[Credentials](#Credentials)</code>
+    * [.fromPassword(password)](#createCredentials.fromPassword) ⇒ <code>[Credentials](#Credentials)</code>
+    * [.fromSecureString(content, password)](#createCredentials.fromSecureString) ⇒ <code>[Promise.&lt;Credentials&gt;](#Credentials)</code>
+
+<a name="createCredentials.fromPassword"></a>
+
+### createCredentials.fromPassword(password) ⇒ <code>[Credentials](#Credentials)</code>
+Create a new credentials instance from a password
+
+**Kind**: static method of <code>[createCredentials](#createCredentials)</code>  
+**Returns**: <code>[Credentials](#Credentials)</code> - The credentials instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| password | <code>String</code> | The password to use |
+
+<a name="createCredentials.fromSecureString"></a>
+
+### createCredentials.fromSecureString(content, password) ⇒ <code>[Promise.&lt;Credentials&gt;](#Credentials)</code>
+Create a new credentials instance from an encrypted string
+
+**Kind**: static method of <code>[createCredentials](#createCredentials)</code>  
+**Returns**: <code>[Promise.&lt;Credentials&gt;](#Credentials)</code> - A promise that resolves with a credentials instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | The encrypted form of a credentials store |
+| password | <code>String</code> | The password to use to decrypt the content |
+
 <a name="dedupe"></a>
 
 ## dedupe(arr) ⇒ <code>Array</code>
@@ -4743,6 +4577,81 @@ De-dupe an array
 | entries | <code>Array.&lt;Object&gt;</code> | Array of entries |
 | attributes | <code>Object</code> | Archive attributes |
 
+<a name="Credentials"></a>
+
+## Credentials : <code>Object</code>
+Credentials wrapper
+
+**Kind**: global typedef  
+
+* [Credentials](#Credentials) : <code>Object</code>
+    * [.password](#Credentials+password) : <code>String</code> &#124; <code>undefined</code>
+    * [.type](#Credentials+type) : <code>String</code>
+    * [.username](#Credentials+username) : <code>String</code> &#124; <code>undefined</code>
+    * [.getValue(property)](#Credentials+getValue) ⇒ <code>\*</code> &#124; <code>undefined</code>
+    * [.getValueOrFail(property)](#Credentials+getValueOrFail) ⇒ <code>\*</code>
+    * [.setValue(property, value)](#Credentials+setValue) ⇒ <code>[Credentials](#Credentials)</code>
+
+<a name="Credentials+password"></a>
+
+### credentials.password : <code>String</code> &#124; <code>undefined</code>
+The password
+
+**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
+<a name="Credentials+type"></a>
+
+### credentials.type : <code>String</code>
+The credentials type
+
+**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
+**Read only**: true  
+<a name="Credentials+username"></a>
+
+### credentials.username : <code>String</code> &#124; <code>undefined</code>
+The username
+
+**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
+<a name="Credentials+getValue"></a>
+
+### credentials.getValue(property) ⇒ <code>\*</code> &#124; <code>undefined</code>
+Get a value from the credentials
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>\*</code> &#124; <code>undefined</code> - Returns the value if found, or undefined  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| property | <code>String</code> | The property to fetch |
+
+<a name="Credentials+getValueOrFail"></a>
+
+### credentials.getValueOrFail(property) ⇒ <code>\*</code>
+Get a value, or fail if it doesn't exist or isn't set
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>\*</code> - The value (not undefined)  
+**Throws**:
+
+- <code>Error</code> Throws if the value is undefined
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| property | <code>String</code> | The property to fetch |
+
+<a name="Credentials+setValue"></a>
+
+### credentials.setValue(property, value) ⇒ <code>[Credentials](#Credentials)</code>
+Set a value for a property
+
+**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Returns**: <code>[Credentials](#Credentials)</code> - Returns self, for chaining  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| property | <code>String</code> | The property to set |
+| value | <code>\*</code> | The value to set for the property |
+
 <a name="DisplayInfo"></a>
 
 ## DisplayInfo
@@ -4755,9 +4664,9 @@ De-dupe an array
 | username | <code>string</code> | The text to replace "username" |
 | password | <code>string</code> | The text to replace "password" |
 
-<a name="SharedWorkspaceItem"></a>
+<a name="WorkspaceItem"></a>
 
-## SharedWorkspaceItem : <code>Object</code>
+## WorkspaceItem : <code>Object</code>
 Shared workspace item
 
 **Kind**: global typedef  
