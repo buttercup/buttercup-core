@@ -1,4 +1,4 @@
-var cgr = require("../../source/classes/commands/CreateGroupCommand.js");
+var cgr = require("../../source/system/commands/CreateGroupCommand.js");
 
 module.exports = {
     setUp: function(cb) {

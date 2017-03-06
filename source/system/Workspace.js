@@ -10,7 +10,7 @@ var Archive = require("./Archive.js"),
  * @param {String} fullCommand The command to process
  * @private
  * @static
- * @memberof SharedWorkspace
+ * @memberof Workspace
  */
 function getCommandType(fullCommand) {
     return (fullCommand && fullCommand.length >= 3) ? fullCommand.substr(0, 3) : "";
@@ -18,7 +18,7 @@ function getCommandType(fullCommand) {
 
 /**
  * Shared workspace item
- * @typedef {Object} SharedWorkspaceItem
+ * @typedef {Object} WorkspaceItem
  * @property {Archive} archive - An archive instance
  * @property {String} password - The master password
  * @property {TextDatasource} datasource - A datasource instance
@@ -26,11 +26,11 @@ function getCommandType(fullCommand) {
 
 /**
  * Check if an item is writeable
- * @param {SharedWorkspaceItem} item The item to check
+ * @param {WorkspaceItem} item The item to check
  * @returns {Boolean} True if the item is writeable
  * @private
  * @static
- * @memberof SharedWorkspace
+ * @memberof Workspace
  */
 function itemIsWriteable(item) {
     return item && item.saveable && item.archive && (item.archive.readOnly === false);
@@ -42,7 +42,7 @@ function itemIsWriteable(item) {
  * @returns {Array.<String>} The history minus any destructive commands
  * @private
  * @static
- * @memberof SharedWorkspace
+ * @memberof Workspace
  */
 function stripDestructiveCommands(history) {
     let destructiveSlugs = Object
@@ -57,9 +57,9 @@ function stripDestructiveCommands(history) {
 
 /**
  * Workspace
- * @class SharedWorkspace
+ * @class Workspace
  */
-class SharedWorkspace {
+class Workspace {
 
     constructor() {
         this._archives = [];
@@ -67,8 +67,8 @@ class SharedWorkspace {
 
     /**
      * The primary archive item
-     * @type {SharedWorkspaceItem}
-     * @memberof SharedWorkspace
+     * @type {WorkspaceItem}
+     * @memberof Workspace
      * @instance
      * @public
      * @name primary
@@ -82,11 +82,11 @@ class SharedWorkspace {
      * Add a shared archive item
      * @param {Archive} archive The archive instance
      * @param {TextDatasource} datasource The datasource instance
-     * @param {String} password The master password
+     * @param {Credentials} masterCredentials The master credentials (password)
      * @param {Boolean=} saveable Whether the archive is remotely saveable or not (default: true)
-     * @returns {SharedWorkspace} Self
+     * @returns {Workspace} Self
      */
-    addSharedArchive(archive, datasource, password, saveable) {
+    addSharedArchive(archive, datasource, masterCredentials, saveable) {
         saveable = (saveable === undefined) ? true : saveable;
         if (this._archives.length <= 0) {
             this._archives[0] = null;
@@ -94,7 +94,7 @@ class SharedWorkspace {
         this._archives.push({
             archive:        archive,
             datasource:     datasource,
-            password:       password,
+            credentials:    masterCredentials,
             saveable:       saveable
         });
         return this;
@@ -102,7 +102,7 @@ class SharedWorkspace {
 
     /**
      * Get all archive items
-     * @returns {Array.<SharedWorkspaceItem>} All of the items
+     * @returns {Array.<WorkspaceItem>} All of the items
      */
     getAllItems() {
         return [].concat(this._archives);
@@ -110,7 +110,7 @@ class SharedWorkspace {
 
     /**
      * Get all the saveable items
-     * @returns {Array.<SharedWorkspaceItem>} All of the saveable items
+     * @returns {Array.<WorkspaceItem>} All of the saveable items
      */
     getSaveableItems() {
         return this._archives.filter(function(item) {
@@ -121,7 +121,7 @@ class SharedWorkspace {
     /**
      * Imbue the primary archive with shared groups from all of the other archives
      * @throws {Error} Throws if the primary archive is not set
-     * @returns {SharedWorkspace} Self
+     * @returns {Workspace} Self
      */
     imbue() {
         let items = this.getAllItems(),
@@ -136,7 +136,7 @@ class SharedWorkspace {
         items.forEach(function(item) {
             item.archive
                 .getGroups()
-                .filter((group) => group.isShared())
+                .filter(group => group.isShared())
                 .forEach(function(group) {
                     // mark as foreign
                     group._getRemoteObject()._foreign = true;
@@ -159,7 +159,7 @@ class SharedWorkspace {
             .all(
                 this.getSaveableItems().map(function(item) {
                     return item.datasource
-                        .load(item.password)
+                        .load(item.credentials)
                         .then(function(loadedItem) {
                             var comparator = new Comparator(item.archive, loadedItem);
                             return comparator.archivesDiffer();
@@ -175,7 +175,7 @@ class SharedWorkspace {
      * Merge an item from its remote counterpart
      * Detects differences between a local and a remote item, and merges the
      * two copies together.
-     * @param {SharedWorkspaceItem} item The local item
+     * @param {WorkspaceItem} item The local item
      * @returns {Promise.<Archive>} A promise that resolves with the newly merged archive -
      *      This archive is automatically saved over the original local copy.
      */
@@ -184,7 +184,7 @@ class SharedWorkspace {
             throw new Error("Archive not writeable");
         }
         return item.datasource
-            .load(item.password)
+            .load(item.credentials)
             .then(function(stagedArchive) {
                 var comparator = new Comparator(item.archive, stagedArchive),
                     differences = comparator.calculateDifferences();
@@ -232,7 +232,7 @@ class SharedWorkspace {
             this.getSaveableItems().map(function(item) {
                 return item.datasource.save(
                     item.archive,
-                    item.password
+                    item.credentials
                 );
             })
         );
@@ -242,14 +242,14 @@ class SharedWorkspace {
      * Set the primary archive
      * @param {Archive} archive The Archive instance
      * @param {TextDatasource} datasource The datasource instance
-     * @param {String} password The master password
-     * @returns {SharedWorkspace} Self
+     * @param {Credentials} masterCredentials The master password
+     * @returns {Workspace} Self
      */
-    setPrimaryArchive(archive, datasource, password) {
+    setPrimaryArchive(archive, datasource, masterCredentials) {
         this._archives[0] = {
             archive:        archive,
             datasource:     datasource,
-            password:       password,
+            credentials:    masterCredentials,
             saveable:       true
         };
         return this;
@@ -257,4 +257,4 @@ class SharedWorkspace {
 
 }
 
-module.exports = SharedWorkspace;
+module.exports = Workspace;

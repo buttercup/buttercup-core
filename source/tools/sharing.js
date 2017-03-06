@@ -1,6 +1,6 @@
 "use strict";
 
-var describe = require("../classes/Descriptor.js");
+var describe = require("../system/Descriptor.js");
 
 module.exports = {
 

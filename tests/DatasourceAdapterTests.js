@@ -1,7 +1,7 @@
 var lib = require("../source/module.js");
 
 var Archive = lib.Archive,
-    Credentials = lib.Credentials,
+    createCredentials = lib.createCredentials,
     TextDatasource = lib.TextDatasource,
     DatasourceAdapter = lib.DatasourceAdapter;
 
@@ -12,7 +12,7 @@ module.exports = {
             testDatasource = new TextDatasource(),
             _this = this;
         testDatasource
-            .save(testArchive, "abc123")
+            .save(testArchive, createCredentials.fromPassword("abc123"))
             .then(function(content) {
                 _this.content = content;
             })
@@ -23,8 +23,8 @@ module.exports = {
 
         createsTextDatasource: function(test) {
             var packet = JSON.stringify({ type: "text", content: this.content });
-            var ds = DatasourceAdapter.stringToDatasource(packet, new Credentials());
-            ds.load("abc123")
+            var ds = DatasourceAdapter.stringToDatasource(packet, createCredentials());
+            ds.load(createCredentials.fromPassword("abc123"))
                 .then(function(archive) {
                     test.ok(archive instanceof Archive, "Loaded item should be an archive");
                 })

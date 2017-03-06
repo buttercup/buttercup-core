@@ -3,12 +3,12 @@ var lib = require("../source/module.js");
 var Archive = lib.Archive,
     WebDAVDatasource = lib.WebDAVDatasource,
     TextDatasource = lib.TextDatasource,
-    signing = lib.tools.signing;
+    signing = lib.tools.signing,
+    createCredentials = lib.createCredentials;
 
-var WebDAVFSMock = function(endpoint, username, password) {
+var WebDAVFSMock = function(endpoint, credentials) {
     this.endpoint = endpoint;
-    this.username = username;
-    this.password = password;
+    this.credentials = credentials;
     this.content = "";
     this.writeFile = function() {
         this.writeFileArgs = Array.prototype.slice.call(arguments);
@@ -28,10 +28,10 @@ module.exports = {
         var _this = this;
         this.archive = new Archive();
         var group = this.archive.createGroup("main");
-        this.datasource = new WebDAVDatasource("", "", "user", "pass");
+        this.datasource = new WebDAVDatasource("", "", createCredentials({username: "user", password: "pass"}));
         this.wfsMock = this.datasource._wfs = new WebDAVFSMock();
         var textDatasource = new TextDatasource();
-        textDatasource.save(this.archive, "abc123")
+        textDatasource.save(this.archive, createCredentials.fromPassword("abc123"))
             .then(function(data) {
                 //_this.content = data;
                 _this.wfsMock.content = data;
@@ -46,7 +46,7 @@ module.exports = {
 
         callsWebDAVFSWithCorrectInformation: function(test) {
             var mock = this.wfsMock;
-            this.datasource.load("abc123")
+            this.datasource.load(createCredentials.fromPassword("abc123"))
                 .then(function(archive) {
                     var args = mock.readFileArgs;
                     test.ok(args.indexOf("utf8") >= 0, "Call should specify UTF8 encoding");
@@ -65,7 +65,7 @@ module.exports = {
 
         callsWebDAVFSWithCorrectInformation: function(test) {
             var mock = this.wfsMock;
-            this.datasource.save(this.archive, "myPass")
+            this.datasource.save(this.archive, createCredentials.fromPassword("myPass"))
                 .then(function() {
                     var args = mock.writeFileArgs,
                         encrypted = args[1];

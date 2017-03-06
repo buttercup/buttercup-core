@@ -35,45 +35,43 @@ class FileDatasource extends TextDatasource {
 
     /**
      * Load from the filename specified in the constructor using a password
-     * @param {string} password The password for decryption
+     * @param {Credentials} credentials The credentials for decryption
      * @returns {Promise<Archive>} A promise resolving with the opened archive
      */
-    load(password) {
+    load(credentials) {
         debug("load archive");
         var filename = this._filename;
         return (new Promise(function(resolve, reject) {
             fs.readFile(filename, "utf8", function(error, data) {
                 if (error) {
-                    (reject)(error);
-                } else {
-                    (resolve)(data);
+                    return reject(error);
                 }
+                return resolve(data);
             });
         }))
         .then((data) => {
             this.setContent(data);
-            return super.load(password);
+            return super.load(credentials);
         });
     }
 
     /**
      * Save an archive to a file using a password for encryption
      * @param {Archive} archive The archive to save
-     * @param {string} password The password to save with
+     * @param {Credentials} credentials The credentials to save with
      * @returns {Promise} A promise that resolves when saving is complete
      */
-    save(archive, password) {
+    save(archive, credentials) {
         debug("save archive");
         return super
-            .save(archive, password)
+            .save(archive, credentials)
             .then((encrypted) => {
                 return new Promise((resolve, reject) => {
                     fs.writeFile(this._filename, encrypted, function(err) {
                         if (err) {
-                            (reject)(err);
-                        } else {
-                            (resolve)();
+                            return reject(err);
                         }
+                        return resolve();
                     });
                 });
             });

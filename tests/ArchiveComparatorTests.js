@@ -2,7 +2,7 @@ var lib = require("../source/module.js");
 
 var Archive = lib.Archive;
 
-var Comparator = require("../source/classes/ArchiveComparator.js");
+var Comparator = require("../source/system/ArchiveComparator.js");
 
 module.exports = {
 
