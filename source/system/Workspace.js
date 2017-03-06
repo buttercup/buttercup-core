@@ -136,7 +136,7 @@ class Workspace {
         items.forEach(function(item) {
             item.archive
                 .getGroups()
-                .filter((group) => group.isShared())
+                .filter(group => group.isShared())
                 .forEach(function(group) {
                     // mark as foreign
                     group._getRemoteObject()._foreign = true;
