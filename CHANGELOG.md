@@ -1,5 +1,17 @@
 # Buttercup-core release change-log
 
+## v0.34.0
+_2017-03-06_
+
+ * Upgrade iocane to 0.6.0
+    * Increase PBKDF2 rounds to 200-250k
+ * New credentials factory
+ * **Breaking:**
+    * Remove old `Workspace`
+    * Rename `SharedWorkspace` to `Workspace`
+    * Remove `Credentials` class
+    * All password authentication methods to use new credentials structure
+
 ## v0.33.2
 _2017-01-07_
 
