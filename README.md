@@ -111,14 +111,14 @@ myGroup.delete(); // `myGroup` reference no longer valid
 Archives can be saved with datasources:
 
 ```javascript
-const { FileDatasource } = Buttercup;
+const { FileDatasource, createCredentials } = Buttercup;
 
 let ds = new FileDatasource("~/myArchive.bcup");
-ds.save(myArchive, "myPa55word").then(function() {
+ds.save(myArchive, createCredentials.fromPassword("myPa55word")).then(function() {
     console.log("Saved!");
 });
 
-ds.load("myPa55word")
+ds.load(createCredentials.fromPassword("myPa55word"))
     .then(function(archive) {
         // loaded `archive`
     })
@@ -130,12 +130,12 @@ ds.load("myPa55word")
 Archives can be managed more easily using a `Workspace`. Workspaces are designed to handle a primary archive and potentially several shared archives, each with their own master password and datasource. When integrating with **Buttercup server**, workspaces allow you to handle multiple shared archives where groups can be handled by multiple users.
 
 ```javascript
-const { Workspace } = Buttercup;
+const { Workspace, createCredentials } = Buttercup;
 
 let workspace = new Workspace();
 workspace
-    .setPrimaryArchive(myArchive, myDatasource, "master password")
-    .addSharedArchive(sharedArchive1, sharedDS1, "shared pass", /* saveable */ true);
+    .setPrimaryArchive(myArchive, myDatasource, createCredentials.fromPassword("master password"))
+    .addSharedArchive(sharedArchive1, sharedDS1, createCredentials.fromPassword("shared pass"), /* saveable */ true);
 
 workspace
     .save()
