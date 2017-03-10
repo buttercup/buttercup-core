@@ -1,9 +1,10 @@
 var lib = require("../../source/module.js");
 var Workspace = lib.Workspace,
     Archive = lib.Archive,
-    createCredentials = lib.createCredentials;
+    createCredentials = lib.createCredentials,
+    encodingTools = lib.tools.encoding;
 
-//var Comparator = require(GLOBAL.root + "/system/ArchiveComparator.js");
+const E = encodingTools.encodeStringValue;
 
 module.exports = {
 
@@ -15,7 +16,7 @@ module.exports = {
                 'tgr 1 "Main Group"',
                 'pad 1',
                 'cgr 1 2',
-                'tgr 2 "Secondary Group',
+                'tgr 2 "Secondary Group"',
                 'pad 2',
                 'cen 1 1',
                 'sep 1 title "My first entry"',
@@ -86,8 +87,8 @@ module.exports = {
         workspace.mergeSaveablesFromRemote()
             .then(function() {
                 var mergedHistory = workspace.primary.archive._getWestley().getHistory();
-                test.ok(mergedHistory.indexOf('tgr 3 "Third group"') > 0, "Merged from group A");
-                test.ok(mergedHistory.indexOf('sep 2 title "My second entry"') > 0,
+                test.ok(mergedHistory.indexOf(`tgr 3 "Third group"`) > 0, "Merged from group A");
+                test.ok(mergedHistory.indexOf(`sep 2 title "My second entry"`) > 0,
                     "Merged from group B");
                 test.ok(mergedHistory.indexOf('pad 4') > 0, "Merged base");
                 test.ok(mergedHistory.indexOf('dgr 1') < 0, "Filtered out deletion commands");

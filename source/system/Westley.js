@@ -4,6 +4,7 @@ const Inigo = require("./InigoGenerator.js");
 const commandTools = require("../tools/command.js");
 const searchingTools = require("../tools/searching-raw.js");
 const entryTools = require("../tools/entry.js");
+const encodingTools = require("../tools/encoding.js");
 
 const VALID_COMMAND_EXP =             /^[a-z]{3}[ ].+$/;
 
@@ -98,7 +99,12 @@ class Westley {
             // prepend
             this._history.unshift(command);
         }
-        commandObject.execute.apply(commandObject, [this._dataset].concat(commandComponents));
+        commandObject.execute.apply(
+            commandObject,
+            [this._dataset].concat(
+                this._processCommandParameters(commandKey, commandComponents)
+            )
+        );
         return this;
     }
 
@@ -134,6 +140,7 @@ class Westley {
      * Gets a command by its key from the cache with its dependencies injected
      * @param {String} commandKey The key of the command
      * @returns {Command} Returns the command
+     * @protected
      * @memberof Westley
      */
     _getCommandForKey(commandKey) {
@@ -155,6 +162,28 @@ class Westley {
         }
 
         return this._cachedCommands[commandKey];
+    }
+
+    _processCommandParameters(commandKey, parameters) {
+        let commandDescription;
+        Object.keys(Inigo.Command).find(function(key) {
+            if (Inigo.Command[key].s === commandKey) {
+                commandDescription = Inigo.Command[key];
+                return true;
+            }
+            return false;
+        });
+        if (!commandDescription) {
+            throw new Error(`Cannot process command parameters: no command found for key: ${commandKey}`);
+        }
+        return parameters.map(function(parameter, i) {
+            if (commandDescription.args[i].encode === true) {
+                if (encodingTools.isEncoded(parameter)) {
+                    return encodingTools.decodeStringValue(parameter);
+                }
+            }
+            return parameter;
+        });
     }
 
 }

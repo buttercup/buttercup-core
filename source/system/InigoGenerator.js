@@ -12,10 +12,10 @@ InigoCommand.prototype.addArgument = function(arg) {
         argRules = this._commandKey.args,
         newArgRule = (argRules.length <= newArgIndex) ? false : argRules[newArgIndex];
     if (newArgRule === false) {
-        throw new Error("Too many arguments for command");
+        throw new Error(`Failed adding argument for command "${this._commandKey.s}": too many arguments for command`);
     }
     if (!newArgRule.test.test(arg)) {
-        throw new Error("Argument " + newArgIndex + " is of invalid format");
+        throw new Error(`Failed adding argument for command "${this._commandKey.s}": argument ${newArgIndex} is of invalid format`);
     }
     this._commandArgs.push(newArgRule.wrap(arg));
     return this;
@@ -28,19 +28,23 @@ InigoCommand.prototype.generateCommand = function() {
 InigoCommand.CommandArgument = {
     ItemID: {
         test: /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i,
-        wrap: function(txt) { return txt; }
+        wrap: function(txt) { return txt; },
+        encode: false
     },
     ItemIDOrRoot: {
         test: /^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|0)$/i,
-        wrap: function(txt) { return txt; }
+        wrap: function(txt) { return txt; },
+        encode: false
     },
     StringKey: {
         test: /^\w+$/,
-        wrap: function(txt) { return txt; }
+        wrap: function(txt) { return encoding.encodeStringValue(txt); },
+        encode: true
     },
     StringValue: {
-        test: /(^.+$|^$)/,
-        wrap: function(txt) { return '"' + encoding.escapeTextValue(txt) + '"' }
+        test: /(^[\s\S]+$|^$)/,
+        wrap: function(txt) { return encoding.encodeStringValue(txt); },
+        encode: true
     }
 };
 var ARG = InigoCommand.CommandArgument;

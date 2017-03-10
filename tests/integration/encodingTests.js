@@ -6,15 +6,15 @@ var Archive = lib.Archive,
 module.exports = {
 
     setUp: function(done) {
-        let archive = new Archive();
-        let mainGroup = archive.createGroup("general"),
+        var archive = new Archive();
+        var mainGroup = archive.createGroup("general"),
             mainEntry = mainGroup.createEntry("login");
         mainEntry.setProperty("title", "   \n   ");
         mainEntry.setProperty("username", " some\nspecialχ");
         mainEntry.setProperty("password", "-----TEST-----\n\n\tSpecial\n-----/\"Test\"\"----");
-        mainEntry.setMeta("special \n\n\t special", "special \n\n\t special");
+        mainEntry.setMeta("specialMeta", "special \n\n\t special ");
         this.entryID = mainEntry.getID();
-        let tds = new TextDatasource();
+        var tds = new TextDatasource();
         tds
             .save(archive, createCredentials.fromPassword("myPass"))
             .then(encrypted => {
@@ -28,7 +28,7 @@ module.exports = {
     },
 
     supportsSpecialPropertyValues: function(test) {
-        let newEntry = this.archive2.findEntryByID(this.entryID);
+        var newEntry = this.archive2.findEntryByID(this.entryID);
         test.strictEqual(newEntry.getProperty("title"), "   \n   ", "Title should match");
         test.strictEqual(newEntry.getProperty("username"), " some\nspecialχ", "Username should match");
         test.strictEqual(newEntry.getProperty("password"), "-----TEST-----\n\n\tSpecial\n-----/\"Test\"\"----", "Password should match");
@@ -36,8 +36,8 @@ module.exports = {
     },
 
     supportsSpecialMetaValues: function(test) {
-        let newEntry = this.archive2.findEntryByID(this.entryID);
-        test.strictEqual(newEntry.getMeta("special \n\n\t special"), "special \n\n\t special", "Meta value should match");
+        var newEntry = this.archive2.findEntryByID(this.entryID);
+        test.strictEqual(newEntry.getMeta("specialMeta"), "special \n\n\t special ", "Meta value should match");
         test.done();
     }
 
