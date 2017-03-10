@@ -6,7 +6,8 @@ var Archive = require("./Archive.js"),
     Credentials = require("./credentials.js"),
     signing = require("../tools/signing.js"),
     encoding = require("../tools/encoding.js"),
-    createDebug = require("../tools/debug.js");
+    createDebug = require("../tools/debug.js"),
+    historyTools = require("../tools/history.js");
 
 const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
@@ -92,7 +93,7 @@ class TextDatasource {
                 if (decrypted && decrypted.length > 0) {
                     var decompressed = encoding.decompress(decrypted);
                     if (decompressed) {
-                        return decompressed.split("\n");
+                        return historyTools.historyStringToArray(decompressed);
                     }
                 }
                 return Promise.reject(new Error("Decryption failed"));
@@ -111,7 +112,7 @@ class TextDatasource {
         let credentialsData = processCredentials(credentials),
             password = credentialsData.password,
             keyfile = credentialsData.keyfile;
-        let history = archive._getWestley().getHistory().join("\n"),
+        let history = historyTools.historyArrayToString(archive._getWestley().getHistory()),
             compressed = encoding.compress(history);
         return Promise
             .resolve(compressed)
