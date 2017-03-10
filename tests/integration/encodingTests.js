@@ -33,6 +33,12 @@ module.exports = {
         test.strictEqual(newEntry.getProperty("username"), " some\nspecialχ", "Username should match");
         test.strictEqual(newEntry.getProperty("password"), "-----TEST-----\n\n\tSpecial\n-----/\"Test\"\"----", "Password should match");
         test.done();
+    },
+
+    supportsSpecialMetaValues: function(test) {
+        let newEntry = this.archive2.findEntryByID(this.entryID);
+        test.strictEqual(newEntry.getMeta("special \n\n\t special"), "special \n\n\t special", "Meta value should match");
+        test.done();
     }
 
 };
