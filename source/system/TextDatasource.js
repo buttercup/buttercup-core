@@ -130,7 +130,7 @@ class TextDatasource {
 
     /**
      * Set the text content
-     * @param {string} content The new text content
+     * @param {String} content The encrypted text content
      * @returns {TextDatasource} Self
      */
     setContent(content) {
