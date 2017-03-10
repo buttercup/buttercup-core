@@ -24,7 +24,7 @@ module.exports = {
                 'tgr 1 "Main Group"',
                 'pad 1',
                 'cgr 1 2',
-                'tgr 2 "Secondary Group',
+                'tgr 2 "Secondary Group"',
                 'pad 2',
                 'cen 1 1',
                 'sep 1 title "My first entry"',

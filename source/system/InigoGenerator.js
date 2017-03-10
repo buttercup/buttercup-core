@@ -28,19 +28,23 @@ InigoCommand.prototype.generateCommand = function() {
 InigoCommand.CommandArgument = {
     ItemID: {
         test: /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i,
-        wrap: function(txt) { return txt; }
+        wrap: function(txt) { return txt; },
+        encode: false
     },
     ItemIDOrRoot: {
         test: /^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|0)$/i,
-        wrap: function(txt) { return txt; }
+        wrap: function(txt) { return txt; },
+        encode: false
     },
     StringKey: {
         test: /^\w+$/,
-        wrap: function(txt) { return txt; }
+        wrap: function(txt) { return encoding.encodeStringValue(txt); },
+        encode: true
     },
     StringValue: {
         test: /(^.+$|^$)/,
-        wrap: function(txt) { return '"' + encoding.escapeTextValue(txt) + '"' }
+        wrap: function(txt) { return encoding.encodeStringValue(txt); },
+        encode: true
     }
 };
 var ARG = InigoCommand.CommandArgument;
