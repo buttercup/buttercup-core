@@ -12,7 +12,7 @@ module.exports = {
         mainEntry.setProperty("title", "   \n   ");
         mainEntry.setProperty("username", " some\nspecialχ");
         mainEntry.setProperty("password", "-----TEST-----\n\n\tSpecial\n-----/\"Test\"\"----");
-        mainEntry.setMeta("special \n\n\t special", "special \n\n\t special");
+        mainEntry.setMeta("specialMeta", "special \n\n\t special ");
         this.entryID = mainEntry.getID();
         let tds = new TextDatasource();
         tds
@@ -37,7 +37,7 @@ module.exports = {
 
     supportsSpecialMetaValues: function(test) {
         let newEntry = this.archive2.findEntryByID(this.entryID);
-        test.strictEqual(newEntry.getMeta("special \n\n\t special"), "special \n\n\t special", "Meta value should match");
+        test.strictEqual(newEntry.getMeta("specialMeta"), "special \n\n\t special ", "Meta value should match");
         test.done();
     }
 
