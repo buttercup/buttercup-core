@@ -14,6 +14,11 @@ var __gzipOptions = {
 
 var lib = module.exports = {
 
+    /**
+     * Compress text using GZIP
+     * @param {String} text The text to compress
+     * @returns {String} Compressed text
+     */
     compress: function(text) {
         var compressed = gzip.zip(text, __gzipOptions),
             compressedLength = compressed.length,
@@ -24,6 +29,11 @@ var lib = module.exports = {
         return outputText;
     },
 
+    /**
+     * Decode an encoded property/meta value
+     * @param {String} value The encoded value
+     * @returns {String} The decoded value
+     */
     decodeStringValue: function(value) {
         if (lib.isEncoded(value) !== true) {
             throw new Error("Cannot decode: provided value is not encoded");
@@ -33,6 +43,11 @@ var lib = module.exports = {
         return buff.toString("utf8");
     },
 
+    /**
+     * Decompress a compressed string (GZIP)
+     * @param {String} text The compressed text
+     * @returns {String} Decompressed text
+     */
     decompress: function(text) {
         var compressedData = [],
             textLen = text.length;
@@ -48,14 +63,20 @@ var lib = module.exports = {
         return outputText;
     },
 
+    /**
+     * Encode a raw value into safe storage form
+     * Uses base64 for encoding
+     * @param {String} value The raw value to encode
+     * @returns {String} The encoded result
+     */
     encodeStringValue: function(value) {
         return ENCODED_STRING_PREFIX + Buffer.from(value, "utf8").toString("base64");
     },
 
-    escapeTextValue: function(txt) {
-        return txt.replace(/"/g, '\\"');
-    },
-
+    /**
+     * Get a unique identifier (UUID v4)
+     * @returns {String} A unique identifier
+     */
     getUniqueID: function() {
         return uuid.v4();
     },
@@ -69,12 +90,13 @@ var lib = module.exports = {
         return Crypto.createHash("sha256").update(text).digest();
     },
 
+    /**
+     * Check if a string value is encoded
+     * @param {String} text The value to check
+     * @returns {Boolean} True if the text is encoded
+     */
     isEncoded: function(text) {
         return ENCODED_STRING_PATTERN.test(text);
-    },
-
-    unescapeTextValue: function(txt) {
-        return txt.replace(/\\"/g, '"');
     }
 
 };
