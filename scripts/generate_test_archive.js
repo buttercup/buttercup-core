@@ -6,7 +6,8 @@
         path = require("path"),
         outputDir = path.resolve(__dirname + "/../tests/_archives"),
         outputFile = outputDir + "/test-archive-" + packageJSON.version + ".bcup",
-        Buttercup = require(__dirname + "/../source/module.js");
+        Buttercup = require(__dirname + "/../source/module.js"),
+        createCredentials = Buttercup.createCredentials;
 
     console.log("Building archive...");
 
@@ -22,7 +23,7 @@
     // Datasource
     console.log("Saving archive: " + outputFile);
     var datasource = new Buttercup.FileDatasource(outputFile);
-    datasource.save(archive, "this is a long password used for a test archive!");
+    datasource.save(archive, createCredentials.fromPassword("this is a long password used for a test archive!"));
 
     console.log("Test archive completed for version: " + packageJSON.version);
 
