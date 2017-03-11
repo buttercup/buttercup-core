@@ -1,5 +1,11 @@
 # Buttercup-core release change-log
 
+## v0.35.0
+_2017-03-11_
+
+ * Serialisation of all string-type values in history
+   * _Old versions of Buttercup **will not be able to read** archives from this version!_
+
 ## v0.34.0
 _2017-03-06_
 
