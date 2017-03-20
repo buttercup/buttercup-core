@@ -113,6 +113,15 @@ Both <code>type</code> and <code>data</code> parameters are optional.</p>
 <dt><a href="#dedupe">dedupe(arr)</a> ⇒ <code>Array</code></dt>
 <dd><p>De-dupe an array</p>
 </dd>
+<dt><a href="#findEntriesByCheck">findEntriesByCheck(groups, compareFn)</a> ⇒ <code><a href="#Entry">Array.&lt;Entry&gt;</a></code></dt>
+<dd><p>Find entry instances by filtering with a compare function</p>
+</dd>
+<dt><a href="#findGroupsByCheck">findGroupsByCheck(groups, compareFn)</a> ⇒ <code><a href="#Group">Array.&lt;Group&gt;</a></code></dt>
+<dd><p>Find group instances within groups that satisfy some check</p>
+</dd>
+<dt><a href="#getAllEntries">getAllEntries(groups)</a> ⇒ <code><a href="#Entry">Array.&lt;Entry&gt;</a></code></dt>
+<dd><p>Get all entries within a collection of groups</p>
+</dd>
 </dl>
 
 ## Typedefs
@@ -596,7 +605,7 @@ Set the text content
 
 | Param | Type | Description |
 | --- | --- | --- |
-| content | <code>string</code> | The new text content |
+| content | <code>String</code> | The encrypted text content |
 
 <a name="TextDatasource+toString"></a>
 
@@ -681,7 +690,7 @@ Set the text content
 
 | Param | Type | Description |
 | --- | --- | --- |
-| content | <code>string</code> | The new text content |
+| content | <code>String</code> | The encrypted text content |
 
 <a name="TextDatasource+toString"></a>
 
@@ -2597,7 +2606,7 @@ Set the text content
 
 | Param | Type | Description |
 | --- | --- | --- |
-| content | <code>string</code> | The new text content |
+| content | <code>String</code> | The encrypted text content |
 
 <a name="TextDatasource+toString"></a>
 
@@ -2688,7 +2697,7 @@ Set the text content
 
 | Param | Type | Description |
 | --- | --- | --- |
-| content | <code>string</code> | The new text content |
+| content | <code>String</code> | The encrypted text content |
 
 <a name="TextDatasource+toString"></a>
 
@@ -3730,7 +3739,7 @@ Set the text content
 
 | Param | Type | Description |
 | --- | --- | --- |
-| content | <code>string</code> | The new text content |
+| content | <code>String</code> | The encrypted text content |
 
 <a name="TextDatasource+toString"></a>
 
@@ -3829,7 +3838,7 @@ Set the text content
 
 | Param | Type | Description |
 | --- | --- | --- |
-| content | <code>string</code> | The new text content |
+| content | <code>String</code> | The encrypted text content |
 
 <a name="TextDatasource+toString"></a>
 
@@ -3903,7 +3912,7 @@ Set the text content
 
 | Param | Type | Description |
 | --- | --- | --- |
-| content | <code>string</code> | The new text content |
+| content | <code>String</code> | The encrypted text content |
 
 <a name="TextDatasource+toObject"></a>
 
@@ -3984,7 +3993,7 @@ Set the text content
 
 | Param | Type | Description |
 | --- | --- | --- |
-| content | <code>string</code> | The new text content |
+| content | <code>String</code> | The encrypted text content |
 
 <a name="TextDatasource+toObject"></a>
 
@@ -4093,7 +4102,7 @@ Set the text content
 
 | Param | Type | Description |
 | --- | --- | --- |
-| content | <code>string</code> | The new text content |
+| content | <code>String</code> | The encrypted text content |
 
 <a name="TextDatasource+toString"></a>
 
@@ -4194,7 +4203,7 @@ Set the text content
 
 | Param | Type | Description |
 | --- | --- | --- |
-| content | <code>string</code> | The new text content |
+| content | <code>String</code> | The encrypted text content |
 
 <a name="TextDatasource+toString"></a>
 
@@ -4295,6 +4304,7 @@ Gets a command by its key from the cache with its dependencies injected
 
 **Kind**: instance method of <code>[Westley](#Westley)</code>  
 **Returns**: <code>Command</code> - Returns the command  
+**Access:** protected  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -4564,6 +4574,44 @@ De-dupe an array
 | Param | Type | Description |
 | --- | --- | --- |
 | arr | <code>Array</code> | The array |
+
+<a name="findEntriesByCheck"></a>
+
+## findEntriesByCheck(groups, compareFn) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+Find entry instances by filtering with a compare function
+
+**Kind**: global function  
+**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found entries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| groups | <code>[Array.&lt;Group&gt;](#Group)</code> | The groups to check in |
+| compareFn | <code>function</code> | The callback comparison function, return true to keep and false  to strip |
+
+<a name="findGroupsByCheck"></a>
+
+## findGroupsByCheck(groups, compareFn) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+Find group instances within groups that satisfy some check
+
+**Kind**: global function  
+**Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of found groups  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| groups | <code>[Array.&lt;Group&gt;](#Group)</code> | The groups to check within |
+| compareFn | <code>function</code> | A comparision function - return true to keep, false to strip |
+
+<a name="getAllEntries"></a>
+
+## getAllEntries(groups) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+Get all entries within a collection of groups
+
+**Kind**: global function  
+**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of entries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| groups | <code>[Array.&lt;Group&gt;](#Group)</code> | An array of groups |
 
 <a name="ArchiveDataset"></a>
 

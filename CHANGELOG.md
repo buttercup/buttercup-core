@@ -1,4 +1,10 @@
-# Buttercup-core release change-log
+# Buttercup-core change-log
+
+## v0.36.0
+_2017-03-20_
+
+ * Add searching tool for fetching all entries from an archive
+ * Expose searching tools
 
 ## v0.35.0
 _2017-03-11_
