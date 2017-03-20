@@ -1,7 +1,5 @@
 "use strict";
 
-const Fuse = require("fuse.js");
-
 /**
  * Find entry instances by filtering with a compare function
  * @param {Array.<Group>} groups The groups to check in
@@ -43,41 +41,6 @@ function findGroupsByCheck(groups, compareFn) {
 }
 
 /**
- * Perform a fuzzy search across some groups
- * @param {Array.<Group>} groups An array of Groups
- * @param {String} searchTerm The search pattern
- * @returns {Array.<Entry>} An array of entries
- */
-function fuzzySearchEntries(groups, searchTerm) {
-    const entries = getAllEntries(groups);
-    const fuse = new Fuse(entries, {
-        keys: [
-            "property.title",
-            "property.username",
-            "meta.URL",
-            "meta.url"
-        ],
-        getFn: function(entry, keyPath) {
-            const [ type, key ] = keyPath.split(".");
-            switch(type) {
-                case "property": {
-                    return entry.getProperty(key);
-                }
-                case "meta": {
-                    return entry.getMeta(key);
-                }
-                default:
-                    throw new Error(`Unknown entry property type: ${type}`);
-            }
-        },
-        shouldSort: true,
-        threshold: 0.5,
-        tokenSeparator: /\s+/g
-    });
-    return fuse.search(searchTerm);
-}
-
-/**
  * Get all entries within a collection of groups
  * @param {Array.<Group>} groups An array of groups
  * @returns {Array.<Entry>} An array of entries
@@ -99,6 +62,5 @@ function getAllEntries(groups) {
 module.exports = {
     findEntriesByCheck,
     findGroupsByCheck,
-    fuzzySearchEntries,
     getAllEntries
 };

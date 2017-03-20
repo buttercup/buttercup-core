@@ -45,7 +45,6 @@
   "dependencies": {
     "clone": "~1.0.2",
     "debug": "~2.3.3",
-    "fuse.js": "~2.6.2",
     "gzip-js": "~0.3.2",
     "iocane": "~0.6.0",
     "node-fetch": "~1.6.3",

@@ -92,17 +92,6 @@ module.exports = {
             return findEntriesByCheck(inst, "property", property, value);
         };
 
-        /**
-         * Find all entries that fuzzy-match a search term
-         * @param {String} searchTerm The search term
-         * @returns {Array.<Entry>} An array of found entries
-         * @name findEntriesBySearch
-         * @memberof EntryCollection
-         */
-        inst.findEntriesBySearch = function findEntriesBySearch(searchTerm) {
-            return instanceSearching.fuzzySearchEntries(inst.getGroups(), searchTerm);
-        };
-
     }
 
 };
