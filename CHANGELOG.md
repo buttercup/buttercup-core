@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.37.0
+_2017-03-27_
+
+ * Add `Group.getGroup()` support for getting parent groups
+
 ## v0.36.0
 _2017-03-20_
 

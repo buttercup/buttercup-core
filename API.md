@@ -137,6 +137,8 @@ Both <code>type</code> and <code>data</code> parameters are optional.</p>
 <dt><a href="#WorkspaceItem">WorkspaceItem</a> : <code>Object</code></dt>
 <dd><p>Shared workspace item</p>
 </dd>
+<dt><a href="#FoundGroupResult">FoundGroupResult</a> : <code>Object</code></dt>
+<dd></dd>
 </dl>
 
 <a name="module_Descriptor"></a>
@@ -2778,6 +2780,7 @@ Get the number of lines to preserve by default
         * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ <code>[Group](#Group)</code>
         * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> &#124; <code>undefined</code>
         * [.getEntries()](#Group+getEntries) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+        * [.getGroup()](#Group+getGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * ~~[.getGroupByID(groupID)](#Group+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
         * [.getGroups()](#Group+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.getID()](#Group+getID) ⇒ <code>string</code>
@@ -2946,6 +2949,18 @@ Get the entries within the group
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of entries  
+<a name="Group+getGroup"></a>
+
+### group.getGroup() ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+Get the parent group
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - Returns the parent group instance or null if the parent
+ is the archive  
+**Throws**:
+
+- <code>Error</code> Throws if no parent could be found (detached)
+
 <a name="Group+getGroupByID"></a>
 
 ### ~~group.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
@@ -3195,6 +3210,7 @@ Create a new Group with a delta-manager and parent group ID
         * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ <code>[Group](#Group)</code>
         * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> &#124; <code>undefined</code>
         * [.getEntries()](#Group+getEntries) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+        * [.getGroup()](#Group+getGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * ~~[.getGroupByID(groupID)](#Group+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
         * [.getGroups()](#Group+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
         * [.getID()](#Group+getID) ⇒ <code>string</code>
@@ -3363,6 +3379,18 @@ Get the entries within the group
 
 **Kind**: instance method of <code>[Group](#Group)</code>  
 **Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of entries  
+<a name="Group+getGroup"></a>
+
+### group.getGroup() ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+Get the parent group
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - Returns the parent group instance or null if the parent
+ is the archive  
+**Throws**:
+
+- <code>Error</code> Throws if no parent could be found (detached)
+
 <a name="Group+getGroupByID"></a>
 
 ### ~~group.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
@@ -4725,4 +4753,15 @@ Shared workspace item
 | archive | <code>[Archive](#Archive)</code> | An archive instance |
 | password | <code>String</code> | The master password |
 | datasource | <code>[TextDatasource](#TextDatasource)</code> | A datasource instance |
+
+<a name="FoundGroupResult"></a>
+
+## FoundGroupResult : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| group | <code>Object</code> | The found group dataset |
+| index | <code>Number</code> | The index the group was located at |
 
