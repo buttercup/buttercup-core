@@ -49,6 +49,18 @@ var searching = module.exports = {
         });
     },
 
+    /**
+     * @typedef {Object} FoundGroupResult
+     * @property {Object} group The found group dataset
+     * @property {Number} index The index the group was located at
+     */
+
+    /**
+     * Find a raw group that contains an entry with an ID
+     * @param {Array.<Object>} groups An array of raw groups
+     * @param {String} id The entry ID to search for
+     * @returns {FoundGroupResult} The parent group of the found entry
+     */
     findGroupContainingEntryID: function(groups, id) {
         for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
             var group = groups[i];
@@ -75,6 +87,12 @@ var searching = module.exports = {
         };
     },
 
+    /**
+     * Find a raw group that contains a group with an ID
+     * @param {Object} group The group/archive to search in
+     * @param {String} id The group ID to search for
+     * @returns {FoundGroupResult} The parent of the located group ID
+     */
     findGroupContainingGroupID: function(group, id) {
         var groups = group.groups || [];
         for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {

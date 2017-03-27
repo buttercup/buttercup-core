@@ -156,6 +156,33 @@ class Group {
     }
 
     /**
+     * Get the parent group
+     * @returns {Group|null} Returns the parent group instance or null if the parent
+     *  is the archive
+     * @throws {Error} Throws if no parent could be found (detached)
+     * @memberof Group
+     */
+    getGroup() {
+        debug("fetch parent group");
+        const archive = this._getArchive();
+        const topmostGroupIDs = archive.getGroups().map(function(group) {
+            return group.getID();
+        });
+        if (topmostGroupIDs.indexOf(this.getID()) >= 0) {
+            // parent is archive
+            return null;
+        }
+        const parentInfo = searching.findGroupContainingGroupID(
+            archive._getWestley().getDataset(),
+            this.getID()
+        );
+        if (parentInfo) {
+            return new Group(archive, parentInfo.group);
+        }
+        throw new Error("No parent group: group is detacted");
+    }
+
+    /**
      * Get a child group (deep) by its ID
      * @param {String} groupID The ID of the group to get
      * @returns {Group|null} The found group or null

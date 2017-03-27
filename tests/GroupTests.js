@@ -257,6 +257,21 @@ module.exports = {
 
     },
 
+    getGroup: {
+
+        getsParents: function(test) {
+            let archive = new Archive(),
+                firstParent = archive.createGroup("first"),
+                secondParent = firstParent.createGroup("second"),
+                target = secondParent.createGroup("final");
+            test.strictEqual(target.getGroup().getID(), secondParent.getID(), "Target should get immediate parent");
+            test.strictEqual(secondParent.getGroup().getID(), firstParent.getID(), "Second should get first");
+            test.strictEqual(firstParent.getGroup(), null, "First should get null");
+            test.done();
+        }
+
+    },
+
     getGroupByID: {
 
         getsASubGroup: function(test) {
