@@ -1,3 +1,5 @@
+"use strict";
+
 var lib = require("../source/module.js"),
     encoding = require("../source/tools/encoding.js");
 
@@ -260,7 +262,7 @@ module.exports = {
     getGroup: {
 
         getsParents: function(test) {
-            let archive = new Archive(),
+            var archive = new Archive(),
                 firstParent = archive.createGroup("first"),
                 secondParent = firstParent.createGroup("second"),
                 target = secondParent.createGroup("final");
