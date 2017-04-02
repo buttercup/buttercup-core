@@ -48,6 +48,7 @@
     "gzip-js": "~0.3.2",
     "iocane": "~0.6.0",
     "node-fetch": "~1.6.3",
+    "simple-oauth2": "~1.1.0",
     "uuid": "~2.0.1",
     "webdav-fs": "~0.4.0"
   },
