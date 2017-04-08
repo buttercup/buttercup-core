@@ -66,6 +66,7 @@ function tokenIsExpired(rawToken) {
 }
 
 module.exports = {
+    SERVICE_TARGET,
     getTokenForLogin,
     refreshToken,
     tokenIsExpired

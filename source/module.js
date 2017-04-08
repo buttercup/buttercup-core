@@ -21,6 +21,7 @@ module.exports = {
     OwnCloudDatasource: require("./system/OwnCloudDatasource.js"),
     WebDAVDatasource: require("./system/WebDAVDatasource.js"),
     ButtercupServerDatasource : require("./system/ButtercupServerDatasource.js"),
+    MyButtercupDatasource: require("./system/MyButtercupDatasource.js"),
 
     Flattener: require("./system/Flattener.js"),
     Descriptor: require("./system/Descriptor.js"),
