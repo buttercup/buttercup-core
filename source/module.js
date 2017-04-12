@@ -5,6 +5,7 @@ var iocane = require("iocane");
 module.exports = {
 
     Archive: require("./system/Archive.js"),
+    ArchiveManager: require("./system/ArchiveManager.js"),
     Westley: require("./system/Westley.js"),
     Inigo: require("./system/InigoGenerator.js"),
     Workspace: require("./system/Workspace.js"),
@@ -25,6 +26,10 @@ module.exports = {
 
     Flattener: require("./system/Flattener.js"),
     Descriptor: require("./system/Descriptor.js"),
+
+    storage: {
+        MemoryStorageInterface: require("./system/storage/MemoryStorageInterface.js")
+    },
 
     tools: {
         encoding: require("./tools/encoding.js"),
