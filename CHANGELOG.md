@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.37.1
+_2017-04-16_
+
+ * Bugfix: Fix merge stripping deletion commands when no changes occurred on the remote side
+
 ## v0.37.0
 _2017-03-27_
 
