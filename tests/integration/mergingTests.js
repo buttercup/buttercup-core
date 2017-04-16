@@ -11,6 +11,7 @@ module.exports = {
     setUp: function(cb) {
         var diffArchiveA = new Archive(),
             diffArchiveB = new Archive(),
+            diffArchiveC = new Archive(),
             commonCommands = [
                 'cgr 0 1',
                 'tgr 1 "Main Group"',
@@ -27,8 +28,8 @@ module.exports = {
                 'sep 1 username "anonymous"',
                 'sep 1 password "retro"',
                 'sea 1 "test" "test"',
-                'pad 4',
-                'cmm "after pad"'
+                'cmm "before pad"',
+                'pad 4'
             ],
             diffCommandsA = [
                 'cgr 1 3',
@@ -53,9 +54,13 @@ module.exports = {
         commonCommands.concat(diffCommandsB).forEach(function(command) {
             diffArchiveB._getWestley().execute(command);
         });
+        commonCommands.forEach(function(command) {
+            diffArchiveC._getWestley().execute(command);
+        });
 
         this.diffArchiveA = diffArchiveA;
         this.diffArchiveB = diffArchiveB;
+        this.diffArchiveC = diffArchiveC;
 
         this.diffWorkspace = new Workspace();
         this.diffWorkspace.setPrimaryArchive(
@@ -63,6 +68,17 @@ module.exports = {
             {
                 load: function() {
                     return Promise.resolve(diffArchiveA);
+                }
+            },
+            createCredentials.fromPassword("fake")
+        );
+
+        this.emptyWorkspace = new Workspace();
+        this.emptyWorkspace.setPrimaryArchive(
+            diffArchiveA,
+            {
+                load: function() {
+                    return Promise.resolve(diffArchiveC);
                 }
             },
             createCredentials.fromPassword("fake")
@@ -82,7 +98,7 @@ module.exports = {
         });
     },
 
-    testNonDeletion: function(test) {
+    doesntDeleteNonDestructiveCommands: function(test) {
         var workspace = this.diffWorkspace;
         workspace.mergeSaveablesFromRemote()
             .then(function() {
@@ -93,6 +109,21 @@ module.exports = {
                 test.ok(mergedHistory.indexOf('pad 4') > 0, "Merged base");
                 test.ok(mergedHistory.indexOf('dgr 1') < 0, "Filtered out deletion commands");
                 test.ok(mergedHistory.indexOf('dgr 4') > 0, "Shared deletion commands persist");
+                test.done();
+            })
+            .catch(function(err) {
+                console.error("Error:", err);
+            });
+    },
+
+    doesntDeleteDestructiveCommandsWhenNoConflict: function(test) {
+        var workspace = this.emptyWorkspace;
+        workspace.mergeSaveablesFromRemote()
+            .then(function() {
+                var mergedHistory = workspace.primary.archive._getWestley().getHistory();
+                console.log(JSON.stringify(mergedHistory, undefined, 3));
+                test.ok(mergedHistory.indexOf('dgr 3') > 0, "Group 3 should not have been deleted");
+                test.ok(mergedHistory.indexOf('dgr 1') > 0, "Group 1 should not have been deleted");
                 test.done();
             })
             .catch(function(err) {

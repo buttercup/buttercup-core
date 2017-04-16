@@ -186,13 +186,20 @@ class Workspace {
         return item.datasource
             .load(item.credentials)
             .then(function(stagedArchive) {
-                var comparator = new Comparator(item.archive, stagedArchive),
-                    differences = comparator.calculateDifferences();
-                var newHistoryMain = stripDestructiveCommands(differences.original),
-                    newHistoryStaged = stripDestructiveCommands(differences.secondary),
-                    base = differences.common;
-                var newArchive = new Archive();
+                const comparator = new Comparator(item.archive, stagedArchive);
+                const differences = comparator.calculateDifferences();
+                // only strip if there are multiple updates
+                const stripDestructive = differences.secondary.length > 0;
+                const newHistoryMain = stripDestructive ?
+                    stripDestructiveCommands(differences.original) :
+                    differences.original;
+                const newHistoryStaged = stripDestructive ? 
+                    stripDestructiveCommands(differences.secondary) :
+                    differences.secondary;
+                const base = differences.common;
+                const newArchive = new Archive();
                 newArchive._getWestley().clear();
+                // merge all history and execute on new archive
                 base
                     .concat(newHistoryStaged)
                     .concat(newHistoryMain)
