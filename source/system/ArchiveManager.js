@@ -2,12 +2,6 @@
 
 const stringHash = require("string-hash");
 const Queue = require("promise-queue");
-
-const Archive = require("./Archive.js");
-const Workspace = require("./Workspace.js");
-const DatasourceAdapter = require("./DatasourceAdapter.js");
-const createCredentials = require("./credentials.js");
-const getArchiveList = require("../tools/myButtercup/archive.js").getArchiveList;
 const credentialsToSources = require("./archiveManagement/marshalling.js").credentialsToSources;
 
 const STORAGE_KEY_PREFIX = "bcup_archivemgr_";

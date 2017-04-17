@@ -1,5 +1,11 @@
 "use strict";
 
+const Archive = require("../Archive.js");
+const Workspace = require("../Workspace.js");
+const createCredentials = require("../credentials.js");
+const DatasourceAdapter = require("../DatasourceAdapter.js");
+const getArchiveList = require("../../tools/myButtercup/archive.js").getArchiveList;
+
 function credentialsToDatasources(sourceCredentials) {
     const datasourceDescriptionRaw = sourceCredentials.getValueOrFail("datasource");
     const datasourceDescription = JSON.parse(datasourceDescriptionRaw);
