@@ -8,6 +8,8 @@
 
 # Buttercup core library
 
+[![Join the chat at https://gitter.im/buttercup-pw/buttercup-core](https://badges.gitter.im/buttercup-pw/buttercup-core.svg)](https://gitter.im/buttercup-pw/buttercup-core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A NodeJS password vault.
 
 [![Buttercup](https://cdn.rawgit.com/buttercup-pw/buttercup-assets/6582a033/badge/buttercup-slim.svg)](https://buttercup.pw) [![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) ![node min version](https://img.shields.io/badge/node-%3E%3D%204.4-lightgrey.svg) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC-red.svg)](https://tools.ietf.org/html/rfc3602) [![Join the chat at https://gitter.im/buttercup-pw/buttercup-core](https://badges.gitter.im/buttercup-pw/buttercup-core.svg)](https://gitter.im/buttercup-pw/buttercup-core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
