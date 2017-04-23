@@ -43,7 +43,7 @@ class ArchiveManager {
         return credentialsToSources(sourceCredentials, archiveCredentials, initialise)
             .then(sourcesInfo => {
                 sourcesInfo.forEach(sourceInfo => {
-                    if (this.sources.hasOwnProperty(sourceInfo.name)) {
+                    if (this.sources.hasOwnProperty(sourceInfo.name) && !this.sources[sourceInfo.name].unlock) {
                         throw new Error(`Cannot add source: Archive source with this name already exists: ${sourceInfo.name}`);
                     }
                 });
@@ -71,6 +71,7 @@ class ArchiveManager {
                             archiveCredentials.toSecureString(archiveCredentials.password)
                         ])
                         .then(([encParentCreds, encArchiveCreds] = []) => {
+                            console.log("WRITING SOURCE", Object.assign({}, source), source.name);
                             const packet = {
                                 name: source.name,
                                 sourceCredentials: encParentCreds,
@@ -97,23 +98,42 @@ class ArchiveManager {
             throw new Error(`Failed to lock: Source not found: ${name}`);
         }
         const source = this.sources[name];
+        if (source.status !== ArchiveManager.ArchiveStatus.UNLOCKED) {
+            throw new Error(`Failed to lock: Source state invalid: ${source.status}`);
+        }
+        const originalStatus = source.status;
         source.status = ArchiveManager.ArchiveStatus.PROCESSING;
+        console.log("Locking", name);
         return this
             .dehydrate()
-            .then(() => {
-                this.sources[name] = {
-                    name: source.name,
-                    type: source.type,
-                    status: ArchiveManager.ArchiveStatus.LOCKED,
-                    sourceCredentials: source.parentSourceCredentials,
-                    archiveCredentials: source.archiveCredentials
-                };
-            });
+            .then(() => this.storageQueue.add(() =>
+                Promise.all([
+                    source.parentSourceCredentials.toSecureString(source.archiveCredentials.password),
+                    source.archiveCredentials.toSecureString(source.archiveCredentials.password)
+                ])
+            ))
+            .then(
+                ([encParentCreds, encArchiveCreds] = []) => {
+                    console.log("Locked", name);
+                    this.sources[name] = {
+                        name: source.name,
+                        type: source.type,
+                        status: ArchiveManager.ArchiveStatus.LOCKED,
+                        sourceCredentials: encParentCreds,
+                        archiveCredentials: encArchiveCreds
+                    };
+                },
+                function _handleDehydrateError(error) {
+                    // restore original status
+                    source.status = originalStatus;
+                    throw error;
+                }
+            );
     }
 
     rehydrate() {
         this._sources = {};
-        return this.storageQueue.add(
+        return this.storageQueue.add(() =>
             this.storageInterface
                 .getValue(STORAGE_KEY_COLLECTION)
                 .then(keys => Promise.all(
@@ -131,6 +151,24 @@ class ArchiveManager {
                         };
                     })
                 })
+        );
+    }
+
+    unlock(name, masterPassword) {
+        if (this.sources.hasOwnProperty(name) !== true) {
+            throw new Error(`Failed to unlock: Source not found: ${name}`);
+        }
+        const source = this.sources[name];
+        const originalStatus = source.status;
+        source.status = ArchiveManager.ArchiveStatus.PROCESSING;
+        source.unlock = true;
+        return this.storageQueue.add(() =>
+            this
+                .addSource(
+                    name,
+                    source.sourceCredentials,
+                    source.archiveCredentials
+                )
         );
     }
 
