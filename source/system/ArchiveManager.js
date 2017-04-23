@@ -6,7 +6,6 @@ const credentialsToSource = require("./archiveManagement/marshalling.js").creden
 const getUniqueID = require("../tools/encoding.js").getUniqueID;
 
 const STORAGE_KEY_PREFIX = "bcup_archivemgr_";
-const STORAGE_KEY_COLLECTION = "bcup_archivemgr__keys_";
 
 const SourceStatus = {
     LOCKED:     "locked",
@@ -46,10 +45,51 @@ class ArchiveManager {
                         type: sourceCredentials.type
                     }
                 ));
-                return id;
+                return this
+                    .dehydrateSource(id)
+                    .then(() => id);
             })
             .catch(function(err) {
                 throw new VError(err, "Failed adding source");
+            });
+    }
+
+    dehydrateSource(id) {
+        let source;
+        return Promise
+            .resolve()
+            .then(() => {
+                const index = this.indexOfSource(id);
+                if (index < 0) {
+                    throw new VError("Source not found for ID");
+                }
+                source = this.sources[index];
+                if (source.status === SourceStatus.LOCKED) {
+                    return source;
+                } else if (source.status === SourceStatus.UNLOCKED) {
+                    return Promise
+                        .all([
+                            source.sourceCredentials.toSecureString(source.archiveCredentials.password),
+                            source.archiveCredentials.toSecureString(source.archiveCredentials.password)
+                        ])
+                        .then(([encParentCreds, encArchiveCreds] = []) => ({
+                            id: source.id,
+                            name: source.name,
+                            type: source.type,
+                            status: SourceStatus.LOCKED,
+                            sourceCredentials: encParentCreds,
+                            archiveCredentials: encArchiveCreds
+                        }));
+                } else {
+                    throw new VError(`Source state invalid: ${source.status}`);
+                }
+            })
+            .then(lockedSource => this.storageInterface.setValue(
+                `${STORAGE_KEY_PREFIX}${lockedSource.id}`,
+                JSON.stringify(lockedSource)
+            ))
+            .catch(function __handleDehydrateError(err) {
+                throw new VError(err, `Failed dehydrating source with ID: ${id}`);
             });
     }
 
@@ -85,6 +125,7 @@ class ArchiveManager {
                     sourceCredentials: encParentCreds,
                     archiveCredentials: encArchiveCreds
                 });
+                return this.dehydrateSource(source.id);
             })
             .catch(function __handleLockError(err) {
                 if (source) {
