@@ -1,24 +1,24 @@
 "use strict";
 
-const stringHash = require("string-hash");
-const Queue = require("promise-queue");
-const credentialsToSources = require("./archiveManagement/marshalling.js").credentialsToSources;
+const VError = require("VError");
+const createCredentials = require("./credentials.js");
+const credentialsToSource = require("./archiveManagement/marshalling.js").credentialsToSource;
+const getUniqueID = require("../tools/encoding.js").getUniqueID;
 
 const STORAGE_KEY_PREFIX = "bcup_archivemgr_";
 const STORAGE_KEY_COLLECTION = "bcup_archivemgr__keys_";
-const STORAGE_QUEUE_CONCURRENCY = 1;
-const STORAGE_QUEUE_LIMIT = Infinity;
 
-function encodeStorageName(name) {
-    return stringHash(name).toString();
-}
+const SourceStatus = {
+    LOCKED:     "locked",
+    UNLOCKED:   "unlocked",
+    PENDING:    "pending"
+};
 
 class ArchiveManager {
-    
+
     constructor(storageInterface) {
         this._storageInterface = storageInterface;
-        this._sources = {};
-        this._storageQueue = new Queue(STORAGE_QUEUE_CONCURRENCY, STORAGE_QUEUE_LIMIT);
+        this._sources = [];
     }
 
     get sources() {
@@ -29,155 +29,121 @@ class ArchiveManager {
         return this._storageInterface;
     }
 
-    get storageQueue() {
-        return this._storageQueue;
-    }
-
     get unlockedSources() {
-        return Object.keys(this._sources)
-            .map(key => this._sources[key])
-            .filter(source => source.status === ArchiveManager.ArchiveStatus.UNLOCKED);
+        return this.sources.map(source => source.status === SourceStatus.UNLOCKED);
     }
 
     addSource(name, sourceCredentials, archiveCredentials, initialise = false) {
-        return credentialsToSources(sourceCredentials, archiveCredentials, initialise)
-            .then(sourcesInfo => {
-                sourcesInfo.forEach(sourceInfo => {
-                    if (this.sources.hasOwnProperty(sourceInfo.name) && !this.sources[sourceInfo.name].unlock) {
-                        throw new Error(`Cannot add source: Archive source with this name already exists: ${sourceInfo.name}`);
+        return credentialsToSource(sourceCredentials, archiveCredentials, initialise)
+            .then(sourceInfo => {
+                const id = getUniqueID();
+                this._sources.push(Object.assign(
+                    sourceInfo,
+                    {
+                        name,
+                        id,
+                        status: SourceStatus.UNLOCKED,
+                        type: sourceCredentials.type
                     }
-                });
-                sourcesInfo.forEach(sourceInfo => {
-                    this._sources[name] = Object.assign(
-                        {
-                            status: ArchiveManager.ArchiveStatus.UNLOCKED,
-                            type: sourceCredentials.type
-                        },
-                        sourceInfo
-                    );
-                    return this.dehydrate();
-                });
+                ));
+                return id;
+            })
+            .catch(function(err) {
+                throw new VError(err, "Failed adding source");
             });
     }
 
-    dehydrate() {
-        return this.storageQueue.add(() => 
-            Promise
-                .all(this.unlockedSources.map(source => {
-                    const archiveCredentials = source.archiveCredentials;
-                    return Promise
-                        .all([
-                            source.parentSourceCredentials.toSecureString(archiveCredentials.password),
-                            archiveCredentials.toSecureString(archiveCredentials.password)
-                        ])
-                        .then(([encParentCreds, encArchiveCreds] = []) => {
-                            console.log("WRITING SOURCE", Object.assign({}, source), source.name);
-                            const packet = {
-                                name: source.name,
-                                sourceCredentials: encParentCreds,
-                                archiveCredentials: encArchiveCreds,
-                                type: source.type
-                            };
-                            const key = `${STORAGE_KEY_PREFIX}${encodeStorageName(source.type + source.name)}`;
-                            return this.storageInterface
-                                .setValue(key, JSON.stringify(packet))
-                                .then(() => key);
-                        });
-                }))
-                .then(keys => {
-                    return this.storageInterface.setValue(
-                        STORAGE_KEY_COLLECTION,
-                        keys.join(",")
-                    );
-                })
-        );
+    indexOfSource(id) {
+        return this.sources.findIndex(source => source.id === id);
     }
 
-    lock(name) {
-        if (this.sources.hasOwnProperty(name) !== true) {
-            throw new Error(`Failed to lock: Source not found: ${name}`);
-        }
-        const source = this.sources[name];
-        if (source.status !== ArchiveManager.ArchiveStatus.UNLOCKED) {
-            throw new Error(`Failed to lock: Source state invalid: ${source.status}`);
-        }
-        const originalStatus = source.status;
-        source.status = ArchiveManager.ArchiveStatus.PROCESSING;
-        console.log("Locking", name);
-        return this
-            .dehydrate()
-            .then(() => this.storageQueue.add(() =>
-                Promise.all([
-                    source.parentSourceCredentials.toSecureString(source.archiveCredentials.password),
-                    source.archiveCredentials.toSecureString(source.archiveCredentials.password)
-                ])
-            ))
-            .then(
-                ([encParentCreds, encArchiveCreds] = []) => {
-                    console.log("Locked", name);
-                    this.sources[name] = {
-                        name: source.name,
-                        type: source.type,
-                        status: ArchiveManager.ArchiveStatus.LOCKED,
-                        sourceCredentials: encParentCreds,
-                        archiveCredentials: encArchiveCreds
-                    };
-                },
-                function _handleDehydrateError(error) {
-                    // restore original status
-                    source.status = originalStatus;
-                    throw error;
+    lock(id) {
+        let source;
+        return Promise
+            .resolve()
+            .then(() => {
+                const index = this.indexOfSource(id);
+                if (index < 0) {
+                    throw new VError("Source not found for ID");
                 }
-            );
+                source = this.sources[index];
+                if (source.status !== SourceStatus.UNLOCKED) {
+                    throw new VError(`Source state invalid: ${source.status}`);
+                }
+                source.status = SourceStatus.PENDING;
+            })
+            .then(() => Promise.all([
+                source.sourceCredentials.toSecureString(source.archiveCredentials.password),
+                source.archiveCredentials.toSecureString(source.archiveCredentials.password)
+            ]))
+            .then(([encParentCreds, encArchiveCreds] = []) => {
+                this._replace(source.id, {
+                    id: source.id,
+                    name: source.name,
+                    type: source.type,
+                    status: SourceStatus.LOCKED,
+                    sourceCredentials: encParentCreds,
+                    archiveCredentials: encArchiveCreds
+                });
+            })
+            .catch(function __handleLockError(err) {
+                if (source) {
+                    source.status = SourceStatus.UNLOCKED;
+                }
+                throw new VError(err, `Failed to lock source with ID: ${id}`);
+            });
     }
 
-    rehydrate() {
-        this._sources = {};
-        return this.storageQueue.add(() =>
-            this.storageInterface
-                .getValue(STORAGE_KEY_COLLECTION)
-                .then(keys => Promise.all(
-                    keys.split(",").map(key => this.storageInterface.getValue(key))
-                ))
-                .then(packets => {
-                    packets.forEach(packetRaw => {
-                        const packet = JSON.parse(packetRaw);
-                        this._sources[packet.name] = {
-                            name: packet.name,
-                            type: packet.type,
-                            status: ArchiveManager.ArchiveStatus.LOCKED,
-                            sourceCredentials: packet.sourceCredentials,
-                            archiveCredentials: packet.archiveCredentials
-                        };
+    unlock(id, masterPassword) {
+        let source;
+        return Promise
+            .resolve()
+            .then(() => {
+                const index = this.indexOfSource(id);
+                if (index < 0) {
+                    throw new VError("Source not found for ID");
+                }
+                source = this.sources[index];
+                if (source.status !== SourceStatus.LOCKED) {
+                    throw new VError(`Source state invalid: ${source.status}`);
+                }
+                source.status = SourceStatus.PENDING;
+                return Promise.all([
+                    createCredentials.fromSecureString(source.sourceCredentials, masterPassword),
+                    createCredentials.fromSecureString(source.archiveCredentials, masterPassword)
+                ]);
+            })
+            .then(([sourceCredentials, archiveCredentials] = []) => {
+                return credentialsToSource(sourceCredentials, archiveCredentials, /* initialise */ false)
+                    .then(sourceInfo => {
+                        this._replace(source.id, Object.assign(
+                            sourceInfo,
+                            {
+                                id: source.id,
+                                status: SourceStatus.UNLOCKED,
+                                type: sourceCredentials.type
+                            }
+                        ))
                     })
-                })
-        );
+                    .catch(function __handleCredentialsMapError(err) {
+                        throw new VError(err, "Failed mapping credentials to a source");
+                    });
+            })
+            .catch(function(err) {
+                throw new VError(err, `Failed to unlock source with ID: ${id}`);
+            });
     }
 
-    unlock(name, masterPassword) {
-        if (this.sources.hasOwnProperty(name) !== true) {
-            throw new Error(`Failed to unlock: Source not found: ${name}`);
+    _replace(id, source) {
+        const index = this.indexOfSource(id);
+        if (index < 0) {
+            throw new VError(`Failed replacing source: Source not found`);
         }
-        const source = this.sources[name];
-        const originalStatus = source.status;
-        source.status = ArchiveManager.ArchiveStatus.PROCESSING;
-        source.unlock = true;
-        return this.storageQueue.add(() =>
-            this
-                .addSource(
-                    name,
-                    source.sourceCredentials,
-                    source.archiveCredentials
-                )
-        );
+        this.sources[index] = source;
     }
 
 }
 
-ArchiveManager.ArchiveStatus = Object.freeze({
-    UNLOCKED:       "unlocked",
-    LOCKED:         "locked",
-    PROCESSING:     "processing"
-});
+ArchiveManager.SourceStatus = SourceStatus;
 
 module.exports = ArchiveManager;

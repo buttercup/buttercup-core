@@ -71,7 +71,7 @@ class MyButtercupDatasource extends TextDatasource {
  * @throws {Error} Throws if the type is not recognised
  */
 MyButtercupDatasource.fromObject = function fromObject(obj) {
-    if (obj.type === "mybuttercup/archive") {
+    if (obj.type === "mybuttercup") {
         return new MyButtercupDatasource(obj.archiveID, obj.token);
     }
     throw new Error(`Unknown or invalid type: ${obj.type}`);
@@ -88,6 +88,6 @@ MyButtercupDatasource.fromString = function fromString(str, hostCredentials) {
     return MyButtercupDatasource.fromObject(JSON.parse(str), hostCredentials);
 };
 
-registerDatasource("mybuttercup/archive", MyButtercupDatasource);
+registerDatasource("mybuttercup", MyButtercupDatasource);
 
 module.exports = MyButtercupDatasource;
