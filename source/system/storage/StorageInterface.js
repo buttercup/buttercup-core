@@ -2,6 +2,10 @@
 
 class StorageInterface {
 
+    getAllKeys() {
+        return Promise.resolve([]);
+    }
+
     getValue(/* name */) {
         return Promise.resolve(null);
     }

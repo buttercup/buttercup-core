@@ -4,8 +4,10 @@ const VError = require("VError");
 const createCredentials = require("./credentials.js");
 const credentialsToSource = require("./archiveManagement/marshalling.js").credentialsToSource;
 const getUniqueID = require("../tools/encoding.js").getUniqueID;
+const MemoryStorageInterface = require("./storage/MemoryStorageInterface.js");
 
-const STORAGE_KEY_PREFIX = "bcup_archivemgr_";
+const STORAGE_KEY_PREFIX =          "bcup_archivemgr_";
+const STORAGE_KEY_PREFIX_TEST =     /^bcup_archivemgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
 const SourceStatus = {
     LOCKED:     "locked",
@@ -15,7 +17,7 @@ const SourceStatus = {
 
 class ArchiveManager {
 
-    constructor(storageInterface) {
+    constructor(storageInterface = new MemoryStorageInterface()) {
         this._storageInterface = storageInterface;
         this._sources = [];
     }
@@ -132,6 +134,28 @@ class ArchiveManager {
                     source.status = SourceStatus.UNLOCKED;
                 }
                 throw new VError(err, `Failed to lock source with ID: ${id}`);
+            });
+    }
+
+    rehydrate() {
+        this._sources = [];
+        return this.storageInterface
+            .getAllKeys()
+            .then(keys => Promise.all(
+                keys
+                    .filter(key => STORAGE_KEY_PREFIX_TEST.test(key))
+                    .map(key => this.storageInterface
+                        .getValue(key)
+                        .then(JSON.parse)
+                        .then(lockedSource => {
+                            this.sources.push(lockedSource);
+                        })
+                        .catch(function __handleDehydratedReadError(err) {
+                            throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
+                        })
+            )))
+            .catch(function __handleRehydrateError(err) {
+                throw new VError(err, "Failed rehydrating sources");
             });
     }
 

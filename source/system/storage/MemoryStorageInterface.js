@@ -9,6 +9,10 @@ class MemoryStorageInterface extends StorageInterface {
         this._store = {};
     }
 
+    getAllKeys() {
+        return Promise.resolve(Object.keys(this._store));
+    }
+
     getValue(name) {
         const value = this._store.hasOwnProperty(name) ?
             this._store[name] :
