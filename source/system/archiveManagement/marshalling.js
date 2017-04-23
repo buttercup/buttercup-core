@@ -1,6 +1,6 @@
 "use strict";
 
-const VError = require("VError");
+const VError = require("verror");
 const Archive = require("../Archive.js");
 const Workspace = require("../Workspace.js");
 const createCredentials = require("../credentials.js");

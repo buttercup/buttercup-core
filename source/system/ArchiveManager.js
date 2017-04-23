@@ -1,6 +1,6 @@
 "use strict";
 
-const VError = require("VError");
+const VError = require("verror");
 const createCredentials = require("./credentials.js");
 const credentialsToSource = require("./archiveManagement/marshalling.js").credentialsToSource;
 const getUniqueID = require("../tools/encoding.js").getUniqueID;
