@@ -15,25 +15,79 @@ const SourceStatus = {
     PENDING:    "pending"
 };
 
+/**
+ * Status of a source: locked/unlocked/pending
+ * @typedef {String} ArchiveManagerSourceStatus
+ */
+
+/**
+ * @typedef {Object} UnlockedArchiveManagerSource
+ * @property {String} name - The name of the source
+ * @property {String} id - The ID of the source (UUID)
+ * @property {ArchiveManagerSourceStatus} status - The current status of the source
+ * @property {String} type - The type of source (eg. dropbox/mybuttercup etc.)
+ * @property {Workspace} workspace - The archive's workspace
+ * @property {Credentials} sourceCredentials - Credentials for the remote datasource
+ * @property {Credentials} archiveCredentials - Credentials for unlocking the archive
+ */
+
+/**
+ * @typedef {Object} LockedArchiveManagerSource
+ * @property {String} name - The name of the source
+ * @property {String} id - The ID of the source (UUID)
+ * @property {ArchiveManagerSourceStatus} status - The current status of the source
+ * @property {String} type - The type of source (eg. dropbox/mybuttercup etc.)
+ * @property {String} sourceCredentials - Encrypted credentials for the remote datasource
+ * @property {String} archiveCredentials - Encrypted credentials for unlocking the archive
+ */
+
+/**
+ * Archive manager for managing archives and connections to sources
+ */
 class ArchiveManager {
 
+    /**
+     * Constructor for ArchiveManager
+     * @param {StorageInterface=} storageInterface An optional StorageInterface instance. Defaults
+     *  to a new MemoryStorageInterface instance if not provided
+     */
     constructor(storageInterface = new MemoryStorageInterface()) {
         this._storageInterface = storageInterface;
         this._sources = [];
     }
 
+    /**
+     * All sources handled by the manager
+     * @type {Array.<UnlockedArchiveManagerSource|LockedArchiveManagerSource>}
+     */
     get sources() {
         return this._sources;
     }
 
+    /**
+     * Reference to the storage interface
+     * @type {StorageInterface}
+     */
     get storageInterface() {
         return this._storageInterface;
     }
 
+    /**
+     * Array of unlocked sources
+     * @type {Array.<UnlockedArchiveManagerSource|LockedArchiveManagerSource>}
+     */
     get unlockedSources() {
         return this.sources.map(source => source.status === SourceStatus.UNLOCKED);
     }
 
+    /**
+     * Add a new source
+     * @param {String} name The name of the source
+     * @param {Credentials} sourceCredentials Archive source credentials (remote system)
+     * @param {Credentials} archiveCredentials Credentials for unlocking the archive
+     * @param {Boolean=} initialise Optionally initialise a blank archive (defaults to false)
+     * @returns {Promise.<String>} A promise that resolves with the source's new ID
+     */
     addSource(name, sourceCredentials, archiveCredentials, initialise = false) {
         return credentialsToSource(sourceCredentials, archiveCredentials, initialise)
             .then(sourceInfo => {
@@ -56,6 +110,12 @@ class ArchiveManager {
             });
     }
 
+    /**
+     * Dehydrate a source and write it to storage
+     * Does not lock the source
+     * @param {String} id The ID of the source to lock
+     * @returns {Promise} A promise that resolves once dehydration has completed
+     */
     dehydrateSource(id) {
         let source;
         return Promise
@@ -95,10 +155,20 @@ class ArchiveManager {
             });
     }
 
+    /**
+     * Get an index for a source with an ID
+     * @param {String} id The ID of the source
+     * @returns {Number} The index or -1 if not found
+     */
     indexOfSource(id) {
         return this.sources.findIndex(source => source.id === id);
     }
 
+    /**
+     * Lock a source by its ID
+     * @param {String} id The ID of the source
+     * @returns {Promise} A promise that resolves once the source is locked
+     */
     lock(id) {
         let source;
         return Promise
@@ -137,6 +207,10 @@ class ArchiveManager {
             });
     }
 
+    /**
+     * Rehydrate all sources from storage
+     * @returns {Promise} A promise that resolves once all sources have been rehydrated
+     */
     rehydrate() {
         this._sources = [];
         return this.storageInterface
@@ -159,6 +233,12 @@ class ArchiveManager {
             });
     }
 
+    /**
+     * Unlock a source
+     * @param {String} id The ID of the source to unlock
+     * @param {String} masterPassword The password to unlock the source
+     * @returns {Promise} A promise that resolves once the source is unlocked
+     */
     unlock(id, masterPassword) {
         let source;
         return Promise
@@ -199,6 +279,12 @@ class ArchiveManager {
             });
     }
 
+    /**
+     * Replace a source by its ID
+     * @protected
+     * @param {String} id The ID of the source
+     * @param {UnlockedArchiveManagerSource|LockedArchiveManagerSource} source The source to replace it with
+     */
     _replace(id, source) {
         const index = this.indexOfSource(id);
         if (index < 0) {
