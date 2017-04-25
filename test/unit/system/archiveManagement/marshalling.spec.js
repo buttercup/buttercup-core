@@ -52,7 +52,7 @@ describe("marshalling", function() {
             return credentialsToSource(this.sourceCredentials, this.archiveCredentials)
                 .then(result => {
                     expect(result).to.have.property("workspace")
-                        .that.is.an.instanceof(Workspace);
+                        .that.is.an.instanceOf(Workspace);
                     expect(result.workspace.primary.archive.getID()).to.equal(this.archive.getID());
                 });
         });
