@@ -31,6 +31,10 @@ module.exports = {
         MemoryStorageInterface: require("./system/storage/MemoryStorageInterface.js")
     },
 
+    archiveManagement: {
+        marshalling: require("./system/archiveManagement/marshalling.js")
+    },
+
     tools: {
         encoding: require("./tools/encoding.js"),
         export: require("./tools/export.js"),

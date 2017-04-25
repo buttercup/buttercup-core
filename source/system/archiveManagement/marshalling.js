@@ -15,16 +15,23 @@ const getArchiveList = require("../../tools/myButtercup/archive.js").getArchiveL
  *  source credentials
  */
 function credentialsToDatasource(sourceCredentials) {
-    const datasourceDescriptionRaw = sourceCredentials.getValueOrFail("datasource");
-    const datasourceDescription = JSON.parse(datasourceDescriptionRaw);
-    if (typeof datasourceDescription.type !== "string") {
-        throw new VError("Failed creating datasources: Invalid or missing type");
-    }
-    const datasource = DatasourceAdapter.objectToDatasource(datasourceDescription, sourceCredentials);
-    return Promise.resolve({
-        datasource,
-        credentials: sourceCredentials
-    });
+    return Promise
+        .resolve()
+        .then(function() {
+            const datasourceDescriptionRaw = sourceCredentials.getValueOrFail("datasource");
+            const datasourceDescription = JSON.parse(datasourceDescriptionRaw);
+            if (typeof datasourceDescription.type !== "string") {
+                throw new VError("Invalid or missing type");
+            }
+            const datasource = DatasourceAdapter.objectToDatasource(datasourceDescription, sourceCredentials);
+            return {
+                datasource,
+                credentials: sourceCredentials
+            };
+        })
+        .catch(function __handleCreationError(err) {
+            throw new VError(err, "Failed creating datasources");
+        });
 }
 
 /**
