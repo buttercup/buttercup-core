@@ -22,7 +22,7 @@
     "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
     "test:lint": "node node_modules/eslint/bin/eslint.js source/",
     "test:nodeunit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
-    "test:unit": "mocha -r test/unit/index.js 'test/unit/**/*.spec.js'"
+    "test:unit": "mocha -r test/unit/index.js 'test/unit/**/*.spec.js' --timeout 5000"
   },
   "repository": {
     "type": "git",

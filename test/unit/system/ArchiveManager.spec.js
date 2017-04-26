@@ -6,6 +6,7 @@ const { getUniqueID } = tools.encoding;
 
 function createArchiveAndCredentials() {
     this.archive = new Archive();
+    this.archiveID = this.archive.getID();
     this.archiveCredentials = createCredentials.fromPassword("testing");
     const tds = new TextDatasource();
     return tds
@@ -148,7 +149,6 @@ describe("ArchiveManager", function() {
         beforeEach(function() {
             return createArchiveAndCredentials.call(this)
                 .then(() => {
-                    sinon.spy(this.archiveManager.storageInterface, "setValue");
                     sinon.stub(this.archiveManager, "dehydrateSource").returns(Promise.resolve());
                     return this.archiveManager
                         .addSource("new item", this.sourceCredentials, this.archiveCredentials)
@@ -175,6 +175,108 @@ describe("ArchiveManager", function() {
                         .that.is.a.string;
                     expect(source).to.have.property("archiveCredentials")
                         .that.is.a.string;
+                });
+        });
+
+        it("dehydrates after locking", function() {
+            sinon.spy(this.archiveManager, "_replace");
+            sinon.stub(this.archiveManager, "dehydrateSource").returns(Promise.resolve());
+            return this.archiveManager.lock(this.sourceID)
+                .then(() => {
+                    expect(this.archiveManager._replace.calledWith(this.sourceID)).to.be.true;
+                    expect(this.archiveManager.dehydrateSource.calledWithExactly(this.sourceID)).to.be.true;
+                    expect(this.archiveManager._replace.calledBefore(this.archiveManager.dehydrateSource)).to.be.true;
+                });
+        });
+
+    });
+
+    describe("rehydrate", function() {
+
+        beforeEach(function() {
+            return createArchiveAndCredentials.call(this)
+                .then(() => {
+                    return this.archiveManager
+                        .addSource("new item", this.sourceCredentials, this.archiveCredentials)
+                        .then(id => {
+                            this.sourceID = id;
+                        });
+                });
+        });
+
+        it("clears sources", function() {
+            this.archiveManager.sources.push({ name: "fake" });
+            expect(this.archiveManager.sources).to.have.lengthOf(2);
+            return this.archiveManager.rehydrate()
+                .then(() => {
+                    expect(this.archiveManager.sources).to.have.lengthOf(1);
+                });
+        });
+
+        it("restores the necessary properties", function() {
+            return this.archiveManager.rehydrate()
+                .then(() => {
+                    const item = this.archiveManager.sources[0];
+                    expect(item).to.have.property("name", "new item");
+                    expect(item).to.have.property("type", "text");
+                    expect(item).to.have.property("status", SourceStatus.LOCKED);
+                    expect(item).to.have.property("sourceCredentials")
+                        .that.is.a.string;
+                    expect(item).to.have.property("archiveCredentials")
+                        .that.is.a.string;
+                });
+        });
+
+    });
+
+    describe("unlock", function() {
+
+        beforeEach(function() {
+            return createArchiveAndCredentials.call(this)
+                .then(() => {
+                    return this.archiveManager
+                        .addSource("new item", this.sourceCredentials, this.archiveCredentials)
+                        .then(id => {
+                            this.sourceID = id;
+                            return this.archiveManager.lock(id);
+                        });
+                });
+        });
+
+        it("sets the correct properties", function() {
+            return this.archiveManager.unlock(this.sourceID, "testing")
+                .then(() => {
+                    expect(this.archiveManager.sources).to.have.lengthOf(1);
+                    const source = this.archiveManager.sources[0];
+                    expect(source).to.have.property("name", "new item");
+                    expect(source).to.have.property("type", "text");
+                    expect(source).to.have.property("status", SourceStatus.UNLOCKED);
+                    expect(source).to.have.property("sourceCredentials")
+                        .that.is.an.object;
+                    expect(source).to.have.property("archiveCredentials")
+                        .that.is.an.object;
+                    expect(source).to.have.property("workspace")
+                        .that.is.an.instanceOf(Workspace);
+                });
+        });
+
+        it("restores the credentials", function() {
+            return this.archiveManager.unlock(this.sourceID, "testing")
+                .then(() => {
+                    const source = this.archiveManager.sources[0];
+                    expect(source.sourceCredentials.getValue("datasource"))
+                        .to.equal(this.sourceCredentials.getValue("datasource"));
+                    expect(source.archiveCredentials.password).to.equal("testing");
+                });
+        });
+
+        it("restores the archive", function() {
+            return this.archiveManager.unlock(this.sourceID, "testing")
+                .then(() => {
+                    const source = this.archiveManager.sources[0];
+                    const archive = source.workspace.primary.archive;
+                    expect(archive).to.be.an.instanceOf(Archive);
+                    expect(archive.getID()).to.equal(this.archiveID);
                 });
         });
 

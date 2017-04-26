@@ -265,6 +265,7 @@ class ArchiveManager {
                             sourceInfo,
                             {
                                 id: source.id,
+                                name: source.name,
                                 status: SourceStatus.UNLOCKED,
                                 type: sourceCredentials.type
                             }
