@@ -1,6 +1,6 @@
 "use strict";
 
-var iocane = require("iocane");
+const iocane = require("iocane");
 
 module.exports = {
 
@@ -21,7 +21,6 @@ module.exports = {
     FileDatasource: require("./system/FileDatasource.js"),
     OwnCloudDatasource: require("./system/OwnCloudDatasource.js"),
     WebDAVDatasource: require("./system/WebDAVDatasource.js"),
-    ButtercupServerDatasource : require("./system/ButtercupServerDatasource.js"),
     MyButtercupDatasource: require("./system/MyButtercupDatasource.js"),
 
     Flattener: require("./system/Flattener.js"),
@@ -46,7 +45,7 @@ module.exports = {
     },
 
     vendor: {
-        iocane: iocane
+        iocane
     }
 
 };
