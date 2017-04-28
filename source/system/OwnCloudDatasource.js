@@ -6,7 +6,6 @@ const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
 /**
  * Datasource for OwnCloud archives
- * @class OwnCloudDatasource
  * @augments WebDAVDatasource
  */
 class OwnCloudDatasource extends WebDAVDatasource {

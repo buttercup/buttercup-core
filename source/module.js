@@ -19,6 +19,7 @@ module.exports = {
     TextDatasource: require("./system/TextDatasource.js"),
     FileDatasource: require("./system/FileDatasource.js"),
     OwnCloudDatasource: require("./system/OwnCloudDatasource.js"),
+    NextcloudDatasource: require("./system/NextcloudDatasource.js"),
     WebDAVDatasource: require("./system/WebDAVDatasource.js"),
     ButtercupServerDatasource : require("./system/ButtercupServerDatasource.js"),
 
