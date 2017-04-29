@@ -121,7 +121,6 @@ module.exports = {
         workspace.mergeSaveablesFromRemote()
             .then(function() {
                 var mergedHistory = workspace.primary.archive._getWestley().getHistory();
-                console.log(JSON.stringify(mergedHistory, undefined, 3));
                 test.ok(mergedHistory.indexOf('dgr 3') > 0, "Group 3 should not have been deleted");
                 test.ok(mergedHistory.indexOf('dgr 1') > 0, "Group 1 should not have been deleted");
                 test.done();
