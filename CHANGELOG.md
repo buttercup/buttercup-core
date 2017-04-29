@@ -1,5 +1,11 @@
 # Buttercup-core change-log
 
+## v0.38.0
+_2017-04-29_
+
+ * Add [MyButtercup](https://github.com/buttercup/roadmap/blob/9da2fad70941f5eda056c2de6d6c112f49470878/roadmap/OVERALL.md#mybuttercup) integration
+ * Add [Nextcloud](https://nextcloud.com/) integration
+
 ## v0.37.1
 _2017-04-16_
 

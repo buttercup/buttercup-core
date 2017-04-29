@@ -16,10 +16,9 @@
 <dd></dd>
 <dt><a href="#Comparator">Comparator</a></dt>
 <dd></dd>
-<dt><a href="#ButtercupServerDatasource">ButtercupServerDatasource</a> ⇐ <code><a href="#TextDatasource">TextDatasource</a></code></dt>
-<dd></dd>
-<dt><a href="#ButtercupServerDatasource">ButtercupServerDatasource</a></dt>
-<dd></dd>
+<dt><a href="#ArchiveManager">ArchiveManager</a></dt>
+<dd><p>Archive manager for managing archives and connections to sources</p>
+</dd>
 <dt><a href="#FormatCommand">FormatCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
 <dd></dd>
 <dt><a href="#BaseCommand">BaseCommand</a></dt>
@@ -76,10 +75,15 @@
 <dd></dd>
 <dt><a href="#Model">Model</a></dt>
 <dd></dd>
+<dt><a href="#MyButtercupDatasource">MyButtercupDatasource</a> ⇐ <code><a href="#TextDatasource">TextDatasource</a></code></dt>
+<dd><p>Datasource for the MyButtercup provider</p>
+</dd>
+<dt><a href="#NextcloudDatasource">NextcloudDatasource</a> ⇐ <code><a href="#OwnCloudDatasource">OwnCloudDatasource</a></code></dt>
+<dd><p>Datasource for Nextcloud archives</p>
+</dd>
 <dt><a href="#OwnCloudDatasource">OwnCloudDatasource</a> ⇐ <code><a href="#WebDAVDatasource">WebDAVDatasource</a></code></dt>
-<dd></dd>
-<dt><a href="#OwnCloudDatasource">OwnCloudDatasource</a></dt>
-<dd></dd>
+<dd><p>Datasource for OwnCloud archives</p>
+</dd>
 <dt><a href="#TextDatasource">TextDatasource</a></dt>
 <dd></dd>
 <dt><a href="#TextDatasource">TextDatasource</a></dt>
@@ -106,6 +110,12 @@
 ## Functions
 
 <dl>
+<dt><a href="#credentialsToDatasource">credentialsToDatasource(sourceCredentials)</a> ⇒ <code>Promise.&lt;{datasource, credentials}&gt;</code></dt>
+<dd><p>Convert credentials of a remote archive to a datasource</p>
+</dd>
+<dt><a href="#credentialsToSource">credentialsToSource(sourceCredentials, archiveCredentials, [initialise])</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Convert credentials to a source for the ArchiveManager</p>
+</dd>
 <dt><a href="#createCredentials">createCredentials([type], [data])</a> ⇒ <code><a href="#Credentials">Credentials</a></code></dt>
 <dd><p>Create a credentials adapter
 Both <code>type</code> and <code>data</code> parameters are optional.</p>
@@ -127,6 +137,13 @@ Both <code>type</code> and <code>data</code> parameters are optional.</p>
 ## Typedefs
 
 <dl>
+<dt><a href="#ArchiveManagerSourceStatus">ArchiveManagerSourceStatus</a> : <code>String</code></dt>
+<dd><p>Status of a source: locked/unlocked/pending</p>
+</dd>
+<dt><a href="#UnlockedArchiveManagerSource">UnlockedArchiveManagerSource</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#LockedArchiveManagerSource">LockedArchiveManagerSource</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#ArchiveDataset">ArchiveDataset</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#Credentials">Credentials</a> : <code>Object</code></dt>
@@ -530,177 +547,139 @@ Calculate the differences, in commands, between the two archives
 **Kind**: instance method of <code>[Comparator](#Comparator)</code>  
 **Returns**: <code>Object</code> &#124; <code>Boolean</code> - Returns false if no common base
        is found, or the command differences as two arrays  
-<a name="ButtercupServerDatasource"></a>
+<a name="ArchiveManager"></a>
 
-## ButtercupServerDatasource ⇐ <code>[TextDatasource](#TextDatasource)</code>
-**Kind**: global class  
-**Extends:** <code>[TextDatasource](#TextDatasource)</code>  
+## ArchiveManager
+Archive manager for managing archives and connections to sources
 
-* [ButtercupServerDatasource](#ButtercupServerDatasource) ⇐ <code>[TextDatasource](#TextDatasource)</code>
-    * [new ButtercupServerDatasource()](#new_ButtercupServerDatasource_new)
-    * [new ButtercupServerDatasource(address, email, password)](#new_ButtercupServerDatasource_new)
-    * [.load(passwordOrCredentials)](#ButtercupServerDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, passwordOrCredentials)](#ButtercupServerDatasource+save) ⇒ <code>Promise</code>
-    * [.toObject()](#ButtercupServerDatasource+toObject) ⇒ <code>Object</code>
-    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
-
-<a name="new_ButtercupServerDatasource_new"></a>
-
-### new ButtercupServerDatasource()
-Datasource for Buttercup server connections
-
-<a name="new_ButtercupServerDatasource_new"></a>
-
-### new ButtercupServerDatasource(address, email, password)
-Constructor for the datasource
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| address | <code>string</code> | The remote address of the server |
-| email | <code>string</code> | The user's email address |
-| password | <code>string</code> | The account password |
-
-<a name="ButtercupServerDatasource+load"></a>
-
-### buttercupServerDatasource.load(passwordOrCredentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-Load an archive
-
-**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
-**Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A Promise that resolves with an Archive  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| passwordOrCredentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The credentials or password for the archive |
-
-<a name="ButtercupServerDatasource+save"></a>
-
-### buttercupServerDatasource.save(archive, passwordOrCredentials) ⇒ <code>Promise</code>
-Save an archive
-
-**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
-**Overrides:** <code>[save](#TextDatasource+save)</code>  
-**Returns**: <code>Promise</code> - A Promise that resolves when saving is complete  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| passwordOrCredentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or credentials for the archive |
-
-<a name="ButtercupServerDatasource+toObject"></a>
-
-### buttercupServerDatasource.toObject() ⇒ <code>Object</code>
-Output the datasource as an object
-
-**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
-**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
-**Returns**: <code>Object</code> - An object describing the datasource  
-<a name="TextDatasource+setContent"></a>
-
-### buttercupServerDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-Set the text content
-
-**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
-**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| content | <code>String</code> | The encrypted text content |
-
-<a name="TextDatasource+toString"></a>
-
-### buttercupServerDatasource.toString() ⇒ <code>String</code>
-Output the datasource configuration as a string
-
-**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
-**Returns**: <code>String</code> - The string representation of the datasource  
-<a name="ButtercupServerDatasource"></a>
-
-## ButtercupServerDatasource
 **Kind**: global class  
 
-* [ButtercupServerDatasource](#ButtercupServerDatasource)
-    * [new ButtercupServerDatasource()](#new_ButtercupServerDatasource_new)
-    * [new ButtercupServerDatasource(address, email, password)](#new_ButtercupServerDatasource_new)
-    * [.load(passwordOrCredentials)](#ButtercupServerDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, passwordOrCredentials)](#ButtercupServerDatasource+save) ⇒ <code>Promise</code>
-    * [.toObject()](#ButtercupServerDatasource+toObject) ⇒ <code>Object</code>
-    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
+* [ArchiveManager](#ArchiveManager)
+    * [new ArchiveManager([storageInterface])](#new_ArchiveManager_new)
+    * [.sources](#ArchiveManager+sources) : <code>Array.&lt;(UnlockedArchiveManagerSource\|LockedArchiveManagerSource)&gt;</code>
+    * [.storageInterface](#ArchiveManager+storageInterface) : <code>StorageInterface</code>
+    * [.unlockedSources](#ArchiveManager+unlockedSources) : <code>Array.&lt;(UnlockedArchiveManagerSource\|LockedArchiveManagerSource)&gt;</code>
+    * [.addSource(name, sourceCredentials, archiveCredentials, [initialise])](#ArchiveManager+addSource) ⇒ <code>Promise.&lt;String&gt;</code>
+    * [.dehydrateSource(id)](#ArchiveManager+dehydrateSource) ⇒ <code>Promise</code>
+    * [.indexOfSource(id)](#ArchiveManager+indexOfSource) ⇒ <code>Number</code>
+    * [.lock(id)](#ArchiveManager+lock) ⇒ <code>Promise</code>
+    * [.rehydrate()](#ArchiveManager+rehydrate) ⇒ <code>Promise</code>
+    * [.unlock(id, masterPassword)](#ArchiveManager+unlock) ⇒ <code>Promise</code>
+    * [._replace(id, source)](#ArchiveManager+_replace)
 
-<a name="new_ButtercupServerDatasource_new"></a>
+<a name="new_ArchiveManager_new"></a>
 
-### new ButtercupServerDatasource()
-Datasource for Buttercup server connections
+### new ArchiveManager([storageInterface])
+Constructor for ArchiveManager
 
-<a name="new_ButtercupServerDatasource_new"></a>
-
-### new ButtercupServerDatasource(address, email, password)
-Constructor for the datasource
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| address | <code>string</code> | The remote address of the server |
-| email | <code>string</code> | The user's email address |
-| password | <code>string</code> | The account password |
-
-<a name="ButtercupServerDatasource+load"></a>
-
-### buttercupServerDatasource.load(passwordOrCredentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-Load an archive
-
-**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
-**Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A Promise that resolves with an Archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| passwordOrCredentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The credentials or password for the archive |
+| [storageInterface] | <code>StorageInterface</code> | An optional StorageInterface instance. Defaults  to a new MemoryStorageInterface instance if not provided |
 
-<a name="ButtercupServerDatasource+save"></a>
+<a name="ArchiveManager+sources"></a>
 
-### buttercupServerDatasource.save(archive, passwordOrCredentials) ⇒ <code>Promise</code>
-Save an archive
+### archiveManager.sources : <code>Array.&lt;(UnlockedArchiveManagerSource\|LockedArchiveManagerSource)&gt;</code>
+All sources handled by the manager
 
-**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
-**Overrides:** <code>[save](#TextDatasource+save)</code>  
-**Returns**: <code>Promise</code> - A Promise that resolves when saving is complete  
+**Kind**: instance property of <code>[ArchiveManager](#ArchiveManager)</code>  
+<a name="ArchiveManager+storageInterface"></a>
+
+### archiveManager.storageInterface : <code>StorageInterface</code>
+Reference to the storage interface
+
+**Kind**: instance property of <code>[ArchiveManager](#ArchiveManager)</code>  
+<a name="ArchiveManager+unlockedSources"></a>
+
+### archiveManager.unlockedSources : <code>Array.&lt;(UnlockedArchiveManagerSource\|LockedArchiveManagerSource)&gt;</code>
+Array of unlocked sources
+
+**Kind**: instance property of <code>[ArchiveManager](#ArchiveManager)</code>  
+<a name="ArchiveManager+addSource"></a>
+
+### archiveManager.addSource(name, sourceCredentials, archiveCredentials, [initialise]) ⇒ <code>Promise.&lt;String&gt;</code>
+Add a new source
+
+**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Returns**: <code>Promise.&lt;String&gt;</code> - A promise that resolves with the source's new ID  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| name | <code>String</code> |  | The name of the source |
+| sourceCredentials | <code>[Credentials](#Credentials)</code> |  | Archive source credentials (remote system) |
+| archiveCredentials | <code>[Credentials](#Credentials)</code> |  | Credentials for unlocking the archive |
+| [initialise] | <code>Boolean</code> | <code>false</code> | Optionally initialise a blank archive (defaults to false) |
+
+<a name="ArchiveManager+dehydrateSource"></a>
+
+### archiveManager.dehydrateSource(id) ⇒ <code>Promise</code>
+Dehydrate a source and write it to storage
+Does not lock the source
+
+**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Returns**: <code>Promise</code> - A promise that resolves once dehydration has completed  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| passwordOrCredentials | <code>string</code> &#124; <code>[Credentials](#Credentials)</code> | The password or credentials for the archive |
+| id | <code>String</code> | The ID of the source to lock |
 
-<a name="ButtercupServerDatasource+toObject"></a>
+<a name="ArchiveManager+indexOfSource"></a>
 
-### buttercupServerDatasource.toObject() ⇒ <code>Object</code>
-Output the datasource as an object
+### archiveManager.indexOfSource(id) ⇒ <code>Number</code>
+Get an index for a source with an ID
 
-**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
-**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
-**Returns**: <code>Object</code> - An object describing the datasource  
-<a name="TextDatasource+setContent"></a>
-
-### buttercupServerDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-Set the text content
-
-**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
-**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Returns**: <code>Number</code> - The index or -1 if not found  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| content | <code>String</code> | The encrypted text content |
+| id | <code>String</code> | The ID of the source |
 
-<a name="TextDatasource+toString"></a>
+<a name="ArchiveManager+lock"></a>
 
-### buttercupServerDatasource.toString() ⇒ <code>String</code>
-Output the datasource configuration as a string
+### archiveManager.lock(id) ⇒ <code>Promise</code>
+Lock a source by its ID
 
-**Kind**: instance method of <code>[ButtercupServerDatasource](#ButtercupServerDatasource)</code>  
-**Returns**: <code>String</code> - The string representation of the datasource  
+**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Returns**: <code>Promise</code> - A promise that resolves once the source is locked  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The ID of the source |
+
+<a name="ArchiveManager+rehydrate"></a>
+
+### archiveManager.rehydrate() ⇒ <code>Promise</code>
+Rehydrate all sources from storage
+
+**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Returns**: <code>Promise</code> - A promise that resolves once all sources have been rehydrated  
+<a name="ArchiveManager+unlock"></a>
+
+### archiveManager.unlock(id, masterPassword) ⇒ <code>Promise</code>
+Unlock a source
+
+**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Returns**: <code>Promise</code> - A promise that resolves once the source is unlocked  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The ID of the source to unlock |
+| masterPassword | <code>String</code> | The password to unlock the source |
+
+<a name="ArchiveManager+_replace"></a>
+
+### archiveManager._replace(id, source)
+Replace a source by its ID
+
+**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Access:** protected  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The ID of the source |
+| source | <code>[UnlockedArchiveManagerSource](#UnlockedArchiveManagerSource)</code> &#124; <code>[LockedArchiveManagerSource](#LockedArchiveManagerSource)</code> | The source to replace it with |
+
 <a name="FormatCommand"></a>
 
 ## FormatCommand ⇐ <code>[BaseCommand](#BaseCommand)</code>
@@ -3676,27 +3655,198 @@ Set a property
 | key | <code>string</code> | The location (property) at which to set a value (eg. "some.nested.prop") |
 | value | <code>string</code> &#124; <code>number</code> &#124; <code>Object</code> &#124; <code>\*</code> | The value to set |
 
+<a name="MyButtercupDatasource"></a>
+
+## MyButtercupDatasource ⇐ <code>[TextDatasource](#TextDatasource)</code>
+Datasource for the MyButtercup provider
+
+**Kind**: global class  
+**Extends:** <code>[TextDatasource](#TextDatasource)</code>  
+
+* [MyButtercupDatasource](#MyButtercupDatasource) ⇐ <code>[TextDatasource](#TextDatasource)</code>
+    * [new MyButtercupDatasource(archiveID, accessToken)](#new_MyButtercupDatasource_new)
+    * _instance_
+        * [.load(credentials)](#MyButtercupDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+        * [.save(archive, credentials)](#MyButtercupDatasource+save) ⇒ <code>Promise</code>
+        * [.toObject()](#MyButtercupDatasource+toObject) ⇒ <code>Object</code>
+        * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+        * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
+    * _static_
+        * [.fromObject(obj)](#MyButtercupDatasource.fromObject) ⇒ <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>
+        * [.fromString(str, hostCredentials)](#MyButtercupDatasource.fromString) ⇒ <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>
+
+<a name="new_MyButtercupDatasource_new"></a>
+
+### new MyButtercupDatasource(archiveID, accessToken)
+Constructor for the datasource
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| archiveID | <code>Number</code> | The ID of the archive |
+| accessToken | <code>String</code> | The OAuth access token |
+
+<a name="MyButtercupDatasource+load"></a>
+
+### myButtercupDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+Load an archive from the datasource
+
+**Kind**: instance method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
+**Overrides:** <code>[load](#TextDatasource+load)</code>  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise that resolves with an Archive instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| credentials | <code>[Credentials](#Credentials)</code> | Credentials instance |
+
+<a name="MyButtercupDatasource+save"></a>
+
+### myButtercupDatasource.save(archive, credentials) ⇒ <code>Promise</code>
+Save an archive
+
+**Kind**: instance method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
+**Overrides:** <code>[save](#TextDatasource+save)</code>  
+**Returns**: <code>Promise</code> - A promise that resolves once saving is complete  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials to use for saving (master password) |
+
+<a name="MyButtercupDatasource+toObject"></a>
+
+### myButtercupDatasource.toObject() ⇒ <code>Object</code>
+Convert the datasource to an object
+
+**Kind**: instance method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
+**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Returns**: <code>Object</code> - The object representation  
+<a name="TextDatasource+setContent"></a>
+
+### myButtercupDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+Set the text content
+
+**Kind**: instance method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
+**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | The encrypted text content |
+
+<a name="TextDatasource+toString"></a>
+
+### myButtercupDatasource.toString() ⇒ <code>String</code>
+Output the datasource configuration as a string
+
+**Kind**: instance method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
+**Returns**: <code>String</code> - The string representation of the datasource  
+<a name="MyButtercupDatasource.fromObject"></a>
+
+### MyButtercupDatasource.fromObject(obj) ⇒ <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>
+Create a datasource instance from an object
+
+**Kind**: static method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
+**Returns**: <code>[MyButtercupDatasource](#MyButtercupDatasource)</code> - A datasource instance  
+**Throws**:
+
+- <code>Error</code> Throws if the type is not recognised
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| obj | <code>Object</code> | The object to create an instance from |
+
+<a name="MyButtercupDatasource.fromString"></a>
+
+### MyButtercupDatasource.fromString(str, hostCredentials) ⇒ <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>
+Create a datasource from a string
+
+**Kind**: static method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
+**Returns**: <code>[MyButtercupDatasource](#MyButtercupDatasource)</code> - A datasource instance  
+**See**: MyButtercupDatasource.fromObject  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| str | <code>String</code> | The string representation of a datasource |
+| hostCredentials | <code>[Credentials](#Credentials)</code> | The credentials for the remote provider |
+
+<a name="NextcloudDatasource"></a>
+
+## NextcloudDatasource ⇐ <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>
+Datasource for Nextcloud archives
+
+**Kind**: global class  
+**Extends:** <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+
+* [NextcloudDatasource](#NextcloudDatasource) ⇐ <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>
+    * [.toObject()](#NextcloudDatasource+toObject) ⇒ <code>Object</code>
+    * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
+    * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
+    * [.load(credentials)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
+
+<a name="NextcloudDatasource+toObject"></a>
+
+### nextcloudDatasource.toObject() ⇒ <code>Object</code>
+Output the datasource as an object
+
+**Kind**: instance method of <code>[NextcloudDatasource](#NextcloudDatasource)</code>  
+**Overrides:** <code>[toObject](#OwnCloudDatasource+toObject)</code>  
+**Returns**: <code>Object</code> - An object describing the datasource  
+<a name="WebDAVDatasource+getArchivePath"></a>
+
+### nextcloudDatasource.getArchivePath() ⇒ <code>string</code>
+Get the path of the archive on the server
+
+**Kind**: instance method of <code>[NextcloudDatasource](#NextcloudDatasource)</code>  
+**Returns**: <code>string</code> - The path  
+<a name="WebDAVDatasource+getRemoteEndpoint"></a>
+
+### nextcloudDatasource.getRemoteEndpoint() ⇒ <code>string</code>
+Get the remote endpoint URI (no resource path)
+
+**Kind**: instance method of <code>[NextcloudDatasource](#NextcloudDatasource)</code>  
+**Returns**: <code>string</code> - The endpoint  
+<a name="WebDAVDatasource+load"></a>
+
+### nextcloudDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+Load the archive from the datasource
+
+**Kind**: instance method of <code>[NextcloudDatasource](#NextcloudDatasource)</code>  
+**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the archive  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials for archive decryption |
+
+<a name="WebDAVDatasource+save"></a>
+
+### nextcloudDatasource.save(archive, credentials) ⇒ <code>Promise</code>
+Save an archive to the WebDAV service
+
+**Kind**: instance method of <code>[NextcloudDatasource](#NextcloudDatasource)</code>  
+**Returns**: <code>Promise</code> - A promise resolving when the save is complete  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| archive | <code>[Archive](#Archive)</code> | The archive to save |
+| credentials | <code>[Credentials](#Credentials)</code> | The credentials for encryption |
+
 <a name="OwnCloudDatasource"></a>
 
 ## OwnCloudDatasource ⇐ <code>[WebDAVDatasource](#WebDAVDatasource)</code>
+Datasource for OwnCloud archives
+
 **Kind**: global class  
 **Extends:** <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
 
 * [OwnCloudDatasource](#OwnCloudDatasource) ⇐ <code>[WebDAVDatasource](#WebDAVDatasource)</code>
-    * [new OwnCloudDatasource()](#new_OwnCloudDatasource_new)
     * [new OwnCloudDatasource(owncloudURL, resourcePath, credentials)](#new_OwnCloudDatasource_new)
     * [.toObject()](#OwnCloudDatasource+toObject) ⇒ <code>Object</code>
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
     * [.load(credentials)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
     * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
-    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
-
-<a name="new_OwnCloudDatasource_new"></a>
-
-### new OwnCloudDatasource()
-Datasource for OwnCloud archives
 
 <a name="new_OwnCloudDatasource_new"></a>
 
@@ -3757,124 +3907,6 @@ Save an archive to the WebDAV service
 | archive | <code>[Archive](#Archive)</code> | The archive to save |
 | credentials | <code>[Credentials](#Credentials)</code> | The credentials for encryption |
 
-<a name="TextDatasource+setContent"></a>
-
-### ownCloudDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-Set the text content
-
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| content | <code>String</code> | The encrypted text content |
-
-<a name="TextDatasource+toString"></a>
-
-### ownCloudDatasource.toString() ⇒ <code>String</code>
-Output the datasource configuration as a string
-
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>String</code> - The string representation of the datasource  
-<a name="OwnCloudDatasource"></a>
-
-## OwnCloudDatasource
-**Kind**: global class  
-
-* [OwnCloudDatasource](#OwnCloudDatasource)
-    * [new OwnCloudDatasource()](#new_OwnCloudDatasource_new)
-    * [new OwnCloudDatasource(owncloudURL, resourcePath, credentials)](#new_OwnCloudDatasource_new)
-    * [.toObject()](#OwnCloudDatasource+toObject) ⇒ <code>Object</code>
-    * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
-    * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(credentials)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
-    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
-
-<a name="new_OwnCloudDatasource_new"></a>
-
-### new OwnCloudDatasource()
-Datasource for OwnCloud archives
-
-<a name="new_OwnCloudDatasource_new"></a>
-
-### new OwnCloudDatasource(owncloudURL, resourcePath, credentials)
-Datasource for Owncloud connections
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| owncloudURL | <code>String</code> | The URL to the owncloud instance, without "remote.php/webdav" etc. |
-| resourcePath | <code>String</code> | The file path |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials (username/password) for owncloud |
-
-<a name="OwnCloudDatasource+toObject"></a>
-
-### ownCloudDatasource.toObject() ⇒ <code>Object</code>
-Output the datasource as an object
-
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Overrides:** <code>[toObject](#WebDAVDatasource+toObject)</code>  
-**Returns**: <code>Object</code> - An object describing the datasource  
-<a name="WebDAVDatasource+getArchivePath"></a>
-
-### ownCloudDatasource.getArchivePath() ⇒ <code>string</code>
-Get the path of the archive on the server
-
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>string</code> - The path  
-<a name="WebDAVDatasource+getRemoteEndpoint"></a>
-
-### ownCloudDatasource.getRemoteEndpoint() ⇒ <code>string</code>
-Get the remote endpoint URI (no resource path)
-
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>string</code> - The endpoint  
-<a name="WebDAVDatasource+load"></a>
-
-### ownCloudDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-Load the archive from the datasource
-
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the archive  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for archive decryption |
-
-<a name="WebDAVDatasource+save"></a>
-
-### ownCloudDatasource.save(archive, credentials) ⇒ <code>Promise</code>
-Save an archive to the WebDAV service
-
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>Promise</code> - A promise resolving when the save is complete  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for encryption |
-
-<a name="TextDatasource+setContent"></a>
-
-### ownCloudDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-Set the text content
-
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| content | <code>String</code> | The encrypted text content |
-
-<a name="TextDatasource+toString"></a>
-
-### ownCloudDatasource.toString() ⇒ <code>String</code>
-Output the datasource configuration as a string
-
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="TextDatasource"></a>
 
 ## TextDatasource
@@ -4547,6 +4579,34 @@ Find groups by their title
 | --- | --- | --- |
 | title | <code>String</code> &#124; <code>RegExp</code> | The group title |
 
+<a name="credentialsToDatasource"></a>
+
+## credentialsToDatasource(sourceCredentials) ⇒ <code>Promise.&lt;{datasource, credentials}&gt;</code>
+Convert credentials of a remote archive to a datasource
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;{datasource, credentials}&gt;</code> - A promise that resolves with the datasource and
+ source credentials  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sourceCredentials | <code>[Credentials](#Credentials)</code> | The remote credentials. The credentials must  have a type field and datasource information field |
+
+<a name="credentialsToSource"></a>
+
+## credentialsToSource(sourceCredentials, archiveCredentials, [initialise]) ⇒ <code>Promise.&lt;Object&gt;</code>
+Convert credentials to a source for the ArchiveManager
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise that resolves with an object containing a workspace,
+ the source credentials and archive credentials  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| sourceCredentials | <code>[Credentials](#Credentials)</code> |  | The remote archive credentials |
+| archiveCredentials | <code>[Credentials](#Credentials)</code> |  | Credentials for unlocking the archive |
+| [initialise] | <code>Boolean</code> | <code>false</code> | Whether or not to initialise a new archive (defaults to false) |
+
 <a name="createCredentials"></a>
 
 ## createCredentials([type], [data]) ⇒ <code>[Credentials](#Credentials)</code>
@@ -4640,6 +4700,43 @@ Get all entries within a collection of groups
 | Param | Type | Description |
 | --- | --- | --- |
 | groups | <code>[Array.&lt;Group&gt;](#Group)</code> | An array of groups |
+
+<a name="ArchiveManagerSourceStatus"></a>
+
+## ArchiveManagerSourceStatus : <code>String</code>
+Status of a source: locked/unlocked/pending
+
+**Kind**: global typedef  
+<a name="UnlockedArchiveManagerSource"></a>
+
+## UnlockedArchiveManagerSource : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name of the source |
+| id | <code>String</code> | The ID of the source (UUID) |
+| status | <code>[ArchiveManagerSourceStatus](#ArchiveManagerSourceStatus)</code> | The current status of the source |
+| type | <code>String</code> | The type of source (eg. dropbox/mybuttercup etc.) |
+| workspace | <code>[Workspace](#Workspace)</code> | The archive's workspace |
+| sourceCredentials | <code>[Credentials](#Credentials)</code> | Credentials for the remote datasource |
+| archiveCredentials | <code>[Credentials](#Credentials)</code> | Credentials for unlocking the archive |
+
+<a name="LockedArchiveManagerSource"></a>
+
+## LockedArchiveManagerSource : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name of the source |
+| id | <code>String</code> | The ID of the source (UUID) |
+| status | <code>[ArchiveManagerSourceStatus](#ArchiveManagerSourceStatus)</code> | The current status of the source |
+| type | <code>String</code> | The type of source (eg. dropbox/mybuttercup etc.) |
+| sourceCredentials | <code>String</code> | Encrypted credentials for the remote datasource |
+| archiveCredentials | <code>String</code> | Encrypted credentials for unlocking the archive |
 
 <a name="ArchiveDataset"></a>
 
