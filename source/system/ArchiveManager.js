@@ -1,0 +1,301 @@
+"use strict";
+
+const VError = require("verror");
+const createCredentials = require("./credentials.js");
+const credentialsToSource = require("./archiveManagement/marshalling.js").credentialsToSource;
+const getUniqueID = require("../tools/encoding.js").getUniqueID;
+const MemoryStorageInterface = require("./storage/MemoryStorageInterface.js");
+
+const STORAGE_KEY_PREFIX =          "bcup_archivemgr_";
+const STORAGE_KEY_PREFIX_TEST =     /^bcup_archivemgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+
+const SourceStatus = {
+    LOCKED:     "locked",
+    UNLOCKED:   "unlocked",
+    PENDING:    "pending"
+};
+
+/**
+ * Status of a source: locked/unlocked/pending
+ * @typedef {String} ArchiveManagerSourceStatus
+ */
+
+/**
+ * @typedef {Object} UnlockedArchiveManagerSource
+ * @property {String} name - The name of the source
+ * @property {String} id - The ID of the source (UUID)
+ * @property {ArchiveManagerSourceStatus} status - The current status of the source
+ * @property {String} type - The type of source (eg. dropbox/mybuttercup etc.)
+ * @property {Workspace} workspace - The archive's workspace
+ * @property {Credentials} sourceCredentials - Credentials for the remote datasource
+ * @property {Credentials} archiveCredentials - Credentials for unlocking the archive
+ */
+
+/**
+ * @typedef {Object} LockedArchiveManagerSource
+ * @property {String} name - The name of the source
+ * @property {String} id - The ID of the source (UUID)
+ * @property {ArchiveManagerSourceStatus} status - The current status of the source
+ * @property {String} type - The type of source (eg. dropbox/mybuttercup etc.)
+ * @property {String} sourceCredentials - Encrypted credentials for the remote datasource
+ * @property {String} archiveCredentials - Encrypted credentials for unlocking the archive
+ */
+
+/**
+ * Archive manager for managing archives and connections to sources
+ */
+class ArchiveManager {
+
+    /**
+     * Constructor for ArchiveManager
+     * @param {StorageInterface=} storageInterface An optional StorageInterface instance. Defaults
+     *  to a new MemoryStorageInterface instance if not provided
+     */
+    constructor(storageInterface = new MemoryStorageInterface()) {
+        this._storageInterface = storageInterface;
+        this._sources = [];
+    }
+
+    /**
+     * All sources handled by the manager
+     * @type {Array.<UnlockedArchiveManagerSource|LockedArchiveManagerSource>}
+     */
+    get sources() {
+        return this._sources;
+    }
+
+    /**
+     * Reference to the storage interface
+     * @type {StorageInterface}
+     */
+    get storageInterface() {
+        return this._storageInterface;
+    }
+
+    /**
+     * Array of unlocked sources
+     * @type {Array.<UnlockedArchiveManagerSource|LockedArchiveManagerSource>}
+     */
+    get unlockedSources() {
+        return this.sources.map(source => source.status === SourceStatus.UNLOCKED);
+    }
+
+    /**
+     * Add a new source
+     * @param {String} name The name of the source
+     * @param {Credentials} sourceCredentials Archive source credentials (remote system)
+     * @param {Credentials} archiveCredentials Credentials for unlocking the archive
+     * @param {Boolean=} initialise Optionally initialise a blank archive (defaults to false)
+     * @returns {Promise.<String>} A promise that resolves with the source's new ID
+     */
+    addSource(name, sourceCredentials, archiveCredentials, initialise = false) {
+        return credentialsToSource(sourceCredentials, archiveCredentials, initialise)
+            .then(sourceInfo => {
+                const id = getUniqueID();
+                this._sources.push(Object.assign(
+                    sourceInfo,
+                    {
+                        name,
+                        id,
+                        status: SourceStatus.UNLOCKED,
+                        type: sourceCredentials.type
+                    }
+                ));
+                return this
+                    .dehydrateSource(id)
+                    .then(() => id);
+            })
+            .catch(function(err) {
+                throw new VError(err, "Failed adding source");
+            });
+    }
+
+    /**
+     * Dehydrate a source and write it to storage
+     * Does not lock the source
+     * @param {String} id The ID of the source to lock
+     * @returns {Promise} A promise that resolves once dehydration has completed
+     */
+    dehydrateSource(id) {
+        let source;
+        return Promise
+            .resolve()
+            .then(() => {
+                const index = this.indexOfSource(id);
+                if (index < 0) {
+                    throw new VError("Source not found for ID");
+                }
+                source = this.sources[index];
+                if (source.status === SourceStatus.LOCKED) {
+                    return source;
+                } else if (source.status === SourceStatus.UNLOCKED) {
+                    return Promise
+                        .all([
+                            source.sourceCredentials.toSecureString(source.archiveCredentials.password),
+                            source.archiveCredentials.toSecureString(source.archiveCredentials.password)
+                        ])
+                        .then(([encParentCreds, encArchiveCreds] = []) => ({
+                            id: source.id,
+                            name: source.name,
+                            type: source.type,
+                            status: SourceStatus.LOCKED,
+                            sourceCredentials: encParentCreds,
+                            archiveCredentials: encArchiveCreds
+                        }));
+                } else {
+                    throw new VError(`Source state invalid: ${source.status}`);
+                }
+            })
+            .then(lockedSource => this.storageInterface.setValue(
+                `${STORAGE_KEY_PREFIX}${lockedSource.id}`,
+                JSON.stringify(lockedSource)
+            ))
+            .catch(function __handleDehydrateError(err) {
+                throw new VError(err, `Failed dehydrating source with ID: ${id}`);
+            });
+    }
+
+    /**
+     * Get an index for a source with an ID
+     * @param {String} id The ID of the source
+     * @returns {Number} The index or -1 if not found
+     */
+    indexOfSource(id) {
+        return this.sources.findIndex(source => source.id === id);
+    }
+
+    /**
+     * Lock a source by its ID
+     * @param {String} id The ID of the source
+     * @returns {Promise} A promise that resolves once the source is locked
+     */
+    lock(id) {
+        let source;
+        return Promise
+            .resolve()
+            .then(() => {
+                const index = this.indexOfSource(id);
+                if (index < 0) {
+                    throw new VError("Source not found for ID");
+                }
+                source = this.sources[index];
+                if (source.status !== SourceStatus.UNLOCKED) {
+                    throw new VError(`Source state invalid: ${source.status}`);
+                }
+                source.status = SourceStatus.PENDING;
+            })
+            .then(() => Promise.all([
+                source.sourceCredentials.toSecureString(source.archiveCredentials.password),
+                source.archiveCredentials.toSecureString(source.archiveCredentials.password)
+            ]))
+            .then(([encParentCreds, encArchiveCreds] = []) => {
+                this._replace(source.id, {
+                    id: source.id,
+                    name: source.name,
+                    type: source.type,
+                    status: SourceStatus.LOCKED,
+                    sourceCredentials: encParentCreds,
+                    archiveCredentials: encArchiveCreds
+                });
+                return this.dehydrateSource(source.id);
+            })
+            .catch(function __handleLockError(err) {
+                if (source) {
+                    source.status = SourceStatus.UNLOCKED;
+                }
+                throw new VError(err, `Failed to lock source with ID: ${id}`);
+            });
+    }
+
+    /**
+     * Rehydrate all sources from storage
+     * @returns {Promise} A promise that resolves once all sources have been rehydrated
+     */
+    rehydrate() {
+        this._sources = [];
+        return this.storageInterface
+            .getAllKeys()
+            .then(keys => Promise.all(
+                keys
+                    .filter(key => STORAGE_KEY_PREFIX_TEST.test(key))
+                    .map(key => this.storageInterface
+                        .getValue(key)
+                        .then(JSON.parse)
+                        .then(lockedSource => {
+                            this.sources.push(lockedSource);
+                        })
+                        .catch(function __handleDehydratedReadError(err) {
+                            throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
+                        })
+            )))
+            .catch(function __handleRehydrateError(err) {
+                throw new VError(err, "Failed rehydrating sources");
+            });
+    }
+
+    /**
+     * Unlock a source
+     * @param {String} id The ID of the source to unlock
+     * @param {String} masterPassword The password to unlock the source
+     * @returns {Promise} A promise that resolves once the source is unlocked
+     */
+    unlock(id, masterPassword) {
+        let source;
+        return Promise
+            .resolve()
+            .then(() => {
+                const index = this.indexOfSource(id);
+                if (index < 0) {
+                    throw new VError("Source not found for ID");
+                }
+                source = this.sources[index];
+                if (source.status !== SourceStatus.LOCKED) {
+                    throw new VError(`Source state invalid: ${source.status}`);
+                }
+                source.status = SourceStatus.PENDING;
+                return Promise.all([
+                    createCredentials.fromSecureString(source.sourceCredentials, masterPassword),
+                    createCredentials.fromSecureString(source.archiveCredentials, masterPassword)
+                ]);
+            })
+            .then(([sourceCredentials, archiveCredentials] = []) => {
+                return credentialsToSource(sourceCredentials, archiveCredentials, /* initialise */ false)
+                    .then(sourceInfo => {
+                        this._replace(source.id, Object.assign(
+                            sourceInfo,
+                            {
+                                id: source.id,
+                                name: source.name,
+                                status: SourceStatus.UNLOCKED,
+                                type: sourceCredentials.type
+                            }
+                        ))
+                    })
+                    .catch(function __handleCredentialsMapError(err) {
+                        throw new VError(err, "Failed mapping credentials to a source");
+                    });
+            })
+            .catch(function(err) {
+                throw new VError(err, `Failed to unlock source with ID: ${id}`);
+            });
+    }
+
+    /**
+     * Replace a source by its ID
+     * @protected
+     * @param {String} id The ID of the source
+     * @param {UnlockedArchiveManagerSource|LockedArchiveManagerSource} source The source to replace it with
+     */
+    _replace(id, source) {
+        const index = this.indexOfSource(id);
+        if (index < 0) {
+            throw new VError(`Failed replacing source: Source not found`);
+        }
+        this.sources[index] = source;
+    }
+
+}
+
+ArchiveManager.SourceStatus = SourceStatus;
+
+module.exports = ArchiveManager;

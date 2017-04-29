@@ -2,9 +2,5 @@ language: node_js
 script: npm run test:ci
 node_js:
   - "stable"
+  - "6.10"
   - "6.9"
-  - "6.8"
-  - "5.12"
-  - "5.11"
-  - "4.6"
-  - "4.5"

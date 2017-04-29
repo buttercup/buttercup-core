@@ -1,10 +1,11 @@
 "use strict";
 
-var iocane = require("iocane");
+const iocane = require("iocane");
 
 module.exports = {
 
     Archive: require("./system/Archive.js"),
+    ArchiveManager: require("./system/ArchiveManager.js"),
     Westley: require("./system/Westley.js"),
     Inigo: require("./system/InigoGenerator.js"),
     Workspace: require("./system/Workspace.js"),
@@ -21,10 +22,18 @@ module.exports = {
     OwnCloudDatasource: require("./system/OwnCloudDatasource.js"),
     NextcloudDatasource: require("./system/NextcloudDatasource.js"),
     WebDAVDatasource: require("./system/WebDAVDatasource.js"),
-    ButtercupServerDatasource : require("./system/ButtercupServerDatasource.js"),
+    MyButtercupDatasource: require("./system/MyButtercupDatasource.js"),
 
     Flattener: require("./system/Flattener.js"),
     Descriptor: require("./system/Descriptor.js"),
+
+    storage: {
+        MemoryStorageInterface: require("./system/storage/MemoryStorageInterface.js")
+    },
+
+    archiveManagement: {
+        marshalling: require("./system/archiveManagement/marshalling.js")
+    },
 
     tools: {
         encoding: require("./tools/encoding.js"),
@@ -37,7 +46,7 @@ module.exports = {
     },
 
     vendor: {
-        iocane: iocane
+        iocane
     }
 
 };

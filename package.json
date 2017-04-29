@@ -19,10 +19,10 @@
     "test": "npm run test:lint && npm run test:istanbul && npm run test:unit",
     "test:ci": "npm test && npm run test:codeclimate",
     "test:codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
-    "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
+    "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
     "test:lint": "node node_modules/eslint/bin/eslint.js source/",
-    "test:nodeunit": "node node_modules/nodeunit/bin/nodeunit tests tests/integration tests/commands",
-    "test:unit": "mocha -r test/unit/index.js test/unit/**/*.spec.js"
+    "test:nodeunit": "node node_modules/nodeunit/bin/nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
+    "test:unit": "mocha -r test/unit/index.js 'test/unit/**/*.spec.js' --timeout 5000"
   },
   "repository": {
     "type": "git",
@@ -46,9 +46,11 @@
     "clone": "~1.0.2",
     "debug": "~2.3.3",
     "gzip-js": "~0.3.2",
-    "iocane": "~0.6.0",
+    "iocane": "~0.7.0",
     "node-fetch": "~1.6.3",
+    "string-hash": "^1.1.3",
     "uuid": "~2.0.1",
+    "verror": "~1.9.0",
     "webdav-fs": "~0.4.0"
   },
   "devDependencies": {
