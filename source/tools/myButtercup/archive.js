@@ -2,7 +2,7 @@
 
 const fetch = require("node-fetch");
 
-const API_TARGET =              "http://my.buttercup.dev";
+const API_TARGET =              "https://my.buttercup.pw";
 const API_ENDPOINT_ARCHIVE =    `${API_TARGET}/api/v1/archive/[ID]`;
 const API_ENDPOINT_ARCHIVES =   `${API_TARGET}/api/v1/archives`;
 
