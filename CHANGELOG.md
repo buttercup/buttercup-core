@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.38.1
+_2017-05-02_
+
+ * Expose `StorageInterface`
+
 ## v0.38.0
 _2017-04-29_
 
