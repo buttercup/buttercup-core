@@ -28,6 +28,7 @@ module.exports = {
     Descriptor: require("./system/Descriptor.js"),
 
     storage: {
+        StorageInterface: require("./system/storage/StorageInterface.js"),
         MemoryStorageInterface: require("./system/storage/MemoryStorageInterface.js")
     },
 
