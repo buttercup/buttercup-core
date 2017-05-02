@@ -40,8 +40,9 @@ This library also supports a variety of datasources for loading from and saving 
 
  * WebDAV
  * [OwnCloud](https://owncloud.org/)
+ * [Nextcloud](https://nextcloud.com/)
  * Files
- * [Buttercup server](https://github.com/buttercup-pw/buttercup-server)
+ * ~~[Buttercup server](https://github.com/buttercup-pw/buttercup-server)~~
 
 You may want to read the [API documentation](https://github.com/buttercup-pw/buttercup-core/blob/master/API.md) and [changelog](https://github.com/buttercup-pw/buttercup-core/blob/master/CHANGELOG.md). Please read our [guide to contributing](https://github.com/buttercup-pw/buttercup-core/blob/master/CONTRIBUTING.md) before creating any issues or pull requests.
 
