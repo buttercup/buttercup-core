@@ -109,24 +109,6 @@ Entry.prototype.getAttribute = function(attributeName) {
 };
 
 /**
- * @typedef DisplayInfo
- * @property {string} title The text to replace "title"
- * @property {string} username The text to replace "username"
- * @property {string} password The text to replace "password"
- */
-
-/**
- * Get the display information for the entry
- * @returns {DisplayInfo|undefined} The display info
- * @memberof Entry
- */
-Entry.prototype.getDisplayInfo = function() {
-    debug("fetch display info");
-    var displayType = this.getAttribute(Entry.Attributes.DisplayType) || "default";
-    return __displayTypes[displayType];
-};
-
-/**
  * Get the containing group for the entry
  * @returns {Group|null} The parent group
  * @memberof Entry
