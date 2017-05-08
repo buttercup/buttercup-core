@@ -8,19 +8,6 @@ var Inigo = require("./InigoGenerator.js"),
 
 const debug = createDebug("entry");
 
-var __displayTypes = {
-    "default": {
-        "title": "Title",
-        "username": "Username",
-        "password": "Password"
-    },
-    "credit-card": {
-        "title": "Name on card",
-        "username": "Card number",
-        "password": "CVV"
-    }
-};
-
 /**
  * Managed entry class
  * @class Entry
@@ -373,7 +360,7 @@ Entry.prototype._getWestley = function() {
 };
 
 Entry.Attributes = Object.freeze({
-    DisplayType:            "bc_entry_display_type"
+    FacadeType:            "BC_ENTRY_FACADE_TYPE"
 });
 
 /**
