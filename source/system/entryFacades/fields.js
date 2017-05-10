@@ -1,3 +1,7 @@
+function applyFieldDescriptor(entry, descriptor) {
+    setEntryValue(entry, descriptor.field, descriptor.name, descriptor.value);
+}
+
 function createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, protected = false) {
     const value = getEntryValue(entry, entryPropertyType, entryPropertyName);
     return {
@@ -18,10 +22,24 @@ function getEntryValue(entry, property, name) {
         case "attribute":
             return entry.getAttribute(name);
         default:
-            throw new Error(`Unknown property type: ${property}`);
+            throw new Error(`Cannot retrieve value: Unknown property type: ${property}`);
+    }
+}
+
+function setEntryValue(entry, property, name, value) {
+    switch (property) {
+        case "property":
+            return entry.setProperty(name, value);
+        case "meta":
+            return entry.setMeta(name, value);
+        case "attribute":
+            return entry.setAttribute(name, value);
+        default:
+            throw new Error(`Cannot set value: Unknown property type: ${property}`);
     }
 }
 
 module.exports = {
+    applyFieldDescriptor,
     createFieldDescriptor
 };

@@ -1,4 +1,4 @@
-const { createFieldDescriptor } = require("./fields.js");
+const { applyFieldDescriptor, createFieldDescriptor } = require("./fields.js");
 
 class EntryFacade {
 
@@ -37,7 +37,11 @@ class EntryFacade {
     }
 
     consumeInputHarness(harness) {
-
+        if (harness && harness.type) {
+            (harness.fields || []).forEach(field => applyFieldDescriptor(field));
+        } else {
+            throw new Error("Invalid item passed as a harness");
+        }
     }
 
     generateInputHarness() {
