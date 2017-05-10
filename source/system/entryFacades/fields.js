@@ -2,14 +2,19 @@ function applyFieldDescriptor(entry, descriptor) {
     setEntryValue(entry, descriptor.field, descriptor.name, descriptor.value);
 }
 
-function createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, protected = false) {
+function createFieldDescriptor(
+        entry, title, entryPropertyType, entryPropertyName,
+        { multiline = false, protected = false, formatting = false } = {}
+    ) {
     const value = getEntryValue(entry, entryPropertyType, entryPropertyName);
     return {
         title,
         field: entryPropertyType,
         property: entryPropertyName,
         value,
-        protected
+        protected,
+        multiline,
+        formatting
     };
 }
 

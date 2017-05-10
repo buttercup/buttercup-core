@@ -23,7 +23,7 @@ class EntryFacade {
                 "Password",
                 "property",
                 "password",
-                /* protected */ true
+                { protected: true }
             )
         ];
     }
