@@ -177,9 +177,15 @@ Entry.prototype.getID = function() {
  */
 Entry.prototype.getMeta = function(property) {
     debug("fetch meta");
-    var raw = this._getRemoteObject();
-    return raw.meta && raw.meta.hasOwnProperty(property) ?
-        raw.meta[property] : undefined;
+    const meta = this._getRemoteObject().meta || {};
+    // Find the first meta key that matches the requested one regardless
+    // of case:
+    const metaKey = Object.keys(meta).find(key =>
+        key.toLowerCase() === property.toLowerCase()
+    );
+    return metaKey ?
+        meta[metaKey] :
+        undefined;
 };
 
 /**
@@ -255,11 +261,15 @@ Entry.prototype.setAttribute = function(attributeName, value) {
  */
 Entry.prototype.setMeta = function(prop, value) {
     debug("set meta");
+    const meta = this._getRemoteObject().meta || {};
+    // Try to find a key that matches the requested property, even in a different case. If it
+    // exists, use that to set instead:
+    const metaKey = Object.keys(meta).find(key => key.toLowerCase() === prop.toLowerCase()) || prop;
     value = value || "";
     this._getWestley().execute(
         Inigo.create(Inigo.Command.SetEntryMeta)
             .addArgument(this.getID())
-            .addArgument(prop)
+            .addArgument(metaKey)
             .addArgument(value)
             .generateCommand()
     );
