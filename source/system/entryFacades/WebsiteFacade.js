@@ -1,17 +1,23 @@
 const LoginFacade = require("./LoginFacade.js");
 const { WEBSITE } = require("./types.js");
+const { createFieldDescriptor } = require("./fields.js");
 
 class WebsiteFacade extends LoginFacade {
 
-    get type() {
-        return WEBSITE;
+    get fields() {
+        return [
+            ...this.fields,
+            createFieldDescriptor(
+                this.entry,
+                "URL",
+                "meta",
+                "url"
+            )
+        ];
     }
 
-    get URL() {
-        return this.entry.getMeta("URL") ||
-            this.entry.getMeta("url") ||
-            this.entry.getMeta("Url") ||
-            undefined;
+    get type() {
+        return WEBSITE;
     }
 
 }
