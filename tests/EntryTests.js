@@ -18,6 +18,8 @@ module.exports = {
             .setMeta("accessKey", "12345")
             .setMeta("user prop", "user val")
             .setAttribute(Entry.Attributes.DisplayType, "credit-card");
+        entry.setMeta("URL", "https://test.com");
+        entry.setMeta("url", "https://testing.com");
         this.id = entry.getID();
         this.archive = archive;
         this.entry = entry;
@@ -104,14 +106,22 @@ module.exports = {
 
     getMeta: {
 
-        testGetsMeta: function(test) {
+        getsMeta: function(test) {
             test.strictEqual(this.entry.getMeta("accessKey"), "12345", "Entry should contain meta");
             test.strictEqual(this.entry.getMeta("user prop"), "user val", "Entry should contain meta");
             test.done();
         },
 
-        testUnsetReturnsUndefined: function(test) {
+        unsetReturnsUndefined: function(test) {
             test.strictEqual(this.entry.getMeta("not set"), undefined, "Should return undefined");
+            test.done();
+        },
+
+        getsValueRegardlessOfCase: function(test) {
+            test.strictEqual(this.entry.getMeta("url"), "https://testing.com");
+            test.strictEqual(this.entry.getMeta("Url"), "https://testing.com");
+            test.strictEqual(this.entry.getMeta("URL"), "https://testing.com");
+            test.strictEqual(this.entry.getMeta("uRl"), "https://testing.com");
             test.done();
         }
 
@@ -210,6 +220,20 @@ module.exports = {
 
     },
 
+    setMeta: {
+
+        setsMetaKeysInsensitiveOfCase: function(test) {
+            this.entry.setMeta("myKey", "first");
+            test.strictEqual(this.entry.toObject().meta.myKey, "first",
+                "Initial setMeta should have set the value with the correct key");
+            this.entry.setMeta("Mykey", "second");
+            test.strictEqual(this.entry.toObject().meta.myKey, "second",
+                "Second setMeta call with different case should use case of first call");
+            test.done();
+        }
+
+    },
+
     toObject: {
 
         testTransfersProperties: function(test) {
@@ -218,7 +242,6 @@ module.exports = {
             test.strictEqual(obj.properties.title, "My entry", "Should transfer title");
             test.strictEqual(obj.properties.username, "some-user", "Should transfer username");
             test.strictEqual(obj.properties.password, "passw0rd", "Should transfer password");
-            test.strictEqual(Object.keys(obj).length, 4, "Only id, properties, attributes and meta should be transferred");
             test.done();
         },
 
@@ -226,7 +249,6 @@ module.exports = {
             var meta = this.entry.toObject().meta;
             test.strictEqual(meta.accessKey, "12345", "Should transfer meta");
             test.strictEqual(meta["user prop"], "user val", "Should transfer custom meta values");
-            test.strictEqual(Object.keys(meta).length, 2, "Should only transfer necessary meta properties");
             test.done();
         }
 
