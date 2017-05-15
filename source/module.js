@@ -15,6 +15,7 @@ module.exports = {
 
     Group: require("./system/Group.js"),
     Entry: require("./system/Entry.js"),
+    entryFacade: require("./system/entryFacade.js"),
 
     DatasourceAdapter: require("./system/DatasourceAdapter.js"),
     TextDatasource: require("./system/TextDatasource.js"),
