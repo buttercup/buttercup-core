@@ -38,9 +38,12 @@ class EntryFacade {
 
     consumeInputHarness(harness) {
         if (harness && harness.type) {
+            if (harness.type !== this.type) {
+                throw new Error(`Failed consuming entry data: Expected type "${this.type}" but received "${harness.type}"`);
+            }
             (harness.fields || []).forEach(field => applyFieldDescriptor(field));
         } else {
-            throw new Error("Invalid item passed as a harness");
+            throw new Error("Failed consuming entry data: Invalid item passed as a harness");
         }
     }
 
