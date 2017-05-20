@@ -16,11 +16,12 @@ const EntryProperty = {
  * @property {Boolean} secret - Wether or not the value should be hidden while viewing (masked)
  * @property {Boolean} multiline - Whether the value should be edited as a multiline value or not
  * @property {Object|Boolean} formatting - Vendor formatting options object, or false if no formatting necessary
+ * @property {Number} maxLength - Maximum recommended length of the value (defaults to -1)
  */
 
 function createFieldDescriptor(
         entry, title, entryPropertyType, entryPropertyName,
-        { multiline = false, secret = false, formatting = false } = {}
+        { multiline = false, secret = false, formatting = false, maxLength = -1 } = {}
     ) {
     const value = getEntryValue(entry, entryPropertyType, entryPropertyName);
     return {
@@ -30,7 +31,8 @@ function createFieldDescriptor(
         value,
         secret,
         multiline,
-        formatting
+        formatting,
+        maxLength
     };
 }
 

@@ -49,7 +49,10 @@ function createCreditCardFields(entry) {
             entry,
             "CVV",
             "meta",
-            "cvv"
+            "cvv",
+            {
+                maxLength: 4
+            }
         ),
         createFieldDescriptor(
             entry,
@@ -64,7 +67,8 @@ function createCreditCardFields(entry) {
                         blocks: [2, 4],
                         numericOnly: true
                     }
-                }
+                },
+                maxLength:
             }
         ),
         createFieldDescriptor(
