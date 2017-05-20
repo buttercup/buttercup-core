@@ -2,16 +2,66 @@
 
 const iocane = require("iocane").crypto;
 
-var Archive = require("./Archive.js"),
-    Credentials = require("./credentials.js"),
-    signing = require("../tools/signing.js"),
-    encoding = require("../tools/encoding.js"),
-    createDebug = require("../tools/debug.js"),
-    historyTools = require("../tools/history.js");
-
+const Archive = require("./Archive.js");
+const Credentials = require("./credentials.js");
+const signing = require("../tools/signing.js");
+const encoding = require("../tools/encoding.js");
+const createDebug = require("../tools/debug.js");
+const historyTools = require("../tools/history.js");
 const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
 const debug = createDebug("text-datasource");
+
+function convertEncryptedContentToHistory(encText, credentials) {
+    const { password, keyfile } = processCredentials(credentials);
+    return Promise.resolve(encText)
+        .then(function(data) {
+            if (!signing.hasValidSignature(data)) {
+                throw new Error("No valid signature in archive");
+            }
+            return signing.stripSignature(data);
+        })
+        .then(function(encryptedData) {
+            // optionally decrypt using a key file
+            return keyfile ?
+                iocane.decryptWithKeyFile(encryptedData, keyfile) :
+                encryptedData;
+        })
+        .then(function(encryptedData) {
+            // optionally decrypt using a password
+            return password ?
+                iocane.decryptWithPassword(encryptedData, password) :
+                encryptedData;
+        })
+        .then(function(decrypted) {
+            if (decrypted && decrypted.length > 0) {
+                var decompressed = encoding.decompress(decrypted);
+                if (decompressed) {
+                    return historyTools.historyStringToArray(decompressed);
+                }
+            }
+            throw new Error("Decryption failed");
+        });
+}
+
+function convertHistoryToEncryptedContent(historyArr, credentials) {
+    const { password, keyfile } = processCredentials(credentials);
+    const history = historyTools.historyArrayToString(historyArr);
+    const compressed = encoding.compress(history);
+    return Promise
+        .resolve(compressed)
+        .then(function(encryptedData) {
+            return password ?
+                iocane.encryptWithPassword(encryptedData, password) :
+                encryptedData;
+        })
+        .then(function(encryptedData) {
+            return keyfile ?
+                iocane.encryptWithKeyFile(encryptedData, keyfile) :
+                encryptedData;
+        })
+        .then(signing.sign);
+}
 
 /**
  * Pre-process credentials data
@@ -62,42 +112,12 @@ class TextDatasource {
     load(credentials, emptyCreatesNew) {
         debug("load archive");
         emptyCreatesNew = (emptyCreatesNew === undefined) ? false : emptyCreatesNew;
-        let credentialsData = processCredentials(credentials),
-            password = credentialsData.password,
-            keyfile = credentialsData.keyfile;
         if (this._content.trim().length <= 0) {
             return emptyCreatesNew ?
                 new Archive() :
                 Promise.reject(new Error("Unable to load archive: contents empty"));
         }
-        return Promise.resolve(this._content)
-            .then(function(data) {
-                if (!signing.hasValidSignature(data)) {
-                    return Promise.reject(new Error("No valid signature in archive"));
-                }
-                return signing.stripSignature(data);
-            })
-            .then(function(encryptedData) {
-                // optionally decrypt using a key file
-                return keyfile ?
-                    iocane.decryptWithKeyFile(encryptedData, keyfile) :
-                    encryptedData;
-            })
-            .then(function(encryptedData) {
-                // optionally decrypt using a password
-                return password ?
-                    iocane.decryptWithPassword(encryptedData, password) :
-                    encryptedData;
-            })
-            .then(function(decrypted) {
-                if (decrypted && decrypted.length > 0) {
-                    var decompressed = encoding.decompress(decrypted);
-                    if (decompressed) {
-                        return historyTools.historyStringToArray(decompressed);
-                    }
-                }
-                return Promise.reject(new Error("Decryption failed"));
-            })
+        return convertEncryptedContentToHistory(this._content, credentials)
             .then(history => Archive.createFromHistory(history));
     }
 
@@ -109,24 +129,7 @@ class TextDatasource {
      */
     save(archive, credentials) {
         debug("save archive");
-        let credentialsData = processCredentials(credentials),
-            password = credentialsData.password,
-            keyfile = credentialsData.keyfile;
-        let history = historyTools.historyArrayToString(archive._getWestley().getHistory()),
-            compressed = encoding.compress(history);
-        return Promise
-            .resolve(compressed)
-            .then(function(encryptedData) {
-                return password ?
-                    iocane.encryptWithPassword(encryptedData, password) :
-                    encryptedData;
-            })
-            .then(function(encryptedData) {
-                return keyfile ?
-                    iocane.encryptWithKeyFile(encryptedData, keyfile) :
-                    encryptedData;
-            })
-            .then(signing.sign);
+        return convertHistoryToEncryptedContent(archive._getWestley().getHistory(), credentials);
     }
 
     /**
