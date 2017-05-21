@@ -12,9 +12,26 @@ const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
 const debug = createDebug("text-datasource");
 
+/**
+ * Current appointed callback for decrypting archive content
+ * @type {Function}
+ * @private
+ */
 let __appointedEncToHistoryCB = convertEncryptedContentToHistory,
+    /**
+     * Current appointed callback for encrypting archive history
+     * @type {Function}
+     * @private
+     */
     __appointedHistoryToEncCB = convertHistoryToEncryptedContent;
 
+/**
+ * Convert encrypted text to an array of commands (history)
+ * @param {String} encText The encrypted archive content
+ * @param {Credentials} credentials A credentials instance that has a password, keyfile
+ *  or both
+ * @returns {Promise.<Array>} A promise that resolves with an array of commands
+ */
 function convertEncryptedContentToHistory(encText, credentials) {
     const { password, keyfile } = processCredentials(credentials);
     return Promise.resolve(encText)
@@ -47,6 +64,13 @@ function convertEncryptedContentToHistory(encText, credentials) {
         });
 }
 
+/**
+ * Convert an array of commands (history) to an encrypted string
+ * @param {Array.<String>} historyArr An array of commands
+ * @param {Credentials} credentials A credentials instance that has a password, keyfile
+ *  or both
+ * @returns {String} Encrypted archive contents
+ */
 function convertHistoryToEncryptedContent(historyArr, credentials) {
     const { password, keyfile } = processCredentials(credentials);
     const history = historyTools.historyArrayToString(historyArr);
