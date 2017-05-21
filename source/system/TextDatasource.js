@@ -35,25 +35,25 @@ let __appointedEncToHistoryCB = convertEncryptedContentToHistory,
 function convertEncryptedContentToHistory(encText, credentials) {
     const { password, keyfile } = processCredentials(credentials);
     return Promise.resolve(encText)
-        .then(function(data) {
+        .then(function __stripSignature(data) {
             if (!signing.hasValidSignature(data)) {
                 throw new Error("No valid signature in archive");
             }
             return signing.stripSignature(data);
         })
-        .then(function(encryptedData) {
+        .then(function __decryptUsingKeyFile(encryptedData) {
             // optionally decrypt using a key file
             return keyfile ?
                 iocane.decryptWithKeyFile(encryptedData, keyfile) :
                 encryptedData;
         })
-        .then(function(encryptedData) {
+        .then(function __decryptUsingPassword(encryptedData) {
             // optionally decrypt using a password
             return password ?
                 iocane.decryptWithPassword(encryptedData, password) :
                 encryptedData;
         })
-        .then(function(decrypted) {
+        .then(function __marshallHistoryToArray(decrypted) {
             if (decrypted && decrypted.length > 0) {
                 var decompressed = encoding.decompress(decrypted);
                 if (decompressed) {
@@ -77,12 +77,12 @@ function convertHistoryToEncryptedContent(historyArr, credentials) {
     const compressed = encoding.compress(history);
     return Promise
         .resolve(compressed)
-        .then(function(encryptedData) {
+        .then(function __encryptUsingPassword(encryptedData) {
             return password ?
                 iocane.encryptWithPassword(encryptedData, password) :
                 encryptedData;
         })
-        .then(function(encryptedData) {
+        .then(function __encryptUsingKeyFile(encryptedData) {
             return keyfile ?
                 iocane.encryptWithKeyFile(encryptedData, keyfile) :
                 encryptedData;
