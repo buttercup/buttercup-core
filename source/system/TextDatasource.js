@@ -12,6 +12,9 @@ const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
 const debug = createDebug("text-datasource");
 
+let __appointedEncToHistoryCB = convertEncryptedContentToHistory,
+    __appointedHistoryToEncCB = convertHistoryToEncryptedContent;
+
 function convertEncryptedContentToHistory(encText, credentials) {
     const { password, keyfile } = processCredentials(credentials);
     return Promise.resolve(encText)
@@ -117,7 +120,7 @@ class TextDatasource {
                 new Archive() :
                 Promise.reject(new Error("Unable to load archive: contents empty"));
         }
-        return convertEncryptedContentToHistory(this._content, credentials)
+        return __appointedEncToHistoryCB(this._content, credentials)
             .then(history => Archive.createFromHistory(history));
     }
 
@@ -129,7 +132,7 @@ class TextDatasource {
      */
     save(archive, credentials) {
         debug("save archive");
-        return convertHistoryToEncryptedContent(archive._getWestley().getHistory(), credentials);
+        return __appointedHistoryToEncCB(archive._getWestley().getHistory(), credentials);
     }
 
     /**
@@ -174,6 +177,36 @@ TextDatasource.fromObject = function fromObject(obj) {
 
 TextDatasource.fromString = function fromString(str) {
     return TextDatasource.fromObject(JSON.parse(str));
+};
+
+/**
+ * Set the deferred handlers for encryption/decryption of the text-based payload
+ * The load and save procedures can defer their work (packing and encryption) to external callbacks,
+ * essentially enabling custom crypto support. While this is not recommended, it makes it possible
+ * to at least perform the crypto *elsewhere*. This was designed for use on mobile platforms where
+ * crypto support may be limited outside of a webview with SubtleCrypto support.
+ * @param {Function|null} decodeHandler The callback function to use for decoding/decryption. Use
+ *  `null` to reset it to the built-in. The function expects 2 parameters: The encrypted text and
+ *  a credentials instance (that must have a password, 'keyfile' or both).
+ * @param {Function|null} encodeHandler The callback function to use for encoding/encryption. Use
+ *  `null` to reset it to the built-in. The function expects 2 parameters: The history array and
+ *  a credentials instance (that must have a password, 'keyfile' or both).
+ */
+TextDatasource.setDeferredEncodingHandlers = function setDeferredEncodingHandlers(decodeHandler, encodeHandler) {
+    if (typeof decodeHandler === "undefined" || decodeHandler === null) {
+        __appointedEncToHistoryCB = convertEncryptedContentToHistory;
+    } else if (typeof decodeHandler === "function") {
+        __appointedEncToHistoryCB = decodeHandler;
+    } else {
+        throw new Error("Invalid value for decode handler");
+    }
+    if (typeof encodeHandler === "undefined" || encodeHandler === null) {
+        __appointedHistoryToEncCB = convertHistoryToEncryptedContent;
+    } else if (typeof encodeHandler === "function") {
+        __appointedHistoryToEncCB = encodeHandler;
+    } else {
+        throw new Error("Invalid value for encode handler");
+    }
 };
 
 registerDatasource("text", TextDatasource);
