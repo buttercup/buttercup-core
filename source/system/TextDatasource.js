@@ -2,16 +2,93 @@
 
 const iocane = require("iocane").crypto;
 
-var Archive = require("./Archive.js"),
-    Credentials = require("./credentials.js"),
-    signing = require("../tools/signing.js"),
-    encoding = require("../tools/encoding.js"),
-    createDebug = require("../tools/debug.js"),
-    historyTools = require("../tools/history.js");
-
+const Archive = require("./Archive.js");
+const Credentials = require("./credentials.js");
+const signing = require("../tools/signing.js");
+const encoding = require("../tools/encoding.js");
+const createDebug = require("../tools/debug.js");
+const historyTools = require("../tools/history.js");
 const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
 const debug = createDebug("text-datasource");
+
+/**
+ * Current appointed callback for decrypting archive content
+ * @type {Function}
+ * @private
+ */
+let __appointedEncToHistoryCB = convertEncryptedContentToHistory,
+    /**
+     * Current appointed callback for encrypting archive history
+     * @type {Function}
+     * @private
+     */
+    __appointedHistoryToEncCB = convertHistoryToEncryptedContent;
+
+/**
+ * Convert encrypted text to an array of commands (history)
+ * @param {String} encText The encrypted archive content
+ * @param {Credentials} credentials A credentials instance that has a password, keyfile
+ *  or both
+ * @returns {Promise.<Array>} A promise that resolves with an array of commands
+ */
+function convertEncryptedContentToHistory(encText, credentials) {
+    const { password, keyfile } = processCredentials(credentials);
+    return Promise.resolve(encText)
+        .then(function __stripSignature(data) {
+            if (!signing.hasValidSignature(data)) {
+                throw new Error("No valid signature in archive");
+            }
+            return signing.stripSignature(data);
+        })
+        .then(function __decryptUsingKeyFile(encryptedData) {
+            // optionally decrypt using a key file
+            return keyfile ?
+                iocane.decryptWithKeyFile(encryptedData, keyfile) :
+                encryptedData;
+        })
+        .then(function __decryptUsingPassword(encryptedData) {
+            // optionally decrypt using a password
+            return password ?
+                iocane.decryptWithPassword(encryptedData, password) :
+                encryptedData;
+        })
+        .then(function __marshallHistoryToArray(decrypted) {
+            if (decrypted && decrypted.length > 0) {
+                var decompressed = encoding.decompress(decrypted);
+                if (decompressed) {
+                    return historyTools.historyStringToArray(decompressed);
+                }
+            }
+            throw new Error("Decryption failed");
+        });
+}
+
+/**
+ * Convert an array of commands (history) to an encrypted string
+ * @param {Array.<String>} historyArr An array of commands
+ * @param {Credentials} credentials A credentials instance that has a password, keyfile
+ *  or both
+ * @returns {String} Encrypted archive contents
+ */
+function convertHistoryToEncryptedContent(historyArr, credentials) {
+    const { password, keyfile } = processCredentials(credentials);
+    const history = historyTools.historyArrayToString(historyArr);
+    const compressed = encoding.compress(history);
+    return Promise
+        .resolve(compressed)
+        .then(function __encryptUsingPassword(encryptedData) {
+            return password ?
+                iocane.encryptWithPassword(encryptedData, password) :
+                encryptedData;
+        })
+        .then(function __encryptUsingKeyFile(encryptedData) {
+            return keyfile ?
+                iocane.encryptWithKeyFile(encryptedData, keyfile) :
+                encryptedData;
+        })
+        .then(signing.sign);
+}
 
 /**
  * Pre-process credentials data
@@ -62,42 +139,12 @@ class TextDatasource {
     load(credentials, emptyCreatesNew) {
         debug("load archive");
         emptyCreatesNew = (emptyCreatesNew === undefined) ? false : emptyCreatesNew;
-        let credentialsData = processCredentials(credentials),
-            password = credentialsData.password,
-            keyfile = credentialsData.keyfile;
         if (this._content.trim().length <= 0) {
             return emptyCreatesNew ?
                 new Archive() :
                 Promise.reject(new Error("Unable to load archive: contents empty"));
         }
-        return Promise.resolve(this._content)
-            .then(function(data) {
-                if (!signing.hasValidSignature(data)) {
-                    return Promise.reject(new Error("No valid signature in archive"));
-                }
-                return signing.stripSignature(data);
-            })
-            .then(function(encryptedData) {
-                // optionally decrypt using a key file
-                return keyfile ?
-                    iocane.decryptWithKeyFile(encryptedData, keyfile) :
-                    encryptedData;
-            })
-            .then(function(encryptedData) {
-                // optionally decrypt using a password
-                return password ?
-                    iocane.decryptWithPassword(encryptedData, password) :
-                    encryptedData;
-            })
-            .then(function(decrypted) {
-                if (decrypted && decrypted.length > 0) {
-                    var decompressed = encoding.decompress(decrypted);
-                    if (decompressed) {
-                        return historyTools.historyStringToArray(decompressed);
-                    }
-                }
-                return Promise.reject(new Error("Decryption failed"));
-            })
+        return __appointedEncToHistoryCB(this._content, credentials)
             .then(history => Archive.createFromHistory(history));
     }
 
@@ -109,24 +156,7 @@ class TextDatasource {
      */
     save(archive, credentials) {
         debug("save archive");
-        let credentialsData = processCredentials(credentials),
-            password = credentialsData.password,
-            keyfile = credentialsData.keyfile;
-        let history = historyTools.historyArrayToString(archive._getWestley().getHistory()),
-            compressed = encoding.compress(history);
-        return Promise
-            .resolve(compressed)
-            .then(function(encryptedData) {
-                return password ?
-                    iocane.encryptWithPassword(encryptedData, password) :
-                    encryptedData;
-            })
-            .then(function(encryptedData) {
-                return keyfile ?
-                    iocane.encryptWithKeyFile(encryptedData, keyfile) :
-                    encryptedData;
-            })
-            .then(signing.sign);
+        return __appointedHistoryToEncCB(archive._getWestley().getHistory(), credentials);
     }
 
     /**
@@ -171,6 +201,36 @@ TextDatasource.fromObject = function fromObject(obj) {
 
 TextDatasource.fromString = function fromString(str) {
     return TextDatasource.fromObject(JSON.parse(str));
+};
+
+/**
+ * Set the deferred handlers for encryption/decryption of the text-based payload
+ * The load and save procedures can defer their work (packing and encryption) to external callbacks,
+ * essentially enabling custom crypto support. While this is not recommended, it makes it possible
+ * to at least perform the crypto *elsewhere*. This was designed for use on mobile platforms where
+ * crypto support may be limited outside of a webview with SubtleCrypto support.
+ * @param {Function|null} decodeHandler The callback function to use for decoding/decryption. Use
+ *  `null` to reset it to the built-in. The function expects 2 parameters: The encrypted text and
+ *  a credentials instance (that must have a password, 'keyfile' or both).
+ * @param {Function|null} encodeHandler The callback function to use for encoding/encryption. Use
+ *  `null` to reset it to the built-in. The function expects 2 parameters: The history array and
+ *  a credentials instance (that must have a password, 'keyfile' or both).
+ */
+TextDatasource.setDeferredEncodingHandlers = function setDeferredEncodingHandlers(decodeHandler, encodeHandler) {
+    if (typeof decodeHandler === "undefined" || decodeHandler === null) {
+        __appointedEncToHistoryCB = convertEncryptedContentToHistory;
+    } else if (typeof decodeHandler === "function") {
+        __appointedEncToHistoryCB = decodeHandler;
+    } else {
+        throw new Error("Invalid value for decode handler");
+    }
+    if (typeof encodeHandler === "undefined" || encodeHandler === null) {
+        __appointedHistoryToEncCB = convertHistoryToEncryptedContent;
+    } else if (typeof encodeHandler === "function") {
+        __appointedHistoryToEncCB = encodeHandler;
+    } else {
+        throw new Error("Invalid value for encode handler");
+    }
 };
 
 registerDatasource("text", TextDatasource);
