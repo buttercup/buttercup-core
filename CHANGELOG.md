@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.39.0
+_2017-05-21_
+
+ * Add support for deferring encryption and packaging in `TextDatasource`
+
 ## v0.38.1
 _2017-05-02_
 

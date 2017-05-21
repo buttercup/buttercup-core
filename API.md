@@ -120,6 +120,12 @@
 <dd><p>Create a credentials adapter
 Both <code>type</code> and <code>data</code> parameters are optional.</p>
 </dd>
+<dt><a href="#convertEncryptedContentToHistory">convertEncryptedContentToHistory(encText, credentials)</a> ⇒ <code>Promise.&lt;Array&gt;</code></dt>
+<dd><p>Convert encrypted text to an array of commands (history)</p>
+</dd>
+<dt><a href="#convertHistoryToEncryptedContent">convertHistoryToEncryptedContent(historyArr, credentials)</a> ⇒ <code>String</code></dt>
+<dd><p>Convert an array of commands (history) to an encrypted string</p>
+</dd>
 <dt><a href="#dedupe">dedupe(arr)</a> ⇒ <code>Array</code></dt>
 <dd><p>De-dupe an array</p>
 </dd>
@@ -3915,11 +3921,14 @@ Save an archive to the WebDAV service
 * [TextDatasource](#TextDatasource)
     * [new TextDatasource()](#new_TextDatasource_new)
     * [new TextDatasource(content)](#new_TextDatasource_new)
-    * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
-    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-    * [.toObject()](#TextDatasource+toObject) ⇒ <code>Object</code>
-    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
+    * _instance_
+        * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+        * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+        * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+        * [.toObject()](#TextDatasource+toObject) ⇒ <code>Object</code>
+        * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
+    * _static_
+        * [.setDeferredEncodingHandlers(decodeHandler, encodeHandler)](#TextDatasource.setDeferredEncodingHandlers)
 
 <a name="new_TextDatasource_new"></a>
 
@@ -3988,6 +3997,22 @@ Output the datasource configuration as a string
 
 **Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
 **Returns**: <code>String</code> - The string representation of the datasource  
+<a name="TextDatasource.setDeferredEncodingHandlers"></a>
+
+### TextDatasource.setDeferredEncodingHandlers(decodeHandler, encodeHandler)
+Set the deferred handlers for encryption/decryption of the text-based payload
+The load and save procedures can defer their work (packing and encryption) to external callbacks,
+essentially enabling custom crypto support. While this is not recommended, it makes it possible
+to at least perform the crypto *elsewhere*. This was designed for use on mobile platforms where
+crypto support may be limited outside of a webview with SubtleCrypto support.
+
+**Kind**: static method of <code>[TextDatasource](#TextDatasource)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| decodeHandler | <code>function</code> &#124; <code>null</code> | The callback function to use for decoding/decryption. Use  `null` to reset it to the built-in. The function expects 2 parameters: The encrypted text and  a credentials instance (that must have a password, 'keyfile' or both). |
+| encodeHandler | <code>function</code> &#124; <code>null</code> | The callback function to use for encoding/encryption. Use  `null` to reset it to the built-in. The function expects 2 parameters: The history array and  a credentials instance (that must have a password, 'keyfile' or both). |
+
 <a name="TextDatasource"></a>
 
 ## TextDatasource
@@ -3996,11 +4021,14 @@ Output the datasource configuration as a string
 * [TextDatasource](#TextDatasource)
     * [new TextDatasource()](#new_TextDatasource_new)
     * [new TextDatasource(content)](#new_TextDatasource_new)
-    * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-    * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
-    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-    * [.toObject()](#TextDatasource+toObject) ⇒ <code>Object</code>
-    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
+    * _instance_
+        * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+        * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+        * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+        * [.toObject()](#TextDatasource+toObject) ⇒ <code>Object</code>
+        * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
+    * _static_
+        * [.setDeferredEncodingHandlers(decodeHandler, encodeHandler)](#TextDatasource.setDeferredEncodingHandlers)
 
 <a name="new_TextDatasource_new"></a>
 
@@ -4069,6 +4097,22 @@ Output the datasource configuration as a string
 
 **Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
 **Returns**: <code>String</code> - The string representation of the datasource  
+<a name="TextDatasource.setDeferredEncodingHandlers"></a>
+
+### TextDatasource.setDeferredEncodingHandlers(decodeHandler, encodeHandler)
+Set the deferred handlers for encryption/decryption of the text-based payload
+The load and save procedures can defer their work (packing and encryption) to external callbacks,
+essentially enabling custom crypto support. While this is not recommended, it makes it possible
+to at least perform the crypto *elsewhere*. This was designed for use on mobile platforms where
+crypto support may be limited outside of a webview with SubtleCrypto support.
+
+**Kind**: static method of <code>[TextDatasource](#TextDatasource)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| decodeHandler | <code>function</code> &#124; <code>null</code> | The callback function to use for decoding/decryption. Use  `null` to reset it to the built-in. The function expects 2 parameters: The encrypted text and  a credentials instance (that must have a password, 'keyfile' or both). |
+| encodeHandler | <code>function</code> &#124; <code>null</code> | The callback function to use for encoding/encryption. Use  `null` to reset it to the built-in. The function expects 2 parameters: The history array and  a credentials instance (that must have a password, 'keyfile' or both). |
+
 <a name="WebDAVDatasource"></a>
 
 ## WebDAVDatasource ⇐ <code>[TextDatasource](#TextDatasource)</code>
@@ -4650,6 +4694,32 @@ Create a new credentials instance from an encrypted string
 | --- | --- | --- |
 | content | <code>String</code> | The encrypted form of a credentials store |
 | password | <code>String</code> | The password to use to decrypt the content |
+
+<a name="convertEncryptedContentToHistory"></a>
+
+## convertEncryptedContentToHistory(encText, credentials) ⇒ <code>Promise.&lt;Array&gt;</code>
+Convert encrypted text to an array of commands (history)
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Array&gt;</code> - A promise that resolves with an array of commands  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| encText | <code>String</code> | The encrypted archive content |
+| credentials | <code>[Credentials](#Credentials)</code> | A credentials instance that has a password, keyfile  or both |
+
+<a name="convertHistoryToEncryptedContent"></a>
+
+## convertHistoryToEncryptedContent(historyArr, credentials) ⇒ <code>String</code>
+Convert an array of commands (history) to an encrypted string
+
+**Kind**: global function  
+**Returns**: <code>String</code> - Encrypted archive contents  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| historyArr | <code>Array.&lt;String&gt;</code> | An array of commands |
+| credentials | <code>[Credentials](#Credentials)</code> | A credentials instance that has a password, keyfile  or both |
 
 <a name="dedupe"></a>
 
