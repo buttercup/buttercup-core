@@ -6,6 +6,25 @@ var createCredentials = lib.createCredentials;
 
 module.exports = {
 
+    fromInsecureString: {
+
+        createsCorrectCredentials: function(test) {
+            const str = JSON.stringify({
+                type: "testing",
+                data: {
+                    username: "person",
+                    password: "secret"
+                }
+            });
+            const creds = createCredentials.fromInsecureString(str);
+            test.strictEqual(creds.username, "person");
+            test.strictEqual(creds.password, "secret");
+            test.strictEqual(creds.type, "testing");
+            test.done();
+        }
+
+    },
+
     fromSecureString: {
 
         encryptsAndDecrypts: function(test) {
@@ -103,6 +122,19 @@ module.exports = {
             var creds = createCredentials({ username: "user" });
             creds.setValue("username", "user@email.com");
             test.strictEqual(creds.getValue("username"), "user@email.com", "Username should be set");
+            test.done();
+        }
+
+    },
+
+    toInsecureString: {
+
+        writesContentToString: function(test) {
+            const creds = createCredentials({ username: "user@site.org", password: "passw0rd" });
+            const str = creds.toInsecureString();
+            test.ok(str.indexOf('"type":""') >= 0, "Empty type should be present");
+            test.ok(str.indexOf("user@site.org") >= 0, "Username should be present");
+            test.ok(str.indexOf("passw0rd") >= 0, "Password should be present");
             test.done();
         }
 

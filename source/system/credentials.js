@@ -124,6 +124,17 @@ function createCredentials() {
         },
 
         /**
+         * Convert the credentials to an insecure string
+         * @returns {String} The string-encoded credentials
+         */
+        toInsecureString() {
+            return JSON.stringify({
+                type: this.type,
+                data
+            });
+        },
+
+        /**
          * Convert the credentials to an encrypted string, for storage
          * @param {string} masterPassword The password for encrypting
          * @returns {Promise} A promise that resolves with the encrypted credentials
@@ -178,6 +189,16 @@ function unsignEncryptedContent(content) {
     }
     return content.substr(SIGNING_KEY.length);
 }
+
+/**
+ * Create a credentials instance from an insecure string
+ * @param {String} content The string format of a credentials instance (insecure)
+ * @returns {Credentials} The credentials instance
+ */
+createCredentials.fromInsecureString = function fromInsecureString(content) {
+    const { type, data } = JSON.parse(content);
+    return createCredentials(type, data);
+};
 
 /**
  * Create a new credentials instance from a password
