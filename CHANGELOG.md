@@ -1,5 +1,11 @@
 # Buttercup-core change-log
 
+## v0.39.1
+_2017-05-22_
+
+ * Add support for credentials to be stringified and parsed _insecurely_ (`TextDatasource` deferred encoding hander support for separated interfaces like React Native and WebViews).
+ * Expose `TextDatasource` default encoding handlers
+
 ## v0.39.0
 _2017-05-21_
 

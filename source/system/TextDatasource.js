@@ -117,7 +117,6 @@ function processCredentials(credentials) {
 
 /**
  * Datasource for text input and output
- * @class TextDatasource
  */
 class TextDatasource {
 

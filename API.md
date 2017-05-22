@@ -85,9 +85,8 @@
 <dd><p>Datasource for OwnCloud archives</p>
 </dd>
 <dt><a href="#TextDatasource">TextDatasource</a></dt>
-<dd></dd>
-<dt><a href="#TextDatasource">TextDatasource</a></dt>
-<dd></dd>
+<dd><p>Datasource for text input and output</p>
+</dd>
 <dt><a href="#WebDAVDatasource">WebDAVDatasource</a> ⇐ <code><a href="#TextDatasource">TextDatasource</a></code></dt>
 <dd></dd>
 <dt><a href="#WebDAVDatasource">WebDAVDatasource</a></dt>
@@ -3916,10 +3915,11 @@ Save an archive to the WebDAV service
 <a name="TextDatasource"></a>
 
 ## TextDatasource
+Datasource for text input and output
+
 **Kind**: global class  
 
 * [TextDatasource](#TextDatasource)
-    * [new TextDatasource()](#new_TextDatasource_new)
     * [new TextDatasource(content)](#new_TextDatasource_new)
     * _instance_
         * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
@@ -3929,111 +3929,6 @@ Save an archive to the WebDAV service
         * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
     * _static_
         * [.setDeferredEncodingHandlers(decodeHandler, encodeHandler)](#TextDatasource.setDeferredEncodingHandlers)
-
-<a name="new_TextDatasource_new"></a>
-
-### new TextDatasource()
-Datasource for text input and output
-
-<a name="new_TextDatasource_new"></a>
-
-### new TextDatasource(content)
-Constructor for the text datasource
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| content | <code>string</code> | The content to load from |
-
-<a name="TextDatasource+load"></a>
-
-### textDatasource.load(credentials, [emptyCreatesNew]) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-Load from the stored content using a password to decrypt
-
-**Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise that resolves with an open archive  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| credentials | <code>[Credentials](#Credentials)</code> | The password or Credentials instance to decrypt with |
-| [emptyCreatesNew] | <code>Boolean</code> | Create a new Archive instance if text contents are empty (defaults to false) |
-
-<a name="TextDatasource+save"></a>
-
-### textDatasource.save(archive, credentials) ⇒ <code>Promise.&lt;string&gt;</code>
-Save an archive with a password
-
-**Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
-**Returns**: <code>Promise.&lt;string&gt;</code> - A promise resolving with the encrypted content  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>[Credentials](#Credentials)</code> | The Credentials instance to encrypt with |
-
-<a name="TextDatasource+setContent"></a>
-
-### textDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-Set the text content
-
-**Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
-**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| content | <code>String</code> | The encrypted text content |
-
-<a name="TextDatasource+toObject"></a>
-
-### textDatasource.toObject() ⇒ <code>Object</code>
-Output the datasource as an object
-
-**Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
-**Returns**: <code>Object</code> - The object representation  
-<a name="TextDatasource+toString"></a>
-
-### textDatasource.toString() ⇒ <code>String</code>
-Output the datasource configuration as a string
-
-**Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
-**Returns**: <code>String</code> - The string representation of the datasource  
-<a name="TextDatasource.setDeferredEncodingHandlers"></a>
-
-### TextDatasource.setDeferredEncodingHandlers(decodeHandler, encodeHandler)
-Set the deferred handlers for encryption/decryption of the text-based payload
-The load and save procedures can defer their work (packing and encryption) to external callbacks,
-essentially enabling custom crypto support. While this is not recommended, it makes it possible
-to at least perform the crypto *elsewhere*. This was designed for use on mobile platforms where
-crypto support may be limited outside of a webview with SubtleCrypto support.
-
-**Kind**: static method of <code>[TextDatasource](#TextDatasource)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| decodeHandler | <code>function</code> &#124; <code>null</code> | The callback function to use for decoding/decryption. Use  `null` to reset it to the built-in. The function expects 2 parameters: The encrypted text and  a credentials instance (that must have a password, 'keyfile' or both). |
-| encodeHandler | <code>function</code> &#124; <code>null</code> | The callback function to use for encoding/encryption. Use  `null` to reset it to the built-in. The function expects 2 parameters: The history array and  a credentials instance (that must have a password, 'keyfile' or both). |
-
-<a name="TextDatasource"></a>
-
-## TextDatasource
-**Kind**: global class  
-
-* [TextDatasource](#TextDatasource)
-    * [new TextDatasource()](#new_TextDatasource_new)
-    * [new TextDatasource(content)](#new_TextDatasource_new)
-    * _instance_
-        * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
-        * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
-        * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
-        * [.toObject()](#TextDatasource+toObject) ⇒ <code>Object</code>
-        * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
-    * _static_
-        * [.setDeferredEncodingHandlers(decodeHandler, encodeHandler)](#TextDatasource.setDeferredEncodingHandlers)
-
-<a name="new_TextDatasource_new"></a>
-
-### new TextDatasource()
-Datasource for text input and output
 
 <a name="new_TextDatasource_new"></a>
 
@@ -4667,8 +4562,21 @@ Both `type` and `data` parameters are optional.
 
 
 * [createCredentials([type], [data])](#createCredentials) ⇒ <code>[Credentials](#Credentials)</code>
+    * [.fromInsecureString(content)](#createCredentials.fromInsecureString) ⇒ <code>[Credentials](#Credentials)</code>
     * [.fromPassword(password)](#createCredentials.fromPassword) ⇒ <code>[Credentials](#Credentials)</code>
     * [.fromSecureString(content, password)](#createCredentials.fromSecureString) ⇒ <code>[Promise.&lt;Credentials&gt;](#Credentials)</code>
+
+<a name="createCredentials.fromInsecureString"></a>
+
+### createCredentials.fromInsecureString(content) ⇒ <code>[Credentials](#Credentials)</code>
+Create a credentials instance from an insecure string
+
+**Kind**: static method of <code>[createCredentials](#createCredentials)</code>  
+**Returns**: <code>[Credentials](#Credentials)</code> - The credentials instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | The string format of a credentials instance (insecure) |
 
 <a name="createCredentials.fromPassword"></a>
 
