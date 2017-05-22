@@ -196,8 +196,8 @@ function unsignEncryptedContent(content) {
  * @returns {Credentials} The credentials instance
  */
 createCredentials.fromInsecureString = function fromInsecureString(content) {
-    const struct = JSON.parse(content);
-    return createCredentials(struct.type, struct.data);
+    const { type, data } = JSON.parse(content);
+    return createCredentials(type, data);
 };
 
 /**
