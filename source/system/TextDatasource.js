@@ -192,6 +192,11 @@ class TextDatasource {
 
 }
 
+TextDatasource.defaultEncodingHandlers = Object.freeze({
+    convertEncryptedContentToHistory,
+    convertHistoryToEncryptedContent 
+});
+
 TextDatasource.fromObject = function fromObject(obj) {
     if (obj.type === "text") {
         return new TextDatasource(obj.content);
