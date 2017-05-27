@@ -1,5 +1,7 @@
 "use strict";
 
+const EE = require("eventemitter3");
+
 var Westley = require("./Westley.js"),
     Inigo = require("./InigoGenerator.js"),
     Flattener = require("./Flattener.js"),
@@ -22,12 +24,16 @@ const debug = createDebug("archive");
  * @mixes GroupCollection
  * @mixes EntryCollection
  */
-class Archive {
+class Archive extends EE {
 
     constructor() {
+        super();
         debug("new archive");
         // create Westley instance
         this._westley = new Westley();
+        this._westley.on("commandExecuted", () => {
+            this.emit("archiveUpdated");
+        });
         // comment created date
         var date = new Date(),
             ts = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
