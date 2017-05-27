@@ -73,6 +73,17 @@ module.exports = {
 
     },
 
+    _events: {
+
+        archiveUpdated: function(test) {
+            let once = 1;
+            // execute done only once
+            this.archiveB.on("archiveUpdated", () => once-- && test.done());
+            this.archiveB.setAttribute("test", "test");
+        }
+
+    },
+
     createFromHistory: {
 
         createsArchive: function(test) {
