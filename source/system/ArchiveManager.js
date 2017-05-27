@@ -5,7 +5,10 @@ const EE = require("eventemitter3");
 const createCredentials = require("./credentials.js");
 const credentialsToSource = require("./archiveManagement/marshalling.js").credentialsToSource;
 const getUniqueID = require("../tools/encoding.js").getUniqueID;
+const createDebug = require("../tools/debug.js");
 const MemoryStorageInterface = require("./storage/MemoryStorageInterface.js");
+
+const debug = createDebug("archive-manager");
 
 const STORAGE_KEY_PREFIX =          "bcup_archivemgr_";
 const STORAGE_KEY_PREFIX_TEST =     /^bcup_archivemgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
@@ -54,6 +57,7 @@ class ArchiveManager extends EE {
      */
     constructor(storageInterface = new MemoryStorageInterface()) {
         super();
+        debug("new manager");
         this._storageInterface = storageInterface;
         this._sources = [];
     }
@@ -91,6 +95,7 @@ class ArchiveManager extends EE {
      * @returns {Promise.<String>} A promise that resolves with the source's new ID
      */
     addSource(name, sourceCredentials, archiveCredentials, initialise = false) {
+        debug("add source");
         return credentialsToSource(sourceCredentials, archiveCredentials, initialise)
             .then(sourceInfo => {
                 const id = getUniqueID();
@@ -107,6 +112,7 @@ class ArchiveManager extends EE {
                 return this
                     .dehydrateSource(id)
                     .then(() => {
+                        debug("added source");
                         this.emit("sourceAdded", sourceMajorInfo);
                         return id;
                     });
@@ -123,6 +129,7 @@ class ArchiveManager extends EE {
      * @returns {Promise} A promise that resolves once dehydration has completed
      */
     dehydrateSource(id) {
+        debug("dehydrate source");
         let source;
         return Promise
             .resolve()
@@ -133,8 +140,10 @@ class ArchiveManager extends EE {
                 }
                 source = this.sources[index];
                 if (source.status === SourceStatus.LOCKED) {
+                    debug("source already locked");
                     return source;
                 } else if (source.status === SourceStatus.UNLOCKED) {
+                    debug("secure credentials");
                     return Promise
                         .all([
                             source.sourceCredentials.toSecureString(source.archiveCredentials.password),
@@ -157,6 +166,7 @@ class ArchiveManager extends EE {
                 JSON.stringify(lockedSource)
             ))
             .then(() => {
+                debug("source dehydrated");
                 this.emit("sourceDehydrated", {
                     id: source.id,
                     name: source.name,
@@ -184,6 +194,7 @@ class ArchiveManager extends EE {
      * @returns {Promise} A promise that resolves once the source is locked
      */
     lock(id) {
+        debug("lock source");
         let source;
         return Promise
             .resolve()
@@ -214,6 +225,7 @@ class ArchiveManager extends EE {
                 return this.dehydrateSource(source.id);
             })
             .then(() => {
+                debug("source locked");
                 this.emit("sourceLocked", {
                     id: source.id,
                     name: source.name,
@@ -235,6 +247,7 @@ class ArchiveManager extends EE {
      */
     rehydrate() {
         this._sources = [];
+        debug("rehydrate sources");
         return this.storageInterface
             .getAllKeys()
             .then(keys => Promise.all(
@@ -250,6 +263,9 @@ class ArchiveManager extends EE {
                             throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
                         })
             )))
+            .then(() => {
+                debug("sources rehydrated");
+            })
             .catch(function __handleRehydrateError(err) {
                 throw new VError(err, "Failed rehydrating sources");
             });
@@ -262,6 +278,7 @@ class ArchiveManager extends EE {
      * @returns {Promise} A promise that resolves once the source is unlocked
      */
     unlock(id, masterPassword) {
+        debug("unlock source");
         let source;
         return Promise
             .resolve()
@@ -298,6 +315,7 @@ class ArchiveManager extends EE {
                     });
             })
             .then(() => {
+                debug("source unlocked");
                 this.emit("sourceUnlocked", {
                     id: source.id,
                     name: source.name,
