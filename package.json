@@ -45,6 +45,7 @@
   "dependencies": {
     "clone": "~1.0.2",
     "debug": "~2.3.3",
+    "eventemitter3": "~2.0.3",
     "gzip-js": "~0.3.2",
     "iocane": "~0.7.0",
     "node-fetch": "~1.6.3",

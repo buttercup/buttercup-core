@@ -1,6 +1,7 @@
 "use strict";
 
 const VError = require("verror");
+const EE = require("eventemitter3");
 const createCredentials = require("./credentials.js");
 const credentialsToSource = require("./archiveManagement/marshalling.js").credentialsToSource;
 const getUniqueID = require("../tools/encoding.js").getUniqueID;
@@ -44,7 +45,7 @@ const SourceStatus = {
 /**
  * Archive manager for managing archives and connections to sources
  */
-class ArchiveManager {
+class ArchiveManager extends EE {
 
     /**
      * Constructor for ArchiveManager
@@ -52,6 +53,7 @@ class ArchiveManager {
      *  to a new MemoryStorageInterface instance if not provided
      */
     constructor(storageInterface = new MemoryStorageInterface()) {
+        super();
         this._storageInterface = storageInterface;
         this._sources = [];
     }
@@ -92,20 +94,24 @@ class ArchiveManager {
         return credentialsToSource(sourceCredentials, archiveCredentials, initialise)
             .then(sourceInfo => {
                 const id = getUniqueID();
+                const sourceMajorInfo = {
+                    id,
+                    name,
+                    status: SourceStatus.UNLOCKED,
+                    type: sourceCredentials.type
+                };
                 this._sources.push(Object.assign(
                     sourceInfo,
-                    {
-                        name,
-                        id,
-                        status: SourceStatus.UNLOCKED,
-                        type: sourceCredentials.type
-                    }
+                    sourceMajorInfo
                 ));
                 return this
                     .dehydrateSource(id)
-                    .then(() => id);
+                    .then(() => {
+                        this.emit("sourceAdded", sourceMajorInfo);
+                        return id;
+                    });
             })
-            .catch(function(err) {
+            .catch(function __handleAddSourceError(err) {
                 throw new VError(err, "Failed adding source");
             });
     }
@@ -150,6 +156,14 @@ class ArchiveManager {
                 `${STORAGE_KEY_PREFIX}${lockedSource.id}`,
                 JSON.stringify(lockedSource)
             ))
+            .then(() => {
+                this.emit("sourceDehydrated", {
+                    id: source.id,
+                    name: source.name,
+                    type: source.type,
+                    status: SourceStatus.LOCKED
+                });
+            })
             .catch(function __handleDehydrateError(err) {
                 throw new VError(err, `Failed dehydrating source with ID: ${id}`);
             });
@@ -198,6 +212,14 @@ class ArchiveManager {
                     archiveCredentials: encArchiveCreds
                 });
                 return this.dehydrateSource(source.id);
+            })
+            .then(() => {
+                this.emit("sourceLocked", {
+                    id: source.id,
+                    name: source.name,
+                    type: source.type,
+                    status: SourceStatus.LOCKED
+                });
             })
             .catch(function __handleLockError(err) {
                 if (source) {
@@ -274,6 +296,14 @@ class ArchiveManager {
                     .catch(function __handleCredentialsMapError(err) {
                         throw new VError(err, "Failed mapping credentials to a source");
                     });
+            })
+            .then(() => {
+                this.emit("sourceUnlocked", {
+                    id: source.id,
+                    name: source.name,
+                    status: SourceStatus.UNLOCKED,
+                    type: source.type
+                });
             })
             .catch(function(err) {
                 throw new VError(err, `Failed to unlock source with ID: ${id}`);
