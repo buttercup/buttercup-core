@@ -50,6 +50,7 @@ describe("ArchiveManager", function() {
                     expect(item.id).to.equal(id);
                     expect(item.name).to.equal("new item");
                     expect(item.status).to.equal(SourceStatus.UNLOCKED);
+                    expect(item.type).to.equal("text");
                 });
         });
 
@@ -63,6 +64,24 @@ describe("ArchiveManager", function() {
                     expect(this.archiveManager.dehydrateSource.callCount).to.equal(1);
                     expect(this.archiveManager.dehydrateSource.calledWithExactly(id)).to.be.true;
                     expect(this.archiveManager.sources.push.calledBefore(this.archiveManager.dehydrateSource)).to.be.true;
+                });
+        });
+
+        it("emits an event", function() {
+            sinon.spy(this.archiveManager, "emit");
+            sinon.stub(this.archiveManager, "dehydrateSource").returns(Promise.resolve());
+            return this.archiveManager
+                .addSource("new item", this.sourceCredentials, this.archiveCredentials)
+                .then((id) => {
+                    expect(this.archiveManager.emit.firstCall.args).to.eql([
+                        "sourceAdded",
+                        {
+                            id,
+                            name: "new item",
+                            status: SourceStatus.UNLOCKED,
+                            type: "text"
+                        }
+                    ]);
                 });
         });
 
@@ -118,6 +137,22 @@ describe("ArchiveManager", function() {
                 .then(() => {
                     const packet = JSON.parse(this.archiveManager.storageInterface.setValue.firstCall.args[1]);
                     expect(packet).to.have.property("archiveCredentials").that.is.a.string;
+                });
+        });
+
+        it("emits an event", function() {
+            sinon.spy(this.archiveManager, "emit");
+            return this.archiveManager.dehydrateSource(this.sourceID)
+                .then(() => {
+                    expect(this.archiveManager.emit.firstCall.args).to.eql([
+                        "sourceDehydrated",
+                        {
+                            id: this.sourceID,
+                            name: "new item",
+                            status: SourceStatus.LOCKED,
+                            type: "text"
+                        }
+                    ]);
                 });
         });
 
@@ -186,6 +221,23 @@ describe("ArchiveManager", function() {
                     expect(this.archiveManager._replace.calledWith(this.sourceID)).to.be.true;
                     expect(this.archiveManager.dehydrateSource.calledWithExactly(this.sourceID)).to.be.true;
                     expect(this.archiveManager._replace.calledBefore(this.archiveManager.dehydrateSource)).to.be.true;
+                });
+        });
+
+        it("emits an event", function() {
+            sinon.spy(this.archiveManager, "emit");
+            sinon.stub(this.archiveManager, "dehydrateSource").returns(Promise.resolve());
+            return this.archiveManager.lock(this.sourceID)
+                .then(() => {
+                    expect(this.archiveManager.emit.firstCall.args).to.eql([
+                        "sourceLocked",
+                        {
+                            id: this.sourceID,
+                            name: "new item",
+                            status: SourceStatus.LOCKED,
+                            type: "text"
+                        }
+                    ]);
                 });
         });
 
@@ -277,6 +329,22 @@ describe("ArchiveManager", function() {
                     const archive = source.workspace.primary.archive;
                     expect(archive).to.be.an.instanceOf(Archive);
                     expect(archive.getID()).to.equal(this.archiveID);
+                });
+        });
+
+        it("emits an event", function() {
+            sinon.spy(this.archiveManager, "emit");
+            return this.archiveManager.unlock(this.sourceID, "testing")
+                .then(() => {
+                    expect(this.archiveManager.emit.firstCall.args).to.eql([
+                        "sourceUnlocked",
+                        {
+                            id: this.sourceID,
+                            name: "new item",
+                            status: SourceStatus.UNLOCKED,
+                            type: "text"
+                        }
+                    ]);
                 });
         });
 
