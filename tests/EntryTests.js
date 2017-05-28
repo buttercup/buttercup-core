@@ -230,6 +230,12 @@ module.exports = {
             test.strictEqual(this.entry.toObject().meta.myKey, "second",
                 "Second setMeta call with different case should use case of first call");
             test.done();
+        },
+
+        setsEmptyValues: function(test) {
+            this.entry.setMeta("key", "");
+            test.strictEqual(this.entry.getMeta("key"), "", "Meta value should be an empty string");
+            test.done();
         }
 
     },
