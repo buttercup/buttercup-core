@@ -14,6 +14,10 @@ var __gzipOptions = {
 
 var lib = module.exports = {
 
+    /**
+     * Prefix for encoded strings
+     * @type {String}
+     */
     ENCODED_STRING_PREFIX,
 
     /**
