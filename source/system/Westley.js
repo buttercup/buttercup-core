@@ -1,5 +1,6 @@
 "use strict";
 
+const EE = require("eventemitter3");
 const Inigo = require("./InigoGenerator.js");
 const commandTools = require("../tools/command.js");
 const searchingTools = require("../tools/searching-raw.js");
@@ -36,9 +37,10 @@ const commandClasses = {
  * revenge for the princess.
  * @class Westley
  */
-class Westley {
+class Westley extends EE {
 
     constructor() {
+        super();
         this.clear();
         this._readOnly = false;
     }
@@ -105,6 +107,7 @@ class Westley {
                 this._processCommandParameters(commandKey, commandComponents)
             )
         );
+        this.emit("commandExecuted");
         return this;
     }
 

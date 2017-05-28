@@ -5,7 +5,7 @@ module.exports = {
 
     setUp: function(cb) {
         this.westley = new Westley();
-        (cb)();
+        cb();
     },
 
     _getCommandForName: {
@@ -47,6 +47,15 @@ module.exports = {
                 "Randomly assigned variable is the same for second and third instance");
 
             test.done();
+        }
+
+    },
+
+    execute: {
+
+        emitsAnEventWhenExecuted: function(test) {
+            this.westley.on("commandExecuted", test.done);
+            this.westley.execute("cgr 0 1");
         }
 
     }
