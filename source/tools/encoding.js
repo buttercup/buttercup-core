@@ -14,6 +14,8 @@ var __gzipOptions = {
 
 var lib = module.exports = {
 
+    ENCODED_STRING_PREFIX,
+
     /**
      * Compress text using GZIP
      * @param {String} text The text to compress
