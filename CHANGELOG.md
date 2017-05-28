@@ -1,5 +1,13 @@
 # Buttercup-core change-log
 
+## v0.40.0
+_2017-05-28_
+
+ * Add event emitters to `Westley` and `Archive` instances for when archive changes occur
+ * Add event emitter to `ArchiveManager` for state updates
+ * Upgrade **webdav-fs** to `1.0.0`
+ * **Bugfix**: Empty values for properties/meta/attributes
+
 ## v0.39.1
 _2017-05-22_
 
