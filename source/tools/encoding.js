@@ -4,7 +4,7 @@ var Crypto = require("crypto"),
     uuid = require("uuid"),
     gzip = require("gzip-js");
 
-const ENCODED_STRING_PATTERN = /^utf8\+base64:[a-zA-Z0-9+\/=]+/;
+const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
 const ENCODED_STRING_PREFIX = "utf8+base64:";
 
 var __gzipOptions = {
