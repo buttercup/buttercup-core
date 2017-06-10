@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.40.1
+_2017-06-10_
+
+ * Add missing event for source rehydration in `ArchiveManager`
+
 ## v0.40.0
 _2017-05-28_
 
