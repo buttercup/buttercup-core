@@ -279,6 +279,22 @@ describe("ArchiveManager", function() {
                 });
         });
 
+        it("emits events for all sources", function() {
+            sinon.spy(this.archiveManager, "emit");
+            return this.archiveManager.rehydrate()
+                .then(() => {
+                    expect(this.archiveManager.emit.firstCall.args).to.eql([
+                        "sourceRehydrated",
+                        {
+                            id: this.sourceID,
+                            name: "new item",
+                            status: SourceStatus.LOCKED,
+                            type: "text"
+                        }
+                    ]);
+                });
+        });
+
     });
 
     describe("unlock", function() {
