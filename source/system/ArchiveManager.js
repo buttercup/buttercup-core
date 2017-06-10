@@ -258,6 +258,12 @@ class ArchiveManager extends EE {
                         .then(JSON.parse)
                         .then(lockedSource => {
                             this.sources.push(lockedSource);
+                            this.emit("sourceRehydrated", {
+                                id: lockedSource.id,
+                                name: lockedSource.name,
+                                status: SourceStatus.LOCKED,
+                                type: lockedSource.type
+                            });
                         })
                         .catch(function __handleDehydratedReadError(err) {
                             throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
