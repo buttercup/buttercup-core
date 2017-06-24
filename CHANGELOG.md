@@ -1,5 +1,12 @@
 # Buttercup-core change-log
 
+## v0.41.0
+_2017-06-24_
+
+ * Upgrade webdav-fs to 1.3.0
+   * Disable browser `window.fetch` for stability
+ * Add `remove` method to `ArchiveManager`
+
 ## v0.40.1
 _2017-06-10_
 

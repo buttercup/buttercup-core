@@ -569,6 +569,7 @@ Archive manager for managing archives and connections to sources
     * [.indexOfSource(id)](#ArchiveManager+indexOfSource) ⇒ <code>Number</code>
     * [.lock(id)](#ArchiveManager+lock) ⇒ <code>Promise</code>
     * [.rehydrate()](#ArchiveManager+rehydrate) ⇒ <code>Promise</code>
+    * [.remove(id)](#ArchiveManager+remove) ⇒ <code>Promise</code>
     * [.unlock(id, masterPassword)](#ArchiveManager+unlock) ⇒ <code>Promise</code>
     * [._replace(id, source)](#ArchiveManager+_replace)
 
@@ -659,6 +660,18 @@ Rehydrate all sources from storage
 
 **Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
 **Returns**: <code>Promise</code> - A promise that resolves once all sources have been rehydrated  
+<a name="ArchiveManager+remove"></a>
+
+### archiveManager.remove(id) ⇒ <code>Promise</code>
+Remove a source
+
+**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Returns**: <code>Promise</code> - A promise that resolves once the source has been removed  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The source ID |
+
 <a name="ArchiveManager+unlock"></a>
 
 ### archiveManager.unlock(id, masterPassword) ⇒ <code>Promise</code>
