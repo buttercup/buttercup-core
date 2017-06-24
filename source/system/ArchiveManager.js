@@ -278,6 +278,37 @@ class ArchiveManager extends EE {
     }
 
     /**
+     * Remove a source
+     * @param {String} id The source ID
+     * @returns {Promise} A promise that resolves once the source has been removed
+     */
+    remove(id) {
+        debug("remove source");
+        let source,
+            sourceIndex;
+        return Promise
+            .resolve()
+            .then(() => {
+                sourceIndex = this.indexOfSource(id);
+                if (sourceIndex < 0) {
+                    throw new VError("Source not found for ID");
+                }
+                source = this.sources[sourceIndex];
+                return this.storageInterface.removeKey(`${STORAGE_KEY_PREFIX}${source.id}`);
+            })
+            .then(() => {
+                this.emit("sourceRemoved", {
+                    id: source.id
+                });
+                this.sources.splice(sourceIndex, 1);
+                debug("source removed");
+            })
+            .catch(function __handleRehydrateError(err) {
+                throw new VError(err, "Failed removing sources");
+            });
+    }
+
+    /**
      * Unlock a source
      * @param {String} id The ID of the source to unlock
      * @param {String} masterPassword The password to unlock the source

@@ -297,6 +297,53 @@ describe("ArchiveManager", function() {
 
     });
 
+    describe("remove", function() {
+
+        beforeEach(function() {
+            return Promise.all([
+                createArchiveAndCredentials.call(this)
+                    .then(() => {
+                        return this.archiveManager
+                            .addSource("Item 1", this.sourceCredentials, this.archiveCredentials)
+                            .then(id => {
+                                this.sourceID1 = id;
+                            });
+                    }),
+                createArchiveAndCredentials.call(this)
+                    .then(() => {
+                        return this.archiveManager
+                            .addSource("Item 2", this.sourceCredentials, this.archiveCredentials)
+                            .then(id => {
+                                this.sourceID2 = id;
+                            });
+                    })
+            ]);
+        });
+
+        it("removes sources", function() {
+            expect(this.archiveManager.sources).to.have.lengthOf(2);
+            return this.archiveManager.remove(this.sourceID1)
+                .then(() => {
+                    expect(this.archiveManager.sources).to.have.lengthOf(1);
+                    expect(this.archiveManager.sources[0]).to.have.property("name", "Item 2");
+                });
+        });
+
+        it("emits removal event", function() {
+            sinon.spy(this.archiveManager, "emit");
+            return this.archiveManager.remove(this.sourceID2)
+                .then(() => {
+                    expect(this.archiveManager.emit.firstCall.args).to.eql([
+                        "sourceRemoved",
+                        {
+                            id: this.sourceID2
+                        }
+                    ]);
+                });
+        });
+
+    });
+
     describe("unlock", function() {
 
         beforeEach(function() {
