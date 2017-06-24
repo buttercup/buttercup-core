@@ -10,6 +10,10 @@ class StorageInterface {
         return Promise.resolve(null);
     }
 
+    removeKey(/* name */) {
+        return Promise.resolve();
+    }
+
     setValue(/* name, value */) {
         return Promise.resolve();
     }
