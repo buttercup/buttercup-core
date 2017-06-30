@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.41.1
+_2017-06-30_
+
+ * **Bugfix**: Wrong credentials passed to `Workspace` in `ArchiveManager`: [#167](https://github.com/buttercup/buttercup-core/issues/167)
+
 ## v0.41.0
 _2017-06-24_
 
