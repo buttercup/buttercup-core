@@ -1,5 +1,5 @@
-var lib = require("../source/module.js"),
-    Westley = lib.Westley;
+var lib = require("../source/module.js");
+var Westley = lib.Westley;
 
 module.exports = {
 

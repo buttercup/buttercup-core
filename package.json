@@ -20,7 +20,7 @@
     "test:ci": "npm test && npm run test:codeclimate",
     "test:codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
     "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
-    "test:lint": "node node_modules/eslint/bin/eslint.js source/",
+    "test:lint": "node node_modules/eslint/bin/eslint.js source/ && node node_modules/eslint/bin/eslint.js test/ && node node_modules/eslint/bin/eslint.js tests/",
     "test:nodeunit": "node node_modules/nodeunit/bin/nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
     "test:unit": "mocha -r test/unit/index.js 'test/unit/**/*.spec.js' --timeout 5000"
   },
