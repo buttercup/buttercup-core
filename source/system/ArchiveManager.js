@@ -235,6 +235,7 @@ class ArchiveManager extends EE {
             })
             .catch(function __handleLockError(err) {
                 if (source) {
+                    // reset status
                     source.status = SourceStatus.UNLOCKED;
                 }
                 throw new VError(err, `Failed to lock source with ID: ${id}`);
@@ -361,6 +362,10 @@ class ArchiveManager extends EE {
                 });
             })
             .catch(function(err) {
+                if (source && source.status) {
+                    // reset status
+                    source.status = SourceStatus.LOCKED;
+                }
                 throw new VError(err, `Failed to unlock source with ID: ${id}`);
             });
     }
