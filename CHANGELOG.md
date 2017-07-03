@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.41.2
+_2017-07-03_
+
+ * **Bugfix**: Wrong password when unlocking source in `ArchiveManager` breaks state
+
 ## v0.41.1
 _2017-06-30_
 
