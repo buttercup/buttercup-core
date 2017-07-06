@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.42.0
+_2017-07-06_
+
+ * Change event emitters (`ArchiveManager`, `Archive` & `Westley`) to be asynchronous: [#169](https://github.com/buttercup/buttercup-core/issues/169)
+
 ## v0.41.2
 _2017-07-03_
 
