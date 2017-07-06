@@ -78,7 +78,7 @@ module.exports = {
         archiveUpdated: function(test) {
             let once = 1;
             // execute done only once
-            this.archiveB.on("archiveUpdated", () => once-- && test.done());
+            this.archiveB.once("archiveUpdated", () => test.done());
             this.archiveB.setAttribute("test", "test");
         }
 

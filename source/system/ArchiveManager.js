@@ -1,7 +1,7 @@
 "use strict";
 
 const VError = require("verror");
-const EE = require("eventemitter3");
+const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
 const createCredentials = require("./credentials.js");
 const credentialsToSource = require("./archiveManagement/marshalling.js").credentialsToSource;
 const getUniqueID = require("../tools/encoding.js").getUniqueID;
@@ -48,7 +48,7 @@ const SourceStatus = {
 /**
  * Archive manager for managing archives and connections to sources
  */
-class ArchiveManager extends EE {
+class ArchiveManager extends AsyncEventEmitter {
 
     /**
      * Constructor for ArchiveManager
