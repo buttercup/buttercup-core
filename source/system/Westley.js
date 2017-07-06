@@ -1,6 +1,6 @@
 "use strict";
 
-const EE = require("eventemitter3");
+const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
 const Inigo = require("./InigoGenerator.js");
 const commandTools = require("../tools/command.js");
 const searchingTools = require("../tools/searching-raw.js");
@@ -37,7 +37,7 @@ const commandClasses = {
  * revenge for the princess.
  * @class Westley
  */
-class Westley extends EE {
+class Westley extends AsyncEventEmitter {
 
     constructor() {
         super();

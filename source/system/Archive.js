@@ -1,6 +1,6 @@
 "use strict";
 
-const EE = require("eventemitter3");
+const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
 
 var Westley = require("./Westley.js"),
     Inigo = require("./InigoGenerator.js"),
@@ -24,7 +24,7 @@ const debug = createDebug("archive");
  * @mixes GroupCollection
  * @mixes EntryCollection
  */
-class Archive extends EE {
+class Archive extends AsyncEventEmitter {
 
     constructor() {
         super();
@@ -346,6 +346,7 @@ class Archive extends EE {
  * @memberof Archive
  */
 Archive.createFromHistory = function(history) {
+    debug("create archive (history)");
     var archive = new Archive(),
         westley = archive._getWestley();
     westley.clear();
