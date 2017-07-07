@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.42.1
+_2017-07-07_
+
+ * **Bugfix**: `ArchiveManager` `unlockedSources` returns array of booleans
+
 ## v0.42.0
 _2017-07-06_
 
