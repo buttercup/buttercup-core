@@ -195,7 +195,7 @@ Buttercup.vendor.iocane.components.setPBKDF2(newPBKDF2Function);
 // Where 'newPBKDF2Function' is a function that returns a Promise with the hash in a Buffer
 ```
 
-### Attributes & Media
+### Attributes
 
 Entries and groups have attributes, describing how they should be treated by the various interfaces that interact with the archive. Attributes are not visible to the users and can contain a variety of different properties.
 
@@ -203,6 +203,8 @@ For instance, you could get the role of a group like so:
 ```javascript
 let groupRole = group.getAttribute(ManagedGroup.Attributes.Role);
 ```
+
+Entry types and facades are [documented separately](ENTRY_FACADES.md).
 
 ## Debugging
 Buttercup supports the [DEBUG](https://github.com/visionmedia/debug) environment variable. You can debug an application using Buttercup like so:

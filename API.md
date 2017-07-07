@@ -119,6 +119,22 @@
 <dd><p>Create a credentials adapter
 Both <code>type</code> and <code>data</code> parameters are optional.</p>
 </dd>
+<dt><a href="#applyFieldDescriptor">applyFieldDescriptor(entry, descriptor)</a></dt>
+<dd><p>Apply a facade field descriptor to an entry
+Takes data from the descriptor and writes it to the entry.</p>
+</dd>
+<dt><a href="#consumeEntryFacade">consumeEntryFacade(entry, facade)</a></dt>
+<dd><p>Process a modified entry facade</p>
+</dd>
+<dt><a href="#createEntryFacade">createEntryFacade(entry)</a> ⇒ <code><a href="#EntryFacade">EntryFacade</a></code></dt>
+<dd><p>Create a data/input facade for an Entry instance</p>
+</dd>
+<dt><a href="#getEntryFacadeType">getEntryFacadeType(entry)</a> ⇒ <code>String</code></dt>
+<dd><p>Get the facade type for an entry</p>
+</dd>
+<dt><a href="#setEntryValue">setEntryValue(entry, property, name, value)</a></dt>
+<dd><p>Set a value on an entry</p>
+</dd>
 <dt><a href="#convertEncryptedContentToHistory">convertEncryptedContentToHistory(encText, credentials)</a> ⇒ <code>Promise.&lt;Array&gt;</code></dt>
 <dd><p>Convert encrypted text to an array of commands (history)</p>
 </dd>
@@ -127,6 +143,18 @@ Both <code>type</code> and <code>data</code> parameters are optional.</p>
 </dd>
 <dt><a href="#dedupe">dedupe(arr)</a> ⇒ <code>Array</code></dt>
 <dd><p>De-dupe an array</p>
+</dd>
+<dt><a href="#createFieldDescriptor">createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options)</a> ⇒ <code><a href="#EntryFacadeField">EntryFacadeField</a></code></dt>
+<dd><p>Create a descriptor for a field to be used within a facade</p>
+</dd>
+<dt><a href="#getEntryValue">getEntryValue(entry, property, name)</a> ⇒ <code>String</code></dt>
+<dd><p>Get a value on an entry for a specific property type</p>
+</dd>
+<dt><a href="#getValidProperties">getValidProperties()</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
+<dd><p>Get an array of valid property names</p>
+</dd>
+<dt><a href="#isValidProperty">isValidProperty(name)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>Check if a property name is valid</p>
 </dd>
 <dt><a href="#findEntriesByCheck">findEntriesByCheck(groups, compareFn)</a> ⇒ <code><a href="#Entry">Array.&lt;Entry&gt;</a></code></dt>
 <dd><p>Find entry instances by filtering with a compare function</p>
@@ -154,10 +182,14 @@ Both <code>type</code> and <code>data</code> parameters are optional.</p>
 <dt><a href="#Credentials">Credentials</a> : <code>Object</code></dt>
 <dd><p>Credentials wrapper</p>
 </dd>
-<dt><a href="#DisplayInfo">DisplayInfo</a></dt>
-<dd></dd>
+<dt><a href="#EntryFacade">EntryFacade</a> : <code>Object</code></dt>
+<dd><p>Entry facade for data input</p>
+</dd>
 <dt><a href="#WorkspaceItem">WorkspaceItem</a> : <code>Object</code></dt>
 <dd><p>Shared workspace item</p>
+</dd>
+<dt><a href="#EntryFacadeField">EntryFacadeField</a> : <code>Object</code></dt>
+<dd><p>Entry facade data field</p>
 </dd>
 <dt><a href="#FoundGroupResult">FoundGroupResult</a> : <code>Object</code></dt>
 <dd></dd>
@@ -2273,7 +2305,6 @@ Add a callback for a key
         * [.deleteAttribute(attr)](#Entry+deleteAttribute) ⇒ <code>[Entry](#Entry)</code>
         * [.deleteMeta(property)](#Entry+deleteMeta) ⇒ <code>[Entry](#Entry)</code>
         * [.getAttribute(attributeName)](#Entry+getAttribute) ⇒ <code>String</code> &#124; <code>undefined</code>
-        * [.getDisplayInfo()](#Entry+getDisplayInfo) ⇒ <code>[DisplayInfo](#DisplayInfo)</code> &#124; <code>undefined</code>
         * [.getGroup()](#Entry+getGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.getID()](#Entry+getID) ⇒ <code>String</code>
         * [.getMeta(property)](#Entry+getMeta) ⇒ <code>String</code> &#124; <code>undefined</code>
@@ -2362,13 +2393,6 @@ Get an attribute
 | --- | --- | --- |
 | attributeName | <code>String</code> | The name of the attribute to fetch |
 
-<a name="Entry+getDisplayInfo"></a>
-
-### entry.getDisplayInfo() ⇒ <code>[DisplayInfo](#DisplayInfo)</code> &#124; <code>undefined</code>
-Get the display information for the entry
-
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>[DisplayInfo](#DisplayInfo)</code> &#124; <code>undefined</code> - The display info  
 <a name="Entry+getGroup"></a>
 
 ### entry.getGroup() ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
@@ -4616,6 +4640,73 @@ Create a new credentials instance from an encrypted string
 | content | <code>String</code> | The encrypted form of a credentials store |
 | password | <code>String</code> | The password to use to decrypt the content |
 
+<a name="applyFieldDescriptor"></a>
+
+## applyFieldDescriptor(entry, descriptor)
+Apply a facade field descriptor to an entry
+Takes data from the descriptor and writes it to the entry.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>[Entry](#Entry)</code> | The entry to apply to |
+| descriptor | <code>[EntryFacadeField](#EntryFacadeField)</code> | The descriptor object |
+
+<a name="consumeEntryFacade"></a>
+
+## consumeEntryFacade(entry, facade)
+Process a modified entry facade
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>[Entry](#Entry)</code> | The entry to apply processed data on |
+| facade | <code>[EntryFacade](#EntryFacade)</code> | The facade object |
+
+<a name="createEntryFacade"></a>
+
+## createEntryFacade(entry) ⇒ <code>[EntryFacade](#EntryFacade)</code>
+Create a data/input facade for an Entry instance
+
+**Kind**: global function  
+**Returns**: <code>[EntryFacade](#EntryFacade)</code> - A newly created facade  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>[Entry](#Entry)</code> | The Entry instance |
+
+<a name="getEntryFacadeType"></a>
+
+## getEntryFacadeType(entry) ⇒ <code>String</code>
+Get the facade type for an entry
+
+**Kind**: global function  
+**Returns**: <code>String</code> - The facade type  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>[Entry](#Entry)</code> | The entry instance |
+
+<a name="setEntryValue"></a>
+
+## setEntryValue(entry, property, name, value)
+Set a value on an entry
+
+**Kind**: global function  
+**Throws**:
+
+- <code>Error</code> Throws if the property type is not recognised
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>[Entry](#Entry)</code> | The entry instance |
+| property | <code>String</code> | Type of property ("property"/"meta"/"attribute") |
+| name | <code>String</code> | The property name |
+| value | <code>String</code> | The value to set |
+
 <a name="convertEncryptedContentToHistory"></a>
 
 ## convertEncryptedContentToHistory(encText, credentials) ⇒ <code>Promise.&lt;Array&gt;</code>
@@ -4653,6 +4744,59 @@ De-dupe an array
 | Param | Type | Description |
 | --- | --- | --- |
 | arr | <code>Array</code> | The array |
+
+<a name="createFieldDescriptor"></a>
+
+## createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options) ⇒ <code>[EntryFacadeField](#EntryFacadeField)</code>
+Create a descriptor for a field to be used within a facade
+
+**Kind**: global function  
+**Returns**: <code>[EntryFacadeField](#EntryFacadeField)</code> - The field descriptor  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>[Entry](#Entry)</code> | The entry instance to process |
+| title | <code>String</code> | The field title |
+| entryPropertyType | <code>String</code> | The type of entry property (property/meta/attribute) |
+| entryPropertyName | <code>String</code> | The name of the property |
+| options | <code>Object</code> | The options for the field |
+
+<a name="getEntryValue"></a>
+
+## getEntryValue(entry, property, name) ⇒ <code>String</code>
+Get a value on an entry for a specific property type
+
+**Kind**: global function  
+**Returns**: <code>String</code> - The property value  
+**Throws**:
+
+- <code>Error</code> Throws for unknown property types
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>[Entry](#Entry)</code> | The entry instance |
+| property | <code>String</code> | The type of entry property (property/meta/attribute) |
+| name | <code>String</code> | The property name |
+
+<a name="getValidProperties"></a>
+
+## getValidProperties() ⇒ <code>Array.&lt;String&gt;</code>
+Get an array of valid property names
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;String&gt;</code> - An array of names  
+<a name="isValidProperty"></a>
+
+## isValidProperty(name) ⇒ <code>Boolean</code>
+Check if a property name is valid
+
+**Kind**: global function  
+**Returns**: <code>Boolean</code> - True if the name is valid  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name to check |
 
 <a name="findEntriesByCheck"></a>
 
@@ -4816,17 +4960,18 @@ Set a value for a property
 | property | <code>String</code> | The property to set |
 | value | <code>\*</code> | The value to set for the property |
 
-<a name="DisplayInfo"></a>
+<a name="EntryFacade"></a>
 
-## DisplayInfo
+## EntryFacade : <code>Object</code>
+Entry facade for data input
+
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| title | <code>string</code> | The text to replace "title" |
-| username | <code>string</code> | The text to replace "username" |
-| password | <code>string</code> | The text to replace "password" |
+| type | <code>String</code> | The type of the facade |
+| fields | <code>[Array.&lt;EntryFacadeField&gt;](#EntryFacadeField)</code> | An array of fields |
 
 <a name="WorkspaceItem"></a>
 
@@ -4841,6 +4986,25 @@ Shared workspace item
 | archive | <code>[Archive](#Archive)</code> | An archive instance |
 | password | <code>String</code> | The master password |
 | datasource | <code>[TextDatasource](#TextDatasource)</code> | A datasource instance |
+
+<a name="EntryFacadeField"></a>
+
+## EntryFacadeField : <code>Object</code>
+Entry facade data field
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| title | <code>String</code> | The user-friendly title of the field |
+| field | <code>String</code> | The type of data to map back to on the Entry instance (property/meta/attribute) |
+| property | <code>String</code> | The property name within the field type of the Entry instance |
+| value | <code>String</code> | The value of the property (read/write) |
+| secret | <code>Boolean</code> | Wether or not the value should be hidden while viewing (masked) |
+| multiline | <code>Boolean</code> | Whether the value should be edited as a multiline value or not |
+| formatting | <code>Object</code> &#124; <code>Boolean</code> | Vendor formatting options object, or false if no formatting necessary |
+| maxLength | <code>Number</code> | Maximum recommended length of the value (defaults to -1) |
 
 <a name="FoundGroupResult"></a>
 
