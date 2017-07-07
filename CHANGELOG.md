@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.43.0
+_2017-07-07_
+
+ * Entry facades: Dynamic field editing
+
 ## v0.42.1
 _2017-07-07_
 
