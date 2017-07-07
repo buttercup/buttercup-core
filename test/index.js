@@ -5,7 +5,7 @@ var chai = require("chai"),
     sinon = require("sinon"),
     mocha = require("mocha");
 
-var Buttercup = require("../../source/module.js"),
+var Buttercup = require("../source/module.js"),
     iocane = require("iocane");
 
 chai.use(chaiAsPromised);

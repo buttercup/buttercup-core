@@ -8,19 +8,6 @@ var Inigo = require("./InigoGenerator.js"),
 
 const debug = createDebug("entry");
 
-var __displayTypes = {
-    "default": {
-        "title": "Title",
-        "username": "Username",
-        "password": "Password"
-    },
-    "credit-card": {
-        "title": "Name on card",
-        "username": "Card number",
-        "password": "CVV"
-    }
-};
-
 /**
  * Managed entry class
  * @class Entry
@@ -119,24 +106,6 @@ Entry.prototype.getAttribute = function(attributeName) {
     var raw = this._getRemoteObject();
     return raw.attributes && raw.attributes.hasOwnProperty(attributeName) ?
         raw.attributes[attributeName] : undefined;
-};
-
-/**
- * @typedef DisplayInfo
- * @property {string} title The text to replace "title"
- * @property {string} username The text to replace "username"
- * @property {string} password The text to replace "password"
- */
-
-/**
- * Get the display information for the entry
- * @returns {DisplayInfo|undefined} The display info
- * @memberof Entry
- */
-Entry.prototype.getDisplayInfo = function() {
-    debug("fetch display info");
-    var displayType = this.getAttribute(Entry.Attributes.DisplayType) || "default";
-    return __displayTypes[displayType];
 };
 
 /**
@@ -373,7 +342,7 @@ Entry.prototype._getWestley = function() {
 };
 
 Entry.Attributes = Object.freeze({
-    DisplayType:            "bc_entry_display_type"
+    FacadeType:            "BC_ENTRY_FACADE_TYPE"
 });
 
 /**

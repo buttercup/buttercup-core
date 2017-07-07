@@ -17,7 +17,7 @@ module.exports = {
             .setProperty("password", "passw0rd")
             .setMeta("accessKey", "12345")
             .setMeta("user prop", "user val")
-            .setAttribute(Entry.Attributes.DisplayType, "credit-card");
+            .setAttribute("test-type", "credit-card");
         entry.setMeta("URL", "https://test.com");
         entry.setMeta("url", "https://testing.com");
         this.id = entry.getID();
@@ -130,24 +130,12 @@ module.exports = {
     getAttribute: {
 
         testGetsAttribute: function(test) {
-            test.strictEqual(this.entry.getAttribute(Entry.Attributes.DisplayType), "credit-card", "Entry should contain attribute");
+            test.strictEqual(this.entry.getAttribute("test-type"), "credit-card", "Entry should contain attribute");
             test.done();
         },
 
         testUnsetReturnsUndefined: function(test) {
             test.strictEqual(this.entry.getAttribute("not set"), undefined, "Should return undefined");
-            test.done();
-        }
-
-    },
-
-    getDisplayInfo: {
-
-        testGetsCorrectInfo: function(test) {
-            var dInfo = this.entry.getDisplayInfo();
-            test.strictEqual(dInfo.title, "Name on card");
-            test.strictEqual(dInfo.username, "Card number");
-            test.strictEqual(dInfo.password, "CVV");
             test.done();
         }
 
