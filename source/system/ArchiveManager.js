@@ -83,7 +83,7 @@ class ArchiveManager extends AsyncEventEmitter {
      * @type {Array.<UnlockedArchiveManagerSource|LockedArchiveManagerSource>}
      */
     get unlockedSources() {
-        return this.sources.map(source => source.status === SourceStatus.UNLOCKED);
+        return this.sources.filter(source => source.status === SourceStatus.UNLOCKED);
     }
 
     /**
