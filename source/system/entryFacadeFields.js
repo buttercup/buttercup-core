@@ -30,12 +30,16 @@ function createCreditCardFields(entry) {
             "password",
             {
                 formatting: {
-                    placeholder: "XXXX-XXXX-XXXX-XXXX",
-                    vendor: {
-                        delimiter: "-",
-                        blocks: [4, 4, 4, 4],
-                        numericOnly: true
-                    }
+                    format: [
+                        { char: /\d/, repeat: 4 },
+                        { exactly: "-" },
+                        { char: /\d/, repeat: 4 },
+                        { exactly: "-" },
+                        { char: /\d/, repeat: 4 },
+                        { exactly: "-" },
+                        { char: /\d/, repeat: 4 }
+                    ],
+                    placeholder: "DDDD-DDDD-DDDD-DDDD"
                 }
             }
         ),
@@ -51,7 +55,12 @@ function createCreditCardFields(entry) {
             "meta",
             "cvv",
             {
-                maxLength: 4
+                formatting: {
+                    format: [
+                        { char: /\d/, repeat: 4 }
+                    ],
+                    placeholder: "DDD or DDDD"
+                }
             }
         ),
         createFieldDescriptor(
@@ -61,14 +70,15 @@ function createCreditCardFields(entry) {
             "valid_from",
             {
                 formatting: {
-                    placeholder: "MM/YYYY",
-                    vendor: {
-                        delimiter: "/",
-                        blocks: [2, 4],
-                        numericOnly: true
-                    }
-                },
-                maxLength:
+                    format: [
+                        { char: /[01]/, repeat: 1 },
+                        { char: /\d/, repeat: 1 },
+                        { exactly: "/" },
+                        { char: /2/, repeat: 1 },
+                        { char: /\d/, repeat: 3 }
+                    ],
+                    placeholder: "MM/YYYY"
+                }
             }
         ),
         createFieldDescriptor(
@@ -78,12 +88,14 @@ function createCreditCardFields(entry) {
             "expiry",
             {
                 formatting: {
-                    placeholder: "MM/YYYY",
-                    vendor: {
-                        delimiter: "/",
-                        blocks: [2, 4],
-                        numericOnly: true
-                    }
+                    format: [
+                        { char: /[01]/, repeat: 1 },
+                        { char: /\d/, repeat: 1 },
+                        { exactly: "/" },
+                        { char: /2/, repeat: 1 },
+                        { char: /\d/, repeat: 3 }
+                    ],
+                    placeholder: "MM/YYYY"
                 }
             }
         )
