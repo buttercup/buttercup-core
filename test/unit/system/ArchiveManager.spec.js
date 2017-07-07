@@ -34,6 +34,29 @@ describe("ArchiveManager", function() {
 
     });
 
+    describe("get:unlockedSources", function() {
+
+        beforeEach(function() {
+            return createArchiveAndCredentials.call(this);
+        });
+
+        it("returns correctly for no sources", function() {
+            expect(this.archiveManager.unlockedSources).to.be.an.array;
+            expect(this.archiveManager.unlockedSources).to.have.lengthOf(0);
+        });
+
+        it("returns correctly for 1 source", function() {
+            return this.archiveManager
+                .addSource("new item", this.sourceCredentials, this.archiveCredentials)
+                .then(id => {
+                    expect(this.archiveManager.unlockedSources).to.have.lengthOf(1);
+                    expect(this.archiveManager.unlockedSources[0]).to.be.an.object;
+                    expect(this.archiveManager.unlockedSources[0]).to.have.property("id", id);
+                });
+        });
+
+    });
+
     describe("addSource", function() {
 
         beforeEach(function() {
