@@ -8,10 +8,21 @@ const facadeFieldFactories = require("./entryFacadeFields.js");
  * @property {Array.<EntryFacadeField>} fields - An array of fields
  */
 
+/**
+ * Apply a facade field descriptor to an entry
+ * Takes data from the descriptor and writes it to the entry.
+ * @param {Entry} entry The entry to apply to
+ * @param {EntryFacadeField} descriptor The descriptor object
+ */
 function applyFieldDescriptor(entry, descriptor) {
     setEntryValue(entry, descriptor.field, descriptor.property, descriptor.value);
 }
 
+/**
+ * Process a modified entry facade
+ * @param {Entry} entry The entry to apply processed data on
+ * @param {EntryFacade} facade The facade object
+ */
 function consumeEntryFacade(entry, facade) {
     const facadeType = getEntryFacadeType(entry);
     if (facade && facade.type) {
@@ -44,10 +55,23 @@ function createEntryFacade(entry) {
     };
 }
 
+/**
+ * Get the facade type for an entry
+ * @param {Entry} entry The entry instance
+ * @returns {String} The facade type
+ */
 function getEntryFacadeType(entry) {
     return entry.getAttribute(Entry.Attributes.FacadeType) || "login";
 }
 
+/**
+ * Set a value on an entry
+ * @param {Entry} entry The entry instance
+ * @param {String} property Type of property ("property"/"meta"/"attribute")
+ * @param {String} name The property name
+ * @param {String} value The value to set
+ * @throws {Error} Throws if the property type is not recognised
+ */
 function setEntryValue(entry, property, name, value) {
     switch (property) {
         case "property":

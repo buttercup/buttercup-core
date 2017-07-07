@@ -19,6 +19,15 @@ const EntryProperty = {
  * @property {Number} maxLength - Maximum recommended length of the value (defaults to -1)
  */
 
+/**
+ * Create a descriptor for a field to be used within a facade
+ * @param {Entry} entry The entry instance to process
+ * @param {String} title The field title
+ * @param {String} entryPropertyType The type of entry property (property/meta/attribute)
+ * @param {String} entryPropertyName The name of the property
+ * @param {Object} options The options for the field
+ * @returns {EntryFacadeField} The field descriptor
+ */
 function createFieldDescriptor(
         entry, title, entryPropertyType, entryPropertyName,
         { multiline = false, secret = false, formatting = false, maxLength = -1 } = {}
@@ -36,6 +45,14 @@ function createFieldDescriptor(
     };
 }
 
+/**
+ * Get a value on an entry for a specific property type
+ * @param {Entry} entry The entry instance
+ * @param {String} property The type of entry property (property/meta/attribute)
+ * @param {String} name The property name
+ * @returns {String} The property value
+ * @throws {Error} Throws for unknown property types
+ */
 function getEntryValue(entry, property, name) {
     switch (property) {
         case "property":
@@ -49,6 +66,10 @@ function getEntryValue(entry, property, name) {
     }
 }
 
+/**
+ * Get an array of valid property names
+ * @returns {Array.<String>} An array of names
+ */
 function getValidProperties() {
     var props = [];
     for (var keyName in EntryProperty) {
@@ -59,6 +80,11 @@ function getValidProperties() {
     return props;
 }
 
+/**
+ * Check if a property name is valid
+ * @param {String} name The name to check
+ * @returns {Boolean} True if the name is valid
+ */
 function isValidProperty(name) {
     for (var keyName in EntryProperty) {
         if (EntryProperty.hasOwnProperty(keyName)) {
