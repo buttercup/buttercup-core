@@ -26,6 +26,19 @@ class SetEntryPropertyCommand extends BaseCommand {
             throw new Error("Entry not found for ID");
         }
         entry[propertyName] = value;
+
+        if (propertyName === "password") {
+          entry.attributes = entry.attributes || {};
+          entry.attributes["passModifiedTime"] = (new Date()).getTime();
+
+            if (entry.attributes["passExpiry"] !== 0) {
+                var passModifiedTime = new Date(entry.attributes["passModifiedTime"]),
+                    passExpiryTime = new Date(entry.attributes["passModifiedTime"]);
+                passExpiryTime.setDate(passModifiedTime.getDate() + parseInt(entry.attributes["passExpiry"], 10));
+                entry.attributes["passExpiryTime"] = passExpiryTime.getTime();
+            }
+        }
+
     }
 
 }
