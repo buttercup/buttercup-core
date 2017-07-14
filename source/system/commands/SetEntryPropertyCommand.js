@@ -28,8 +28,8 @@ class SetEntryPropertyCommand extends BaseCommand {
         entry[propertyName] = value;
 
         if (propertyName === "password") {
-          entry.attributes = entry.attributes || {};
-          entry.attributes["passModifiedTime"] = (new Date()).getTime();
+            entry.attributes = entry.attributes || {};
+            entry.attributes["passModifiedTime"] = (new Date()).getTime();
 
             if (entry.attributes["passExpiry"] !== 0) {
                 var passModifiedTime = new Date(entry.attributes["passModifiedTime"]),
