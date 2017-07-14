@@ -105,24 +105,9 @@ function isValidProperty(name) {
     return false;
 }
 
-/**
- * Set default attributes
- * @returns {Hash.<String>} A hash of the default attributes
- */
-function setDefaultAttributesValues() {
-    var defAttrs = {};
-    for (var keyName in EntryDefaultAttribute) {
-        if (EntryDefaultAttributeValue.hasOwnProperty(keyName)) {
-            defAttrs[EntryDefaultAttribute[keyName]] = EntryDefaultAttributeValue[keyName];
-        }
-    }
-    return defAttrs;
-}
-
 module.exports = {
     createFieldDescriptor,
     getEntryValue,
     getValidProperties,
-    isValidProperty,
-    setDefaultAttributesValues
+    isValidProperty
 };
