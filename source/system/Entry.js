@@ -172,6 +172,21 @@ Entry.prototype.getProperty = function(property) {
 };
 
 /**
+ * Check if the password has expired
+ * @returns {Boolean}  Whether or not the password has expired
+ * @memberof Entry
+ */
+Entry.prototype.hasExpiredPassword = function() {
+    debug("check password expiry");
+    var raw = this._getRemoteObject();
+    var now = (new Date()).getTime();
+    if ( (now >  raw.attributes["passExpiryTime"]) && raw.attributes.hasOwnProperty("passExpiryTime")) {
+        return true;
+    }
+    return false;
+};
+
+/**
  * Check if the entry is in the trash
  * @returns {Boolean} Whether or not the entry is in the trash
  * @memberof Entry
@@ -376,6 +391,11 @@ Entry.createNew = function(archive, groupID) {
     );
     // get the raw dataset for the new entry
     var entry = searching.findEntryByID(westley.getDataset().groups, id);
+
+    // init default attributes
+    entry.attributes = entry.attributes || {};
+    Object.assign(entry.attributes, entryTools.setDefaultAttributesValues());
+
     return new Entry(archive, entry);
 };
 

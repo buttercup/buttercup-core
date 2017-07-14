@@ -92,6 +92,27 @@ module.exports = {
             return findEntriesByCheck(inst, "property", property, value);
         };
 
+        /**
+         * Find all entries that have an expired password
+         * @name findEntriesByExpiredPassword
+         * @returns {Array.<Entry>} An array of matched entries
+         * @memberof EntryCollection
+         */
+        inst.findEntriesByExpiredPassword = function findEntriesByExpiredPassword() {
+            var expiredEntries = [];
+            let groups = (inst.getEntries) ?
+                [inst] : inst.getGroups();
+            return instanceSearching.findEntriesByCheck(
+                groups,
+                function(entry) {
+                    if ( entry.hasExpiredPassword() ) {
+                        expiredEntries += entry;
+                    }
+                    return expiredEntries;
+                }
+            );
+        };
+
     }
 
 };

@@ -17,6 +17,7 @@
         mainEntry = mainGroup.createEntry("test-entry-main");
 
     mainEntry.setProperty("username", "user123한@test.рф");
+    mainEntry.setAttribute("passExpiry", "30");
     mainEntry.setProperty("password", "* পাসওয়ার্ড! ");
     mainEntry.setMeta("test-meta", "test-value 8");
 
