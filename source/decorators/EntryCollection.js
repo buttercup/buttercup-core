@@ -99,16 +99,13 @@ module.exports = {
          * @memberof EntryCollection
          */
         inst.findEntriesByExpiredPassword = function findEntriesByExpiredPassword() {
-            var expiredEntries = [];
             let groups = (inst.getEntries) ?
                 [inst] : inst.getGroups();
             return instanceSearching.findEntriesByCheck(
                 groups,
                 function(entry) {
-                    if ( entry.hasExpiredPassword() ) {
-                        expiredEntries += entry;
-                    }
-                    return expiredEntries;
+                    return entry.hasExpiredPassword() ?
+                      entry : false;
                 }
             );
         };

@@ -179,9 +179,12 @@ Entry.prototype.getProperty = function(property) {
 Entry.prototype.hasExpiredPassword = function() {
     debug("check password expiry");
     var raw = this._getRemoteObject();
-    var now = (new Date()).getTime();
-    if ( (now >  raw.attributes["passExpiryTime"]) && raw.attributes.hasOwnProperty("passExpiryTime")) {
-        return true;
+    if (raw.attributes["passExpiry"] !== 0) {
+      var now = (new Date()).getTime(),
+          passModifiedTime = new Date(raw.attributes["passModifiedTime"]),
+          passExpiryTime = new Date(raw.attributes["passModifiedTime"]);
+      passExpiryTime.setDate(passModifiedTime.getDate() + parseInt(raw.attributes["passExpiry"], 10));
+      return (now > passExpiryTime.getTime());
     }
     return false;
 };
@@ -357,7 +360,9 @@ Entry.prototype._getWestley = function() {
 };
 
 Entry.Attributes = Object.freeze({
-    FacadeType:            "BC_ENTRY_FACADE_TYPE"
+    FacadeType:            "BC_ENTRY_FACADE_TYPE",
+    PassModifiedTime:      "passModifiedTime",
+    PassExpiry:            "passExpiry"
 });
 
 /**
@@ -391,11 +396,6 @@ Entry.createNew = function(archive, groupID) {
     );
     // get the raw dataset for the new entry
     var entry = searching.findEntryByID(westley.getDataset().groups, id);
-
-    // init default attributes
-    entry.attributes = entry.attributes || {};
-    Object.assign(entry.attributes, entryTools.setDefaultAttributesValues());
-
     return new Entry(archive, entry);
 };
 
