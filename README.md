@@ -195,6 +195,14 @@ Buttercup.vendor.iocane.components.setPBKDF2(newPBKDF2Function);
 // Where 'newPBKDF2Function' is a function that returns a Promise with the hash in a Buffer
 ```
 
+Buttercup uses `webdav-fs` under the hood for support of several storage providers, and this in turn uses [`node-fetch`](https://github.com/bitinn/node-fetch) for requests. `node-fetch` does not work in every environment (such as React-Native) and needs to be switched for a native alterative, like `global.fetch`. Webdav-fs supports this via the `setFetchMethod`, which can be called in Buttercup like so:
+
+```javascript
+var Buttercup = require("buttercup");
+Buttercup.vendor.webdavFS.setFetchMethod(global.fetch);
+// Where `global.fetch` is a fetch-API supporting method
+```
+
 ### Attributes
 
 Entries and groups have attributes, describing how they should be treated by the various interfaces that interact with the archive. Attributes are not visible to the users and can contain a variety of different properties.

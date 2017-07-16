@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.44.0
+_2017-07-16_
+
+ * Expose `webdav-fs` via vendor props: `Buttercup.vendor.webdavFS` (for `fetch` override support)
+
 ## v0.43.0
 _2017-07-07_
 
