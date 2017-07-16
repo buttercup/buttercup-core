@@ -1,6 +1,7 @@
 "use strict";
 
 const iocane = require("iocane");
+const webdavFS = require("webdav-fs");
 
 module.exports = {
 
@@ -48,7 +49,8 @@ module.exports = {
     },
 
     vendor: {
-        iocane
+        iocane,
+        webdavFS
     }
 
 };
