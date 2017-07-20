@@ -1,5 +1,22 @@
 const Entry = require("./Entry.js");
 const facadeFieldFactories = require("./entryFacadeFields.js");
+const { createFieldDescriptor } = require("../tools/entry.js");
+
+function addMetaFieldsNonDestructive(entry, fields) {
+    const exists = metaName => fields.find(item => item.field === "meta" && item.property === metaName);
+    const meta = entry.toObject().meta || {};
+    return [
+        ...fields,
+        ...Object.keys(meta)
+            .filter(name => !exists(name))
+            .map(name => createFieldDescriptor(
+                entry,  // Entry instance
+                name,   // Title
+                "meta", // Type
+                name    // Property name
+            ))
+    ];
+}
 
 /**
  * Entry facade for data input
@@ -49,9 +66,10 @@ function createEntryFacade(entry) {
     if (!createFields) {
         throw new Error(`Failed creating entry facade: No factory found for type "${facadeType}"`);
     }
+    const fields = createFields(entry);
     return {
         type: facadeType,
-        fields: createFields(entry)
+        fields: addMetaFieldsNonDestructive(entry, fields)
     };
 }
 
