@@ -3,6 +3,83 @@ const {
     createEntryFacade
 } = entryFacade;
 
+describe("consumeEntryFacade", function() {
+
+    beforeEach(function() {
+        const archive = new Archive();
+        this.entry = archive.createGroup("Test").createEntry("Testing");
+        this.entry.setProperty("username", "username");
+        this.entry.setProperty("password", "password");
+        this.entry.setMeta("some meta value", "123");
+        this.facade = {
+            "type": "login",
+            "fields": [
+                {
+                    "title": "Title",
+                    "field": "property",
+                    "property": "title",
+                    "value": "Test",
+                    "secret": false,
+                    "multiline": false,
+                    "formatting": false
+                },
+                {
+                    "title": "Username",
+                    "field": "property",
+                    "property": "username",
+                    "value": "user",
+                    "secret": false,
+                    "multiline": false,
+                    "formatting": false
+                },
+                {
+                    "title": "Password",
+                    "field": "property",
+                    "property": "password",
+                    "value": "pass",
+                    "secret": true,
+                    "multiline": false,
+                    "formatting": false
+                },
+                {
+                    "title": "some meta value",
+                    "field": "meta",
+                    "property": "some meta value",
+                    "value": "123 456",
+                    "secret": false,
+                    "multiline": false,
+                    "formatting": false
+                },
+                {
+                    "title": "new meta",
+                    "field": "meta",
+                    "property": "new meta",
+                    "value": "new",
+                    "secret": false,
+                    "multiline": false,
+                    "formatting": false
+                }
+            ]
+        };
+        consumeEntryFacade(this.entry, this.facade);
+    });
+
+    it("writes the values to the entry", function() {
+        expect(this.entry.getProperty("title")).to.equal("Test");
+        expect(this.entry.getProperty("username")).to.equal("user");
+        expect(this.entry.getProperty("password")).to.equal("pass");
+    });
+
+    it("writes extra meta to the entry", function() {
+        expect(this.entry.getMeta("some meta value")).to.equal("123 456");
+    });
+
+    it("writes new meta to the entry", function() {
+        expect(this.entry.getMeta("new meta")).to.equal("new");
+    });
+
+});
+
 describe("createEntryFacade", function() {
 
     beforeEach(function() {
@@ -12,7 +89,6 @@ describe("createEntryFacade", function() {
         this.entry.setProperty("password", "pass");
         this.entry.setMeta("some meta value", "123 456");
         this.facade = createEntryFacade(this.entry);
-        console.log(JSON.stringify(this.facade, undefined, 4));
     });
 
     it("creates a facade", function() {
