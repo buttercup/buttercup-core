@@ -43,10 +43,29 @@ function applyFieldDescriptor(entry, descriptor) {
 function consumeEntryFacade(entry, facade) {
     const facadeType = getEntryFacadeType(entry);
     if (facade && facade.type) {
+        const meta = entry.getMeta();
+        const attributes = entry.getAttribute();
         if (facade.type !== facadeType) {
             throw new Error(`Failed consuming entry data: Expected type "${facadeType}" but received "${facade.type}"`);
         }
+        // update data
         (facade.fields || []).forEach(field => applyFieldDescriptor(entry, field));
+        // remove missing meta
+        Object.keys(meta).forEach(metaKey => {
+            const correspondingField = facade.fields.find(({ field, property }) =>
+                field === "meta" && property === metaKey);
+            if (typeof correspondingField === "undefined") {
+                entry.deleteMeta(metaKey);
+            }
+        });
+        // remove missing attributes
+        Object.keys(attributes).forEach(attrKey => {
+            const correspondingField = facade.fields.find(({ field, property }) =>
+                field === "attribute" && property === attrKey);
+            if (typeof correspondingField === "undefined") {
+                entry.deleteAttribute(attrKey);
+            }
+        });
     } else {
         throw new Error("Failed consuming entry data: Invalid item passed as a facade");
     }
