@@ -123,19 +123,32 @@ module.exports = {
             test.strictEqual(this.entry.getMeta("URL"), "https://testing.com");
             test.strictEqual(this.entry.getMeta("uRl"), "https://testing.com");
             test.done();
+        },
+
+        returnsMetaObjectForNoParams: function(test) {
+            var meta = this.entry.getMeta();
+            test.strictEqual(meta.accessKey, "12345", "Meta 'accessKey' should be set");
+            test.strictEqual(meta["user prop"], "user val", "Meta 'user prop' should be set");
+            test.done();
         }
 
     },
 
     getAttribute: {
 
-        testGetsAttribute: function(test) {
+        getsAttribute: function(test) {
             test.strictEqual(this.entry.getAttribute("test-type"), "credit-card", "Entry should contain attribute");
             test.done();
         },
 
-        testUnsetReturnsUndefined: function(test) {
+        nonSetReturnsUndefined: function(test) {
             test.strictEqual(this.entry.getAttribute("not set"), undefined, "Should return undefined");
+            test.done();
+        },
+
+        returnsAttributesObjectForNoParams: function(test) {
+            var attr = this.entry.getAttribute();
+            test.strictEqual(attr["test-type"], "credit-card", "Attribute should exist");
             test.done();
         }
 
@@ -154,15 +167,23 @@ module.exports = {
 
     getProperty: {
 
-        testGetsProperties: function(test) {
+        getsProperties: function(test) {
             test.strictEqual(this.entry.getProperty("title"), "My entry", "Should return title");
             test.strictEqual(this.entry.getProperty("username"), "some-user", "Should return username");
             test.strictEqual(this.entry.getProperty("password"), "passw0rd", "Should return password");
             test.done();
         },
 
-        testUnsetReturnsUndefined: function(test) {
+        nonSetReturnsUndefined: function(test) {
             test.strictEqual(this.entry.getProperty("unset"), undefined, "Should return undefined");
+            test.done();
+        },
+
+        returnsMetaObjectForNoParams: function(test) {
+            var props = this.entry.getProperty();
+            test.strictEqual(props.title, "My entry", "Title should be set");
+            test.strictEqual(props.username, "some-user", "Username should be set");
+            test.strictEqual(props.password, "passw0rd", "Password should be set");
             test.done();
         }
 

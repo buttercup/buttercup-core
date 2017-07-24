@@ -1,5 +1,7 @@
 "use strict";
 
+const { objectValues } = require("./polyfill.js");
+
 const EntryProperty = {
     Password:                     "password",
     Title:                        "title",
@@ -70,13 +72,7 @@ function getEntryValue(entry, property, name) {
  * @returns {Array.<String>} An array of names
  */
 function getValidProperties() {
-    var props = [];
-    for (var keyName in EntryProperty) {
-        if (EntryProperty.hasOwnProperty(keyName)) {
-            props.push(EntryProperty[keyName]);
-        }
-    }
-    return props;
+    return objectValues(EntryProperty);
 }
 
 /**

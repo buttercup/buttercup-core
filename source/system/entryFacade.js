@@ -1,5 +1,31 @@
 const Entry = require("./Entry.js");
 const facadeFieldFactories = require("./entryFacadeFields.js");
+const { createFieldDescriptor } = require("../tools/entry.js");
+
+/**
+ * Add meta fields to a fields array that are not mentioned in a preset
+ * Facades are creaded by presets which don't mention all meta values (custom user
+ * added items). This method adds the unmentioned items to the facade fields so that
+ * they can be edited as well.
+ * @param {Entry} entry An Entry instance
+ * @param {Array.<EntryFacadeField>} fields An array of fields
+ * @returns {Array.<EntryFacadeField>} A new array with all combined fields
+ */
+function addMetaFieldsNonDestructive(entry, fields) {
+    const exists = metaName => fields.find(item => item.field === "meta" && item.property === metaName);
+    const meta = entry.toObject().meta || {};
+    return [
+        ...fields,
+        ...Object.keys(meta)
+            .filter(name => !exists(name))
+            .map(name => createFieldDescriptor(
+                entry,  // Entry instance
+                name,   // Title
+                "meta", // Type
+                name    // Property name
+            ))
+    ];
+}
 
 /**
  * Entry facade for data input
@@ -26,10 +52,29 @@ function applyFieldDescriptor(entry, descriptor) {
 function consumeEntryFacade(entry, facade) {
     const facadeType = getEntryFacadeType(entry);
     if (facade && facade.type) {
+        const meta = entry.getMeta();
+        const attributes = entry.getAttribute();
         if (facade.type !== facadeType) {
             throw new Error(`Failed consuming entry data: Expected type "${facadeType}" but received "${facade.type}"`);
         }
+        // update data
         (facade.fields || []).forEach(field => applyFieldDescriptor(entry, field));
+        // remove missing meta
+        Object.keys(meta).forEach(metaKey => {
+            const correspondingField = facade.fields.find(({ field, property }) =>
+                field === "meta" && property === metaKey);
+            if (typeof correspondingField === "undefined") {
+                entry.deleteMeta(metaKey);
+            }
+        });
+        // remove missing attributes
+        Object.keys(attributes).forEach(attrKey => {
+            const correspondingField = facade.fields.find(({ field, property }) =>
+                field === "attribute" && property === attrKey);
+            if (typeof correspondingField === "undefined") {
+                entry.deleteAttribute(attrKey);
+            }
+        });
     } else {
         throw new Error("Failed consuming entry data: Invalid item passed as a facade");
     }
@@ -49,9 +94,10 @@ function createEntryFacade(entry) {
     if (!createFields) {
         throw new Error(`Failed creating entry facade: No factory found for type "${facadeType}"`);
     }
+    const fields = createFields(entry);
     return {
         type: facadeType,
-        fields: createFields(entry)
+        fields: addMetaFieldsNonDestructive(entry, fields)
     };
 }
 
