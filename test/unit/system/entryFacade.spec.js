@@ -12,6 +12,7 @@ describe("consumeEntryFacade", function() {
         this.entry.setProperty("password", "password");
         this.entry.setMeta("some meta value", "123");
         this.entry.setMeta("removed meta", "gone");
+        this.entry.setAttribute("removed attribute", "gone");
         this.facade = {
             "type": "login",
             "fields": [
@@ -81,6 +82,10 @@ describe("consumeEntryFacade", function() {
 
     it("removes unmentioned meta", function() {
         expect(this.entry.getMeta("removed meta")).to.be.undefined;
+    });
+
+    it("removes unmentioned attributes", function() {
+        expect(this.entry.getAttribute("removed attribute")).to.be.undefined;
     });
 
 });
