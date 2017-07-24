@@ -29,3 +29,16 @@ describe("createFieldDescriptor", function() {
     });
 
 });
+
+describe("getValidProperties", function() {
+
+    const { getValidProperties } = tools.entry;
+
+    it("returns the correct values", function() {
+        const props = getValidProperties();
+        expect(props).to.contain("title");
+        expect(props).to.contain("username");
+        expect(props).to.contain("password");
+    });
+
+});

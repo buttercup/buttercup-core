@@ -96,16 +96,23 @@ Entry.prototype.deleteMeta = function(property) {
 
 /**
  * Get an attribute
- * @params {String} attributeName The name of the attribute
- * @returns {String|undefined} The attribute value
- * @param {String} attributeName The name of the attribute to fetch
+ * If no attribute name is specified, an object with all attributes and their
+ * values is returned.
+ * @param {String=} attributeName The name of the attribute to fetch
+ * @returns {String|undefined|Object} The attribute value or an object
+ *  containing all attribute keys and their values if no attribute name
+ *  is provided
  * @memberof Entry
  */
 Entry.prototype.getAttribute = function(attributeName) {
     debug("fetch attribute");
-    var raw = this._getRemoteObject();
-    return raw.attributes && raw.attributes.hasOwnProperty(attributeName) ?
-        raw.attributes[attributeName] : undefined;
+    const attributes = this._getRemoteObject().attributes || {};
+    if (typeof attributeName === "undefined") {
+        // No property, return entire object
+        return Object.assign({}, attributes);
+    }
+    return attributes.hasOwnProperty(attributeName) ?
+        attributes[attributeName] : undefined;
 };
 
 /**
@@ -139,16 +146,21 @@ Entry.prototype.getID = function() {
 
 /**
  * Get a meta value
- * @params {String} property The name of the meta property
- * @returns {String|undefined} The meta value
- * @param {String} property The meta item to get
+ * If no meta name is specified, an object with all meta keys and their
+ * values is returned.
+ * @param {String=} property The name of the meta property
+ * @returns {String|undefined|Object} The meta value or an object
+ *  containing all meta keys and values if no meta name specified
  * @memberof Entry
  */
 Entry.prototype.getMeta = function(property) {
     debug("fetch meta");
     const meta = this._getRemoteObject().meta || {};
-    // Find the first meta key that matches the requested one regardless
-    // of case:
+    if (typeof property === "undefined") {
+        // No property, return entire object
+        return Object.assign({}, meta);
+    }
+    // Find the first meta key that matches the requested one regardless of case:
     const metaKey = Object.keys(meta).find(key =>
         key.toLowerCase() === property.toLowerCase()
     );
@@ -159,14 +171,23 @@ Entry.prototype.getMeta = function(property) {
 
 /**
  * Get a property value
- * @params {String} property The name of the meta property
- * @returns {String|undefined} The property value
- * @param {String} property The name of the property to fetch
+ * If no property name is specified, an object with all properties and their
+ * values is returned.
+ * @param {String=} property The name of the property to fetch
+ * @returns {String|undefined|Object} The property value or an object with all
+ *  values if no property specified
  * @memberof Entry
  */
 Entry.prototype.getProperty = function(property) {
     debug("fetch property");
     var raw = this._getRemoteObject();
+    if (typeof property === "undefined") {
+        return entryTools.getValidProperties().reduce((props, propName) => {
+            return Object.assign(props, {
+                [propName]: raw[propName]
+            });
+        }, {});
+    }
     return raw.hasOwnProperty(property) && entryTools.isValidProperty(property) ?
         raw[property] : undefined;
 };
