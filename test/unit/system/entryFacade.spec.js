@@ -11,6 +11,7 @@ describe("consumeEntryFacade", function() {
         this.entry.setProperty("username", "username");
         this.entry.setProperty("password", "password");
         this.entry.setMeta("some meta value", "123");
+        this.entry.setMeta("removed meta", "gone");
         this.facade = {
             "type": "login",
             "fields": [
@@ -76,6 +77,10 @@ describe("consumeEntryFacade", function() {
 
     it("writes new meta to the entry", function() {
         expect(this.entry.getMeta("new meta")).to.equal("new");
+    });
+
+    it("removes unmentioned meta", function() {
+        expect(this.entry.getMeta("removed meta")).to.be.undefined;
     });
 
 });
