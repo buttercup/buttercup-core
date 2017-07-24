@@ -1,5 +1,11 @@
 # Buttercup-core change-log
 
+## v0.45.0
+_2017-07-24_
+
+ * **Bugfix**: Entry facades remove meta/attributes that no longer exist
+ * Entry `getProperty`/`getMeta`/`getAttribute` return base objects when no parameters specified
+
 ## v0.44.1
 _2017-07-16_
 

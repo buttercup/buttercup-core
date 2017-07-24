@@ -119,6 +119,12 @@
 <dd><p>Create a credentials adapter
 Both <code>type</code> and <code>data</code> parameters are optional.</p>
 </dd>
+<dt><a href="#addMetaFieldsNonDestructive">addMetaFieldsNonDestructive(entry, fields)</a> ⇒ <code><a href="#EntryFacadeField">Array.&lt;EntryFacadeField&gt;</a></code></dt>
+<dd><p>Add meta fields to a fields array that are not mentioned in a preset
+Facades are creaded by presets which don&#39;t mention all meta values (custom user
+added items). This method adds the unmentioned items to the facade fields so that
+they can be edited as well.</p>
+</dd>
 <dt><a href="#applyFieldDescriptor">applyFieldDescriptor(entry, descriptor)</a></dt>
 <dd><p>Apply a facade field descriptor to an entry
 Takes data from the descriptor and writes it to the entry.</p>
@@ -2304,11 +2310,11 @@ Add a callback for a key
         * [.delete()](#Entry+delete) ⇒ <code>Boolean</code>
         * [.deleteAttribute(attr)](#Entry+deleteAttribute) ⇒ <code>[Entry](#Entry)</code>
         * [.deleteMeta(property)](#Entry+deleteMeta) ⇒ <code>[Entry](#Entry)</code>
-        * [.getAttribute(attributeName)](#Entry+getAttribute) ⇒ <code>String</code> &#124; <code>undefined</code>
+        * [.getAttribute([attributeName])](#Entry+getAttribute) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
         * [.getGroup()](#Entry+getGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.getID()](#Entry+getID) ⇒ <code>String</code>
-        * [.getMeta(property)](#Entry+getMeta) ⇒ <code>String</code> &#124; <code>undefined</code>
-        * [.getProperty(property)](#Entry+getProperty) ⇒ <code>String</code> &#124; <code>undefined</code>
+        * [.getMeta([property])](#Entry+getMeta) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
+        * [.getProperty([property])](#Entry+getProperty) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
         * [.isInTrash()](#Entry+isInTrash) ⇒ <code>Boolean</code>
         * [.moveToGroup(group)](#Entry+moveToGroup) ⇒ <code>[Entry](#Entry)</code>
         * [.setAttribute(attributeName, value)](#Entry+setAttribute) ⇒ <code>[Entry](#Entry)</code>
@@ -2382,16 +2388,19 @@ Delete a meta item
 
 <a name="Entry+getAttribute"></a>
 
-### entry.getAttribute(attributeName) ⇒ <code>String</code> &#124; <code>undefined</code>
+### entry.getAttribute([attributeName]) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
 Get an attribute
+If no attribute name is specified, an object with all attributes and their
+values is returned.
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>String</code> &#124; <code>undefined</code> - The attribute value  
-**Params**: <code>String</code> attributeName The name of the attribute  
+**Returns**: <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code> - The attribute value or an object
+ containing all attribute keys and their values if no attribute name
+ is provided  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| attributeName | <code>String</code> | The name of the attribute to fetch |
+| [attributeName] | <code>String</code> | The name of the attribute to fetch |
 
 <a name="Entry+getGroup"></a>
 
@@ -2409,29 +2418,33 @@ Get the entry ID
 **Returns**: <code>String</code> - The entry's ID  
 <a name="Entry+getMeta"></a>
 
-### entry.getMeta(property) ⇒ <code>String</code> &#124; <code>undefined</code>
+### entry.getMeta([property]) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
 Get a meta value
+If no meta name is specified, an object with all meta keys and their
+values is returned.
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>String</code> &#124; <code>undefined</code> - The meta value  
-**Params**: <code>String</code> property The name of the meta property  
+**Returns**: <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code> - The meta value or an object
+ containing all meta keys and values if no meta name specified  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| property | <code>String</code> | The meta item to get |
+| [property] | <code>String</code> | The name of the meta property |
 
 <a name="Entry+getProperty"></a>
 
-### entry.getProperty(property) ⇒ <code>String</code> &#124; <code>undefined</code>
+### entry.getProperty([property]) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
 Get a property value
+If no property name is specified, an object with all properties and their
+values is returned.
 
 **Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>String</code> &#124; <code>undefined</code> - The property value  
-**Params**: <code>String</code> property The name of the meta property  
+**Returns**: <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code> - The property value or an object with all
+ values if no property specified  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| property | <code>String</code> | The name of the property to fetch |
+| [property] | <code>String</code> | The name of the property to fetch |
 
 <a name="Entry+isInTrash"></a>
 
@@ -4639,6 +4652,22 @@ Create a new credentials instance from an encrypted string
 | --- | --- | --- |
 | content | <code>String</code> | The encrypted form of a credentials store |
 | password | <code>String</code> | The password to use to decrypt the content |
+
+<a name="addMetaFieldsNonDestructive"></a>
+
+## addMetaFieldsNonDestructive(entry, fields) ⇒ <code>[Array.&lt;EntryFacadeField&gt;](#EntryFacadeField)</code>
+Add meta fields to a fields array that are not mentioned in a preset
+Facades are creaded by presets which don't mention all meta values (custom user
+added items). This method adds the unmentioned items to the facade fields so that
+they can be edited as well.
+
+**Kind**: global function  
+**Returns**: <code>[Array.&lt;EntryFacadeField&gt;](#EntryFacadeField)</code> - A new array with all combined fields  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>[Entry](#Entry)</code> | An Entry instance |
+| fields | <code>[Array.&lt;EntryFacadeField&gt;](#EntryFacadeField)</code> | An array of fields |
 
 <a name="applyFieldDescriptor"></a>
 
