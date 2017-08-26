@@ -183,22 +183,47 @@ group.findEntriesByMeta("postcode", /^0\d{4}$/);
 
 You can import from other password archive formats, such as KeePass. Checkout the [Buttercup Importer](https://github.com/perry-mitchell/buttercup-importer) project.
 
-### Performance and web support
+### Performance and browser/mobile support
 
-Some things in Buttercup are best run purely on Node, such has password-based key derivation. When preparing this for the web (such as with Webpack or Browserify), things can move **very** slowly. There are implementations for functions, such as PBKDF2, that exist for web use that are many times faster than the output of such build utilities.
+Some things in Buttercup are best run purely on Node, such has password-based key derivation. When preparing this for the web or other platforms (such as with Webpack or Browserify), things can move **very** slowly. There are implementations for functions, such as PBKDF2, that exist for web use that are many times faster than the output of such build utilities.
 
 You can override PBKDF2 by doing the following ([documented on iocane](https://github.com/perry-mitchell/iocane#overriding-the-built-in-pbkdf2-function)):
 
 ```javascript
-var Buttercup = require("buttercup");
+const Buttercup = require("buttercup");
 Buttercup.vendor.iocane.components.setPBKDF2(newPBKDF2Function);
 // Where 'newPBKDF2Function' is a function that returns a Promise with the hash in a Buffer
 ```
 
+> Using a _native_ PBKDF2 implementation is always advisable, for speed, as this is usually the most intense procedure within Buttercup (computationally).
+
+You can also override the built in encryption methods used in iocane - This can be very useful in other environments aswell:
+
+```javascript
+const Buttercup = require("buttercup");
+
+Buttercup.vendor.iocane.components.setEncryptTool(function(text, keyDerivationInfo) {
+    // Do the encryption and return information:
+    // return {
+    //     hmac,
+    //     iv,
+    //     salt,
+    //     rounds,
+    //     encryptedContent
+    // };
+});
+
+Buttercup.vendor.iocane.components.setDecryptTool(function(encryptedComponents, keyDerivationInfo) {
+    // Decrypt and return decrypted string
+});
+```
+
+> Specifying new crypto methods can help with compatibility. Check [iocane's documention](https://github.com/perry-mitchell/iocane/blob/88747b3d77b05e2fc65227a1d5362f1608a26397/README.md#overriding-the-built-in-encryption-and-decryption-functions) on how to use these methods.
+
 Buttercup uses `webdav-fs` under the hood for support of several storage providers, and this in turn uses [`node-fetch`](https://github.com/bitinn/node-fetch) for requests. `node-fetch` does not work in every environment (such as React-Native) and needs to be switched for a native alterative, like `global.fetch`. Webdav-fs supports this via the `setFetchMethod`, which can be called in Buttercup like so:
 
 ```javascript
-var Buttercup = require("buttercup");
+const Buttercup = require("buttercup");
 Buttercup.vendor.webdavFS.setFetchMethod(global.fetch);
 // Where `global.fetch` is a fetch-API supporting method
 ```
