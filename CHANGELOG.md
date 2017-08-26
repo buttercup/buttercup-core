@@ -1,5 +1,11 @@
 # Buttercup-core change-log
 
+## v0.46.0
+_2017-08-26_
+
+ * Upgrade iocane to 0.8.0
+   * Expose ability to override built-in encryption/decryption methods
+
 ## v0.45.0
 _2017-07-24_
 
