@@ -1,5 +1,11 @@
 # Buttercup-core change-log
 
+## v0.47.1
+_2017-08-29_
+
+ * Upgrade iocane to 0.9.0
+   * Core crypto now async
+
 ## v0.46.0
 _2017-08-26_
 
