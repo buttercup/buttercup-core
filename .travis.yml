@@ -2,5 +2,5 @@ language: node_js
 script: npm run test
 node_js:
   - "stable"
-  - "6.10"
-  - "6.9"
+  - "7.10"
+  - "6.11"
