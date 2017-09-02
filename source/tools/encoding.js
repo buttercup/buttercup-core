@@ -1,8 +1,11 @@
 "use strict";
 
-var Crypto = require("crypto"),
-    uuid = require("uuid"),
-    gzip = require("gzip-js");
+const gzip = require("gzip-js");
+
+const {
+    getTextHasher,
+    getUUIDGenerator
+} = require("./overridable.js");
 
 const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
 const ENCODED_STRING_PREFIX = "utf8+base64:";
@@ -84,16 +87,16 @@ var lib = module.exports = {
      * @returns {String} A unique identifier
      */
     getUniqueID: function() {
-        return uuid.v4();
+        return getUUIDGenerator()();
     },
 
     /**
      * Hash text using sha256
-     * @param {String} text
-     * @returns {Buffer}
+     * @param {String} text The text to hash
+     * @returns {Buffer} A buffer containing the hashed data
      */
     hashText: function(text) {
-        return Crypto.createHash("sha256").update(text).digest();
+        return getTextHasher()(text);
     },
 
     /**

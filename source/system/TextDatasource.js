@@ -219,6 +219,7 @@ TextDatasource.fromString = function fromString(str) {
  * @param {Function|null} encodeHandler The callback function to use for encoding/encryption. Use
  *  `null` to reset it to the built-in. The function expects 2 parameters: The history array and
  *  a credentials instance (that must have a password, 'keyfile' or both).
+ * @deprecated Use of this helper is no longer needed. See 'iocane' for crypto overrides.
  */
 TextDatasource.setDeferredEncodingHandlers = function setDeferredEncodingHandlers(decodeHandler, encodeHandler) {
     if (typeof decodeHandler === "undefined" || decodeHandler === null) {
