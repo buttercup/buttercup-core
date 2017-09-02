@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.48.0
+_2017-09-02_
+
+ * Add [overridable crypto methods](https://github.com/buttercup/buttercup-core/blob/b285c1449ae4a0430729388559524ba13d85c6ca/source/tools/overridable.js#L26)
+
 ## v0.47.1
 _2017-08-29_
 
