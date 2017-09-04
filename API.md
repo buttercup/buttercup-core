@@ -165,9 +165,6 @@ Takes data from the descriptor and writes it to the entry.</p>
 <dt><a href="#generateUUID">generateUUID()</a> ⇒ <code>String</code></dt>
 <dd><p>Generate a UUID (v4)</p>
 </dd>
-<dt><a href="#hashText">hashText(text)</a> ⇒ <code>Buffer</code></dt>
-<dd><p>Hash text and output a buffer</p>
-</dd>
 <dt><a href="#findEntriesByCheck">findEntriesByCheck(groups, compareFn)</a> ⇒ <code><a href="#Entry">Array.&lt;Entry&gt;</a></code></dt>
 <dd><p>Find entry instances by filtering with a compare function</p>
 </dd>
@@ -4842,18 +4839,6 @@ Generate a UUID (v4)
 
 **Kind**: global function  
 **Returns**: <code>String</code> - The new UUID  
-<a name="hashText"></a>
-
-## hashText(text) ⇒ <code>Buffer</code>
-Hash text and output a buffer
-
-**Kind**: global function  
-**Returns**: <code>Buffer</code> - A buffer containing the hashed content  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| text | <code>String</code> | The text to hash |
-
 <a name="findEntriesByCheck"></a>
 
 ## findEntriesByCheck(groups, compareFn) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>

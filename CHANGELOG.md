@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.49.0
+_2017-09-04_
+
+ * Add override methods for salt and IV generation in iocane
+
 ## v0.48.0
 _2017-09-02_
 
