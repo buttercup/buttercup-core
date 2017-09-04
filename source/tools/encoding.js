@@ -15,7 +15,7 @@ var __gzipOptions = {
     timestamp: parseInt(Date.now() / 1000, 10)
 };
 
-var lib = module.exports = {
+const lib = module.exports = {
 
     /**
      * Prefix for encoded strings
@@ -88,15 +88,6 @@ var lib = module.exports = {
      */
     getUniqueID: function() {
         return getUUIDGenerator()();
-    },
-
-    /**
-     * Hash text using sha256
-     * @param {String} text The text to hash
-     * @returns {Buffer} A buffer containing the hashed data
-     */
-    hashText: function(text) {
-        return getTextHasher()(text);
     },
 
     /**
