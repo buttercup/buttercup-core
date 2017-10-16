@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v0.50.0
+_2017-10-16_
+
+ * Allow overriding of already-registered datasources
+
 ## v0.49.0
 _2017-09-04_
 
