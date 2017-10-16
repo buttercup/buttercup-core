@@ -31,12 +31,8 @@ var adapter = module.exports = {
      * custom datasource is used.
      * @param {String} datasourceType The name (slug) of the datasource
      * @param {Object} DSClass The class for the new datasource
-     * @throws {Error} Throws if the `datasourceType` has already been registered
      */
     registerDatasource: function(datasourceType, DSClass) {
-        if (__datasources[datasourceType]) {
-            throw new Error("Datasource already registered: " + datasourceType);
-        }
         __datasources[datasourceType] = DSClass;
     },
 
