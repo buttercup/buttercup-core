@@ -13,7 +13,7 @@ var Commands = Inigo.Command;
  * @type {Function}
  */
 module.exports = function describe(dataset, parentGroupID) {
-    //eslint-disable-line complexity
+    /*eslint complexity: ["error", 20]*/
     var currentGroupID = dataset.id || "0",
         entries = currentGroupID === "0" ? [] : dataset.entries || [];
     var commands = [];
