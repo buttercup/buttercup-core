@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class CreateGroupCommand extends BaseCommand {
-
     /**
      * Execute the group creation
      * @param {ArchiveDataset} obj The archive dataset
@@ -32,7 +31,6 @@ class CreateGroupCommand extends BaseCommand {
             parentGroup.groups.push(group);
         }
     }
-
 }
 
 module.exports = CreateGroupCommand;

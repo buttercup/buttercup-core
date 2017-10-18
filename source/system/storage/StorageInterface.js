@@ -1,7 +1,6 @@
 "use strict";
 
 class StorageInterface {
-
     getAllKeys() {
         return Promise.resolve([]);
     }
@@ -17,7 +16,6 @@ class StorageInterface {
     setValue(/* name, value */) {
         return Promise.resolve();
     }
-
 }
 
 module.exports = StorageInterface;

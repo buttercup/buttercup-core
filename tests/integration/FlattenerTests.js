@@ -5,11 +5,10 @@ var Archive = lib.Archive,
     Flattener = lib.Flattener;
 
 module.exports = {
-
     setUp: function(cb) {
         this.archive = new Archive();
         this.flattener = new Flattener(this.archive._getWestley());
-        (cb)();
+        cb();
     },
 
     testFlattensLargeArchive: function(test) {
@@ -21,5 +20,4 @@ module.exports = {
         test.ok(historyCountAfter < historyCountBefore, "History should be shorter after flattening");
         test.done();
     }
-
 };

@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class CommentCommand extends BaseCommand {
-
     /**
      * Execute comment callbacks
      * @param {ArchiveDataset} obj The archive dataset
@@ -18,7 +17,6 @@ class CommentCommand extends BaseCommand {
     execute(obj, comment) {
         this.executeCallbacks("comment", comment);
     }
-
 }
 
 module.exports = CommentCommand;

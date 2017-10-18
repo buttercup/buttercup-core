@@ -4,14 +4,13 @@ var Archive = lib.Archive,
     TextDatasource = lib.TextDatasource;
 
 module.exports = {
-
     setUp: function(done) {
         var archive = new Archive();
         var mainGroup = archive.createGroup("general"),
             mainEntry = mainGroup.createEntry("login");
         mainEntry.setProperty("title", "   \n   ");
         mainEntry.setProperty("username", " some\nspecialχ");
-        mainEntry.setProperty("password", "-----TEST-----\n\n\tSpecial\n-----/\"Test\"\"----");
+        mainEntry.setProperty("password", '-----TEST-----\n\n\tSpecial\n-----/"Test""----');
         mainEntry.setMeta("specialMeta", "special \n\n\t special ");
         this.entryID = mainEntry.getID();
         var tds = new TextDatasource();
@@ -31,7 +30,11 @@ module.exports = {
         var newEntry = this.archive2.findEntryByID(this.entryID);
         test.strictEqual(newEntry.getProperty("title"), "   \n   ", "Title should match");
         test.strictEqual(newEntry.getProperty("username"), " some\nspecialχ", "Username should match");
-        test.strictEqual(newEntry.getProperty("password"), "-----TEST-----\n\n\tSpecial\n-----/\"Test\"\"----", "Password should match");
+        test.strictEqual(
+            newEntry.getProperty("password"),
+            '-----TEST-----\n\n\tSpecial\n-----/"Test""----',
+            "Password should match"
+        );
         test.done();
     },
 
@@ -40,5 +43,4 @@ module.exports = {
         test.strictEqual(newEntry.getMeta("specialMeta"), "special \n\n\t special ", "Meta value should match");
         test.done();
     }
-
 };

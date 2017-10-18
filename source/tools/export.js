@@ -1,7 +1,6 @@
 "use strict";
 
 module.exports = {
-
     /**
      * Export an archive to Buttercup format
      * @param {Archive} archive The archive to export
@@ -12,10 +11,7 @@ module.exports = {
             type: "buttercup-archive",
             exported: Date.now(),
             format: archive.getFormat(),
-            groups: archive
-                .getGroups()
-                .map((group) => group.toObject())
+            groups: archive.getGroups().map(group => group.toObject())
         };
     }
-
 };

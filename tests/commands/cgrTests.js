@@ -3,7 +3,7 @@ var cgr = require("../../source/system/commands/CreateGroupCommand.js");
 module.exports = {
     setUp: function(cb) {
         this.command = new cgr();
-        (cb)();
+        cb();
     },
 
     errors: {
@@ -16,9 +16,13 @@ module.exports = {
 
             var parentId = 1;
 
-            test.throws(function() {
-                this.command.execute({ }, parentId, 0);
-            }.bind(this), 'Invalid parent group ID: not found', 'An error was thrown when no group found');
+            test.throws(
+                function() {
+                    this.command.execute({}, parentId, 0);
+                }.bind(this),
+                "Invalid parent group ID: not found",
+                "An error was thrown when no group found"
+            );
             test.done();
         }
     },
@@ -33,7 +37,11 @@ module.exports = {
 
             this.command.execute(fakeObj, 0, 1);
 
-            test.strictEqual(fakeObj.groups.length, expectedLength, '1 in object groups when no parent and zero initially');
+            test.strictEqual(
+                fakeObj.groups.length,
+                expectedLength,
+                "1 in object groups when no parent and zero initially"
+            );
             test.done();
         },
 
@@ -41,15 +49,21 @@ module.exports = {
             var expectedLength = 2;
 
             var fakeObj = {
-                groups: [{
-                    id: 1,
-                    title: 'bla'
-                }]
+                groups: [
+                    {
+                        id: 1,
+                        title: "bla"
+                    }
+                ]
             };
 
             this.command.execute(fakeObj, 0, 1);
 
-            test.strictEqual(fakeObj.groups.length, expectedLength, '2 in object groups when no parent and one initially');
+            test.strictEqual(
+                fakeObj.groups.length,
+                expectedLength,
+                "2 in object groups when no parent and one initially"
+            );
             test.done();
         },
 
@@ -62,7 +76,11 @@ module.exports = {
 
             this.command.execute(fakeObj, 0, expectedId);
 
-            test.strictEqual(fakeObj.groups[0].id, expectedId, 'New group has correct id when added with id ' + expectedId);
+            test.strictEqual(
+                fakeObj.groups[0].id,
+                expectedId,
+                "New group has correct id when added with id " + expectedId
+            );
             test.done();
         },
 
@@ -75,7 +93,11 @@ module.exports = {
 
             this.command.execute(fakeObj, 0, expectedId);
 
-            test.strictEqual(fakeObj.groups[0].id, expectedId, 'New group has correct id when added with id ' + expectedId);
+            test.strictEqual(
+                fakeObj.groups[0].id,
+                expectedId,
+                "New group has correct id when added with id " + expectedId
+            );
             test.done();
         }
     },
@@ -97,9 +119,9 @@ module.exports = {
 
             this.command.searchTools = fakeSearching;
 
-            this.command.execute({ }, submittedParentId, 5);
+            this.command.execute({}, submittedParentId, 5);
 
-            test.strictEqual(searchingCalled, true, 'Searched for parent id ' + submittedParentId);
+            test.strictEqual(searchingCalled, true, "Searched for parent id " + submittedParentId);
             test.done();
         },
 
@@ -119,9 +141,9 @@ module.exports = {
 
             this.command.searchTools = fakeSearching;
 
-            this.command.execute({ }, submittedParentId, 5);
+            this.command.execute({}, submittedParentId, 5);
 
-            test.strictEqual(searchingCalled, true, 'Searched for parent id ' + submittedParentId);
+            test.strictEqual(searchingCalled, true, "Searched for parent id " + submittedParentId);
             test.done();
         },
 
@@ -138,9 +160,9 @@ module.exports = {
 
             this.command.searchTools = fakeSearching;
 
-            this.command.execute({ }, 1, 1);
+            this.command.execute({}, 1, 1);
 
-            test.strictEqual(fakeParent.groups.length, 1, 'One group in the parent when executed on an empty group');
+            test.strictEqual(fakeParent.groups.length, 1, "One group in the parent when executed on an empty group");
             test.done();
         },
 
@@ -157,9 +179,13 @@ module.exports = {
 
             this.command.searchTools = fakeSearching;
 
-            this.command.execute({ }, 1, 1);
+            this.command.execute({}, 1, 1);
 
-            test.strictEqual(fakeParent.groups.length, 3, 'Three group in the parent when executed on a group with two');
+            test.strictEqual(
+                fakeParent.groups.length,
+                3,
+                "Three group in the parent when executed on a group with two"
+            );
             test.done();
         },
 
@@ -178,9 +204,13 @@ module.exports = {
 
             this.command.searchTools = fakeSearching;
 
-            this.command.execute({ }, 1, expectedGroupId);
+            this.command.execute({}, 1, expectedGroupId);
 
-            test.strictEqual(fakeParent.groups[0].id, expectedGroupId, 'Group in parent has correct id when added with id ' + expectedGroupId);
+            test.strictEqual(
+                fakeParent.groups[0].id,
+                expectedGroupId,
+                "Group in parent has correct id when added with id " + expectedGroupId
+            );
             test.done();
         },
 
@@ -199,9 +229,13 @@ module.exports = {
 
             this.command.searchTools = fakeSearching;
 
-            this.command.execute({ }, 1, expectedGroupId);
+            this.command.execute({}, 1, expectedGroupId);
 
-            test.strictEqual(fakeParent.groups[0].id, expectedGroupId, 'Group in parent has correct id when added with id ' + expectedGroupId);
+            test.strictEqual(
+                fakeParent.groups[0].id,
+                expectedGroupId,
+                "Group in parent has correct id when added with id " + expectedGroupId
+            );
             test.done();
         }
     }

@@ -2,8 +2,7 @@
 
 var __datasources = {};
 
-var adapter = module.exports = {
-
+var adapter = (module.exports = {
     /**
      * Create a datasource from an object
      * The object must have the required properties (as output by the corresponding
@@ -47,5 +46,4 @@ var adapter = module.exports = {
     stringToDatasource: function(str, hostCredentials) {
         return adapter.objectToDatasource(JSON.parse(str), hostCredentials);
     }
-
-};
+});

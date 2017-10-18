@@ -4,7 +4,6 @@ const iocane = require("iocane");
 const webdavFS = require("webdav-fs");
 
 module.exports = {
-
     Archive: require("./system/Archive.js"),
     ArchiveManager: require("./system/ArchiveManager.js"),
     Westley: require("./system/Westley.js"),
@@ -54,5 +53,4 @@ module.exports = {
         iocane,
         webdavFS
     }
-
 };

@@ -11,7 +11,6 @@ const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
  * @augments TextDatasource
  */
 class WebDAVDatasource extends TextDatasource {
-
     /**
      * Constructor for the datasource
      * @param {string} endpoint URL for the WebDAV service (without resource path)
@@ -21,11 +20,11 @@ class WebDAVDatasource extends TextDatasource {
     constructor(endpoint, webDAVPath, credentials) {
         super("");
         var endpointLen = endpoint.length;
-        this._endpoint = (endpoint[endpointLen - 1] === "/") ? endpoint : endpoint + "/";
-        webDAVPath = (webDAVPath[0] === "/") ? webDAVPath : "/" + webDAVPath;
-        this._wfs = credentials ?
-            webdavFS(this._endpoint, credentials.username, credentials.password) :
-            webdavFS(this._endpoint);
+        this._endpoint = endpoint[endpointLen - 1] === "/" ? endpoint : endpoint + "/";
+        webDAVPath = webDAVPath[0] === "/" ? webDAVPath : "/" + webDAVPath;
+        this._wfs = credentials
+            ? webdavFS(this._endpoint, credentials.username, credentials.password)
+            : webdavFS(this._endpoint);
         this._path = webDAVPath;
     }
 
@@ -53,21 +52,23 @@ class WebDAVDatasource extends TextDatasource {
     load(credentials) {
         var wfs = this._wfs,
             filePath = this._path;
-        return (new Promise(function(resolve, reject) {
+        return new Promise(function(resolve, reject) {
             wfs.readFile(filePath, "utf8", function(error, data) {
                 if (error) {
                     return reject(error);
                 }
                 return resolve(data);
             });
-        })).then((content) => {
-            this.setContent(content);
-            return super.load(credentials);
-        }).catch(function(err) {
-            var errorMsg = "Failed opening archive: " + err;
-            console.error(errorMsg);
-            throw err;
-        });
+        })
+            .then(content => {
+                this.setContent(content);
+                return super.load(credentials);
+            })
+            .catch(function(err) {
+                var errorMsg = "Failed opening archive: " + err;
+                console.error(errorMsg);
+                throw err;
+            });
     }
 
     /**
@@ -79,19 +80,17 @@ class WebDAVDatasource extends TextDatasource {
     save(archive, credentials) {
         var wfs = this._wfs,
             filePath = this._path;
-        return super
-            .save(archive, credentials)
-            .then(function(encrypted) {
-                return new Promise(function(resolve, reject) {
-                    wfs.writeFile(filePath, encrypted, "utf8", function(error) {
-                        if (error) {
-                            (reject)(error);
-                        } else {
-                            (resolve)();
-                        }
-                    });
+        return super.save(archive, credentials).then(function(encrypted) {
+            return new Promise(function(resolve, reject) {
+                wfs.writeFile(filePath, encrypted, "utf8", function(error) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve();
+                    }
                 });
             });
+        });
     }
 
     /**
@@ -105,7 +104,6 @@ class WebDAVDatasource extends TextDatasource {
             path: this._path
         };
     }
-
 }
 
 WebDAVDatasource.fromObject = function fromObject(obj, hostCredentials) {

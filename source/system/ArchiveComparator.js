@@ -32,8 +32,7 @@ function calculateCommonRecentCommand(archiveA, archiveB) {
         if (getCommandType(historyA[a]) === "pad") {
             var paddingA = getPaddingID(historyA[a]);
             for (b = bLen - 1; b >= 0; b -= 1) {
-                if (getCommandType(historyB[b]) === "pad" &&
-                    getPaddingID(historyB[b]) === paddingA) {
+                if (getCommandType(historyB[b]) === "pad" && getPaddingID(historyB[b]) === paddingA) {
                     return {
                         a: a,
                         b: b,
@@ -56,7 +55,7 @@ function calculateCommonRecentCommand(archiveA, archiveB) {
  * @memberof Comparator
  */
 function getCommandType(fullCommand) {
-    return (fullCommand && fullCommand.length >= 3) ? fullCommand.substr(0, 3) : "";
+    return fullCommand && fullCommand.length >= 3 ? fullCommand.substr(0, 3) : "";
 }
 
 /**

@@ -3,9 +3,9 @@
 const { objectValues } = require("./polyfill.js");
 
 const EntryProperty = {
-    Password:                     "password",
-    Title:                        "title",
-    Username:                     "username"
+    Password: "password",
+    Title: "title",
+    Username: "username"
 };
 
 /**
@@ -31,9 +31,12 @@ const EntryProperty = {
  * @returns {EntryFacadeField} The field descriptor
  */
 function createFieldDescriptor(
-        entry, title, entryPropertyType, entryPropertyName,
-        { multiline = false, secret = false, formatting = false } = {}
-    ) {
+    entry,
+    title,
+    entryPropertyType,
+    entryPropertyName,
+    { multiline = false, secret = false, formatting = false } = {}
+) {
     const value = getEntryValue(entry, entryPropertyType, entryPropertyName);
     return {
         title,

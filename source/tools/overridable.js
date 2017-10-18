@@ -14,5 +14,7 @@ function generateUUID() {
 
 module.exports = {
     getUUIDGenerator: () => __uuidGenerator || generateUUID,
-    setUUIDGenerator: (generator) => { __uuidGenerator = generator; }
+    setUUIDGenerator: generator => {
+        __uuidGenerator = generator;
+    }
 };

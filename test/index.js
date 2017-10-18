@@ -13,12 +13,12 @@ chai.use(chaiAsPromised);
 Object.assign(
     global,
     {
-        describe:           mocha.describe,
-        it:                 mocha.it,
-        beforeEach:         mocha.beforeEach,
-        afterEach:          mocha.afterEach,
-        sinon:              sinon,
-        expect:             chai.expect
+        describe: mocha.describe,
+        it: mocha.it,
+        beforeEach: mocha.beforeEach,
+        afterEach: mocha.afterEach,
+        sinon: sinon,
+        expect: chai.expect
     },
     Buttercup
 );

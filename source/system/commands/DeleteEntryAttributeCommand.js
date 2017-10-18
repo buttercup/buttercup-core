@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class DeleteEntryAttributeCommand extends BaseCommand {
-
     /**
      * Execute the deletion of an attribute
      * @param {ArchiveDataset} obj The archive dataset
@@ -27,7 +26,6 @@ class DeleteEntryAttributeCommand extends BaseCommand {
             throw new Error("Failed deleting attribute");
         }
     }
-
 }
 
 module.exports = DeleteEntryAttributeCommand;

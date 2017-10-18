@@ -6,7 +6,6 @@ var Archive = lib.Archive,
     DatasourceAdapter = lib.DatasourceAdapter;
 
 module.exports = {
-
     setUp: function(cb) {
         var testArchive = Archive.createWithDefaults(),
             testDatasource = new TextDatasource(),
@@ -20,17 +19,15 @@ module.exports = {
     },
 
     stringToDatasource: {
-
         createsTextDatasource: function(test) {
             var packet = JSON.stringify({ type: "text", content: this.content });
             var ds = DatasourceAdapter.stringToDatasource(packet, createCredentials());
-            ds.load(createCredentials.fromPassword("abc123"))
+            ds
+                .load(createCredentials.fromPassword("abc123"))
                 .then(function(archive) {
                     test.ok(archive instanceof Archive, "Loaded item should be an archive");
                 })
                 .then(test.done);
         }
-
     }
-
 };

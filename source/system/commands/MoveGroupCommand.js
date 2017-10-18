@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class MoveGroupCommand extends BaseCommand {
-
     /**
      * Execute the move
      * @param {ArchiveDataset} obj The archive dataset
@@ -24,8 +23,10 @@ class MoveGroupCommand extends BaseCommand {
             throw new Error("Invalid group ID");
         }
 
-        var targetGroup = (targetGroupID.length === 1 && parseInt(targetGroupID, 10) === 0) ?
-            obj : this.searchTools.findGroupByID(obj.groups, targetGroupID);
+        var targetGroup =
+            targetGroupID.length === 1 && parseInt(targetGroupID, 10) === 0
+                ? obj
+                : this.searchTools.findGroupByID(obj.groups, targetGroupID);
 
         if (!targetGroup) {
             throw new Error("Invalid group ID");
@@ -34,7 +35,6 @@ class MoveGroupCommand extends BaseCommand {
         targetGroup.groups = targetGroup.groups || [];
         targetGroup.groups.push(movedGroup);
     }
-
 }
 
 module.exports = MoveGroupCommand;

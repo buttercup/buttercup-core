@@ -43,15 +43,11 @@ function convertEncryptedContentToHistory(encText, credentials) {
         })
         .then(function __decryptUsingKeyFile(encryptedData) {
             // optionally decrypt using a key file
-            return keyfile ?
-                iocane.decryptWithKeyFile(encryptedData, keyfile) :
-                encryptedData;
+            return keyfile ? iocane.decryptWithKeyFile(encryptedData, keyfile) : encryptedData;
         })
         .then(function __decryptUsingPassword(encryptedData) {
             // optionally decrypt using a password
-            return password ?
-                iocane.decryptWithPassword(encryptedData, password) :
-                encryptedData;
+            return password ? iocane.decryptWithPassword(encryptedData, password) : encryptedData;
         })
         .then(function __marshallHistoryToArray(decrypted) {
             if (decrypted && decrypted.length > 0) {
@@ -75,17 +71,12 @@ function convertHistoryToEncryptedContent(historyArr, credentials) {
     const { password, keyfile } = processCredentials(credentials);
     const history = historyTools.historyArrayToString(historyArr);
     const compressed = encoding.compress(history);
-    return Promise
-        .resolve(compressed)
+    return Promise.resolve(compressed)
         .then(function __encryptUsingPassword(encryptedData) {
-            return password ?
-                iocane.encryptWithPassword(encryptedData, password) :
-                encryptedData;
+            return password ? iocane.encryptWithPassword(encryptedData, password) : encryptedData;
         })
         .then(function __encryptUsingKeyFile(encryptedData) {
-            return keyfile ?
-                iocane.encryptWithKeyFile(encryptedData, keyfile) :
-                encryptedData;
+            return keyfile ? iocane.encryptWithKeyFile(encryptedData, keyfile) : encryptedData;
         })
         .then(signing.sign);
 }
@@ -119,7 +110,6 @@ function processCredentials(credentials) {
  * Datasource for text input and output
  */
 class TextDatasource {
-
     /**
      * Constructor for the text datasource
      * @param {string} content The content to load from
@@ -137,14 +127,15 @@ class TextDatasource {
      */
     load(credentials, emptyCreatesNew) {
         debug("load archive");
-        emptyCreatesNew = (emptyCreatesNew === undefined) ? false : emptyCreatesNew;
+        emptyCreatesNew = emptyCreatesNew === undefined ? false : emptyCreatesNew;
         if (this._content.trim().length <= 0) {
-            return emptyCreatesNew ?
-                new Archive() :
-                Promise.reject(new Error("Unable to load archive: contents empty"));
+            return emptyCreatesNew
+                ? new Archive()
+                : Promise.reject(new Error("Unable to load archive: contents empty"));
         }
-        return __appointedEncToHistoryCB(this._content, credentials)
-            .then(history => Archive.createFromHistory(history));
+        return __appointedEncToHistoryCB(this._content, credentials).then(history =>
+            Archive.createFromHistory(history)
+        );
     }
 
     /**
@@ -188,12 +179,11 @@ class TextDatasource {
         debug("to string");
         return JSON.stringify(this.toObject());
     }
-
 }
 
 TextDatasource.defaultEncodingHandlers = Object.freeze({
     convertEncryptedContentToHistory,
-    convertHistoryToEncryptedContent 
+    convertHistoryToEncryptedContent
 });
 
 TextDatasource.fromObject = function fromObject(obj) {

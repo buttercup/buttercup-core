@@ -1,7 +1,6 @@
 "use strict";
 
-var searching = module.exports = {
-
+var searching = (module.exports = {
     findEntryByID: function(groups, id) {
         for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
             var group = groups[i];
@@ -24,7 +23,7 @@ var searching = module.exports = {
 
     findGroupByCheck: function(groups, checkFn) {
         for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
-            if ((checkFn)(groups[i]) === true) {
+            if (checkFn(groups[i]) === true) {
                 return groups[i];
             }
             if (groups[i].groups) {
@@ -112,5 +111,4 @@ var searching = module.exports = {
             index: null
         };
     }
-
-};
+});

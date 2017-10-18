@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class CreateEntryCommand extends BaseCommand {
-
     /**
      * Execute the entry creation
      * @param {ArchiveDataset} obj The archive dataset
@@ -28,7 +27,6 @@ class CreateEntryCommand extends BaseCommand {
         group.entries = group.entries || [];
         group.entries.push(entry);
     }
-
 }
 
 module.exports = CreateEntryCommand;

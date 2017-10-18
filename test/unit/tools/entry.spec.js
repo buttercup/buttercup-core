@@ -1,5 +1,4 @@
 describe("createFieldDescriptor", function() {
-
     const { createFieldDescriptor } = tools.entry;
 
     beforeEach(function() {
@@ -7,12 +6,7 @@ describe("createFieldDescriptor", function() {
         this.entry = archive.createGroup("Test").createEntry("Test");
         this.entry.setProperty("username", "user");
         this.entry.setProperty("password", "pass");
-        this.descriptor = createFieldDescriptor(
-            this.entry,
-            "Title",
-            "property",
-            "title"
-        );
+        this.descriptor = createFieldDescriptor(this.entry, "Title", "property", "title");
     });
 
     it("creates a descriptor with the correct properties", function() {
@@ -27,11 +21,9 @@ describe("createFieldDescriptor", function() {
         expect(this.descriptor).to.have.property("multiline", false);
         expect(this.descriptor).to.have.property("formatting", false);
     });
-
 });
 
 describe("getValidProperties", function() {
-
     const { getValidProperties } = tools.entry;
 
     it("returns the correct values", function() {
@@ -40,5 +32,4 @@ describe("getValidProperties", function() {
         expect(props).to.contain("username");
         expect(props).to.contain("password");
     });
-
 });

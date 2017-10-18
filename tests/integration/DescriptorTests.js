@@ -19,10 +19,9 @@ function stripEmptyArrays(dataset) {
 }
 
 module.exports = {
-
     setUp: function(cb) {
         this.archive = new Archive();
-        (cb)();
+        cb();
     },
 
     describesGenerated: function(test) {
@@ -47,5 +46,4 @@ module.exports = {
         test.strictEqual(newWestley.getDataset().archiveID, archiveID, "Archive ID should be present");
         test.done();
     }
-
 };

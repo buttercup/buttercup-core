@@ -12,7 +12,6 @@ var Archive = lib.Archive,
 var binFilePath = path.resolve(__dirname, "./_helpers/test.bin");
 
 module.exports = {
-
     setUp: function(cb) {
         var _this = this;
         this.archive = new Archive();
@@ -38,10 +37,10 @@ module.exports = {
     },
 
     load: {
-
         loadsFromContentWithOnlyPassword: function(test) {
             var tds = new TextDatasource(this.contentFromPassword);
-            tds.load(createCredentials.fromPassword("abc123"))
+            tds
+                .load(createCredentials.fromPassword("abc123"))
                 .then(function(archive) {
                     test.ok(archive instanceof Archive, "Should return an archive");
                     test.strictEqual(archive.getGroups()[0].getTitle(), "main", "Should contain correct group");
@@ -54,7 +53,8 @@ module.exports = {
 
         loadsFromContentWithOnlyKeyfile: function(test) {
             var tds = new TextDatasource(this.contentFromKeyfile);
-            tds.load(createCredentials({ keyfile: binFilePath }))
+            tds
+                .load(createCredentials({ keyfile: binFilePath }))
                 .then(function(archive) {
                     test.ok(archive instanceof Archive, "Should return an archive");
                     test.strictEqual(archive.getGroups()[0].getTitle(), "main", "Should contain correct group");
@@ -67,7 +67,8 @@ module.exports = {
 
         loadsFromContentWithBothPasswordAndKeyfile: function(test) {
             var tds = new TextDatasource(this.contentFromBoth);
-            tds.load(createCredentials({ password: "abc123", keyfile: binFilePath }))
+            tds
+                .load(createCredentials({ password: "abc123", keyfile: binFilePath }))
                 .then(function(archive) {
                     test.ok(archive instanceof Archive, "Should return an archive");
                     test.strictEqual(archive.getGroups()[0].getTitle(), "main", "Should contain correct group");
@@ -81,7 +82,8 @@ module.exports = {
         loadsFromContentWithKeyfileData: function(test) {
             var keyFileData = fs.readFileSync(binFilePath);
             var tds = new TextDatasource(this.contentFromKeyfile);
-            tds.load(createCredentials({ keyfile: keyFileData }))
+            tds
+                .load(createCredentials({ keyfile: keyFileData }))
                 .then(function(archive) {
                     test.ok(archive instanceof Archive, "Should return an archive");
                     test.strictEqual(archive.getGroups()[0].getTitle(), "main", "Should contain correct group");
@@ -91,14 +93,13 @@ module.exports = {
                     console.error(err);
                 });
         }
-
     },
 
     save: {
-
         savesToContent: function(test) {
             var tds = new TextDatasource("");
-            tds.save(this.archive, createCredentials.fromPassword("passw0rd"))
+            tds
+                .save(this.archive, createCredentials.fromPassword("passw0rd"))
                 .then(function(encryptedData) {
                     test.ok(encryptedData.length > 100, "Encrypted content should not be empty");
                     test.ok(encryptedData.indexOf(signing.getSignature()) >= 0, "Signature should be present");
@@ -108,30 +109,22 @@ module.exports = {
                     console.error(err);
                 });
         }
-
     },
 
     toString: {
-
         matchesToObject: function(test) {
             var tds = new TextDatasource("abc");
-            test.strictEqual(
-                tds.toString(),
-                JSON.stringify(tds.toObject()),
-                "Contents should be identical"
-            );
+            test.strictEqual(tds.toString(), JSON.stringify(tds.toObject()), "Contents should be identical");
             test.done();
         },
 
         outputsCorrectContent: function(test) {
             var tds = new TextDatasource("abc"),
                 str = tds.toString();
-            var props = JSON.parse(str)
+            var props = JSON.parse(str);
             test.strictEqual(props.type, "text", "Datasource type should match");
             test.strictEqual(props.content, "abc", "Content should be included");
             test.done();
         }
-
     }
-
 };

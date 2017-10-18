@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class MoveEntryCommand extends BaseCommand {
-
     /**
      * Execute the move
      * @param {ArchiveDataset} obj The archive dataset
@@ -31,7 +30,6 @@ class MoveEntryCommand extends BaseCommand {
         targetGroup.entries = targetGroup.entries || [];
         targetGroup.entries.push(movedEntry);
     }
-
 }
 
 module.exports = MoveEntryCommand;

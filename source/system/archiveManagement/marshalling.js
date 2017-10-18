@@ -15,8 +15,7 @@ const getArchiveList = require("../../tools/myButtercup/archive.js").getArchiveL
  *  source credentials
  */
 function credentialsToDatasource(sourceCredentials) {
-    return Promise
-        .resolve()
+    return Promise.resolve()
         .then(function() {
             const datasourceDescriptionRaw = sourceCredentials.getValueOrFail("datasource");
             const datasourceDescription = JSON.parse(datasourceDescriptionRaw);
@@ -47,23 +46,23 @@ function credentialsToSource(sourceCredentials, archiveCredentials, initialise =
         .then(function __handleInitialisation(result) {
             const datasource = result.datasource;
             const defaultArchive = Archive.createWithDefaults();
-            return initialise ?
-                datasource
-                    .save(defaultArchive, archiveCredentials)
-                    .then(() => Object.assign(
-                        {
-                            archive: defaultArchive
-                        },
-                        result
-                    )) :
-                datasource
-                    .load(archiveCredentials)
-                    .then(archive => Object.assign(
-                        {
-                            archive
-                        },
-                        result
-                    ));
+            return initialise
+                ? datasource.save(defaultArchive, archiveCredentials).then(() =>
+                      Object.assign(
+                          {
+                              archive: defaultArchive
+                          },
+                          result
+                      )
+                  )
+                : datasource.load(archiveCredentials).then(archive =>
+                      Object.assign(
+                          {
+                              archive
+                          },
+                          result
+                      )
+                  );
         })
         .then(function __datasourceToSource(result) {
             const workspace = new Workspace();

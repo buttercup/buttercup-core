@@ -5,7 +5,6 @@ var Archive = lib.Archive,
     signing = lib.tools.signing;
 
 module.exports = {
-
     setUp: function(done) {
         this.archive = new Archive();
         this.main = this.archive.createGroup("Main");
@@ -17,7 +16,7 @@ module.exports = {
             .setMeta("cust0mMeta", "123 456")
             .setAttribute("someAttr!", "***");
         this.exported = exporter.exportArchiveToJSON(this.archive);
-        (done)();
+        done();
     },
 
     testExportsType: function(test) {
@@ -37,7 +36,11 @@ module.exports = {
     },
 
     testExportsGroupAttributes: function(test) {
-        test.strictEqual(this.exported.groups[0].attributes["custom attribute"], "attr value", "Attribute should be correct");
+        test.strictEqual(
+            this.exported.groups[0].attributes["custom attribute"],
+            "attr value",
+            "Attribute should be correct"
+        );
         test.done();
     },
 
@@ -61,5 +64,4 @@ module.exports = {
         test.strictEqual(entry.attributes["someAttr!"], "***", "Attribute value should be correct");
         test.done();
     }
-
 };

@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class FormatCommand extends BaseCommand {
-
     /**
      * Execute the setting of the format
      * @param {ArchiveDataset} obj The archive dataset
@@ -20,7 +19,6 @@ class FormatCommand extends BaseCommand {
         }
         obj.format = format;
     }
-
 }
 
 module.exports = FormatCommand;

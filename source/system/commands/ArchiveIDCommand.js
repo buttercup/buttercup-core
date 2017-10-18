@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class ArchiveIDCommand extends BaseCommand {
-
     /**
      * Execute the setting of the ID
      * @param {ArchiveDataset} obj The archive dataset
@@ -21,7 +20,6 @@ class ArchiveIDCommand extends BaseCommand {
         }
         obj.archiveID = id;
     }
-
 }
 
 module.exports = ArchiveIDCommand;

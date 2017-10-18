@@ -1,18 +1,20 @@
 var compareTools = require("../source/tools/compare.js");
 
 module.exports = {
-
     setUp: function(cb) {
-        (cb)();
+        cb();
     },
 
     objectsDiffer: {
-
         confirmsComplexObjectsAreTheSame: function(test) {
             var o1 = {
                 test: 123,
                 items: [
-                    "a", true, false, false, {
+                    "a",
+                    true,
+                    false,
+                    false,
+                    {
                         a: [1, 2, 3],
                         b: "hello"
                     }
@@ -25,10 +27,14 @@ module.exports = {
                 t: undefined,
                 v: [null, undefined],
                 items: [
-                    "a", false, {
+                    "a",
+                    false,
+                    {
                         a: [2, 3, 1],
                         b: "hello"
-                    }, true, false
+                    },
+                    true,
+                    false
                 ]
             };
             test.strictEqual(compareTools.objectsDiffer(o1, o2), false, "Objects should be the same");
@@ -39,7 +45,11 @@ module.exports = {
             var o1 = {
                 test: 123,
                 items: [
-                    "a", true, false, false, {
+                    "a",
+                    true,
+                    false,
+                    false,
+                    {
                         a: [1, 2, 3],
                         b: "hello"
                     }
@@ -52,10 +62,14 @@ module.exports = {
                 t: undefined,
                 v: [null, undefined],
                 items: [
-                    "a", false, {
+                    "a",
+                    false,
+                    {
                         a: [2, 3, 1, 4], // added 4 here
                         b: "hello"
-                    }, true, false
+                    },
+                    true,
+                    false
                 ]
             };
             test.strictEqual(compareTools.objectsDiffer(o1, o2), true, "Objects should be different");
@@ -73,7 +87,5 @@ module.exports = {
             test.strictEqual(compareTools.objectsDiffer(null, undefined), true, "Null/undefined should differ");
             test.done();
         }
-
     }
-
 };

@@ -18,7 +18,6 @@ const debug = createDebug("group");
  * @mixes EntryCollection
  */
 class Group {
-
     /**
      * Managed group class
      * @param {Archive} archive The archive instance
@@ -85,12 +84,12 @@ class Group {
      */
     delete(skipTrash) {
         debug("delete group");
-        skipTrash = (skipTrash === undefined) ? false : skipTrash;
+        skipTrash = skipTrash === undefined ? false : skipTrash;
         if (this.isTrash()) {
             throw new Error("Trash group cannot be deleted");
         }
         var trashGroup = this._getArchive().getTrashGroup(),
-            hasTrash = (trashGroup !== null),
+            hasTrash = trashGroup !== null,
             inTrash = this.isInTrash();
         if (!inTrash && hasTrash && !skipTrash) {
             debug("move to trash");
@@ -138,8 +137,9 @@ class Group {
     getAttribute(attributeName) {
         debug("fetch attribute");
         var raw = this._getRemoteObject();
-        return raw.attributes && raw.attributes.hasOwnProperty(attributeName) ?
-            raw.attributes[attributeName] : undefined;
+        return raw.attributes && raw.attributes.hasOwnProperty(attributeName)
+            ? raw.attributes[attributeName]
+            : undefined;
     }
 
     /**
@@ -172,10 +172,7 @@ class Group {
             // parent is archive
             return null;
         }
-        const parentInfo = searching.findGroupContainingGroupID(
-            archive._getWestley().getDataset(),
-            this.getID()
-        );
+        const parentInfo = searching.findGroupContainingGroupID(archive._getWestley().getDataset(), this.getID());
         if (parentInfo) {
             return new Group(archive, parentInfo.group);
         }
@@ -192,9 +189,8 @@ class Group {
      */
     getGroupByID(groupID) {
         debug("fetch group by ID");
-        let groupRaw = searching
-            .findGroupByID((this._getRemoteObject().groups || []), groupID);
-        return (groupRaw === null) ? null : new Group(this._getArchive(), groupRaw);
+        let groupRaw = searching.findGroupByID(this._getRemoteObject().groups || [], groupID);
+        return groupRaw === null ? null : new Group(this._getArchive(), groupRaw);
     }
 
     /**
@@ -246,7 +242,7 @@ class Group {
         let trash = this._getArchive().getTrashGroup();
         if (trash) {
             let thisGroup = trash.getGroupByID(this.getID());
-            return (thisGroup !== null);
+            return thisGroup !== null;
         }
         return false;
     }
@@ -279,8 +275,7 @@ class Group {
         if (this.isTrash()) {
             throw new Error("Trash group cannot be moved");
         }
-        let targetArchive,
-            targetGroupID;
+        let targetArchive, targetGroupID;
         if (target.type === "Group") {
             debug("move to group");
             // moving to a group
@@ -384,9 +379,7 @@ class Group {
      */
     toObject(outputFlags) {
         debug("to object");
-        outputFlags = (outputFlags === undefined) ?
-            (Group.OutputFlag.Entries | Group.OutputFlag.Groups) :
-            outputFlags;
+        outputFlags = outputFlags === undefined ? Group.OutputFlag.Entries | Group.OutputFlag.Groups : outputFlags;
         // @todo use object cloning
         var attributes = {},
             groupAttributes = this._remoteObject.attributes || {};
@@ -396,21 +389,17 @@ class Group {
             }
         }
         let output = {
-            id:         this.getID(),
-            title:      this.getTitle(),
+            id: this.getID(),
+            title: this.getTitle(),
             attributes: attributes,
-            foreign:    this.isForeign(),
-            shared:     this.isShared()
+            foreign: this.isForeign(),
+            shared: this.isShared()
         };
         if (outputFlags & Group.OutputFlag.Entries) {
-            output.entries = this
-                .getEntries()
-                .map(entry => entry.toObject());
+            output.entries = this.getEntries().map(entry => entry.toObject());
         }
         if (outputFlags & Group.OutputFlag.Groups) {
-            output.groups = this
-                .getGroups()
-                .map(group => group.toObject(outputFlags))
+            output.groups = this.getGroups().map(group => group.toObject(outputFlags));
         }
         return output;
     }
@@ -456,7 +445,6 @@ class Group {
     _getWestley() {
         return this._westley;
     }
-
 }
 
 /**
@@ -467,7 +455,7 @@ class Group {
  * @static
  */
 Group.Attributes = Object.freeze({
-    Role:        "bc_group_role"
+    Role: "bc_group_role"
 });
 
 /**
@@ -480,9 +468,9 @@ Group.Attributes = Object.freeze({
  * @enum {Number}
  */
 Group.OutputFlag = Object.freeze({
-    OnlyGroup:  0,
-    Entries:    1,
-    Groups:     2
+    OnlyGroup: 0,
+    Entries: 1,
+    Groups: 2
 });
 
 /**

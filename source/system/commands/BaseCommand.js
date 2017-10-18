@@ -12,7 +12,6 @@
  * @class BaseCommand
  */
 class BaseCommand {
-
     constructor() {
         this._searchTools = null;
         this._entryTools = null;
@@ -79,7 +78,6 @@ class BaseCommand {
         this._callbacks[key] = this._callbacks[key] || [];
         this._callbacks[key].push(fn);
     }
-
 }
 
 module.exports = BaseCommand;

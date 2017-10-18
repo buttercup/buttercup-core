@@ -14,15 +14,23 @@
     }
   ],
   "scripts": {
+    "format": "prettier --write '{source,test,tests}/**/*.js'",
     "generate:archive": "node scripts/generate_test_archive.js",
     "generate:docs": "./scripts/generate-docs",
     "postinstall": "opencollective postinstall",
-    "test": "npm run test:lint && npm run test:istanbul && npm run test:unit && npm run test:integration",
+    "test": "npm run test:lint && npm run test:istanbul && npm run test:unit && npm run test:integration && npm run test:format",
+    "test:format": "prettier-check '{source,test,tests}/**/*.js'",
     "test:integration": "mocha -r test/index.js 'test/integration/**/*.spec.js' --timeout 10000",
     "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
     "test:lint": "node node_modules/eslint/bin/eslint.js source/ && node node_modules/eslint/bin/eslint.js test/ && node node_modules/eslint/bin/eslint.js tests/",
     "test:nodeunit": "node node_modules/nodeunit/bin/nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
     "test:unit": "mocha -r test/index.js 'test/unit/**/*.spec.js' --timeout 5000"
+  },
+  "lint-staged": {
+    "{source,test,tests}/**/*.js": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -60,10 +68,14 @@
     "chai-as-promised": "^6.0.0",
     "codeclimate-test-reporter": "^0.4.0",
     "eslint": "^2.2.0",
+    "husky": "0.14.3",
     "istanbul": "~0.4.2",
     "jsdoc-to-markdown": "~1.2.0",
+    "lint-staged": "4.3.0",
     "mocha": "^3.2.0",
     "nodeunit": "~0.9.1",
+    "prettier": "1.7.4",
+    "prettier-check": "2.0.0",
     "rimraf": "^2.5.4",
     "sinon": "^1.17.7",
     "walk": "~2.3.9"

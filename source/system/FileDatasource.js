@@ -14,7 +14,6 @@ const debug = createDebug("file-datasource");
  * @augments TextDatasource
  */
 class FileDatasource extends TextDatasource {
-
     /**
      * Constructor for the file datasource
      * @param {string} filename The filename to load and save
@@ -41,15 +40,14 @@ class FileDatasource extends TextDatasource {
     load(credentials) {
         debug("load archive");
         var filename = this._filename;
-        return (new Promise(function(resolve, reject) {
+        return new Promise(function(resolve, reject) {
             fs.readFile(filename, "utf8", function(error, data) {
                 if (error) {
                     return reject(error);
                 }
                 return resolve(data);
             });
-        }))
-        .then((data) => {
+        }).then(data => {
             this.setContent(data);
             return super.load(credentials);
         });
@@ -63,18 +61,16 @@ class FileDatasource extends TextDatasource {
      */
     save(archive, credentials) {
         debug("save archive");
-        return super
-            .save(archive, credentials)
-            .then((encrypted) => {
-                return new Promise((resolve, reject) => {
-                    fs.writeFile(this._filename, encrypted, function(err) {
-                        if (err) {
-                            return reject(err);
-                        }
-                        return resolve();
-                    });
+        return super.save(archive, credentials).then(encrypted => {
+            return new Promise((resolve, reject) => {
+                fs.writeFile(this._filename, encrypted, function(err) {
+                    if (err) {
+                        return reject(err);
+                    }
+                    return resolve();
                 });
             });
+        });
     }
 
     /**
@@ -87,7 +83,6 @@ class FileDatasource extends TextDatasource {
             path: this._filename
         });
     }
-
 }
 
 FileDatasource.fromObject = function fromObject(obj) {

@@ -3,7 +3,7 @@ var cmm = require("../../source/system/commands/CommentCommand.js");
 module.exports = {
     setUp: function(cb) {
         this.command = new cmm();
-        (cb)();
+        cb();
     },
 
     callbackInjected: {

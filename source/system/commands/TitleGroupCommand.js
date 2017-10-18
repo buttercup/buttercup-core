@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class TitleGroupCommand extends BaseCommand {
-
     /**
      * Execute the setting of the title
      * @param {ArchiveDataset} obj The archive dataset
@@ -23,7 +22,6 @@ class TitleGroupCommand extends BaseCommand {
         }
         group.title = title;
     }
-
 }
 
 module.exports = TitleGroupCommand;

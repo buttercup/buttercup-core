@@ -1,29 +1,23 @@
 "use strict";
 
 describe("Workspace", function() {
-
     beforeEach(function() {
         this.workspace = new Workspace();
     });
 
     describe("addSharedArchive", function() {
-
         it("adds archives as secondary", function() {
             let archive = { mock: "archive" },
                 datasource = { mock: "datasource" },
                 credentials = { mock: "credentials" };
-            this.workspace.addSharedArchive(
-                archive,
-                datasource,
-                credentials
-            );
+            this.workspace.addSharedArchive(archive, datasource, credentials);
             expect(this.workspace._archives).to.have.lengthOf(2);
             // expect(this.workspace._archives[0]).to.be.null;
             expect(this.workspace._archives[1]).to.eql({
-                archive:        archive,
-                datasource:     datasource,
-                credentials:    credentials,
-                saveable:       true
+                archive: archive,
+                datasource: datasource,
+                credentials: credentials,
+                saveable: true
             });
         });
 
@@ -31,11 +25,9 @@ describe("Workspace", function() {
             this.workspace.addSharedArchive({}, {}, {});
             expect(this.workspace._archives[0]).to.be.null;
         });
-
     });
 
     describe("getAllItems", function() {
-
         it("returns all items in a new array", function() {
             let workspace = new Workspace();
             workspace.addSharedArchive({}, {}, {});
@@ -43,11 +35,9 @@ describe("Workspace", function() {
             expect(workspace.getAllItems()).to.eql(workspace._archives);
             expect(workspace.getAllItems()).to.not.equal(workspace._archives);
         });
-
     });
 
     describe("getSaveableItems", function() {
-
         beforeEach(function() {
             this.workspace = new Workspace();
             this.workspace.addSharedArchive({ a: "1" }, { b: "1" }, { c: "1" }, false);
@@ -59,38 +49,49 @@ describe("Workspace", function() {
             let saveable = this.workspace.getSaveableItems();
             expect(saveable).to.eql([
                 {
-                    archive:        { a: "3" },
-                    datasource:     { b: "3" },
-                    credentials:    { c: "3" },
-                    saveable:       true
+                    archive: { a: "3" },
+                    datasource: { b: "3" },
+                    credentials: { c: "3" },
+                    saveable: true
                 },
                 {
-                    archive:        { a: "2" },
-                    datasource:     { b: "2" },
-                    credentials:    { c: "2" },
-                    saveable:       true
+                    archive: { a: "2" },
+                    datasource: { b: "2" },
+                    credentials: { c: "2" },
+                    saveable: true
                 }
             ]);
         });
-
     });
 
     describe("imbue", function() {
-
         beforeEach(function() {
             this.primaryArchive = {
                 sharedGroups: [],
-                discardSharedGroups: () => { this.primaryArchive.sharedGroups = []; }
+                discardSharedGroups: () => {
+                    this.primaryArchive.sharedGroups = [];
+                }
             };
             this.secondaryArchive = {
                 getGroups: () => null
             };
             sinon.spy(this.primaryArchive, "discardSharedGroups");
-            sinon.stub(this.secondaryArchive, "getGroups")
-                .returns([
-                    { id: "a", isShared: () => false, _getRemoteObject: function() { return this; } },
-                    { id: "b", isShared: () => true, _getRemoteObject: function() { return this; } }
-                ]);
+            sinon.stub(this.secondaryArchive, "getGroups").returns([
+                {
+                    id: "a",
+                    isShared: () => false,
+                    _getRemoteObject: function() {
+                        return this;
+                    }
+                },
+                {
+                    id: "b",
+                    isShared: () => true,
+                    _getRemoteObject: function() {
+                        return this;
+                    }
+                }
+            ]);
             this.workspace = new Workspace();
             this.workspace.setPrimaryArchive(this.primaryArchive, {}, {});
             this.workspace.addSharedArchive(this.secondaryArchive, {}, {});
@@ -115,7 +116,5 @@ describe("Workspace", function() {
                 workspace.imbue();
             }).to.throw(/no primary/i);
         });
-
     });
-
 });

@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class DeleteEntryMetaCommand extends BaseCommand {
-
     /**
      * Execute the deletion of a meta property
      * @param {ArchiveDataset} obj The archive dataset
@@ -27,7 +26,6 @@ class DeleteEntryMetaCommand extends BaseCommand {
             throw new Error("Failed deleting meta property");
         }
     }
-
 }
 
 module.exports = DeleteEntryMetaCommand;

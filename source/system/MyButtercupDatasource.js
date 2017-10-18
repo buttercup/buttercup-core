@@ -9,7 +9,6 @@ const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
  * @augments TextDatasource
  */
 class MyButtercupDatasource extends TextDatasource {
-
     /**
      * Constructor for the datasource
      * @param {Number} archiveID The ID of the archive
@@ -28,12 +27,10 @@ class MyButtercupDatasource extends TextDatasource {
      * @returns {Promise.<Archive>} A promise that resolves with an Archive instance
      */
     load(credentials) {
-        return this._adapter
-            .getArchiveData()
-            .then(data => {
-                this.setContent(data);
-                return super.load(credentials, /* new if empty */ true);
-            });
+        return this._adapter.getArchiveData().then(data => {
+            this.setContent(data);
+            return super.load(credentials, /* new if empty */ true);
+        });
     }
 
     /**
@@ -43,9 +40,7 @@ class MyButtercupDatasource extends TextDatasource {
      * @returns {Promise} A promise that resolves once saving is complete
      */
     save(archive, credentials) {
-        return super
-            .save(archive, credentials)
-            .then(encrypted => this._adapter.saveArchiveData(encrypted));
+        return super.save(archive, credentials).then(encrypted => this._adapter.saveArchiveData(encrypted));
     }
 
     /**
@@ -59,7 +54,6 @@ class MyButtercupDatasource extends TextDatasource {
             archiveID: this._archiveID
         };
     }
-
 }
 
 /**

@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class DeleteGroupAttributeCommand extends BaseCommand {
-
     /**
      * Execute the deletion of a group attribute
      * @param {ArchiveDataset} obj The archive dataset
@@ -27,7 +26,6 @@ class DeleteGroupAttributeCommand extends BaseCommand {
             throw new Error("Failed deleting attribute");
         }
     }
-
 }
 
 module.exports = DeleteGroupAttributeCommand;

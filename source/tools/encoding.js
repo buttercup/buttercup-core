@@ -2,10 +2,7 @@
 
 const gzip = require("gzip-js");
 
-const {
-    getTextHasher,
-    getUUIDGenerator
-} = require("./overridable.js");
+const { getTextHasher, getUUIDGenerator } = require("./overridable.js");
 
 const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
 const ENCODED_STRING_PREFIX = "utf8+base64:";
@@ -15,8 +12,7 @@ var __gzipOptions = {
     timestamp: parseInt(Date.now() / 1000, 10)
 };
 
-const lib = module.exports = {
-
+const lib = (module.exports = {
     /**
      * Prefix for encoded strings
      * @type {String}
@@ -98,5 +94,4 @@ const lib = module.exports = {
     isEncoded: function(text) {
         return ENCODED_STRING_PATTERN.test(text);
     }
-
-};
+});

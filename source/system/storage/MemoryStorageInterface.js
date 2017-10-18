@@ -3,7 +3,6 @@
 const StorageInterface = require("./StorageInterface.js");
 
 class MemoryStorageInterface extends StorageInterface {
-
     constructor() {
         super();
         this._store = {};
@@ -23,9 +22,7 @@ class MemoryStorageInterface extends StorageInterface {
      * @returns {Promise.<String>} A promise that resolves with the value
      */
     getValue(name) {
-        const value = this._store.hasOwnProperty(name) ?
-            this._store[name] :
-            null;
+        const value = this._store.hasOwnProperty(name) ? this._store[name] : null;
         return Promise.resolve(value);
     }
 
@@ -50,7 +47,6 @@ class MemoryStorageInterface extends StorageInterface {
         this._store[name] = value;
         return Promise.resolve();
     }
-
 }
 
 module.exports = MemoryStorageInterface;

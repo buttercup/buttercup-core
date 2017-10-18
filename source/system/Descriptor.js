@@ -12,26 +12,23 @@ var Commands = Inigo.Command;
  * @module Descriptor
  * @type {Function}
  */
-module.exports = function describe(dataset, parentGroupID) { //eslint-disable-line complexity
+module.exports = function describe(dataset, parentGroupID) {
+    /*eslint complexity: ["error", 20]*/
     var currentGroupID = dataset.id || "0",
-        entries = (currentGroupID === "0") ?
-            [] :
-            (dataset.entries || []);
+        entries = currentGroupID === "0" ? [] : dataset.entries || [];
     var commands = [];
     if (currentGroupID === "0") {
         // Archive
         if (dataset.format) {
             commands.push(
-                Inigo
-                    .create(Commands.Format)
+                Inigo.create(Commands.Format)
                     .addArgument(dataset.format)
                     .generateCommand()
             );
         }
         if (dataset.archiveID) {
             commands.push(
-                Inigo
-                    .create(Commands.ArchiveID)
+                Inigo.create(Commands.ArchiveID)
                     .addArgument(dataset.archiveID)
                     .generateCommand()
             );
@@ -39,8 +36,7 @@ module.exports = function describe(dataset, parentGroupID) { //eslint-disable-li
         if (dataset.attributes) {
             Object.keys(dataset.attributes).forEach(function(attributeName) {
                 commands.push(
-                    Inigo
-                        .create(Commands.SetArchiveAttribute)
+                    Inigo.create(Commands.SetArchiveAttribute)
                         .addArgument(attributeName)
                         .addArgument(dataset.attributes[attributeName])
                         .generateCommand()
@@ -53,16 +49,14 @@ module.exports = function describe(dataset, parentGroupID) { //eslint-disable-li
             throw new Error("No parent group ID specified");
         }
         commands.push(
-            Inigo
-                .create(Commands.CreateGroup)
+            Inigo.create(Commands.CreateGroup)
                 .addArgument(parentGroupID)
                 .addArgument(currentGroupID)
                 .generateCommand()
         );
         if (dataset.title) {
             commands.push(
-                Inigo
-                    .create(Commands.SetGroupTitle)
+                Inigo.create(Commands.SetGroupTitle)
                     .addArgument(currentGroupID)
                     .addArgument(dataset.title)
                     .generateCommand()
@@ -72,8 +66,7 @@ module.exports = function describe(dataset, parentGroupID) { //eslint-disable-li
             for (var attributeName in dataset.attributes) {
                 if (dataset.attributes.hasOwnProperty(attributeName)) {
                     commands.push(
-                        Inigo
-                            .create(Commands.SetGroupAttribute)
+                        Inigo.create(Commands.SetGroupAttribute)
                             .addArgument(currentGroupID)
                             .addArgument(attributeName)
                             .addArgument(dataset.attributes[attributeName])
@@ -86,8 +79,7 @@ module.exports = function describe(dataset, parentGroupID) { //eslint-disable-li
     }
     entries.forEach(function(entry) {
         commands.push(
-            Inigo
-                .create(Commands.CreateEntry)
+            Inigo.create(Commands.CreateEntry)
                 .addArgument(currentGroupID)
                 .addArgument(entry.id)
                 .generateCommand()
@@ -95,8 +87,7 @@ module.exports = function describe(dataset, parentGroupID) { //eslint-disable-li
         ["title", "username", "password"].forEach(function(property) {
             if (entry[property]) {
                 commands.push(
-                    Inigo
-                        .create(Commands.SetEntryProperty)
+                    Inigo.create(Commands.SetEntryProperty)
                         .addArgument(entry.id)
                         .addArgument(property)
                         .addArgument(entry[property])
@@ -108,8 +99,7 @@ module.exports = function describe(dataset, parentGroupID) { //eslint-disable-li
             for (var metaName in entry.meta) {
                 if (entry.meta.hasOwnProperty(metaName)) {
                     commands.push(
-                        Inigo
-                            .create(Commands.SetEntryMeta)
+                        Inigo.create(Commands.SetEntryMeta)
                             .addArgument(entry.id)
                             .addArgument(metaName)
                             .addArgument(entry.meta[metaName])
@@ -122,8 +112,7 @@ module.exports = function describe(dataset, parentGroupID) { //eslint-disable-li
             for (var attributeName in entry.attributes) {
                 if (entry.attributes.hasOwnProperty(attributeName)) {
                     commands.push(
-                        Inigo
-                            .create(Commands.SetEntryAttribute)
+                        Inigo.create(Commands.SetEntryAttribute)
                             .addArgument(entry.id)
                             .addArgument(attributeName)
                             .addArgument(entry.attributes[attributeName])
