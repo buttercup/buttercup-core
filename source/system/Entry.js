@@ -193,6 +193,24 @@ Entry.prototype.getProperty = function(property) {
 };
 
 /**
+ * Check if the password has expired
+ * @returns {Boolean}  Whether or not the password has expired
+ * @memberof Entry
+ */
+Entry.prototype.hasExpiredPassword = function() {
+    debug("check password expiry");
+    var raw = this._getRemoteObject();
+    if (raw.attributes["passExpiry"] !== 0) {
+      var now = (new Date()).getTime(),
+          passModifiedTime = new Date(raw.attributes["passModifiedTime"]),
+          passExpiryTime = new Date(raw.attributes["passModifiedTime"]);
+      passExpiryTime.setDate(passModifiedTime.getDate() + parseInt(raw.attributes["passExpiry"], 10));
+      return (now > passExpiryTime.getTime());
+    }
+    return false;
+};
+
+/**
  * Check if the entry is in the trash
  * @returns {Boolean} Whether or not the entry is in the trash
  * @memberof Entry
@@ -363,7 +381,9 @@ Entry.prototype._getWestley = function() {
 };
 
 Entry.Attributes = Object.freeze({
-    FacadeType:            "BC_ENTRY_FACADE_TYPE"
+    FacadeType:            "BC_ENTRY_FACADE_TYPE",
+    PassModifiedTime:      "passModifiedTime",
+    PassExpiry:            "passExpiry"
 });
 
 /**
