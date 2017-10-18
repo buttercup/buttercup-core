@@ -16,6 +16,7 @@
   "scripts": {
     "generate:archive": "node scripts/generate_test_archive.js",
     "generate:docs": "./scripts/generate-docs",
+    "postinstall": "opencollective postinstall",
     "test": "npm run test:lint && npm run test:istanbul && npm run test:unit && npm run test:integration",
     "test:integration": "mocha -r test/index.js 'test/integration/**/*.spec.js' --timeout 10000",
     "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
@@ -48,6 +49,7 @@
     "gzip-js": "~0.3.2",
     "iocane": "~0.10.0",
     "node-fetch": "~1.6.3",
+    "opencollective": "1.0.3",
     "string-hash": "^1.1.3",
     "uuid": "~2.0.1",
     "verror": "~1.9.0",
@@ -65,5 +67,10 @@
     "rimraf": "^2.5.4",
     "sinon": "^1.17.7",
     "walk": "~2.3.9"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/buttercup-desktop",
+    "logo": "https://opencollective.com/opencollective/logo.txt"
   }
 }
