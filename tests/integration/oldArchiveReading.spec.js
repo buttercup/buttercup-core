@@ -2,7 +2,7 @@
 
 var path = require("path"),
     walk = require("walk");
-var lib = require("../../source/module.js");
+var lib = require("../../source/node/index.js");
 var FileDatasource = lib.FileDatasource,
     createCredentials = lib.createCredentials;
 

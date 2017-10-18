@@ -1,10 +1,10 @@
 (function(module) {
     "use strict";
 
-    var Buttercup = require("../../source/module.js"),
-        Inigo = require("../../source/system/InigoGenerator.js"),
-        searching = require("../../source/tools/searching-raw.js"),
-        encoding = require("../../source/tools/encoding.js");
+    var Buttercup = require("../../source/node/index.js"),
+        Inigo = require("../../source/node/system/InigoGenerator.js"),
+        searching = require("../../source/node/tools/searching-raw.js"),
+        encoding = require("../../source/node/tools/encoding.js");
     var Archive = Buttercup.Archive,
         Commands = Inigo.Command;
 

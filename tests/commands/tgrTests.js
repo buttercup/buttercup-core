@@ -1,4 +1,4 @@
-var tgr = require("../../source/system/commands/TitleGroupCommand.js");
+var tgr = require("../../source/node/system/commands/TitleGroupCommand.js");
 
 module.exports = {
     setUp: function(cb) {

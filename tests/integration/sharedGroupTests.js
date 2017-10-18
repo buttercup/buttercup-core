@@ -1,6 +1,6 @@
 "use strict";
 
-var lib = require("../../source/module.js");
+var lib = require("../../source/node/index.js");
 
 var Archive = lib.Archive,
     Workspace = lib.Workspace,

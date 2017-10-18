@@ -2,7 +2,7 @@
   "name": "buttercup",
   "version": "0.50.0",
   "description": "A NodeJS password vault.",
-  "main": "source/module.js",
+  "main": "source/node/index.js",
   "contributors": [
     {
       "name": "Perry Mitchell",
@@ -21,9 +21,9 @@
     "test": "npm run test:lint && npm run test:istanbul && npm run test:unit && npm run test:integration && npm run test:format",
     "test:format": "prettier-check '{source,test,tests}/**/*.js'",
     "test:integration": "mocha -r test/index.js 'test/integration/**/*.spec.js' --timeout 10000",
-    "test:istanbul": "node node_modules/istanbul/lib/cli.js cover node_modules/nodeunit/bin/nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
-    "test:lint": "node node_modules/eslint/bin/eslint.js source/ && node node_modules/eslint/bin/eslint.js test/ && node node_modules/eslint/bin/eslint.js tests/",
-    "test:nodeunit": "node node_modules/nodeunit/bin/nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
+    "test:istanbul": "istanbul cover nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
+    "test:lint": "eslint source/ && eslint test/ && eslint tests/",
+    "test:nodeunit": "nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
     "test:unit": "mocha -r test/index.js 'test/unit/**/*.spec.js' --timeout 5000"
   },
   "lint-staged": {

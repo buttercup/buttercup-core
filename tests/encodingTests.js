@@ -1,4 +1,4 @@
-const encodingTools = require("../source/tools/encoding.js");
+const encodingTools = require("../source/node/tools/encoding.js");
 
 const { ENCODED_STRING_PREFIX } = encodingTools;
 

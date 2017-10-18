@@ -1,4 +1,4 @@
-var lib = require("../../source/module.js");
+var lib = require("../../source/node/index.js");
 var Workspace = lib.Workspace,
     Archive = lib.Archive,
     createCredentials = lib.createCredentials,

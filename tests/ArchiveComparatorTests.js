@@ -1,8 +1,8 @@
-var lib = require("../source/module.js");
+var lib = require("../source/node/index.js");
 
 var Archive = lib.Archive;
 
-var Comparator = require("../source/system/ArchiveComparator.js");
+var Comparator = require("../source/node/system/ArchiveComparator.js");
 
 module.exports = {
     setUp: function(cb) {

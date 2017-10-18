@@ -7,4 +7,4 @@ if [ -e "${CWD}/../API.md" ]; then
     rm "${CWD}/../API.md"
 fi
 
-node "$JSDOC2MD" --verbose "${CWD}/../source/**/*.js" > "${CWD}/../API.md"
+node "$JSDOC2MD" --verbose "${CWD}/../source/node/**/*.js" > "${CWD}/../API.md"

@@ -1,4 +1,4 @@
-var lib = require("../source/module.js"),
+var lib = require("../source/node/index.js"),
     generate = require("./_helpers/generator.js");
 
 var Archive = lib.Archive,
