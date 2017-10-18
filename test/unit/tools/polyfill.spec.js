@@ -1,7 +1,6 @@
 const { objectValues } = require("../../../source/tools/polyfill.js");
 
 describe("objectValues", function() {
-
     it("returns the correct values", function() {
         const amazing = {};
         const values = objectValues({
@@ -13,5 +12,4 @@ describe("objectValues", function() {
         expect(values).to.contain(amazing);
         expect(values).to.contain(null);
     });
-
 });

@@ -7,7 +7,6 @@ var Archive = lib.Archive,
     Entry = lib.Entry;
 
 module.exports = {
-
     setUp: function(cb) {
         var archive = new Archive(),
             group = archive.createGroup("test group"),
@@ -24,18 +23,14 @@ module.exports = {
         this.archive = archive;
         this.entry = entry;
         this.group = group;
-        (cb)();
+        cb();
     },
 
     createNew: {
-
         createsNewEntry: function(test) {
             var newEntry = Entry.createNew(this.archive, this.group.getID());
             test.ok(newEntry instanceof Entry, "New entry should be an Entry instance");
-            test.ok(
-                this.archive.findEntryByID(newEntry.getID()),
-                "New entry should be found in archive"
-            );
+            test.ok(this.archive.findEntryByID(newEntry.getID()), "New entry should be found in archive");
             test.done();
         },
 
@@ -46,11 +41,9 @@ module.exports = {
             }, "Should throw when creating in trash");
             test.done();
         }
-
     },
 
     delete: {
-
         deletesWhenNoTrash: function(test) {
             this.entry.delete();
             test.strictEqual(this.group.getEntries().length, 0, "Entry should be gone");
@@ -58,9 +51,7 @@ module.exports = {
         },
 
         movesToTrash: function(test) {
-            var trash = this.archive
-                .createGroup("Trash")
-                    .setAttribute(Group.Attributes.Role, "trash");
+            var trash = this.archive.createGroup("Trash").setAttribute(Group.Attributes.Role, "trash");
             this.entry.delete();
             test.strictEqual(trash.getEntries().length, 1, "Entry should be in trash");
             this.entry.delete();
@@ -69,9 +60,7 @@ module.exports = {
         },
 
         deletesWhenInTrash: function(test) {
-            var trash = this.archive
-                .createGroup("Trash")
-                    .setAttribute(Group.Attributes.Role, "trash");
+            var trash = this.archive.createGroup("Trash").setAttribute(Group.Attributes.Role, "trash");
             var deleted = this.entry.delete();
             test.strictEqual(deleted, false, "Should move to trash first");
             deleted = this.entry.delete();
@@ -81,31 +70,25 @@ module.exports = {
         },
 
         deletesWhenInGroupWithinTrash: function(test) {
-            var trash = this.archive
-                .createGroup("Trash")
-                    .setAttribute(Group.Attributes.Role, "trash");
+            var trash = this.archive.createGroup("Trash").setAttribute(Group.Attributes.Role, "trash");
             this.group.moveToGroup(trash);
             var deleted = this.entry.delete();
             test.strictEqual(trash.getEntries().length, 0, "Entry should be gone from trash");
             test.strictEqual(this.group.getEntries().length, 0, "Entry should have been removed from the group");
             test.done();
         }
-
     },
 
     deleteMeta: {
-
         testDeletesProperties: function(test) {
             test.strictEqual(this.entry.getMeta("accessKey"), "12345", "Entry should contain meta item");
             this.entry.deleteMeta("accessKey");
             test.strictEqual(this.entry.getMeta("accessKey"), undefined, "Meta item should be deleted");
             test.done();
         }
-
     },
 
     getMeta: {
-
         getsMeta: function(test) {
             test.strictEqual(this.entry.getMeta("accessKey"), "12345", "Entry should contain meta");
             test.strictEqual(this.entry.getMeta("user prop"), "user val", "Entry should contain meta");
@@ -131,11 +114,9 @@ module.exports = {
             test.strictEqual(meta["user prop"], "user val", "Meta 'user prop' should be set");
             test.done();
         }
-
     },
 
     getAttribute: {
-
         getsAttribute: function(test) {
             test.strictEqual(this.entry.getAttribute("test-type"), "credit-card", "Entry should contain attribute");
             test.done();
@@ -151,22 +132,18 @@ module.exports = {
             test.strictEqual(attr["test-type"], "credit-card", "Attribute should exist");
             test.done();
         }
-
     },
 
     getGroup: {
-
         testGetsGroup: function(test) {
             var parent = this.entry.getGroup();
             test.strictEqual(parent.getTitle(), "test group", "Parent title should be correct");
             test.strictEqual(parent.getEntries()[0].getID(), this.entry.getID(), "Parent should be correct");
             test.done();
         }
-
     },
 
     getProperty: {
-
         getsProperties: function(test) {
             test.strictEqual(this.entry.getProperty("title"), "My entry", "Should return title");
             test.strictEqual(this.entry.getProperty("username"), "some-user", "Should return username");
@@ -186,16 +163,12 @@ module.exports = {
             test.strictEqual(props.password, "passw0rd", "Password should be set");
             test.done();
         }
-
     },
 
     isInTrash: {
-
         detectsCorrectlyWhenDeletedDirectly: function(test) {
             test.strictEqual(this.entry.isInTrash(), false, "Entry should not be detected as in the trash");
-            var trash = this.archive
-                .createGroup("Trash")
-                    .setAttribute(Group.Attributes.Role, "trash");
+            var trash = this.archive.createGroup("Trash").setAttribute(Group.Attributes.Role, "trash");
             this.entry.delete();
             test.strictEqual(this.entry.isInTrash(), true, "Entry should be detected as being in the trash");
             test.done();
@@ -203,18 +176,14 @@ module.exports = {
 
         detectsCorrectlyWhenInDeletedGroup: function(test) {
             test.strictEqual(this.entry.isInTrash(), false, "Entry should not be detected as in the trash");
-            var trash = this.archive
-                .createGroup("Trash")
-                    .setAttribute(Group.Attributes.Role, "trash");
+            var trash = this.archive.createGroup("Trash").setAttribute(Group.Attributes.Role, "trash");
             this.group.delete();
             test.strictEqual(this.entry.isInTrash(), true, "Entry should be detected as being in the trash");
             test.done();
         }
-
     },
 
     readOnly: {
-
         failsToWriteInROMode: function(test) {
             this.entry._getWestley().readOnly = true;
             test.throws(
@@ -226,18 +195,22 @@ module.exports = {
             );
             test.done();
         }
-
     },
 
     setMeta: {
-
         setsMetaKeysInsensitiveOfCase: function(test) {
             this.entry.setMeta("myKey", "first");
-            test.strictEqual(this.entry.toObject().meta.myKey, "first",
-                "Initial setMeta should have set the value with the correct key");
+            test.strictEqual(
+                this.entry.toObject().meta.myKey,
+                "first",
+                "Initial setMeta should have set the value with the correct key"
+            );
             this.entry.setMeta("Mykey", "second");
-            test.strictEqual(this.entry.toObject().meta.myKey, "second",
-                "Second setMeta call with different case should use case of first call");
+            test.strictEqual(
+                this.entry.toObject().meta.myKey,
+                "second",
+                "Second setMeta call with different case should use case of first call"
+            );
             test.done();
         },
 
@@ -246,11 +219,9 @@ module.exports = {
             test.strictEqual(this.entry.getMeta("key"), "", "Meta value should be an empty string");
             test.done();
         }
-
     },
 
     toObject: {
-
         testTransfersProperties: function(test) {
             var obj = this.entry.toObject();
             test.strictEqual(obj.id, this.id, "Should transfer id");
@@ -266,7 +237,5 @@ module.exports = {
             test.strictEqual(meta["user prop"], "user val", "Should transfer custom meta values");
             test.done();
         }
-
     }
-
 };

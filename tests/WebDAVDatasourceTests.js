@@ -23,15 +23,15 @@ var WebDAVFSMock = function(endpoint, credentials) {
 };
 
 module.exports = {
-
     setUp: function(cb) {
         var _this = this;
         this.archive = new Archive();
         var group = this.archive.createGroup("main");
-        this.datasource = new WebDAVDatasource("", "", createCredentials({username: "user", password: "pass"}));
+        this.datasource = new WebDAVDatasource("", "", createCredentials({ username: "user", password: "pass" }));
         this.wfsMock = this.datasource._wfs = new WebDAVFSMock();
         var textDatasource = new TextDatasource();
-        textDatasource.save(this.archive, createCredentials.fromPassword("abc123"))
+        textDatasource
+            .save(this.archive, createCredentials.fromPassword("abc123"))
             .then(function(data) {
                 //_this.content = data;
                 _this.wfsMock.content = data;
@@ -43,10 +43,10 @@ module.exports = {
     },
 
     load: {
-
         callsWebDAVFSWithCorrectInformation: function(test) {
             var mock = this.wfsMock;
-            this.datasource.load(createCredentials.fromPassword("abc123"))
+            this.datasource
+                .load(createCredentials.fromPassword("abc123"))
                 .then(function(archive) {
                     var args = mock.readFileArgs;
                     test.ok(args.indexOf("utf8") >= 0, "Call should specify UTF8 encoding");
@@ -58,14 +58,13 @@ module.exports = {
                     console.error(err);
                 });
         }
-
     },
 
     save: {
-
         callsWebDAVFSWithCorrectInformation: function(test) {
             var mock = this.wfsMock;
-            this.datasource.save(this.archive, createCredentials.fromPassword("myPass"))
+            this.datasource
+                .save(this.archive, createCredentials.fromPassword("myPass"))
                 .then(function() {
                     var args = mock.writeFileArgs,
                         encrypted = args[1];
@@ -76,21 +75,17 @@ module.exports = {
                     console.error(err);
                 });
         }
-
     },
 
     toObject: {
-
         outputsAnObject: function(test) {
             var props = this.datasource.toObject();
             test.strictEqual(typeof props, "object", "Output should be an object");
             test.done();
         }
-
     },
 
     toString: {
-
         matchesToObject: function(test) {
             test.strictEqual(
                 this.datasource.toString(),
@@ -107,7 +102,5 @@ module.exports = {
             test.strictEqual(props.path, "/", "Path should be correct");
             test.done();
         }
-
     }
-
 };

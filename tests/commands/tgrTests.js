@@ -3,73 +3,73 @@ var tgr = require("../../source/system/commands/TitleGroupCommand.js");
 module.exports = {
     setUp: function(cb) {
         this.command = new tgr();
-        (cb)();
+        cb();
     },
 
     errors: {
-
-        testGroupNotFoundThrowsError: function (test) {
+        testGroupNotFoundThrowsError: function(test) {
             var fakeSearching = {
-                findGroupByID: function (a, b) {
+                findGroupByID: function(a, b) {
                     return false;
                 }
             };
 
             this.command.searchTools = fakeSearching;
 
-            test.throws(function() {
-                this.command.execute({ }, 1, 'a');
-            }.bind(this), 'Group not found for ID', 'An error was thrown when no group found');
+            test.throws(
+                function() {
+                    this.command.execute({}, 1, "a");
+                }.bind(this),
+                "Group not found for ID",
+                "An error was thrown when no group found"
+            );
             test.done();
         }
-
     },
 
     titleSet: {
-
-        testTitleSetCorrectlyForBla: function (test) {
-            var expectedTitle = 'Bla';
+        testTitleSetCorrectlyForBla: function(test) {
+            var expectedTitle = "Bla";
             var command = new tgr();
 
             var fakeGroup = {
-                title: ''
+                title: ""
             };
 
             var fakeSearching = {
-                findGroupByID: function (a, b) {
+                findGroupByID: function(a, b) {
                     return fakeGroup;
                 }
             };
 
             this.command.searchTools = fakeSearching;
 
-            this.command.execute({ }, 1, expectedTitle);
+            this.command.execute({}, 1, expectedTitle);
 
-            test.strictEqual(fakeGroup.title, expectedTitle, 'The title was set to ' + expectedTitle + ' correctly');
+            test.strictEqual(fakeGroup.title, expectedTitle, "The title was set to " + expectedTitle + " correctly");
             test.done();
         },
 
-        testTitleSetCorrectlyForJames: function (test) {
-            var expectedTitle = 'James';
+        testTitleSetCorrectlyForJames: function(test) {
+            var expectedTitle = "James";
             var command = new tgr();
 
             var fakeGroup = {
-                title: ''
+                title: ""
             };
 
             var fakeSearching = {
-                findGroupByID: function (a, b) {
+                findGroupByID: function(a, b) {
                     return fakeGroup;
                 }
             };
 
             command.searchTools = fakeSearching;
 
-            command.execute({ }, 1, expectedTitle);
+            command.execute({}, 1, expectedTitle);
 
-            test.strictEqual(fakeGroup.title, expectedTitle, 'The title was set to ' + expectedTitle + ' correctly');
+            test.strictEqual(fakeGroup.title, expectedTitle, "The title was set to " + expectedTitle + " correctly");
             test.done();
         }
-
     }
 };

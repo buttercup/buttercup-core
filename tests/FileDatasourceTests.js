@@ -5,16 +5,10 @@ var Archive = lib.Archive,
     datasourceTools = lib.tools.datasource;
 
 module.exports = {
-
     toString: {
-
         matchesToObject: function(test) {
             var fds = new FileDatasource("C:\\Work\\myarchive.bcup");
-            test.strictEqual(
-                fds.toString(),
-                JSON.stringify(fds.toObject()),
-                "Contents should be identical"
-            );
+            test.strictEqual(fds.toString(), JSON.stringify(fds.toObject()), "Contents should be identical");
             test.done();
         },
 
@@ -26,7 +20,5 @@ module.exports = {
             test.strictEqual(props.path, "C:\\Work\\myarchive.bcup", "Path should match");
             test.done();
         }
-
     }
-
 };

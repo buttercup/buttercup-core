@@ -1,10 +1,6 @@
-const {
-    consumeEntryFacade,
-    createEntryFacade
-} = entryFacade;
+const { consumeEntryFacade, createEntryFacade } = entryFacade;
 
 describe("consumeEntryFacade", function() {
-
     beforeEach(function() {
         const archive = new Archive();
         this.entry = archive.createGroup("Test").createEntry("Testing");
@@ -14,52 +10,52 @@ describe("consumeEntryFacade", function() {
         this.entry.setMeta("removed meta", "gone");
         this.entry.setAttribute("removed attribute", "gone");
         this.facade = {
-            "type": "login",
-            "fields": [
+            type: "login",
+            fields: [
                 {
-                    "title": "Title",
-                    "field": "property",
-                    "property": "title",
-                    "value": "Test",
-                    "secret": false,
-                    "multiline": false,
-                    "formatting": false
+                    title: "Title",
+                    field: "property",
+                    property: "title",
+                    value: "Test",
+                    secret: false,
+                    multiline: false,
+                    formatting: false
                 },
                 {
-                    "title": "Username",
-                    "field": "property",
-                    "property": "username",
-                    "value": "user",
-                    "secret": false,
-                    "multiline": false,
-                    "formatting": false
+                    title: "Username",
+                    field: "property",
+                    property: "username",
+                    value: "user",
+                    secret: false,
+                    multiline: false,
+                    formatting: false
                 },
                 {
-                    "title": "Password",
-                    "field": "property",
-                    "property": "password",
-                    "value": "pass",
-                    "secret": true,
-                    "multiline": false,
-                    "formatting": false
+                    title: "Password",
+                    field: "property",
+                    property: "password",
+                    value: "pass",
+                    secret: true,
+                    multiline: false,
+                    formatting: false
                 },
                 {
-                    "title": "some meta value",
-                    "field": "meta",
-                    "property": "some meta value",
-                    "value": "123 456",
-                    "secret": false,
-                    "multiline": false,
-                    "formatting": false
+                    title: "some meta value",
+                    field: "meta",
+                    property: "some meta value",
+                    value: "123 456",
+                    secret: false,
+                    multiline: false,
+                    formatting: false
                 },
                 {
-                    "title": "new meta",
-                    "field": "meta",
-                    "property": "new meta",
-                    "value": "new",
-                    "secret": false,
-                    "multiline": false,
-                    "formatting": false
+                    title: "new meta",
+                    field: "meta",
+                    property: "new meta",
+                    value: "new",
+                    secret: false,
+                    multiline: false,
+                    formatting: false
                 }
             ]
         };
@@ -87,11 +83,9 @@ describe("consumeEntryFacade", function() {
     it("removes unmentioned attributes", function() {
         expect(this.entry.getAttribute("removed attribute")).to.be.undefined;
     });
-
 });
 
 describe("createEntryFacade", function() {
-
     beforeEach(function() {
         const archive = new Archive();
         this.entry = archive.createGroup("Test").createEntry("Test");
@@ -103,8 +97,7 @@ describe("createEntryFacade", function() {
 
     it("creates a facade", function() {
         expect(this.facade).to.have.property("type", "login");
-        expect(this.facade).to.have.property("fields")
-            .that.is.an.array;
+        expect(this.facade).to.have.property("fields").that.is.an.array;
     });
 
     it("creates items for each property", function() {
@@ -121,5 +114,4 @@ describe("createEntryFacade", function() {
         expect(metaItem).to.have.property("field", "meta");
         expect(metaItem).to.have.property("value", "123 456");
     });
-
 });

@@ -1,5 +1,4 @@
-(function (module) {
-
+(function(module) {
     "use strict";
 
     var Buttercup = require("../../source/module.js"),
@@ -74,8 +73,7 @@
             entryID;
         if (groupID) {
             entryID = encoding.getUniqueID();
-            return Inigo
-                .create(Commands.CreateEntry)
+            return Inigo.create(Commands.CreateEntry)
                 .addArgument(groupID)
                 .addArgument(entryID)
                 .generateCommand();
@@ -92,8 +90,7 @@
     function getRandomNewGroupCommand(dataset) {
         var groupID = encoding.getUniqueID(),
             targetID = getRandomGroupID(dataset, true);
-        return Inigo
-            .create(Commands.CreateGroup)
+        return Inigo.create(Commands.CreateGroup)
             .addArgument(targetID)
             .addArgument(groupID)
             .generateCommand();
@@ -108,8 +105,7 @@
     function getRandomDeleteEntryCommand(dataset) {
         var entryID = getRandomEntryID(dataset);
         if (entryID) {
-            return Inigo
-                .create(Commands.DeleteEntry)
+            return Inigo.create(Commands.DeleteEntry)
                 .addArgument(entryID)
                 .generateCommand();
         }
@@ -125,8 +121,7 @@
     function getRandomDeleteGroupCommand(dataset) {
         var groupID = getRandomGroupID(dataset, false);
         if (groupID) {
-            return Inigo
-                .create(Commands.DeleteGroup)
+            return Inigo.create(Commands.DeleteGroup)
                 .addArgument(groupID)
                 .generateCommand();
         }
@@ -143,8 +138,7 @@
         var entryID = getRandomEntryID(dataset),
             groupID = getRandomGroupID(dataset);
         if (entryID && groupID) {
-            return Inigo
-                .create(Commands.MoveEntry)
+            return Inigo.create(Commands.MoveEntry)
                 .addArgument(entryID)
                 .addArgument(groupID)
                 .generateCommand();
@@ -162,8 +156,7 @@
         var groupID = getRandomGroupID(dataset),
             targetID = getRandomGroupID(dataset);
         if (groupID && targetID && groupID !== targetID) {
-            return Inigo
-                .create(Commands.MoveGroup)
+            return Inigo.create(Commands.MoveGroup)
                 .addArgument(groupID)
                 .addArgument(targetID)
                 .generateCommand();
@@ -189,8 +182,7 @@
             } else {
                 setPropType = "password";
             }
-            return Inigo
-                .create(Commands.SetEntryProperty)
+            return Inigo.create(Commands.SetEntryProperty)
                 .addArgument(entryID)
                 .addArgument(setPropType)
                 .addArgument(getRandomValue())
@@ -208,8 +200,7 @@
     function getRandomSetMetaCommand(dataset) {
         var entryID = getRandomEntryID(dataset);
         if (entryID) {
-            return Inigo
-                .create(Commands.SetEntryMeta)
+            return Inigo.create(Commands.SetEntryMeta)
                 .addArgument(entryID)
                 .addArgument(getRandomKey())
                 .addArgument(getRandomValue())
@@ -227,8 +218,7 @@
     function getRandomSetEntryAttributeCommand(dataset) {
         var entryID = getRandomEntryID(dataset);
         if (entryID) {
-            return Inigo
-                .create(Commands.SetEntryAttribute)
+            return Inigo.create(Commands.SetEntryAttribute)
                 .addArgument(entryID)
                 .addArgument(getRandomKey().toUpperCase())
                 .addArgument(getRandomValue())
@@ -246,8 +236,7 @@
     function getRandomTitleGroupCommand(dataset) {
         var groupID = getRandomGroupID(dataset);
         if (groupID) {
-            return Inigo
-                .create(Commands.SetGroupTitle)
+            return Inigo.create(Commands.SetGroupTitle)
                 .addArgument(groupID)
                 .addArgument(getRandomValue())
                 .generateCommand();
@@ -264,8 +253,7 @@
     function getRandomSetGroupAttributeCommand(dataset) {
         var groupID = getRandomGroupID(dataset);
         if (groupID) {
-            return Inigo
-                .create(Commands.SetGroupAttribute)
+            return Inigo.create(Commands.SetGroupAttribute)
                 .addArgument(groupID)
                 .addArgument(getRandomKey().toUpperCase())
                 .addArgument(getRandomValue())
@@ -340,7 +328,7 @@
      * @private
      */
     function getRandomString(length, chars) {
-        var result = '';
+        var result = "";
         for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
         return result;
     }
@@ -351,8 +339,10 @@
      * @private
      */
     function getRandomValue() {
-        return getRandomString(32, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" +
-            "!@#$%^&*()_+-={}[]|\\;'\":,.<>/?`~");
+        return getRandomString(
+            32,
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" + "!@#$%^&*()_+-={}[]|\\;'\":,.<>/?`~"
+        );
     }
 
     /**
@@ -370,13 +360,10 @@
         while (numActions > 0) {
             command = getRandomCommand(westley.getDataset());
             if (command) {
-                westley
-                    .execute(command)
-                    .pad();
+                westley.execute(command).pad();
                 numActions -= 1;
             }
         }
         return archive;
     };
-
 })(module);

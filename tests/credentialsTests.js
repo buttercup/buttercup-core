@@ -5,9 +5,7 @@ var lib = require("../source/module.js");
 var createCredentials = lib.createCredentials;
 
 module.exports = {
-
     fromInsecureString: {
-
         createsCorrectCredentials: function(test) {
             const str = JSON.stringify({
                 type: "testing",
@@ -22,34 +20,29 @@ module.exports = {
             test.strictEqual(creds.type, "testing");
             test.done();
         }
-
     },
 
     fromSecureString: {
-
         encryptsAndDecrypts: function(test) {
             var creds = createCredentials({ username: "user", password: "pass" });
-            creds.toSecureString("monkey")
-                .then((secureContent) => {
+            creds
+                .toSecureString("monkey")
+                .then(secureContent => {
                     test.ok(secureContent.indexOf("user") < 0);
                     test.ok(secureContent.indexOf("pass") < 0);
-                    return createCredentials
-                        .fromSecureString(secureContent, "monkey")
-                        .then(newCred => {
-                            test.strictEqual(newCred.username, "user", "Username should match");
-                            test.strictEqual(newCred.password, "pass", "Password should match");
-                            test.done();
-                        });
+                    return createCredentials.fromSecureString(secureContent, "monkey").then(newCred => {
+                        test.strictEqual(newCred.username, "user", "Username should match");
+                        test.strictEqual(newCred.password, "pass", "Password should match");
+                        test.done();
+                    });
                 })
                 .catch(function(err) {
                     console.error(err);
                 });
         }
-
     },
 
     getters: {
-
         getsUsernameAndPassword: function(test) {
             var creds = createCredentials({ username: "user", password: "pass" });
             test.strictEqual(creds.username, "user", "Username should be correct");
@@ -68,11 +61,9 @@ module.exports = {
             test.strictEqual(creds.type, "", "Should get an empty type");
             test.done();
         }
-
     },
 
     getValue: {
-
         getsUsernameAndPassword: function(test) {
             var creds = createCredentials({ username: "user", password: "pass" });
             test.strictEqual(creds.getValue("username"), "user", "Username should be correct");
@@ -86,11 +77,9 @@ module.exports = {
             test.strictEqual(creds.getValue("custom"), undefined, "Custom value should be undefined");
             test.done();
         }
-
     },
 
     getValueOrFail: {
-
         getsValues: function(test) {
             var creds = createCredentials({ value1: "abc", value2: false });
             test.strictEqual(creds.getValue("value1"), "abc", "String value should be correct");
@@ -100,16 +89,18 @@ module.exports = {
 
         throwsIfValueIsNotSet: function(test) {
             var creds = createCredentials();
-            test.throws(function() {
-                creds.getValueOrFail("username");
-            }, /failed.+username/i, "Should fail with error mentioning missing property value");
+            test.throws(
+                function() {
+                    creds.getValueOrFail("username");
+                },
+                /failed.+username/i,
+                "Should fail with error mentioning missing property value"
+            );
             test.done();
         }
-
     },
 
     setValue: {
-
         setsNewValues: function(test) {
             var creds = createCredentials();
             test.strictEqual(creds.getValue("username"), undefined, "Username should be undefined");
@@ -124,11 +115,9 @@ module.exports = {
             test.strictEqual(creds.getValue("username"), "user@email.com", "Username should be set");
             test.done();
         }
-
     },
 
     toInsecureString: {
-
         writesContentToString: function(test) {
             const creds = createCredentials({ username: "user@site.org", password: "passw0rd" });
             const str = creds.toInsecureString();
@@ -137,11 +126,9 @@ module.exports = {
             test.ok(str.indexOf("passw0rd") >= 0, "Password should be present");
             test.done();
         }
-
     },
 
     toSecureString: {
-
         outputsAStringNotContainingCredentials: function(test) {
             var creds = createCredentials({ username: "user@site.org", password: "password" });
             creds.toSecureString("pass").then(function(encrypted) {
@@ -150,7 +137,5 @@ module.exports = {
                 test.done();
             });
         }
-
     }
-
 };

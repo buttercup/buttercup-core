@@ -1,11 +1,10 @@
 var lib = require("../source/module.js"),
     encoding = require("../source/tools/encoding.js");
-    
+
 var Archive = lib.Archive,
     Group = lib.Group;
 
 module.exports = {
-
     setUp: function(cb) {
         var archiveA = new Archive(),
             mainGroupID = encoding.getUniqueID(),
@@ -13,26 +12,26 @@ module.exports = {
             entry1ID = encoding.getUniqueID(),
             thirdGroupID = encoding.getUniqueID(),
             commonCommands = [
-                'cgr 0 ' + mainGroupID,
-                'tgr ' + mainGroupID + ' "Main Group"',
-                'pad ' + encoding.getUniqueID(),
-                'cgr ' + mainGroupID + ' ' + secondaryGroupID,
-                'tgr ' + secondaryGroupID + ' "Secondary Group"',
-                'pad ' + encoding.getUniqueID(),
-                'cen ' + mainGroupID + ' ' + entry1ID,
-                'sep ' + entry1ID + ' title "My first entry"',
-                'pad ' + encoding.getUniqueID(),
-                'sep ' + entry1ID + ' username "anonymous"',
-                'sep ' + entry1ID + ' password "retro"',
-                'pad ' + encoding.getUniqueID(),
+                "cgr 0 " + mainGroupID,
+                "tgr " + mainGroupID + ' "Main Group"',
+                "pad " + encoding.getUniqueID(),
+                "cgr " + mainGroupID + " " + secondaryGroupID,
+                "tgr " + secondaryGroupID + ' "Secondary Group"',
+                "pad " + encoding.getUniqueID(),
+                "cen " + mainGroupID + " " + entry1ID,
+                "sep " + entry1ID + ' title "My first entry"',
+                "pad " + encoding.getUniqueID(),
+                "sep " + entry1ID + ' username "anonymous"',
+                "sep " + entry1ID + ' password "retro"',
+                "pad " + encoding.getUniqueID(),
                 'cmm "after pad"',
-                'cgr 0 ' + thirdGroupID,
-                'tgr ' + thirdGroupID + ' "Websites"',
-                'pad ' + encoding.getUniqueID(),
+                "cgr 0 " + thirdGroupID,
+                "tgr " + thirdGroupID + ' "Websites"',
+                "pad " + encoding.getUniqueID(),
                 'saa "my key" "my value"',
                 'saa "notHere" "12345"',
                 'daa "notHere"',
-                'pad ' + encoding.getUniqueID()
+                "pad " + encoding.getUniqueID()
             ];
         commonCommands.forEach(function(command) {
             archiveA._getWestley().execute(command);
@@ -61,31 +60,24 @@ module.exports = {
     },
 
     _getters: {
-
         type: {
-
             hasCorrectType: function(test) {
                 test.strictEqual(this.archiveA.type, "Archive");
                 test.done();
             }
-
         }
-
     },
 
     _events: {
-
         archiveUpdated: function(test) {
             let once = 1;
             // execute done only once
             this.archiveB.once("archiveUpdated", () => test.done());
             this.archiveB.setAttribute("test", "test");
         }
-
     },
 
     createFromHistory: {
-
         createsArchive: function(test) {
             var history = this.archiveA.getHistory(),
                 newArchive = Archive.createFromHistory(history),
@@ -93,11 +85,9 @@ module.exports = {
             test.strictEqual(group3.getTitle(), "Websites", "Groups should be copied");
             test.done();
         }
-
     },
 
     createWithDefaults: {
-
         createsGeneralGroup: function(test) {
             var archive = Archive.createWithDefaults(),
                 firstGroup = archive.getGroups()[0];
@@ -112,21 +102,17 @@ module.exports = {
             test.strictEqual(firstGroup.isTrash(), true, "First group should be of type 'trash'");
             test.done();
         }
-
     },
 
     deleteAttribute: {
-
         deletesAttributes: function(test) {
             this.archiveA.deleteAttribute("my key");
             test.strictEqual(this.archiveA.getAttribute("my key"), undefined, "Attribute should have been deleted");
             test.done();
         }
-
     },
 
     emptyTrash: {
-
         emptiesTrash: function(test) {
             var archive = Archive.createWithDefaults(),
                 myGroup = archive.createGroup("Personal"),
@@ -141,11 +127,9 @@ module.exports = {
             test.strictEqual(trash.getEntries().length, 0, "Trash should have no entries after emptying");
             test.done();
         }
-
     },
 
     findEntriesByMeta: {
-
         testFindsEntriesByString: function(test) {
             var entries = this.archiveB.findEntriesByMeta("some meta", "86");
             test.strictEqual(entries.length, 1, "1 entry should be found");
@@ -169,11 +153,9 @@ module.exports = {
             test.strictEqual(entries3.length, 0, "No entries should be found for non-existent value-regex");
             test.done();
         }
-
     },
 
     findEntriesByProperty: {
-
         testFindsEntriesByString: function(test) {
             var entries = this.archiveB.findEntriesByProperty("title", "abc12");
             test.strictEqual(entries.length, 1, "1 entry should be found");
@@ -204,11 +186,9 @@ module.exports = {
             test.strictEqual(entries3.length, 0, "No entries should be found for non-existent value-regex");
             test.done();
         }
-
     },
 
     findGroupByID: {
-
         findsNestedGroup: function(test) {
             var group = this.archiveA.findGroupByID(this.group2ID);
             test.strictEqual(group.getTitle(), "Secondary Group", "Should find group with its ID");
@@ -220,16 +200,13 @@ module.exports = {
             test.strictEqual(group, null, "Should not find non-existing group");
             test.done();
         }
-
     },
 
     findGroupsByTitle: {
-
         testFindsParentByString: function(test) {
             var groups = this.archiveB.findGroupsByTitle("parent");
             test.strictEqual(groups.length, 1, "Only parent should be found");
-            test.strictEqual(groups[0].getTitle(), this.archiveBgroup1.getTitle(),
-                "Found group should be parent");
+            test.strictEqual(groups[0].getTitle(), this.archiveBgroup1.getTitle(), "Found group should be parent");
             test.done();
         },
 
@@ -254,11 +231,9 @@ module.exports = {
             test.ok(groups.indexOf(this.archiveBgroup1) < 0, "Parent should not be in results");
             test.done();
         }
-
     },
 
     getAttribute: {
-
         getsAttributeValue: function(test) {
             var attrValue = this.archiveA.getAttribute("my key");
             test.strictEqual(attrValue, "my value", "Attribute should have correct value");
@@ -272,11 +247,9 @@ module.exports = {
             test.strictEqual(attr2, undefined, "Should receive undefined for deleted attributes");
             test.done();
         }
-
     },
 
     getEntryByID: {
-
         testGetsEntryIfExists: function(test) {
             var entry = this.archiveA.getEntryByID(this.entry1ID);
             test.strictEqual(entry.getProperty("title"), "My first entry");
@@ -290,11 +263,9 @@ module.exports = {
             test.strictEqual(entry, null, "Entry should not exist");
             test.done();
         }
-
     },
 
     getGroupByID: {
-
         testGetsGroupIfExists: function(test) {
             var group = this.archiveA.getGroupByID(this.group2ID);
             test.strictEqual(group.getTitle(), "Secondary Group");
@@ -306,11 +277,9 @@ module.exports = {
             test.strictEqual(group, null, "Group should not exist");
             test.done();
         }
-
     },
 
     getGroups: {
-
         testGetsAll: function(test) {
             var groups = this.archiveA.getGroups();
             test.strictEqual(groups.length, 2, "Archive root should contain 2 groups");
@@ -324,32 +293,26 @@ module.exports = {
             });
             test.done();
         }
-
     },
 
     getHistory: {
-
         returnsHistory: function(test) {
             var history = this.archiveA.getHistory();
             test.ok(history.length > 0, "History should be a non-empty array");
             test.strictEqual(typeof history[0], "string", "History should be an array of strings");
             test.done();
         }
-
     },
 
     getID: {
-
         newArchiveCreatedWithID: function(test) {
             test.strictEqual(this.archiveA.getID().length, 36, "ID (a) should be set");
-            test.strictEqual((new Archive()).getID().length, 36, "ID (b) should be set");
+            test.strictEqual(new Archive().getID().length, 36, "ID (b) should be set");
             test.done();
         }
-
     },
 
     getTrashGroup: {
-
         testReturnsNullIfNotPresent: function(test) {
             var trashGroup = this.archiveA.getTrashGroup();
             test.strictEqual(trashGroup, null, "No trash group should be present");
@@ -363,11 +326,9 @@ module.exports = {
             test.strictEqual(trashGroup.getID(), group.getID(), "Trash group should be present");
             test.done();
         }
-
     },
 
     readOnly: {
-
         isReadWriteByDefault: function(test) {
             var archive = new Archive();
             test.ok(archive.readOnly === false, "Archive should be read-write");
@@ -393,11 +354,9 @@ module.exports = {
             );
             test.done();
         }
-
     },
 
     setAttribute: {
-
         setsAttributes: function(test) {
             var archive = this.archiveA;
             test.strictEqual(archive.getAttribute("abc"), undefined, "Non-set attribute should be undefined");
@@ -412,29 +371,23 @@ module.exports = {
             test.strictEqual(archive.getAttribute("my key"), "new value", "Attribute should contain new value");
             test.done();
         }
-
     },
 
     toObject: {
-
         outputsCorrectProperties: function(test) {
             var obj = this.archiveA.toObject();
             test.ok(obj.format, "Format should be set");
             test.ok(Array.isArray(obj.groups), "Groups should be an array");
             test.done();
         }
-
     },
 
     _generateID: {
-
         throwsIfIDExists: function(test) {
             test.throws(() => {
                 this.archiveA._generateID();
             }, "Should throw when trying to set a new ID");
             test.done();
         }
-
     }
-
 };

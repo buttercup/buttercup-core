@@ -1,12 +1,9 @@
 const { consumeEntryFacade, createEntryFacade } = entryFacade;
 
 describe("modifying data via facades", function() {
-
     beforeEach(function() {
         const archive = new Archive();
-        this.entry = archive
-            .createGroup("Test")
-            .createEntry("Test");
+        this.entry = archive.createGroup("Test").createEntry("Test");
         this.entry
             .setProperty("username", "firstuser")
             .setProperty("password", "firstpass")
@@ -36,5 +33,4 @@ describe("modifying data via facades", function() {
     it("writes meta changes", function() {
         expect(this.entry.getMeta("url")).to.equal("http://login.com");
     });
-
 });

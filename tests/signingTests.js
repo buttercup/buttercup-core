@@ -1,8 +1,7 @@
 var signing = require("../source/tools/signing.js");
 
 module.exports = {
-
-    testStripSignature: function (test) {
+    testStripSignature: function(test) {
         var raw = "SomeEncryptedContent",
             signature = signing.getSignature(),
             signed = signing.sign(raw);
