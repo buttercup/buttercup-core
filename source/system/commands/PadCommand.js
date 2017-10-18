@@ -9,9 +9,7 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class PadCommand extends BaseCommand {
-
-    execute(/*obj, padID*/) { }
-
+    execute(/*obj, padID*/) {}
 }
 
 module.exports = PadCommand;

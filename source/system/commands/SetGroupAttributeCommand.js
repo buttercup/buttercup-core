@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class SetGroupAttributeCommand extends BaseCommand {
-
     /**
      * Execute the setting of an attribute
      * @param {ArchiveDataset} obj The archive dataset
@@ -25,7 +24,6 @@ class SetGroupAttributeCommand extends BaseCommand {
         group.attributes = group.attributes || {};
         group.attributes[attributeName] = value;
     }
-
 }
 
 module.exports = SetGroupAttributeCommand;

@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class SetEntryPropertyCommand extends BaseCommand {
-
     /**
      * Execute the setting of a property
      * @param {ArchiveDataset} obj The archive dataset
@@ -27,7 +26,6 @@ class SetEntryPropertyCommand extends BaseCommand {
         }
         entry[propertyName] = value;
     }
-
 }
 
 module.exports = SetEntryPropertyCommand;

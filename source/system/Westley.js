@@ -7,7 +7,7 @@ const searchingTools = require("../tools/searching-raw.js");
 const entryTools = require("../tools/entry.js");
 const encodingTools = require("../tools/encoding.js");
 
-const VALID_COMMAND_EXP =             /^[a-z]{3}[ ].+$/;
+const VALID_COMMAND_EXP = /^[a-z]{3}[ ].+$/;
 
 const commandClasses = {
     aid: require("./commands/ArchiveIDCommand.js"),
@@ -38,7 +38,6 @@ const commandClasses = {
  * @class Westley
  */
 class Westley extends AsyncEventEmitter {
-
     constructor() {
         super();
         this.clear();
@@ -60,7 +59,7 @@ class Westley extends AsyncEventEmitter {
      * @param {Boolean} newRO The new value
      */
     set readOnly(newRO) {
-        this._readOnly = (newRO === true);
+        this._readOnly = newRO === true;
     }
 
     /**
@@ -83,7 +82,7 @@ class Westley extends AsyncEventEmitter {
      * @memberof Westley
      */
     execute(command, append) {
-        append = (append === false) ? false : true;
+        append = append === false ? false : true;
         if (!VALID_COMMAND_EXP.test(command)) {
             throw new Error("Invalid command");
         }
@@ -103,9 +102,7 @@ class Westley extends AsyncEventEmitter {
         }
         commandObject.execute.apply(
             commandObject,
-            [this._dataset].concat(
-                this._processCommandParameters(commandKey, commandComponents)
-            )
+            [this._dataset].concat(this._processCommandParameters(commandKey, commandComponents))
         );
         this.emit("commandExecuted");
         return this;
@@ -188,7 +185,6 @@ class Westley extends AsyncEventEmitter {
             return parameter;
         });
     }
-
 }
 
 module.exports = Westley;

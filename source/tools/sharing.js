@@ -3,7 +3,6 @@
 var describe = require("../system/Descriptor.js");
 
 module.exports = {
-
     /**
      * Move a group between archives
      * @param {Group} movingGroup The group to move
@@ -11,8 +10,7 @@ module.exports = {
      * @throws {Error} Throws if the remote type is not recognised
      */
     moveGroupBetweenArchives: function(movingGroup, target) {
-        let targetArchive,
-            groupDesc;
+        let targetArchive, groupDesc;
         if (target.type === "Archive") {
             // destination is an archive
             targetArchive = target;
@@ -26,7 +24,8 @@ module.exports = {
         }
         // execute each command in the destination archive
         groupDesc.forEach(function(command) {
-            targetArchive._getWestley()
+            targetArchive
+                ._getWestley()
                 .execute(command)
                 .pad();
         });
@@ -45,5 +44,4 @@ module.exports = {
         // delete
         movingGroup.delete(/* skip trash */ true);
     }
-
 };

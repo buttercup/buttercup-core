@@ -8,7 +8,6 @@ const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
  * @augments OwnCloudDatasource
  */
 class NextcloudDatasource extends OwnCloudDatasource {
-
     /**
      * Output the datasource as an object
      * @returns {Object} An object describing the datasource
@@ -20,7 +19,6 @@ class NextcloudDatasource extends OwnCloudDatasource {
             path: this._toObjectRefs.resourcePath
         };
     }
-
 }
 
 NextcloudDatasource.fromObject = function fromObject(obj, hostCredentials) {

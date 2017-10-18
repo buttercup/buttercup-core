@@ -41,7 +41,6 @@ function createCredentials() {
         data = shallowClone(arguments[1]);
     }
     const adapter = {
-
         [CREDENTIALS_ATTR]: "credentials",
 
         /**
@@ -62,7 +61,7 @@ function createCredentials() {
          * @readonly
          */
         get type() {
-            return type;  
+            return type;
         },
 
         /**
@@ -145,11 +144,8 @@ function createCredentials() {
             if (typeof masterPassword !== "string") {
                 throw new Error("Master password must be a string");
             }
-            return iocane
-                .encryptWithPassword(JSON.stringify([type, data]), masterPassword)
-                .then(signEncryptedContent);
+            return iocane.encryptWithPassword(JSON.stringify([type, data]), masterPassword).then(signEncryptedContent);
         }
-
     };
     return adapter;
 }

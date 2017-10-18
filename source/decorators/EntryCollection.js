@@ -18,34 +18,30 @@ function findEntriesByCheck(groupParent, check, key, value) {
     // If the groupParent object is a Group, use it as the only search group,
     // otherwise just take the children groups (groupParent is probably an
     // Archive instance):
-    let groups = (groupParent.getEntries) ?
-        [groupParent] : groupParent.getGroups();
-    return instanceSearching.findEntriesByCheck(
-        groups,
-        function(entry) {
-            var itemValue;
-            switch(check) {
-                case "property": {
-                    itemValue = entry.getProperty(key) || "";
-                    break;
-                }
-                case "meta": {
-                    itemValue = entry.getMeta(key) || "";
-                    break;
-                }
-                case "id": {
-                    return value === entry.getID();
-                }
-                default:
-                    throw new Error(`Unknown check instruction: ${check}`);
+    let groups = groupParent.getEntries ? [groupParent] : groupParent.getGroups();
+    return instanceSearching.findEntriesByCheck(groups, function(entry) {
+        var itemValue;
+        switch (check) {
+            case "property": {
+                itemValue = entry.getProperty(key) || "";
+                break;
             }
-            if (value instanceof RegExp) {
-                return value.test(itemValue);
-            } else {
-                return itemValue.indexOf(value) >= 0;
+            case "meta": {
+                itemValue = entry.getMeta(key) || "";
+                break;
             }
+            case "id": {
+                return value === entry.getID();
+            }
+            default:
+                throw new Error(`Unknown check instruction: ${check}`);
         }
-    );
+        if (value instanceof RegExp) {
+            return value.test(itemValue);
+        } else {
+            return itemValue.indexOf(value) >= 0;
+        }
+    });
 }
 
 /**
@@ -54,9 +50,7 @@ function findEntriesByCheck(groupParent, check, key, value) {
  */
 
 module.exports = {
-
     decorate: function(inst) {
-
         /**
          * Find an entry by its ID
          * @param {String} id The ID to search for
@@ -65,7 +59,7 @@ module.exports = {
          */
         inst.findEntryByID = function findEntryByID(id) {
             let entries = findEntriesByCheck(inst, "id", null, id);
-            return (entries && entries.length === 1) ? entries[0] : null;
+            return entries && entries.length === 1 ? entries[0] : null;
         };
 
         /**
@@ -91,7 +85,5 @@ module.exports = {
         inst.findEntriesByProperty = function findEntriesByProperty(property, value) {
             return findEntriesByCheck(inst, "property", property, value);
         };
-
     }
-
 };

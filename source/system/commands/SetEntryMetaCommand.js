@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class SetEntryMetaCommand extends BaseCommand {
-
     /**
      * Execute the setting of a meta property
      * @param {ArchiveDataset} obj The archive dataset
@@ -25,7 +24,6 @@ class SetEntryMetaCommand extends BaseCommand {
         entry.meta = entry.meta || {};
         entry.meta[propertyName] = value;
     }
-
 }
 
 module.exports = SetEntryMetaCommand;

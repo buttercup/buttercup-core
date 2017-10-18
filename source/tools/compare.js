@@ -8,7 +8,7 @@ var PRIMATIVES = ["string", "number", "boolean", "undefined"];
  * @returns {Array} The de-duped array
  */
 function dedupe(arr) {
-    return arr.filter(function (item, pos) {
+    return arr.filter(function(item, pos) {
         return arr.indexOf(item) === pos;
     });
 }
@@ -24,14 +24,14 @@ function dedupe(arr) {
  */
 function different(object1, object2) {
     if (Array.isArray(object1) && Array.isArray(object2)) {
-        let differs = object1.some(function (item1) {
-            return !object2.some(function (item2) {
+        let differs = object1.some(function(item1) {
+            return !object2.some(function(item2) {
                 return different(item1, item2) === false;
             });
         });
         if (!differs) {
-            return object2.some(function (item1) {
-                return !object1.some(function (item2) {
+            return object2.some(function(item1) {
+                return !object1.some(function(item2) {
                     return different(item1, item2) === false;
                 });
             });
@@ -41,11 +41,11 @@ function different(object1, object2) {
             return false;
         }
         let allKeys = dedupe(Object.keys(object1).concat(Object.keys(object2))),
-            isMissingAKey = allKeys.some(function (key) {
+            isMissingAKey = allKeys.some(function(key) {
                 return !(object1.hasOwnProperty(key) && object2.hasOwnProperty(key));
             });
         if (!isMissingAKey) {
-            return allKeys.some(function (key) {
+            return allKeys.some(function(key) {
                 return different(object1[key], object2[key]);
             });
         }
@@ -55,9 +55,7 @@ function different(object1, object2) {
     return true;
 }
 
-
 module.exports = {
-
     /**
      * Check if the objects differ
      * @param {*} o1 The first item
@@ -68,5 +66,4 @@ module.exports = {
     objectsDiffer: function(o1, o2) {
         return different(o1, o2);
     }
-
 };

@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class DeleteGroupCommand extends BaseCommand {
-
     /**
      * Execute the deletion of a group
      * @param {ArchiveDataset} obj The archive dataset
@@ -24,7 +23,6 @@ class DeleteGroupCommand extends BaseCommand {
         }
         containerGroup.groups.splice(containerIndex, 1);
     }
-
 }
 
 module.exports = DeleteGroupCommand;

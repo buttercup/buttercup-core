@@ -10,13 +10,13 @@ const MemoryStorageInterface = require("./storage/MemoryStorageInterface.js");
 
 const debug = createDebug("archive-manager");
 
-const STORAGE_KEY_PREFIX =          "bcup_archivemgr_";
-const STORAGE_KEY_PREFIX_TEST =     /^bcup_archivemgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+const STORAGE_KEY_PREFIX = "bcup_archivemgr_";
+const STORAGE_KEY_PREFIX_TEST = /^bcup_archivemgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
 const SourceStatus = {
-    LOCKED:     "locked",
-    UNLOCKED:   "unlocked",
-    PENDING:    "pending"
+    LOCKED: "locked",
+    UNLOCKED: "unlocked",
+    PENDING: "pending"
 };
 
 /**
@@ -49,7 +49,6 @@ const SourceStatus = {
  * Archive manager for managing archives and connections to sources
  */
 class ArchiveManager extends AsyncEventEmitter {
-
     /**
      * Constructor for ArchiveManager
      * @param {StorageInterface=} storageInterface An optional StorageInterface instance. Defaults
@@ -105,17 +104,12 @@ class ArchiveManager extends AsyncEventEmitter {
                     status: SourceStatus.UNLOCKED,
                     type: sourceCredentials.type
                 };
-                this._sources.push(Object.assign(
-                    sourceInfo,
-                    sourceMajorInfo
-                ));
-                return this
-                    .dehydrateSource(id)
-                    .then(() => {
-                        debug("added source");
-                        this.emit("sourceAdded", sourceMajorInfo);
-                        return id;
-                    });
+                this._sources.push(Object.assign(sourceInfo, sourceMajorInfo));
+                return this.dehydrateSource(id).then(() => {
+                    debug("added source");
+                    this.emit("sourceAdded", sourceMajorInfo);
+                    return id;
+                });
             })
             .catch(function __handleAddSourceError(err) {
                 throw new VError(err, "Failed adding source");
@@ -131,8 +125,7 @@ class ArchiveManager extends AsyncEventEmitter {
     dehydrateSource(id) {
         debug("dehydrate source");
         let source;
-        return Promise
-            .resolve()
+        return Promise.resolve()
             .then(() => {
                 const index = this.indexOfSource(id);
                 if (index < 0) {
@@ -144,27 +137,24 @@ class ArchiveManager extends AsyncEventEmitter {
                     return source;
                 } else if (source.status === SourceStatus.UNLOCKED) {
                     debug("secure credentials");
-                    return Promise
-                        .all([
-                            source.sourceCredentials.toSecureString(source.archiveCredentials.password),
-                            source.archiveCredentials.toSecureString(source.archiveCredentials.password)
-                        ])
-                        .then(([encParentCreds, encArchiveCreds] = []) => ({
-                            id: source.id,
-                            name: source.name,
-                            type: source.type,
-                            status: SourceStatus.LOCKED,
-                            sourceCredentials: encParentCreds,
-                            archiveCredentials: encArchiveCreds
-                        }));
+                    return Promise.all([
+                        source.sourceCredentials.toSecureString(source.archiveCredentials.password),
+                        source.archiveCredentials.toSecureString(source.archiveCredentials.password)
+                    ]).then(([encParentCreds, encArchiveCreds] = []) => ({
+                        id: source.id,
+                        name: source.name,
+                        type: source.type,
+                        status: SourceStatus.LOCKED,
+                        sourceCredentials: encParentCreds,
+                        archiveCredentials: encArchiveCreds
+                    }));
                 } else {
                     throw new VError(`Source state invalid: ${source.status}`);
                 }
             })
-            .then(lockedSource => this.storageInterface.setValue(
-                `${STORAGE_KEY_PREFIX}${lockedSource.id}`,
-                JSON.stringify(lockedSource)
-            ))
+            .then(lockedSource =>
+                this.storageInterface.setValue(`${STORAGE_KEY_PREFIX}${lockedSource.id}`, JSON.stringify(lockedSource))
+            )
             .then(() => {
                 debug("source dehydrated");
                 this.emit("sourceDehydrated", {
@@ -196,8 +186,7 @@ class ArchiveManager extends AsyncEventEmitter {
     lock(id) {
         debug("lock source");
         let source;
-        return Promise
-            .resolve()
+        return Promise.resolve()
             .then(() => {
                 const index = this.indexOfSource(id);
                 if (index < 0) {
@@ -209,10 +198,12 @@ class ArchiveManager extends AsyncEventEmitter {
                 }
                 source.status = SourceStatus.PENDING;
             })
-            .then(() => Promise.all([
-                source.sourceCredentials.toSecureString(source.archiveCredentials.password),
-                source.archiveCredentials.toSecureString(source.archiveCredentials.password)
-            ]))
+            .then(() =>
+                Promise.all([
+                    source.sourceCredentials.toSecureString(source.archiveCredentials.password),
+                    source.archiveCredentials.toSecureString(source.archiveCredentials.password)
+                ])
+            )
             .then(([encParentCreds, encArchiveCreds] = []) => {
                 this._replace(source.id, {
                     id: source.id,
@@ -251,25 +242,27 @@ class ArchiveManager extends AsyncEventEmitter {
         debug("rehydrate sources");
         return this.storageInterface
             .getAllKeys()
-            .then(keys => Promise.all(
-                keys
-                    .filter(key => STORAGE_KEY_PREFIX_TEST.test(key))
-                    .map(key => this.storageInterface
-                        .getValue(key)
-                        .then(JSON.parse)
-                        .then(lockedSource => {
-                            this.sources.push(lockedSource);
-                            this.emit("sourceRehydrated", {
-                                id: lockedSource.id,
-                                name: lockedSource.name,
-                                status: SourceStatus.LOCKED,
-                                type: lockedSource.type
-                            });
-                        })
-                        .catch(function __handleDehydratedReadError(err) {
-                            throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
-                        })
-            )))
+            .then(keys =>
+                Promise.all(
+                    keys.filter(key => STORAGE_KEY_PREFIX_TEST.test(key)).map(key =>
+                        this.storageInterface
+                            .getValue(key)
+                            .then(JSON.parse)
+                            .then(lockedSource => {
+                                this.sources.push(lockedSource);
+                                this.emit("sourceRehydrated", {
+                                    id: lockedSource.id,
+                                    name: lockedSource.name,
+                                    status: SourceStatus.LOCKED,
+                                    type: lockedSource.type
+                                });
+                            })
+                            .catch(function __handleDehydratedReadError(err) {
+                                throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
+                            })
+                    )
+                )
+            )
             .then(() => {
                 debug("sources rehydrated");
             })
@@ -285,10 +278,8 @@ class ArchiveManager extends AsyncEventEmitter {
      */
     remove(id) {
         debug("remove source");
-        let source,
-            sourceIndex;
-        return Promise
-            .resolve()
+        let source, sourceIndex;
+        return Promise.resolve()
             .then(() => {
                 sourceIndex = this.indexOfSource(id);
                 if (sourceIndex < 0) {
@@ -318,8 +309,7 @@ class ArchiveManager extends AsyncEventEmitter {
     unlock(id, masterPassword) {
         debug("unlock source");
         let source;
-        return Promise
-            .resolve()
+        return Promise.resolve()
             .then(() => {
                 const index = this.indexOfSource(id);
                 if (index < 0) {
@@ -338,15 +328,15 @@ class ArchiveManager extends AsyncEventEmitter {
             .then(([sourceCredentials, archiveCredentials] = []) => {
                 return credentialsToSource(sourceCredentials, archiveCredentials, /* initialise */ false)
                     .then(sourceInfo => {
-                        this._replace(source.id, Object.assign(
-                            sourceInfo,
-                            {
+                        this._replace(
+                            source.id,
+                            Object.assign(sourceInfo, {
                                 id: source.id,
                                 name: source.name,
                                 status: SourceStatus.UNLOCKED,
                                 type: sourceCredentials.type
-                            }
-                        ))
+                            })
+                        );
                     })
                     .catch(function __handleCredentialsMapError(err) {
                         throw new VError(err, "Failed mapping credentials to a source");
@@ -383,7 +373,6 @@ class ArchiveManager extends AsyncEventEmitter {
         }
         this.sources[index] = source;
     }
-
 }
 
 ArchiveManager.SourceStatus = SourceStatus;

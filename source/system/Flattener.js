@@ -6,7 +6,7 @@
  * @private
  * @memberof Flattener
  */
-var PRESERVE_LAST_LINES =                         1000;
+var PRESERVE_LAST_LINES = 1000;
 
 const describe = require("./Descriptor.js"),
     Westley = require("./Westley.js");
@@ -31,7 +31,6 @@ function mustBePreserved(command) {
  * @param {Westley} westley The Westley instance
  */
 class Flattener {
-
     constructor(westley) {
         this._westley = westley;
     }
@@ -43,7 +42,7 @@ class Flattener {
      * @memberof Flattener
      */
     canBeFlattened() {
-        return (this._westley.getHistory().length > PRESERVE_LAST_LINES);
+        return this._westley.getHistory().length > PRESERVE_LAST_LINES;
     }
 
     /**
@@ -54,7 +53,7 @@ class Flattener {
      * @memberof Flattener
      */
     flatten(force) {
-        force = (force === undefined) ? false : force;
+        force = force === undefined ? false : force;
         var history = this._westley.getHistory(),
             availableLines = history.length - PRESERVE_LAST_LINES,
             cleanHistory,
@@ -81,8 +80,8 @@ class Flattener {
         cleanHistory = describe(tempWestley.getDataset());
         // prepare to replay
         var newHistory = []
-            .concat(preservedLines)                   // preserved commands that cannot be stripped
-            .concat(cleanHistory)                    // the newly flattened description commands
+            .concat(preservedLines) // preserved commands that cannot be stripped
+            .concat(cleanHistory) // the newly flattened description commands
             .concat(history.slice(availableLines)); // the existing history minus the flattened portion
         // clear the system
         this._westley.clear();
@@ -101,7 +100,6 @@ class Flattener {
     getPreservationCount() {
         return PRESERVE_LAST_LINES;
     }
-
 }
 
 module.exports = Flattener;

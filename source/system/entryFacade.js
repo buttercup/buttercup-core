@@ -18,12 +18,14 @@ function addMetaFieldsNonDestructive(entry, fields) {
         ...fields,
         ...Object.keys(meta)
             .filter(name => !exists(name))
-            .map(name => createFieldDescriptor(
-                entry,  // Entry instance
-                name,   // Title
-                "meta", // Type
-                name    // Property name
-            ))
+            .map(name =>
+                createFieldDescriptor(
+                    entry, // Entry instance
+                    name, // Title
+                    "meta", // Type
+                    name // Property name
+                )
+            )
     ];
 }
 
@@ -61,16 +63,18 @@ function consumeEntryFacade(entry, facade) {
         (facade.fields || []).forEach(field => applyFieldDescriptor(entry, field));
         // remove missing meta
         Object.keys(meta).forEach(metaKey => {
-            const correspondingField = facade.fields.find(({ field, property }) =>
-                field === "meta" && property === metaKey);
+            const correspondingField = facade.fields.find(
+                ({ field, property }) => field === "meta" && property === metaKey
+            );
             if (typeof correspondingField === "undefined") {
                 entry.deleteMeta(metaKey);
             }
         });
         // remove missing attributes
         Object.keys(attributes).forEach(attrKey => {
-            const correspondingField = facade.fields.find(({ field, property }) =>
-                field === "attribute" && property === attrKey);
+            const correspondingField = facade.fields.find(
+                ({ field, property }) => field === "attribute" && property === attrKey
+            );
             if (typeof correspondingField === "undefined") {
                 entry.deleteAttribute(attrKey);
             }

@@ -13,7 +13,7 @@ var Archive = require("./Archive.js"),
  * @memberof Workspace
  */
 function getCommandType(fullCommand) {
-    return (fullCommand && fullCommand.length >= 3) ? fullCommand.substr(0, 3) : "";
+    return fullCommand && fullCommand.length >= 3 ? fullCommand.substr(0, 3) : "";
 }
 
 /**
@@ -33,7 +33,7 @@ function getCommandType(fullCommand) {
  * @memberof Workspace
  */
 function itemIsWriteable(item) {
-    return item && item.saveable && item.archive && (item.archive.readOnly === false);
+    return item && item.saveable && item.archive && item.archive.readOnly === false;
 }
 
 /**
@@ -45,11 +45,10 @@ function itemIsWriteable(item) {
  * @memberof Workspace
  */
 function stripDestructiveCommands(history) {
-    let destructiveSlugs = Object
-        .keys(Inigo.Command)
-        .map((key) => Inigo.Command[key])
-        .filter((command) => command.d)
-        .map((command) => command.s);
+    let destructiveSlugs = Object.keys(Inigo.Command)
+        .map(key => Inigo.Command[key])
+        .filter(command => command.d)
+        .map(command => command.s);
     return history.filter(function(command) {
         return destructiveSlugs.indexOf(getCommandType(command)) < 0;
     });
@@ -60,7 +59,6 @@ function stripDestructiveCommands(history) {
  * @class Workspace
  */
 class Workspace {
-
     constructor() {
         this._archives = [];
     }
@@ -74,8 +72,7 @@ class Workspace {
      * @name primary
      */
     get primary() {
-        return (this._archives[0]) ?
-            this._archives[0] : null;
+        return this._archives[0] ? this._archives[0] : null;
     }
 
     /**
@@ -87,15 +84,15 @@ class Workspace {
      * @returns {Workspace} Self
      */
     addSharedArchive(archive, datasource, masterCredentials, saveable) {
-        saveable = (saveable === undefined) ? true : saveable;
+        saveable = saveable === undefined ? true : saveable;
         if (this._archives.length <= 0) {
             this._archives[0] = null;
         }
         this._archives.push({
-            archive:        archive,
-            datasource:     datasource,
-            credentials:    masterCredentials,
-            saveable:       saveable
+            archive: archive,
+            datasource: datasource,
+            credentials: masterCredentials,
+            saveable: saveable
         });
         return this;
     }
@@ -155,20 +152,16 @@ class Workspace {
      *      there are differences, false if there is not
      */
     localDiffersFromRemote() {
-        return Promise
-            .all(
-                this.getSaveableItems().map(function(item) {
-                    return item.datasource
-                        .load(item.credentials)
-                        .then(function(loadedItem) {
-                            var comparator = new Comparator(item.archive, loadedItem);
-                            return comparator.archivesDiffer();
-                        });
-                })
-            )
-            .then(function(differences) {
-                return differences.some((differs) => differs);
-            });
+        return Promise.all(
+            this.getSaveableItems().map(function(item) {
+                return item.datasource.load(item.credentials).then(function(loadedItem) {
+                    var comparator = new Comparator(item.archive, loadedItem);
+                    return comparator.archivesDiffer();
+                });
+            })
+        ).then(function(differences) {
+            return differences.some(differs => differs);
+        });
     }
 
     /**
@@ -183,32 +176,30 @@ class Workspace {
         if (!itemIsWriteable(item)) {
             throw new Error("Archive not writeable");
         }
-        return item.datasource
-            .load(item.credentials)
-            .then(function(stagedArchive) {
-                const comparator = new Comparator(item.archive, stagedArchive);
-                const differences = comparator.calculateDifferences();
-                // only strip if there are multiple updates
-                const stripDestructive = differences.secondary.length > 0;
-                const newHistoryMain = stripDestructive ?
-                    stripDestructiveCommands(differences.original) :
-                    differences.original;
-                const newHistoryStaged = stripDestructive ? 
-                    stripDestructiveCommands(differences.secondary) :
-                    differences.secondary;
-                const base = differences.common;
-                const newArchive = new Archive();
-                newArchive._getWestley().clear();
-                // merge all history and execute on new archive
-                base
-                    .concat(newHistoryStaged)
-                    .concat(newHistoryMain)
-                    .forEach(function(command) {
-                        newArchive._getWestley().execute(command);
-                    });
-                item.archive = newArchive;
-                return newArchive;
-            });
+        return item.datasource.load(item.credentials).then(function(stagedArchive) {
+            const comparator = new Comparator(item.archive, stagedArchive);
+            const differences = comparator.calculateDifferences();
+            // only strip if there are multiple updates
+            const stripDestructive = differences.secondary.length > 0;
+            const newHistoryMain = stripDestructive
+                ? stripDestructiveCommands(differences.original)
+                : differences.original;
+            const newHistoryStaged = stripDestructive
+                ? stripDestructiveCommands(differences.secondary)
+                : differences.secondary;
+            const base = differences.common;
+            const newArchive = new Archive();
+            newArchive._getWestley().clear();
+            // merge all history and execute on new archive
+            base
+                .concat(newHistoryStaged)
+                .concat(newHistoryMain)
+                .forEach(function(command) {
+                    newArchive._getWestley().execute(command);
+                });
+            item.archive = newArchive;
+            return newArchive;
+        });
     }
 
     /**
@@ -218,16 +209,14 @@ class Workspace {
      * @returns {Promise.<Archive[]>} A promise that resolves with an array of merged Archives
      */
     mergeSaveablesFromRemote() {
-        return Promise
-            .all(
-                this.getSaveableItems().map((item) => {
-                    return this.mergeItemFromRemote(item);
-                })
-            )
-            .then((archives) => {
-                this.imbue();
-                return archives;
-            });
+        return Promise.all(
+            this.getSaveableItems().map(item => {
+                return this.mergeItemFromRemote(item);
+            })
+        ).then(archives => {
+            this.imbue();
+            return archives;
+        });
     }
 
     /**
@@ -237,10 +226,7 @@ class Workspace {
     save() {
         return Promise.all(
             this.getSaveableItems().map(function(item) {
-                return item.datasource.save(
-                    item.archive,
-                    item.credentials
-                );
+                return item.datasource.save(item.archive, item.credentials);
             })
         );
     }
@@ -254,14 +240,13 @@ class Workspace {
      */
     setPrimaryArchive(archive, datasource, masterCredentials) {
         this._archives[0] = {
-            archive:        archive,
-            datasource:     datasource,
-            credentials:    masterCredentials,
-            saveable:       true
+            archive: archive,
+            datasource: datasource,
+            credentials: masterCredentials,
+            saveable: true
         };
         return this;
     }
-
 }
 
 module.exports = Workspace;

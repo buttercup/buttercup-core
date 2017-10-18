@@ -35,8 +35,7 @@ Entry.prototype.delete = function() {
     debug("delete entry");
     var trashGroup = this._getArchive().getTrashGroup(),
         parentGroup = this.getGroup(),
-        canTrash = (trashGroup && parentGroup) &&
-            (!parentGroup.isTrash() && !parentGroup.isInTrash());
+        canTrash = trashGroup && parentGroup && (!parentGroup.isTrash() && !parentGroup.isInTrash());
     if (canTrash) {
         debug("move to trash (delete)");
         // trash it
@@ -111,8 +110,7 @@ Entry.prototype.getAttribute = function(attributeName) {
         // No property, return entire object
         return Object.assign({}, attributes);
     }
-    return attributes.hasOwnProperty(attributeName) ?
-        attributes[attributeName] : undefined;
+    return attributes.hasOwnProperty(attributeName) ? attributes[attributeName] : undefined;
 };
 
 /**
@@ -123,10 +121,7 @@ Entry.prototype.getAttribute = function(attributeName) {
 Entry.prototype.getGroup = function() {
     debug("fetch parent group");
     // @todo move to a new searching library
-    var parentInfo = searching.findGroupContainingEntryID(
-            this._getWestley().getDataset().groups || [],
-            this.getID()
-        );
+    var parentInfo = searching.findGroupContainingEntryID(this._getWestley().getDataset().groups || [], this.getID());
     if (parentInfo && parentInfo.group) {
         // require Group here due to circular references:
         var Group = require("./Group.js");
@@ -161,12 +156,8 @@ Entry.prototype.getMeta = function(property) {
         return Object.assign({}, meta);
     }
     // Find the first meta key that matches the requested one regardless of case:
-    const metaKey = Object.keys(meta).find(key =>
-        key.toLowerCase() === property.toLowerCase()
-    );
-    return metaKey ?
-        meta[metaKey] :
-        undefined;
+    const metaKey = Object.keys(meta).find(key => key.toLowerCase() === property.toLowerCase());
+    return metaKey ? meta[metaKey] : undefined;
 };
 
 /**
@@ -188,8 +179,7 @@ Entry.prototype.getProperty = function(property) {
             });
         }, {});
     }
-    return raw.hasOwnProperty(property) && entryTools.isValidProperty(property) ?
-        raw[property] : undefined;
+    return raw.hasOwnProperty(property) && entryTools.isValidProperty(property) ? raw[property] : undefined;
 };
 
 /**
@@ -363,7 +353,7 @@ Entry.prototype._getWestley = function() {
 };
 
 Entry.Attributes = Object.freeze({
-    FacadeType:            "BC_ENTRY_FACADE_TYPE"
+    FacadeType: "BC_ENTRY_FACADE_TYPE"
 });
 
 /**

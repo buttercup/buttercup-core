@@ -25,7 +25,6 @@ const debug = createDebug("archive");
  * @mixes EntryCollection
  */
 class Archive extends AsyncEventEmitter {
-
     constructor() {
         super();
         debug("new archive");
@@ -39,7 +38,7 @@ class Archive extends AsyncEventEmitter {
             ts = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
         this._getWestley().execute(
             Inigo.create(Inigo.Command.Comment)
-                .addArgument('Buttercup archive created (' + ts + ')')
+                .addArgument("Buttercup archive created (" + ts + ")")
                 .generateCommand()
         );
         // set format
@@ -69,7 +68,8 @@ class Archive extends AsyncEventEmitter {
         return this._getWestley().readOnly;
     }
 
-    set readOnly(ro) { // eslint-disable-line
+    set readOnly(ro) {
+        // eslint-disable-line
         throw new Error("readOnly is read-only");
     }
 
@@ -158,7 +158,7 @@ class Archive extends AsyncEventEmitter {
     equals(archive) {
         let thisID = this.getID(),
             remoteID = archive.getID();
-        return (thisID === remoteID);
+        return thisID === remoteID;
     }
 
     /**
@@ -186,7 +186,7 @@ class Archive extends AsyncEventEmitter {
         debug("fetch entry by ID");
         var westley = this._getWestley(),
             entryRaw = rawSearching.findEntryByID(westley.getDataset().groups, entryID);
-        return (entryRaw === null) ? null : new Entry(this, entryRaw);
+        return entryRaw === null ? null : new Entry(this, entryRaw);
     }
 
     /**
@@ -210,7 +210,7 @@ class Archive extends AsyncEventEmitter {
         debug("fetch group by ID");
         var westley = this._getWestley(),
             groupRaw = rawSearching.findGroupByID(westley.getDataset().groups, groupID);
-        return (groupRaw === null) ? null : new Group(this, groupRaw);
+        return groupRaw === null ? null : new Group(this, groupRaw);
     }
 
     /**
@@ -335,7 +335,6 @@ class Archive extends AsyncEventEmitter {
     _getWestley() {
         return this._westley;
     }
-
 }
 
 /**
@@ -368,9 +367,7 @@ Archive.createWithDefaults = function() {
     debug("create archive (defaults)");
     var archive = new Archive(),
         generalGroup = archive.createGroup("General"),
-        trashGroup = archive
-            .createGroup("Trash")
-                .setAttribute(Group.Attributes.Role, "trash");
+        trashGroup = archive.createGroup("Trash").setAttribute(Group.Attributes.Role, "trash");
     return archive;
 };
 

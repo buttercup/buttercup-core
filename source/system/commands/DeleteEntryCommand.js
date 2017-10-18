@@ -8,7 +8,6 @@ const BaseCommand = require("./BaseCommand.js");
  * @augments BaseCommand
  */
 class DeleteEntryCommand extends BaseCommand {
-
     /**
      * Execute the entry deletion
      * @param {ArchiveDataset} obj The archive dataset
@@ -24,7 +23,6 @@ class DeleteEntryCommand extends BaseCommand {
         }
         containerGroup.entries.splice(containerIndex, 1);
     }
-
 }
 
 module.exports = DeleteEntryCommand;

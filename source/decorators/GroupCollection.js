@@ -8,9 +8,7 @@ var instanceSearching = require("../tools/searching-instance.js");
  */
 
 module.exports = {
-
     decorate: function(inst) {
-
         /**
          * Find a group by its ID
          * @returns {Group|null} The group or null if not found
@@ -19,13 +17,10 @@ module.exports = {
          * @name findGroupByID
          */
         inst.findGroupByID = function findGroupByID(id) {
-            let foundGroups = instanceSearching.findGroupsByCheck(
-                inst.getGroups(),
-                function(group) {
-                    return (group.getID() === id);
-                }
-            );
-            return (foundGroups && foundGroups.length === 1) ? foundGroups[0] : null;
+            let foundGroups = instanceSearching.findGroupsByCheck(inst.getGroups(), function(group) {
+                return group.getID() === id;
+            });
+            return foundGroups && foundGroups.length === 1 ? foundGroups[0] : null;
         };
 
         /**
@@ -36,18 +31,13 @@ module.exports = {
          * @returns {Array.<Group>} An array of groups
          */
         inst.findGroupsByTitle = function findGroupsByTitle(title) {
-            return instanceSearching.findGroupsByCheck(
-                inst.getGroups(),
-                function(group) {
-                    if (title instanceof RegExp) {
-                        return title.test(group.getTitle());
-                    } else {
-                        return group.getTitle().indexOf(title) >= 0;
-                    }
+            return instanceSearching.findGroupsByCheck(inst.getGroups(), function(group) {
+                if (title instanceof RegExp) {
+                    return title.test(group.getTitle());
+                } else {
+                    return group.getTitle().indexOf(title) >= 0;
                 }
-            );
+            });
         };
-
     }
-
 };

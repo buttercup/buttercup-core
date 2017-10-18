@@ -5,7 +5,6 @@
  * @module command
  */
 module.exports = {
-
     /**
      * Extract command components from a string
      * @param {String} command The command to extract from
@@ -22,9 +21,8 @@ module.exports = {
 
         while ((match = patt.exec(command))) {
             var matched = match[0];
-            command = command.substr(0, match.index) +
-                quotedStringPlaceholder +
-                command.substr(match.index + matched.length);
+            command =
+                command.substr(0, match.index) + quotedStringPlaceholder + command.substr(match.index + matched.length);
             matches.push(matched.substring(1, matched.length - 1));
         }
 
@@ -34,11 +32,10 @@ module.exports = {
             if (item === quotedStringPlaceholder) {
                 item = matches.shift();
             }
-            item = item.replace(new RegExp(escapedQuotePlaceholder, 'g'), '"');
+            item = item.replace(new RegExp(escapedQuotePlaceholder, "g"), '"');
             return item;
         });
 
         return parts;
     }
-
 };

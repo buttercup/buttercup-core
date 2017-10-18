@@ -23,9 +23,9 @@ function resolveProperty(data, key) {
         if (keyParts.length <= 0) {
             return data[prop];
         } else {
-            return typeof data[prop] === "object" && data[prop] !== null ?
-                resolveProperty(data[prop], keyParts) :
-                PROPERTY_NOT_FOUND;
+            return typeof data[prop] === "object" && data[prop] !== null
+                ? resolveProperty(data[prop], keyParts)
+                : PROPERTY_NOT_FOUND;
         }
     }
     return PROPERTY_NOT_FOUND;
@@ -57,7 +57,6 @@ function setProperty(data, key, value) {
  * @param {Object} data
  */
 class Model {
-
     constructor(data) {
         this._data = data || {};
     }
@@ -101,7 +100,6 @@ class Model {
         setProperty(this._data, key, value);
         return this;
     }
-
 }
 
 module.exports = Model;

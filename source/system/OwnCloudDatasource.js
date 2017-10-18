@@ -9,7 +9,6 @@ const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
  * @augments WebDAVDatasource
  */
 class OwnCloudDatasource extends WebDAVDatasource {
-
     /**
      * Datasource for Owncloud connections
      * @param {String} owncloudURL The URL to the owncloud instance, without "remote.php/webdav" etc.
@@ -19,7 +18,7 @@ class OwnCloudDatasource extends WebDAVDatasource {
     constructor(owncloudURL, resourcePath, credentials) {
         let urlLen = owncloudURL.length,
             toObjectRefs = { owncloudURL, resourcePath };
-        owncloudURL = (owncloudURL[urlLen - 1] === "/") ? owncloudURL : owncloudURL + "/";
+        owncloudURL = owncloudURL[urlLen - 1] === "/" ? owncloudURL : owncloudURL + "/";
         owncloudURL += "remote.php/webdav/";
         super(owncloudURL, resourcePath, credentials);
         this._toObjectRefs = toObjectRefs;
@@ -36,7 +35,6 @@ class OwnCloudDatasource extends WebDAVDatasource {
             path: this._toObjectRefs.resourcePath
         };
     }
-
 }
 
 OwnCloudDatasource.fromObject = function fromObject(obj, hostCredentials) {
