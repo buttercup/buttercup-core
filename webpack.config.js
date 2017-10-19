@@ -7,8 +7,8 @@ const { DefinePlugin } = webpack;
 const WEB_ENTRY = path.resolve(__dirname, "./source/web/index.js");
 const DIST = path.resolve(__dirname, "./dist");
 
-module.exports = {
-
+const baseConfig = {
+    
     entry: WEB_ENTRY,
 
     module: {
@@ -42,8 +42,20 @@ module.exports = {
     plugins: [
         new DefinePlugin({
             BUTTERCUP_WEB: true
-        }),
-        new UglifyJSPlugin()
+        })
     ]
 
 };
+
+module.exports = [
+    baseConfig,
+    Object.assign({}, baseConfig, {
+        output: Object.assign({}, baseConfig.output, {
+            filename: "buttercup-web.min.js"
+        }),
+        plugins: [
+            ...baseConfig.plugins,
+            new UglifyJSPlugin()
+        ]
+    })
+];
