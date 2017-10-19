@@ -14,6 +14,7 @@
     }
   ],
   "scripts": {
+    "build": "webpack",
     "format": "prettier --write '{source,test,tests}/**/*.js'",
     "generate:archive": "node scripts/generate_test_archive.js",
     "generate:docs": "./scripts/generate-docs",
@@ -53,6 +54,7 @@
   "dependencies": {
     "clone": "~1.0.2",
     "debug": "~2.3.3",
+    "dropbox-fs": "~0.1.0",
     "eventemitter3": "~2.0.3",
     "gzip-js": "~0.3.2",
     "iocane": "~0.10.0",
@@ -64,6 +66,9 @@
     "webdav-fs": "~1.5.0"
   },
   "devDependencies": {
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.2",
+    "babel-preset-env": "1.6.1",
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "codeclimate-test-reporter": "^0.4.0",
@@ -74,11 +79,13 @@
     "lint-staged": "4.3.0",
     "mocha": "^3.2.0",
     "nodeunit": "~0.9.1",
+    "null-loader": "0.1.1",
     "prettier": "1.7.4",
     "prettier-check": "2.0.0",
     "rimraf": "^2.5.4",
     "sinon": "^1.17.7",
-    "walk": "~2.3.9"
+    "walk": "~2.3.9",
+    "webpack": "3.8.1"
   },
   "collective": {
     "type": "opencollective",
