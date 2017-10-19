@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 const { DefinePlugin } = webpack;
 
@@ -33,13 +34,16 @@ module.exports = {
 
     output: {
         path: DIST,
-        filename: "buttercup-web.js"
+        filename: "buttercup-web.js",
+        library: "Buttercup",
+        libraryTarget: "umd"
     },
 
     plugins: [
         new DefinePlugin({
             BUTTERCUP_WEB: true
-        })
+        }),
+        new UglifyJSPlugin()
     ]
 
 };
