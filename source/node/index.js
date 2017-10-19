@@ -24,6 +24,7 @@ module.exports = {
     NextcloudDatasource: require("./system/NextcloudDatasource.js"),
     WebDAVDatasource: require("./system/WebDAVDatasource.js"),
     MyButtercupDatasource: require("./system/MyButtercupDatasource.js"),
+    DropboxDatasource: require("./system/DropboxDatasource.js"),
 
     Flattener: require("./system/Flattener.js"),
     Descriptor: require("./system/Descriptor.js"),
