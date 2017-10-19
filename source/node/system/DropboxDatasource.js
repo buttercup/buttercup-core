@@ -9,7 +9,6 @@ const { registerDatasource } = DatasourceAdapter;
  * @augments TextDatasource
  */
 class DropboxDatasource extends TextDatasource {
-
     /**
      * Datasource for Dropbox accounts
      * @param {String} accessToken The dropbox access token
@@ -30,15 +29,14 @@ class DropboxDatasource extends TextDatasource {
      * @returns {Promise.<Archive>} A promise that resolves with an archive
      */
     load(credentials) {
-        return (new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             this.dfs.readFile(this.path, { encoding: "utf8" }, function _readFile(error, data) {
                 if (error) {
                     return reject(error);
                 }
                 return resolve(data);
             });
-        }))
-        .then((content) => {
+        }).then(content => {
             this.setContent(content);
             return super.load(credentials);
         });
@@ -51,18 +49,16 @@ class DropboxDatasource extends TextDatasource {
      * @returns {Promise} A promise that resolves when saving has completed
      */
     save(archive, credentials) {
-        return super
-            .save(archive, credentials)
-            .then((encryptedContent) => {
-                return new Promise((resolve, reject) => {
-                    this.dfs.writeFile(this.path, encryptedContent, function _writeFile(err) {
-                        if (err) {
-                            return reject(err);
-                        }
-                        return resolve();
-                    });
+        return super.save(archive, credentials).then(encryptedContent => {
+            return new Promise((resolve, reject) => {
+                this.dfs.writeFile(this.path, encryptedContent, function _writeFile(err) {
+                    if (err) {
+                        return reject(err);
+                    }
+                    return resolve();
                 });
             });
+        });
     }
 
     /**
@@ -76,7 +72,6 @@ class DropboxDatasource extends TextDatasource {
             path: this.path
         };
     }
-
 }
 
 DropboxDatasource.fromObject = function fromObject(obj) {

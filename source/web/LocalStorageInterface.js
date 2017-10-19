@@ -9,7 +9,6 @@ function getStorage() {
  * @augments StorageInterface
  */
 class LocalStorageInterface extends StorageInterface {
-
     constructor() {
         super();
         this._storage = getStorage();
@@ -47,7 +46,6 @@ class LocalStorageInterface extends StorageInterface {
         this.storage.setItem(name, value);
         return Promise.resolve();
     }
-
 }
 
 module.exports = LocalStorageInterface;

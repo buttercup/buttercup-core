@@ -53,36 +53,29 @@ function deriveKeyFromPassword(password, salt, rounds, bits /* , algorithm */) {
         },
         bytes = bits / 8,
         keysLen = bytes / 2;
-    return subtleCrypto.importKey(
+    return subtleCrypto
+        .importKey(
             "raw",
             stringToArrayBuffer(password),
             { name: "PBKDF2" },
             false, // not extractable
             ["deriveBits"]
         )
-        .then((keyData) => subtleCrypto.deriveBits(params, keyData, bits))
-        .then((derivedData) => Promise.all([
-            subtleCrypto.importKey(
-                "raw",
-                derivedData.slice(0, keysLen),
-                "AES-CBC",
-                true,
-                ["encrypt", "decrypt"]
-            ),
-            subtleCrypto.importKey(
-                "raw",
-                derivedData.slice(keysLen, keysLen * 2),
-                "AES-CBC",
-                true,
-                ["encrypt", "decrypt"]
-            )
-        ]))
-        .then((aesKeys) => Promise.all([
-            subtleCrypto.exportKey("raw", aesKeys[0]),
-            subtleCrypto.exportKey("raw", aesKeys[1])
-        ]))
-        .then((rawKeys) => joinBuffers(rawKeys[0], rawKeys[1]))
-        .then((arrBuff) => addHexSupportToArrayBuffer(arrBuff)); // HAXOR
+        .then(keyData => subtleCrypto.deriveBits(params, keyData, bits))
+        .then(derivedData =>
+            Promise.all([
+                subtleCrypto.importKey("raw", derivedData.slice(0, keysLen), "AES-CBC", true, ["encrypt", "decrypt"]),
+                subtleCrypto.importKey("raw", derivedData.slice(keysLen, keysLen * 2), "AES-CBC", true, [
+                    "encrypt",
+                    "decrypt"
+                ])
+            ])
+        )
+        .then(aesKeys =>
+            Promise.all([subtleCrypto.exportKey("raw", aesKeys[0]), subtleCrypto.exportKey("raw", aesKeys[1])])
+        )
+        .then(rawKeys => joinBuffers(rawKeys[0], rawKeys[1]))
+        .then(arrBuff => addHexSupportToArrayBuffer(arrBuff)); // HAXOR
 }
 
 /**
