@@ -7,9 +7,12 @@ node_modules
 
 # this contains test information, not needed for a user
 build
+.babelrc
 
 # our unit tests
+test
 tests
+coverage
 
 # codeclimate configuration
 .codeclimate.yml
