@@ -21,6 +21,9 @@ class FileDatasource extends TextDatasource {
     constructor(filename) {
         debug("new file datasource");
         super("");
+        if (typeof BUTTERCUP_WEB !== "undefined" && BUTTERCUP_WEB === true) {
+            throw new Error("FileDatasource is not available in the browser");
+        }
         this._filename = filename;
     }
 
