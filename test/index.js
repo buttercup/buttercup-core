@@ -1,12 +1,10 @@
-"use strict";
+const chai = require("chai");
+const chaiAsPromised = require("chai-as-promised");
+const sinon = require("sinon");
+const mocha = require("mocha");
 
-var chai = require("chai"),
-    chaiAsPromised = require("chai-as-promised"),
-    sinon = require("sinon"),
-    mocha = require("mocha");
-
-var Buttercup = require("../source/node/index.js"),
-    iocane = require("iocane");
+const Buttercup = require("../source/node/index.js");
+const iocane = require("iocane");
 
 chai.use(chaiAsPromised);
 

@@ -1,9 +1,7 @@
-"use strict";
-
 function arrayBufferToHexString(arrayBuffer) {
-    var byteArray = new Uint8Array(arrayBuffer);
-    var hexString = "";
-    var nextHexByte;
+    const byteArray = new Uint8Array(arrayBuffer);
+    let hexString = "",
+        nextHexByte;
 
     for (let i = 0; i < byteArray.byteLength; i += 1) {
         nextHexByte = byteArray[i].toString(16);
@@ -88,14 +86,14 @@ function patchCorePBKDF(handler = lib.deriveKeyFromPassword) {
 }
 
 function joinBuffers(buffer1, buffer2) {
-    var tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
+    let tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
     tmp.set(new Uint8Array(buffer1), 0);
     tmp.set(new Uint8Array(buffer2), buffer1.byteLength);
     return tmp.buffer;
 }
 
 function stringToArrayBuffer(string) {
-    var encoder = new TextEncoder("utf-8");
+    const encoder = new TextEncoder("utf-8");
     return encoder.encode(string);
 }
 
