@@ -48,14 +48,20 @@ You may want to read the [API documentation](https://github.com/buttercup-pw/but
 
 ### Buttercup suite
 
-This core library fuels the processing for several other libraries, such as the [desktop application](https://github.com/buttercup-pw/buttercup), [core library for use in browsers](https://github.com/buttercup-pw/buttercup-core-web), [server for hosting archives](https://github.com/buttercup-pw/buttercup-server) and [command-line application](https://github.com/buttercup-pw/buttercup-cli).
+This core library fuels the processing for several other libraries, such as the [desktop application](https://github.com/buttercup-pw/buttercup-desktop), [mobile application](https://github.com/buttercup-pw/buttercup-mobile) and [browser extension](https://github.com/buttercup-pw/buttercup-browser-extension).
 
 ## Usage
 
-Buttercup can easily be imported and used in NodeJS applications from version **4.x and upwards**:
+Buttercup can easily be imported and used in NodeJS applications from version **6.11 and upwards**:
 
 ```javascript
 const Buttercup = require("buttercup"); // buttercup-core is "buttercup" on npm
+```
+
+Buttercup for browsers is also bundled and can be used like so:
+
+```javascript
+import Buttercup from "buttercup/dist/buttercup-web.min.js";
 ```
 
 ### Creating content

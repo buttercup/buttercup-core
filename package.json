@@ -19,6 +19,7 @@
     "generate:archive": "node scripts/generate_test_archive.js",
     "generate:docs": "./scripts/generate-docs",
     "postinstall": "opencollective postinstall",
+    "prepublish": "npm run build",
     "test": "run-p --max-parallel 2 test:lint test:format test:istanbul test:unit test:integration test:web",
     "test:ci:node": "run-s test:lint test:format test:istanbul test:unit test:integration",
     "test:ci:web": "run-s test:web",
