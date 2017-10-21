@@ -1,8 +1,6 @@
-"use strict";
+const __datasources = {};
 
-var __datasources = {};
-
-var adapter = (module.exports = {
+const adapter = (module.exports = {
     /**
      * Create a datasource from an object
      * The object must have the required properties (as output by the corresponding

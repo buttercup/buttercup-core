@@ -1,6 +1,6 @@
-var lib = require("../source/module.js"),
-    encoding = require("../source/tools/encoding.js"),
-    entryTools = require("../source/tools/entry.js");
+var lib = require("../source/node/index.js"),
+    encoding = require("../source/node/tools/encoding.js"),
+    entryTools = require("../source/node/tools/entry.js");
 
 var Archive = lib.Archive,
     Group = lib.Group,

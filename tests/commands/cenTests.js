@@ -1,4 +1,4 @@
-var cen = require("../../source/system/commands/CreateEntryCommand.js");
+var cen = require("../../source/node/system/commands/CreateEntryCommand.js");
 
 module.exports = {
     setUp: function(cb) {

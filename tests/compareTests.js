@@ -1,4 +1,4 @@
-var compareTools = require("../source/tools/compare.js");
+var compareTools = require("../source/node/tools/compare.js");
 
 module.exports = {
     setUp: function(cb) {

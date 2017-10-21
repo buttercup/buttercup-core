@@ -1,7 +1,7 @@
 "use strict";
 
-var lib = require("../source/module.js"),
-    encoding = require("../source/tools/encoding.js");
+var lib = require("../source/node/index.js"),
+    encoding = require("../source/node/tools/encoding.js");
 
 var Group = lib.Group,
     Archive = lib.Archive;

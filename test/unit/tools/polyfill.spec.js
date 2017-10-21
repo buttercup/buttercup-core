@@ -1,4 +1,4 @@
-const { objectValues } = require("../../../source/tools/polyfill.js");
+const { objectValues } = require("../../../source/node/tools/polyfill.js");
 
 describe("objectValues", function() {
     it("returns the correct values", function() {

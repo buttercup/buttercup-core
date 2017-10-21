@@ -1,5 +1,5 @@
 var fs = require("fs"),
-    lib = require("../../source/module.js");
+    lib = require("../../source/node/index.js");
 
 var Archive = lib.Archive,
     FileDatasource = lib.FileDatasource,

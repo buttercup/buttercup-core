@@ -1,4 +1,4 @@
-var sga = require("../../source/system/commands/SetGroupAttributeCommand.js");
+var sga = require("../../source/node/system/commands/SetGroupAttributeCommand.js");
 
 var fakeGroup;
 

@@ -1,4 +1,4 @@
-var signing = require("../source/tools/signing.js");
+var signing = require("../source/node/tools/signing.js");
 
 module.exports = {
     testStripSignature: function(test) {

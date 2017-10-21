@@ -1,5 +1,5 @@
-var lib = require("../source/module.js"),
-    encoding = require("../source/tools/encoding.js");
+var lib = require("../source/node/index.js"),
+    encoding = require("../source/node/tools/encoding.js");
 
 var Archive = lib.Archive,
     Group = lib.Group;
