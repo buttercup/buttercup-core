@@ -62,6 +62,15 @@ class Workspace {
         this._archives = [];
     }
 
+    get isSaving() {
+        try {
+            const saveChannel = this.saveChannel;
+            return saveChannel.isRunning;
+        } catch (err) {
+            return false;
+        }
+    }
+
     /**
      * The primary archive item
      * @type {WorkspaceItem}
@@ -72,6 +81,11 @@ class Workspace {
      */
     get primary() {
         return this._archives[0] ? this._archives[0] : null;
+    }
+
+    get saveChannel() {
+        const topicID = this.primary.archive.getID();
+        return getQueue().channel(`workspace:${topicID}`);
     }
 
     /**
@@ -223,19 +237,16 @@ class Workspace {
      * @returns {Promise} A promise that resolves when all saveable archives have been saved
      */
     save() {
-        const topicID = this.primary.archive.getID();
-        return getQueue()
-            .channel(`workspace:${topicID}`)
-            .enqueue(
-                () =>
-                    Promise.all(
-                        this.getSaveableItems().map(function(item) {
-                            return item.datasource.save(item.archive, item.credentials);
-                        })
-                    ),
-                /* priority */ undefined,
-                /* stack */ "saving"
-            );
+        return this.saveChannel.enqueue(
+            () =>
+                Promise.all(
+                    this.getSaveableItems().map(function(item) {
+                        return item.datasource.save(item.archive, item.credentials);
+                    })
+                ),
+            /* priority */ undefined,
+            /* stack */ "saving"
+        );
     }
 
     /**
