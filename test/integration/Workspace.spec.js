@@ -1,5 +1,4 @@
 describe("Workspace", function() {
-
     beforeEach(function() {
         this.archive = Archive.createWithDefaults();
         this.ds = new TextDatasource("");
@@ -18,5 +17,4 @@ describe("Workspace", function() {
             expect(this.ds.save.calledOnce).to.be.true;
         });
     });
-
 });

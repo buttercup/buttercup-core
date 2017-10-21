@@ -224,11 +224,18 @@ class Workspace {
      */
     save() {
         const topicID = this.primary.archive.getID();
-        return getQueue().channel(`workspace:${topicID}`).enqueue(() => Promise.all(
-            this.getSaveableItems().map(function(item) {
-                return item.datasource.save(item.archive, item.credentials);
-            })
-        ), /* priority */ undefined, /* stack */ "saving");
+        return getQueue()
+            .channel(`workspace:${topicID}`)
+            .enqueue(
+                () =>
+                    Promise.all(
+                        this.getSaveableItems().map(function(item) {
+                            return item.datasource.save(item.archive, item.credentials);
+                        })
+                    ),
+                /* priority */ undefined,
+                /* stack */ "saving"
+            );
     }
 
     /**
