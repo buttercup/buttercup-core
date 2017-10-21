@@ -56,6 +56,7 @@
   },
   "homepage": "https://github.com/buttercup/buttercup-core#readme",
   "dependencies": {
+    "@buttercup/channel-queue": "~0.2.2",
     "clone": "~1.0.2",
     "debug": "~2.3.3",
     "dropbox-fs": "~0.1.0",
