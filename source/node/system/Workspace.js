@@ -1,8 +1,7 @@
-"use strict";
-
-var Archive = require("./Archive.js"),
-    Inigo = require("./InigoGenerator.js"),
-    Comparator = require("./ArchiveComparator.js");
+const Archive = require("./Archive.js");
+const Inigo = require("./InigoGenerator.js");
+const Comparator = require("./ArchiveComparator.js");
+const { getQueue } = require("./Queue.js");
 
 /**
  * Extract the command portion of a history item
@@ -127,7 +126,7 @@ class Workspace {
         if (!primary) {
             throw new Error("No primary archive");
         }
-        let primaryArchive = primary.archive;
+        const primaryArchive = primary.archive;
         // clear first
         primaryArchive.discardSharedGroups();
         items.forEach(function(item) {
@@ -224,11 +223,19 @@ class Workspace {
      * @returns {Promise} A promise that resolves when all saveable archives have been saved
      */
     save() {
-        return Promise.all(
-            this.getSaveableItems().map(function(item) {
-                return item.datasource.save(item.archive, item.credentials);
-            })
-        );
+        const topicID = this.primary.archive.getID();
+        return getQueue()
+            .channel(`workspace:${topicID}`)
+            .enqueue(
+                () =>
+                    Promise.all(
+                        this.getSaveableItems().map(function(item) {
+                            return item.datasource.save(item.archive, item.credentials);
+                        })
+                    ),
+                /* priority */ undefined,
+                /* stack */ "saving"
+            );
     }
 
     /**
