@@ -80,7 +80,7 @@ function deriveKeyFromPassword(password, salt, rounds, bits /* , algorithm */) {
  * Perform patching of the PBKDF2 function in iocane
  * @param {Function|undefined=} handler Optionally override the internal PBKDF2 engine
  */
-function patchCorePBKDF(handler = lib.deriveKeyFromPassword) {
+function patchCorePBKDF(handler = deriveKeyFromPassword) {
     const { vendor } = require("./index.js");
     vendor.iocane.components.setPBKDF2(handler);
 }

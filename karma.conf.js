@@ -28,7 +28,7 @@ module.exports = config => config.set({
         "test/web/**/*.js"
     ],
 
-    frameworks: ["mocha", "chai"],
+    frameworks: ["mocha", "chai", "sinon"],
 
     plugins: [
         require("karma-webpack"),
@@ -36,6 +36,7 @@ module.exports = config => config.set({
         require("karma-chrome-launcher"),
         require("karma-mocha"),
         require("karma-chai"),
+        require("karma-sinon"),
         require("karma-coverage"),
         require("karma-spec-reporter")
     ],
