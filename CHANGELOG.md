@@ -1,6 +1,6 @@
 # Buttercup-core change-log
 
-## v1.0.0-rc1 - rc3
+## v1.0.0-rc1 - rc4
 _2017-10-21_
 
  * Inclusion of core-web
