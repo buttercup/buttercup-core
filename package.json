@@ -1,6 +1,6 @@
 {
   "name": "buttercup",
-  "version": "1.0.0-rc2",
+  "version": "1.0.0-rc3",
   "description": "A NodeJS password vault.",
   "main": "source/node/index.js",
   "contributors": [
