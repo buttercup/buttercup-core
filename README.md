@@ -44,7 +44,7 @@ This library also supports a variety of datasources for loading from and saving 
  * Files
  * ~~[Buttercup server](https://github.com/buttercup-pw/buttercup-server)~~
 
-You may want to read the [API documentation](https://github.com/buttercup-pw/buttercup-core/blob/master/API.md) and [changelog](https://github.com/buttercup-pw/buttercup-core/blob/master/CHANGELOG.md). Please read our [guide to contributing](https://github.com/buttercup-pw/buttercup-core/blob/master/CONTRIBUTING.md) before creating any issues or pull requests.
+You may want to read the [API documentation](https://github.com/buttercup/buttercup-core/blob/master/API.md) (or for the [web](https://github.com/buttercup/buttercup-core/blob/master/API_WEB.md)) and [changelog](https://github.com/buttercup/buttercup-core/blob/master/CHANGELOG.md). Please read our [guide to contributing](https://github.com/buttercup/buttercup-core/blob/master/CONTRIBUTING.md) before creating any issues or pull requests.
 
 ### Buttercup suite
 

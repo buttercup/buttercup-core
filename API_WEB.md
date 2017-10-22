@@ -56,6 +56,9 @@
 <dd></dd>
 <dt><a href="#Workspace">Workspace</a></dt>
 <dd></dd>
+<dt><a href="#LocalStorageInterface">LocalStorageInterface</a> ⇐ <code>StorageInterface</code></dt>
+<dd><p>Interface for localStorage</p>
+</dd>
 </dl>
 
 ## Mixins
@@ -128,6 +131,12 @@ Takes data from the descriptor and writes it to the entry.</p>
 </dd>
 <dt><a href="#getAllEntries">getAllEntries(groups)</a> ⇒ <code><a href="#Entry">Array.&lt;Entry&gt;</a></code></dt>
 <dd><p>Get all entries within a collection of groups</p>
+</dd>
+<dt><a href="#deriveKeyFromPassword">deriveKeyFromPassword(password, salt, rounds, bits)</a> ⇒ <code>Promise.&lt;ArrayBuffer&gt;</code></dt>
+<dd><p>Derive a key from a password</p>
+</dd>
+<dt><a href="#patchCorePBKDF">patchCorePBKDF(handler)</a></dt>
+<dd><p>Perform patching of the PBKDF2 function in iocane</p>
 </dd>
 </dl>
 
@@ -2963,6 +2972,51 @@ Set the primary archive
 | datasource | <code>[TextDatasource](#TextDatasource)</code> | The datasource instance |
 | masterCredentials | <code>[Credentials](#Credentials)</code> | The master password |
 
+<a name="LocalStorageInterface"></a>
+
+## LocalStorageInterface ⇐ <code>StorageInterface</code>
+Interface for localStorage
+
+**Kind**: global class  
+**Extends:** <code>StorageInterface</code>  
+
+* [LocalStorageInterface](#LocalStorageInterface) ⇐ <code>StorageInterface</code>
+    * [.getAllKeys()](#LocalStorageInterface+getAllKeys) ⇒ <code>Promise.&lt;Array.&lt;String&gt;&gt;</code>
+    * [.getValue(name)](#LocalStorageInterface+getValue) ⇒ <code>Promise.&lt;String&gt;</code>
+    * [.setValue(name, value)](#LocalStorageInterface+setValue) ⇒ <code>Promise</code>
+
+<a name="LocalStorageInterface+getAllKeys"></a>
+
+### localStorageInterface.getAllKeys() ⇒ <code>Promise.&lt;Array.&lt;String&gt;&gt;</code>
+Get all keys from storage
+
+**Kind**: instance method of <code>[LocalStorageInterface](#LocalStorageInterface)</code>  
+**Returns**: <code>Promise.&lt;Array.&lt;String&gt;&gt;</code> - A promise that resolves with an array of keys  
+<a name="LocalStorageInterface+getValue"></a>
+
+### localStorageInterface.getValue(name) ⇒ <code>Promise.&lt;String&gt;</code>
+Get the value of a key
+
+**Kind**: instance method of <code>[LocalStorageInterface](#LocalStorageInterface)</code>  
+**Returns**: <code>Promise.&lt;String&gt;</code> - A promise that resolves with the value  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The key name |
+
+<a name="LocalStorageInterface+setValue"></a>
+
+### localStorageInterface.setValue(name, value) ⇒ <code>Promise</code>
+Set the value for a key
+
+**Kind**: instance method of <code>[LocalStorageInterface](#LocalStorageInterface)</code>  
+**Returns**: <code>Promise</code> - A promise that resolves when the value is set  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The key name |
+| value | <code>String</code> | The value to set |
+
 <a name="EntryCollection"></a>
 
 ## EntryCollection : <code>Object</code>
@@ -3319,6 +3373,33 @@ Get all entries within a collection of groups
 | Param | Type | Description |
 | --- | --- | --- |
 | groups | <code>[Array.&lt;Group&gt;](#Group)</code> | An array of groups |
+
+<a name="deriveKeyFromPassword"></a>
+
+## deriveKeyFromPassword(password, salt, rounds, bits) ⇒ <code>Promise.&lt;ArrayBuffer&gt;</code>
+Derive a key from a password
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;ArrayBuffer&gt;</code> - A promise that resolves with an ArrayBuffer  
+**See**: checkBrowserSupport  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| password | <code>String</code> | The password |
+| salt | <code>String</code> | The salt |
+| rounds | <code>Number</code> | The number of derivation rounds |
+| bits | <code>Number</code> | The number of bits for the key |
+
+<a name="patchCorePBKDF"></a>
+
+## patchCorePBKDF(handler)
+Perform patching of the PBKDF2 function in iocane
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handler | <code>function</code> &#124; <code>undefined</code> | Optionally override the internal PBKDF2 engine |
 
 <a name="ArchiveManagerSourceStatus"></a>
 
