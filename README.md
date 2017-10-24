@@ -21,7 +21,7 @@ A NodeJS password vault.
 
 ## About
 
-Buttercup is a password manager written in JavaScript for NodeJS ([and the browser!](https://github.com/buttercup-pw/buttercup-core-web)). It's based around `Archive`s that contain `Group`s and `Entry`s. Together, in a nested structure, these items act as a secure store for a user's credentials (much like standard managers these days). Entries allow you to store a credential's username and password, along with other miscellaneous properties (meta) and invisible functional info (attributes).
+Buttercup is a password manager written in JavaScript for NodeJS ([and the browser!](https://github.com/buttercup/buttercup-core-web)). It's based around `Archive`s that contain `Group`s and `Entry`s. Together, in a nested structure, these items act as a secure store for a user's credentials (much like standard managers these days). Entries allow you to store a credential's username and password, along with other miscellaneous properties (meta) and invisible functional info (attributes).
 
 Buttercup archives sit in memory as an Object instance that is built from delta-style commands that modify the structure. As changes are made to the archive, new delta commands are added to the history and saved to the archive's `Datasource`. Archives are compressed and encrypted before being saved.
 
@@ -42,13 +42,13 @@ This library also supports a variety of datasources for loading from and saving 
  * [OwnCloud](https://owncloud.org/)
  * [Nextcloud](https://nextcloud.com/)
  * Files
- * ~~[Buttercup server](https://github.com/buttercup-pw/buttercup-server)~~
+ * ~~[Buttercup server](https://github.com/buttercup/buttercup-server)~~
 
 You may want to read the [API documentation](https://github.com/buttercup/buttercup-core/blob/master/API.md) (or for the [web](https://github.com/buttercup/buttercup-core/blob/master/API_WEB.md)) and [changelog](https://github.com/buttercup/buttercup-core/blob/master/CHANGELOG.md). Please read our [guide to contributing](https://github.com/buttercup/buttercup-core/blob/master/CONTRIBUTING.md) before creating any issues or pull requests.
 
 ### Buttercup suite
 
-This core library fuels the processing for several other libraries, such as the [desktop application](https://github.com/buttercup-pw/buttercup-desktop), [mobile application](https://github.com/buttercup-pw/buttercup-mobile) and [browser extension](https://github.com/buttercup-pw/buttercup-browser-extension).
+This core library fuels the processing for several other libraries, such as the [desktop application](https://github.com/buttercup/buttercup-desktop), [mobile application](https://github.com/buttercup/buttercup-mobile) and [browser extension](https://github.com/buttercup/buttercup-browser-extension).
 
 ## Usage
 
