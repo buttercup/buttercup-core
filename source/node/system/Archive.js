@@ -169,11 +169,20 @@ class Archive extends AsyncEventEmitter {
      */
     getAttribute(attributeName) {
         debug("fetch attribute");
-        let dataset = this._getWestley().getDataset();
+        const dataset = this._getWestley().getDataset();
         if (dataset.attributes && dataset.attributes.hasOwnProperty(attributeName)) {
             return dataset.attributes[attributeName];
         }
         return undefined;
+    }
+
+    /**
+     * Get all attributes
+     * @returns {Object} Attributes object
+     */
+    getAttributes() {
+        const dataset = this._getWestley().getDataset();
+        return Object.assign({}, dataset.attributes || {});
     }
 
     /**
@@ -307,6 +316,7 @@ class Archive extends AsyncEventEmitter {
         return {
             archiveID: this.getID(),
             format: this.getFormat(),
+            attributes: this.getAttributes(),
             groups: this.getGroups().map(group => group.toObject(groupOutputFlags))
         };
     }

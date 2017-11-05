@@ -114,6 +114,15 @@ Entry.prototype.getAttribute = function(attributeName) {
 };
 
 /**
+ * Get all attributes
+ * @returns {Object} Attributes object
+ */
+Entry.prototype.getAttributes = function() {
+    const attributes = this._getRemoteObject().attributes || {};
+    return Object.assign({}, attributes);
+};
+
+/**
  * Get the containing group for the entry
  * @returns {Group|null} The parent group
  * @memberof Entry
