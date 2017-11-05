@@ -14,8 +14,7 @@ A NodeJS password vault.
 
 [![Build Status](https://travis-ci.org/buttercup/buttercup-core.svg?branch=master)](https://travis-ci.org/buttercup/buttercup-core)
 
-[![NPM](https://nodei.co/npm/buttercup.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/buttercup/)
-[![NPM](https://nodei.co/npm-dl/buttercup.png?months=3)](https://nodei.co/npm/buttercup/)
+[![NPM](https://nodei.co/npm/buttercup.png)](https://www.npmjs.com/package/buttercup)
 
 **Please be aware** that breaking changes _will occur_ during 0.* (alpha) development. Until 1.0 is released, assume that every minor version contains breaking changes to encryption, structure and API.
 
