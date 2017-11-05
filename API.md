@@ -207,6 +207,7 @@ Extract command components from a string
         * [.discardSharedGroups()](#Archive+discardSharedGroups) ⇒ <code>[Archive](#Archive)</code>
         * [.emptyTrash()](#Archive+emptyTrash)
         * [.getAttribute(attributeName)](#Archive+getAttribute) ⇒ <code>undefined</code> &#124; <code>String</code>
+        * [.getAttributes()](#Archive+getAttributes) ⇒ <code>Object</code>
         * [.getEntryByID(entryID)](#Archive+getEntryByID) ⇒ <code>[Entry](#Entry)</code> &#124; <code>null</code>
         * [.getFormat()](#Archive+getFormat) ⇒ <code>string</code>
         * ~~[.getGroupByID(groupID)](#Archive+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
@@ -367,6 +368,13 @@ Get the value of an attribute
 | --- | --- | --- |
 | attributeName | <code>String</code> | The attribute to get |
 
+<a name="Archive+getAttributes"></a>
+
+### archive.getAttributes() ⇒ <code>Object</code>
+Get all attributes
+
+**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Returns**: <code>Object</code> - Attributes object  
 <a name="Archive+getEntryByID"></a>
 
 ### archive.getEntryByID(entryID) ⇒ <code>[Entry](#Entry)</code> &#124; <code>null</code>
@@ -785,6 +793,7 @@ Output the datasource configuration as a string
         * [.deleteAttribute(attr)](#Entry+deleteAttribute) ⇒ <code>[Entry](#Entry)</code>
         * [.deleteMeta(property)](#Entry+deleteMeta) ⇒ <code>[Entry](#Entry)</code>
         * [.getAttribute([attributeName])](#Entry+getAttribute) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
+        * [.getAttributes()](#Entry+getAttributes) ⇒ <code>Object</code>
         * [.getGroup()](#Entry+getGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * [.getID()](#Entry+getID) ⇒ <code>String</code>
         * [.getMeta([property])](#Entry+getMeta) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
@@ -876,6 +885,13 @@ values is returned.
 | --- | --- | --- |
 | [attributeName] | <code>String</code> | The name of the attribute to fetch |
 
+<a name="Entry+getAttributes"></a>
+
+### entry.getAttributes() ⇒ <code>Object</code>
+Get all attributes
+
+**Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Returns**: <code>Object</code> - Attributes object  
 <a name="Entry+getGroup"></a>
 
 ### entry.getGroup() ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
@@ -1287,6 +1303,7 @@ Get the number of lines to preserve by default
         * [.delete([skipTrash])](#Group+delete) ⇒ <code>Boolean</code>
         * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ <code>[Group](#Group)</code>
         * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> &#124; <code>undefined</code>
+        * [.getAttributes()](#Group+getAttributes) ⇒ <code>Object</code>
         * [.getEntries()](#Group+getEntries) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
         * [.getGroup()](#Group+getGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * ~~[.getGroupByID(groupID)](#Group+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
@@ -1450,6 +1467,13 @@ Get an attribute
 | --- | --- | --- |
 | attributeName | <code>string</code> | The name of the attribute |
 
+<a name="Group+getAttributes"></a>
+
+### group.getAttributes() ⇒ <code>Object</code>
+Get all attributes
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>Object</code> - Attributes object  
 <a name="Group+getEntries"></a>
 
 ### group.getEntries() ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
@@ -1717,6 +1741,7 @@ Create a new Group with a delta-manager and parent group ID
         * [.delete([skipTrash])](#Group+delete) ⇒ <code>Boolean</code>
         * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ <code>[Group](#Group)</code>
         * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> &#124; <code>undefined</code>
+        * [.getAttributes()](#Group+getAttributes) ⇒ <code>Object</code>
         * [.getEntries()](#Group+getEntries) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
         * [.getGroup()](#Group+getGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
         * ~~[.getGroupByID(groupID)](#Group+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
@@ -1880,6 +1905,13 @@ Get an attribute
 | --- | --- | --- |
 | attributeName | <code>string</code> | The name of the attribute |
 
+<a name="Group+getAttributes"></a>
+
+### group.getAttributes() ⇒ <code>Object</code>
+Get all attributes
+
+**Kind**: instance method of <code>[Group](#Group)</code>  
+**Returns**: <code>Object</code> - Attributes object  
 <a name="Group+getEntries"></a>
 
 ### group.getEntries() ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>

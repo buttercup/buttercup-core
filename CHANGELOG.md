@@ -1,5 +1,11 @@
 # Buttercup-core change-log
 
+## **v1.0.0**
+_2017-11-05_
+
+ * Major release! Hooray!
+ * `getAttributes` added to `Archive`, `Group` and `Entry` classes
+
 ## v1.0.0-rc1 - rc4
 _2017-10-21_
 
