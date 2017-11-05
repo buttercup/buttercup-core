@@ -136,10 +136,19 @@ class Group {
      */
     getAttribute(attributeName) {
         debug("fetch attribute");
-        var raw = this._getRemoteObject();
+        const raw = this._getRemoteObject();
         return raw.attributes && raw.attributes.hasOwnProperty(attributeName)
             ? raw.attributes[attributeName]
             : undefined;
+    }
+
+    /**
+     * Get all attributes
+     * @returns {Object} Attributes object
+     */
+    getAttributes() {
+        const raw = this._getRemoteObject();
+        return Object.assign({}, raw.attributes || {});
     }
 
     /**
