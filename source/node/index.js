@@ -1,5 +1,3 @@
-"use strict";
-
 const iocane = require("iocane");
 const webdavFS = require("webdav-fs");
 
@@ -28,6 +26,7 @@ module.exports = {
 
     Flattener: require("./system/Flattener.js"),
     Descriptor: require("./system/Descriptor.js"),
+    EntryFinder: require("./system/EntryFinder.js"),
 
     storage: {
         StorageInterface: require("./system/storage/StorageInterface.js"),
