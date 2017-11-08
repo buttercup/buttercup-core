@@ -167,7 +167,6 @@ workspace
 ```
 
 ### Searching for things
-
 You can search within archives for certain entries or groups:
 
 ```javascript
@@ -183,6 +182,17 @@ archive
 
 group.findEntriesByMeta("postcode", /^0\d{4}$/);
 ```
+
+`findEntriesByProperty` and `findGroupsByTitle` are exact in how they search, and are maybe not suited for some user-facing interfaces. For archive/application-wide search functionality it is recommended to use `EntryFinder`:
+
+```javascript
+const { EntryFinder } = Buttercup;
+
+const finder = new EntryFinder([archive1, archive2]);
+const results = finder.search("bank");
+```
+
+Results from `EntryFinder` are objects that contain the entry that was found, along with the archive it was found in: `{ entry, archive }`.
 
 ### Importing
 
