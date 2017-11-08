@@ -1,7 +1,4 @@
 describe("EntryFinder", function() {
-    // const { Archive } = window.Buttercup;
-    // const { EntryFinder } = window.Buttercup.Web;
-
     it("supports multiple archives", function() {
         const a1 = new Archive();
         const a2 = new Archive();
