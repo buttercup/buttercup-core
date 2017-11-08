@@ -70,21 +70,20 @@ Archives are easily created by making a new instance:
 ```javascript
 const Archive = Buttercup.Archive;
 
-let myArchive = new Archive();
+const myArchive = new Archive();
 ```
 
 Groups can be created within **other groups** or **archives**:
 
 ```javascript
-let websitesGroup = myArchive.createGroup("Websites");
-
-let bankingGroup = websitesGroup.createGroup("Banking");
+const websitesGroup = myArchive.createGroup("Websites");
+const bankingGroup = websitesGroup.createGroup("Banking");
 ```
 
 Entries can be created within **groups**, which hold authentication information:
 
 ```javascript
-let worldBank = bankingGroup.createEntry("World bank");
+const worldBank = bankingGroup.createEntry("World bank");
 
 worldBank
     .setProperty("username", "johnSmith87")
@@ -96,7 +95,6 @@ Entries can be moved to other groups, and groups to other groups or archives:
 
 ```javascript
 worldBank.moveToGroup(websitesGroup);
-
 bankingGroup.moveTo(myArchive); // move up to the root level
 ```
 
@@ -106,7 +104,6 @@ Groups and entries can easily be deleted:
 
 ```javascript
 myEntry.delete(); // `myEntry` reference no longer valid
-
 myGroup.delete(); // `myGroup` reference no longer valid
 ```
 
@@ -119,7 +116,7 @@ Archives can be saved with datasources:
 ```javascript
 const { FileDatasource, createCredentials } = Buttercup;
 
-let ds = new FileDatasource("~/myArchive.bcup");
+const ds = new FileDatasource("~/myArchive.bcup");
 ds.save(myArchive, createCredentials.fromPassword("myPa55word")).then(function() {
     console.log("Saved!");
 });
@@ -138,7 +135,7 @@ Archives can be managed more easily using a `Workspace`. Workspaces are designed
 ```javascript
 const { Workspace, createCredentials } = Buttercup;
 
-let workspace = new Workspace();
+const workspace = new Workspace();
 workspace
     .setPrimaryArchive(myArchive, myDatasource, createCredentials.fromPassword("master password"))
     .addSharedArchive(sharedArchive1, sharedDS1, createCredentials.fromPassword("shared pass"), /* saveable */ true);
@@ -249,7 +246,7 @@ Entries and groups have attributes, describing how they should be treated by the
 
 For instance, you could get the role of a group like so:
 ```javascript
-let groupRole = group.getAttribute(ManagedGroup.Attributes.Role);
+const groupRole = group.getAttribute(ManagedGroup.Attributes.Role);
 ```
 
 Entry types and facades are [documented separately](ENTRY_FACADES.md).
