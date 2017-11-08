@@ -1,30 +1,27 @@
-(function() {
+const path = require("path");
+const Buttercup = require("../source/node/index.js");
+const packageInfo = require("../package.json");
 
-    "use strict";
+const createCredentials = Buttercup.createCredentials;
+const { version } = packageInfo;
 
-    var packageJSON = require(__dirname + "/../package.json"),
-        path = require("path"),
-        outputDir = path.resolve(__dirname + "/../tests/_archives"),
-        outputFile = outputDir + "/test-archive-" + packageJSON.version + ".bcup",
-        Buttercup = require(__dirname + "/../source/module.js"),
-        createCredentials = Buttercup.createCredentials;
+const outputDir = path.resolve(__dirname, "../tests/_archives");
+const outputFile = path.join(outputDir, `/test-archive-${version}.bcup`);
 
-    console.log("Building archive...");
+console.log("Building archive...");
 
-    // Archive
-    var archive = new Buttercup.Archive(),
-        mainGroup = archive.createGroup("test-group-main"),
-        mainEntry = mainGroup.createEntry("test-entry-main");
+// Archive
+const archive = new Buttercup.Archive();
+const mainGroup = archive.createGroup("test-group-main");
+const mainEntry = mainGroup.createEntry("test-entry-main");
 
-    mainEntry.setProperty("username", "user123한@test.рф");
-    mainEntry.setProperty("password", "* পাসওয়ার্ড! ");
-    mainEntry.setMeta("test-meta", "test-value 8");
+mainEntry.setProperty("username", "user123한@test.рф");
+mainEntry.setProperty("password", "* পাসওয়ার্ড! ");
+mainEntry.setMeta("test-meta", "test-value 8");
 
-    // Datasource
-    console.log("Saving archive: " + outputFile);
-    var datasource = new Buttercup.FileDatasource(outputFile);
-    datasource.save(archive, createCredentials.fromPassword("this is a long password used for a test archive!"));
+// Datasource
+console.log("Saving archive: " + outputFile);
+const datasource = new Buttercup.FileDatasource(outputFile);
+datasource.save(archive, createCredentials.fromPassword("this is a long password used for a test archive!"));
 
-    console.log("Test archive completed for version: " + packageJSON.version);
-
-})();
+console.log("Test archive completed for version: " + version);
