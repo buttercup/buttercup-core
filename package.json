@@ -64,7 +64,7 @@
     "debug": "~2.3.3",
     "dropbox-fs": "~0.1.0",
     "eventemitter3": "~2.0.3",
-    "fuse.js": "~3.2.0",
+    "fuse.js": "~2.7.2",
     "gzip-js": "~0.3.2",
     "iocane": "~0.10.0",
     "node-fetch": "~1.6.3",

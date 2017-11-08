@@ -62,7 +62,7 @@ class EntryFinder {
      */
     initSearcher() {
         this._fuse = new Fuse(this.items, {
-            keys: ["property.title", "property.username", "meta.URL", "meta.url"],
+            keys: ["property.title", "property.username", "meta.url"],
             getFn: function _translateEntryForFuse(item, keyPath) {
                 const entry = item.entry;
                 const [type, key] = keyPath.split(".");
