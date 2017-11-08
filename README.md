@@ -16,11 +16,9 @@ A NodeJS password vault.
 
 [![NPM](https://nodei.co/npm/buttercup.png)](https://www.npmjs.com/package/buttercup)
 
-**Please be aware** that breaking changes _will occur_ during 0.* (alpha) development. Until 1.0 is released, assume that every minor version contains breaking changes to encryption, structure and API.
-
 ## About
 
-Buttercup is a password manager written in JavaScript for NodeJS ([and the browser!](https://github.com/buttercup/buttercup-core-web)). It's based around `Archive`s that contain `Group`s and `Entry`s. Together, in a nested structure, these items act as a secure store for a user's credentials (much like standard managers these days). Entries allow you to store a credential's username and password, along with other miscellaneous properties (meta) and invisible functional info (attributes).
+Buttercup is a password manager written in JavaScript for NodeJS (and the browser!). It's based around `Archive`s that contain `Group`s and `Entry`s. Together, in a nested structure, these items act as a secure store for a user's credentials (much like standard managers these days). Entries allow you to store a credential's username and password, along with other miscellaneous properties (meta) and invisible functional info (attributes).
 
 Buttercup archives sit in memory as an Object instance that is built from delta-style commands that modify the structure. As changes are made to the archive, new delta commands are added to the history and saved to the archive's `Datasource`. Archives are compressed and encrypted before being saved.
 
