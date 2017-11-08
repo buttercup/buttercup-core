@@ -24,6 +24,9 @@
 </dd>
 <dt><a href="#Entry">Entry</a></dt>
 <dd></dd>
+<dt><a href="#EntryFinder">EntryFinder</a></dt>
+<dd><p>Entry searching class</p>
+</dd>
 <dt><a href="#FileDatasource">FileDatasource</a> ⇐ <code><a href="#TextDatasource">TextDatasource</a></code></dt>
 <dd></dd>
 <dt><a href="#FileDatasource">FileDatasource</a></dt>
@@ -73,6 +76,9 @@
 ## Functions
 
 <dl>
+<dt><a href="#flattenEntries">flattenEntries(archives)</a> ⇒ <code><a href="#EntrySearchInfo">Array.&lt;EntrySearchInfo&gt;</a></code></dt>
+<dd><p>Flatten entries into a searchable structure</p>
+</dd>
 <dt><a href="#convertEncryptedContentToHistory">convertEncryptedContentToHistory(encText, credentials)</a> ⇒ <code>Promise.&lt;Array&gt;</code></dt>
 <dd><p>Convert encrypted text to an array of commands (history)</p>
 </dd>
@@ -149,6 +155,8 @@ Takes data from the descriptor and writes it to the entry.</p>
 <dt><a href="#UnlockedArchiveManagerSource">UnlockedArchiveManagerSource</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#LockedArchiveManagerSource">LockedArchiveManagerSource</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#EntrySearchInfo">EntrySearchInfo</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#WorkspaceItem">WorkspaceItem</a> : <code>Object</code></dt>
 <dd><p>Shared workspace item</p>
@@ -1057,6 +1065,58 @@ Create a new entry
 | --- | --- | --- |
 | archive | <code>[Archive](#Archive)</code> | The archive |
 | groupID | <code>string</code> | The ID of the target group |
+
+<a name="EntryFinder"></a>
+
+## EntryFinder
+Entry searching class
+
+**Kind**: global class  
+
+* [EntryFinder](#EntryFinder)
+    * [new EntryFinder(target)](#new_EntryFinder_new)
+    * [.items](#EntryFinder+items) : <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+    * [.lastResult](#EntryFinder+lastResult) : <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+    * [.initSearcher()](#EntryFinder+initSearcher)
+    * [.search(term)](#EntryFinder+search) ⇒ <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+
+<a name="new_EntryFinder_new"></a>
+
+### new EntryFinder(target)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>[Array.&lt;Archive&gt;](#Archive)</code> &#124; <code>[Archive](#Archive)</code> | The archive or archives to search |
+
+<a name="EntryFinder+items"></a>
+
+### entryFinder.items : <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+All items available for searching
+
+**Kind**: instance property of <code>[EntryFinder](#EntryFinder)</code>  
+<a name="EntryFinder+lastResult"></a>
+
+### entryFinder.lastResult : <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+The last result
+
+**Kind**: instance property of <code>[EntryFinder](#EntryFinder)</code>  
+<a name="EntryFinder+initSearcher"></a>
+
+### entryFinder.initSearcher()
+Initialise the searching mechanism
+
+**Kind**: instance method of <code>[EntryFinder](#EntryFinder)</code>  
+<a name="EntryFinder+search"></a>
+
+### entryFinder.search(term) ⇒ <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+Search and get results
+
+**Kind**: instance method of <code>[EntryFinder](#EntryFinder)</code>  
+**Returns**: <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code> - The results  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| term | <code>String</code> | The search term |
 
 <a name="FileDatasource"></a>
 
@@ -3130,6 +3190,18 @@ Find groups by their title
 | --- | --- | --- |
 | title | <code>String</code> &#124; <code>RegExp</code> | The group title |
 
+<a name="flattenEntries"></a>
+
+## flattenEntries(archives) ⇒ <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+Flatten entries into a searchable structure
+
+**Kind**: global function  
+**Returns**: <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code> - An array of searchable objects  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| archives | <code>[Array.&lt;Archive&gt;](#Archive)</code> | An array of archives |
+
 <a name="convertEncryptedContentToHistory"></a>
 
 ## convertEncryptedContentToHistory(encText, credentials) ⇒ <code>Promise.&lt;Array&gt;</code>
@@ -3469,6 +3541,17 @@ Status of a source: locked/unlocked/pending
 | type | <code>String</code> | The type of source (eg. dropbox/mybuttercup etc.) |
 | sourceCredentials | <code>String</code> | Encrypted credentials for the remote datasource |
 | archiveCredentials | <code>String</code> | Encrypted credentials for unlocking the archive |
+
+<a name="EntrySearchInfo"></a>
+
+## EntrySearchInfo : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| entry | <code>[Entry](#Entry)</code> | The entry |
+| archive | <code>[Archive](#Archive)</code> | The associated archive |
 
 <a name="WorkspaceItem"></a>
 
