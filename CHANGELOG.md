@@ -1,5 +1,13 @@
 # Buttercup-core change-log
 
+## v1.1.1
+_2017-11-18_
+
+**Security release**
+
+ * Upgrade iocane to 0.10.1
+   * Fixes [DOS vulnerability in `debug` module](https://github.com/perry-mitchell/iocane/pull/21)
+
 ## v1.1.0
 _2017-11-08_
 
