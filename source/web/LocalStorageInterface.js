@@ -37,6 +37,16 @@ class LocalStorageInterface extends StorageInterface {
     }
 
     /**
+     * Remove a key
+     * @param {String} name The key name
+     * @returns {Promise} A promise that resolves when the removal has completed
+     */
+    removeKey(name) {
+        this.storage.removeItem(name);
+        return Promise.resolve();
+    }
+
+    /**
      * Set the value for a key
      * @param {String} name The key name
      * @param {String} value The value to set

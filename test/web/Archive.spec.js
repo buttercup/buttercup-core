@@ -1,4 +1,4 @@
-const { Archive, Group } = window.Buttercup;
+const { Archive, Group } = require("../../source/web/index.js");
 
 describe("Archive", function() {
     it("can be instantiated", function() {
