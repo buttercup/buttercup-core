@@ -50,4 +50,19 @@ describe("LocalStorageInterface", function() {
             return expect(removal).to.eventually.resolve;
         });
     });
+
+    describe("setValue", function() {
+        it("sets a new value", function() {
+            return this.localStorageInterface.setValue("some-thing", "somevalue").then(() => {
+                expect(window.localStorage.getItem("some-thing")).to.equal("somevalue");
+            });
+        });
+
+        it("overwrites old values", function() {
+            window.localStorage.setItem("myKey", "1");
+            return this.localStorageInterface.setValue("myKey", "2").then(() => {
+                expect(window.localStorage.getItem("myKey")).to.equal("2");
+            });
+        });
+    });
 });
