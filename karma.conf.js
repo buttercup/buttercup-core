@@ -25,7 +25,8 @@ module.exports = config => config.set({
 
     files: [
         "source/web/index.js",
-        "test/web/**/*.js"
+        "test/web/index.js",
+        "test/web/**/*.spec.js"
     ],
 
     frameworks: ["mocha", "chai", "sinon"],
@@ -43,7 +44,8 @@ module.exports = config => config.set({
 
     preprocessors: {
         "source/**/*.js": ["webpack"],
-        "test/web/**/*.js": ["webpack"]
+        "test/web/index.js": ["webpack"],
+        "test/web/**/*.spec.js": ["webpack"]
     },
 
     reporters: ["spec", "progress"],
