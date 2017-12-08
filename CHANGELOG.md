@@ -1,5 +1,11 @@
 # Buttercup-core change-log
 
+## v1.1.2
+_2017-12-08_
+
+ * **Bugfix**:
+   * Fixed `ArchiveManager#removeSource` functionality in web context (`LocalStorageInterface` had no remove method)
+
 ## v1.1.1
 _2017-11-18_
 
