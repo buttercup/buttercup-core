@@ -117,4 +117,17 @@ describe("Workspace", function() {
             }).to.throw(/no primary/i);
         });
     });
+
+    describe("updatePrimaryCredentials", function() {
+        beforeEach(function() {
+            this.workspace = new Workspace();
+            this.workspace.setPrimaryArchive(new Archive(), {}, createCredentials.fromPassword("base"));
+        });
+
+        it("changes the primary archive's password", function() {
+            expect(this.workspace.primary.credentials.password).to.equal("base");
+            this.workspace.updatePrimaryCredentials(createCredentials.fromPassword("new"));
+            expect(this.workspace.primary.credentials.password).to.equal("new");
+        });
+    });
 });

@@ -265,6 +265,18 @@ class Workspace {
         };
         return this;
     }
+
+    /**
+     * Update the master password of the primary archive
+     * @param {Credentials} masterCredentials The new credentials
+     * @returns {Workspace} Self
+     */
+    updatePrimaryCredentials(masterCredentials) {
+        Object.assign(this._archives[0], {
+            credentials: masterCredentials
+        });
+        return this;
+    }
 }
 
 module.exports = Workspace;
