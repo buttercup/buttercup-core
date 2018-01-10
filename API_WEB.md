@@ -649,6 +649,7 @@ Archive manager for managing archives and connections to sources
     * [.remove(id)](#ArchiveManager+remove) ⇒ <code>Promise</code>
     * [.rename(id, newName)](#ArchiveManager+rename)
     * [.unlock(id, masterPassword)](#ArchiveManager+unlock) ⇒ <code>Promise</code>
+    * [.updateArchiveCredentials(sourceID, masterCredentials)](#ArchiveManager+updateArchiveCredentials)
     * [._replace(id, source)](#ArchiveManager+_replace)
 
 <a name="new_ArchiveManager_new"></a>
@@ -778,6 +779,23 @@ Unlock a source
 | --- | --- | --- |
 | id | <code>String</code> | The ID of the source to unlock |
 | masterPassword | <code>String</code> | The password to unlock the source |
+
+<a name="ArchiveManager+updateArchiveCredentials"></a>
+
+### archiveManager.updateArchiveCredentials(sourceID, masterCredentials)
+Update the master credentials for an archive source
+
+**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
+**Throws**:
+
+- <code>VError</code> Throws if the source is not unlocked
+- <code>VError</code> Throws if no source is found for the provided ID
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sourceID | <code>String</code> | The source ID |
+| masterCredentials | [<code>Credentials</code>](#Credentials) | The new credentials to use |
 
 <a name="ArchiveManager+_replace"></a>
 

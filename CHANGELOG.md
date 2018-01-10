@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v1.3.1
+_2017-01-10_
+
+ * Fix master password update process (`ArchiveManager` integration)
+
 ## v1.3.0
 _2017-01-10_
 
