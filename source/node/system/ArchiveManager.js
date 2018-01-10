@@ -383,6 +383,32 @@ class ArchiveManager extends AsyncEventEmitter {
     }
 
     /**
+     * Update the master credentials for an archive source
+     * @param {String} sourceID The source ID
+     * @param {Credentials} masterCredentials The new credentials to use
+     * @throws {VError} Throws if the source is not unlocked
+     * @throws {VError} Throws if no source is found for the provided ID
+     */
+    updateArchiveCredentials(sourceID, masterCredentials) {
+        debug(`update archive credentials: ${sourceID}`);
+        const sourceIndex = this.indexOfSource(sourceID);
+        if (sourceIndex >= 0) {
+            const source = this.sources[sourceIndex];
+            if (source.status !== SourceStatus.UNLOCKED) {
+                throw new VError(`Failed updating archive credentials: Source is not unlocked: ${sourceID}`);
+            }
+            // First update the credentials stored here
+            Object.assign(source, {
+                archiveCredentials: masterCredentials
+            });
+            // Then update the credentials in the workspace
+            source.workspace.updatePrimaryCredentials(masterCredentials);
+        } else {
+            throw new VError(`Failed updating archive credentials: Source with ID not found: ${sourceID}`);
+        }
+    }
+
+    /**
      * Replace a source by its ID
      * @protected
      * @param {String} id The ID of the source
