@@ -409,4 +409,34 @@ describe("ArchiveManager", function() {
             });
         });
     });
+
+    describe("updateArchiveCredentials", function() {
+        beforeEach(function() {
+            return createArchiveAndCredentials.call(this).then(() => {
+                return this.archiveManager
+                    .addSource("MyItem", this.sourceCredentials, this.archiveCredentials)
+                    .then(id => {
+                        this.sourceID = id;
+                    });
+            });
+        });
+
+        it("updates the password within the archive manager's item", function() {
+            const sourceIndex = this.archiveManager.indexOfSource(this.sourceID);
+            expect(this.archiveManager.sources[sourceIndex].archiveCredentials.password).to.equal(
+                this.archiveCredentials.password
+            );
+            this.archiveManager.updateArchiveCredentials(this.sourceID, createCredentials.fromPassword("second"));
+            expect(this.archiveManager.sources[sourceIndex].archiveCredentials.password).to.equal("second");
+        });
+
+        it("updates the password within the workspace", function() {
+            const sourceIndex = this.archiveManager.indexOfSource(this.sourceID);
+            expect(this.archiveManager.sources[sourceIndex].workspace.primary.credentials.password).to.equal(
+                this.archiveCredentials.password
+            );
+            this.archiveManager.updateArchiveCredentials(this.sourceID, createCredentials.fromPassword("second"));
+            expect(this.archiveManager.sources[sourceIndex].workspace.primary.credentials.password).to.equal("second");
+        });
+    });
 });
