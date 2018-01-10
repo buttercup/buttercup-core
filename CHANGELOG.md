@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v1.3.0
+_2017-01-10_
+
+ * Support for changing archive names in `ArchiveManager` ([#193](https://github.com/buttercup/buttercup-core/issues/193))
+
 ## v1.2.0
 _2017-01-10_
 

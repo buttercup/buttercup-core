@@ -589,6 +589,7 @@ Archive manager for managing archives and connections to sources
     * [.lock(id)](#ArchiveManager+lock) ⇒ <code>Promise</code>
     * [.rehydrate()](#ArchiveManager+rehydrate) ⇒ <code>Promise</code>
     * [.remove(id)](#ArchiveManager+remove) ⇒ <code>Promise</code>
+    * [.rename(id, newName)](#ArchiveManager+rename)
     * [.unlock(id, masterPassword)](#ArchiveManager+unlock) ⇒ <code>Promise</code>
     * [._replace(id, source)](#ArchiveManager+_replace)
 
@@ -690,6 +691,22 @@ Remove a source
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>String</code> | The source ID |
+
+<a name="ArchiveManager+rename"></a>
+
+### archiveManager.rename(id, newName)
+Rename an archive
+
+**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Throws**:
+
+- <code>VError</code> Throws if the source ID does not exist
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The source ID |
+| newName | <code>String</code> | The new name for the source |
 
 <a name="ArchiveManager+unlock"></a>
 
@@ -2953,6 +2970,7 @@ Gets a command by its key from the cache with its dependencies injected
     * [.mergeSaveablesFromRemote()](#Workspace+mergeSaveablesFromRemote) ⇒ <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code>
     * [.save()](#Workspace+save) ⇒ <code>Promise</code>
     * [.setPrimaryArchive(archive, datasource, masterCredentials)](#Workspace+setPrimaryArchive) ⇒ <code>[Workspace](#Workspace)</code>
+    * [.updatePrimaryCredentials(masterCredentials)](#Workspace+updatePrimaryCredentials) ⇒ <code>[Workspace](#Workspace)</code>
 
 <a name="new_Workspace_new"></a>
 
@@ -3064,6 +3082,18 @@ Set the primary archive
 | datasource | <code>[TextDatasource](#TextDatasource)</code> | The datasource instance |
 | masterCredentials | <code>[Credentials](#Credentials)</code> | The master password |
 
+<a name="Workspace+updatePrimaryCredentials"></a>
+
+### workspace.updatePrimaryCredentials(masterCredentials) ⇒ <code>[Workspace](#Workspace)</code>
+Update the master password of the primary archive
+
+**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Returns**: <code>[Workspace](#Workspace)</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| masterCredentials | <code>[Credentials](#Credentials)</code> | The new credentials |
+
 <a name="LocalStorageInterface"></a>
 
 ## LocalStorageInterface ⇐ <code>StorageInterface</code>
@@ -3075,6 +3105,7 @@ Interface for localStorage
 * [LocalStorageInterface](#LocalStorageInterface) ⇐ <code>StorageInterface</code>
     * [.getAllKeys()](#LocalStorageInterface+getAllKeys) ⇒ <code>Promise.&lt;Array.&lt;String&gt;&gt;</code>
     * [.getValue(name)](#LocalStorageInterface+getValue) ⇒ <code>Promise.&lt;String&gt;</code>
+    * [.removeKey(name)](#LocalStorageInterface+removeKey) ⇒ <code>Promise</code>
     * [.setValue(name, value)](#LocalStorageInterface+setValue) ⇒ <code>Promise</code>
 
 <a name="LocalStorageInterface+getAllKeys"></a>
@@ -3091,6 +3122,18 @@ Get the value of a key
 
 **Kind**: instance method of <code>[LocalStorageInterface](#LocalStorageInterface)</code>  
 **Returns**: <code>Promise.&lt;String&gt;</code> - A promise that resolves with the value  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The key name |
+
+<a name="LocalStorageInterface+removeKey"></a>
+
+### localStorageInterface.removeKey(name) ⇒ <code>Promise</code>
+Remove a key
+
+**Kind**: instance method of <code>[LocalStorageInterface](#LocalStorageInterface)</code>  
+**Returns**: <code>Promise</code> - A promise that resolves when the removal has completed  
 
 | Param | Type | Description |
 | --- | --- | --- |
