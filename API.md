@@ -187,7 +187,7 @@ Command related tools
 ### command.extractCommandComponents(command) ⇒ <code>Array.&lt;String&gt;</code>
 Extract command components from a string
 
-**Kind**: static method of <code>[command](#module_command)</code>  
+**Kind**: static method of [<code>command</code>](#module_command)  
 **Returns**: <code>Array.&lt;String&gt;</code> - The separated parts  
 
 | Param | Type | Description |
@@ -198,7 +198,7 @@ Extract command components from a string
 
 ## Archive
 **Kind**: global class  
-**Mixes**: <code>[GroupCollection](#GroupCollection)</code>, <code>[EntryCollection](#EntryCollection)</code>  
+**Mixes**: [<code>GroupCollection</code>](#GroupCollection), [<code>EntryCollection</code>](#EntryCollection)  
 
 * [Archive](#Archive)
     * [new Archive()](#new_Archive_new)
@@ -206,32 +206,32 @@ Extract command components from a string
         * [.readOnly](#Archive+readOnly)
         * [.sharedGroups](#Archive+sharedGroups)
         * [.type](#Archive+type) : <code>String</code>
-        * [.findGroupByID](#Archive+findGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
-        * [.findGroupsByTitle](#Archive+findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
-        * [.findEntriesByMeta](#Archive+findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
-        * [.findEntriesByProperty](#Archive+findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
-        * [.createGroup([title])](#Archive+createGroup) ⇒ <code>[Group](#Group)</code>
-        * [.deleteAttribute(attributeName)](#Archive+deleteAttribute) ⇒ <code>[Archive](#Archive)</code>
-        * [.discardSharedGroups()](#Archive+discardSharedGroups) ⇒ <code>[Archive](#Archive)</code>
+        * [.findGroupByID](#Archive+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
+        * [.findGroupsByTitle](#Archive+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
+        * [.findEntriesByMeta](#Archive+findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+        * [.findEntriesByProperty](#Archive+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+        * [.createGroup([title])](#Archive+createGroup) ⇒ [<code>Group</code>](#Group)
+        * [.deleteAttribute(attributeName)](#Archive+deleteAttribute) ⇒ [<code>Archive</code>](#Archive)
+        * [.discardSharedGroups()](#Archive+discardSharedGroups) ⇒ [<code>Archive</code>](#Archive)
         * [.emptyTrash()](#Archive+emptyTrash)
-        * [.getAttribute(attributeName)](#Archive+getAttribute) ⇒ <code>undefined</code> &#124; <code>String</code>
+        * [.getAttribute(attributeName)](#Archive+getAttribute) ⇒ <code>undefined</code> \| <code>String</code>
         * [.getAttributes()](#Archive+getAttributes) ⇒ <code>Object</code>
-        * [.getEntryByID(entryID)](#Archive+getEntryByID) ⇒ <code>[Entry](#Entry)</code> &#124; <code>null</code>
+        * [.getEntryByID(entryID)](#Archive+getEntryByID) ⇒ [<code>Entry</code>](#Entry) \| <code>null</code>
         * [.getFormat()](#Archive+getFormat) ⇒ <code>string</code>
-        * ~~[.getGroupByID(groupID)](#Archive+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
-        * [.getGroups()](#Archive+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+        * ~~[.getGroupByID(groupID)](#Archive+getGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>~~
+        * [.getGroups()](#Archive+getGroups) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
         * [.getHistory()](#Archive+getHistory) ⇒ <code>Array.&lt;String&gt;</code>
         * [.getID()](#Archive+getID) ⇒ <code>String</code>
-        * [.getTrashGroup()](#Archive+getTrashGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
-        * [.optimise()](#Archive+optimise) ⇒ <code>[Archive](#Archive)</code>
-        * [.setAttribute(attributeName, value)](#Archive+setAttribute) ⇒ <code>[Archive](#Archive)</code>
+        * [.getTrashGroup()](#Archive+getTrashGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
+        * [.optimise()](#Archive+optimise) ⇒ [<code>Archive</code>](#Archive)
+        * [.setAttribute(attributeName, value)](#Archive+setAttribute) ⇒ [<code>Archive</code>](#Archive)
         * [.toObject(groupOutputFlags)](#Archive+toObject) ⇒ <code>Object</code>
         * [._generateID()](#Archive+_generateID)
-        * [._getWestley()](#Archive+_getWestley) ⇒ <code>[Westley](#Westley)</code>
-        * [.inst.findEntryByID(id)](#Archive+findEntryByID) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
+        * [._getWestley()](#Archive+_getWestley) ⇒ [<code>Westley</code>](#Westley)
+        * [.inst.findEntryByID(id)](#Archive+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
     * _static_
-        * [.createFromHistory(history)](#Archive.createFromHistory) ⇒ <code>[Archive](#Archive)</code>
-        * [.createWithDefaults()](#Archive.createWithDefaults) ⇒ <code>[Archive](#Archive)</code>
+        * [.createFromHistory(history)](#Archive.createFromHistory) ⇒ [<code>Archive</code>](#Archive)
+        * [.createWithDefaults()](#Archive.createWithDefaults) ⇒ [<code>Archive</code>](#Archive)
 
 <a name="new_Archive_new"></a>
 
@@ -243,7 +243,7 @@ Buttercup Archive
 ### archive.readOnly
 Whether the archive is read only or not
 
-**Kind**: instance property of <code>[Archive](#Archive)</code>  
+**Kind**: instance property of [<code>Archive</code>](#Archive)  
 **Read only**: true  
 **Properties**
 
@@ -256,27 +256,27 @@ Whether the archive is read only or not
 ### archive.sharedGroups
 An array of shared groups
 
-**Kind**: instance property of <code>[Archive](#Archive)</code>  
+**Kind**: instance property of [<code>Archive</code>](#Archive)  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| sharedGroups | <code>[Array.&lt;Group&gt;](#Group)</code> | 
+| sharedGroups | [<code>Array.&lt;Group&gt;</code>](#Group) | 
 
 <a name="Archive+type"></a>
 
 ### archive.type : <code>String</code>
 Get the instance type
 
-**Kind**: instance property of <code>[Archive](#Archive)</code>  
+**Kind**: instance property of [<code>Archive</code>](#Archive)  
 <a name="Archive+findGroupByID"></a>
 
-### archive.findGroupByID ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+### archive.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
 Find a group by its ID
 
-**Kind**: instance property of <code>[Archive](#Archive)</code>  
-**Mixes**: <code>[findGroupByID](#GroupCollection.findGroupByID)</code>  
-**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The group or null if not found  
+**Kind**: instance property of [<code>Archive</code>](#Archive)  
+**Mixes**: [<code>findGroupByID</code>](#GroupCollection.findGroupByID)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The group or null if not found  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -284,52 +284,52 @@ Find a group by its ID
 
 <a name="Archive+findGroupsByTitle"></a>
 
-### archive.findGroupsByTitle ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+### archive.findGroupsByTitle ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
 Find groups by their title
 
-**Kind**: instance property of <code>[Archive](#Archive)</code>  
-**Mixes**: <code>[findGroupsByTitle](#GroupCollection.findGroupsByTitle)</code>  
-**Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of groups  
+**Kind**: instance property of [<code>Archive</code>](#Archive)  
+**Mixes**: [<code>findGroupsByTitle</code>](#GroupCollection.findGroupsByTitle)  
+**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of groups  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| title | <code>String</code> &#124; <code>RegExp</code> | The group title |
+| title | <code>String</code> \| <code>RegExp</code> | The group title |
 
 <a name="Archive+findEntriesByMeta"></a>
 
-### archive.findEntriesByMeta ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+### archive.findEntriesByMeta ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
 Find entries that match a certain meta property
 
-**Kind**: instance property of <code>[Archive](#Archive)</code>  
-**Mixes**: <code>[findEntriesByMeta](#EntryCollection.findEntriesByMeta)</code>  
-**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found entries  
+**Kind**: instance property of [<code>Archive</code>](#Archive)  
+**Mixes**: [<code>findEntriesByMeta</code>](#EntryCollection.findEntriesByMeta)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | metaName | <code>String</code> | The meta property to search for |
-| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
 
 <a name="Archive+findEntriesByProperty"></a>
 
-### archive.findEntriesByProperty ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+### archive.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
 Find all entries that match a certain property
 
-**Kind**: instance property of <code>[Archive](#Archive)</code>  
-**Mixes**: <code>[findEntriesByProperty](#EntryCollection.findEntriesByProperty)</code>  
-**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found extries  
+**Kind**: instance property of [<code>Archive</code>](#Archive)  
+**Mixes**: [<code>findEntriesByProperty</code>](#EntryCollection.findEntriesByProperty)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found extries  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | property | <code>string</code> | The property to search with |
-| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
 
 <a name="Archive+createGroup"></a>
 
-### archive.createGroup([title]) ⇒ <code>[Group](#Group)</code>
+### archive.createGroup([title]) ⇒ [<code>Group</code>](#Group)
 Create a new group
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>[Group](#Group)</code> - The newly created group  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Returns**: [<code>Group</code>](#Group) - The newly created group  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -337,11 +337,11 @@ Create a new group
 
 <a name="Archive+deleteAttribute"></a>
 
-### archive.deleteAttribute(attributeName) ⇒ <code>[Archive](#Archive)</code>
+### archive.deleteAttribute(attributeName) ⇒ [<code>Archive</code>](#Archive)
 Delete an attribute
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>[Archive](#Archive)</code> - Self  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Returns**: [<code>Archive</code>](#Archive) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -349,28 +349,28 @@ Delete an attribute
 
 <a name="Archive+discardSharedGroups"></a>
 
-### archive.discardSharedGroups() ⇒ <code>[Archive](#Archive)</code>
+### archive.discardSharedGroups() ⇒ [<code>Archive</code>](#Archive)
 Clear the shared groups array
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>[Archive](#Archive)</code> - Self  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Returns**: [<code>Archive</code>](#Archive) - Self  
 <a name="Archive+emptyTrash"></a>
 
 ### archive.emptyTrash()
 Remove all entries and groups from the trash (permanent)
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
 **Throws**:
 
 - <code>Error</code> Throws if there is no trash group
 
 <a name="Archive+getAttribute"></a>
 
-### archive.getAttribute(attributeName) ⇒ <code>undefined</code> &#124; <code>String</code>
+### archive.getAttribute(attributeName) ⇒ <code>undefined</code> \| <code>String</code>
 Get the value of an attribute
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>undefined</code> &#124; <code>String</code> - The value of the attribute or undefined if not set  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Returns**: <code>undefined</code> \| <code>String</code> - The value of the attribute or undefined if not set  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -381,15 +381,15 @@ Get the value of an attribute
 ### archive.getAttributes() ⇒ <code>Object</code>
 Get all attributes
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
 **Returns**: <code>Object</code> - Attributes object  
 <a name="Archive+getEntryByID"></a>
 
-### archive.getEntryByID(entryID) ⇒ <code>[Entry](#Entry)</code> &#124; <code>null</code>
+### archive.getEntryByID(entryID) ⇒ [<code>Entry</code>](#Entry) \| <code>null</code>
 Find an entry by its ID
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>[Entry](#Entry)</code> &#124; <code>null</code> - The found entry or null  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Returns**: [<code>Entry</code>](#Entry) \| <code>null</code> - The found entry or null  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -400,17 +400,17 @@ Find an entry by its ID
 ### archive.getFormat() ⇒ <code>string</code>
 Get the archive format
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
 **Returns**: <code>string</code> - The format of the archive  
 <a name="Archive+getGroupByID"></a>
 
-### ~~archive.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
+### ~~archive.getGroupByID(groupID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>~~
 ***Deprecated***
 
 Find a group by its ID
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The group with the provided ID  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The group with the provided ID  
 **See**: findGroupByID  
 
 | Param | Type | Description |
@@ -419,47 +419,47 @@ Find a group by its ID
 
 <a name="Archive+getGroups"></a>
 
-### archive.getGroups() ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+### archive.getGroups() ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
 Get all groups (root) in the archive
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of Groups  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of Groups  
 <a name="Archive+getHistory"></a>
 
 ### archive.getHistory() ⇒ <code>Array.&lt;String&gt;</code>
 Get the command array (history)
 Returned object can be quite large.
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
 **Returns**: <code>Array.&lt;String&gt;</code> - The command array  
 <a name="Archive+getID"></a>
 
 ### archive.getID() ⇒ <code>String</code>
 Get the archive ID
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
 **Returns**: <code>String</code> - The ID or an empty string if not set  
 <a name="Archive+getTrashGroup"></a>
 
-### archive.getTrashGroup() ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+### archive.getTrashGroup() ⇒ [<code>Group</code>](#Group) \| <code>null</code>
 Get the trash group
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The trash group if found, null otherwise  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The trash group if found, null otherwise  
 <a name="Archive+optimise"></a>
 
-### archive.optimise() ⇒ <code>[Archive](#Archive)</code>
+### archive.optimise() ⇒ [<code>Archive</code>](#Archive)
 Perform archive optimisations
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>[Archive](#Archive)</code> - Self  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Returns**: [<code>Archive</code>](#Archive) - Self  
 <a name="Archive+setAttribute"></a>
 
-### archive.setAttribute(attributeName, value) ⇒ <code>[Archive](#Archive)</code>
+### archive.setAttribute(attributeName, value) ⇒ [<code>Archive</code>](#Archive)
 Set an attribute on the archive
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>[Archive](#Archive)</code> - Self  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Returns**: [<code>Archive</code>](#Archive) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -471,7 +471,7 @@ Set an attribute on the archive
 ### archive.toObject(groupOutputFlags) ⇒ <code>Object</code>
 Convert the archive to an object
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
 **Returns**: <code>Object</code> - The archive in object form  
 **See**: Group.toObject  
 
@@ -484,24 +484,24 @@ Convert the archive to an object
 ### archive._generateID()
 Generate an archive ID
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Access:** protected  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Access**: protected  
 <a name="Archive+_getWestley"></a>
 
-### archive._getWestley() ⇒ <code>[Westley](#Westley)</code>
+### archive._getWestley() ⇒ [<code>Westley</code>](#Westley)
 Get the underlying Westley instance
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>[Westley](#Westley)</code> - The Westley instance  
-**Access:** protected  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Returns**: [<code>Westley</code>](#Westley) - The Westley instance  
+**Access**: protected  
 <a name="Archive+findEntryByID"></a>
 
-### archive.inst.findEntryByID(id) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
+### archive.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
 Find an entry by its ID
 
-**Kind**: instance method of <code>[Archive](#Archive)</code>  
-**Mixes**: <code>[inst.findEntryByID](#EntryCollection.inst.findEntryByID)</code>  
-**Returns**: <code>null</code> &#124; <code>[Entry](#Entry)</code> - Null if not found, or the Entry instance  
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
+**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -509,11 +509,11 @@ Find an entry by its ID
 
 <a name="Archive.createFromHistory"></a>
 
-### Archive.createFromHistory(history) ⇒ <code>[Archive](#Archive)</code>
+### Archive.createFromHistory(history) ⇒ [<code>Archive</code>](#Archive)
 Create a new archive instance from a list of commands (history)
 
-**Kind**: static method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>[Archive](#Archive)</code> - The archive instance  
+**Kind**: static method of [<code>Archive</code>](#Archive)  
+**Returns**: [<code>Archive</code>](#Archive) - The archive instance  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -521,11 +521,11 @@ Create a new archive instance from a list of commands (history)
 
 <a name="Archive.createWithDefaults"></a>
 
-### Archive.createWithDefaults() ⇒ <code>[Archive](#Archive)</code>
+### Archive.createWithDefaults() ⇒ [<code>Archive</code>](#Archive)
 Create an Archive with the default template
 
-**Kind**: static method of <code>[Archive](#Archive)</code>  
-**Returns**: <code>[Archive](#Archive)</code> - The new archive  
+**Kind**: static method of [<code>Archive</code>](#Archive)  
+**Returns**: [<code>Archive</code>](#Archive) - The new archive  
 <a name="Comparator"></a>
 
 ## Comparator
@@ -534,7 +534,7 @@ Create an Archive with the default template
 * [Comparator](#Comparator)
     * [new Comparator(originalArchive, secondaryArchive)](#new_Comparator_new)
     * [.archivesDiffer()](#Comparator+archivesDiffer) ⇒ <code>Boolean</code>
-    * [.calculateDifferences()](#Comparator+calculateDifferences) ⇒ <code>Object</code> &#124; <code>Boolean</code>
+    * [.calculateDifferences()](#Comparator+calculateDifferences) ⇒ <code>Object</code> \| <code>Boolean</code>
 
 <a name="new_Comparator_new"></a>
 
@@ -544,23 +544,23 @@ Archive comparison class
 
 | Param | Type | Description |
 | --- | --- | --- |
-| originalArchive | <code>[Archive](#Archive)</code> | The primary archive |
-| secondaryArchive | <code>[Archive](#Archive)</code> | The secondary archive |
+| originalArchive | [<code>Archive</code>](#Archive) | The primary archive |
+| secondaryArchive | [<code>Archive</code>](#Archive) | The secondary archive |
 
 <a name="Comparator+archivesDiffer"></a>
 
 ### comparator.archivesDiffer() ⇒ <code>Boolean</code>
 Check if the current archives differ
 
-**Kind**: instance method of <code>[Comparator](#Comparator)</code>  
+**Kind**: instance method of [<code>Comparator</code>](#Comparator)  
 **Returns**: <code>Boolean</code> - True if the archives are different  
 <a name="Comparator+calculateDifferences"></a>
 
-### comparator.calculateDifferences() ⇒ <code>Object</code> &#124; <code>Boolean</code>
+### comparator.calculateDifferences() ⇒ <code>Object</code> \| <code>Boolean</code>
 Calculate the differences, in commands, between the two archives
 
-**Kind**: instance method of <code>[Comparator](#Comparator)</code>  
-**Returns**: <code>Object</code> &#124; <code>Boolean</code> - Returns false if no common base
+**Kind**: instance method of [<code>Comparator</code>](#Comparator)  
+**Returns**: <code>Object</code> \| <code>Boolean</code> - Returns false if no common base
        is found, or the command differences as two arrays  
 <a name="ArchiveManager"></a>
 
@@ -599,32 +599,32 @@ Constructor for ArchiveManager
 ### archiveManager.sources : <code>Array.&lt;(UnlockedArchiveManagerSource\|LockedArchiveManagerSource)&gt;</code>
 All sources handled by the manager
 
-**Kind**: instance property of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
 <a name="ArchiveManager+storageInterface"></a>
 
 ### archiveManager.storageInterface : <code>StorageInterface</code>
 Reference to the storage interface
 
-**Kind**: instance property of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
 <a name="ArchiveManager+unlockedSources"></a>
 
 ### archiveManager.unlockedSources : <code>Array.&lt;(UnlockedArchiveManagerSource\|LockedArchiveManagerSource)&gt;</code>
 Array of unlocked sources
 
-**Kind**: instance property of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
 <a name="ArchiveManager+addSource"></a>
 
 ### archiveManager.addSource(name, sourceCredentials, archiveCredentials, [initialise]) ⇒ <code>Promise.&lt;String&gt;</code>
 Add a new source
 
-**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
 **Returns**: <code>Promise.&lt;String&gt;</code> - A promise that resolves with the source's new ID  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | name | <code>String</code> |  | The name of the source |
-| sourceCredentials | <code>[Credentials](#Credentials)</code> |  | Archive source credentials (remote system) |
-| archiveCredentials | <code>[Credentials](#Credentials)</code> |  | Credentials for unlocking the archive |
+| sourceCredentials | [<code>Credentials</code>](#Credentials) |  | Archive source credentials (remote system) |
+| archiveCredentials | [<code>Credentials</code>](#Credentials) |  | Credentials for unlocking the archive |
 | [initialise] | <code>Boolean</code> | <code>false</code> | Optionally initialise a blank archive (defaults to false) |
 
 <a name="ArchiveManager+dehydrateSource"></a>
@@ -633,7 +633,7 @@ Add a new source
 Dehydrate a source and write it to storage
 Does not lock the source
 
-**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
 **Returns**: <code>Promise</code> - A promise that resolves once dehydration has completed  
 
 | Param | Type | Description |
@@ -645,7 +645,7 @@ Does not lock the source
 ### archiveManager.indexOfSource(id) ⇒ <code>Number</code>
 Get an index for a source with an ID
 
-**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
 **Returns**: <code>Number</code> - The index or -1 if not found  
 
 | Param | Type | Description |
@@ -657,7 +657,7 @@ Get an index for a source with an ID
 ### archiveManager.lock(id) ⇒ <code>Promise</code>
 Lock a source by its ID
 
-**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
 **Returns**: <code>Promise</code> - A promise that resolves once the source is locked  
 
 | Param | Type | Description |
@@ -669,14 +669,14 @@ Lock a source by its ID
 ### archiveManager.rehydrate() ⇒ <code>Promise</code>
 Rehydrate all sources from storage
 
-**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
 **Returns**: <code>Promise</code> - A promise that resolves once all sources have been rehydrated  
 <a name="ArchiveManager+remove"></a>
 
 ### archiveManager.remove(id) ⇒ <code>Promise</code>
 Remove a source
 
-**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
 **Returns**: <code>Promise</code> - A promise that resolves once the source has been removed  
 
 | Param | Type | Description |
@@ -688,7 +688,7 @@ Remove a source
 ### archiveManager.rename(id, newName)
 Rename an archive
 
-**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
 **Throws**:
 
 - <code>VError</code> Throws if the source ID does not exist
@@ -704,7 +704,7 @@ Rename an archive
 ### archiveManager.unlock(id, masterPassword) ⇒ <code>Promise</code>
 Unlock a source
 
-**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
+**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
 **Returns**: <code>Promise</code> - A promise that resolves once the source is unlocked  
 
 | Param | Type | Description |
@@ -717,28 +717,28 @@ Unlock a source
 ### archiveManager._replace(id, source)
 Replace a source by its ID
 
-**Kind**: instance method of <code>[ArchiveManager](#ArchiveManager)</code>  
-**Access:** protected  
+**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
+**Access**: protected  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>String</code> | The ID of the source |
-| source | <code>[UnlockedArchiveManagerSource](#UnlockedArchiveManagerSource)</code> &#124; <code>[LockedArchiveManagerSource](#LockedArchiveManagerSource)</code> | The source to replace it with |
+| source | [<code>UnlockedArchiveManagerSource</code>](#UnlockedArchiveManagerSource) \| [<code>LockedArchiveManagerSource</code>](#LockedArchiveManagerSource) | The source to replace it with |
 
 <a name="DropboxDatasource"></a>
 
-## DropboxDatasource ⇐ <code>[TextDatasource](#TextDatasource)</code>
+## DropboxDatasource ⇐ [<code>TextDatasource</code>](#TextDatasource)
 Datasource for Dropbox archives
 
 **Kind**: global class  
-**Extends:** <code>[TextDatasource](#TextDatasource)</code>  
+**Extends**: [<code>TextDatasource</code>](#TextDatasource)  
 
-* [DropboxDatasource](#DropboxDatasource) ⇐ <code>[TextDatasource](#TextDatasource)</code>
+* [DropboxDatasource](#DropboxDatasource) ⇐ [<code>TextDatasource</code>](#TextDatasource)
     * [new DropboxDatasource(accessToken, resourcePath)](#new_DropboxDatasource_new)
-    * [.load(credentials)](#DropboxDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.load(credentials)](#DropboxDatasource+load) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.save(archive, credentials)](#DropboxDatasource+save) ⇒ <code>Promise</code>
     * [.toObject()](#DropboxDatasource+toObject) ⇒ <code>Object</code>
-    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ [<code>TextDatasource</code>](#TextDatasource)
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_DropboxDatasource_new"></a>
@@ -754,46 +754,46 @@ Datasource for Dropbox accounts
 
 <a name="DropboxDatasource+load"></a>
 
-### dropboxDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### dropboxDatasource.load(credentials) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
 Load an archive from the datasource
 
-**Kind**: instance method of <code>[DropboxDatasource](#DropboxDatasource)</code>  
-**Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise that resolves with an archive  
+**Kind**: instance method of [<code>DropboxDatasource</code>](#DropboxDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;Archive&gt;</code>](#Archive) - A promise that resolves with an archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for decryption |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for decryption |
 
 <a name="DropboxDatasource+save"></a>
 
 ### dropboxDatasource.save(archive, credentials) ⇒ <code>Promise</code>
 Save an archive using the datasource
 
-**Kind**: instance method of <code>[DropboxDatasource](#DropboxDatasource)</code>  
-**Overrides:** <code>[save](#TextDatasource+save)</code>  
+**Kind**: instance method of [<code>DropboxDatasource</code>](#DropboxDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
 **Returns**: <code>Promise</code> - A promise that resolves when saving has completed  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials to save with |
+| archive | [<code>Archive</code>](#Archive) | The archive to save |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials to save with |
 
 <a name="DropboxDatasource+toObject"></a>
 
 ### dropboxDatasource.toObject() ⇒ <code>Object</code>
 Output the datasource as an object
 
-**Kind**: instance method of <code>[DropboxDatasource](#DropboxDatasource)</code>  
-**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Kind**: instance method of [<code>DropboxDatasource</code>](#DropboxDatasource)  
+**Overrides**: [<code>toObject</code>](#TextDatasource+toObject)  
 **Returns**: <code>Object</code> - An object describing the datasource  
 <a name="TextDatasource+setContent"></a>
 
-### dropboxDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+### dropboxDatasource.setContent(content) ⇒ [<code>TextDatasource</code>](#TextDatasource)
 Set the text content
 
-**Kind**: instance method of <code>[DropboxDatasource](#DropboxDatasource)</code>  
-**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+**Kind**: instance method of [<code>DropboxDatasource</code>](#DropboxDatasource)  
+**Returns**: [<code>TextDatasource</code>](#TextDatasource) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -804,7 +804,7 @@ Set the text content
 ### dropboxDatasource.toString() ⇒ <code>String</code>
 Output the datasource configuration as a string
 
-**Kind**: instance method of <code>[DropboxDatasource](#DropboxDatasource)</code>  
+**Kind**: instance method of [<code>DropboxDatasource</code>](#DropboxDatasource)  
 **Returns**: <code>String</code> - The string representation of the datasource  
 <a name="Entry"></a>
 
@@ -815,26 +815,26 @@ Output the datasource configuration as a string
     * [new Entry(archive, remoteObj)](#new_Entry_new)
     * _instance_
         * [.delete()](#Entry+delete) ⇒ <code>Boolean</code>
-        * [.deleteAttribute(attr)](#Entry+deleteAttribute) ⇒ <code>[Entry](#Entry)</code>
-        * [.deleteMeta(property)](#Entry+deleteMeta) ⇒ <code>[Entry](#Entry)</code>
-        * [.getAttribute([attributeName])](#Entry+getAttribute) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
+        * [.deleteAttribute(attr)](#Entry+deleteAttribute) ⇒ [<code>Entry</code>](#Entry)
+        * [.deleteMeta(property)](#Entry+deleteMeta) ⇒ [<code>Entry</code>](#Entry)
+        * [.getAttribute([attributeName])](#Entry+getAttribute) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
         * [.getAttributes()](#Entry+getAttributes) ⇒ <code>Object</code>
-        * [.getGroup()](#Entry+getGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+        * [.getGroup()](#Entry+getGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
         * [.getID()](#Entry+getID) ⇒ <code>String</code>
-        * [.getMeta([property])](#Entry+getMeta) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
-        * [.getProperty([property])](#Entry+getProperty) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
+        * [.getMeta([property])](#Entry+getMeta) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
+        * [.getProperty([property])](#Entry+getProperty) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
         * [.isInTrash()](#Entry+isInTrash) ⇒ <code>Boolean</code>
-        * [.moveToGroup(group)](#Entry+moveToGroup) ⇒ <code>[Entry](#Entry)</code>
-        * [.setAttribute(attributeName, value)](#Entry+setAttribute) ⇒ <code>[Entry](#Entry)</code>
-        * [.setMeta(prop, [value])](#Entry+setMeta) ⇒ <code>[Entry](#Entry)</code>
-        * [.setProperty(prop, [value])](#Entry+setProperty) ⇒ <code>[Entry](#Entry)</code>
+        * [.moveToGroup(group)](#Entry+moveToGroup) ⇒ [<code>Entry</code>](#Entry)
+        * [.setAttribute(attributeName, value)](#Entry+setAttribute) ⇒ [<code>Entry</code>](#Entry)
+        * [.setMeta(prop, [value])](#Entry+setMeta) ⇒ [<code>Entry</code>](#Entry)
+        * [.setProperty(prop, [value])](#Entry+setProperty) ⇒ [<code>Entry</code>](#Entry)
         * [.toObject()](#Entry+toObject) ⇒ <code>Object</code>
         * [.toString()](#Entry+toString) ⇒ <code>String</code>
-        * [._getArchive()](#Entry+_getArchive) ⇒ <code>[Archive](#Archive)</code>
+        * [._getArchive()](#Entry+_getArchive) ⇒ [<code>Archive</code>](#Archive)
         * [._getRemoteObject()](#Entry+_getRemoteObject) ⇒ <code>Object</code>
-        * [._getWestley()](#Entry+_getWestley) ⇒ <code>[Westley](#Westley)</code>
+        * [._getWestley()](#Entry+_getWestley) ⇒ [<code>Westley</code>](#Westley)
     * _static_
-        * [.createNew(archive, groupID)](#Entry.createNew) ⇒ <code>[Entry](#Entry)</code>
+        * [.createNew(archive, groupID)](#Entry.createNew) ⇒ [<code>Entry</code>](#Entry)
 
 <a name="new_Entry_new"></a>
 
@@ -844,7 +844,7 @@ Managed entry class
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The main archive instance |
+| archive | [<code>Archive</code>](#Archive) | The main archive instance |
 | remoteObj | <code>Object</code> | The remote object reference |
 
 <a name="Entry+delete"></a>
@@ -855,7 +855,7 @@ If the entry is in the trash already, it is removed (including if there is no
    trash group). If the entry is in a normal group and a trash group exists, it
  is moved there instead of being deleted.
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
 **Returns**: <code>Boolean</code> - Whether or not the item was deleted  
 **See**
 
@@ -864,11 +864,11 @@ If the entry is in the trash already, it is removed (including if there is no
 
 <a name="Entry+deleteAttribute"></a>
 
-### entry.deleteAttribute(attr) ⇒ <code>[Entry](#Entry)</code>
+### entry.deleteAttribute(attr) ⇒ [<code>Entry</code>](#Entry)
 Delete an attribute
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>[Entry](#Entry)</code> - Self  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: [<code>Entry</code>](#Entry) - Self  
 **Throws**:
 
 - <code>Error</code> Throws if the attribute doesn't exist, or cannot be deleted
@@ -880,11 +880,11 @@ Delete an attribute
 
 <a name="Entry+deleteMeta"></a>
 
-### entry.deleteMeta(property) ⇒ <code>[Entry](#Entry)</code>
+### entry.deleteMeta(property) ⇒ [<code>Entry</code>](#Entry)
 Delete a meta item
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>[Entry](#Entry)</code> - Self  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: [<code>Entry</code>](#Entry) - Self  
 **Throws**:
 
 - <code>Error</code> Throws if property doesn't exist, or cannot be deleted
@@ -896,13 +896,13 @@ Delete a meta item
 
 <a name="Entry+getAttribute"></a>
 
-### entry.getAttribute([attributeName]) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
+### entry.getAttribute([attributeName]) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
 Get an attribute
 If no attribute name is specified, an object with all attributes and their
 values is returned.
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code> - The attribute value or an object
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: <code>String</code> \| <code>undefined</code> \| <code>Object</code> - The attribute value or an object
  containing all attribute keys and their values if no attribute name
  is provided  
 
@@ -915,31 +915,31 @@ values is returned.
 ### entry.getAttributes() ⇒ <code>Object</code>
 Get all attributes
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
 **Returns**: <code>Object</code> - Attributes object  
 <a name="Entry+getGroup"></a>
 
-### entry.getGroup() ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+### entry.getGroup() ⇒ [<code>Group</code>](#Group) \| <code>null</code>
 Get the containing group for the entry
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The parent group  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The parent group  
 <a name="Entry+getID"></a>
 
 ### entry.getID() ⇒ <code>String</code>
 Get the entry ID
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
 **Returns**: <code>String</code> - The entry's ID  
 <a name="Entry+getMeta"></a>
 
-### entry.getMeta([property]) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
+### entry.getMeta([property]) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
 Get a meta value
 If no meta name is specified, an object with all meta keys and their
 values is returned.
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code> - The meta value or an object
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: <code>String</code> \| <code>undefined</code> \| <code>Object</code> - The meta value or an object
  containing all meta keys and values if no meta name specified  
 
 | Param | Type | Description |
@@ -948,13 +948,13 @@ values is returned.
 
 <a name="Entry+getProperty"></a>
 
-### entry.getProperty([property]) ⇒ <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code>
+### entry.getProperty([property]) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
 Get a property value
 If no property name is specified, an object with all properties and their
 values is returned.
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>String</code> &#124; <code>undefined</code> &#124; <code>Object</code> - The property value or an object with all
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: <code>String</code> \| <code>undefined</code> \| <code>Object</code> - The property value or an object with all
  values if no property specified  
 
 | Param | Type | Description |
@@ -966,28 +966,28 @@ values is returned.
 ### entry.isInTrash() ⇒ <code>Boolean</code>
 Check if the entry is in the trash
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
 **Returns**: <code>Boolean</code> - Whether or not the entry is in the trash  
 <a name="Entry+moveToGroup"></a>
 
-### entry.moveToGroup(group) ⇒ <code>[Entry](#Entry)</code>
+### entry.moveToGroup(group) ⇒ [<code>Entry</code>](#Entry)
 Move the entry to another group
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>[Entry](#Entry)</code> - Returns self  
-**Params**: <code>[Group](#Group)</code> group The target group  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: [<code>Entry</code>](#Entry) - Returns self  
+**Params**: [<code>Group</code>](#Group) group The target group  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| group | <code>[Group](#Group)</code> | The target group |
+| group | [<code>Group</code>](#Group) | The target group |
 
 <a name="Entry+setAttribute"></a>
 
-### entry.setAttribute(attributeName, value) ⇒ <code>[Entry](#Entry)</code>
+### entry.setAttribute(attributeName, value) ⇒ [<code>Entry</code>](#Entry)
 Set an attribute on the entry
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>[Entry](#Entry)</code> - Returns self  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: [<code>Entry</code>](#Entry) - Returns self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -996,11 +996,11 @@ Set an attribute on the entry
 
 <a name="Entry+setMeta"></a>
 
-### entry.setMeta(prop, [value]) ⇒ <code>[Entry](#Entry)</code>
+### entry.setMeta(prop, [value]) ⇒ [<code>Entry</code>](#Entry)
 Set a meta value on the entry
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>[Entry](#Entry)</code> - Returns self  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: [<code>Entry</code>](#Entry) - Returns self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1009,11 +1009,11 @@ Set a meta value on the entry
 
 <a name="Entry+setProperty"></a>
 
-### entry.setProperty(prop, [value]) ⇒ <code>[Entry](#Entry)</code>
+### entry.setProperty(prop, [value]) ⇒ [<code>Entry</code>](#Entry)
 Set a property on the entry
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>[Entry](#Entry)</code> - Returns self  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: [<code>Entry</code>](#Entry) - Returns self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1025,43 +1025,43 @@ Set a property on the entry
 ### entry.toObject() ⇒ <code>Object</code>
 Export entry to object
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
 **Returns**: <code>Object</code> - The entry in object-form  
 <a name="Entry+toString"></a>
 
 ### entry.toString() ⇒ <code>String</code>
 toString override
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
 **Returns**: <code>String</code> - The string representation of the Entry  
 <a name="Entry+_getArchive"></a>
 
-### entry._getArchive() ⇒ <code>[Archive](#Archive)</code>
+### entry._getArchive() ⇒ [<code>Archive</code>](#Archive)
 Get the archive reference
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>[Archive](#Archive)</code> - The Archive reference  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: [<code>Archive</code>](#Archive) - The Archive reference  
 <a name="Entry+_getRemoteObject"></a>
 
 ### entry._getRemoteObject() ⇒ <code>Object</code>
 Get the remote object that mirrors the data represented here
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
 **Returns**: <code>Object</code> - The remote object (in-memory copy)  
 <a name="Entry+_getWestley"></a>
 
-### entry._getWestley() ⇒ <code>[Westley](#Westley)</code>
+### entry._getWestley() ⇒ [<code>Westley</code>](#Westley)
 Get the Westley reference
 
-**Kind**: instance method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>[Westley](#Westley)</code> - The internal Westley reference  
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: [<code>Westley</code>](#Westley) - The internal Westley reference  
 <a name="Entry.createNew"></a>
 
-### Entry.createNew(archive, groupID) ⇒ <code>[Entry](#Entry)</code>
+### Entry.createNew(archive, groupID) ⇒ [<code>Entry</code>](#Entry)
 Create a new entry
 
-**Kind**: static method of <code>[Entry](#Entry)</code>  
-**Returns**: <code>[Entry](#Entry)</code> - The new entry  
+**Kind**: static method of [<code>Entry</code>](#Entry)  
+**Returns**: [<code>Entry</code>](#Entry) - The new entry  
 **Throws**:
 
 - <code>Error</code> Throws if the target group doesn't exist
@@ -1071,7 +1071,7 @@ Create a new entry
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive |
+| archive | [<code>Archive</code>](#Archive) | The archive |
 | groupID | <code>string</code> | The ID of the target group |
 
 <a name="EntryFinder"></a>
@@ -1083,10 +1083,10 @@ Entry searching class
 
 * [EntryFinder](#EntryFinder)
     * [new EntryFinder(target)](#new_EntryFinder_new)
-    * [.items](#EntryFinder+items) : <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
-    * [.lastResult](#EntryFinder+lastResult) : <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+    * [.items](#EntryFinder+items) : [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
+    * [.lastResult](#EntryFinder+lastResult) : [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
     * [.initSearcher()](#EntryFinder+initSearcher)
-    * [.search(term)](#EntryFinder+search) ⇒ <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+    * [.search(term)](#EntryFinder+search) ⇒ [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
 
 <a name="new_EntryFinder_new"></a>
 
@@ -1094,33 +1094,33 @@ Entry searching class
 
 | Param | Type | Description |
 | --- | --- | --- |
-| target | <code>[Array.&lt;Archive&gt;](#Archive)</code> &#124; <code>[Archive](#Archive)</code> | The archive or archives to search |
+| target | [<code>Array.&lt;Archive&gt;</code>](#Archive) \| [<code>Archive</code>](#Archive) | The archive or archives to search |
 
 <a name="EntryFinder+items"></a>
 
-### entryFinder.items : <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+### entryFinder.items : [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
 All items available for searching
 
-**Kind**: instance property of <code>[EntryFinder](#EntryFinder)</code>  
+**Kind**: instance property of [<code>EntryFinder</code>](#EntryFinder)  
 <a name="EntryFinder+lastResult"></a>
 
-### entryFinder.lastResult : <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+### entryFinder.lastResult : [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
 The last result
 
-**Kind**: instance property of <code>[EntryFinder](#EntryFinder)</code>  
+**Kind**: instance property of [<code>EntryFinder</code>](#EntryFinder)  
 <a name="EntryFinder+initSearcher"></a>
 
 ### entryFinder.initSearcher()
 Initialise the searching mechanism
 
-**Kind**: instance method of <code>[EntryFinder](#EntryFinder)</code>  
+**Kind**: instance method of [<code>EntryFinder</code>](#EntryFinder)  
 <a name="EntryFinder+search"></a>
 
-### entryFinder.search(term) ⇒ <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+### entryFinder.search(term) ⇒ [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
 Search and get results
 
-**Kind**: instance method of <code>[EntryFinder](#EntryFinder)</code>  
-**Returns**: <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code> - The results  
+**Kind**: instance method of [<code>EntryFinder</code>](#EntryFinder)  
+**Returns**: [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo) - The results  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1128,18 +1128,18 @@ Search and get results
 
 <a name="FileDatasource"></a>
 
-## FileDatasource ⇐ <code>[TextDatasource](#TextDatasource)</code>
+## FileDatasource ⇐ [<code>TextDatasource</code>](#TextDatasource)
 **Kind**: global class  
-**Extends:** <code>[TextDatasource](#TextDatasource)</code>  
+**Extends**: [<code>TextDatasource</code>](#TextDatasource)  
 
-* [FileDatasource](#FileDatasource) ⇐ <code>[TextDatasource](#TextDatasource)</code>
+* [FileDatasource](#FileDatasource) ⇐ [<code>TextDatasource</code>](#TextDatasource)
     * [new FileDatasource()](#new_FileDatasource_new)
     * [new FileDatasource(filename)](#new_FileDatasource_new)
     * [.getArchivePath()](#FileDatasource+getArchivePath) ⇒ <code>String</code>
-    * [.load(credentials)](#FileDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.load(credentials)](#FileDatasource+load) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.save(archive, credentials)](#FileDatasource+save) ⇒ <code>Promise</code>
     * [.toObject()](#FileDatasource+toObject) ⇒ <code>Object</code>
-    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ [<code>TextDatasource</code>](#TextDatasource)
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_FileDatasource_new"></a>
@@ -1162,50 +1162,50 @@ Constructor for the file datasource
 ### fileDatasource.getArchivePath() ⇒ <code>String</code>
 Get the path of the archive
 
-**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
+**Kind**: instance method of [<code>FileDatasource</code>](#FileDatasource)  
 **Returns**: <code>String</code> - The file path  
 <a name="FileDatasource+load"></a>
 
-### fileDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### fileDatasource.load(credentials) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
 Load from the filename specified in the constructor using a password
 
-**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
-**Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the opened archive  
+**Kind**: instance method of [<code>FileDatasource</code>](#FileDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;Archive&gt;</code>](#Archive) - A promise resolving with the opened archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for decryption |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for decryption |
 
 <a name="FileDatasource+save"></a>
 
 ### fileDatasource.save(archive, credentials) ⇒ <code>Promise</code>
 Save an archive to a file using a password for encryption
 
-**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
-**Overrides:** <code>[save](#TextDatasource+save)</code>  
+**Kind**: instance method of [<code>FileDatasource</code>](#FileDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
 **Returns**: <code>Promise</code> - A promise that resolves when saving is complete  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials to save with |
+| archive | [<code>Archive</code>](#Archive) | The archive to save |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials to save with |
 
 <a name="FileDatasource+toObject"></a>
 
 ### fileDatasource.toObject() ⇒ <code>Object</code>
 Output the datasource as an object
 
-**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
-**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Kind**: instance method of [<code>FileDatasource</code>](#FileDatasource)  
+**Overrides**: [<code>toObject</code>](#TextDatasource+toObject)  
 **Returns**: <code>Object</code> - An object describing the datasource  
 <a name="TextDatasource+setContent"></a>
 
-### fileDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+### fileDatasource.setContent(content) ⇒ [<code>TextDatasource</code>](#TextDatasource)
 Set the text content
 
-**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
-**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+**Kind**: instance method of [<code>FileDatasource</code>](#FileDatasource)  
+**Returns**: [<code>TextDatasource</code>](#TextDatasource) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1216,7 +1216,7 @@ Set the text content
 ### fileDatasource.toString() ⇒ <code>String</code>
 Output the datasource configuration as a string
 
-**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
+**Kind**: instance method of [<code>FileDatasource</code>](#FileDatasource)  
 **Returns**: <code>String</code> - The string representation of the datasource  
 <a name="FileDatasource"></a>
 
@@ -1227,10 +1227,10 @@ Output the datasource configuration as a string
     * [new FileDatasource()](#new_FileDatasource_new)
     * [new FileDatasource(filename)](#new_FileDatasource_new)
     * [.getArchivePath()](#FileDatasource+getArchivePath) ⇒ <code>String</code>
-    * [.load(credentials)](#FileDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.load(credentials)](#FileDatasource+load) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.save(archive, credentials)](#FileDatasource+save) ⇒ <code>Promise</code>
     * [.toObject()](#FileDatasource+toObject) ⇒ <code>Object</code>
-    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ [<code>TextDatasource</code>](#TextDatasource)
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_FileDatasource_new"></a>
@@ -1253,50 +1253,50 @@ Constructor for the file datasource
 ### fileDatasource.getArchivePath() ⇒ <code>String</code>
 Get the path of the archive
 
-**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
+**Kind**: instance method of [<code>FileDatasource</code>](#FileDatasource)  
 **Returns**: <code>String</code> - The file path  
 <a name="FileDatasource+load"></a>
 
-### fileDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### fileDatasource.load(credentials) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
 Load from the filename specified in the constructor using a password
 
-**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
-**Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the opened archive  
+**Kind**: instance method of [<code>FileDatasource</code>](#FileDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;Archive&gt;</code>](#Archive) - A promise resolving with the opened archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for decryption |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for decryption |
 
 <a name="FileDatasource+save"></a>
 
 ### fileDatasource.save(archive, credentials) ⇒ <code>Promise</code>
 Save an archive to a file using a password for encryption
 
-**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
-**Overrides:** <code>[save](#TextDatasource+save)</code>  
+**Kind**: instance method of [<code>FileDatasource</code>](#FileDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
 **Returns**: <code>Promise</code> - A promise that resolves when saving is complete  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials to save with |
+| archive | [<code>Archive</code>](#Archive) | The archive to save |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials to save with |
 
 <a name="FileDatasource+toObject"></a>
 
 ### fileDatasource.toObject() ⇒ <code>Object</code>
 Output the datasource as an object
 
-**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
-**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Kind**: instance method of [<code>FileDatasource</code>](#FileDatasource)  
+**Overrides**: [<code>toObject</code>](#TextDatasource+toObject)  
 **Returns**: <code>Object</code> - An object describing the datasource  
 <a name="TextDatasource+setContent"></a>
 
-### fileDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+### fileDatasource.setContent(content) ⇒ [<code>TextDatasource</code>](#TextDatasource)
 Set the text content
 
-**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
-**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+**Kind**: instance method of [<code>FileDatasource</code>](#FileDatasource)  
+**Returns**: [<code>TextDatasource</code>](#TextDatasource) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1307,7 +1307,7 @@ Set the text content
 ### fileDatasource.toString() ⇒ <code>String</code>
 Output the datasource configuration as a string
 
-**Kind**: instance method of <code>[FileDatasource](#FileDatasource)</code>  
+**Kind**: instance method of [<code>FileDatasource</code>](#FileDatasource)  
 **Returns**: <code>String</code> - The string representation of the datasource  
 <a name="Flattener"></a>
 
@@ -1328,24 +1328,24 @@ Flatten archives
 
 | Param | Type | Description |
 | --- | --- | --- |
-| westley | <code>[Westley](#Westley)</code> | The Westley instance |
+| westley | [<code>Westley</code>](#Westley) | The Westley instance |
 
 <a name="Flattener+canBeFlattened"></a>
 
 ### flattener.canBeFlattened() ⇒ <code>Boolean</code>
 Check if the dataset can be flattened
 
-**Kind**: instance method of <code>[Flattener](#Flattener)</code>  
+**Kind**: instance method of [<code>Flattener</code>](#Flattener)  
 **Returns**: <code>Boolean</code> - True if it can be flattened  
-**Access:** public  
+**Access**: public  
 <a name="Flattener+flatten"></a>
 
 ### flattener.flatten([force]) ⇒ <code>Boolean</code>
 Flatten a dataset
 
-**Kind**: instance method of <code>[Flattener](#Flattener)</code>  
+**Kind**: instance method of [<code>Flattener</code>](#Flattener)  
 **Returns**: <code>Boolean</code> - True if flattening occurred, false otherwise  
-**Access:** public  
+**Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1356,55 +1356,55 @@ Flatten a dataset
 ### flattener.getPreservationCount() ⇒ <code>Number</code>
 Get the number of lines to preserve by default
 
-**Kind**: instance method of <code>[Flattener](#Flattener)</code>  
+**Kind**: instance method of [<code>Flattener</code>](#Flattener)  
 **Returns**: <code>Number</code> - The number of lines  
-**Access:** public  
+**Access**: public  
 **See**: PRESERVE_LAST_LINES  
 <a name="Group"></a>
 
 ## Group
 **Kind**: global class  
-**Mixes**: <code>[GroupCollection](#GroupCollection)</code>, <code>[EntryCollection](#EntryCollection)</code>  
+**Mixes**: [<code>GroupCollection</code>](#GroupCollection), [<code>EntryCollection</code>](#EntryCollection)  
 
 * [Group](#Group)
     * [new Group()](#new_Group_new)
     * [new Group(archive, remoteObj)](#new_Group_new)
     * _instance_
         * [.type](#Group+type) : <code>String</code>
-        * [.findGroupByID](#Group+findGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
-        * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
-        * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
-        * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
-        * [.createEntry([title])](#Group+createEntry) ⇒ <code>[Entry](#Entry)</code>
-        * [.createGroup([title])](#Group+createGroup) ⇒ <code>[Group](#Group)</code>
+        * [.findGroupByID](#Group+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
+        * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
+        * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+        * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+        * [.createEntry([title])](#Group+createEntry) ⇒ [<code>Entry</code>](#Entry)
+        * [.createGroup([title])](#Group+createGroup) ⇒ [<code>Group</code>](#Group)
         * [.delete([skipTrash])](#Group+delete) ⇒ <code>Boolean</code>
-        * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ <code>[Group](#Group)</code>
-        * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> &#124; <code>undefined</code>
+        * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ [<code>Group</code>](#Group)
+        * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> \| <code>undefined</code>
         * [.getAttributes()](#Group+getAttributes) ⇒ <code>Object</code>
-        * [.getEntries()](#Group+getEntries) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
-        * [.getGroup()](#Group+getGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
-        * ~~[.getGroupByID(groupID)](#Group+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
-        * [.getGroups()](#Group+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+        * [.getEntries()](#Group+getEntries) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+        * [.getGroup()](#Group+getGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
+        * ~~[.getGroupByID(groupID)](#Group+getGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>~~
+        * [.getGroups()](#Group+getGroups) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
         * [.getID()](#Group+getID) ⇒ <code>string</code>
         * [.getTitle()](#Group+getTitle) ⇒ <code>string</code>
         * [.isForeign()](#Group+isForeign) ⇒ <code>Boolean</code>
         * [.isInTrash()](#Group+isInTrash) ⇒ <code>Boolean</code>
         * [.isShared()](#Group+isShared) ⇒ <code>Boolean</code>
         * [.isTrash()](#Group+isTrash) ⇒ <code>Boolean</code>
-        * [.moveTo(target)](#Group+moveTo) ⇒ <code>[Group](#Group)</code>
-        * ~~[.moveToGroup(group)](#Group+moveToGroup) ⇒ <code>[Group](#Group)</code>~~
-        * [.setAttribute(attributeName, value)](#Group+setAttribute) ⇒ <code>[Group](#Group)</code>
-        * [.setTitle(title)](#Group+setTitle) ⇒ <code>[Group](#Group)</code>
+        * [.moveTo(target)](#Group+moveTo) ⇒ [<code>Group</code>](#Group)
+        * ~~[.moveToGroup(group)](#Group+moveToGroup) ⇒ [<code>Group</code>](#Group)~~
+        * [.setAttribute(attributeName, value)](#Group+setAttribute) ⇒ [<code>Group</code>](#Group)
+        * [.setTitle(title)](#Group+setTitle) ⇒ [<code>Group</code>](#Group)
         * [.toObject(outputFlags)](#Group+toObject) ⇒ <code>Object</code>
         * [.toString(outputFlags)](#Group+toString) ⇒ <code>string</code>
-        * [._getArchive()](#Group+_getArchive) ⇒ <code>[Archive](#Archive)</code>
+        * [._getArchive()](#Group+_getArchive) ⇒ [<code>Archive</code>](#Archive)
         * [._getRemoteObject()](#Group+_getRemoteObject) ⇒ <code>Object</code>
-        * [._getWestley()](#Group+_getWestley) ⇒ <code>[Westley](#Westley)</code>
-        * [.inst.findEntryByID(id)](#Group+findEntryByID) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
+        * [._getWestley()](#Group+_getWestley) ⇒ [<code>Westley</code>](#Westley)
+        * [.inst.findEntryByID(id)](#Group+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
     * _static_
         * [.Attributes](#Group.Attributes) : <code>enum</code>
         * [.OutputFlag](#Group.OutputFlag) : <code>enum</code>
-        * [.createNew(archive, [parentID])](#Group.createNew) ⇒ <code>[Group](#Group)</code>
+        * [.createNew(archive, [parentID])](#Group.createNew) ⇒ [<code>Group</code>](#Group)
 
 <a name="new_Group_new"></a>
 
@@ -1419,7 +1419,7 @@ Managed group class
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive instance |
+| archive | [<code>Archive</code>](#Archive) | The archive instance |
 | remoteObj | <code>Object</code> | The remote object reference |
 
 <a name="Group+type"></a>
@@ -1427,15 +1427,15 @@ Managed group class
 ### group.type : <code>String</code>
 Get the instance type
 
-**Kind**: instance property of <code>[Group](#Group)</code>  
+**Kind**: instance property of [<code>Group</code>](#Group)  
 <a name="Group+findGroupByID"></a>
 
-### group.findGroupByID ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+### group.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
 Find a group by its ID
 
-**Kind**: instance property of <code>[Group](#Group)</code>  
-**Mixes**: <code>[findGroupByID](#GroupCollection.findGroupByID)</code>  
-**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The group or null if not found  
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Mixes**: [<code>findGroupByID</code>](#GroupCollection.findGroupByID)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The group or null if not found  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1443,52 +1443,52 @@ Find a group by its ID
 
 <a name="Group+findGroupsByTitle"></a>
 
-### group.findGroupsByTitle ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+### group.findGroupsByTitle ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
 Find groups by their title
 
-**Kind**: instance property of <code>[Group](#Group)</code>  
-**Mixes**: <code>[findGroupsByTitle](#GroupCollection.findGroupsByTitle)</code>  
-**Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of groups  
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Mixes**: [<code>findGroupsByTitle</code>](#GroupCollection.findGroupsByTitle)  
+**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of groups  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| title | <code>String</code> &#124; <code>RegExp</code> | The group title |
+| title | <code>String</code> \| <code>RegExp</code> | The group title |
 
 <a name="Group+findEntriesByMeta"></a>
 
-### group.findEntriesByMeta ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+### group.findEntriesByMeta ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
 Find entries that match a certain meta property
 
-**Kind**: instance property of <code>[Group](#Group)</code>  
-**Mixes**: <code>[findEntriesByMeta](#EntryCollection.findEntriesByMeta)</code>  
-**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found entries  
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Mixes**: [<code>findEntriesByMeta</code>](#EntryCollection.findEntriesByMeta)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | metaName | <code>String</code> | The meta property to search for |
-| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
 
 <a name="Group+findEntriesByProperty"></a>
 
-### group.findEntriesByProperty ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+### group.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
 Find all entries that match a certain property
 
-**Kind**: instance property of <code>[Group](#Group)</code>  
-**Mixes**: <code>[findEntriesByProperty](#EntryCollection.findEntriesByProperty)</code>  
-**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found extries  
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Mixes**: [<code>findEntriesByProperty</code>](#EntryCollection.findEntriesByProperty)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found extries  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | property | <code>string</code> | The property to search with |
-| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
 
 <a name="Group+createEntry"></a>
 
-### group.createEntry([title]) ⇒ <code>[Entry](#Entry)</code>
+### group.createEntry([title]) ⇒ [<code>Entry</code>](#Entry)
 Create a new entry with a title
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Entry](#Entry)</code> - The new entry  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Entry</code>](#Entry) - The new entry  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1496,11 +1496,11 @@ Create a new entry with a title
 
 <a name="Group+createGroup"></a>
 
-### group.createGroup([title]) ⇒ <code>[Group](#Group)</code>
+### group.createGroup([title]) ⇒ [<code>Group</code>](#Group)
 Create a child group
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - The new child group  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - The new child group  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1513,7 +1513,7 @@ Delete the group
 If there is a trash group available, the group is moved there. If the group
 is already in the trash, it is deleted permanently.
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Boolean</code> - True when deleted, false when moved to trash  
 
 | Param | Type | Description |
@@ -1522,11 +1522,11 @@ is already in the trash, it is deleted permanently.
 
 <a name="Group+deleteAttribute"></a>
 
-### group.deleteAttribute(attr) ⇒ <code>[Group](#Group)</code>
+### group.deleteAttribute(attr) ⇒ [<code>Group</code>](#Group)
 Delete an attribute
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - Returns self  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - Returns self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1534,11 +1534,11 @@ Delete an attribute
 
 <a name="Group+getAttribute"></a>
 
-### group.getAttribute(attributeName) ⇒ <code>string</code> &#124; <code>undefined</code>
+### group.getAttribute(attributeName) ⇒ <code>string</code> \| <code>undefined</code>
 Get an attribute
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>string</code> &#124; <code>undefined</code> - Returns the attribute or undefined if not found  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: <code>string</code> \| <code>undefined</code> - Returns the attribute or undefined if not found  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1549,22 +1549,22 @@ Get an attribute
 ### group.getAttributes() ⇒ <code>Object</code>
 Get all attributes
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Object</code> - Attributes object  
 <a name="Group+getEntries"></a>
 
-### group.getEntries() ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+### group.getEntries() ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
 Get the entries within the group
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of entries  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of entries  
 <a name="Group+getGroup"></a>
 
-### group.getGroup() ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+### group.getGroup() ⇒ [<code>Group</code>](#Group) \| <code>null</code>
 Get the parent group
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - Returns the parent group instance or null if the parent
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - Returns the parent group instance or null if the parent
  is the archive  
 **Throws**:
 
@@ -1572,13 +1572,13 @@ Get the parent group
 
 <a name="Group+getGroupByID"></a>
 
-### ~~group.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
+### ~~group.getGroupByID(groupID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>~~
 ***Deprecated***
 
 Get a child group (deep) by its ID
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The found group or null  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The found group or null  
 **See**: findGroupByID  
 
 | Param | Type | Description |
@@ -1587,87 +1587,87 @@ Get a child group (deep) by its ID
 
 <a name="Group+getGroups"></a>
 
-### group.getGroups() ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+### group.getGroups() ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
 Get the groups within the group
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of child groups  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of child groups  
 <a name="Group+getID"></a>
 
 ### group.getID() ⇒ <code>string</code>
 Get the group ID
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>string</code> - The ID of the group  
 <a name="Group+getTitle"></a>
 
 ### group.getTitle() ⇒ <code>string</code>
 Get the group title
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>string</code> - The title of the group  
 <a name="Group+isForeign"></a>
 
 ### group.isForeign() ⇒ <code>Boolean</code>
 Check if the group is foreign (from another archive)
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Boolean</code> - True if it is foreign  
 <a name="Group+isInTrash"></a>
 
 ### group.isInTrash() ⇒ <code>Boolean</code>
 Check if the group is in the trash
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Boolean</code> - Whether or not the group is within the trash group  
 <a name="Group+isShared"></a>
 
 ### group.isShared() ⇒ <code>Boolean</code>
 Check if the group is shared
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Boolean</code> - True if the group is a shared group  
 <a name="Group+isTrash"></a>
 
 ### group.isTrash() ⇒ <code>Boolean</code>
 Check if the group is used for trash
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Boolean</code> - Whether or not the group is the trash group  
 <a name="Group+moveTo"></a>
 
-### group.moveTo(target) ⇒ <code>[Group](#Group)</code>
+### group.moveTo(target) ⇒ [<code>Group</code>](#Group)
 Move the group to another group or archive
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - Self  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| target | <code>[Group](#Group)</code> &#124; <code>[Archive](#Archive)</code> | The destination Group or Archive instance |
+| target | [<code>Group</code>](#Group) \| [<code>Archive</code>](#Archive) | The destination Group or Archive instance |
 
 <a name="Group+moveToGroup"></a>
 
-### ~~group.moveToGroup(group) ⇒ <code>[Group](#Group)</code>~~
+### ~~group.moveToGroup(group) ⇒ [<code>Group</code>](#Group)~~
 ***Deprecated***
 
 Move the group into another
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - Returns self  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - Returns self  
 **See**: moveTo  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| group | <code>[Group](#Group)</code> | The target group (new parent) |
+| group | [<code>Group</code>](#Group) | The target group (new parent) |
 
 <a name="Group+setAttribute"></a>
 
-### group.setAttribute(attributeName, value) ⇒ <code>[Group](#Group)</code>
+### group.setAttribute(attributeName, value) ⇒ [<code>Group</code>](#Group)
 Set an attribute
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - Returns self  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - Returns self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1676,11 +1676,11 @@ Set an attribute
 
 <a name="Group+setTitle"></a>
 
-### group.setTitle(title) ⇒ <code>[Group](#Group)</code>
+### group.setTitle(title) ⇒ [<code>Group</code>](#Group)
 Set the group title
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - Returns self  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - Returns self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1691,7 +1691,7 @@ Set the group title
 ### group.toObject(outputFlags) ⇒ <code>Object</code>
 Export group to object
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Object</code> - The group, in raw object form  
 
 | Param | Type | Description |
@@ -1718,7 +1718,7 @@ Export group to object
 ### group.toString(outputFlags) ⇒ <code>string</code>
 Export the group to a JSON string
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>string</code> - The group (and entries) in JSON string format  
 **See**: toObject  
 
@@ -1728,36 +1728,36 @@ Export the group to a JSON string
 
 <a name="Group+_getArchive"></a>
 
-### group._getArchive() ⇒ <code>[Archive](#Archive)</code>
+### group._getArchive() ⇒ [<code>Archive</code>](#Archive)
 Get the archive instance reference
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Archive](#Archive)</code> - The archive instance  
-**Access:** protected  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Archive</code>](#Archive) - The archive instance  
+**Access**: protected  
 <a name="Group+_getRemoteObject"></a>
 
 ### group._getRemoteObject() ⇒ <code>Object</code>
 Get the remotely-managed object (group)
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Object</code> - The object instance for the group  
-**Access:** protected  
+**Access**: protected  
 <a name="Group+_getWestley"></a>
 
-### group._getWestley() ⇒ <code>[Westley](#Westley)</code>
+### group._getWestley() ⇒ [<code>Westley</code>](#Westley)
 Get the delta managing instance for the archive
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Westley](#Westley)</code> - The internal Westley object  
-**Access:** protected  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Westley</code>](#Westley) - The internal Westley object  
+**Access**: protected  
 <a name="Group+findEntryByID"></a>
 
-### group.inst.findEntryByID(id) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
+### group.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
 Find an entry by its ID
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Mixes**: <code>[inst.findEntryByID](#EntryCollection.inst.findEntryByID)</code>  
-**Returns**: <code>null</code> &#124; <code>[Entry](#Entry)</code> - Null if not found, or the Entry instance  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
+**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1768,13 +1768,13 @@ Find an entry by its ID
 ### Group.Attributes : <code>enum</code>
 Group attribute names
 
-**Kind**: static enum property of <code>[Group](#Group)</code>  
+**Kind**: static enum of [<code>Group</code>](#Group)  
 <a name="Group.OutputFlag"></a>
 
 ### Group.OutputFlag : <code>enum</code>
 Bitwise output flags for `toObject` and `toString`
 
-**Kind**: static enum property of <code>[Group](#Group)</code>  
+**Kind**: static enum of [<code>Group</code>](#Group)  
 **See**
 
 - toObject
@@ -1782,11 +1782,11 @@ Bitwise output flags for `toObject` and `toString`
 
 <a name="Group.createNew"></a>
 
-### Group.createNew(archive, [parentID]) ⇒ <code>[Group](#Group)</code>
+### Group.createNew(archive, [parentID]) ⇒ [<code>Group</code>](#Group)
 Create a new Group with a delta-manager and parent group ID
 
-**Kind**: static method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - A new group  
+**Kind**: static method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - A new group  
 **Throws**:
 
 - <code>Error</code> Throws if the target group doesn't exist
@@ -1796,7 +1796,7 @@ Create a new Group with a delta-manager and parent group ID
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to create the group in |
+| archive | [<code>Archive</code>](#Archive) | The archive to create the group in |
 | [parentID] | <code>string</code> | The parent group ID (default is root) |
 
 <a name="Group"></a>
@@ -1809,40 +1809,40 @@ Create a new Group with a delta-manager and parent group ID
     * [new Group(archive, remoteObj)](#new_Group_new)
     * _instance_
         * [.type](#Group+type) : <code>String</code>
-        * [.findGroupByID](#Group+findGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
-        * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
-        * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
-        * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
-        * [.createEntry([title])](#Group+createEntry) ⇒ <code>[Entry](#Entry)</code>
-        * [.createGroup([title])](#Group+createGroup) ⇒ <code>[Group](#Group)</code>
+        * [.findGroupByID](#Group+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
+        * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
+        * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+        * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+        * [.createEntry([title])](#Group+createEntry) ⇒ [<code>Entry</code>](#Entry)
+        * [.createGroup([title])](#Group+createGroup) ⇒ [<code>Group</code>](#Group)
         * [.delete([skipTrash])](#Group+delete) ⇒ <code>Boolean</code>
-        * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ <code>[Group](#Group)</code>
-        * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> &#124; <code>undefined</code>
+        * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ [<code>Group</code>](#Group)
+        * [.getAttribute(attributeName)](#Group+getAttribute) ⇒ <code>string</code> \| <code>undefined</code>
         * [.getAttributes()](#Group+getAttributes) ⇒ <code>Object</code>
-        * [.getEntries()](#Group+getEntries) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
-        * [.getGroup()](#Group+getGroup) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
-        * ~~[.getGroupByID(groupID)](#Group+getGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
-        * [.getGroups()](#Group+getGroups) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+        * [.getEntries()](#Group+getEntries) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+        * [.getGroup()](#Group+getGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
+        * ~~[.getGroupByID(groupID)](#Group+getGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>~~
+        * [.getGroups()](#Group+getGroups) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
         * [.getID()](#Group+getID) ⇒ <code>string</code>
         * [.getTitle()](#Group+getTitle) ⇒ <code>string</code>
         * [.isForeign()](#Group+isForeign) ⇒ <code>Boolean</code>
         * [.isInTrash()](#Group+isInTrash) ⇒ <code>Boolean</code>
         * [.isShared()](#Group+isShared) ⇒ <code>Boolean</code>
         * [.isTrash()](#Group+isTrash) ⇒ <code>Boolean</code>
-        * [.moveTo(target)](#Group+moveTo) ⇒ <code>[Group](#Group)</code>
-        * ~~[.moveToGroup(group)](#Group+moveToGroup) ⇒ <code>[Group](#Group)</code>~~
-        * [.setAttribute(attributeName, value)](#Group+setAttribute) ⇒ <code>[Group](#Group)</code>
-        * [.setTitle(title)](#Group+setTitle) ⇒ <code>[Group](#Group)</code>
+        * [.moveTo(target)](#Group+moveTo) ⇒ [<code>Group</code>](#Group)
+        * ~~[.moveToGroup(group)](#Group+moveToGroup) ⇒ [<code>Group</code>](#Group)~~
+        * [.setAttribute(attributeName, value)](#Group+setAttribute) ⇒ [<code>Group</code>](#Group)
+        * [.setTitle(title)](#Group+setTitle) ⇒ [<code>Group</code>](#Group)
         * [.toObject(outputFlags)](#Group+toObject) ⇒ <code>Object</code>
         * [.toString(outputFlags)](#Group+toString) ⇒ <code>string</code>
-        * [._getArchive()](#Group+_getArchive) ⇒ <code>[Archive](#Archive)</code>
+        * [._getArchive()](#Group+_getArchive) ⇒ [<code>Archive</code>](#Archive)
         * [._getRemoteObject()](#Group+_getRemoteObject) ⇒ <code>Object</code>
-        * [._getWestley()](#Group+_getWestley) ⇒ <code>[Westley](#Westley)</code>
-        * [.inst.findEntryByID(id)](#Group+findEntryByID) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
+        * [._getWestley()](#Group+_getWestley) ⇒ [<code>Westley</code>](#Westley)
+        * [.inst.findEntryByID(id)](#Group+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
     * _static_
         * [.Attributes](#Group.Attributes) : <code>enum</code>
         * [.OutputFlag](#Group.OutputFlag) : <code>enum</code>
-        * [.createNew(archive, [parentID])](#Group.createNew) ⇒ <code>[Group](#Group)</code>
+        * [.createNew(archive, [parentID])](#Group.createNew) ⇒ [<code>Group</code>](#Group)
 
 <a name="new_Group_new"></a>
 
@@ -1857,7 +1857,7 @@ Managed group class
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive instance |
+| archive | [<code>Archive</code>](#Archive) | The archive instance |
 | remoteObj | <code>Object</code> | The remote object reference |
 
 <a name="Group+type"></a>
@@ -1865,15 +1865,15 @@ Managed group class
 ### group.type : <code>String</code>
 Get the instance type
 
-**Kind**: instance property of <code>[Group](#Group)</code>  
+**Kind**: instance property of [<code>Group</code>](#Group)  
 <a name="Group+findGroupByID"></a>
 
-### group.findGroupByID ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+### group.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
 Find a group by its ID
 
-**Kind**: instance property of <code>[Group](#Group)</code>  
-**Mixes**: <code>[findGroupByID](#GroupCollection.findGroupByID)</code>  
-**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The group or null if not found  
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Mixes**: [<code>findGroupByID</code>](#GroupCollection.findGroupByID)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The group or null if not found  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1881,52 +1881,52 @@ Find a group by its ID
 
 <a name="Group+findGroupsByTitle"></a>
 
-### group.findGroupsByTitle ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+### group.findGroupsByTitle ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
 Find groups by their title
 
-**Kind**: instance property of <code>[Group](#Group)</code>  
-**Mixes**: <code>[findGroupsByTitle](#GroupCollection.findGroupsByTitle)</code>  
-**Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of groups  
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Mixes**: [<code>findGroupsByTitle</code>](#GroupCollection.findGroupsByTitle)  
+**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of groups  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| title | <code>String</code> &#124; <code>RegExp</code> | The group title |
+| title | <code>String</code> \| <code>RegExp</code> | The group title |
 
 <a name="Group+findEntriesByMeta"></a>
 
-### group.findEntriesByMeta ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+### group.findEntriesByMeta ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
 Find entries that match a certain meta property
 
-**Kind**: instance property of <code>[Group](#Group)</code>  
-**Mixes**: <code>[findEntriesByMeta](#EntryCollection.findEntriesByMeta)</code>  
-**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found entries  
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Mixes**: [<code>findEntriesByMeta</code>](#EntryCollection.findEntriesByMeta)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | metaName | <code>String</code> | The meta property to search for |
-| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
 
 <a name="Group+findEntriesByProperty"></a>
 
-### group.findEntriesByProperty ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+### group.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
 Find all entries that match a certain property
 
-**Kind**: instance property of <code>[Group](#Group)</code>  
-**Mixes**: <code>[findEntriesByProperty](#EntryCollection.findEntriesByProperty)</code>  
-**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found extries  
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Mixes**: [<code>findEntriesByProperty</code>](#EntryCollection.findEntriesByProperty)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found extries  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | property | <code>string</code> | The property to search with |
-| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
 
 <a name="Group+createEntry"></a>
 
-### group.createEntry([title]) ⇒ <code>[Entry](#Entry)</code>
+### group.createEntry([title]) ⇒ [<code>Entry</code>](#Entry)
 Create a new entry with a title
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Entry](#Entry)</code> - The new entry  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Entry</code>](#Entry) - The new entry  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1934,11 +1934,11 @@ Create a new entry with a title
 
 <a name="Group+createGroup"></a>
 
-### group.createGroup([title]) ⇒ <code>[Group](#Group)</code>
+### group.createGroup([title]) ⇒ [<code>Group</code>](#Group)
 Create a child group
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - The new child group  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - The new child group  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1951,7 +1951,7 @@ Delete the group
 If there is a trash group available, the group is moved there. If the group
 is already in the trash, it is deleted permanently.
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Boolean</code> - True when deleted, false when moved to trash  
 
 | Param | Type | Description |
@@ -1960,11 +1960,11 @@ is already in the trash, it is deleted permanently.
 
 <a name="Group+deleteAttribute"></a>
 
-### group.deleteAttribute(attr) ⇒ <code>[Group](#Group)</code>
+### group.deleteAttribute(attr) ⇒ [<code>Group</code>](#Group)
 Delete an attribute
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - Returns self  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - Returns self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1972,11 +1972,11 @@ Delete an attribute
 
 <a name="Group+getAttribute"></a>
 
-### group.getAttribute(attributeName) ⇒ <code>string</code> &#124; <code>undefined</code>
+### group.getAttribute(attributeName) ⇒ <code>string</code> \| <code>undefined</code>
 Get an attribute
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>string</code> &#124; <code>undefined</code> - Returns the attribute or undefined if not found  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: <code>string</code> \| <code>undefined</code> - Returns the attribute or undefined if not found  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1987,22 +1987,22 @@ Get an attribute
 ### group.getAttributes() ⇒ <code>Object</code>
 Get all attributes
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Object</code> - Attributes object  
 <a name="Group+getEntries"></a>
 
-### group.getEntries() ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+### group.getEntries() ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
 Get the entries within the group
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of entries  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of entries  
 <a name="Group+getGroup"></a>
 
-### group.getGroup() ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+### group.getGroup() ⇒ [<code>Group</code>](#Group) \| <code>null</code>
 Get the parent group
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - Returns the parent group instance or null if the parent
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - Returns the parent group instance or null if the parent
  is the archive  
 **Throws**:
 
@@ -2010,13 +2010,13 @@ Get the parent group
 
 <a name="Group+getGroupByID"></a>
 
-### ~~group.getGroupByID(groupID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>~~
+### ~~group.getGroupByID(groupID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>~~
 ***Deprecated***
 
 Get a child group (deep) by its ID
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The found group or null  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The found group or null  
 **See**: findGroupByID  
 
 | Param | Type | Description |
@@ -2025,87 +2025,87 @@ Get a child group (deep) by its ID
 
 <a name="Group+getGroups"></a>
 
-### group.getGroups() ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+### group.getGroups() ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
 Get the groups within the group
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of child groups  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of child groups  
 <a name="Group+getID"></a>
 
 ### group.getID() ⇒ <code>string</code>
 Get the group ID
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>string</code> - The ID of the group  
 <a name="Group+getTitle"></a>
 
 ### group.getTitle() ⇒ <code>string</code>
 Get the group title
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>string</code> - The title of the group  
 <a name="Group+isForeign"></a>
 
 ### group.isForeign() ⇒ <code>Boolean</code>
 Check if the group is foreign (from another archive)
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Boolean</code> - True if it is foreign  
 <a name="Group+isInTrash"></a>
 
 ### group.isInTrash() ⇒ <code>Boolean</code>
 Check if the group is in the trash
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Boolean</code> - Whether or not the group is within the trash group  
 <a name="Group+isShared"></a>
 
 ### group.isShared() ⇒ <code>Boolean</code>
 Check if the group is shared
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Boolean</code> - True if the group is a shared group  
 <a name="Group+isTrash"></a>
 
 ### group.isTrash() ⇒ <code>Boolean</code>
 Check if the group is used for trash
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Boolean</code> - Whether or not the group is the trash group  
 <a name="Group+moveTo"></a>
 
-### group.moveTo(target) ⇒ <code>[Group](#Group)</code>
+### group.moveTo(target) ⇒ [<code>Group</code>](#Group)
 Move the group to another group or archive
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - Self  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| target | <code>[Group](#Group)</code> &#124; <code>[Archive](#Archive)</code> | The destination Group or Archive instance |
+| target | [<code>Group</code>](#Group) \| [<code>Archive</code>](#Archive) | The destination Group or Archive instance |
 
 <a name="Group+moveToGroup"></a>
 
-### ~~group.moveToGroup(group) ⇒ <code>[Group](#Group)</code>~~
+### ~~group.moveToGroup(group) ⇒ [<code>Group</code>](#Group)~~
 ***Deprecated***
 
 Move the group into another
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - Returns self  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - Returns self  
 **See**: moveTo  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| group | <code>[Group](#Group)</code> | The target group (new parent) |
+| group | [<code>Group</code>](#Group) | The target group (new parent) |
 
 <a name="Group+setAttribute"></a>
 
-### group.setAttribute(attributeName, value) ⇒ <code>[Group](#Group)</code>
+### group.setAttribute(attributeName, value) ⇒ [<code>Group</code>](#Group)
 Set an attribute
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - Returns self  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - Returns self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2114,11 +2114,11 @@ Set an attribute
 
 <a name="Group+setTitle"></a>
 
-### group.setTitle(title) ⇒ <code>[Group](#Group)</code>
+### group.setTitle(title) ⇒ [<code>Group</code>](#Group)
 Set the group title
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - Returns self  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - Returns self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2129,7 +2129,7 @@ Set the group title
 ### group.toObject(outputFlags) ⇒ <code>Object</code>
 Export group to object
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Object</code> - The group, in raw object form  
 
 | Param | Type | Description |
@@ -2156,7 +2156,7 @@ Export group to object
 ### group.toString(outputFlags) ⇒ <code>string</code>
 Export the group to a JSON string
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>string</code> - The group (and entries) in JSON string format  
 **See**: toObject  
 
@@ -2166,36 +2166,36 @@ Export the group to a JSON string
 
 <a name="Group+_getArchive"></a>
 
-### group._getArchive() ⇒ <code>[Archive](#Archive)</code>
+### group._getArchive() ⇒ [<code>Archive</code>](#Archive)
 Get the archive instance reference
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Archive](#Archive)</code> - The archive instance  
-**Access:** protected  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Archive</code>](#Archive) - The archive instance  
+**Access**: protected  
 <a name="Group+_getRemoteObject"></a>
 
 ### group._getRemoteObject() ⇒ <code>Object</code>
 Get the remotely-managed object (group)
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
+**Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: <code>Object</code> - The object instance for the group  
-**Access:** protected  
+**Access**: protected  
 <a name="Group+_getWestley"></a>
 
-### group._getWestley() ⇒ <code>[Westley](#Westley)</code>
+### group._getWestley() ⇒ [<code>Westley</code>](#Westley)
 Get the delta managing instance for the archive
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Westley](#Westley)</code> - The internal Westley object  
-**Access:** protected  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Westley</code>](#Westley) - The internal Westley object  
+**Access**: protected  
 <a name="Group+findEntryByID"></a>
 
-### group.inst.findEntryByID(id) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
+### group.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
 Find an entry by its ID
 
-**Kind**: instance method of <code>[Group](#Group)</code>  
-**Mixes**: <code>[inst.findEntryByID](#EntryCollection.inst.findEntryByID)</code>  
-**Returns**: <code>null</code> &#124; <code>[Entry](#Entry)</code> - Null if not found, or the Entry instance  
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
+**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2206,13 +2206,13 @@ Find an entry by its ID
 ### Group.Attributes : <code>enum</code>
 Group attribute names
 
-**Kind**: static enum property of <code>[Group](#Group)</code>  
+**Kind**: static enum of [<code>Group</code>](#Group)  
 <a name="Group.OutputFlag"></a>
 
 ### Group.OutputFlag : <code>enum</code>
 Bitwise output flags for `toObject` and `toString`
 
-**Kind**: static enum property of <code>[Group](#Group)</code>  
+**Kind**: static enum of [<code>Group</code>](#Group)  
 **See**
 
 - toObject
@@ -2220,11 +2220,11 @@ Bitwise output flags for `toObject` and `toString`
 
 <a name="Group.createNew"></a>
 
-### Group.createNew(archive, [parentID]) ⇒ <code>[Group](#Group)</code>
+### Group.createNew(archive, [parentID]) ⇒ [<code>Group</code>](#Group)
 Create a new Group with a delta-manager and parent group ID
 
-**Kind**: static method of <code>[Group](#Group)</code>  
-**Returns**: <code>[Group](#Group)</code> - A new group  
+**Kind**: static method of [<code>Group</code>](#Group)  
+**Returns**: [<code>Group</code>](#Group) - A new group  
 **Throws**:
 
 - <code>Error</code> Throws if the target group doesn't exist
@@ -2234,7 +2234,7 @@ Create a new Group with a delta-manager and parent group ID
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to create the group in |
+| archive | [<code>Archive</code>](#Archive) | The archive to create the group in |
 | [parentID] | <code>string</code> | The parent group ID (default is root) |
 
 <a name="Model"></a>
@@ -2246,7 +2246,7 @@ Create a new Group with a delta-manager and parent group ID
     * [new Model(data)](#new_Model_new)
     * [.get(key, [defaultValue])](#Model+get) ⇒ <code>\*</code>
     * [.getData()](#Model+getData) ⇒ <code>Object</code>
-    * [.set(key, value)](#Model+set) ⇒ <code>[Model](#Model)</code>
+    * [.set(key, value)](#Model+set) ⇒ [<code>Model</code>](#Model)
 
 <a name="new_Model_new"></a>
 
@@ -2264,8 +2264,8 @@ Data modelling helper
 Get a value for a property.
  eg. model.get("some.deep.property", 19);
 
-**Kind**: instance method of <code>[Model](#Model)</code>  
-**Access:** public  
+**Kind**: instance method of [<code>Model</code>](#Model)  
+**Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2277,41 +2277,41 @@ Get a value for a property.
 ### model.getData() ⇒ <code>Object</code>
 Get the wrapped object
 
-**Kind**: instance method of <code>[Model](#Model)</code>  
-**Access:** public  
+**Kind**: instance method of [<code>Model</code>](#Model)  
+**Access**: public  
 <a name="Model+set"></a>
 
-### model.set(key, value) ⇒ <code>[Model](#Model)</code>
+### model.set(key, value) ⇒ [<code>Model</code>](#Model)
 Set a property
 
-**Kind**: instance method of <code>[Model](#Model)</code>  
-**Returns**: <code>[Model](#Model)</code> - Returns self  
-**Access:** public  
+**Kind**: instance method of [<code>Model</code>](#Model)  
+**Returns**: [<code>Model</code>](#Model) - Returns self  
+**Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | key | <code>string</code> | The location (property) at which to set a value (eg. "some.nested.prop") |
-| value | <code>string</code> &#124; <code>number</code> &#124; <code>Object</code> &#124; <code>\*</code> | The value to set |
+| value | <code>string</code> \| <code>number</code> \| <code>Object</code> \| <code>\*</code> | The value to set |
 
 <a name="MyButtercupDatasource"></a>
 
-## MyButtercupDatasource ⇐ <code>[TextDatasource](#TextDatasource)</code>
+## MyButtercupDatasource ⇐ [<code>TextDatasource</code>](#TextDatasource)
 Datasource for the MyButtercup provider
 
 **Kind**: global class  
-**Extends:** <code>[TextDatasource](#TextDatasource)</code>  
+**Extends**: [<code>TextDatasource</code>](#TextDatasource)  
 
-* [MyButtercupDatasource](#MyButtercupDatasource) ⇐ <code>[TextDatasource](#TextDatasource)</code>
+* [MyButtercupDatasource](#MyButtercupDatasource) ⇐ [<code>TextDatasource</code>](#TextDatasource)
     * [new MyButtercupDatasource(archiveID, accessToken)](#new_MyButtercupDatasource_new)
     * _instance_
-        * [.load(credentials)](#MyButtercupDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+        * [.load(credentials)](#MyButtercupDatasource+load) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
         * [.save(archive, credentials)](#MyButtercupDatasource+save) ⇒ <code>Promise</code>
         * [.toObject()](#MyButtercupDatasource+toObject) ⇒ <code>Object</code>
-        * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+        * [.setContent(content)](#TextDatasource+setContent) ⇒ [<code>TextDatasource</code>](#TextDatasource)
         * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
     * _static_
-        * [.fromObject(obj)](#MyButtercupDatasource.fromObject) ⇒ <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>
-        * [.fromString(str, hostCredentials)](#MyButtercupDatasource.fromString) ⇒ <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>
+        * [.fromObject(obj)](#MyButtercupDatasource.fromObject) ⇒ [<code>MyButtercupDatasource</code>](#MyButtercupDatasource)
+        * [.fromString(str, hostCredentials)](#MyButtercupDatasource.fromString) ⇒ [<code>MyButtercupDatasource</code>](#MyButtercupDatasource)
 
 <a name="new_MyButtercupDatasource_new"></a>
 
@@ -2326,46 +2326,46 @@ Constructor for the datasource
 
 <a name="MyButtercupDatasource+load"></a>
 
-### myButtercupDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### myButtercupDatasource.load(credentials) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
 Load an archive from the datasource
 
-**Kind**: instance method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
-**Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise that resolves with an Archive instance  
+**Kind**: instance method of [<code>MyButtercupDatasource</code>](#MyButtercupDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;Archive&gt;</code>](#Archive) - A promise that resolves with an Archive instance  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| credentials | <code>[Credentials](#Credentials)</code> | Credentials instance |
+| credentials | [<code>Credentials</code>](#Credentials) | Credentials instance |
 
 <a name="MyButtercupDatasource+save"></a>
 
 ### myButtercupDatasource.save(archive, credentials) ⇒ <code>Promise</code>
 Save an archive
 
-**Kind**: instance method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
-**Overrides:** <code>[save](#TextDatasource+save)</code>  
+**Kind**: instance method of [<code>MyButtercupDatasource</code>](#MyButtercupDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
 **Returns**: <code>Promise</code> - A promise that resolves once saving is complete  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials to use for saving (master password) |
+| archive | [<code>Archive</code>](#Archive) | The archive to save |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials to use for saving (master password) |
 
 <a name="MyButtercupDatasource+toObject"></a>
 
 ### myButtercupDatasource.toObject() ⇒ <code>Object</code>
 Convert the datasource to an object
 
-**Kind**: instance method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
-**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Kind**: instance method of [<code>MyButtercupDatasource</code>](#MyButtercupDatasource)  
+**Overrides**: [<code>toObject</code>](#TextDatasource+toObject)  
 **Returns**: <code>Object</code> - The object representation  
 <a name="TextDatasource+setContent"></a>
 
-### myButtercupDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+### myButtercupDatasource.setContent(content) ⇒ [<code>TextDatasource</code>](#TextDatasource)
 Set the text content
 
-**Kind**: instance method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
-**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+**Kind**: instance method of [<code>MyButtercupDatasource</code>](#MyButtercupDatasource)  
+**Returns**: [<code>TextDatasource</code>](#TextDatasource) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2376,15 +2376,15 @@ Set the text content
 ### myButtercupDatasource.toString() ⇒ <code>String</code>
 Output the datasource configuration as a string
 
-**Kind**: instance method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
+**Kind**: instance method of [<code>MyButtercupDatasource</code>](#MyButtercupDatasource)  
 **Returns**: <code>String</code> - The string representation of the datasource  
 <a name="MyButtercupDatasource.fromObject"></a>
 
-### MyButtercupDatasource.fromObject(obj) ⇒ <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>
+### MyButtercupDatasource.fromObject(obj) ⇒ [<code>MyButtercupDatasource</code>](#MyButtercupDatasource)
 Create a datasource instance from an object
 
-**Kind**: static method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
-**Returns**: <code>[MyButtercupDatasource](#MyButtercupDatasource)</code> - A datasource instance  
+**Kind**: static method of [<code>MyButtercupDatasource</code>](#MyButtercupDatasource)  
+**Returns**: [<code>MyButtercupDatasource</code>](#MyButtercupDatasource) - A datasource instance  
 **Throws**:
 
 - <code>Error</code> Throws if the type is not recognised
@@ -2396,31 +2396,31 @@ Create a datasource instance from an object
 
 <a name="MyButtercupDatasource.fromString"></a>
 
-### MyButtercupDatasource.fromString(str, hostCredentials) ⇒ <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>
+### MyButtercupDatasource.fromString(str, hostCredentials) ⇒ [<code>MyButtercupDatasource</code>](#MyButtercupDatasource)
 Create a datasource from a string
 
-**Kind**: static method of <code>[MyButtercupDatasource](#MyButtercupDatasource)</code>  
-**Returns**: <code>[MyButtercupDatasource](#MyButtercupDatasource)</code> - A datasource instance  
+**Kind**: static method of [<code>MyButtercupDatasource</code>](#MyButtercupDatasource)  
+**Returns**: [<code>MyButtercupDatasource</code>](#MyButtercupDatasource) - A datasource instance  
 **See**: MyButtercupDatasource.fromObject  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | str | <code>String</code> | The string representation of a datasource |
-| hostCredentials | <code>[Credentials](#Credentials)</code> | The credentials for the remote provider |
+| hostCredentials | [<code>Credentials</code>](#Credentials) | The credentials for the remote provider |
 
 <a name="NextcloudDatasource"></a>
 
-## NextcloudDatasource ⇐ <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>
+## NextcloudDatasource ⇐ [<code>OwnCloudDatasource</code>](#OwnCloudDatasource)
 Datasource for Nextcloud archives
 
 **Kind**: global class  
-**Extends:** <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+**Extends**: [<code>OwnCloudDatasource</code>](#OwnCloudDatasource)  
 
-* [NextcloudDatasource](#NextcloudDatasource) ⇐ <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>
+* [NextcloudDatasource](#NextcloudDatasource) ⇐ [<code>OwnCloudDatasource</code>](#OwnCloudDatasource)
     * [.toObject()](#NextcloudDatasource+toObject) ⇒ <code>Object</code>
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(credentials)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.load(credentials)](#WebDAVDatasource+load) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
 
 <a name="NextcloudDatasource+toObject"></a>
@@ -2428,62 +2428,62 @@ Datasource for Nextcloud archives
 ### nextcloudDatasource.toObject() ⇒ <code>Object</code>
 Output the datasource as an object
 
-**Kind**: instance method of <code>[NextcloudDatasource](#NextcloudDatasource)</code>  
-**Overrides:** <code>[toObject](#OwnCloudDatasource+toObject)</code>  
+**Kind**: instance method of [<code>NextcloudDatasource</code>](#NextcloudDatasource)  
+**Overrides**: [<code>toObject</code>](#OwnCloudDatasource+toObject)  
 **Returns**: <code>Object</code> - An object describing the datasource  
 <a name="WebDAVDatasource+getArchivePath"></a>
 
 ### nextcloudDatasource.getArchivePath() ⇒ <code>string</code>
 Get the path of the archive on the server
 
-**Kind**: instance method of <code>[NextcloudDatasource](#NextcloudDatasource)</code>  
+**Kind**: instance method of [<code>NextcloudDatasource</code>](#NextcloudDatasource)  
 **Returns**: <code>string</code> - The path  
 <a name="WebDAVDatasource+getRemoteEndpoint"></a>
 
 ### nextcloudDatasource.getRemoteEndpoint() ⇒ <code>string</code>
 Get the remote endpoint URI (no resource path)
 
-**Kind**: instance method of <code>[NextcloudDatasource](#NextcloudDatasource)</code>  
+**Kind**: instance method of [<code>NextcloudDatasource</code>](#NextcloudDatasource)  
 **Returns**: <code>string</code> - The endpoint  
 <a name="WebDAVDatasource+load"></a>
 
-### nextcloudDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### nextcloudDatasource.load(credentials) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
 Load the archive from the datasource
 
-**Kind**: instance method of <code>[NextcloudDatasource](#NextcloudDatasource)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the archive  
+**Kind**: instance method of [<code>NextcloudDatasource</code>](#NextcloudDatasource)  
+**Returns**: [<code>Promise.&lt;Archive&gt;</code>](#Archive) - A promise resolving with the archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for archive decryption |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for archive decryption |
 
 <a name="WebDAVDatasource+save"></a>
 
 ### nextcloudDatasource.save(archive, credentials) ⇒ <code>Promise</code>
 Save an archive to the WebDAV service
 
-**Kind**: instance method of <code>[NextcloudDatasource](#NextcloudDatasource)</code>  
+**Kind**: instance method of [<code>NextcloudDatasource</code>](#NextcloudDatasource)  
 **Returns**: <code>Promise</code> - A promise resolving when the save is complete  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for encryption |
+| archive | [<code>Archive</code>](#Archive) | The archive to save |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for encryption |
 
 <a name="OwnCloudDatasource"></a>
 
-## OwnCloudDatasource ⇐ <code>[WebDAVDatasource](#WebDAVDatasource)</code>
+## OwnCloudDatasource ⇐ [<code>WebDAVDatasource</code>](#WebDAVDatasource)
 Datasource for OwnCloud archives
 
 **Kind**: global class  
-**Extends:** <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Extends**: [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
 
-* [OwnCloudDatasource](#OwnCloudDatasource) ⇐ <code>[WebDAVDatasource](#WebDAVDatasource)</code>
+* [OwnCloudDatasource](#OwnCloudDatasource) ⇐ [<code>WebDAVDatasource</code>](#WebDAVDatasource)
     * [new OwnCloudDatasource(owncloudURL, resourcePath, credentials)](#new_OwnCloudDatasource_new)
     * [.toObject()](#OwnCloudDatasource+toObject) ⇒ <code>Object</code>
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(credentials)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.load(credentials)](#WebDAVDatasource+load) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
 
 <a name="new_OwnCloudDatasource_new"></a>
@@ -2496,54 +2496,54 @@ Datasource for Owncloud connections
 | --- | --- | --- |
 | owncloudURL | <code>String</code> | The URL to the owncloud instance, without "remote.php/webdav" etc. |
 | resourcePath | <code>String</code> | The file path |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials (username/password) for owncloud |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials (username/password) for owncloud |
 
 <a name="OwnCloudDatasource+toObject"></a>
 
 ### ownCloudDatasource.toObject() ⇒ <code>Object</code>
 Output the datasource as an object
 
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Overrides:** <code>[toObject](#WebDAVDatasource+toObject)</code>  
+**Kind**: instance method of [<code>OwnCloudDatasource</code>](#OwnCloudDatasource)  
+**Overrides**: [<code>toObject</code>](#WebDAVDatasource+toObject)  
 **Returns**: <code>Object</code> - An object describing the datasource  
 <a name="WebDAVDatasource+getArchivePath"></a>
 
 ### ownCloudDatasource.getArchivePath() ⇒ <code>string</code>
 Get the path of the archive on the server
 
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+**Kind**: instance method of [<code>OwnCloudDatasource</code>](#OwnCloudDatasource)  
 **Returns**: <code>string</code> - The path  
 <a name="WebDAVDatasource+getRemoteEndpoint"></a>
 
 ### ownCloudDatasource.getRemoteEndpoint() ⇒ <code>string</code>
 Get the remote endpoint URI (no resource path)
 
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+**Kind**: instance method of [<code>OwnCloudDatasource</code>](#OwnCloudDatasource)  
 **Returns**: <code>string</code> - The endpoint  
 <a name="WebDAVDatasource+load"></a>
 
-### ownCloudDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### ownCloudDatasource.load(credentials) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
 Load the archive from the datasource
 
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the archive  
+**Kind**: instance method of [<code>OwnCloudDatasource</code>](#OwnCloudDatasource)  
+**Returns**: [<code>Promise.&lt;Archive&gt;</code>](#Archive) - A promise resolving with the archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for archive decryption |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for archive decryption |
 
 <a name="WebDAVDatasource+save"></a>
 
 ### ownCloudDatasource.save(archive, credentials) ⇒ <code>Promise</code>
 Save an archive to the WebDAV service
 
-**Kind**: instance method of <code>[OwnCloudDatasource](#OwnCloudDatasource)</code>  
+**Kind**: instance method of [<code>OwnCloudDatasource</code>](#OwnCloudDatasource)  
 **Returns**: <code>Promise</code> - A promise resolving when the save is complete  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for encryption |
+| archive | [<code>Archive</code>](#Archive) | The archive to save |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for encryption |
 
 <a name="TextDatasource"></a>
 
@@ -2555,9 +2555,9 @@ Datasource for text input and output
 * [TextDatasource](#TextDatasource)
     * [new TextDatasource(content)](#new_TextDatasource_new)
     * _instance_
-        * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+        * [.load(credentials, [emptyCreatesNew])](#TextDatasource+load) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
         * [.save(archive, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
-        * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+        * [.setContent(content)](#TextDatasource+setContent) ⇒ [<code>TextDatasource</code>](#TextDatasource)
         * [.toObject()](#TextDatasource+toObject) ⇒ <code>Object</code>
         * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
     * _static_
@@ -2575,15 +2575,15 @@ Constructor for the text datasource
 
 <a name="TextDatasource+load"></a>
 
-### textDatasource.load(credentials, [emptyCreatesNew]) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### textDatasource.load(credentials, [emptyCreatesNew]) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
 Load from the stored content using a password to decrypt
 
-**Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise that resolves with an open archive  
+**Kind**: instance method of [<code>TextDatasource</code>](#TextDatasource)  
+**Returns**: [<code>Promise.&lt;Archive&gt;</code>](#Archive) - A promise that resolves with an open archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| credentials | <code>[Credentials](#Credentials)</code> | The password or Credentials instance to decrypt with |
+| credentials | [<code>Credentials</code>](#Credentials) | The password or Credentials instance to decrypt with |
 | [emptyCreatesNew] | <code>Boolean</code> | Create a new Archive instance if text contents are empty (defaults to false) |
 
 <a name="TextDatasource+save"></a>
@@ -2591,21 +2591,21 @@ Load from the stored content using a password to decrypt
 ### textDatasource.save(archive, credentials) ⇒ <code>Promise.&lt;string&gt;</code>
 Save an archive with a password
 
-**Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
+**Kind**: instance method of [<code>TextDatasource</code>](#TextDatasource)  
 **Returns**: <code>Promise.&lt;string&gt;</code> - A promise resolving with the encrypted content  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>[Credentials](#Credentials)</code> | The Credentials instance to encrypt with |
+| archive | [<code>Archive</code>](#Archive) | The archive to save |
+| credentials | [<code>Credentials</code>](#Credentials) | The Credentials instance to encrypt with |
 
 <a name="TextDatasource+setContent"></a>
 
-### textDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+### textDatasource.setContent(content) ⇒ [<code>TextDatasource</code>](#TextDatasource)
 Set the text content
 
-**Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
-**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+**Kind**: instance method of [<code>TextDatasource</code>](#TextDatasource)  
+**Returns**: [<code>TextDatasource</code>](#TextDatasource) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2616,14 +2616,14 @@ Set the text content
 ### textDatasource.toObject() ⇒ <code>Object</code>
 Output the datasource as an object
 
-**Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
+**Kind**: instance method of [<code>TextDatasource</code>](#TextDatasource)  
 **Returns**: <code>Object</code> - The object representation  
 <a name="TextDatasource+toString"></a>
 
 ### textDatasource.toString() ⇒ <code>String</code>
 Output the datasource configuration as a string
 
-**Kind**: instance method of <code>[TextDatasource](#TextDatasource)</code>  
+**Kind**: instance method of [<code>TextDatasource</code>](#TextDatasource)  
 **Returns**: <code>String</code> - The string representation of the datasource  
 <a name="TextDatasource.setDeferredEncodingHandlers"></a>
 
@@ -2636,28 +2636,28 @@ essentially enabling custom crypto support. While this is not recommended, it ma
 to at least perform the crypto *elsewhere*. This was designed for use on mobile platforms where
 crypto support may be limited outside of a webview with SubtleCrypto support.
 
-**Kind**: static method of <code>[TextDatasource](#TextDatasource)</code>  
+**Kind**: static method of [<code>TextDatasource</code>](#TextDatasource)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| decodeHandler | <code>function</code> &#124; <code>null</code> | The callback function to use for decoding/decryption. Use  `null` to reset it to the built-in. The function expects 2 parameters: The encrypted text and  a credentials instance (that must have a password, 'keyfile' or both). |
-| encodeHandler | <code>function</code> &#124; <code>null</code> | The callback function to use for encoding/encryption. Use  `null` to reset it to the built-in. The function expects 2 parameters: The history array and  a credentials instance (that must have a password, 'keyfile' or both). |
+| decodeHandler | <code>function</code> \| <code>null</code> | The callback function to use for decoding/decryption. Use  `null` to reset it to the built-in. The function expects 2 parameters: The encrypted text and  a credentials instance (that must have a password, 'keyfile' or both). |
+| encodeHandler | <code>function</code> \| <code>null</code> | The callback function to use for encoding/encryption. Use  `null` to reset it to the built-in. The function expects 2 parameters: The history array and  a credentials instance (that must have a password, 'keyfile' or both). |
 
 <a name="WebDAVDatasource"></a>
 
-## WebDAVDatasource ⇐ <code>[TextDatasource](#TextDatasource)</code>
+## WebDAVDatasource ⇐ [<code>TextDatasource</code>](#TextDatasource)
 **Kind**: global class  
-**Extends:** <code>[TextDatasource](#TextDatasource)</code>  
+**Extends**: [<code>TextDatasource</code>](#TextDatasource)  
 
-* [WebDAVDatasource](#WebDAVDatasource) ⇐ <code>[TextDatasource](#TextDatasource)</code>
+* [WebDAVDatasource](#WebDAVDatasource) ⇐ [<code>TextDatasource</code>](#TextDatasource)
     * [new WebDAVDatasource()](#new_WebDAVDatasource_new)
     * [new WebDAVDatasource(endpoint, webDAVPath, [credentials])](#new_WebDAVDatasource_new)
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(credentials)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.load(credentials)](#WebDAVDatasource+load) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
     * [.toObject()](#WebDAVDatasource+toObject) ⇒ <code>Object</code>
-    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ [<code>TextDatasource</code>](#TextDatasource)
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_WebDAVDatasource_new"></a>
@@ -2675,64 +2675,64 @@ Constructor for the datasource
 | --- | --- | --- |
 | endpoint | <code>string</code> | URL for the WebDAV service (without resource path) |
 | webDAVPath | <code>string</code> | Resource path on the WebDAV service |
-| [credentials] | <code>[Credentials](#Credentials)</code> | Credentials (username/password) for the WebDAV service |
+| [credentials] | [<code>Credentials</code>](#Credentials) | Credentials (username/password) for the WebDAV service |
 
 <a name="WebDAVDatasource+getArchivePath"></a>
 
 ### webDAVDatasource.getArchivePath() ⇒ <code>string</code>
 Get the path of the archive on the server
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
 **Returns**: <code>string</code> - The path  
 <a name="WebDAVDatasource+getRemoteEndpoint"></a>
 
 ### webDAVDatasource.getRemoteEndpoint() ⇒ <code>string</code>
 Get the remote endpoint URI (no resource path)
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
 **Returns**: <code>string</code> - The endpoint  
 <a name="WebDAVDatasource+load"></a>
 
-### webDAVDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### webDAVDatasource.load(credentials) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
 Load the archive from the datasource
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
-**Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the archive  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;Archive&gt;</code>](#Archive) - A promise resolving with the archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for archive decryption |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for archive decryption |
 
 <a name="WebDAVDatasource+save"></a>
 
 ### webDAVDatasource.save(archive, credentials) ⇒ <code>Promise</code>
 Save an archive to the WebDAV service
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
-**Overrides:** <code>[save](#TextDatasource+save)</code>  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
 **Returns**: <code>Promise</code> - A promise resolving when the save is complete  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for encryption |
+| archive | [<code>Archive</code>](#Archive) | The archive to save |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for encryption |
 
 <a name="WebDAVDatasource+toObject"></a>
 
 ### webDAVDatasource.toObject() ⇒ <code>Object</code>
 Output the datasource as an object
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
-**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
+**Overrides**: [<code>toObject</code>](#TextDatasource+toObject)  
 **Returns**: <code>Object</code> - An object describing the datasource  
 <a name="TextDatasource+setContent"></a>
 
-### webDAVDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+### webDAVDatasource.setContent(content) ⇒ [<code>TextDatasource</code>](#TextDatasource)
 Set the text content
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
-**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
+**Returns**: [<code>TextDatasource</code>](#TextDatasource) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2743,7 +2743,7 @@ Set the text content
 ### webDAVDatasource.toString() ⇒ <code>String</code>
 Output the datasource configuration as a string
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
 **Returns**: <code>String</code> - The string representation of the datasource  
 <a name="WebDAVDatasource"></a>
 
@@ -2755,10 +2755,10 @@ Output the datasource configuration as a string
     * [new WebDAVDatasource(endpoint, webDAVPath, [credentials])](#new_WebDAVDatasource_new)
     * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
-    * [.load(credentials)](#WebDAVDatasource+load) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.load(credentials)](#WebDAVDatasource+load) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
     * [.toObject()](#WebDAVDatasource+toObject) ⇒ <code>Object</code>
-    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ [<code>TextDatasource</code>](#TextDatasource)
     * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_WebDAVDatasource_new"></a>
@@ -2776,64 +2776,64 @@ Constructor for the datasource
 | --- | --- | --- |
 | endpoint | <code>string</code> | URL for the WebDAV service (without resource path) |
 | webDAVPath | <code>string</code> | Resource path on the WebDAV service |
-| [credentials] | <code>[Credentials](#Credentials)</code> | Credentials (username/password) for the WebDAV service |
+| [credentials] | [<code>Credentials</code>](#Credentials) | Credentials (username/password) for the WebDAV service |
 
 <a name="WebDAVDatasource+getArchivePath"></a>
 
 ### webDAVDatasource.getArchivePath() ⇒ <code>string</code>
 Get the path of the archive on the server
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
 **Returns**: <code>string</code> - The path  
 <a name="WebDAVDatasource+getRemoteEndpoint"></a>
 
 ### webDAVDatasource.getRemoteEndpoint() ⇒ <code>string</code>
 Get the remote endpoint URI (no resource path)
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
 **Returns**: <code>string</code> - The endpoint  
 <a name="WebDAVDatasource+load"></a>
 
-### webDAVDatasource.load(credentials) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### webDAVDatasource.load(credentials) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
 Load the archive from the datasource
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
-**Overrides:** <code>[load](#TextDatasource+load)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise resolving with the archive  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;Archive&gt;</code>](#Archive) - A promise resolving with the archive  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for archive decryption |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for archive decryption |
 
 <a name="WebDAVDatasource+save"></a>
 
 ### webDAVDatasource.save(archive, credentials) ⇒ <code>Promise</code>
 Save an archive to the WebDAV service
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
-**Overrides:** <code>[save](#TextDatasource+save)</code>  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
 **Returns**: <code>Promise</code> - A promise resolving when the save is complete  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive to save |
-| credentials | <code>[Credentials](#Credentials)</code> | The credentials for encryption |
+| archive | [<code>Archive</code>](#Archive) | The archive to save |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for encryption |
 
 <a name="WebDAVDatasource+toObject"></a>
 
 ### webDAVDatasource.toObject() ⇒ <code>Object</code>
 Output the datasource as an object
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
-**Overrides:** <code>[toObject](#TextDatasource+toObject)</code>  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
+**Overrides**: [<code>toObject</code>](#TextDatasource+toObject)  
 **Returns**: <code>Object</code> - An object describing the datasource  
 <a name="TextDatasource+setContent"></a>
 
-### webDAVDatasource.setContent(content) ⇒ <code>[TextDatasource](#TextDatasource)</code>
+### webDAVDatasource.setContent(content) ⇒ [<code>TextDatasource</code>](#TextDatasource)
 Set the text content
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
-**Returns**: <code>[TextDatasource](#TextDatasource)</code> - Self  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
+**Returns**: [<code>TextDatasource</code>](#TextDatasource) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2844,7 +2844,7 @@ Set the text content
 ### webDAVDatasource.toString() ⇒ <code>String</code>
 Output the datasource configuration as a string
 
-**Kind**: instance method of <code>[WebDAVDatasource](#WebDAVDatasource)</code>  
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
 **Returns**: <code>String</code> - The string representation of the datasource  
 <a name="Westley"></a>
 
@@ -2855,11 +2855,11 @@ Output the datasource configuration as a string
     * [new Westley()](#new_Westley_new)
     * [.readOnly](#Westley+readOnly)
     * [.readOnly](#Westley+readOnly)
-    * [.clear()](#Westley+clear) ⇒ <code>[Westley](#Westley)</code>
-    * [.execute(command, [append])](#Westley+execute) ⇒ <code>[Westley](#Westley)</code>
+    * [.clear()](#Westley+clear) ⇒ [<code>Westley</code>](#Westley)
+    * [.execute(command, [append])](#Westley+execute) ⇒ [<code>Westley</code>](#Westley)
     * [.getDataset()](#Westley+getDataset) ⇒ <code>Object</code>
     * [.getHistory()](#Westley+getHistory) ⇒ <code>Array.&lt;String&gt;</code>
-    * [.pad()](#Westley+pad) ⇒ <code>[Westley](#Westley)</code>
+    * [.pad()](#Westley+pad) ⇒ [<code>Westley</code>](#Westley)
     * [._getCommandForKey(commandKey)](#Westley+_getCommandForKey) ⇒ <code>Command</code>
 
 <a name="new_Westley_new"></a>
@@ -2871,8 +2871,8 @@ revenge for the princess.
 <a name="Westley+readOnly"></a>
 
 ### westley.readOnly
-**Kind**: instance property of <code>[Westley](#Westley)</code>  
-**Access:** public  
+**Kind**: instance property of [<code>Westley</code>](#Westley)  
+**Access**: public  
 **Properties**
 
 | Name | Type |
@@ -2884,7 +2884,7 @@ revenge for the princess.
 ### westley.readOnly
 Set the read only value
 
-**Kind**: instance property of <code>[Westley](#Westley)</code>  
+**Kind**: instance property of [<code>Westley</code>](#Westley)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2892,18 +2892,18 @@ Set the read only value
 
 <a name="Westley+clear"></a>
 
-### westley.clear() ⇒ <code>[Westley](#Westley)</code>
+### westley.clear() ⇒ [<code>Westley</code>](#Westley)
 Clear the dataset and history
 
-**Kind**: instance method of <code>[Westley](#Westley)</code>  
-**Returns**: <code>[Westley](#Westley)</code> - Returns self  
+**Kind**: instance method of [<code>Westley</code>](#Westley)  
+**Returns**: [<code>Westley</code>](#Westley) - Returns self  
 <a name="Westley+execute"></a>
 
-### westley.execute(command, [append]) ⇒ <code>[Westley](#Westley)</code>
+### westley.execute(command, [append]) ⇒ [<code>Westley</code>](#Westley)
 Execute a command - stored in history and modifies the dataset
 
-**Kind**: instance method of <code>[Westley](#Westley)</code>  
-**Returns**: <code>[Westley](#Westley)</code> - Returns self  
+**Kind**: instance method of [<code>Westley</code>](#Westley)  
+**Returns**: [<code>Westley</code>](#Westley) - Returns self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2915,30 +2915,30 @@ Execute a command - stored in history and modifies the dataset
 ### westley.getDataset() ⇒ <code>Object</code>
 Get the core dataset
 
-**Kind**: instance method of <code>[Westley](#Westley)</code>  
+**Kind**: instance method of [<code>Westley</code>](#Westley)  
 **Returns**: <code>Object</code> - The dataset object  
 <a name="Westley+getHistory"></a>
 
 ### westley.getHistory() ⇒ <code>Array.&lt;String&gt;</code>
 Get the history (deltas)
 
-**Kind**: instance method of <code>[Westley](#Westley)</code>  
+**Kind**: instance method of [<code>Westley</code>](#Westley)  
 **Returns**: <code>Array.&lt;String&gt;</code> - The command array (history)  
 <a name="Westley+pad"></a>
 
-### westley.pad() ⇒ <code>[Westley](#Westley)</code>
+### westley.pad() ⇒ [<code>Westley</code>](#Westley)
 Insert a padding in the archive (used for delta tracking)
 
-**Kind**: instance method of <code>[Westley](#Westley)</code>  
-**Returns**: <code>[Westley](#Westley)</code> - Returns self  
+**Kind**: instance method of [<code>Westley</code>](#Westley)  
+**Returns**: [<code>Westley</code>](#Westley) - Returns self  
 <a name="Westley+_getCommandForKey"></a>
 
 ### westley._getCommandForKey(commandKey) ⇒ <code>Command</code>
 Gets a command by its key from the cache with its dependencies injected
 
-**Kind**: instance method of <code>[Westley](#Westley)</code>  
+**Kind**: instance method of [<code>Westley</code>](#Westley)  
 **Returns**: <code>Command</code> - Returns the command  
-**Access:** protected  
+**Access**: protected  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2951,17 +2951,17 @@ Gets a command by its key from the cache with its dependencies injected
 
 * [Workspace](#Workspace)
     * [new Workspace()](#new_Workspace_new)
-    * [.primary](#Workspace+primary) : <code>[WorkspaceItem](#WorkspaceItem)</code>
-    * [.addSharedArchive(archive, datasource, masterCredentials, [saveable])](#Workspace+addSharedArchive) ⇒ <code>[Workspace](#Workspace)</code>
-    * [.getAllItems()](#Workspace+getAllItems) ⇒ <code>[Array.&lt;WorkspaceItem&gt;](#WorkspaceItem)</code>
-    * [.getSaveableItems()](#Workspace+getSaveableItems) ⇒ <code>[Array.&lt;WorkspaceItem&gt;](#WorkspaceItem)</code>
-    * [.imbue()](#Workspace+imbue) ⇒ <code>[Workspace](#Workspace)</code>
+    * [.primary](#Workspace+primary) : [<code>WorkspaceItem</code>](#WorkspaceItem)
+    * [.addSharedArchive(archive, datasource, masterCredentials, [saveable])](#Workspace+addSharedArchive) ⇒ [<code>Workspace</code>](#Workspace)
+    * [.getAllItems()](#Workspace+getAllItems) ⇒ [<code>Array.&lt;WorkspaceItem&gt;</code>](#WorkspaceItem)
+    * [.getSaveableItems()](#Workspace+getSaveableItems) ⇒ [<code>Array.&lt;WorkspaceItem&gt;</code>](#WorkspaceItem)
+    * [.imbue()](#Workspace+imbue) ⇒ [<code>Workspace</code>](#Workspace)
     * [.localDiffersFromRemote()](#Workspace+localDiffersFromRemote) ⇒ <code>Promise.&lt;Boolean&gt;</code>
-    * [.mergeItemFromRemote(item)](#Workspace+mergeItemFromRemote) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+    * [.mergeItemFromRemote(item)](#Workspace+mergeItemFromRemote) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.mergeSaveablesFromRemote()](#Workspace+mergeSaveablesFromRemote) ⇒ <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code>
     * [.save()](#Workspace+save) ⇒ <code>Promise</code>
-    * [.setPrimaryArchive(archive, datasource, masterCredentials)](#Workspace+setPrimaryArchive) ⇒ <code>[Workspace](#Workspace)</code>
-    * [.updatePrimaryCredentials(masterCredentials)](#Workspace+updatePrimaryCredentials) ⇒ <code>[Workspace](#Workspace)</code>
+    * [.setPrimaryArchive(archive, datasource, masterCredentials)](#Workspace+setPrimaryArchive) ⇒ [<code>Workspace</code>](#Workspace)
+    * [.updatePrimaryCredentials(masterCredentials)](#Workspace+updatePrimaryCredentials) ⇒ [<code>Workspace</code>](#Workspace)
 
 <a name="new_Workspace_new"></a>
 
@@ -2970,47 +2970,47 @@ Workspace
 
 <a name="Workspace+primary"></a>
 
-### workspace.primary : <code>[WorkspaceItem](#WorkspaceItem)</code>
+### workspace.primary : [<code>WorkspaceItem</code>](#WorkspaceItem)
 The primary archive item
 
-**Kind**: instance property of <code>[Workspace](#Workspace)</code>  
-**Access:** public  
+**Kind**: instance property of [<code>Workspace</code>](#Workspace)  
+**Access**: public  
 <a name="Workspace+addSharedArchive"></a>
 
-### workspace.addSharedArchive(archive, datasource, masterCredentials, [saveable]) ⇒ <code>[Workspace](#Workspace)</code>
+### workspace.addSharedArchive(archive, datasource, masterCredentials, [saveable]) ⇒ [<code>Workspace</code>](#Workspace)
 Add a shared archive item
 
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>[Workspace](#Workspace)</code> - Self  
+**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
+**Returns**: [<code>Workspace</code>](#Workspace) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The archive instance |
-| datasource | <code>[TextDatasource](#TextDatasource)</code> | The datasource instance |
-| masterCredentials | <code>[Credentials](#Credentials)</code> | The master credentials (password) |
+| archive | [<code>Archive</code>](#Archive) | The archive instance |
+| datasource | [<code>TextDatasource</code>](#TextDatasource) | The datasource instance |
+| masterCredentials | [<code>Credentials</code>](#Credentials) | The master credentials (password) |
 | [saveable] | <code>Boolean</code> | Whether the archive is remotely saveable or not (default: true) |
 
 <a name="Workspace+getAllItems"></a>
 
-### workspace.getAllItems() ⇒ <code>[Array.&lt;WorkspaceItem&gt;](#WorkspaceItem)</code>
+### workspace.getAllItems() ⇒ [<code>Array.&lt;WorkspaceItem&gt;</code>](#WorkspaceItem)
 Get all archive items
 
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>[Array.&lt;WorkspaceItem&gt;](#WorkspaceItem)</code> - All of the items  
+**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
+**Returns**: [<code>Array.&lt;WorkspaceItem&gt;</code>](#WorkspaceItem) - All of the items  
 <a name="Workspace+getSaveableItems"></a>
 
-### workspace.getSaveableItems() ⇒ <code>[Array.&lt;WorkspaceItem&gt;](#WorkspaceItem)</code>
+### workspace.getSaveableItems() ⇒ [<code>Array.&lt;WorkspaceItem&gt;</code>](#WorkspaceItem)
 Get all the saveable items
 
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>[Array.&lt;WorkspaceItem&gt;](#WorkspaceItem)</code> - All of the saveable items  
+**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
+**Returns**: [<code>Array.&lt;WorkspaceItem&gt;</code>](#WorkspaceItem) - All of the saveable items  
 <a name="Workspace+imbue"></a>
 
-### workspace.imbue() ⇒ <code>[Workspace](#Workspace)</code>
+### workspace.imbue() ⇒ [<code>Workspace</code>](#Workspace)
 Imbue the primary archive with shared groups from all of the other archives
 
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>[Workspace](#Workspace)</code> - Self  
+**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
+**Returns**: [<code>Workspace</code>](#Workspace) - Self  
 **Throws**:
 
 - <code>Error</code> Throws if the primary archive is not set
@@ -3022,30 +3022,30 @@ Detect whether the local archives (in memory) differ from their remote copies
 Fetches the remote copies from their datasources and detects differences between
 them and their local counterparts. Does not change/update the local items.
 
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
 **Returns**: <code>Promise.&lt;Boolean&gt;</code> - A promise that resolves with a boolean - true if
      there are differences, false if there is not  
 <a name="Workspace+mergeItemFromRemote"></a>
 
-### workspace.mergeItemFromRemote(item) ⇒ <code>[Promise.&lt;Archive&gt;](#Archive)</code>
+### workspace.mergeItemFromRemote(item) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
 Merge an item from its remote counterpart
 Detects differences between a local and a remote item, and merges the
 two copies together.
 
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>[Promise.&lt;Archive&gt;](#Archive)</code> - A promise that resolves with the newly merged archive -
+**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
+**Returns**: [<code>Promise.&lt;Archive&gt;</code>](#Archive) - A promise that resolves with the newly merged archive -
      This archive is automatically saved over the original local copy.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| item | <code>[WorkspaceItem](#WorkspaceItem)</code> | The local item |
+| item | [<code>WorkspaceItem</code>](#WorkspaceItem) | The local item |
 
 <a name="Workspace+mergeSaveablesFromRemote"></a>
 
 ### workspace.mergeSaveablesFromRemote() ⇒ <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code>
 Merge all saveable remote copies into their local counterparts
 
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
 **Returns**: <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code> - A promise that resolves with an array of merged Archives  
 **See**
 
@@ -3057,33 +3057,33 @@ Merge all saveable remote copies into their local counterparts
 ### workspace.save() ⇒ <code>Promise</code>
 Save all saveable archives to their remotes
 
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
+**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
 **Returns**: <code>Promise</code> - A promise that resolves when all saveable archives have been saved  
 <a name="Workspace+setPrimaryArchive"></a>
 
-### workspace.setPrimaryArchive(archive, datasource, masterCredentials) ⇒ <code>[Workspace](#Workspace)</code>
+### workspace.setPrimaryArchive(archive, datasource, masterCredentials) ⇒ [<code>Workspace</code>](#Workspace)
 Set the primary archive
 
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>[Workspace](#Workspace)</code> - Self  
+**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
+**Returns**: [<code>Workspace</code>](#Workspace) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | The Archive instance |
-| datasource | <code>[TextDatasource](#TextDatasource)</code> | The datasource instance |
-| masterCredentials | <code>[Credentials](#Credentials)</code> | The master password |
+| archive | [<code>Archive</code>](#Archive) | The Archive instance |
+| datasource | [<code>TextDatasource</code>](#TextDatasource) | The datasource instance |
+| masterCredentials | [<code>Credentials</code>](#Credentials) | The master password |
 
 <a name="Workspace+updatePrimaryCredentials"></a>
 
-### workspace.updatePrimaryCredentials(masterCredentials) ⇒ <code>[Workspace](#Workspace)</code>
+### workspace.updatePrimaryCredentials(masterCredentials) ⇒ [<code>Workspace</code>](#Workspace)
 Update the master password of the primary archive
 
-**Kind**: instance method of <code>[Workspace](#Workspace)</code>  
-**Returns**: <code>[Workspace](#Workspace)</code> - Self  
+**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
+**Returns**: [<code>Workspace</code>](#Workspace) - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| masterCredentials | <code>[Credentials](#Credentials)</code> | The new credentials |
+| masterCredentials | [<code>Credentials</code>](#Credentials) | The new credentials |
 
 <a name="EntryCollection"></a>
 
@@ -3091,43 +3091,43 @@ Update the master password of the primary archive
 **Kind**: global mixin  
 
 * [EntryCollection](#EntryCollection) : <code>Object</code>
-    * [.findEntriesByMeta](#EntryCollection.findEntriesByMeta) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
-    * [.findEntriesByProperty](#EntryCollection.findEntriesByProperty) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
-    * [.inst.findEntryByID(id)](#EntryCollection.inst.findEntryByID) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
+    * [.findEntriesByMeta](#EntryCollection.findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+    * [.findEntriesByProperty](#EntryCollection.findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+    * [.inst.findEntryByID(id)](#EntryCollection.inst.findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
 
 <a name="EntryCollection.findEntriesByMeta"></a>
 
-### EntryCollection.findEntriesByMeta ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+### EntryCollection.findEntriesByMeta ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
 Find entries that match a certain meta property
 
-**Kind**: static property of <code>[EntryCollection](#EntryCollection)</code>  
-**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found entries  
+**Kind**: static property of [<code>EntryCollection</code>](#EntryCollection)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | metaName | <code>String</code> | The meta property to search for |
-| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
 
 <a name="EntryCollection.findEntriesByProperty"></a>
 
-### EntryCollection.findEntriesByProperty ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+### EntryCollection.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
 Find all entries that match a certain property
 
-**Kind**: static property of <code>[EntryCollection](#EntryCollection)</code>  
-**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found extries  
+**Kind**: static property of [<code>EntryCollection</code>](#EntryCollection)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found extries  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | property | <code>string</code> | The property to search with |
-| value | <code>RegExp</code> &#124; <code>string</code> | The value to search for |
+| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
 
 <a name="EntryCollection.inst.findEntryByID"></a>
 
-### EntryCollection.inst.findEntryByID(id) ⇒ <code>null</code> &#124; <code>[Entry](#Entry)</code>
+### EntryCollection.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
 Find an entry by its ID
 
-**Kind**: static method of <code>[EntryCollection](#EntryCollection)</code>  
-**Returns**: <code>null</code> &#124; <code>[Entry](#Entry)</code> - Null if not found, or the Entry instance  
+**Kind**: static method of [<code>EntryCollection</code>](#EntryCollection)  
+**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3139,16 +3139,16 @@ Find an entry by its ID
 **Kind**: global mixin  
 
 * [GroupCollection](#GroupCollection) : <code>Object</code>
-    * [.findGroupByID](#GroupCollection.findGroupByID) ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
-    * [.findGroupsByTitle](#GroupCollection.findGroupsByTitle) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+    * [.findGroupByID](#GroupCollection.findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
+    * [.findGroupsByTitle](#GroupCollection.findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
 
 <a name="GroupCollection.findGroupByID"></a>
 
-### GroupCollection.findGroupByID ⇒ <code>[Group](#Group)</code> &#124; <code>null</code>
+### GroupCollection.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
 Find a group by its ID
 
-**Kind**: static property of <code>[GroupCollection](#GroupCollection)</code>  
-**Returns**: <code>[Group](#Group)</code> &#124; <code>null</code> - The group or null if not found  
+**Kind**: static property of [<code>GroupCollection</code>](#GroupCollection)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The group or null if not found  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3156,27 +3156,27 @@ Find a group by its ID
 
 <a name="GroupCollection.findGroupsByTitle"></a>
 
-### GroupCollection.findGroupsByTitle ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+### GroupCollection.findGroupsByTitle ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
 Find groups by their title
 
-**Kind**: static property of <code>[GroupCollection](#GroupCollection)</code>  
-**Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of groups  
+**Kind**: static property of [<code>GroupCollection</code>](#GroupCollection)  
+**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of groups  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| title | <code>String</code> &#124; <code>RegExp</code> | The group title |
+| title | <code>String</code> \| <code>RegExp</code> | The group title |
 
 <a name="flattenEntries"></a>
 
-## flattenEntries(archives) ⇒ <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code>
+## flattenEntries(archives) ⇒ [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
 Flatten entries into a searchable structure
 
 **Kind**: global function  
-**Returns**: <code>[Array.&lt;EntrySearchInfo&gt;](#EntrySearchInfo)</code> - An array of searchable objects  
+**Returns**: [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo) - An array of searchable objects  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archives | <code>[Array.&lt;Archive&gt;](#Archive)</code> | An array of archives |
+| archives | [<code>Array.&lt;Archive&gt;</code>](#Archive) | An array of archives |
 
 <a name="convertEncryptedContentToHistory"></a>
 
@@ -3189,7 +3189,7 @@ Convert encrypted text to an array of commands (history)
 | Param | Type | Description |
 | --- | --- | --- |
 | encText | <code>String</code> | The encrypted archive content |
-| credentials | <code>[Credentials](#Credentials)</code> | A credentials instance that has a password, keyfile  or both |
+| credentials | [<code>Credentials</code>](#Credentials) | A credentials instance that has a password, keyfile  or both |
 
 <a name="convertHistoryToEncryptedContent"></a>
 
@@ -3202,16 +3202,16 @@ Convert an array of commands (history) to an encrypted string
 | Param | Type | Description |
 | --- | --- | --- |
 | historyArr | <code>Array.&lt;String&gt;</code> | An array of commands |
-| credentials | <code>[Credentials](#Credentials)</code> | A credentials instance that has a password, keyfile  or both |
+| credentials | [<code>Credentials</code>](#Credentials) | A credentials instance that has a password, keyfile  or both |
 
 <a name="createCredentials"></a>
 
-## createCredentials([type], [data]) ⇒ <code>[Credentials](#Credentials)</code>
+## createCredentials([type], [data]) ⇒ [<code>Credentials</code>](#Credentials)
 Create a credentials adapter
 Both `type` and `data` parameters are optional.
 
 **Kind**: global function  
-**Returns**: <code>[Credentials](#Credentials)</code> - A credentials adapter  
+**Returns**: [<code>Credentials</code>](#Credentials) - A credentials adapter  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3219,18 +3219,18 @@ Both `type` and `data` parameters are optional.
 | [data] | <code>Object</code> | The credentials data |
 
 
-* [createCredentials([type], [data])](#createCredentials) ⇒ <code>[Credentials](#Credentials)</code>
-    * [.fromInsecureString(content)](#createCredentials.fromInsecureString) ⇒ <code>[Credentials](#Credentials)</code>
-    * [.fromPassword(password)](#createCredentials.fromPassword) ⇒ <code>[Credentials](#Credentials)</code>
-    * [.fromSecureString(content, password)](#createCredentials.fromSecureString) ⇒ <code>[Promise.&lt;Credentials&gt;](#Credentials)</code>
+* [createCredentials([type], [data])](#createCredentials) ⇒ [<code>Credentials</code>](#Credentials)
+    * [.fromInsecureString(content)](#createCredentials.fromInsecureString) ⇒ [<code>Credentials</code>](#Credentials)
+    * [.fromPassword(password)](#createCredentials.fromPassword) ⇒ [<code>Credentials</code>](#Credentials)
+    * [.fromSecureString(content, password)](#createCredentials.fromSecureString) ⇒ [<code>Promise.&lt;Credentials&gt;</code>](#Credentials)
 
 <a name="createCredentials.fromInsecureString"></a>
 
-### createCredentials.fromInsecureString(content) ⇒ <code>[Credentials](#Credentials)</code>
+### createCredentials.fromInsecureString(content) ⇒ [<code>Credentials</code>](#Credentials)
 Create a credentials instance from an insecure string
 
-**Kind**: static method of <code>[createCredentials](#createCredentials)</code>  
-**Returns**: <code>[Credentials](#Credentials)</code> - The credentials instance  
+**Kind**: static method of [<code>createCredentials</code>](#createCredentials)  
+**Returns**: [<code>Credentials</code>](#Credentials) - The credentials instance  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3238,11 +3238,11 @@ Create a credentials instance from an insecure string
 
 <a name="createCredentials.fromPassword"></a>
 
-### createCredentials.fromPassword(password) ⇒ <code>[Credentials](#Credentials)</code>
+### createCredentials.fromPassword(password) ⇒ [<code>Credentials</code>](#Credentials)
 Create a new credentials instance from a password
 
-**Kind**: static method of <code>[createCredentials](#createCredentials)</code>  
-**Returns**: <code>[Credentials](#Credentials)</code> - The credentials instance  
+**Kind**: static method of [<code>createCredentials</code>](#createCredentials)  
+**Returns**: [<code>Credentials</code>](#Credentials) - The credentials instance  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3250,11 +3250,11 @@ Create a new credentials instance from a password
 
 <a name="createCredentials.fromSecureString"></a>
 
-### createCredentials.fromSecureString(content, password) ⇒ <code>[Promise.&lt;Credentials&gt;](#Credentials)</code>
+### createCredentials.fromSecureString(content, password) ⇒ [<code>Promise.&lt;Credentials&gt;</code>](#Credentials)
 Create a new credentials instance from an encrypted string
 
-**Kind**: static method of <code>[createCredentials](#createCredentials)</code>  
-**Returns**: <code>[Promise.&lt;Credentials&gt;](#Credentials)</code> - A promise that resolves with a credentials instance  
+**Kind**: static method of [<code>createCredentials</code>](#createCredentials)  
+**Returns**: [<code>Promise.&lt;Credentials&gt;</code>](#Credentials) - A promise that resolves with a credentials instance  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3263,19 +3263,19 @@ Create a new credentials instance from an encrypted string
 
 <a name="addMetaFieldsNonDestructive"></a>
 
-## addMetaFieldsNonDestructive(entry, fields) ⇒ <code>[Array.&lt;EntryFacadeField&gt;](#EntryFacadeField)</code>
+## addMetaFieldsNonDestructive(entry, fields) ⇒ [<code>Array.&lt;EntryFacadeField&gt;</code>](#EntryFacadeField)
 Add meta fields to a fields array that are not mentioned in a preset
 Facades are creaded by presets which don't mention all meta values (custom user
 added items). This method adds the unmentioned items to the facade fields so that
 they can be edited as well.
 
 **Kind**: global function  
-**Returns**: <code>[Array.&lt;EntryFacadeField&gt;](#EntryFacadeField)</code> - A new array with all combined fields  
+**Returns**: [<code>Array.&lt;EntryFacadeField&gt;</code>](#EntryFacadeField) - A new array with all combined fields  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| entry | <code>[Entry](#Entry)</code> | An Entry instance |
-| fields | <code>[Array.&lt;EntryFacadeField&gt;](#EntryFacadeField)</code> | An array of fields |
+| entry | [<code>Entry</code>](#Entry) | An Entry instance |
+| fields | [<code>Array.&lt;EntryFacadeField&gt;</code>](#EntryFacadeField) | An array of fields |
 
 <a name="applyFieldDescriptor"></a>
 
@@ -3287,8 +3287,8 @@ Takes data from the descriptor and writes it to the entry.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| entry | <code>[Entry](#Entry)</code> | The entry to apply to |
-| descriptor | <code>[EntryFacadeField](#EntryFacadeField)</code> | The descriptor object |
+| entry | [<code>Entry</code>](#Entry) | The entry to apply to |
+| descriptor | [<code>EntryFacadeField</code>](#EntryFacadeField) | The descriptor object |
 
 <a name="consumeEntryFacade"></a>
 
@@ -3299,20 +3299,20 @@ Process a modified entry facade
 
 | Param | Type | Description |
 | --- | --- | --- |
-| entry | <code>[Entry](#Entry)</code> | The entry to apply processed data on |
-| facade | <code>[EntryFacade](#EntryFacade)</code> | The facade object |
+| entry | [<code>Entry</code>](#Entry) | The entry to apply processed data on |
+| facade | [<code>EntryFacade</code>](#EntryFacade) | The facade object |
 
 <a name="createEntryFacade"></a>
 
-## createEntryFacade(entry) ⇒ <code>[EntryFacade](#EntryFacade)</code>
+## createEntryFacade(entry) ⇒ [<code>EntryFacade</code>](#EntryFacade)
 Create a data/input facade for an Entry instance
 
 **Kind**: global function  
-**Returns**: <code>[EntryFacade](#EntryFacade)</code> - A newly created facade  
+**Returns**: [<code>EntryFacade</code>](#EntryFacade) - A newly created facade  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| entry | <code>[Entry](#Entry)</code> | The Entry instance |
+| entry | [<code>Entry</code>](#Entry) | The Entry instance |
 
 <a name="getEntryFacadeType"></a>
 
@@ -3324,7 +3324,7 @@ Get the facade type for an entry
 
 | Param | Type | Description |
 | --- | --- | --- |
-| entry | <code>[Entry](#Entry)</code> | The entry instance |
+| entry | [<code>Entry</code>](#Entry) | The entry instance |
 
 <a name="setEntryValue"></a>
 
@@ -3339,7 +3339,7 @@ Set a value on an entry
 
 | Param | Type | Description |
 | --- | --- | --- |
-| entry | <code>[Entry](#Entry)</code> | The entry instance |
+| entry | [<code>Entry</code>](#Entry) | The entry instance |
 | property | <code>String</code> | Type of property ("property"/"meta"/"attribute") |
 | name | <code>String</code> | The property name |
 | value | <code>String</code> | The value to set |
@@ -3358,15 +3358,15 @@ De-dupe an array
 
 <a name="createFieldDescriptor"></a>
 
-## createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options) ⇒ <code>[EntryFacadeField](#EntryFacadeField)</code>
+## createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options) ⇒ [<code>EntryFacadeField</code>](#EntryFacadeField)
 Create a descriptor for a field to be used within a facade
 
 **Kind**: global function  
-**Returns**: <code>[EntryFacadeField](#EntryFacadeField)</code> - The field descriptor  
+**Returns**: [<code>EntryFacadeField</code>](#EntryFacadeField) - The field descriptor  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| entry | <code>[Entry](#Entry)</code> | The entry instance to process |
+| entry | [<code>Entry</code>](#Entry) | The entry instance to process |
 | title | <code>String</code> | The field title |
 | entryPropertyType | <code>String</code> | The type of entry property (property/meta/attribute) |
 | entryPropertyName | <code>String</code> | The name of the property |
@@ -3386,7 +3386,7 @@ Get a value on an entry for a specific property type
 
 | Param | Type | Description |
 | --- | --- | --- |
-| entry | <code>[Entry](#Entry)</code> | The entry instance |
+| entry | [<code>Entry</code>](#Entry) | The entry instance |
 | property | <code>String</code> | The type of entry property (property/meta/attribute) |
 | name | <code>String</code> | The property name |
 
@@ -3418,41 +3418,41 @@ Generate a UUID (v4)
 **Returns**: <code>String</code> - The new UUID  
 <a name="findEntriesByCheck"></a>
 
-## findEntriesByCheck(groups, compareFn) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+## findEntriesByCheck(groups, compareFn) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
 Find entry instances by filtering with a compare function
 
 **Kind**: global function  
-**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of found entries  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| groups | <code>[Array.&lt;Group&gt;](#Group)</code> | The groups to check in |
+| groups | [<code>Array.&lt;Group&gt;</code>](#Group) | The groups to check in |
 | compareFn | <code>function</code> | The callback comparison function, return true to keep and false  to strip |
 
 <a name="findGroupsByCheck"></a>
 
-## findGroupsByCheck(groups, compareFn) ⇒ <code>[Array.&lt;Group&gt;](#Group)</code>
+## findGroupsByCheck(groups, compareFn) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
 Find group instances within groups that satisfy some check
 
 **Kind**: global function  
-**Returns**: <code>[Array.&lt;Group&gt;](#Group)</code> - An array of found groups  
+**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of found groups  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| groups | <code>[Array.&lt;Group&gt;](#Group)</code> | The groups to check within |
+| groups | [<code>Array.&lt;Group&gt;</code>](#Group) | The groups to check within |
 | compareFn | <code>function</code> | A comparision function - return true to keep, false to strip |
 
 <a name="getAllEntries"></a>
 
-## getAllEntries(groups) ⇒ <code>[Array.&lt;Entry&gt;](#Entry)</code>
+## getAllEntries(groups) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
 Get all entries within a collection of groups
 
 **Kind**: global function  
-**Returns**: <code>[Array.&lt;Entry&gt;](#Entry)</code> - An array of entries  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of entries  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| groups | <code>[Array.&lt;Group&gt;](#Group)</code> | An array of groups |
+| groups | [<code>Array.&lt;Group&gt;</code>](#Group) | An array of groups |
 
 <a name="ArchiveManagerSourceStatus"></a>
 
@@ -3470,11 +3470,11 @@ Status of a source: locked/unlocked/pending
 | --- | --- | --- |
 | name | <code>String</code> | The name of the source |
 | id | <code>String</code> | The ID of the source (UUID) |
-| status | <code>[ArchiveManagerSourceStatus](#ArchiveManagerSourceStatus)</code> | The current status of the source |
+| status | [<code>ArchiveManagerSourceStatus</code>](#ArchiveManagerSourceStatus) | The current status of the source |
 | type | <code>String</code> | The type of source (eg. dropbox/mybuttercup etc.) |
-| workspace | <code>[Workspace](#Workspace)</code> | The archive's workspace |
-| sourceCredentials | <code>[Credentials](#Credentials)</code> | Credentials for the remote datasource |
-| archiveCredentials | <code>[Credentials](#Credentials)</code> | Credentials for unlocking the archive |
+| workspace | [<code>Workspace</code>](#Workspace) | The archive's workspace |
+| sourceCredentials | [<code>Credentials</code>](#Credentials) | Credentials for the remote datasource |
+| archiveCredentials | [<code>Credentials</code>](#Credentials) | Credentials for unlocking the archive |
 
 <a name="LockedArchiveManagerSource"></a>
 
@@ -3486,7 +3486,7 @@ Status of a source: locked/unlocked/pending
 | --- | --- | --- |
 | name | <code>String</code> | The name of the source |
 | id | <code>String</code> | The ID of the source (UUID) |
-| status | <code>[ArchiveManagerSourceStatus](#ArchiveManagerSourceStatus)</code> | The current status of the source |
+| status | [<code>ArchiveManagerSourceStatus</code>](#ArchiveManagerSourceStatus) | The current status of the source |
 | type | <code>String</code> | The type of source (eg. dropbox/mybuttercup etc.) |
 | sourceCredentials | <code>String</code> | Encrypted credentials for the remote datasource |
 | archiveCredentials | <code>String</code> | Encrypted credentials for unlocking the archive |
@@ -3499,8 +3499,8 @@ Status of a source: locked/unlocked/pending
 
 | Name | Type | Description |
 | --- | --- | --- |
-| entry | <code>[Entry](#Entry)</code> | The entry |
-| archive | <code>[Archive](#Archive)</code> | The associated archive |
+| entry | [<code>Entry</code>](#Entry) | The entry |
+| archive | [<code>Archive</code>](#Archive) | The associated archive |
 
 <a name="WorkspaceItem"></a>
 
@@ -3512,9 +3512,9 @@ Shared workspace item
 
 | Name | Type | Description |
 | --- | --- | --- |
-| archive | <code>[Archive](#Archive)</code> | An archive instance |
+| archive | [<code>Archive</code>](#Archive) | An archive instance |
 | password | <code>String</code> | The master password |
-| datasource | <code>[TextDatasource](#TextDatasource)</code> | A datasource instance |
+| datasource | [<code>TextDatasource</code>](#TextDatasource) | A datasource instance |
 
 <a name="Credentials"></a>
 
@@ -3524,39 +3524,39 @@ Credentials wrapper
 **Kind**: global typedef  
 
 * [Credentials](#Credentials) : <code>Object</code>
-    * [.password](#Credentials+password) : <code>String</code> &#124; <code>undefined</code>
+    * [.password](#Credentials+password) : <code>String</code> \| <code>undefined</code>
     * [.type](#Credentials+type) : <code>String</code>
-    * [.username](#Credentials+username) : <code>String</code> &#124; <code>undefined</code>
-    * [.getValue(property)](#Credentials+getValue) ⇒ <code>\*</code> &#124; <code>undefined</code>
+    * [.username](#Credentials+username) : <code>String</code> \| <code>undefined</code>
+    * [.getValue(property)](#Credentials+getValue) ⇒ <code>\*</code> \| <code>undefined</code>
     * [.getValueOrFail(property)](#Credentials+getValueOrFail) ⇒ <code>\*</code>
-    * [.setValue(property, value)](#Credentials+setValue) ⇒ <code>[Credentials](#Credentials)</code>
+    * [.setValue(property, value)](#Credentials+setValue) ⇒ [<code>Credentials</code>](#Credentials)
 
 <a name="Credentials+password"></a>
 
-### credentials.password : <code>String</code> &#124; <code>undefined</code>
+### credentials.password : <code>String</code> \| <code>undefined</code>
 The password
 
-**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
+**Kind**: instance property of [<code>Credentials</code>](#Credentials)  
 <a name="Credentials+type"></a>
 
 ### credentials.type : <code>String</code>
 The credentials type
 
-**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
+**Kind**: instance property of [<code>Credentials</code>](#Credentials)  
 **Read only**: true  
 <a name="Credentials+username"></a>
 
-### credentials.username : <code>String</code> &#124; <code>undefined</code>
+### credentials.username : <code>String</code> \| <code>undefined</code>
 The username
 
-**Kind**: instance property of <code>[Credentials](#Credentials)</code>  
+**Kind**: instance property of [<code>Credentials</code>](#Credentials)  
 <a name="Credentials+getValue"></a>
 
-### credentials.getValue(property) ⇒ <code>\*</code> &#124; <code>undefined</code>
+### credentials.getValue(property) ⇒ <code>\*</code> \| <code>undefined</code>
 Get a value from the credentials
 
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>\*</code> &#124; <code>undefined</code> - Returns the value if found, or undefined  
+**Kind**: instance method of [<code>Credentials</code>](#Credentials)  
+**Returns**: <code>\*</code> \| <code>undefined</code> - Returns the value if found, or undefined  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3567,7 +3567,7 @@ Get a value from the credentials
 ### credentials.getValueOrFail(property) ⇒ <code>\*</code>
 Get a value, or fail if it doesn't exist or isn't set
 
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
+**Kind**: instance method of [<code>Credentials</code>](#Credentials)  
 **Returns**: <code>\*</code> - The value (not undefined)  
 **Throws**:
 
@@ -3580,11 +3580,11 @@ Get a value, or fail if it doesn't exist or isn't set
 
 <a name="Credentials+setValue"></a>
 
-### credentials.setValue(property, value) ⇒ <code>[Credentials](#Credentials)</code>
+### credentials.setValue(property, value) ⇒ [<code>Credentials</code>](#Credentials)
 Set a value for a property
 
-**Kind**: instance method of <code>[Credentials](#Credentials)</code>  
-**Returns**: <code>[Credentials](#Credentials)</code> - Returns self, for chaining  
+**Kind**: instance method of [<code>Credentials</code>](#Credentials)  
+**Returns**: [<code>Credentials</code>](#Credentials) - Returns self, for chaining  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3602,7 +3602,7 @@ Entry facade for data input
 | Name | Type | Description |
 | --- | --- | --- |
 | type | <code>String</code> | The type of the facade |
-| fields | <code>[Array.&lt;EntryFacadeField&gt;](#EntryFacadeField)</code> | An array of fields |
+| fields | [<code>Array.&lt;EntryFacadeField&gt;</code>](#EntryFacadeField) | An array of fields |
 
 <a name="EntryFacadeField"></a>
 
@@ -3620,7 +3620,7 @@ Entry facade data field
 | value | <code>String</code> | The value of the property (read/write) |
 | secret | <code>Boolean</code> | Wether or not the value should be hidden while viewing (masked) |
 | multiline | <code>Boolean</code> | Whether the value should be edited as a multiline value or not |
-| formatting | <code>Object</code> &#124; <code>Boolean</code> | Vendor formatting options object, or false if no formatting necessary |
+| formatting | <code>Object</code> \| <code>Boolean</code> | Vendor formatting options object, or false if no formatting necessary |
 | maxLength | <code>Number</code> | Maximum recommended length of the value (defaults to -1) |
 
 <a name="FoundGroupResult"></a>
