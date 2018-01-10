@@ -94,7 +94,7 @@ class ArchiveManager extends AsyncEventEmitter {
      * @returns {Promise.<String>} A promise that resolves with the source's new ID
      */
     addSource(name, sourceCredentials, archiveCredentials, initialise = false) {
-        debug("add source");
+        debug(`add source: ${name}`);
         return credentialsToSource(sourceCredentials, archiveCredentials, initialise)
             .then(sourceInfo => {
                 const id = getUniqueID();
@@ -123,7 +123,7 @@ class ArchiveManager extends AsyncEventEmitter {
      * @returns {Promise} A promise that resolves once dehydration has completed
      */
     dehydrateSource(id) {
-        debug("dehydrate source");
+        debug(`dehydrate source: ${id}`);
         let source;
         return Promise.resolve()
             .then(() => {
@@ -156,7 +156,7 @@ class ArchiveManager extends AsyncEventEmitter {
                 this.storageInterface.setValue(`${STORAGE_KEY_PREFIX}${lockedSource.id}`, JSON.stringify(lockedSource))
             )
             .then(() => {
-                debug("source dehydrated");
+                debug(`source dehydrated: ${id}`);
                 this.emit("sourceDehydrated", {
                     id: source.id,
                     name: source.name,
@@ -184,7 +184,7 @@ class ArchiveManager extends AsyncEventEmitter {
      * @returns {Promise} A promise that resolves once the source is locked
      */
     lock(id) {
-        debug("lock source");
+        debug(`lock source: ${id}`);
         let source;
         return Promise.resolve()
             .then(() => {
@@ -238,8 +238,8 @@ class ArchiveManager extends AsyncEventEmitter {
      * @returns {Promise} A promise that resolves once all sources have been rehydrated
      */
     rehydrate() {
-        this._sources = [];
         debug("rehydrate sources");
+        this._sources = [];
         return this.storageInterface
             .getAllKeys()
             .then(keys =>
@@ -277,7 +277,7 @@ class ArchiveManager extends AsyncEventEmitter {
      * @returns {Promise} A promise that resolves once the source has been removed
      */
     remove(id) {
-        debug("remove source");
+        debug(`remove source: ${id}`);
         let source, sourceIndex;
         return Promise.resolve()
             .then(() => {
@@ -295,9 +295,31 @@ class ArchiveManager extends AsyncEventEmitter {
                 this.sources.splice(sourceIndex, 1);
                 debug("source removed");
             })
-            .catch(function __handleRehydrateError(err) {
+            .catch(function __handleRemoveError(err) {
                 throw new VError(err, "Failed removing sources");
             });
+    }
+
+    /**
+     * Rename an archive
+     * @param {String} id The source ID
+     * @param {String} newName The new name for the source
+     * @throws {VError} Throws if the source ID does not exist
+     */
+    rename(id, newName) {
+        debug(`rename source (${id}): ${newName}`);
+        const sourceIndex = this.indexOfSource(id);
+        if (sourceIndex >= 0) {
+            const originalName = this.sources[sourceIndex].name;
+            this.sources[sourceIndex].name = newName;
+            this.emit("sourceRenamed", {
+                id,
+                originalName,
+                newName
+            });
+        } else {
+            throw new VError(`Failed renaming source: Source with ID not found: ${id}`);
+        }
     }
 
     /**
@@ -351,7 +373,7 @@ class ArchiveManager extends AsyncEventEmitter {
                     type: source.type
                 });
             })
-            .catch(function(err) {
+            .catch(function __handleUnlockError(err) {
                 if (source && source.status) {
                     // reset status
                     source.status = SourceStatus.LOCKED;

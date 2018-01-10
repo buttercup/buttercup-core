@@ -329,6 +329,25 @@ describe("ArchiveManager", function() {
         });
     });
 
+    describe("rename", function() {
+        beforeEach(function() {
+            return createArchiveAndCredentials.call(this).then(() => {
+                return this.archiveManager
+                    .addSource("Item 1", this.sourceCredentials, this.archiveCredentials)
+                    .then(id => {
+                        this.sourceID = id;
+                    });
+            });
+        });
+
+        it("renames a source", function() {
+            const sourceIndex = this.archiveManager.indexOfSource(this.sourceID);
+            expect(this.archiveManager.sources[sourceIndex].name).to.equal("Item 1");
+            this.archiveManager.rename(this.sourceID, "New Name");
+            expect(this.archiveManager.sources[sourceIndex].name).to.equal("New Name");
+        });
+    });
+
     describe("unlock", function() {
         beforeEach(function() {
             return createArchiveAndCredentials.call(this).then(() => {
