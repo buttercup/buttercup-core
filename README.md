@@ -161,6 +161,21 @@ workspace
     });
 ```
 
+#### Changing the master password
+Archive passwords can be changed when being used within workspaces. For example:
+
+```javascript
+const workspace = new Workspace();
+workspace.setPrimaryArchive(
+    myArchive,
+    myDatasource,
+    createCredentials.fromPassword("master password")
+);
+
+// later:
+workspace.updatePrimaryCredentials(createCredentials.fromPassword("new password"));
+```
+
 ### Searching for things
 You can search within archives for certain entries or groups:
 

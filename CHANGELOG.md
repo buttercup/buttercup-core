@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v1.2.0
+_2017-01-10_
+
+ * Support for changing the master password ([#197](https://github.com/buttercup/buttercup-core/issues/197))
+
 ## v1.1.2
 _2017-12-08_
 
