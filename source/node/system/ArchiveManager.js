@@ -388,6 +388,7 @@ class ArchiveManager extends AsyncEventEmitter {
      * @param {Credentials} masterCredentials The new credentials to use
      * @throws {VError} Throws if the source is not unlocked
      * @throws {VError} Throws if no source is found for the provided ID
+     * @returns {Promise} A promise that resolves when updating & dehydrating have occurred
      */
     updateArchiveCredentials(sourceID, masterCredentials) {
         debug(`update archive credentials: ${sourceID}`);
@@ -405,7 +406,11 @@ class ArchiveManager extends AsyncEventEmitter {
                 // Then update the credentials in the workspace
                 source.workspace.updatePrimaryCredentials(masterCredentials);
                 // Finally, dehydrate the source to save changes in the manager
-                return this.dehydrateSource(sourceID);
+                return (
+                    this.dehydrateSource(sourceID)
+                        // Save the workspace to push the new password to file
+                        .then(() => source.workspace.save())
+                );
             } else {
                 throw new VError(`Failed updating archive credentials: Source with ID not found: ${sourceID}`);
             }

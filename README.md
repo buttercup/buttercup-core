@@ -176,7 +176,7 @@ workspace.setPrimaryArchive(
 workspace.updatePrimaryCredentials(createCredentials.fromPassword("new password"));
 ```
 
-**NB:** Usually archives will be managed by an `ArchiveManager` instance, and in this case you'll want to use `archiveManager.updateArchiveCredentials(sourceID, newCredentials)` instead.
+**NB:** Usually archives will be managed by an `ArchiveManager` instance, and in this case you'll want to use `archiveManager.updateArchiveCredentials(sourceID, newCredentials)` instead. Be aware that the `updatePrimaryCredentials` on the `Workspace` class does **not** save the new password to file/remote, whereas the `updateArchiveCredentials` method on the `ArchiveManager` class does save the new credentials both to the local system and within the `Workspace`.
 
 ### Searching for things
 You can search within archives for certain entries or groups:
