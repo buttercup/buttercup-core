@@ -426,8 +426,11 @@ describe("ArchiveManager", function() {
             expect(this.archiveManager.sources[sourceIndex].archiveCredentials.password).to.equal(
                 this.archiveCredentials.password
             );
-            this.archiveManager.updateArchiveCredentials(this.sourceID, createCredentials.fromPassword("second"));
-            expect(this.archiveManager.sources[sourceIndex].archiveCredentials.password).to.equal("second");
+            return this.archiveManager
+                .updateArchiveCredentials(this.sourceID, createCredentials.fromPassword("second"))
+                .then(() => {
+                    expect(this.archiveManager.sources[sourceIndex].archiveCredentials.password).to.equal("second");
+                });
         });
 
         it("updates the password within the workspace", function() {
@@ -435,8 +438,13 @@ describe("ArchiveManager", function() {
             expect(this.archiveManager.sources[sourceIndex].workspace.primary.credentials.password).to.equal(
                 this.archiveCredentials.password
             );
-            this.archiveManager.updateArchiveCredentials(this.sourceID, createCredentials.fromPassword("second"));
-            expect(this.archiveManager.sources[sourceIndex].workspace.primary.credentials.password).to.equal("second");
+            return this.archiveManager
+                .updateArchiveCredentials(this.sourceID, createCredentials.fromPassword("second"))
+                .then(() => {
+                    expect(this.archiveManager.sources[sourceIndex].workspace.primary.credentials.password).to.equal(
+                        "second"
+                    );
+                });
         });
     });
 });
