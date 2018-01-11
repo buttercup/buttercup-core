@@ -649,7 +649,7 @@ Archive manager for managing archives and connections to sources
     * [.remove(id)](#ArchiveManager+remove) ⇒ <code>Promise</code>
     * [.rename(id, newName)](#ArchiveManager+rename)
     * [.unlock(id, masterPassword)](#ArchiveManager+unlock) ⇒ <code>Promise</code>
-    * [.updateArchiveCredentials(sourceID, masterCredentials)](#ArchiveManager+updateArchiveCredentials)
+    * [.updateArchiveCredentials(sourceID, masterCredentials)](#ArchiveManager+updateArchiveCredentials) ⇒ <code>Promise</code>
     * [._replace(id, source)](#ArchiveManager+_replace)
 
 <a name="new_ArchiveManager_new"></a>
@@ -782,10 +782,12 @@ Unlock a source
 
 <a name="ArchiveManager+updateArchiveCredentials"></a>
 
-### archiveManager.updateArchiveCredentials(sourceID, masterCredentials)
+### archiveManager.updateArchiveCredentials(sourceID, masterCredentials) ⇒ <code>Promise</code>
 Update the master credentials for an archive source
+Calls `workspace.save()` after updating the credentials in the manager and workspace.
 
 **Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
+**Returns**: <code>Promise</code> - A promise that resolves when updating & dehydrating have occurred  
 **Throws**:
 
 - <code>VError</code> Throws if the source is not unlocked

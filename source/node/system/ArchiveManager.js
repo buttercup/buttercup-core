@@ -384,6 +384,7 @@ class ArchiveManager extends AsyncEventEmitter {
 
     /**
      * Update the master credentials for an archive source
+     * Calls `workspace.save()` after updating the credentials in the manager and workspace.
      * @param {String} sourceID The source ID
      * @param {Credentials} masterCredentials The new credentials to use
      * @throws {VError} Throws if the source is not unlocked

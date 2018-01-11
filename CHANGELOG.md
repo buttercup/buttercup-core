@@ -1,5 +1,10 @@
 # Buttercup-core change-log
 
+## v1.4.0
+_2017-01-11_
+
+ * `ArchiveManager#updateArchiveCredentials` to call `Workspace.save` after updating the credentials
+
 ## v1.3.1
 _2017-01-10_
 
