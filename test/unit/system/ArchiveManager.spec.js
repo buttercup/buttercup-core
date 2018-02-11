@@ -69,6 +69,7 @@ describe("ArchiveManager", function() {
                     expect(item.name).to.equal("new item");
                     expect(item.status).to.equal(SourceStatus.UNLOCKED);
                     expect(item.type).to.equal("text");
+                    expect(item.colour).to.equal(ArchiveManager.DefaultSourceColour);
                 });
         });
 
@@ -98,7 +99,8 @@ describe("ArchiveManager", function() {
                             id,
                             name: "new item",
                             status: SourceStatus.UNLOCKED,
-                            type: "text"
+                            type: "text",
+                            colour: ArchiveManager.DefaultSourceColour
                         }
                     ]);
                 });
@@ -161,7 +163,8 @@ describe("ArchiveManager", function() {
                         id: this.sourceID,
                         name: "new item",
                         status: SourceStatus.LOCKED,
-                        type: "text"
+                        type: "text",
+                        colour: ArchiveManager.DefaultSourceColour
                     }
                 ]);
             });
@@ -235,7 +238,8 @@ describe("ArchiveManager", function() {
                         id: this.sourceID,
                         name: "new item",
                         status: SourceStatus.LOCKED,
-                        type: "text"
+                        type: "text",
+                        colour: ArchiveManager.DefaultSourceColour
                     }
                 ]);
             });
@@ -269,6 +273,7 @@ describe("ArchiveManager", function() {
                 expect(item).to.have.property("status", SourceStatus.LOCKED);
                 expect(item).to.have.property("sourceCredentials").that.is.a.string;
                 expect(item).to.have.property("archiveCredentials").that.is.a.string;
+                expect(item).to.have.property("colour", ArchiveManager.DefaultSourceColour);
             });
         });
 
@@ -281,7 +286,8 @@ describe("ArchiveManager", function() {
                         id: this.sourceID,
                         name: "new item",
                         status: SourceStatus.LOCKED,
-                        type: "text"
+                        type: "text",
+                        colour: ArchiveManager.DefaultSourceColour
                     }
                 ]);
             });
@@ -369,6 +375,7 @@ describe("ArchiveManager", function() {
                 expect(source).to.have.property("status", SourceStatus.UNLOCKED);
                 expect(source).to.have.property("sourceCredentials").that.is.an.object;
                 expect(source).to.have.property("archiveCredentials").that.is.an.object;
+                expect(source).to.have.property("colour", ArchiveManager.DefaultSourceColour);
                 expect(source)
                     .to.have.property("workspace")
                     .that.is.an.instanceOf(Workspace);
@@ -403,7 +410,8 @@ describe("ArchiveManager", function() {
                         id: this.sourceID,
                         name: "new item",
                         status: SourceStatus.UNLOCKED,
-                        type: "text"
+                        type: "text",
+                        colour: ArchiveManager.DefaultSourceColour
                     }
                 ]);
             });
