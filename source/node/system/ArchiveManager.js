@@ -1,5 +1,3 @@
-"use strict";
-
 const VError = require("verror");
 const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
 const createCredentials = require("./credentials.js");
@@ -102,7 +100,8 @@ class ArchiveManager extends AsyncEventEmitter {
                     id,
                     name,
                     status: SourceStatus.UNLOCKED,
-                    type: sourceCredentials.type
+                    type: sourceCredentials.type,
+                    colour: ArchiveManager.DefaultSourceColour
                 };
                 this._sources.push(Object.assign(sourceInfo, sourceMajorInfo));
                 return this.dehydrateSource(id).then(() => {
@@ -129,7 +128,7 @@ class ArchiveManager extends AsyncEventEmitter {
             .then(() => {
                 const index = this.indexOfSource(id);
                 if (index < 0) {
-                    throw new VError("Source not found for ID");
+                    throw new VError("Source not found");
                 }
                 source = this.sources[index];
                 if (source.status === SourceStatus.LOCKED) {
@@ -145,6 +144,7 @@ class ArchiveManager extends AsyncEventEmitter {
                         name: source.name,
                         type: source.type,
                         status: SourceStatus.LOCKED,
+                        colour: source.colour || ArchiveManager.DefaultSourceColour,
                         sourceCredentials: encParentCreds,
                         archiveCredentials: encArchiveCreds
                     }));
@@ -161,7 +161,8 @@ class ArchiveManager extends AsyncEventEmitter {
                     id: source.id,
                     name: source.name,
                     type: source.type,
-                    status: SourceStatus.LOCKED
+                    status: SourceStatus.LOCKED,
+                    colour: source.colour || ArchiveManager.DefaultSourceColour
                 });
             })
             .catch(function __handleDehydrateError(err) {
@@ -210,6 +211,7 @@ class ArchiveManager extends AsyncEventEmitter {
                     name: source.name,
                     type: source.type,
                     status: SourceStatus.LOCKED,
+                    colour: source.colour || ArchiveManager.DefaultSourceColour,
                     sourceCredentials: encParentCreds,
                     archiveCredentials: encArchiveCreds
                 });
@@ -221,7 +223,8 @@ class ArchiveManager extends AsyncEventEmitter {
                     id: source.id,
                     name: source.name,
                     type: source.type,
-                    status: SourceStatus.LOCKED
+                    status: SourceStatus.LOCKED,
+                    colour: source.colour || ArchiveManager.DefaultSourceColour
                 });
             })
             .catch(function __handleLockError(err) {
@@ -254,7 +257,8 @@ class ArchiveManager extends AsyncEventEmitter {
                                     id: lockedSource.id,
                                     name: lockedSource.name,
                                     status: SourceStatus.LOCKED,
-                                    type: lockedSource.type
+                                    type: lockedSource.type,
+                                    colour: lockedSource.colour || ArchiveManager.DefaultSourceColour
                                 });
                             })
                             .catch(function __handleDehydratedReadError(err) {
@@ -356,7 +360,8 @@ class ArchiveManager extends AsyncEventEmitter {
                                 id: source.id,
                                 name: source.name,
                                 status: SourceStatus.UNLOCKED,
-                                type: sourceCredentials.type
+                                type: sourceCredentials.type,
+                                colour: source.colour || ArchiveManager.DefaultSourceColour
                             })
                         );
                     })
@@ -370,7 +375,8 @@ class ArchiveManager extends AsyncEventEmitter {
                     id: source.id,
                     name: source.name,
                     status: SourceStatus.UNLOCKED,
-                    type: source.type
+                    type: source.type,
+                    colour: source.colour || ArchiveManager.DefaultSourceColour
                 });
             })
             .catch(function __handleUnlockError(err) {
@@ -433,6 +439,7 @@ class ArchiveManager extends AsyncEventEmitter {
     }
 }
 
+ArchiveManager.DefaultSourceColour = "#000000";
 ArchiveManager.SourceStatus = SourceStatus;
 
 module.exports = ArchiveManager;
