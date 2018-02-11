@@ -38,6 +38,8 @@ This library also supports a variety of datasources for loading from and saving 
  * WebDAV
  * [OwnCloud](https://owncloud.org/)
  * [Nextcloud](https://nextcloud.com/)
+ * [Dropbox](https://www.dropbox.com/)
+ * [Box](https://www.box.com/)
  * Files
  * ~~[Buttercup server](https://github.com/buttercup/buttercup-server)~~
 
