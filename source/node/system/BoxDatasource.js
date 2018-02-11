@@ -1,6 +1,5 @@
 const WebDAVDatasource = require("./WebDAVDatasource.js");
-
-const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
+const { registerDatasource } = require("./DatasourceAdapter.js");
 
 /**
  * Datasource for Box archives
