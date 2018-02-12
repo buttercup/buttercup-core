@@ -5,6 +5,7 @@ const createCredentials = require("./credentials.js");
 const credentialsToSource = require("./archiveManagement/marshalling.js").credentialsToSource;
 
 const DefaultColour = "#000000";
+const DefaultOrder = 1000;
 const Status = {
     LOCKED: "locked",
     UNLOCKED: "unlocked",
@@ -38,6 +39,7 @@ class ArchiveSource extends AsyncEventEmitter {
         this._workspace = null;
         this._colour = DefaultColour;
         this.type = "";
+        this.order = DefaultOrder;
     }
 
     get colour() {

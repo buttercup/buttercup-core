@@ -41,7 +41,7 @@ class ArchiveManager extends AsyncEventEmitter {
                 this.emit("sourceUnlocked", details);
                 this._emitSourcesListUpdated();
             });
-            this.sort();
+            this.reorderSources();
         }
     }
 
@@ -95,7 +95,20 @@ class ArchiveManager extends AsyncEventEmitter {
         this._emitSourcesListUpdated();
     }
 
-    sort() {}
+    reorderSources() {
+        this.sources.sort((sourceA, sourceB) => {
+            if (sourceA.order > sourceB.order) {
+                return -1;
+            } else if (sourceB.order > sourceA.order) {
+                return 1;
+            }
+            return 0;
+        });
+        this.sources.forEach((source, index) => {
+            source.order = index;
+        });
+        this._emitSourcesListUpdated();
+    }
 
     _emitSourcesListUpdated() {
         this.emit("sourcesUpdated", this.sourcesList);
