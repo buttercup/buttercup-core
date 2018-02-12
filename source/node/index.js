@@ -1,9 +1,15 @@
 const iocane = require("iocane");
 const webdavFS = require("webdav-fs");
+const OriginalArchiveManager = require("./system/ArchiveManager.js");
+
+OriginalArchiveManager.v2 = {
+    ArchiveManager: require("./system/archiveManagement/ArchiveManager.js"),
+    ArchiveSource: require("./system/archiveManagement/ArchiveSource.js")
+};
 
 module.exports = {
     Archive: require("./system/Archive.js"),
-    ArchiveManager: require("./system/ArchiveManager.js"),
+    ArchiveManager: OriginalArchiveManager,
     Westley: require("./system/Westley.js"),
     Inigo: require("./system/InigoGenerator.js"),
     Workspace: require("./system/Workspace.js"),
