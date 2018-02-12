@@ -37,7 +37,7 @@ class ArchiveManager extends AsyncEventEmitter {
                 this._emitSourcesListUpdated();
             }
             const handleDetailsChange = (event, sourceDetails) => {
-                this.emit(event, details);
+                this.emit(event, sourceDetails);
                 this._emitSourcesListUpdated();
             };
             archiveSource.on("sourceLocked", details => handleDetailsChange("sourceLocked", details));
