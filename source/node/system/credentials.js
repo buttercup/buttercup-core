@@ -37,11 +37,12 @@ function createCredentials() {
     }
     if (typeof arguments[0] === "object") {
         data = shallowClone(arguments[0]);
-        type = data.type || "";
+        type = type || data.type || "";
     } else if (typeof arguments[1] === "object") {
         data = shallowClone(arguments[1]);
-        type = data.type || "";
+        type = type || data.type || "";
     }
+    delete data.type;
     const adapter = {
         [CREDENTIALS_ATTR]: "credentials",
 
