@@ -14,6 +14,10 @@ class ArchiveManager extends AsyncEventEmitter {
         return this._sources;
     }
 
+    get sourcesList() {
+        return this.sources.map(source => source.description);
+    }
+
     get storageInterface() {
         return this._storageInterface;
     }
@@ -22,16 +26,22 @@ class ArchiveManager extends AsyncEventEmitter {
         return this.sources.filter(source => source.status === ArchiveSource.Status.UNLOCKED);
     }
 
-    addSource(archiveSource) {
+    addSource(archiveSource, emitUpdated = true) {
         const existing = this.sources.find(source => source.id === archiveSource.id);
         if (!existing) {
             this.sources.push(archiveSource);
+            if (emitUpdated) {
+                this._emitSourcesListUpdated();
+            }
             archiveSource.on("sourceLocked", details => {
                 this.emit("sourceLocked", details);
+                this._emitSourcesListUpdated();
             });
             archiveSource.on("sourceUnlocked", details => {
                 this.emit("sourceUnlocked", details);
+                this._emitSourcesListUpdated();
             });
+            this.sort();
         }
     }
 
@@ -55,7 +65,7 @@ class ArchiveManager extends AsyncEventEmitter {
                             .getValue(key)
                             .then(dehydratedSource => ArchiveSource.rehydrate(dehydratedSource))
                             .then(source => {
-                                this.addSource(source);
+                                this.addSource(source, /* emit updated event: */ false);
                             })
                             .catch(function __handleDehydratedReadError(err) {
                                 throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
@@ -63,7 +73,13 @@ class ArchiveManager extends AsyncEventEmitter {
                     )
                 )
             )
+            .then(() => {
+                // Emit updated event after all added
+                this._emitSourcesListUpdated();
+            })
             .catch(err => {
+                // Or after all failed
+                this._emitSourcesListUpdated();
                 throw new VError(err, "Failed rehydrating sources");
             });
     }
@@ -76,9 +92,14 @@ class ArchiveManager extends AsyncEventEmitter {
         const source = this.sources[sourceIndex];
         source.removeAllListeners();
         this.sources.splice(sourceIndex, 1);
+        this._emitSourcesListUpdated();
     }
 
     sort() {}
+
+    _emitSourcesListUpdated() {
+        this.emit("sourcesUpdated", this.sourcesList);
+    }
 }
 
 module.exports = ArchiveManager;
