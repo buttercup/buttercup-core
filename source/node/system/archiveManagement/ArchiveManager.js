@@ -26,9 +26,38 @@ class ArchiveManager extends AsyncEventEmitter {
         this.sources.push(archiveSource);
     }
 
-    dehydrate() {}
+    dehydrate() {
+        return Promise.all(
+            this.sources.map(source =>
+                source.dehydrate().then(dehydratedSource => {
+                    this.storageInterface.setValue(`${STORAGE_KEY_PREFIX}${source.id}`, dehydratedSource);
+                })
+            )
+        );
+    }
 
-    rehydrate() {}
+    rehydrate() {
+        return this.storageInterface
+            .getAllKeys()
+            .then(keys =>
+                Promise.all(
+                    keys.filter(key => STORAGE_KEY_PREFIX_TEST.test(key)).map(key =>
+                        this.storageInterface
+                            .getValue(key)
+                            .then(dehydratedSource => ArchiveSource.rehydrate(dehydratedSource))
+                            .then(source => {
+                                this.addSource(source);
+                            })
+                            .catch(function __handleDehydratedReadError(err) {
+                                throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
+                            })
+                    )
+                )
+            )
+            .catch(err => {
+                throw new VError(err, "Failed rehydrating sources");
+            });
+    }
 
     removeSource(sourceID) {
         const sourceIndex = this.sources.findIndex(source => source.id === sourceID);
