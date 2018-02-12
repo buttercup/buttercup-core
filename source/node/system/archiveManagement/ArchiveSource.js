@@ -138,7 +138,7 @@ class ArchiveSource extends AsyncEventEmitter {
             });
     }
 
-    unlock(masterPassword) {
+    unlock(masterPassword, initialiseRemote = false) {
         if (this.status !== Status.LOCKED) {
             return Promise.reject(
                 new VError(`Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`)
@@ -150,7 +150,7 @@ class ArchiveSource extends AsyncEventEmitter {
             createCredentials.fromSecureString(this._archiveCredentials, masterPassword)
         ])
             .then(([sourceCredentials, archiveCredentials] = []) => {
-                return credentialsToSource(sourceCredentials, archiveCredentials, /* initialise */ false)
+                return credentialsToSource(sourceCredentials, archiveCredentials, initialiseRemote)
                     .then(sourceInfo => {
                         const { workspace, sourceCredentials, archiveCredentials } = sourceInfo;
                         this._workspace = workspace;
