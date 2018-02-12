@@ -175,7 +175,7 @@ class ArchiveSource extends AsyncEventEmitter {
     }
 
     updateArchiveCredentials(masterPassword) {
-        if (this.status !== SourceStatus.UNLOCKED) {
+        if (this.status !== Status.UNLOCKED) {
             return Promise.reject(
                 new VError(`Failed updating archive credentials: Source is not unlocked: ${this.id}`)
             );
