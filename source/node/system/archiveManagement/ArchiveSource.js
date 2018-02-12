@@ -152,6 +152,25 @@ class ArchiveSource extends AsyncEventEmitter {
                 throw new VError(err, `Failed unlocking source: ${this.id}`);
             });
     }
+
+    updateArchiveCredentials(masterPassword) {
+        if (this.status !== SourceStatus.UNLOCKED) {
+            return Promise.reject(
+                new VError(`Failed updating archive credentials: Source is not unlocked: ${this.id}`)
+            );
+        }
+        const credentials = createCredentials.fromPassword(masterPassword);
+        // First update the credentials stored here
+        this._archiveCredentials = credentials;
+        // Then update the credentials in the workspace
+        this.workspace.updatePrimaryCredentials(credentials);
+        // Finally, dehydrate the source to save changes in the manager
+        return (
+            this.dehydrateSource(sourceID)
+                // Save the workspace to push the new password to file
+                .then(() => this.workspace.save())
+        );
+    }
 }
 
 ArchiveSource.Status = Status;
