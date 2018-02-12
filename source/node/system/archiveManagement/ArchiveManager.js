@@ -1,6 +1,6 @@
 const VError = require("verror");
-const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
-const MemoryStorageInterface = require("./storage/MemoryStorageInterface.js");
+const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
+const MemoryStorageInterface = require("../storage/MemoryStorageInterface.js");
 const ArchiveSource = require("./ArchiveSource.js");
 
 class ArchiveManager extends AsyncEventEmitter {

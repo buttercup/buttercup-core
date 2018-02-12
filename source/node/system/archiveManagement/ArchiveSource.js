@@ -1,8 +1,8 @@
 const VError = require("verror");
-const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
-const getUniqueID = require("../tools/encoding.js").getUniqueID;
-const createCredentials = require("./credentials.js");
-const credentialsToSource = require("./archiveManagement/marshalling.js").credentialsToSource;
+const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
+const getUniqueID = require("../../tools/encoding.js").getUniqueID;
+const createCredentials = require("../credentials.js");
+const credentialsToSource = require("./marshalling.js").credentialsToSource;
 
 const DefaultColour = "#000000";
 const DefaultOrder = 1000;
