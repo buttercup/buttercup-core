@@ -11,6 +11,16 @@ const Status = {
     PENDING: "pending"
 };
 
+function rehydrate(dehydratedString) {
+    const { name, id, sourceCredentials, archiveCredentials, type, colour } = JSON.parse(dehydratedString);
+    const source = new ArchiveSource(name, sourceCredentials, archiveCredentials, id);
+    source.type = type;
+    if (colour) {
+        source.colour = colour;
+    }
+    return source;
+}
+
 class ArchiveSource extends AsyncEventEmitter {
     constructor(name, sourceCredentials, archiveCredentials, id = getUniqueID()) {
         super();
@@ -145,5 +155,7 @@ class ArchiveSource extends AsyncEventEmitter {
 }
 
 ArchiveSource.Status = Status;
+
+ArchiveSource.rehydrate = rehydrate;
 
 module.exports = ArchiveSource;
