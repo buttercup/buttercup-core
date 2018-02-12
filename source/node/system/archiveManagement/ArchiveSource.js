@@ -77,6 +77,7 @@ class ArchiveSource extends AsyncEventEmitter {
             throw new VError(`Failed setting colour: Invalid format (expected hex): ${newColour}`);
         }
         this._colour = newColour;
+        this.emit("sourceColourUpdated", this.description);
     }
 
     dehydrate() {
