@@ -4,6 +4,8 @@ const getUniqueID = require("../../tools/encoding.js").getUniqueID;
 const createCredentials = require("../credentials.js");
 const credentialsToSource = require("./marshalling.js").credentialsToSource;
 
+const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;
+
 const DefaultColour = "#000000";
 const DefaultOrder = 1000;
 const Status = {
@@ -73,7 +75,7 @@ class ArchiveSource extends AsyncEventEmitter {
     }
 
     set colour(newColour) {
-        if (/^$/.test(newColour) !== true) {
+        if (COLOUR_TEST.test(newColour) !== true) {
             throw new VError(`Failed setting colour: Invalid format (expected hex): ${newColour}`);
         }
         this._colour = newColour;
