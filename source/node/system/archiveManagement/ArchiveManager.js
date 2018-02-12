@@ -55,6 +55,11 @@ class ArchiveManager extends AsyncEventEmitter {
         );
     }
 
+    getSourceForID(sourceID) {
+        const source = this.sources.find(target => target.id && target.id === sourceID);
+        return source || null;
+    }
+
     rehydrate() {
         return this.storageInterface
             .getAllKeys()
@@ -93,6 +98,20 @@ class ArchiveManager extends AsyncEventEmitter {
         source.removeAllListeners();
         this.sources.splice(sourceIndex, 1);
         this._emitSourcesListUpdated();
+    }
+
+    reorderSource(sourceID, position) {
+        const source = getSourceForID(sourceID);
+        if (!source) {
+            throw new VError(`Failed reordering source: No source found for ID: ${sourceID}`);
+        }
+        source.order = position;
+        this.sources.forEach(otherSource => {
+            if (otherSource.id !== sourceID && otherSource.order >= position) {
+                otherSource.order += 1;
+            }
+        });
+        this.reorderSources();
     }
 
     reorderSources() {
