@@ -3,6 +3,9 @@ const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
 const MemoryStorageInterface = require("../storage/MemoryStorageInterface.js");
 const ArchiveSource = require("./ArchiveSource.js");
 
+const STORAGE_KEY_PREFIX = "bcup_archivemgr_";
+const STORAGE_KEY_PREFIX_TEST = /^bcup_archivemgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+
 class ArchiveManager extends AsyncEventEmitter {
     constructor(storageInterface = new MemoryStorageInterface()) {
         super();
