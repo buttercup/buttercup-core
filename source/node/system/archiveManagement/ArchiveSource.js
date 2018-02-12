@@ -44,6 +44,16 @@ class ArchiveSource extends AsyncEventEmitter {
         return this._colour;
     }
 
+    get description() {
+        return {
+            name: this.name,
+            id: this.id,
+            status: this.status,
+            type: this.type,
+            colour: this.colour
+        };
+    }
+
     get id() {
         return this._id;
     }
@@ -117,6 +127,9 @@ class ArchiveSource extends AsyncEventEmitter {
                 this._archiveCredentials = encArchiveCredentials;
                 return this.dehydrate();
             })
+            .then(() => {
+                this.emit("sourceLocked", this.description);
+            })
             .catch(err => {
                 throw new VError(err, `Failed locking source: ${this.id}`);
             });
@@ -146,6 +159,9 @@ class ArchiveSource extends AsyncEventEmitter {
                     .catch(err => {
                         throw new VError(err, "Failed mapping credentials to a source");
                     });
+            })
+            .then(() => {
+                this.emit("sourceUnlocked", this.description);
             })
             .catch(err => {
                 this._status = Status.LOCKED;

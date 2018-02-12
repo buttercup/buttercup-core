@@ -23,7 +23,16 @@ class ArchiveManager extends AsyncEventEmitter {
     }
 
     addSource(archiveSource) {
-        this.sources.push(archiveSource);
+        const existing = this.sources.find(source => source.id === archiveSource.id);
+        if (!existing) {
+            this.sources.push(archiveSource);
+            archiveSource.on("sourceLocked", details => {
+                this.emit("sourceLocked", details);
+            });
+            archiveSource.on("sourceUnlocked", details => {
+                this.emit("sourceUnlocked", details);
+            });
+        }
     }
 
     dehydrate() {
@@ -64,6 +73,8 @@ class ArchiveManager extends AsyncEventEmitter {
         if (sourceIndex === -1) {
             throw new VError(`Failed removing source: No source found for ID: ${sourceID}`);
         }
+        const source = this.sources[sourceIndex];
+        source.removeAllListeners();
         this.sources.splice(sourceIndex, 1);
     }
 
