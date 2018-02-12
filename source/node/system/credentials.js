@@ -220,4 +220,27 @@ createCredentials.fromSecureString = function fromSecureString(content, password
         .then(credentialsData => createCredentials(credentialsData[0], credentialsData[1]));
 };
 
+/**
+ * Check if a variable is a credentials instance
+ * @param {*} target The variable to check
+ * @returns {Boolean} True if a credentials instance
+ */
+createCredentials.isCredentials = function isCredentials(target) {
+    return typeof target === "object" && target !== null && target[CREDENTIALS_ATTR] === "credentials";
+};
+
+/**
+ * Check if a string is a secure credentials string
+ * @param {String} str The string to check
+ * @returns {Boolean} True if an encrypted credentials string
+ */
+createCredentials.isSecureString = function isSecureString(str) {
+    try {
+        unsignEncryptedContent(str);
+        return true;
+    } catch (err) {
+        return false;
+    }
+};
+
 module.exports = createCredentials;
