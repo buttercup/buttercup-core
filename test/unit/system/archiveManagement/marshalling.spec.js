@@ -1,5 +1,3 @@
-"use strict";
-
 const { credentialsToDatasource, credentialsToSource } = archiveManagement.marshalling;
 
 describe("marshalling", function() {

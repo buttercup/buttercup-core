@@ -97,7 +97,9 @@ describe("createEntryFacade", function() {
 
     it("creates a facade", function() {
         expect(this.facade).to.have.property("type", "login");
-        expect(this.facade).to.have.property("fields").that.is.an.array;
+        expect(this.facade)
+            .to.have.property("fields")
+            .that.is.an("array");
     });
 
     it("creates items for each property", function() {

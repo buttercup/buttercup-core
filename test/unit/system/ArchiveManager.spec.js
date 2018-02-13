@@ -38,7 +38,7 @@ describe("ArchiveManager", function() {
         });
 
         it("returns correctly for no sources", function() {
-            expect(this.archiveManager.unlockedSources).to.be.an.array;
+            expect(this.archiveManager.unlockedSources).to.be.an("array");
             expect(this.archiveManager.unlockedSources).to.have.lengthOf(0);
         });
 
@@ -47,7 +47,7 @@ describe("ArchiveManager", function() {
                 .addSource("new item", this.sourceCredentials, this.archiveCredentials)
                 .then(id => {
                     expect(this.archiveManager.unlockedSources).to.have.lengthOf(1);
-                    expect(this.archiveManager.unlockedSources[0]).to.be.an.object;
+                    expect(this.archiveManager.unlockedSources[0]).to.be.an("object");
                     expect(this.archiveManager.unlockedSources[0]).to.have.property("id", id);
                 });
         });
@@ -367,8 +367,12 @@ describe("ArchiveManager", function() {
                 expect(source).to.have.property("name", "new item");
                 expect(source).to.have.property("type", "text");
                 expect(source).to.have.property("status", SourceStatus.UNLOCKED);
-                expect(source).to.have.property("sourceCredentials").that.is.an.object;
-                expect(source).to.have.property("archiveCredentials").that.is.an.object;
+                expect(source)
+                    .to.have.property("sourceCredentials")
+                    .that.is.an("object");
+                expect(source)
+                    .to.have.property("archiveCredentials")
+                    .that.is.an("object");
                 expect(source)
                     .to.have.property("workspace")
                     .that.is.an.instanceOf(Workspace);
