@@ -29,7 +29,7 @@ class ArchiveManager extends AsyncEventEmitter {
         return this.sources.filter(source => source.status === ArchiveSource.Status.UNLOCKED);
     }
 
-    addSource(archiveSource, emitUpdated = true) {
+    addSource(archiveSource, { emitUpdated = true, reorder = true } = {}) {
         const existing = this.sources.find(source => source.id === archiveSource.id);
         if (!existing) {
             this.sources.push(archiveSource);
@@ -43,7 +43,9 @@ class ArchiveManager extends AsyncEventEmitter {
             archiveSource.on("sourceLocked", details => handleDetailsChange("sourceLocked", details));
             archiveSource.on("sourceUnlocked", details => handleDetailsChange("sourceUnlocked", details));
             archiveSource.on("sourceColourUpdated", details => handleDetailsChange("sourceColourUpdated", details));
-            this.reorderSources();
+            if (reorder) {
+                this.reorderSources();
+            }
         }
     }
 
@@ -72,7 +74,7 @@ class ArchiveManager extends AsyncEventEmitter {
                             .getValue(key)
                             .then(dehydratedSource => ArchiveSource.rehydrate(dehydratedSource))
                             .then(source => {
-                                this.addSource(source, /* emit updated event: */ false);
+                                this.addSource(source, { emitUpdated: false, reorder: false });
                             })
                             .catch(function __handleDehydratedReadError(err) {
                                 throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
@@ -81,8 +83,10 @@ class ArchiveManager extends AsyncEventEmitter {
                 )
             )
             .then(() => {
-                // Emit updated event after all added
-                this._emitSourcesListUpdated();
+                // Reorder all sources
+                this.reorderSources();
+                // We don't need to explicitly call for emitting an updated event,
+                // as that will happen at the end of reordering.
             })
             .catch(err => {
                 // Or after all failed
