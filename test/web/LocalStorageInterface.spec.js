@@ -47,7 +47,7 @@ describe("LocalStorageInterface", function() {
 
         it("does not throw if item doesn't exist", function() {
             const removal = this.localStorageInterface.removeKey("my item");
-            return expect(removal).to.eventually.resolve;
+            return expect(removal).to.be.eventually.fulfilled;
         });
     });
 
