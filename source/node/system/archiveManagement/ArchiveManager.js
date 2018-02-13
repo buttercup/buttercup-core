@@ -122,9 +122,9 @@ class ArchiveManager extends AsyncEventEmitter {
     reorderSources() {
         this.sources.sort((sourceA, sourceB) => {
             if (sourceA.order > sourceB.order) {
-                return -1;
-            } else if (sourceB.order > sourceA.order) {
                 return 1;
+            } else if (sourceB.order > sourceA.order) {
+                return -1;
             }
             return 0;
         });
