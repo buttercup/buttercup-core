@@ -27,16 +27,16 @@ matrix:
         - NAME="Node 6"
     - language: node_js
       node_js: 8
-      sudo: required
+    #   sudo: required
       env:
         - NAME="Web"
-      addons:
-        firefox: latest
-        apt:
-          sources:
-            - google-chrome
-          packages:
-            - google-chrome-stable
+    #   addons:
+    #     firefox: latest
+    #     apt:
+    #       sources:
+    #         - google-chrome
+    #       packages:
+    #         - google-chrome-stable
       before_script:
         - export DISPLAY=:99.0
         - sh -e /etc/init.d/xvfb start
