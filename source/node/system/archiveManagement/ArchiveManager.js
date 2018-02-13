@@ -33,13 +33,13 @@ class ArchiveManager extends AsyncEventEmitter {
         return this.sources.filter(source => source.status === ArchiveSource.Status.UNLOCKED);
     }
 
-    addSource(archiveSource, { emitUpdated = true } = {}) {
+    addSource(archiveSource, { emitUpdated = true, order = this.nextSourceOrder } = {}) {
         const existing = this.sources.find(source => source.id === archiveSource.id);
         if (!existing) {
             // Store the source
             this.sources.push(archiveSource);
             // Configure the order
-            archiveSource.order = this.nextSourceOrder;
+            archiveSource.order = order;
             // Emit an updated event for the source having been added
             if (emitUpdated) {
                 this._emitSourcesListUpdated();
@@ -80,7 +80,7 @@ class ArchiveManager extends AsyncEventEmitter {
                             .getValue(key)
                             .then(dehydratedSource => ArchiveSource.rehydrate(dehydratedSource))
                             .then(source => {
-                                this.addSource(source, { emitUpdated: false });
+                                this.addSource(source, { emitUpdated: false, order: source.order });
                             })
                             .catch(function __handleDehydratedReadError(err) {
                                 throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
