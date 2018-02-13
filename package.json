@@ -82,7 +82,7 @@
     "babel-preset-env": "~1.6.1",
     "chai": "~4.1.2",
     "chai-as-promised": "~7.1.1",
-    "chromedriver": "~2.33.1",
+    "chromedriver": "~2.35.0",
     "codeclimate-test-reporter": "~0.4.0",
     "eslint": "~2.2.0",
     "husky": "~0.14.3",
