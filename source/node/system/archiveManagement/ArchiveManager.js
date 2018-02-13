@@ -100,6 +100,9 @@ class ArchiveManager extends AsyncEventEmitter {
         source.removeAllListeners();
         this.sources.splice(sourceIndex, 1);
         this._emitSourcesListUpdated();
+        return this.storageInterface.removeKey(`${STORAGE_KEY_PREFIX}${sourceID}`).catch(err => {
+            throw new VError(err, `Failed removing source with ID: ${sourceID}`);
+        });
     }
 
     reorderSource(sourceID, position) {
