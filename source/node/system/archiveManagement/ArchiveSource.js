@@ -92,7 +92,9 @@ class ArchiveSource extends AsyncEventEmitter {
                     id: this.id,
                     name: this.name,
                     type: this.type,
-                    status: Status.LOCKED
+                    status: Status.LOCKED,
+                    colour: this.colour,
+                    order: this.order
                 };
                 if (this.status === Status.LOCKED) {
                     payload.sourceCredentials = this._sourceCredentials;
