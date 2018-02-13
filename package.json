@@ -33,6 +33,7 @@
     "test:lint": "eslint source/ && eslint test/ && eslint tests/",
     "test:nodeunit": "nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
     "test:unit": "mocha -r test/index.js 'test/unit/**/*.spec.js' --timeout 5000",
+    "test:unit:watch": "nodemon --exec 'npm run test:unit' --ignore tests/ --ignore node_modules/",
     "test:web": "karma start"
   },
   "lint-staged": {
@@ -98,6 +99,7 @@
     "karma-webpack": "~2.0.5",
     "lint-staged": "~4.3.0",
     "mocha": "~3.2.0",
+    "nodemon": "~1.14.12",
     "nodeunit": "~0.9.1",
     "np": "~2.18.3",
     "npm-run-all": "~4.1.1",
