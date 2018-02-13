@@ -13,6 +13,10 @@ class ArchiveManager extends AsyncEventEmitter {
         this._sources = [];
     }
 
+    get nextSourceOrder() {
+        return this.sources.length;
+    }
+
     get sources() {
         return this._sources;
     }
@@ -29,13 +33,18 @@ class ArchiveManager extends AsyncEventEmitter {
         return this.sources.filter(source => source.status === ArchiveSource.Status.UNLOCKED);
     }
 
-    addSource(archiveSource, { emitUpdated = true, reorder = true } = {}) {
+    addSource(archiveSource, { emitUpdated = true } = {}) {
         const existing = this.sources.find(source => source.id === archiveSource.id);
         if (!existing) {
+            // Store the source
             this.sources.push(archiveSource);
+            // Configure the order
+            archiveSource.order = this.nextSourceOrder;
+            // Emit an updated event for the source having been added
             if (emitUpdated) {
                 this._emitSourcesListUpdated();
             }
+            // Attach event listeners
             const handleDetailsChange = (event, sourceDetails) => {
                 this.emit(event, sourceDetails);
                 this._emitSourcesListUpdated();
@@ -43,9 +52,6 @@ class ArchiveManager extends AsyncEventEmitter {
             archiveSource.on("sourceLocked", details => handleDetailsChange("sourceLocked", details));
             archiveSource.on("sourceUnlocked", details => handleDetailsChange("sourceUnlocked", details));
             archiveSource.on("sourceColourUpdated", details => handleDetailsChange("sourceColourUpdated", details));
-            if (reorder) {
-                this.reorderSources();
-            }
         }
     }
 
@@ -74,7 +80,7 @@ class ArchiveManager extends AsyncEventEmitter {
                             .getValue(key)
                             .then(dehydratedSource => ArchiveSource.rehydrate(dehydratedSource))
                             .then(source => {
-                                this.addSource(source, { emitUpdated: false, reorder: false });
+                                this.addSource(source, { emitUpdated: false });
                             })
                             .catch(function __handleDehydratedReadError(err) {
                                 throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
