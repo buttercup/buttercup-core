@@ -30,8 +30,8 @@ matrix:
     #   sudo: required
       env:
         - NAME="Web"
-        addons:
-          chrome: stable
+      addons:
+        chrome: stable
     #   addons:
     #     firefox: latest
     #     apt:
