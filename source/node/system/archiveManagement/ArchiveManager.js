@@ -120,10 +120,19 @@ class ArchiveManager extends AsyncEventEmitter {
         if (!source) {
             throw new VError(`Failed reordering source: No source found for ID: ${sourceID}`);
         }
+        if (position === source.order) {
+            return;
+        }
+        const originalOrder = source.order;
         source.order = position;
+        const movingUp = position < originalOrder;
         this.sources.forEach(otherSource => {
-            if (otherSource.id !== sourceID && otherSource.order <= position) {
-                otherSource.order -= 1;
+            if (otherSource.id !== sourceID) {
+                if (movingUp && otherSource.order >= position) {
+                    otherSource.order += 1;
+                } else if (!movingUp && otherSource.order <= position) {
+                    otherSource.order -= 1;
+                }
             }
         });
         this.reorderSources();

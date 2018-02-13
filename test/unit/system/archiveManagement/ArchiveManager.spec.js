@@ -25,6 +25,7 @@ describe("ArchiveManager", function() {
             this.manager.reorderSource("1", 1);
             expect(this.fakeSource2.order).to.equal(0);
             expect(this.fakeSource1.order).to.equal(1);
+            expect(this.fakeSource3.order).to.equal(2);
         });
 
         it("throws if there's no source for the provided ID", function() {
@@ -34,7 +35,7 @@ describe("ArchiveManager", function() {
         });
 
         it("reorders positions before the moved source", function() {
-            this.manager.reorderSource("1", 1);
+            this.manager.reorderSource("3", 1);
             this.manager.sources.sort((sourceA, sourceB) => {
                 if (sourceA.order > sourceB.order) {
                     return 1;
@@ -43,7 +44,7 @@ describe("ArchiveManager", function() {
                 }
                 return 0;
             });
-            expect(this.manager.sources[1].id).to.equal("1");
+            expect(this.manager.sources[1].id).to.equal("3");
         });
     });
 
