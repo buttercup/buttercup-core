@@ -5,8 +5,9 @@ describe("ArchiveManager", function() {
         beforeEach(function() {
             this.fakeSource1 = { id: "1", order: 0 };
             this.fakeSource2 = { id: "2", order: 1 };
+            this.fakeSource3 = { id: "3", order: 2 };
             this.manager = new NewArchiveManager();
-            this.manager.sources.push(this.fakeSource1, this.fakeSource2);
+            this.manager.sources.push(this.fakeSource1, this.fakeSource2, this.fakeSource3);
             sinon.stub(this.manager, "reorderSources");
         });
 
@@ -30,6 +31,19 @@ describe("ArchiveManager", function() {
             expect(() => {
                 this.manager.reorderSource("0", 0);
             }).to.throw(/No source found/i);
+        });
+
+        it("reorders positions before the moved source", function() {
+            this.manager.reorderSource("1", 1);
+            this.manager.sources.sort((sourceA, sourceB) => {
+                if (sourceA.order > sourceB.order) {
+                    return 1;
+                } else if (sourceB.order > sourceA.order) {
+                    return -1;
+                }
+                return 0;
+            });
+            expect(this.manager.sources[1].id).to.equal("1");
         });
     });
 
