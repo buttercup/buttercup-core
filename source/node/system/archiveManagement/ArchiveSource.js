@@ -57,7 +57,8 @@ class ArchiveSource extends AsyncEventEmitter {
             id: this.id,
             status: this.status,
             type: this.type,
-            colour: this.colour
+            colour: this.colour,
+            order: this.order
         };
     }
 
