@@ -122,8 +122,8 @@ class ArchiveManager extends AsyncEventEmitter {
         }
         source.order = position;
         this.sources.forEach(otherSource => {
-            if (otherSource.id !== sourceID && otherSource.order >= position) {
-                otherSource.order += 1;
+            if (otherSource.id !== sourceID && otherSource.order <= position) {
+                otherSource.order -= 1;
             }
         });
         this.reorderSources();

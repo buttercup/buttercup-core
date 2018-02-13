@@ -21,10 +21,10 @@ describe("ArchiveManager", function() {
             expect(this.fakeSource1.order).to.equal(1);
         });
 
-        it("reorders items with orders the same or higher", function() {
-            this.manager.reorderSource("2", 0);
-            expect(this.fakeSource1.order).to.equal(1);
+        it("reorders items with orders the same or lower", function() {
+            this.manager.reorderSource("1", 1);
             expect(this.fakeSource2.order).to.equal(0);
+            expect(this.fakeSource1.order).to.equal(1);
         });
 
         it("throws if there's no source for the provided ID", function() {
