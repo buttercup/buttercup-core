@@ -15,11 +15,14 @@ const Status = {
 };
 
 function rehydrate(dehydratedString) {
-    const { name, id, sourceCredentials, archiveCredentials, type, colour } = JSON.parse(dehydratedString);
+    const { name, id, sourceCredentials, archiveCredentials, type, colour, order } = JSON.parse(dehydratedString);
     const source = new ArchiveSource(name, sourceCredentials, archiveCredentials, id);
     source.type = type;
     if (colour) {
         source.colour = colour;
+    }
+    if (order >= 0) {
+        source.order = order;
     }
     return source;
 }
