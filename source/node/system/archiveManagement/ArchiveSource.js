@@ -8,12 +8,25 @@ const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;
 
 const DefaultColour = "#000000";
 const DefaultOrder = 1000;
+/**
+ * Archive source status
+ * @enum ArchiveSourceStatus
+ * @memberof ArchiveSource
+ * @static
+ */
 const Status = {
     LOCKED: "locked",
     UNLOCKED: "unlocked",
     PENDING: "pending"
 };
 
+/**
+ * Rehydrate a dehydrated archive source
+ * @param {String} dehydratedString A dehydrated archive source
+ * @returns {ArchiveSource} The rehydrated source
+ * @memberof ArchiveSource
+ * @static
+ */
 function rehydrate(dehydratedString) {
     const { name, id, sourceCredentials, archiveCredentials, type, colour, order } = JSON.parse(dehydratedString);
     const source = new ArchiveSource(name, sourceCredentials, archiveCredentials, id);
@@ -27,7 +40,18 @@ function rehydrate(dehydratedString) {
     return source;
 }
 
+/**
+ * Archive source class
+ * @augments AsyncEventEmitter
+ */
 class ArchiveSource extends AsyncEventEmitter {
+    /**
+     * Constructor for an archive source
+     * @param {String} name The name of the source
+     * @param {String} sourceCredentials Encrypted archive source credentials
+     * @param {String} archiveCredentials Encrypted archive credentials
+     * @param {String=} id Optional source ID (Do not pass for new source)
+     */
     constructor(name, sourceCredentials, archiveCredentials, id = getUniqueID()) {
         super();
         if (createCredentials.isSecureString(sourceCredentials) !== true) {
@@ -47,10 +71,30 @@ class ArchiveSource extends AsyncEventEmitter {
         this.order = DefaultOrder;
     }
 
+    /**
+     * Source colour
+     * @type {String}
+     * @memberof ArchiveSource
+     */
     get colour() {
         return this._colour;
     }
 
+    /**
+     * @typedef ArchiveSourceDescription
+     * @property {String} name - The name of the source
+     * @property {String} id - The source ID
+     * @property {ArchiveSourceStatus} status - Status of the source
+     * @property {String} type - The source type
+     * @property {String} colour - Colour for the source
+     * @property {Number} order - The order of the source
+     */
+
+    /**
+     * Get the source description
+     * @type {ArchiveSourceDescription}
+     * @memberof ArchiveSource
+     */
     get description() {
         return {
             name: this.name,
@@ -62,18 +106,39 @@ class ArchiveSource extends AsyncEventEmitter {
         };
     }
 
+    /**
+     * Source ID
+     * @type {String}
+     * @memberof ArchiveSource
+     */
     get id() {
         return this._id;
     }
 
+    /**
+     * Source name
+     * @type {String}
+     * @memberof ArchiveSource
+     */
     get name() {
         return this._name;
     }
 
+    /**
+     * Source status
+     * @type {ArchiveSourceStatus}
+     * @memberof ArchiveSource
+     */
     get status() {
         return this._status;
     }
 
+    /**
+     * Workspace instance for the source
+     * Is null when the source is locked
+     * @type {Workspace|null}
+     * @memberof ArchiveSource
+     */
     get workspace() {
         return this._workspace;
     }
@@ -86,6 +151,16 @@ class ArchiveSource extends AsyncEventEmitter {
         this.emit("sourceColourUpdated", this.description);
     }
 
+    /**
+     * Dehydrate the source for storage
+     * Returns a secure string with locked (encrypted) credentials, even when the
+     *  source is in the UNLOCKED state. This method does NOT store the source - 
+     *  this must be done separately.
+     * @returns {Promise.<String>} A promise that resolves with the dehydrated
+     *  source information
+     * @memberof ArchiveSource
+     * @throws {VError} Rejects is source in PENDING state
+     */
     dehydrate() {
         if (this.status === Status.PENDING) {
             return Promise.reject(new VError(`Failed dehydrating source: Source in pending state: ${this.id}`));
@@ -120,6 +195,15 @@ class ArchiveSource extends AsyncEventEmitter {
             });
     }
 
+    /**
+     * Lock the source
+     * Encrypts the credentials and performs dehydration, placing the source into
+     *  a LOCKED state. No saving is performed before locking.
+     * @returns {Promise.<String>} A promise that resolves with dehydrated content
+     * @throws {VError} Rejects if not in unlocked state
+     * @fires ArchiveSource#sourceLocked
+     * @memberof ArchiveSource
+     */
     lock() {
         if (this.status !== Status.UNLOCKED) {
             return Promise.reject(
@@ -147,6 +231,17 @@ class ArchiveSource extends AsyncEventEmitter {
             });
     }
 
+    /**
+     * Unlock the source
+     * @param {String} masterPassword The master password
+     * @param {Boolean=} initialiseRemote Optionally initialise the remote (replaces
+     *  remote archive) (defaults to false)
+     * @memberof ArchiveSource
+     * @throws {VError} Rejects if not in locked state
+     * @throws {VError} Rejects if not able to create the source from the encrypted
+     *  credentials
+     * @fires ArchiveSource#sourceUnlocked
+     */
     unlock(masterPassword, initialiseRemote = false) {
         if (this.status !== Status.LOCKED) {
             return Promise.reject(
@@ -181,6 +276,16 @@ class ArchiveSource extends AsyncEventEmitter {
             });
     }
 
+    /**
+     * Update the password/credentials for the archive
+     * The workspace is saved after changing. Responds with dehydrated details
+     * which should be SAVED.
+     * @param {String} masterPassword New master password
+     * @returns {Promise.<String>} A promise that resolves with the dehydrated
+     *  source details
+     * @memberof ArchiveSource
+     * @throws {VError} Rejects if source is not in unlocked state
+     */
     updateArchiveCredentials(masterPassword) {
         if (this.status !== Status.UNLOCKED) {
             return Promise.reject(
@@ -194,9 +299,11 @@ class ArchiveSource extends AsyncEventEmitter {
         this.workspace.updatePrimaryCredentials(credentials);
         // Finally, dehydrate the source to save changes in the manager
         return (
-            this.dehydrate()
-                // Save the workspace to push the new password to file
-                .then(() => this.workspace.save())
+            // Save the workspace to push the new password to file
+            this.workspace
+                .save()
+                // Finally dehydrate
+                .then(() => this.dehydrate())
         );
     }
 }

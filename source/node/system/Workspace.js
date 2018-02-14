@@ -132,6 +132,7 @@ class Workspace {
      * Imbue the primary archive with shared groups from all of the other archives
      * @throws {Error} Throws if the primary archive is not set
      * @returns {Workspace} Self
+     * @deprecated To be removed
      */
     imbue() {
         let items = this.getAllItems(),
@@ -218,7 +219,7 @@ class Workspace {
     /**
      * Merge all saveable remote copies into their local counterparts
      * @see mergeItemFromRemote
-     * @see embue
+     * @see imbue
      * @returns {Promise.<Archive[]>} A promise that resolves with an array of merged Archives
      */
     mergeSaveablesFromRemote() {
