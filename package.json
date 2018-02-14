@@ -22,7 +22,7 @@
     "generate:docs:web": "jsdoc2md source/{web,node}/**/*.js > API_WEB.md",
     "precommit": "lint-staged",
     "postinstall": "opencollective postinstall",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "pub": "np",
     "test": "run-p --max-parallel 2 test:lint test:format test:istanbul test:unit test:integration test:web",
     "test:ci:node": "run-s test:lint test:format test:istanbul test:unit test:integration",
