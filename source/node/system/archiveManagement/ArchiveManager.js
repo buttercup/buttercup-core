@@ -187,6 +187,13 @@ class ArchiveManager extends AsyncEventEmitter {
         });
     }
 
+    /**
+     * Reorder a source
+     * @param {String} sourceID The ID of the source to reorder
+     * @param {Number} position The 0-based position to move the source to
+     * @memberof ArchiveManager
+     * @throws {VError} Throws if no source is found
+     */
     reorderSource(sourceID, position) {
         const source = this.getSourceForID(sourceID);
         if (!source) {
@@ -210,6 +217,10 @@ class ArchiveManager extends AsyncEventEmitter {
         this.reorderSources();
     }
 
+    /**
+     * Reorder all sources
+     * @memberof ArchiveManager
+     */
     reorderSources() {
         this.sources.sort((sourceA, sourceB) => {
             if (sourceA.order > sourceB.order) {
