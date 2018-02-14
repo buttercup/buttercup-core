@@ -32,7 +32,7 @@ function rehydrate(dehydratedString) {
     const source = new ArchiveSource(name, sourceCredentials, archiveCredentials, id);
     source.type = type;
     if (colour) {
-        source.colour = colour;
+        source._colour = colour;
     }
     if (order >= 0) {
         source.order = order;
