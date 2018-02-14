@@ -39,34 +39,44 @@ function createArchiveSource(name) {
 describe("ArchiveManager", function() {
     describe("addSource", function() {
         beforeEach(function() {
-            this.fakeSource1 = { id: "1", order: 0, on: NOOP };
+            this.fakeSource1 = { id: "1", order: 0, on: NOOP, dehydrate: sinon.stub().returns(Promise.resolve()) };
             this.manager = new NewArchiveManager();
             this.manager.sources.push(this.fakeSource1);
-            this.fakeSource2 = { id: "2", on: NOOP };
+            this.fakeSource2 = { id: "2", on: NOOP, dehydrate: sinon.stub().returns(Promise.resolve()) };
         });
 
         it("adds sources", function() {
-            this.manager.addSource(this.fakeSource2);
-            expect(this.manager.sources).to.contain(this.fakeSource2);
+            return this.manager.addSource(this.fakeSource2).then(() => {
+                expect(this.manager.sources).to.contain(this.fakeSource2);
+            });
         });
 
         it("sets the order", function() {
-            this.manager.addSource(this.fakeSource2);
-            expect(this.fakeSource2)
-                .to.have.property("order")
-                .that.is.above(this.fakeSource1.order);
+            return this.manager.addSource(this.fakeSource2).then(() => {
+                expect(this.fakeSource2)
+                    .to.have.property("order")
+                    .that.is.above(this.fakeSource1.order);
+            });
         });
 
         it("emits 'sourcesUpdated' event", function() {
             sinon.spy(this.manager, "emit");
-            this.manager.addSource(this.fakeSource2);
-            expect(this.manager.emit.calledWith("sourcesUpdated")).to.be.true;
+            return this.manager.addSource(this.fakeSource2).then(() => {
+                expect(this.manager.emit.calledWith("sourcesUpdated")).to.be.true;
+            });
         });
 
         it("does not add duplicates", function() {
             sinon.spy(this.manager.sources, "push");
-            this.manager.addSource(this.fakeSource1);
-            expect(this.manager.sources.push.notCalled).to.be.true;
+            return this.manager.addSource(this.fakeSource1).then(() => {
+                expect(this.manager.sources.push.notCalled).to.be.true;
+            });
+        });
+
+        it("dehydrates and stores", function() {
+            return this.manager.addSource(this.fakeSource2).then(() => {
+                expect(this.fakeSource2.dehydrate.calledOnce).to.be.true;
+            });
         });
     });
 
@@ -146,10 +156,10 @@ describe("ArchiveManager", function() {
             });
         });
 
-        it("emits 'sourcesUpdated' event", function() {
+        it("emits 'sourcesUpdated' event once", function() {
             sinon.spy(this.manager, "emit");
             return this.manager.rehydrate().then(() => {
-                expect(this.manager.emit.calledWith("sourcesUpdated")).to.be.true;
+                expect(this.manager.emit.calledOnceWith("sourcesUpdated")).to.be.true;
             });
         });
     });

@@ -94,6 +94,7 @@ class ArchiveSource extends AsyncEventEmitter {
      * Get the source description
      * @type {ArchiveSourceDescription}
      * @memberof ArchiveSource
+     * @readonly
      */
     get description() {
         return {
@@ -110,6 +111,7 @@ class ArchiveSource extends AsyncEventEmitter {
      * Source ID
      * @type {String}
      * @memberof ArchiveSource
+     * @readonly
      */
     get id() {
         return this._id;
@@ -119,6 +121,7 @@ class ArchiveSource extends AsyncEventEmitter {
      * Source name
      * @type {String}
      * @memberof ArchiveSource
+     * @readonly
      */
     get name() {
         return this._name;
@@ -128,6 +131,7 @@ class ArchiveSource extends AsyncEventEmitter {
      * Source status
      * @type {ArchiveSourceStatus}
      * @memberof ArchiveSource
+     * @readonly
      */
     get status() {
         return this._status;
@@ -138,6 +142,7 @@ class ArchiveSource extends AsyncEventEmitter {
      * Is null when the source is locked
      * @type {Workspace|null}
      * @memberof ArchiveSource
+     * @readonly
      */
     get workspace() {
         return this._workspace;

@@ -6,33 +6,80 @@ const ArchiveSource = require("./ArchiveSource.js");
 const STORAGE_KEY_PREFIX = "bcup_archivemgr_";
 const STORAGE_KEY_PREFIX_TEST = /^bcup_archivemgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
+/**
+ * Archive manager class
+ * @augments AsyncEventEmitter
+ */
 class ArchiveManager extends AsyncEventEmitter {
+    /**
+     * Constructor for the archive manager
+     * @param {StorageInterface=} storageInterface The storage interface to use -
+     *  defaults to storing in memory
+     */
     constructor(storageInterface = new MemoryStorageInterface()) {
         super();
         this._storageInterface = storageInterface;
         this._sources = [];
     }
 
+    /**
+     * The next available source order
+     * @type {Number}
+     * @memberof ArchiveManager
+     * @readonly
+     */
     get nextSourceOrder() {
         return this.sources.length;
     }
 
+    /**
+     * The current sources
+     * @type {Array.<ArchiveSource>}
+     * @memberof ArchiveManager
+     * @readonly
+     */
     get sources() {
         return this._sources;
     }
 
+    /**
+     * All sources, listed by their descriptions
+     * @type {Array.<ArchiveSourceDescription>}
+     * @memberof ArchiveManager
+     * @readonly
+     */
     get sourcesList() {
         return this.sources.map(source => source.description);
     }
 
+    /**
+     * The current storage interface
+     * @type {StorageInterface}
+     * @memberof ArchiveManager
+     * @readonly
+     */
     get storageInterface() {
         return this._storageInterface;
     }
 
+    /**
+     * All unlocked sources
+     * @type {Array.<ArchiveSource>}
+     * @memberof ArchiveManager
+     * @readonly
+     */
     get unlockedSources() {
         return this.sources.filter(source => source.status === ArchiveSource.Status.UNLOCKED);
     }
 
+    /**
+     * Add a source to the manager
+     * @param {ArchiveSource} archiveSource The source to add
+     * @param {Object=} obj Optional configuration
+     * @param {Boolean=} obj.emitUpdated - Whether or not to emit an updated event (default: true)
+     * @param {Number=} obj.order - Override the order of the new source
+     * @memberof ArchiveManager
+     */
     addSource(archiveSource, { emitUpdated = true, order = this.nextSourceOrder } = {}) {
         const existing = this.sources.find(source => source.id === archiveSource.id);
         if (!existing) {
@@ -52,24 +99,43 @@ class ArchiveManager extends AsyncEventEmitter {
             archiveSource.on("sourceLocked", details => handleDetailsChange("sourceLocked", details));
             archiveSource.on("sourceUnlocked", details => handleDetailsChange("sourceUnlocked", details));
             archiveSource.on("sourceColourUpdated", details => handleDetailsChange("sourceColourUpdated", details));
+            return archiveSource
+                .dehydrate()
+                .then(dehydratedSource => this._storeDehydratedSource(archiveSource.id, dehydratedSource));
         }
+        return Promise.resolve();
     }
 
+    /**
+     * Dehydrate all sources and write them to storage
+     * @returns {Promise} A promise that resolves once all sources have been dehydrated
+     * @memberof ArchiveManager
+     */
     dehydrate() {
         return Promise.all(
             this.sources.map(source =>
-                source.dehydrate().then(dehydratedSource => {
-                    this.storageInterface.setValue(`${STORAGE_KEY_PREFIX}${source.id}`, dehydratedSource);
-                })
+                source.dehydrate().then(dehydratedSource => this._storeDehydratedSource(source.id, dehydratedSource))
             )
         );
     }
 
+    /**
+     * Get a source for an ID
+     * @param {String} sourceID The source ID
+     * @returns {ArchiveSource|null} The source with the matching ID or null if not found
+     * @memberof ArchiveManager
+     */
     getSourceForID(sourceID) {
         const source = this.sources.find(target => target.id && target.id === sourceID);
         return source || null;
     }
 
+    /**
+     * Rehydrate sources from storage
+     * @returns {Promise} A promise that resolves once rehydration has completed
+     * @memberof ArchiveManager
+     * @throws {VError} Rejects if rehydrating from storage fails
+     */
     rehydrate() {
         return this.storageInterface
             .getAllKeys()
@@ -101,6 +167,12 @@ class ArchiveManager extends AsyncEventEmitter {
             });
     }
 
+    /**
+     * Remove a source from the storage
+     * @param {String} sourceID The ID of the source to remove
+     * @returns {Promise} A promise that resolves once the source has been removed
+     * @memberof ArchiveManager
+     */
     removeSource(sourceID) {
         const sourceIndex = this.sources.findIndex(source => source.id === sourceID);
         if (sourceIndex === -1) {
@@ -155,6 +227,10 @@ class ArchiveManager extends AsyncEventEmitter {
 
     _emitSourcesListUpdated() {
         this.emit("sourcesUpdated", this.sourcesList);
+    }
+
+    _storeDehydratedSource(id, dehydratedSource) {
+        return this.storageInterface.setValue(`${STORAGE_KEY_PREFIX}${id}`, dehydratedSource);
     }
 }
 
