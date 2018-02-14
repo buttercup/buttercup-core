@@ -1,4 +1,9 @@
-# Buttercup-core change-log
+# Core library changelog
+
+## v1.5.0
+_2018-02-14_
+
+ * Add new `ArchiveManager` and `ArchiveSource` classes
 
 ## v1.4.0
 _2017-01-11_
