@@ -29,14 +29,13 @@ module.exports = config => config.set({
         "test/web/**/*.spec.js"
     ],
 
-    frameworks: ["mocha", "chai", "sinon"],
+    frameworks: ["mocha", "sinon"],
 
     plugins: [
         require("karma-webpack"),
         require("istanbul-instrumenter-loader"),
         require("karma-chrome-launcher"),
         require("karma-mocha"),
-        require("karma-chai"),
         require("karma-sinon"),
         require("karma-coverage"),
         require("karma-spec-reporter")

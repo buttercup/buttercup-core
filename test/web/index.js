@@ -1,3 +1,10 @@
+const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised");
 
-window.chai.use(chaiAsPromised);
+const { expect } = chai;
+
+chai.use(chaiAsPromised);
+
+Object.assign(window, {
+    expect
+});

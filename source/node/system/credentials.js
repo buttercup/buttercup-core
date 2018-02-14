@@ -37,9 +37,12 @@ function createCredentials() {
     }
     if (typeof arguments[0] === "object") {
         data = shallowClone(arguments[0]);
+        type = type || data.type || "";
     } else if (typeof arguments[1] === "object") {
         data = shallowClone(arguments[1]);
+        type = type || data.type || "";
     }
+    delete data.type;
     const adapter = {
         [CREDENTIALS_ATTR]: "credentials",
 
@@ -218,6 +221,29 @@ createCredentials.fromSecureString = function fromSecureString(content, password
         .decryptWithPassword(unsignEncryptedContent(content), password)
         .then(decryptedContent => JSON.parse(decryptedContent))
         .then(credentialsData => createCredentials(credentialsData[0], credentialsData[1]));
+};
+
+/**
+ * Check if a variable is a credentials instance
+ * @param {*} target The variable to check
+ * @returns {Boolean} True if a credentials instance
+ */
+createCredentials.isCredentials = function isCredentials(target) {
+    return typeof target === "object" && target !== null && target[CREDENTIALS_ATTR] === "credentials";
+};
+
+/**
+ * Check if a string is a secure credentials string
+ * @param {String} str The string to check
+ * @returns {Boolean} True if an encrypted credentials string
+ */
+createCredentials.isSecureString = function isSecureString(str) {
+    try {
+        unsignEncryptedContent(str);
+        return true;
+    } catch (err) {
+        return false;
+    }
 };
 
 module.exports = createCredentials;
