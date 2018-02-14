@@ -158,4 +158,6 @@ class ArchiveManager extends AsyncEventEmitter {
     }
 }
 
+ArchiveManager.STORAGE_KEY_PREFIX = STORAGE_KEY_PREFIX;
+
 module.exports = ArchiveManager;

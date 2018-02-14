@@ -1,6 +1,4 @@
-"use strict";
-
-const uuid = require("uuid");
+const uuid = require("uuid/v4");
 
 let __uuidGenerator;
 
@@ -9,7 +7,7 @@ let __uuidGenerator;
  * @returns {String} The new UUID
  */
 function generateUUID() {
-    return uuid.v4();
+    return uuid();
 }
 
 module.exports = {
