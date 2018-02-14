@@ -19,6 +19,9 @@
 <dt><a href="#ArchiveManager">ArchiveManager</a></dt>
 <dd><p>Archive manager for managing archives and connections to sources</p>
 </dd>
+<dt><a href="#BoxDatasource">BoxDatasource</a> ⇐ <code><a href="#WebDAVDatasource">WebDAVDatasource</a></code></dt>
+<dd><p>Datasource for Box archives</p>
+</dd>
 <dt><a href="#DropboxDatasource">DropboxDatasource</a> ⇐ <code><a href="#TextDatasource">TextDatasource</a></code></dt>
 <dd><p>Datasource for Dropbox archives</p>
 </dd>
@@ -745,6 +748,101 @@ Replace a source by its ID
 | id | <code>String</code> | The ID of the source |
 | source | [<code>UnlockedArchiveManagerSource</code>](#UnlockedArchiveManagerSource) \| [<code>LockedArchiveManagerSource</code>](#LockedArchiveManagerSource) | The source to replace it with |
 
+<a name="BoxDatasource"></a>
+
+## BoxDatasource ⇐ [<code>WebDAVDatasource</code>](#WebDAVDatasource)
+Datasource for Box archives
+
+**Kind**: global class  
+**Extends**: [<code>WebDAVDatasource</code>](#WebDAVDatasource)  
+
+* [BoxDatasource](#BoxDatasource) ⇐ [<code>WebDAVDatasource</code>](#WebDAVDatasource)
+    * [new BoxDatasource(resourcePath, credentials)](#new_BoxDatasource_new)
+    * [.toObject()](#BoxDatasource+toObject) ⇒ <code>Object</code>
+    * [.getArchivePath()](#WebDAVDatasource+getArchivePath) ⇒ <code>string</code>
+    * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
+    * [.load(credentials)](#WebDAVDatasource+load) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
+    * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ [<code>TextDatasource</code>](#TextDatasource)
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
+
+<a name="new_BoxDatasource_new"></a>
+
+### new BoxDatasource(resourcePath, credentials)
+Datasource for Box connections
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| resourcePath | <code>String</code> | The file path |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials (username/password) for Box |
+
+<a name="BoxDatasource+toObject"></a>
+
+### boxDatasource.toObject() ⇒ <code>Object</code>
+Output the datasource as an object
+
+**Kind**: instance method of [<code>BoxDatasource</code>](#BoxDatasource)  
+**Overrides**: [<code>toObject</code>](#WebDAVDatasource+toObject)  
+**Returns**: <code>Object</code> - An object describing the datasource  
+<a name="WebDAVDatasource+getArchivePath"></a>
+
+### boxDatasource.getArchivePath() ⇒ <code>string</code>
+Get the path of the archive on the server
+
+**Kind**: instance method of [<code>BoxDatasource</code>](#BoxDatasource)  
+**Returns**: <code>string</code> - The path  
+<a name="WebDAVDatasource+getRemoteEndpoint"></a>
+
+### boxDatasource.getRemoteEndpoint() ⇒ <code>string</code>
+Get the remote endpoint URI (no resource path)
+
+**Kind**: instance method of [<code>BoxDatasource</code>](#BoxDatasource)  
+**Returns**: <code>string</code> - The endpoint  
+<a name="WebDAVDatasource+load"></a>
+
+### boxDatasource.load(credentials) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
+Load the archive from the datasource
+
+**Kind**: instance method of [<code>BoxDatasource</code>](#BoxDatasource)  
+**Returns**: [<code>Promise.&lt;Archive&gt;</code>](#Archive) - A promise resolving with the archive  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for archive decryption |
+
+<a name="WebDAVDatasource+save"></a>
+
+### boxDatasource.save(archive, credentials) ⇒ <code>Promise</code>
+Save an archive to the WebDAV service
+
+**Kind**: instance method of [<code>BoxDatasource</code>](#BoxDatasource)  
+**Returns**: <code>Promise</code> - A promise resolving when the save is complete  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| archive | [<code>Archive</code>](#Archive) | The archive to save |
+| credentials | [<code>Credentials</code>](#Credentials) | The credentials for encryption |
+
+<a name="TextDatasource+setContent"></a>
+
+### boxDatasource.setContent(content) ⇒ [<code>TextDatasource</code>](#TextDatasource)
+Set the text content
+
+**Kind**: instance method of [<code>BoxDatasource</code>](#BoxDatasource)  
+**Returns**: [<code>TextDatasource</code>](#TextDatasource) - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | The encrypted text content |
+
+<a name="TextDatasource+toString"></a>
+
+### boxDatasource.toString() ⇒ <code>String</code>
+Output the datasource configuration as a string
+
+**Kind**: instance method of [<code>BoxDatasource</code>](#BoxDatasource)  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="DropboxDatasource"></a>
 
 ## DropboxDatasource ⇐ [<code>TextDatasource</code>](#TextDatasource)
@@ -2442,6 +2540,8 @@ Datasource for Nextcloud archives
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
     * [.load(credentials)](#WebDAVDatasource+load) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ [<code>TextDatasource</code>](#TextDatasource)
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="NextcloudDatasource+toObject"></a>
 
@@ -2490,6 +2590,25 @@ Save an archive to the WebDAV service
 | archive | [<code>Archive</code>](#Archive) | The archive to save |
 | credentials | [<code>Credentials</code>](#Credentials) | The credentials for encryption |
 
+<a name="TextDatasource+setContent"></a>
+
+### nextcloudDatasource.setContent(content) ⇒ [<code>TextDatasource</code>](#TextDatasource)
+Set the text content
+
+**Kind**: instance method of [<code>NextcloudDatasource</code>](#NextcloudDatasource)  
+**Returns**: [<code>TextDatasource</code>](#TextDatasource) - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | The encrypted text content |
+
+<a name="TextDatasource+toString"></a>
+
+### nextcloudDatasource.toString() ⇒ <code>String</code>
+Output the datasource configuration as a string
+
+**Kind**: instance method of [<code>NextcloudDatasource</code>](#NextcloudDatasource)  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="OwnCloudDatasource"></a>
 
 ## OwnCloudDatasource ⇐ [<code>WebDAVDatasource</code>](#WebDAVDatasource)
@@ -2505,6 +2624,8 @@ Datasource for OwnCloud archives
     * [.getRemoteEndpoint()](#WebDAVDatasource+getRemoteEndpoint) ⇒ <code>string</code>
     * [.load(credentials)](#WebDAVDatasource+load) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.save(archive, credentials)](#WebDAVDatasource+save) ⇒ <code>Promise</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ [<code>TextDatasource</code>](#TextDatasource)
+    * [.toString()](#TextDatasource+toString) ⇒ <code>String</code>
 
 <a name="new_OwnCloudDatasource_new"></a>
 
@@ -2565,6 +2686,25 @@ Save an archive to the WebDAV service
 | archive | [<code>Archive</code>](#Archive) | The archive to save |
 | credentials | [<code>Credentials</code>](#Credentials) | The credentials for encryption |
 
+<a name="TextDatasource+setContent"></a>
+
+### ownCloudDatasource.setContent(content) ⇒ [<code>TextDatasource</code>](#TextDatasource)
+Set the text content
+
+**Kind**: instance method of [<code>OwnCloudDatasource</code>](#OwnCloudDatasource)  
+**Returns**: [<code>TextDatasource</code>](#TextDatasource) - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | The encrypted text content |
+
+<a name="TextDatasource+toString"></a>
+
+### ownCloudDatasource.toString() ⇒ <code>String</code>
+Output the datasource configuration as a string
+
+**Kind**: instance method of [<code>OwnCloudDatasource</code>](#OwnCloudDatasource)  
+**Returns**: <code>String</code> - The string representation of the datasource  
 <a name="TextDatasource"></a>
 
 ## TextDatasource
@@ -2975,7 +3115,7 @@ Gets a command by its key from the cache with its dependencies injected
     * [.addSharedArchive(archive, datasource, masterCredentials, [saveable])](#Workspace+addSharedArchive) ⇒ [<code>Workspace</code>](#Workspace)
     * [.getAllItems()](#Workspace+getAllItems) ⇒ [<code>Array.&lt;WorkspaceItem&gt;</code>](#WorkspaceItem)
     * [.getSaveableItems()](#Workspace+getSaveableItems) ⇒ [<code>Array.&lt;WorkspaceItem&gt;</code>](#WorkspaceItem)
-    * [.imbue()](#Workspace+imbue) ⇒ [<code>Workspace</code>](#Workspace)
+    * ~~[.imbue()](#Workspace+imbue) ⇒ [<code>Workspace</code>](#Workspace)~~
     * [.localDiffersFromRemote()](#Workspace+localDiffersFromRemote) ⇒ <code>Promise.&lt;Boolean&gt;</code>
     * [.mergeItemFromRemote(item)](#Workspace+mergeItemFromRemote) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.mergeSaveablesFromRemote()](#Workspace+mergeSaveablesFromRemote) ⇒ <code>Promise.&lt;Array.&lt;Archive&gt;&gt;</code>
@@ -3026,7 +3166,9 @@ Get all the saveable items
 **Returns**: [<code>Array.&lt;WorkspaceItem&gt;</code>](#WorkspaceItem) - All of the saveable items  
 <a name="Workspace+imbue"></a>
 
-### workspace.imbue() ⇒ [<code>Workspace</code>](#Workspace)
+### ~~workspace.imbue() ⇒ [<code>Workspace</code>](#Workspace)~~
+***Deprecated***
+
 Imbue the primary archive with shared groups from all of the other archives
 
 **Kind**: instance method of [<code>Workspace</code>](#Workspace)  
@@ -3070,7 +3212,7 @@ Merge all saveable remote copies into their local counterparts
 **See**
 
 - mergeItemFromRemote
-- embue
+- imbue
 
 <a name="Workspace+save"></a>
 
@@ -3243,6 +3385,8 @@ Both `type` and `data` parameters are optional.
     * [.fromInsecureString(content)](#createCredentials.fromInsecureString) ⇒ [<code>Credentials</code>](#Credentials)
     * [.fromPassword(password)](#createCredentials.fromPassword) ⇒ [<code>Credentials</code>](#Credentials)
     * [.fromSecureString(content, password)](#createCredentials.fromSecureString) ⇒ [<code>Promise.&lt;Credentials&gt;</code>](#Credentials)
+    * [.isCredentials(target)](#createCredentials.isCredentials) ⇒ <code>Boolean</code>
+    * [.isSecureString(str)](#createCredentials.isSecureString) ⇒ <code>Boolean</code>
 
 <a name="createCredentials.fromInsecureString"></a>
 
@@ -3280,6 +3424,30 @@ Create a new credentials instance from an encrypted string
 | --- | --- | --- |
 | content | <code>String</code> | The encrypted form of a credentials store |
 | password | <code>String</code> | The password to use to decrypt the content |
+
+<a name="createCredentials.isCredentials"></a>
+
+### createCredentials.isCredentials(target) ⇒ <code>Boolean</code>
+Check if a variable is a credentials instance
+
+**Kind**: static method of [<code>createCredentials</code>](#createCredentials)  
+**Returns**: <code>Boolean</code> - True if a credentials instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>\*</code> | The variable to check |
+
+<a name="createCredentials.isSecureString"></a>
+
+### createCredentials.isSecureString(str) ⇒ <code>Boolean</code>
+Check if a string is a secure credentials string
+
+**Kind**: static method of [<code>createCredentials</code>](#createCredentials)  
+**Returns**: <code>Boolean</code> - True if an encrypted credentials string  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| str | <code>String</code> | The string to check |
 
 <a name="addMetaFieldsNonDestructive"></a>
 
