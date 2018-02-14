@@ -138,8 +138,9 @@ class ArchiveSource extends AsyncEventEmitter {
                 this._archiveCredentials = encArchiveCredentials;
                 return this.dehydrate();
             })
-            .then(() => {
+            .then(dehydratedContent => {
                 this.emit("sourceLocked", this.description);
+                return dehydratedContent;
             })
             .catch(err => {
                 throw new VError(err, `Failed locking source: ${this.id}`);
@@ -200,6 +201,8 @@ class ArchiveSource extends AsyncEventEmitter {
     }
 }
 
+ArchiveSource.DefaultColour = DefaultColour;
+ArchiveSource.DefaultOrder = DefaultOrder;
 ArchiveSource.Status = Status;
 
 ArchiveSource.rehydrate = rehydrate;
