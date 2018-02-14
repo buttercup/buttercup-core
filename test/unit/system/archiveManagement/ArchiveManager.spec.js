@@ -154,6 +154,43 @@ describe("ArchiveManager", function() {
         });
     });
 
+    describe("removeSource", function() {
+        beforeEach(function() {
+            this.fakeSource1 = { id: "1", order: 0, removeAllListeners: sinon.spy() };
+            this.fakeSource2 = { id: "2", order: 1, removeAllListeners: sinon.spy() };
+            this.manager = new NewArchiveManager();
+            sinon.stub(this.manager.storageInterface, "removeKey").returns(Promise.resolve());
+            this.manager.sources.push(this.fakeSource1, this.fakeSource2);
+        });
+
+        it("removes the specified source", function() {
+            return this.manager.removeSource("1").then(() => {
+                expect(this.manager.sources).to.not.contain(this.fakeSource1);
+                expect(this.manager.sources).to.contain(this.fakeSource2);
+            });
+        });
+
+        it("calls to remove the correct storage key", function() {
+            return this.manager.removeSource("2").then(() => {
+                expect(this.manager.storageInterface.removeKey.calledWithExactly(`${STORAGE_KEY_PREFIX}2`)).to.be.true;
+            });
+        });
+
+        it("emits 'sourcesUpdated' event", function() {
+            sinon.spy(this.manager, "emit");
+            return this.manager.removeSource("2").then(() => {
+                expect(this.manager.emit.calledWith("sourcesUpdated")).to.be.true;
+            });
+        });
+
+        it("removes all source event listeners", function() {
+            return this.manager.removeSource("2").then(() => {
+                expect(this.fakeSource2.removeAllListeners.calledOnce).to.be.true;
+                expect(this.fakeSource1.removeAllListeners.notCalled).to.be.true;
+            });
+        });
+    });
+
     describe("reorderSource", function() {
         beforeEach(function() {
             this.fakeSource1 = { id: "1", order: 0 };
