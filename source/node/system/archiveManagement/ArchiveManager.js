@@ -145,36 +145,32 @@ class ArchiveManager extends AsyncEventEmitter {
      * @throws {VError} Rejects if rehydrating from storage fails
      */
     rehydrate() {
-        return this._enqueueStateChange(() => {
-            return this.storageInterface
-                .getAllKeys()
-                .then(keys =>
-                    Promise.all(
-                        keys.filter(key => STORAGE_KEY_PREFIX_TEST.test(key)).map(key =>
-                            this.storageInterface
-                                .getValue(key)
-                                .then(dehydratedSource => ArchiveSource.rehydrate(dehydratedSource))
-                                .then(source => {
-                                    this.addSource(source, { emitUpdated: false, order: source.order });
-                                })
-                                .catch(function __handleDehydratedReadError(err) {
-                                    throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
-                                })
-                        )
+        return this.storageInterface
+            .getAllKeys()
+            .then(keys =>
+                Promise.all(
+                    keys.filter(key => STORAGE_KEY_PREFIX_TEST.test(key)).map(key =>
+                        this.storageInterface
+                            .getValue(key)
+                            .then(dehydratedSource => ArchiveSource.rehydrate(dehydratedSource))
+                            .then(source => this.addSource(source, { emitUpdated: false, order: source.order }))
+                            .catch(function __handleDehydratedReadError(err) {
+                                throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
+                            })
                     )
                 )
-                .then(() => {
-                    // Reorder all sources
-                    this.reorderSources();
-                    // We don't need to explicitly call for emitting an updated event,
-                    // as that will happen at the end of reordering.
-                })
-                .catch(err => {
-                    // Or after all failed
-                    this._emitSourcesListUpdated();
-                    throw new VError(err, "Failed rehydrating sources");
-                });
-        });
+            )
+            .then(() => {
+                // Reorder all sources
+                this.reorderSources();
+                // We don't need to explicitly call for emitting an updated event,
+                // as that will happen at the end of reordering.
+            })
+            .catch(err => {
+                // Or after all failed
+                this._emitSourcesListUpdated();
+                throw new VError(err, "Failed rehydrating sources");
+            });
     }
 
     /**
