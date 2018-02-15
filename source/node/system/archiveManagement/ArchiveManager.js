@@ -1,4 +1,5 @@
 const VError = require("verror");
+const ChannelQueue = require("@buttercup/channel-queue");
 const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
 const MemoryStorageInterface = require("../storage/MemoryStorageInterface.js");
 const ArchiveSource = require("./ArchiveSource.js");
@@ -20,6 +21,7 @@ class ArchiveManager extends AsyncEventEmitter {
         super();
         this._storageInterface = storageInterface;
         this._sources = [];
+        this._queue = new ChannelQueue();
     }
 
     /**
@@ -83,25 +85,27 @@ class ArchiveManager extends AsyncEventEmitter {
     addSource(archiveSource, { emitUpdated = true, order = this.nextSourceOrder } = {}) {
         const existing = this.sources.find(source => source.id === archiveSource.id);
         if (!existing) {
-            // Store the source
-            this.sources.push(archiveSource);
-            // Configure the order
-            archiveSource.order = order;
-            // Emit an updated event for the source having been added
-            if (emitUpdated) {
-                this._emitSourcesListUpdated();
-            }
-            // Attach event listeners
-            const handleDetailsChange = (event, sourceDetails) => {
-                this.emit(event, sourceDetails);
-                this._emitSourcesListUpdated();
-            };
-            archiveSource.on("sourceLocked", details => handleDetailsChange("sourceLocked", details));
-            archiveSource.on("sourceUnlocked", details => handleDetailsChange("sourceUnlocked", details));
-            archiveSource.on("sourceColourUpdated", details => handleDetailsChange("sourceColourUpdated", details));
-            return archiveSource
-                .dehydrate()
-                .then(dehydratedSource => this._storeDehydratedSource(archiveSource.id, dehydratedSource));
+            return this._enqueueStateChange(() => {
+                // Store the source
+                this.sources.push(archiveSource);
+                // Configure the order
+                archiveSource.order = order;
+                // Emit an updated event for the source having been added
+                if (emitUpdated) {
+                    this._emitSourcesListUpdated();
+                }
+                // Attach event listeners
+                const handleDetailsChange = (event, sourceDetails) => {
+                    this.emit(event, sourceDetails);
+                    this._emitSourcesListUpdated();
+                };
+                archiveSource.on("sourceLocked", details => handleDetailsChange("sourceLocked", details));
+                archiveSource.on("sourceUnlocked", details => handleDetailsChange("sourceUnlocked", details));
+                archiveSource.on("sourceColourUpdated", details => handleDetailsChange("sourceColourUpdated", details));
+                return archiveSource
+                    .dehydrate()
+                    .then(dehydratedSource => this._storeDehydratedSource(archiveSource.id, dehydratedSource));
+            });
         }
         return Promise.resolve();
     }
@@ -112,11 +116,15 @@ class ArchiveManager extends AsyncEventEmitter {
      * @memberof ArchiveManager
      */
     dehydrate() {
-        return Promise.all(
-            this.sources.map(source =>
-                source.dehydrate().then(dehydratedSource => this._storeDehydratedSource(source.id, dehydratedSource))
-            )
-        );
+        return this._enqueueStateChange(() => {
+            return Promise.all(
+                this.sources.map(source =>
+                    source
+                        .dehydrate()
+                        .then(dehydratedSource => this._storeDehydratedSource(source.id, dehydratedSource))
+                )
+            );
+        });
     }
 
     /**
@@ -137,34 +145,36 @@ class ArchiveManager extends AsyncEventEmitter {
      * @throws {VError} Rejects if rehydrating from storage fails
      */
     rehydrate() {
-        return this.storageInterface
-            .getAllKeys()
-            .then(keys =>
-                Promise.all(
-                    keys.filter(key => STORAGE_KEY_PREFIX_TEST.test(key)).map(key =>
-                        this.storageInterface
-                            .getValue(key)
-                            .then(dehydratedSource => ArchiveSource.rehydrate(dehydratedSource))
-                            .then(source => {
-                                this.addSource(source, { emitUpdated: false, order: source.order });
-                            })
-                            .catch(function __handleDehydratedReadError(err) {
-                                throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
-                            })
+        return this._enqueueStateChange(() => {
+            return this.storageInterface
+                .getAllKeys()
+                .then(keys =>
+                    Promise.all(
+                        keys.filter(key => STORAGE_KEY_PREFIX_TEST.test(key)).map(key =>
+                            this.storageInterface
+                                .getValue(key)
+                                .then(dehydratedSource => ArchiveSource.rehydrate(dehydratedSource))
+                                .then(source => {
+                                    this.addSource(source, { emitUpdated: false, order: source.order });
+                                })
+                                .catch(function __handleDehydratedReadError(err) {
+                                    throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
+                                })
+                        )
                     )
                 )
-            )
-            .then(() => {
-                // Reorder all sources
-                this.reorderSources();
-                // We don't need to explicitly call for emitting an updated event,
-                // as that will happen at the end of reordering.
-            })
-            .catch(err => {
-                // Or after all failed
-                this._emitSourcesListUpdated();
-                throw new VError(err, "Failed rehydrating sources");
-            });
+                .then(() => {
+                    // Reorder all sources
+                    this.reorderSources();
+                    // We don't need to explicitly call for emitting an updated event,
+                    // as that will happen at the end of reordering.
+                })
+                .catch(err => {
+                    // Or after all failed
+                    this._emitSourcesListUpdated();
+                    throw new VError(err, "Failed rehydrating sources");
+                });
+        });
     }
 
     /**
@@ -174,16 +184,18 @@ class ArchiveManager extends AsyncEventEmitter {
      * @memberof ArchiveManager
      */
     removeSource(sourceID) {
-        const sourceIndex = this.sources.findIndex(source => source.id === sourceID);
-        if (sourceIndex === -1) {
-            throw new VError(`Failed removing source: No source found for ID: ${sourceID}`);
-        }
-        const source = this.sources[sourceIndex];
-        source.removeAllListeners();
-        this.sources.splice(sourceIndex, 1);
-        this._emitSourcesListUpdated();
-        return this.storageInterface.removeKey(`${STORAGE_KEY_PREFIX}${sourceID}`).catch(err => {
-            throw new VError(err, `Failed removing source with ID: ${sourceID}`);
+        return this._enqueueStateChange(() => {
+            const sourceIndex = this.sources.findIndex(source => source.id === sourceID);
+            if (sourceIndex === -1) {
+                return Promise.reject(new VError(`Failed removing source: No source found for ID: ${sourceID}`));
+            }
+            const source = this.sources[sourceIndex];
+            source.removeAllListeners();
+            this.sources.splice(sourceIndex, 1);
+            this._emitSourcesListUpdated();
+            return this.storageInterface.removeKey(`${STORAGE_KEY_PREFIX}${sourceID}`).catch(err => {
+                throw new VError(err, `Failed removing source with ID: ${sourceID}`);
+            });
         });
     }
 
@@ -238,6 +250,10 @@ class ArchiveManager extends AsyncEventEmitter {
 
     _emitSourcesListUpdated() {
         this.emit("sourcesUpdated", this.sourcesList);
+    }
+
+    _enqueueStateChange(cb) {
+        return this._queue.channel("state").enqueue(cb);
     }
 
     _storeDehydratedSource(id, dehydratedSource) {
