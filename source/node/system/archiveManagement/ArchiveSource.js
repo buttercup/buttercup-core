@@ -1,4 +1,5 @@
 const VError = require("verror");
+const ChannelQueue = require("@buttercup/channel-queue");
 const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
 const getUniqueID = require("../../tools/encoding.js").getUniqueID;
 const createCredentials = require("../credentials.js");
@@ -60,6 +61,7 @@ class ArchiveSource extends AsyncEventEmitter {
         if (createCredentials.isSecureString(archiveCredentials) !== true) {
             throw new VError("Failed constructing archive source: Archive credentials not in encrypted form");
         }
+        this._queue = new ChannelQueue();
         this._name = name;
         this._id = id;
         this._status = Status.LOCKED;
@@ -170,34 +172,36 @@ class ArchiveSource extends AsyncEventEmitter {
         if (this.status === Status.PENDING) {
             return Promise.reject(new VError(`Failed dehydrating source: Source in pending state: ${this.id}`));
         }
-        return Promise.resolve()
-            .then(() => {
-                const payload = {
-                    id: this.id,
-                    name: this.name,
-                    type: this.type,
-                    status: Status.LOCKED,
-                    colour: this.colour,
-                    order: this.order
-                };
-                if (this.status === Status.LOCKED) {
-                    payload.sourceCredentials = this._sourceCredentials;
-                    payload.archiveCredentials = this._archiveCredentials;
-                    return payload;
-                }
-                return Promise.all([
-                    this._sourceCredentials.toSecureString(this._archiveCredentials.password),
-                    this._archiveCredentials.toSecureString(this._archiveCredentials.password)
-                ]).then(([encSourceCredentials, encArchiveCredentials]) => {
-                    payload.sourceCredentials = encSourceCredentials;
-                    payload.archiveCredentials = encArchiveCredentials;
-                    return payload;
+        return this._enqueueStateChange(() => {
+            return Promise.resolve()
+                .then(() => {
+                    const payload = {
+                        id: this.id,
+                        name: this.name,
+                        type: this.type,
+                        status: Status.LOCKED,
+                        colour: this.colour,
+                        order: this.order
+                    };
+                    if (this.status === Status.LOCKED) {
+                        payload.sourceCredentials = this._sourceCredentials;
+                        payload.archiveCredentials = this._archiveCredentials;
+                        return payload;
+                    }
+                    return Promise.all([
+                        this._sourceCredentials.toSecureString(this._archiveCredentials.password),
+                        this._archiveCredentials.toSecureString(this._archiveCredentials.password)
+                    ]).then(([encSourceCredentials, encArchiveCredentials]) => {
+                        payload.sourceCredentials = encSourceCredentials;
+                        payload.archiveCredentials = encArchiveCredentials;
+                        return payload;
+                    });
+                })
+                .then(payload => JSON.stringify(payload))
+                .catch(err => {
+                    throw new VError(err, `Failed dehydrating source: ${this.id}`);
                 });
-            })
-            .then(payload => JSON.stringify(payload))
-            .catch(err => {
-                throw new VError(err, `Failed dehydrating source: ${this.id}`);
-            });
+        });
     }
 
     /**
@@ -216,24 +220,24 @@ class ArchiveSource extends AsyncEventEmitter {
             );
         }
         this._status = Status.PENDING;
-        return Promise.all([
-            this._sourceCredentials.toSecureString(this._archiveCredentials.password),
-            this._archiveCredentials.toSecureString(this._archiveCredentials.password)
-        ])
-            .then(([encSourceCredentials, encArchiveCredentials]) => {
-                this._status = Status.LOCKED;
-                this._workspace = null;
-                this._sourceCredentials = encSourceCredentials;
-                this._archiveCredentials = encArchiveCredentials;
-                return this.dehydrate();
-            })
-            .then(dehydratedContent => {
-                this.emit("sourceLocked", this.description);
-                return dehydratedContent;
-            })
-            .catch(err => {
-                throw new VError(err, `Failed locking source: ${this.id}`);
-            });
+        return this._enqueueStateChange(() => {
+            return Promise.all([
+                this._sourceCredentials.toSecureString(this._archiveCredentials.password),
+                this._archiveCredentials.toSecureString(this._archiveCredentials.password)
+            ])
+                .then(([encSourceCredentials, encArchiveCredentials]) => {
+                    this._status = Status.LOCKED;
+                    this._workspace = null;
+                    this._sourceCredentials = encSourceCredentials;
+                    this._archiveCredentials = encArchiveCredentials;
+                })
+                .catch(err => {
+                    throw new VError(err, `Failed locking source: ${this.id}`);
+                });
+        }).then(() => {
+            this.emit("sourceLocked", this.description);
+            return this.dehydrate();
+        });
     }
 
     /**
@@ -254,31 +258,33 @@ class ArchiveSource extends AsyncEventEmitter {
             );
         }
         this._status = Status.PENDING;
-        return Promise.all([
-            createCredentials.fromSecureString(this._sourceCredentials, masterPassword),
-            createCredentials.fromSecureString(this._archiveCredentials, masterPassword)
-        ])
-            .then(([sourceCredentials, archiveCredentials] = []) => {
-                return credentialsToSource(sourceCredentials, archiveCredentials, initialiseRemote)
-                    .then(sourceInfo => {
-                        const { workspace, sourceCredentials, archiveCredentials } = sourceInfo;
-                        this._workspace = workspace;
-                        this._sourceCredentials = sourceCredentials;
-                        this._archiveCredentials = archiveCredentials;
-                        this._status = Status.UNLOCKED;
-                        this.type = sourceCredentials.type;
-                    })
-                    .catch(err => {
-                        throw new VError(err, "Failed mapping credentials to a source");
-                    });
-            })
-            .then(() => {
-                this.emit("sourceUnlocked", this.description);
-            })
-            .catch(err => {
-                this._status = Status.LOCKED;
-                throw new VError(err, `Failed unlocking source: ${this.id}`);
-            });
+        return this._enqueueStateChange(() => {
+            return Promise.all([
+                createCredentials.fromSecureString(this._sourceCredentials, masterPassword),
+                createCredentials.fromSecureString(this._archiveCredentials, masterPassword)
+            ])
+                .then(([sourceCredentials, archiveCredentials] = []) => {
+                    return credentialsToSource(sourceCredentials, archiveCredentials, initialiseRemote)
+                        .then(sourceInfo => {
+                            const { workspace, sourceCredentials, archiveCredentials } = sourceInfo;
+                            this._workspace = workspace;
+                            this._sourceCredentials = sourceCredentials;
+                            this._archiveCredentials = archiveCredentials;
+                            this._status = Status.UNLOCKED;
+                            this.type = sourceCredentials.type;
+                        })
+                        .catch(err => {
+                            throw new VError(err, "Failed mapping credentials to a source");
+                        });
+                })
+                .then(() => {
+                    this.emit("sourceUnlocked", this.description);
+                })
+                .catch(err => {
+                    this._status = Status.LOCKED;
+                    throw new VError(err, `Failed unlocking source: ${this.id}`);
+                });
+        });
     }
 
     /**
@@ -297,19 +303,25 @@ class ArchiveSource extends AsyncEventEmitter {
                 new VError(`Failed updating archive credentials: Source is not unlocked: ${this.id}`)
             );
         }
-        const credentials = createCredentials.fromPassword(masterPassword);
-        // First update the credentials stored here
-        this._archiveCredentials = credentials;
-        // Then update the credentials in the workspace
-        this.workspace.updatePrimaryCredentials(credentials);
-        // Finally, dehydrate the source to save changes in the manager
-        return (
-            // Save the workspace to push the new password to file
-            this.workspace
-                .save()
-                // Finally dehydrate
-                .then(() => this.dehydrate())
-        );
+        return this._enqueueStateChange(() => {
+            const credentials = createCredentials.fromPassword(masterPassword);
+            // First update the credentials stored here
+            this._archiveCredentials = credentials;
+            // Then update the credentials in the workspace
+            this.workspace.updatePrimaryCredentials(credentials);
+            // Finally, dehydrate the source to save changes in the manager
+            return (
+                // Save the workspace to push the new password to file
+                this.workspace
+                    .save()
+                    // Finally dehydrate
+                    .then(() => this.dehydrate())
+            );
+        });
+    }
+
+    _enqueueStateChange(cb) {
+        return this._queue.channel("state").enqueue(cb);
     }
 }
 
