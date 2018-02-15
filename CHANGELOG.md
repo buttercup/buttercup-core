@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v1.5.1
+_2018-02-15_
+
+ * Add queues to `ArchiveManager` and `ArchiveSource` classes
+
 ## v1.5.0
 _2018-02-14_
 
