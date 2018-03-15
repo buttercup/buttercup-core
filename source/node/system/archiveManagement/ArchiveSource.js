@@ -309,14 +309,8 @@ class ArchiveSource extends AsyncEventEmitter {
             this._archiveCredentials = credentials;
             // Then update the credentials in the workspace
             this.workspace.updatePrimaryCredentials(credentials);
-            // Finally, dehydrate the source to save changes in the manager
-            return (
-                // Save the workspace to push the new password to file
-                this.workspace
-                    .save()
-                    // Finally dehydrate
-                    .then(() => this.dehydrate())
-            );
+            // Save the workspace to push the new password to file
+            return this.workspace.save();
         });
     }
 
