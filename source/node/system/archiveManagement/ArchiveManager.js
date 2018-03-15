@@ -117,14 +117,18 @@ class ArchiveManager extends AsyncEventEmitter {
      */
     dehydrate() {
         return this._enqueueStateChange(() => {
-            return Promise.all(
-                this.sources.map(source =>
-                    source
-                        .dehydrate()
-                        .then(dehydratedSource => this._storeDehydratedSource(source.id, dehydratedSource))
-                )
-            );
+            return Promise.all(this.sources.map(source => this.dehydrateSource(source)));
         });
+    }
+
+    /**
+     * Dehydrate a single archive source
+     * @param {String} sourceID The ID of the source
+     * @returns {Promise} A promise that resolves once the source has been dehydrated
+     */
+    dehydrateSource(sourceOrSourceID) {
+        const source = typeof sourceOrSourceID === "string" ? this.getSourceForID(sourceOrSourceID) : sourceOrSourceID;
+        return source.dehydrate().then(dehydratedSource => this._storeDehydratedSource(source.id, dehydratedSource));
     }
 
     /**
