@@ -23,7 +23,7 @@
     "precommit": "lint-staged",
     "postinstall": "opencollective postinstall",
     "prepublishOnly": "npm run build",
-    "pub": "np",
+    "pub": "np --no-cleanup",
     "test": "run-p --max-parallel 2 test:lint test:format test:istanbul test:unit test:integration test:web",
     "test:ci:node": "run-s test:lint test:format test:istanbul test:unit test:integration",
     "test:ci:web": "run-s test:web",
