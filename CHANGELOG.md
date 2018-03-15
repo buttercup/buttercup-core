@@ -1,9 +1,9 @@
 # Core library changelog
 
-## v1.6.1
+## v1.6.2
 _2018-03-15_
 
- * Update `webdav-fs` to `1.8.0`
+ * Update `webdav-fs` to `1.9.0`
  * Bugfix: Changing password in new `ArchiveManager` would fail in deadlock
 
 ## v1.5.1
