@@ -1,6 +1,6 @@
 # Core library changelog
 
-## v1.6.0
+## v1.6.1
 _2018-03-15_
 
  * Update `webdav-fs` to `1.8.0`
