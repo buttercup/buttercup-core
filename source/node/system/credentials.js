@@ -128,6 +128,7 @@ function createCredentials() {
         /**
          * Convert the credentials to an insecure string
          * @returns {String} The string-encoded credentials
+         * @memberof Credentials
          */
         toInsecureString() {
             return JSON.stringify({
@@ -142,6 +143,7 @@ function createCredentials() {
          * @returns {Promise} A promise that resolves with the encrypted credentials
          * @see signEncryptedContent
          * @throws {Error} Throws when masterPassword is not a string
+         * @memberof Credentials
          */
         toSecureString(masterPassword) {
             if (typeof masterPassword !== "string") {
