@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Find entry instances by filtering with a compare function
  * @param {Array.<Group>} groups The groups to check in

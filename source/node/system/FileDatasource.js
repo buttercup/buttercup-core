@@ -6,8 +6,6 @@ var TextDatasource = require("./TextDatasource.js"),
 
 const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
-const debug = createDebug("file-datasource");
-
 /**
  * File datasource for loading and saving files
  * @class FileDatasource
@@ -19,7 +17,6 @@ class FileDatasource extends TextDatasource {
      * @param {string} filename The filename to load and save
      */
     constructor(filename) {
-        debug("new file datasource");
         super("");
         if (typeof BUTTERCUP_WEB !== "undefined" && BUTTERCUP_WEB === true) {
             throw new Error("FileDatasource is not available in the browser");
@@ -41,7 +38,6 @@ class FileDatasource extends TextDatasource {
      * @returns {Promise<Archive>} A promise resolving with the opened archive
      */
     load(credentials) {
-        debug("load archive");
         var filename = this._filename;
         return new Promise(function(resolve, reject) {
             fs.readFile(filename, "utf8", function(error, data) {
@@ -63,7 +59,6 @@ class FileDatasource extends TextDatasource {
      * @returns {Promise} A promise that resolves when saving is complete
      */
     save(archive, credentials) {
-        debug("save archive");
         return super.save(archive, credentials).then(encrypted => {
             return new Promise((resolve, reject) => {
                 fs.writeFile(this._filename, encrypted, function(err) {

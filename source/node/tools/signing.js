@@ -1,7 +1,5 @@
-"use strict";
-
-var BUTTERCUP_FORMAT = "buttercup/a",
-    BUTTERCUP_SIGNATURE = "b~>" + BUTTERCUP_FORMAT;
+const BUTTERCUP_FORMAT = "buttercup/a";
+const BUTTERCUP_SIGNATURE = "b~>" + BUTTERCUP_FORMAT;
 
 var lib = (module.exports = {
     getFormat: function() {

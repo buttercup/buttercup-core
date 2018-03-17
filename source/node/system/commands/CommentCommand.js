@@ -1,5 +1,3 @@
-"use strict";
-
 const BaseCommand = require("./BaseCommand.js");
 
 /**

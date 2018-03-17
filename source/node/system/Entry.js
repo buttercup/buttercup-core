@@ -1,12 +1,8 @@
-"use strict";
-
 var Inigo = require("./InigoGenerator.js"),
     encoding = require("../tools/encoding.js"),
     searching = require("../tools/searching-raw.js"),
     entryTools = require("../tools/entry.js"),
     createDebug = require("../tools/debug.js");
-
-const debug = createDebug("entry");
 
 /**
  * Managed entry class
@@ -15,7 +11,6 @@ const debug = createDebug("entry");
  * @param {Object} remoteObj The remote object reference
  */
 var Entry = function(archive, remoteObj) {
-    debug("new entry");
     this._archive = archive;
     this._westley = archive._getWestley();
     this._remoteObject = remoteObj;
@@ -32,17 +27,14 @@ var Entry = function(archive, remoteObj) {
  * @returns {Boolean} Whether or not the item was deleted
  */
 Entry.prototype.delete = function() {
-    debug("delete entry");
     var trashGroup = this._getArchive().getTrashGroup(),
         parentGroup = this.getGroup(),
         canTrash = trashGroup && parentGroup && (!parentGroup.isTrash() && !parentGroup.isInTrash());
     if (canTrash) {
-        debug("move to trash (delete)");
         // trash it
         this.moveToGroup(trashGroup);
         return false;
     }
-    debug("delete permanently");
     // delete it
     this._getWestley().execute(
         Inigo.create(Inigo.Command.DeleteEntry)
@@ -63,7 +55,6 @@ Entry.prototype.delete = function() {
  * @returns {Entry} Self
  */
 Entry.prototype.deleteAttribute = function(attr) {
-    debug("delete attribute");
     this._getWestley().execute(
         Inigo.create(Inigo.Command.DeleteEntryAttribute)
             .addArgument(this.getID())
@@ -82,7 +73,6 @@ Entry.prototype.deleteAttribute = function(attr) {
  * @returns {Entry} Self
  */
 Entry.prototype.deleteMeta = function(property) {
-    debug("delete meta");
     this._getWestley().execute(
         Inigo.create(Inigo.Command.DeleteEntryMeta)
             .addArgument(this.getID())
@@ -104,7 +94,6 @@ Entry.prototype.deleteMeta = function(property) {
  * @memberof Entry
  */
 Entry.prototype.getAttribute = function(attributeName) {
-    debug("fetch attribute");
     const attributes = this._getRemoteObject().attributes || {};
     if (typeof attributeName === "undefined") {
         // No property, return entire object
@@ -128,7 +117,6 @@ Entry.prototype.getAttributes = function() {
  * @memberof Entry
  */
 Entry.prototype.getGroup = function() {
-    debug("fetch parent group");
     // @todo move to a new searching library
     var parentInfo = searching.findGroupContainingEntryID(this._getWestley().getDataset().groups || [], this.getID());
     if (parentInfo && parentInfo.group) {
@@ -158,7 +146,6 @@ Entry.prototype.getID = function() {
  * @memberof Entry
  */
 Entry.prototype.getMeta = function(property) {
-    debug("fetch meta");
     const meta = this._getRemoteObject().meta || {};
     if (typeof property === "undefined") {
         // No property, return entire object
@@ -179,7 +166,6 @@ Entry.prototype.getMeta = function(property) {
  * @memberof Entry
  */
 Entry.prototype.getProperty = function(property) {
-    debug("fetch property");
     var raw = this._getRemoteObject();
     if (typeof property === "undefined") {
         return entryTools.getValidProperties().reduce((props, propName) => {
@@ -197,7 +183,6 @@ Entry.prototype.getProperty = function(property) {
  * @memberof Entry
  */
 Entry.prototype.isInTrash = function() {
-    debug("check if in trash");
     return this.getGroup().isInTrash() || this.getGroup().isTrash();
 };
 
@@ -209,7 +194,6 @@ Entry.prototype.isInTrash = function() {
  * @memberof Entry
  */
 Entry.prototype.moveToGroup = function(group) {
-    debug("move to group");
     var targetID = group.getID();
     this._getWestley().execute(
         Inigo.create(Inigo.Command.MoveEntry)
@@ -229,7 +213,6 @@ Entry.prototype.moveToGroup = function(group) {
  * @memberof Entry
  */
 Entry.prototype.setAttribute = function(attributeName, value) {
-    debug("set attribute");
     this._getWestley().execute(
         Inigo.create(Inigo.Command.SetEntryAttribute)
             .addArgument(this.getID())
@@ -249,7 +232,6 @@ Entry.prototype.setAttribute = function(attributeName, value) {
  * @memberof Entry
  */
 Entry.prototype.setMeta = function(prop, value) {
-    debug("set meta");
     const meta = this._getRemoteObject().meta || {};
     // Try to find a key that matches the requested property, even in a different case. If it
     // exists, use that to set instead:
@@ -274,7 +256,6 @@ Entry.prototype.setMeta = function(prop, value) {
  * @memberof Entry
  */
 Entry.prototype.setProperty = function(prop, value) {
-    debug("set property");
     value = value || "";
     this._getWestley().execute(
         Inigo.create(Inigo.Command.SetEntryProperty)
@@ -293,7 +274,6 @@ Entry.prototype.setProperty = function(prop, value) {
  * @memberof Entry
  */
 Entry.prototype.toObject = function() {
-    debug("to object");
     var properties = {},
         meta = {},
         attributes = {},
@@ -330,7 +310,6 @@ Entry.prototype.toObject = function() {
  * @memberof Entry
  */
 Entry.prototype.toString = function() {
-    debug("to string");
     return JSON.stringify(this.toObject());
 };
 
@@ -377,7 +356,6 @@ Entry.Attributes = Object.freeze({
  *      or if the target group is in the trash
  */
 Entry.createNew = function(archive, groupID) {
-    debug("create entry");
     // check if group is trash/in-trash
     var group = archive.findGroupByID(groupID);
     if (!group) {

@@ -1,5 +1,3 @@
-"use strict";
-
 const iocane = require("iocane").crypto;
 
 const Archive = require("./Archive.js");
@@ -9,8 +7,6 @@ const encoding = require("../tools/encoding.js");
 const createDebug = require("../tools/debug.js");
 const historyTools = require("../tools/history.js");
 const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
-
-const debug = createDebug("text-datasource");
 
 /**
  * Current appointed callback for decrypting archive content
@@ -115,7 +111,6 @@ class TextDatasource {
      * @param {string} content The content to load from
      */
     constructor(content) {
-        debug("new text datasource");
         this._content = content;
     }
 
@@ -126,7 +121,6 @@ class TextDatasource {
      * @returns {Promise.<Archive>} A promise that resolves with an open archive
      */
     load(credentials, emptyCreatesNew) {
-        debug("load archive");
         emptyCreatesNew = emptyCreatesNew === undefined ? false : emptyCreatesNew;
         if (this._content.trim().length <= 0) {
             return emptyCreatesNew
@@ -145,7 +139,6 @@ class TextDatasource {
      * @returns {Promise.<string>} A promise resolving with the encrypted content
      */
     save(archive, credentials) {
-        debug("save archive");
         return __appointedHistoryToEncCB(archive._getWestley().getHistory(), credentials);
     }
 
@@ -155,7 +148,6 @@ class TextDatasource {
      * @returns {TextDatasource} Self
      */
     setContent(content) {
-        debug("set content");
         this._content = content;
         return this;
     }
@@ -176,7 +168,6 @@ class TextDatasource {
      * @returns {String} The string representation of the datasource
      */
     toString() {
-        debug("to string");
         return JSON.stringify(this.toObject());
     }
 }

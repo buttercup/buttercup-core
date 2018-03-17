@@ -1,5 +1,3 @@
-"use strict";
-
 const { objectValues } = require("./polyfill.js");
 
 const EntryProperty = {

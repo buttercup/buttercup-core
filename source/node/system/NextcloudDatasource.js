@@ -1,5 +1,3 @@
-"use strict";
-
 const OwnCloudDatasource = require("./OwnCloudDatasource.js");
 const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 

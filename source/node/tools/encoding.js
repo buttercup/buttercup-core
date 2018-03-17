@@ -1,16 +1,8 @@
-"use strict";
-
 const gzip = require("gzip-js");
-
 const { getTextHasher, getUUIDGenerator } = require("./overridable.js");
 
 const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
 const ENCODED_STRING_PREFIX = "utf8+base64:";
-
-var __gzipOptions = {
-    level: 9,
-    timestamp: parseInt(Date.now() / 1000, 10)
-};
 
 const lib = (module.exports = {
     /**
@@ -25,9 +17,12 @@ const lib = (module.exports = {
      * @returns {String} Compressed text
      */
     compress: function(text) {
-        var compressed = gzip.zip(text, __gzipOptions),
-            compressedLength = compressed.length,
-            outputText = "";
+        const compressed = gzip.zip(text, {
+            level: 9,
+            timestamp: parseInt(Date.now() / 1000, 10)
+        });
+        const compressedLength = compressed.length;
+        const outputText = "";
         for (var i = 0; i < compressedLength; i += 1) {
             outputText += String.fromCharCode(compressed[i]);
         }
@@ -43,8 +38,8 @@ const lib = (module.exports = {
         if (lib.isEncoded(value) !== true) {
             throw new Error("Cannot decode: provided value is not encoded");
         }
-        value = value.substr(ENCODED_STRING_PREFIX.length);
-        let buff = Buffer.from(value, "base64");
+        const newValue = value.substr(ENCODED_STRING_PREFIX.length);
+        const buff = Buffer.from(newValue, "base64");
         return buff.toString("utf8");
     },
 

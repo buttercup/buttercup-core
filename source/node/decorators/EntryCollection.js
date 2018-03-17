@@ -1,6 +1,4 @@
-"use strict";
-
-var instanceSearching = require("../tools/searching-instance.js");
+const instanceSearching = require("../tools/searching-instance.js");
 
 /**
  * Find entries by searching properties/meta

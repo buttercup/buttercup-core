@@ -1,5 +1,3 @@
-"use strict";
-
 const StorageInterface = require("./StorageInterface.js");
 
 class MemoryStorageInterface extends StorageInterface {

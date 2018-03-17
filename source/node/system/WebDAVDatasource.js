@@ -1,8 +1,5 @@
-"use strict";
-
-var webdavFS = require("webdav-fs"),
-    TextDatasource = require("./TextDatasource.js");
-
+const webdavFS = require("webdav-fs");
+const TextDatasource = require("./TextDatasource.js");
 const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
 /**

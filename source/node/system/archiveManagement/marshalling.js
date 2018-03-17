@@ -1,5 +1,3 @@
-"use strict";
-
 const VError = require("verror");
 const Archive = require("../Archive.js");
 const Workspace = require("../Workspace.js");

@@ -1,5 +1,3 @@
-"use strict";
-
 const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
 
 var Westley = require("./Westley.js"),
@@ -13,10 +11,7 @@ var Westley = require("./Westley.js"),
 
 var signing = require("../tools/signing.js"),
     rawSearching = require("../tools/searching-raw.js"),
-    encoding = require("../tools/encoding.js"),
-    createDebug = require("../tools/debug.js");
-
-const debug = createDebug("archive");
+    encoding = require("../tools/encoding.js");
 
 /**
  * Buttercup Archive
@@ -27,7 +22,6 @@ const debug = createDebug("archive");
 class Archive extends AsyncEventEmitter {
     constructor() {
         super();
-        debug("new archive");
         // create Westley instance
         this._westley = new Westley();
         this._westley.on("commandExecuted", () => {
@@ -97,7 +91,6 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     createGroup(title) {
-        debug("new group");
         var group = Group.createNew(this);
         if (title) {
             group.setTitle(title);
@@ -111,7 +104,6 @@ class Archive extends AsyncEventEmitter {
      * @returns {Archive} Self
      */
     deleteAttribute(attributeName) {
-        debug("delete attribute");
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteArchiveAttribute)
                 .addArgument(attributeName)
@@ -126,7 +118,6 @@ class Archive extends AsyncEventEmitter {
      * @returns {Archive} Self
      */
     discardSharedGroups() {
-        debug("discard shared groups");
         this._sharedGroups = [];
         return this;
     }
@@ -136,7 +127,6 @@ class Archive extends AsyncEventEmitter {
      * @throws {Error} Throws if there is no trash group
      */
     emptyTrash() {
-        debug("empty trash");
         let trash = this.getTrashGroup();
         if (!trash) {
             throw new Error("No trash group found");
@@ -168,7 +158,6 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     getAttribute(attributeName) {
-        debug("fetch attribute");
         const dataset = this._getWestley().getDataset();
         if (dataset.attributes && dataset.attributes.hasOwnProperty(attributeName)) {
             return dataset.attributes[attributeName];
@@ -192,7 +181,6 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     getEntryByID(entryID) {
-        debug("fetch entry by ID");
         var westley = this._getWestley(),
             entryRaw = rawSearching.findEntryByID(westley.getDataset().groups, entryID);
         return entryRaw === null ? null : new Entry(this, entryRaw);
@@ -216,7 +204,6 @@ class Archive extends AsyncEventEmitter {
      * @see findGroupByID
      */
     getGroupByID(groupID) {
-        debug("fetch group by ID");
         var westley = this._getWestley(),
             groupRaw = rawSearching.findGroupByID(westley.getDataset().groups, groupID);
         return groupRaw === null ? null : new Group(this, groupRaw);
@@ -228,7 +215,6 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     getGroups() {
-        debug("get groups");
         var archive = this,
             westley = this._getWestley();
         return (westley.getDataset().groups || [])
@@ -262,7 +248,6 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     getTrashGroup() {
-        debug("fetch trash group");
         var groups = this.getGroups();
         for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
             if (groups[i].isTrash()) {
@@ -278,10 +263,8 @@ class Archive extends AsyncEventEmitter {
      * @returns {Archive} Self
      */
     optimise() {
-        debug("flatten (check)");
         var flattener = new Flattener(this._getWestley());
         if (flattener.canBeFlattened()) {
-            debug("flatten (valid)");
             flattener.flatten();
         }
         return this;
@@ -294,7 +277,6 @@ class Archive extends AsyncEventEmitter {
      * @returns {Archive} Self
      */
     setAttribute(attributeName, value) {
-        debug("set attribute");
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetArchiveAttribute)
                 .addArgument(attributeName)
@@ -312,7 +294,6 @@ class Archive extends AsyncEventEmitter {
      * @see Group.toObject
      */
     toObject(groupOutputFlags) {
-        debug("to object");
         return {
             archiveID: this.getID(),
             format: this.getFormat(),
@@ -327,7 +308,6 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     _generateID() {
-        debug("generate new ID");
         this._getWestley().execute(
             Inigo.create(Inigo.Command.ArchiveID)
                 .addArgument(encoding.getUniqueID())
@@ -355,7 +335,6 @@ class Archive extends AsyncEventEmitter {
  * @memberof Archive
  */
 Archive.createFromHistory = function(history) {
-    debug("create archive (history)");
     var archive = new Archive(),
         westley = archive._getWestley();
     westley.clear();
@@ -374,7 +353,6 @@ Archive.createFromHistory = function(history) {
  * @static
  */
 Archive.createWithDefaults = function() {
-    debug("create archive (defaults)");
     var archive = new Archive(),
         generalGroup = archive.createGroup("General"),
         trashGroup = archive.createGroup("Trash").setAttribute(Group.Attributes.Role, "trash");

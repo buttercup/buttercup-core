@@ -1,11 +1,9 @@
-"use strict";
+const encoding = require("../tools/encoding.js");
 
-var encoding = require("../tools/encoding.js");
-
-var InigoCommand = function(cmdKey) {
+function InigoCommand(cmdKey) {
     this._commandKey = cmdKey;
     this._commandArgs = [];
-};
+}
 
 InigoCommand.prototype.addArgument = function(arg) {
     var newArgIndex = this._commandArgs.length,

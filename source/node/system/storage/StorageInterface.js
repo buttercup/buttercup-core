@@ -1,5 +1,3 @@
-"use strict";
-
 class StorageInterface {
     getAllKeys() {
         return Promise.resolve([]);

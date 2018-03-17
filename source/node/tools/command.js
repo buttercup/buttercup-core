@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Command related tools
  * @module command

@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * @type {String}
  * @private

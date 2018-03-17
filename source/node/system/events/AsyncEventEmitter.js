@@ -1,5 +1,3 @@
-"use strict";
-
 const EE = require("eventemitter3");
 
 class AsyncEventEmitter extends EE {

@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * @typedef {Object} ArchiveDataset
  * @property {Array.<Object>} groups Array of groups

@@ -1,7 +1,4 @@
-"use strict";
-
-var WebDAVDatasource = require("./WebDAVDatasource.js");
-
+const WebDAVDatasource = require("./WebDAVDatasource.js");
 const registerDatasource = require("./DatasourceAdapter.js").registerDatasource;
 
 /**

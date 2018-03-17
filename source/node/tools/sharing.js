@@ -1,6 +1,4 @@
-"use strict";
-
-var describe = require("../system/Descriptor.js");
+const describe = require("../system/Descriptor.js");
 
 module.exports = {
     /**

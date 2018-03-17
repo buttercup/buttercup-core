@@ -1,5 +1,3 @@
-"use strict";
-
 var Inigo = require("./InigoGenerator.js");
 
 var Commands = Inigo.Command;

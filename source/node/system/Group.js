@@ -1,5 +1,3 @@
-"use strict";
-
 var Inigo = require("./InigoGenerator.js"),
     Entry = require("./Entry.js"),
     encoding = require("../tools/encoding.js"),
@@ -8,8 +6,6 @@ var Inigo = require("./InigoGenerator.js"),
     GroupCollectionDecorator = require("../decorators/GroupCollection.js"),
     EntryCollectionDecorator = require("../decorators/EntryCollection.js"),
     createDebug = require("../tools/debug.js");
-
-const debug = createDebug("group");
 
 /**
  * Buttercup Group
@@ -25,7 +21,6 @@ class Group {
      * @constructor
      */
     constructor(archive, remoteObj) {
-        debug("new group");
         this._archive = archive;
         this._westley = archive._getWestley();
         this._remoteObject = remoteObj;
@@ -51,7 +46,6 @@ class Group {
      * @memberof Group
      */
     createEntry(title) {
-        debug("create entry");
         var entry = Entry.createNew(this._getArchive(), this.getID());
         if (title) {
             entry.setProperty("title", title);
@@ -66,7 +60,6 @@ class Group {
      * @memberof Group
      */
     createGroup(title) {
-        debug("create group");
         var group = Group.createNew(this._getArchive(), this.getID());
         if (title) {
             group.setTitle(title);
@@ -83,7 +76,6 @@ class Group {
      * @returns {Boolean} True when deleted, false when moved to trash
      */
     delete(skipTrash) {
-        debug("delete group");
         skipTrash = skipTrash === undefined ? false : skipTrash;
         if (this.isTrash()) {
             throw new Error("Trash group cannot be deleted");
@@ -92,12 +84,10 @@ class Group {
             hasTrash = trashGroup !== null,
             inTrash = this.isInTrash();
         if (!inTrash && hasTrash && !skipTrash) {
-            debug("move to trash");
             // Not in trash, and a trash group exists, so move it there
             this.moveToGroup(trashGroup);
             return false;
         }
-        debug("delete permanently");
         // No trash or already in trash, so just delete
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteGroup)
@@ -117,7 +107,6 @@ class Group {
      * @memberof Group
      */
     deleteAttribute(attr) {
-        debug("delete attribute");
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteGroupAttribute)
                 .addArgument(this.getID())
@@ -135,7 +124,6 @@ class Group {
      * @memberof Group
      */
     getAttribute(attributeName) {
-        debug("fetch attribute");
         const raw = this._getRemoteObject();
         return raw.attributes && raw.attributes.hasOwnProperty(attributeName)
             ? raw.attributes[attributeName]
@@ -157,7 +145,6 @@ class Group {
      * @memberof Group
      */
     getEntries() {
-        debug("fetch entries");
         var archive = this._getArchive();
         return (this._getRemoteObject().entries || []).map(function(rawEntry) {
             return new Entry(archive, rawEntry);
@@ -172,7 +159,6 @@ class Group {
      * @memberof Group
      */
     getGroup() {
-        debug("fetch parent group");
         const archive = this._getArchive();
         const topmostGroupIDs = archive.getGroups().map(function(group) {
             return group.getID();
@@ -197,7 +183,6 @@ class Group {
      * @see findGroupByID
      */
     getGroupByID(groupID) {
-        debug("fetch group by ID");
         let groupRaw = searching.findGroupByID(this._getRemoteObject().groups || [], groupID);
         return groupRaw === null ? null : new Group(this._getArchive(), groupRaw);
     }
@@ -208,7 +193,6 @@ class Group {
      * @memberof Group
      */
     getGroups() {
-        debug("fetch groups");
         var archive = this._getArchive();
         return (this._getRemoteObject().groups || []).map(function(rawGroup) {
             return new Group(archive, rawGroup);
@@ -247,7 +231,6 @@ class Group {
      * @returns {Boolean} Whether or not the group is within the trash group
      */
     isInTrash() {
-        debug("check if in trash");
         let trash = this._getArchive().getTrashGroup();
         if (trash) {
             let thisGroup = trash.getGroupByID(this.getID());
@@ -280,18 +263,15 @@ class Group {
      * @memberof Group
      */
     moveTo(target) {
-        debug("move");
         if (this.isTrash()) {
             throw new Error("Trash group cannot be moved");
         }
         let targetArchive, targetGroupID;
         if (target.type === "Group") {
-            debug("move to group");
             // moving to a group
             targetArchive = target._getArchive();
             targetGroupID = target.getID();
         } else if (target.type === "Archive") {
-            debug("move to archive");
             // moving to an archive
             targetArchive = target;
             targetGroupID = "0";
@@ -305,7 +285,6 @@ class Group {
             throw new Error("Cannot move group: target archive is read-only");
         }
         if (this._getArchive().equals(targetArchive)) {
-            debug("move is local");
             // target is local, so create commands here
             this._getWestley().execute(
                 Inigo.create(Inigo.Command.MoveGroup)
@@ -315,7 +294,6 @@ class Group {
             );
             this._getWestley().pad();
         } else {
-            debug("move is remote");
             // target is in another archive, so move there
             sharing.moveGroupBetweenArchives(this, target);
         }
@@ -342,7 +320,6 @@ class Group {
      * @memberof Group
      */
     setAttribute(attributeName, value) {
-        debug("set attribute");
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetGroupAttribute)
                 .addArgument(this.getID())
@@ -360,7 +337,6 @@ class Group {
      * @returns {Group} Returns self
      */
     setTitle(title) {
-        debug("set title");
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetGroupTitle)
                 .addArgument(this.getID())
@@ -387,7 +363,6 @@ class Group {
      *      group.toObject(Group.OutputFlag.OnlyGroup)
      */
     toObject(outputFlags) {
-        debug("to object");
         outputFlags = outputFlags === undefined ? Group.OutputFlag.Entries | Group.OutputFlag.Groups : outputFlags;
         // @todo use object cloning
         var attributes = {},
@@ -421,7 +396,6 @@ class Group {
      * @see toObject
      */
     toString(outputFlags) {
-        debug("to string");
         return JSON.stringify(this.toObject(outputFlags));
     }
 
@@ -494,7 +468,6 @@ Group.OutputFlag = Object.freeze({
  *      or if the target group is within the trash group
  */
 Group.createNew = function(archive, parentID) {
-    debug("create group");
     parentID = parentID || "0";
     if (parentID !== "0") {
         // check if group is trash/in-trash

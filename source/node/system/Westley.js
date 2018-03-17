@@ -1,5 +1,3 @@
-"use strict";
-
 const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
 const Inigo = require("./InigoGenerator.js");
 const commandTools = require("../tools/command.js");

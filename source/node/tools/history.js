@@ -1,5 +1,3 @@
-"use strict";
-
 function historyArrayToString(historyArray) {
     return historyArray.join("\n");
 }
