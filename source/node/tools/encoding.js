@@ -1,5 +1,5 @@
 const gzip = require("gzip-js");
-const { getTextHasher, getUUIDGenerator } = require("./overridable.js");
+const { getUUIDGenerator } = require("./overridable.js");
 
 const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
 const ENCODED_STRING_PREFIX = "utf8+base64:";
