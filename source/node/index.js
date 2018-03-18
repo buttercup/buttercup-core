@@ -28,7 +28,7 @@ module.exports = {
         encoding: require("./tools/encoding.js"),
         entry: require("./tools/entry.js"),
         export: require("./tools/export.js"),
-        overrides: require("./tools/overridable.js"),
+        uuid: require("./tools/uuid.js"),
         signing: require("./tools/signing.js"),
         searching: {
             instance: require("./tools/searching-instance.js"),

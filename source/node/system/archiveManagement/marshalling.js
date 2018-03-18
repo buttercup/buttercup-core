@@ -1,9 +1,8 @@
 const VError = require("verror");
+const { objectToDatasource } = require("@buttercup/datasources");
 const Archive = require("../Archive.js");
 const Workspace = require("../Workspace.js");
 const createCredentials = require("../credentials.js");
-const DatasourceAdapter = require("../DatasourceAdapter.js");
-const getArchiveList = require("../../tools/myButtercup/archive.js").getArchiveList;
 
 /**
  * Convert credentials of a remote archive to a datasource
@@ -20,7 +19,7 @@ function credentialsToDatasource(sourceCredentials) {
             if (typeof datasourceDescription.type !== "string") {
                 throw new VError("Invalid or missing type");
             }
-            const datasource = DatasourceAdapter.objectToDatasource(datasourceDescription, sourceCredentials);
+            const datasource = objectToDatasource(datasourceDescription, sourceCredentials);
             return {
                 datasource,
                 credentials: sourceCredentials
