@@ -1,4 +1,5 @@
-const { consumeEntryFacade, createEntryFacade } = entryFacade;
+const Archive = require("../../../source/node/system/Archive.js");
+const { consumeEntryFacade, createEntryFacade } = require("../../../source/node/system/entryFacade.js");
 
 describe("consumeEntryFacade", function() {
     beforeEach(function() {

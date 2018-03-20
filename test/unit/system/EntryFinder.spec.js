@@ -1,3 +1,6 @@
+const Archive = require("../../../source/node/system/Archive.js");
+const EntryFinder = require("../../../source/node/system/EntryFinder.js");
+
 describe("EntryFinder", function() {
     it("supports multiple archives", function() {
         const a1 = new Archive();
@@ -35,7 +38,7 @@ describe("EntryFinder", function() {
         });
 
         it("returns entries related to a term", function() {
-            let entries = this.finder.search("bank");
+            const entries = this.finder.search("bank");
             expect(entries.map(i => i.entry.getProperty("title")).sort()).to.eql(
                 ["My personal bank", "Other banking login", "Car ranking site"].sort()
             );
@@ -83,14 +86,14 @@ describe("EntryFinder", function() {
         });
 
         it("returns entries by URL searches", function() {
-            let entries = this.finder.search("secure");
+            const entries = this.finder.search("secure");
             expect(entries.map(i => i.entry.getMeta("URL") || i.entry.getMeta("url")).sort()).to.eql([
                 "https://secure.shopping.com/login"
             ]);
         });
 
         it("returns entries for similar URLs", function() {
-            let entries = this.finder.search("shopping");
+            const entries = this.finder.search("shopping");
             expect(entries.map(i => i.entry.getMeta("URL") || i.entry.getMeta("url")).sort()).to.eql([
                 "http://www.someplace.org/shopping/entry.php",
                 "https://secure.shopping.com/login"

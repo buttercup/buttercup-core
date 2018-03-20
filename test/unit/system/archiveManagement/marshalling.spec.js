@@ -1,9 +1,16 @@
-const { credentialsToDatasource, credentialsToSource } = archiveManagement.marshalling;
+const { TextDatasource } = require("@buttercup/datasources");
+const {
+    credentialsToDatasource,
+    credentialsToSource
+} = require("../../../../source/node/system/archiveManagement/marshalling.js");
+const Credentials = require("../../../../source/node/system/Credentials.js");
+const Archive = require("../../../../source/node/system/Archive.js");
+const Workspace = require("../../../../source/node/system/Workspace.js");
 
 describe("marshalling", function() {
     describe("credentialsToDatasource", function() {
         it("creates a datasource", function() {
-            const creds = createCredentials();
+            const creds = new Credentials();
             creds.setValue("datasource", JSON.stringify({ type: "text" }));
             return credentialsToDatasource(creds).then(function(result) {
                 expect(result.datasource instanceof TextDatasource).to.be.true;
@@ -11,12 +18,12 @@ describe("marshalling", function() {
         });
 
         it("throws an error if no datasource property is found", function() {
-            const creds = createCredentials();
+            const creds = new Credentials();
             return expect(credentialsToDatasource(creds)).to.eventually.be.rejectedWith(/failed.+required.+property/i);
         });
 
         it("throws an error if no type is found", function() {
-            const creds = createCredentials();
+            const creds = new Credentials();
             creds.setValue("datasource", JSON.stringify({}));
             return expect(credentialsToDatasource(creds)).to.eventually.be.rejectedWith(/invalid.+type/i);
         });
@@ -25,10 +32,10 @@ describe("marshalling", function() {
     describe("credentialsToSource", function() {
         beforeEach(function() {
             this.archive = new Archive();
-            this.archiveCredentials = createCredentials.fromPassword("testing");
+            this.archiveCredentials = Credentials.fromPassword("testing");
             const tds = new TextDatasource();
-            return tds.save(this.archive, this.archiveCredentials).then(content => {
-                this.sourceCredentials = createCredentials();
+            return tds.save(this.archive.getHistory(), this.archiveCredentials).then(content => {
+                this.sourceCredentials = new Credentials();
                 this.sourceCredentials.setValue(
                     "datasource",
                     JSON.stringify({

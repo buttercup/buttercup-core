@@ -15,27 +15,22 @@
   ],
   "scripts": {
     "build": "webpack",
-    "format": "prettier --write '{source,test,tests}/**/*.js'",
+    "format": "prettier --write '{source,test}/**/*.js'",
     "generate:archive": "node scripts/generate_test_archive.js",
     "generate:docs": "run-p generate:docs:node generate:docs:web",
     "generate:docs:node": "jsdoc2md source/node/**/*.js > API.md",
     "generate:docs:web": "jsdoc2md source/{web,node}/**/*.js > API_WEB.md",
     "precommit": "lint-staged",
     "prepublishOnly": "npm run build",
-    "test": "run-p --max-parallel 2 test:lint test:format test:istanbul test:unit test:integration test:web",
-    "test:ci:node": "run-s test:lint test:format test:istanbul test:unit test:integration",
+    "test": "run-s test:unit",
+    "test:ci:node": "run-s test:unit test:format",
     "test:ci:web": "run-s test:web",
-    "test:format": "prettier-check '{source,test,tests}/**/*.js'",
-    "test:integration": "mocha -r test/index.js 'test/integration/**/*.spec.js' --timeout 10000",
-    "test:istanbul": "istanbul cover nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
-    "test:lint": "eslint source/ && eslint test/ && eslint tests/",
-    "test:nodeunit": "nodeunit tests/_helpers/init.js tests tests/integration tests/commands",
-    "test:unit": "mocha -r test/index.js 'test/unit/**/*.spec.js' --timeout 5000",
-    "test:unit:watch": "nodemon --exec 'npm run test:unit' --ignore tests/ --ignore node_modules/",
+    "test:format": "prettier-check '{source,test}/**/*.js'",
+    "test:unit": "mocha -r test/index.js 'test/unit/**/*.spec.js'",
     "test:web": "karma start"
   },
   "lint-staged": {
-    "{source,test,tests}/**/*.js": [
+    "{source,test}/**/*.js": [
       "prettier --write",
       "git add"
     ]
@@ -60,7 +55,7 @@
   "homepage": "https://github.com/buttercup/buttercup-core#readme",
   "dependencies": {
     "@buttercup/channel-queue": "~0.2.2",
-    "@buttercup/datasources": "~1.0.1",
+    "@buttercup/datasources": "~1.0.3",
     "@buttercup/signing": "~0.1.0",
     "eventemitter3": "~2.0.3",
     "fuse.js": "~2.7.2",

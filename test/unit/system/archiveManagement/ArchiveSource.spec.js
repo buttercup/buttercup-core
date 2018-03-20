@@ -1,4 +1,7 @@
-const { ArchiveSource } = ArchiveManager.v2;
+const { TextDatasource } = require("@buttercup/datasources");
+const ArchiveSource = require("../../../../source/node/system/archiveManagement/ArchiveSource.js");
+const Archive = require("../../../../source/node/system/Archive.js");
+const Credentials = require("../../../../source/node/system/Credentials.js");
 
 const { DefaultColour, DefaultOrder, Status } = ArchiveSource;
 
@@ -6,10 +9,10 @@ const UUID_EXP = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
 
 function createArchiveAndCredentials() {
     this.archive = new Archive();
-    this.archiveCredentials = createCredentials.fromPassword("testing");
+    this.archiveCredentials = Credentials.fromPassword("testing");
     const tds = new TextDatasource();
-    return tds.save(this.archive, this.archiveCredentials).then(content => {
-        this.sourceCredentials = createCredentials("text");
+    return tds.save(this.archive.getHistory(), this.archiveCredentials).then(content => {
+        this.sourceCredentials = new Credentials("text");
         this.sourceCredentials.setValue(
             "datasource",
             JSON.stringify({
@@ -135,10 +138,10 @@ describe("ArchiveSource", function() {
                     expect(payload).to.have.property("order", DefaultOrder);
                     expect(payload)
                         .to.have.property("sourceCredentials")
-                        .that.satisfies(createCredentials.isSecureString);
+                        .that.satisfies(Credentials.isSecureString);
                     expect(payload)
                         .to.have.property("archiveCredentials")
-                        .that.satisfies(createCredentials.isSecureString);
+                        .that.satisfies(Credentials.isSecureString);
                 });
         });
 
@@ -153,10 +156,10 @@ describe("ArchiveSource", function() {
                 .then(payload => {
                     expect(payload)
                         .to.have.property("sourceCredentials")
-                        .that.satisfies(createCredentials.isSecureString);
+                        .that.satisfies(Credentials.isSecureString);
                     expect(payload)
                         .to.have.property("archiveCredentials")
-                        .that.satisfies(createCredentials.isSecureString);
+                        .that.satisfies(Credentials.isSecureString);
                 });
         });
     });
@@ -172,10 +175,10 @@ describe("ArchiveSource", function() {
                 expect(this.source).to.have.property("status", Status.LOCKED);
                 expect(this.source)
                     .to.have.property("_sourceCredentials")
-                    .that.satisfies(createCredentials.isSecureString);
+                    .that.satisfies(Credentials.isSecureString);
                 expect(this.source)
                     .to.have.property("_archiveCredentials")
-                    .that.satisfies(createCredentials.isSecureString);
+                    .that.satisfies(Credentials.isSecureString);
             });
         });
 
@@ -208,10 +211,10 @@ describe("ArchiveSource", function() {
                 expect(this.source).to.have.property("status", Status.UNLOCKED);
                 expect(this.source)
                     .to.have.property("_sourceCredentials")
-                    .that.satisfies(createCredentials.isCredentials);
+                    .that.satisfies(Credentials.isCredentials);
                 expect(this.source)
                     .to.have.property("_archiveCredentials")
-                    .that.satisfies(createCredentials.isCredentials);
+                    .that.satisfies(Credentials.isCredentials);
             });
         });
 

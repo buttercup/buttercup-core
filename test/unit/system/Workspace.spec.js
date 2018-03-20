@@ -1,4 +1,6 @@
-"use strict";
+const Workspace = require("../../../source/node/system/Workspace.js");
+const Archive = require("../../../source/node/system/Archive.js");
+const Credentials = require("../../../source/node/system/Credentials.js");
 
 describe("Workspace", function() {
     beforeEach(function() {
@@ -12,7 +14,6 @@ describe("Workspace", function() {
                 credentials = { mock: "credentials" };
             this.workspace.addSharedArchive(archive, datasource, credentials);
             expect(this.workspace._archives).to.have.lengthOf(2);
-            // expect(this.workspace._archives[0]).to.be.null;
             expect(this.workspace._archives[1]).to.eql({
                 archive: archive,
                 datasource: datasource,
@@ -29,7 +30,7 @@ describe("Workspace", function() {
 
     describe("getAllItems", function() {
         it("returns all items in a new array", function() {
-            let workspace = new Workspace();
+            const workspace = new Workspace();
             workspace.addSharedArchive({}, {}, {});
             workspace.setPrimaryArchive({}, {}, {});
             expect(workspace.getAllItems()).to.eql(workspace._archives);
@@ -46,7 +47,7 @@ describe("Workspace", function() {
         });
 
         it("returns only saveable items", function() {
-            let saveable = this.workspace.getSaveableItems();
+            const saveable = this.workspace.getSaveableItems();
             expect(saveable).to.eql([
                 {
                     archive: { a: "3" },
@@ -110,7 +111,7 @@ describe("Workspace", function() {
         });
 
         it("throws if no primary archive is set", function() {
-            let workspace = new Workspace();
+            const workspace = new Workspace();
             workspace.addSharedArchive(this.secondaryArchive, {}, {});
             expect(() => {
                 workspace.imbue();
@@ -121,12 +122,12 @@ describe("Workspace", function() {
     describe("updatePrimaryCredentials", function() {
         beforeEach(function() {
             this.workspace = new Workspace();
-            this.workspace.setPrimaryArchive(new Archive(), {}, createCredentials.fromPassword("base"));
+            this.workspace.setPrimaryArchive(new Archive(), {}, Credentials.fromPassword("base"));
         });
 
         it("changes the primary archive's password", function() {
             expect(this.workspace.primary.credentials.password).to.equal("base");
-            this.workspace.updatePrimaryCredentials(createCredentials.fromPassword("new"));
+            this.workspace.updatePrimaryCredentials(Credentials.fromPassword("new"));
             expect(this.workspace.primary.credentials.password).to.equal("new");
         });
     });

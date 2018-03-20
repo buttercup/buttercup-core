@@ -1,6 +1,7 @@
-describe("createFieldDescriptor", function() {
-    const { createFieldDescriptor } = tools.entry;
+const Archive = require("../../../source/node/system/Archive.js");
+const { createFieldDescriptor, getValidProperties } = require("../../../source/node/tools/entry.js");
 
+describe("createFieldDescriptor", function() {
     beforeEach(function() {
         const archive = new Archive();
         this.entry = archive.createGroup("Test").createEntry("Test");
@@ -24,8 +25,6 @@ describe("createFieldDescriptor", function() {
 });
 
 describe("getValidProperties", function() {
-    const { getValidProperties } = tools.entry;
-
     it("returns the correct values", function() {
         const props = getValidProperties();
         expect(props).to.contain("title");

@@ -1,15 +1,19 @@
 const uuid = require("uuid/v4");
-const { ArchiveManager: NewArchiveManager, ArchiveSource } = ArchiveManager.v2;
+const { TextDatasource } = require("@buttercup/datasources");
+const ArchiveManager = require("../../../../source/node/system/archiveManagement/ArchiveManager.js");
+const ArchiveSource = require("../../../../source/node/system/archiveManagement/ArchiveSource.js");
+const Archive = require("../../../../source/node/system/Archive.js");
+const Credentials = require("../../../../source/node/system/Credentials.js");
 
-const { STORAGE_KEY_PREFIX } = NewArchiveManager;
+const { STORAGE_KEY_PREFIX } = ArchiveManager;
 const NOOP = () => {};
 
 function createArchiveAndCredentials() {
     this.archive = new Archive();
-    this.archiveCredentials = createCredentials.fromPassword("testing");
+    this.archiveCredentials = Credentials.fromPassword("testing");
     const tds = new TextDatasource();
-    return tds.save(this.archive, this.archiveCredentials).then(content => {
-        this.sourceCredentials = createCredentials("text");
+    return tds.save(this.archive.getHistory(), this.archiveCredentials).then(content => {
+        this.sourceCredentials = new Credentials("text");
         this.sourceCredentials.setValue(
             "datasource",
             JSON.stringify({
@@ -40,7 +44,7 @@ describe("ArchiveManager", function() {
     describe("addSource", function() {
         beforeEach(function() {
             this.fakeSource1 = { id: "1", order: 0, on: NOOP, dehydrate: sinon.stub().returns(Promise.resolve()) };
-            this.manager = new NewArchiveManager();
+            this.manager = new ArchiveManager();
             this.manager.sources.push(this.fakeSource1);
             this.fakeSource2 = { id: "2", on: NOOP, dehydrate: sinon.stub().returns(Promise.resolve()) };
         });
@@ -84,7 +88,7 @@ describe("ArchiveManager", function() {
         beforeEach(function() {
             this.fakeSource1 = { id: "1", dehydrate: sinon.stub().returns(Promise.resolve("d1")) };
             this.fakeSource2 = { id: "2", dehydrate: sinon.stub().returns(Promise.resolve("d2")) };
-            this.manager = new NewArchiveManager();
+            this.manager = new ArchiveManager();
             this.manager.sources.push(this.fakeSource1, this.fakeSource2);
             sinon.stub(this.manager.storageInterface, "setValue");
         });
@@ -110,7 +114,7 @@ describe("ArchiveManager", function() {
         beforeEach(function() {
             this.fakeSource1 = { id: "1" };
             this.fakeSource2 = { id: "2" };
-            this.manager = new NewArchiveManager();
+            this.manager = new ArchiveManager();
             this.manager.sources.push(this.fakeSource1, this.fakeSource2);
         });
 
@@ -129,7 +133,7 @@ describe("ArchiveManager", function() {
             return Promise.all([createArchiveSource.call(this, "One"), createArchiveSource.call(this, "Two")])
                 .then(([source1, source2]) => Promise.all([source1.dehydrate(), source2.dehydrate()]))
                 .then(([dehydrated1, dehydrated2]) => {
-                    this.manager = new NewArchiveManager();
+                    this.manager = new ArchiveManager();
                     sinon
                         .stub(this.manager.storageInterface, "getAllKeys")
                         .returns(Promise.resolve([`${STORAGE_KEY_PREFIX}${uuid()}`, `${STORAGE_KEY_PREFIX}${uuid()}`]));
@@ -168,7 +172,7 @@ describe("ArchiveManager", function() {
         beforeEach(function() {
             this.fakeSource1 = { id: "1", order: 0, removeAllListeners: sinon.spy() };
             this.fakeSource2 = { id: "2", order: 1, removeAllListeners: sinon.spy() };
-            this.manager = new NewArchiveManager();
+            this.manager = new ArchiveManager();
             sinon.stub(this.manager.storageInterface, "removeKey").returns(Promise.resolve());
             this.manager.sources.push(this.fakeSource1, this.fakeSource2);
         });
@@ -206,7 +210,7 @@ describe("ArchiveManager", function() {
             this.fakeSource1 = { id: "1", order: 0 };
             this.fakeSource2 = { id: "2", order: 1 };
             this.fakeSource3 = { id: "3", order: 2 };
-            this.manager = new NewArchiveManager();
+            this.manager = new ArchiveManager();
             this.manager.sources.push(this.fakeSource1, this.fakeSource2, this.fakeSource3);
             sinon.stub(this.manager, "reorderSources");
         });
@@ -253,7 +257,7 @@ describe("ArchiveManager", function() {
             this.fakeSource1 = { id: "1", order: 2 };
             this.fakeSource2 = { id: "2", order: 0 };
             this.fakeSource3 = { id: "3", order: 1 };
-            this.manager = new NewArchiveManager();
+            this.manager = new ArchiveManager();
             this.manager.sources.push(this.fakeSource1, this.fakeSource2, this.fakeSource3);
             sinon.stub(this.manager, "_emitSourcesListUpdated");
         });
