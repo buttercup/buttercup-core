@@ -89,6 +89,7 @@ class Credentials {
     }
 
     constructor(typeOrData) {
+        this[CREDENTIALS_ATTR] = "credentials";
         this.data =
             typeof typeOrData === "string"
                 ? { type: typeOrData }
@@ -184,7 +185,7 @@ class Credentials {
      * @memberof Credentials
      */
     toInsecureString() {
-        return JSON.stringify(data);
+        return JSON.stringify(this.data);
     }
 
     /**
@@ -203,4 +204,4 @@ class Credentials {
     }
 }
 
-module.exports = createCredentials;
+module.exports = Credentials;

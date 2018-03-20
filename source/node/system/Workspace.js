@@ -168,10 +168,13 @@ class Workspace {
     localDiffersFromRemote() {
         return Promise.all(
             this.getSaveableItems().map(function(item) {
-                return item.datasource.load(item.credentials).then(function(loadedItem) {
-                    var comparator = new Comparator(item.archive, loadedItem);
-                    return comparator.archivesDiffer();
-                });
+                return item.datasource
+                    .load(item.credentials)
+                    .then(history => Archive.createFromHistory(history))
+                    .then(function(loadedItem) {
+                        var comparator = new Comparator(item.archive, loadedItem);
+                        return comparator.archivesDiffer();
+                    });
             })
         ).then(function(differences) {
             return differences.some(differs => differs);
@@ -242,7 +245,7 @@ class Workspace {
             () =>
                 Promise.all(
                     this.getSaveableItems().map(function(item) {
-                        return item.datasource.save(item.archive, item.credentials);
+                        return item.datasource.save(item.archive.getHistory(), item.credentials);
                     })
                 ),
             /* priority */ undefined,

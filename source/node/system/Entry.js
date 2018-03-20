@@ -1,8 +1,7 @@
 var Inigo = require("./InigoGenerator.js"),
     encoding = require("../tools/encoding.js"),
     searching = require("../tools/searching-raw.js"),
-    entryTools = require("../tools/entry.js"),
-    createDebug = require("../tools/debug.js");
+    entryTools = require("../tools/entry.js");
 
 /**
  * Managed entry class

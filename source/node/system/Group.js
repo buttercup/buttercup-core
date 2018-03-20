@@ -4,8 +4,7 @@ var Inigo = require("./InigoGenerator.js"),
     searching = require("../tools/searching-raw.js"),
     sharing = require("../tools/sharing.js"),
     GroupCollectionDecorator = require("../decorators/GroupCollection.js"),
-    EntryCollectionDecorator = require("../decorators/EntryCollection.js"),
-    createDebug = require("../tools/debug.js");
+    EntryCollectionDecorator = require("../decorators/EntryCollection.js");
 
 /**
  * Buttercup Group

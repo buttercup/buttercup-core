@@ -44,7 +44,7 @@ function credentialsToSource(sourceCredentials, archiveCredentials, initialise =
             const datasource = result.datasource;
             const defaultArchive = Archive.createWithDefaults();
             return initialise
-                ? datasource.save(defaultArchive, archiveCredentials).then(() =>
+                ? datasource.save(defaultArchive.getHistory(), archiveCredentials).then(() =>
                       Object.assign(
                           {
                               archive: defaultArchive
@@ -52,14 +52,17 @@ function credentialsToSource(sourceCredentials, archiveCredentials, initialise =
                           result
                       )
                   )
-                : datasource.load(archiveCredentials).then(archive =>
-                      Object.assign(
-                          {
-                              archive
-                          },
-                          result
-                      )
-                  );
+                : datasource
+                      .load(archiveCredentials)
+                      .then(history => Archive.createFromHistory(history))
+                      .then(archive =>
+                          Object.assign(
+                              {
+                                  archive
+                              },
+                              result
+                          )
+                      );
         })
         .then(function __datasourceToSource(result) {
             const workspace = new Workspace();
