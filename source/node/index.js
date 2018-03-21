@@ -1,5 +1,6 @@
 const iocane = require("iocane");
 const datasources = require("@buttercup/datasources");
+const Credentials = require("@buttercup/credentials");
 
 module.exports = {
     Archive: require("./system/Archive.js"),
@@ -7,7 +8,7 @@ module.exports = {
     ArchiveSource: require("./system/archiveManagement/ArchiveSource.js"),
     Workspace: require("./system/Workspace.js"),
 
-    createCredentials: require("./system/credentials.js"),
+    Credentials: Credentials,
 
     Group: require("./system/Group.js"),
     Entry: require("./system/Entry.js"),

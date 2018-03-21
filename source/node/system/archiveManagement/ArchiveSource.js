@@ -1,8 +1,8 @@
 const VError = require("verror");
 const ChannelQueue = require("@buttercup/channel-queue");
+const Credentials = require("@buttercup/credentials");
 const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
 const getUniqueID = require("../../tools/encoding.js").getUniqueID;
-const createCredentials = require("../credentials.js");
 const credentialsToSource = require("./marshalling.js").credentialsToSource;
 
 const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;
@@ -55,10 +55,10 @@ class ArchiveSource extends AsyncEventEmitter {
      */
     constructor(name, sourceCredentials, archiveCredentials, id = getUniqueID()) {
         super();
-        if (createCredentials.isSecureString(sourceCredentials) !== true) {
+        if (Credentials.isSecureString(sourceCredentials) !== true) {
             throw new VError("Failed constructing archive source: Source credentials not in encrypted form");
         }
-        if (createCredentials.isSecureString(archiveCredentials) !== true) {
+        if (Credentials.isSecureString(archiveCredentials) !== true) {
             throw new VError("Failed constructing archive source: Archive credentials not in encrypted form");
         }
         this._queue = new ChannelQueue();
@@ -260,8 +260,8 @@ class ArchiveSource extends AsyncEventEmitter {
         this._status = Status.PENDING;
         return this._enqueueStateChange(() => {
             return Promise.all([
-                createCredentials.fromSecureString(this._sourceCredentials, masterPassword),
-                createCredentials.fromSecureString(this._archiveCredentials, masterPassword)
+                Credentials.fromSecureString(this._sourceCredentials, masterPassword),
+                Credentials.fromSecureString(this._archiveCredentials, masterPassword)
             ])
                 .then(([sourceCredentials, archiveCredentials] = []) => {
                     return credentialsToSource(sourceCredentials, archiveCredentials, initialiseRemote)
@@ -304,7 +304,7 @@ class ArchiveSource extends AsyncEventEmitter {
             );
         }
         return this._enqueueStateChange(() => {
-            const credentials = createCredentials.fromPassword(masterPassword);
+            const credentials = Credentials.fromPassword(masterPassword);
             // First update the credentials stored here
             this._archiveCredentials = credentials;
             // Then update the credentials in the workspace

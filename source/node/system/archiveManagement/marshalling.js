@@ -1,8 +1,8 @@
 const VError = require("verror");
 const { objectToDatasource } = require("@buttercup/datasources");
+const Credentials = require("@buttercup/credentials");
 const Archive = require("../Archive.js");
 const Workspace = require("../Workspace.js");
-const createCredentials = require("../credentials.js");
 
 /**
  * Convert credentials of a remote archive to a datasource
