@@ -22,7 +22,7 @@
     "generate:docs:web": "jsdoc2md source/{web,node}/**/*.js > API_WEB.md",
     "precommit": "lint-staged",
     "prepublishOnly": "npm run build",
-    "test": "run-s test:unit",
+    "test": "run-s test:unit test:web",
     "test:ci:node": "run-s test:unit test:format",
     "test:ci:web": "run-s test:web",
     "test:format": "prettier-check '{source,test}/**/*.js'",
