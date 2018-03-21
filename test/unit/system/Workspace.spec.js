@@ -1,6 +1,6 @@
+const Credentials = require("@buttercup/credentials");
 const Workspace = require("../../../source/node/system/Workspace.js");
 const Archive = require("../../../source/node/system/Archive.js");
-const Credentials = require("../../../source/node/system/Credentials.js");
 
 describe("Workspace", function() {
     beforeEach(function() {
