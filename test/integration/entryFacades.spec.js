@@ -1,4 +1,6 @@
 const { consumeEntryFacade, createEntryFacade } = require("../../source/node/system/entryFacade.js");
+const Archive = require("../../source/node/system/Archive.js");
+const Entry = require("../../source/node/system/Entry.js");
 
 describe("modifying data via facades", function() {
     beforeEach(function() {
