@@ -1,4 +1,4 @@
-const Archive = require("../../../source/node/system/Archive.js");
+const Archive = require("../../../source/node/Archive.js");
 const { createFieldDescriptor, getValidProperties } = require("../../../source/node/tools/entry.js");
 
 describe("createFieldDescriptor", function() {

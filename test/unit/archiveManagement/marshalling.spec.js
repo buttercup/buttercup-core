@@ -3,9 +3,9 @@ const Credentials = require("@buttercup/credentials");
 const {
     credentialsToDatasource,
     credentialsToSource
-} = require("../../../../source/node/system/archiveManagement/marshalling.js");
-const Archive = require("../../../../source/node/system/Archive.js");
-const Workspace = require("../../../../source/node/system/Workspace.js");
+} = require("../../../source/node/archiveManagement/marshalling.js");
+const Archive = require("../../../source/node/Archive.js");
+const Workspace = require("../../../source/node/Workspace.js");
 
 describe("marshalling", function() {
     describe("credentialsToDatasource", function() {

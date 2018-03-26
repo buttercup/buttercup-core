@@ -1,7 +1,7 @@
 const { TextDatasource } = require("@buttercup/datasources");
 const Credentials = require("@buttercup/credentials");
-const ArchiveSource = require("../../../../source/node/system/archiveManagement/ArchiveSource.js");
-const Archive = require("../../../../source/node/system/Archive.js");
+const ArchiveSource = require("../../../source/node/archiveManagement/ArchiveSource.js");
+const Archive = require("../../../source/node/Archive.js");
 
 const { DefaultColour, DefaultOrder, Status } = ArchiveSource;
 

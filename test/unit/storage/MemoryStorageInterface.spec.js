@@ -1,4 +1,4 @@
-const MemoryStorageInterface = require("../../../../source/node/system/storage/MemoryStorageInterface.js");
+const MemoryStorageInterface = require("../../../source/node/storage/MemoryStorageInterface.js");
 
 describe("MemoryStorageInterface", function() {
     beforeEach(function() {

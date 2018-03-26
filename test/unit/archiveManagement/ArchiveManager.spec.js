@@ -1,9 +1,9 @@
 const uuid = require("uuid/v4");
 const { TextDatasource } = require("@buttercup/datasources");
 const Credentials = require("@buttercup/credentials");
-const ArchiveManager = require("../../../../source/node/system/archiveManagement/ArchiveManager.js");
-const ArchiveSource = require("../../../../source/node/system/archiveManagement/ArchiveSource.js");
-const Archive = require("../../../../source/node/system/Archive.js");
+const ArchiveManager = require("../../../source/node/archiveManagement/ArchiveManager.js");
+const ArchiveSource = require("../../../source/node/archiveManagement/ArchiveSource.js");
+const Archive = require("../../../source/node/Archive.js");
 
 const { STORAGE_KEY_PREFIX } = ArchiveManager;
 const NOOP = () => {};

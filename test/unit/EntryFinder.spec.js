@@ -1,5 +1,5 @@
-const Archive = require("../../../source/node/system/Archive.js");
-const EntryFinder = require("../../../source/node/system/EntryFinder.js");
+const Archive = require("../../source/node/Archive.js");
+const EntryFinder = require("../../source/node/EntryFinder.js");
 
 describe("EntryFinder", function() {
     it("supports multiple archives", function() {

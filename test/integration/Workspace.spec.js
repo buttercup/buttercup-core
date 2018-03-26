@@ -1,7 +1,7 @@
 const Credentials = require("@buttercup/credentials");
 const { TextDatasource } = require("@buttercup/datasources");
-const Archive = require("../../source/node/system/Archive.js");
-const Workspace = require("../../source/node/system/Workspace.js");
+const Archive = require("../../source/node/Archive.js");
+const Workspace = require("../../source/node/Workspace.js");
 
 describe("Workspace", function() {
     beforeEach(function() {

@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const { FileDatasource } = require("@buttercup/datasources");
 const Credentials = require("@buttercup/credentials");
-const Archive = require("../../source/node/system/Archive.js");
+const Archive = require("../../source/node/Archive.js");
 
 const DIR = path.resolve(__dirname, "../resources/archives");
 const PASSWORD = "this is a long password used for a test archive!";
