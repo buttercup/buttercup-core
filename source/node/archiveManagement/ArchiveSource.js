@@ -2,7 +2,7 @@ const VError = require("verror");
 const ChannelQueue = require("@buttercup/channel-queue");
 const Credentials = require("@buttercup/credentials");
 const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
-const getUniqueID = require("../../tools/encoding.js").getUniqueID;
+const getUniqueID = require("../tools/encoding.js").getUniqueID;
 const credentialsToSource = require("./marshalling.js").credentialsToSource;
 
 const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;

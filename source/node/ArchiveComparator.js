@@ -1,7 +1,7 @@
 "use strict";
 
-var encoding = require("../tools/encoding.js"),
-    compare = require("../tools/compare.js");
+var encoding = require("./tools/encoding.js"),
+    compare = require("./tools/compare.js");
 
 /**
  * Calculate the common command indexes between 2 archives.
@@ -19,7 +19,7 @@ var encoding = require("../tools/encoding.js"),
  *        the history arrays for the archives.
  * @private
  * @static
- * @memberof Comparator
+ * @memberof ArchiveComparator
  */
 function calculateCommonRecentCommand(archiveA, archiveB) {
     var historyA = archiveA._getWestley().getHistory(),
@@ -52,7 +52,7 @@ function calculateCommonRecentCommand(archiveA, archiveB) {
  * @returns {String} The 3-character command name
  * @private
  * @static
- * @memberof Comparator
+ * @memberof ArchiveComparator
  */
 function getCommandType(fullCommand) {
     return fullCommand && fullCommand.length >= 3 ? fullCommand.substr(0, 3) : "";
@@ -64,7 +64,7 @@ function getCommandType(fullCommand) {
  * @returns {String} The UUID of the padding command
  * @private
  * @static
- * @memberof Comparator
+ * @memberof ArchiveComparator
  */
 function getPaddingID(command) {
     return command.split(" ")[1];
@@ -72,11 +72,11 @@ function getPaddingID(command) {
 
 /**
  * Archive comparison class
- * @class Comparator
+ * @class ArchiveComparator
  * @param {Archive} originalArchive The primary archive
  * @param {Archive} secondaryArchive The secondary archive
  */
-var Comparator = function(originalArchive, secondaryArchive) {
+var ArchiveComparator = function(originalArchive, secondaryArchive) {
     this._archiveA = originalArchive;
     this._archiveB = secondaryArchive;
 };
@@ -84,9 +84,9 @@ var Comparator = function(originalArchive, secondaryArchive) {
 /**
  * Check if the current archives differ
  * @returns {Boolean} True if the archives are different
- * @memberof Comparator
+ * @memberof ArchiveComparator
  */
-Comparator.prototype.archivesDiffer = function archivesDiffer() {
+ArchiveComparator.prototype.archivesDiffer = function archivesDiffer() {
     let objA = this._archiveA.toObject(),
         objB = this._archiveB.toObject();
     // ignore the IDs
@@ -99,9 +99,9 @@ Comparator.prototype.archivesDiffer = function archivesDiffer() {
  * Calculate the differences, in commands, between the two archives
  * @returns {{ original:Array, secondary:Array }|Boolean} Returns false if no common base
  *        is found, or the command differences as two arrays
- * @memberof Comparator
+ * @memberof ArchiveComparator
  */
-Comparator.prototype.calculateDifferences = function() {
+ArchiveComparator.prototype.calculateDifferences = function() {
     var commonIndexes = calculateCommonRecentCommand(this._archiveA, this._archiveB);
     if (commonIndexes === false) {
         return false;
@@ -113,4 +113,4 @@ Comparator.prototype.calculateDifferences = function() {
     };
 };
 
-module.exports = Comparator;
+module.exports = ArchiveComparator;

@@ -1,4 +1,5 @@
-"use strict";
+const describe = require("./Descriptor.js");
+const Westley = require("./Westley.js");
 
 /**
  * Number of dataset lines to preserve by default (minimum)
@@ -6,10 +7,7 @@
  * @private
  * @memberof Flattener
  */
-var PRESERVE_LAST_LINES = 1000;
-
-const describe = require("./Descriptor.js"),
-    Westley = require("./Westley.js");
+const PRESERVE_LAST_LINES = 1000;
 
 /**
  * Check if a command should be preserved (not flattened)

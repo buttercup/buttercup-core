@@ -1,4 +1,4 @@
-const encoding = require("../tools/encoding.js");
+const encoding = require("./tools/encoding.js");
 
 function InigoCommand(cmdKey) {
     this._commandKey = cmdKey;

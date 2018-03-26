@@ -1,6 +1,6 @@
 const Entry = require("./Entry.js");
 const facadeFieldFactories = require("./entryFacadeFields.js");
-const { createFieldDescriptor } = require("../tools/entry.js");
+const { createFieldDescriptor } = require("./tools/entry.js");
 
 /**
  * Add meta fields to a fields array that are not mentioned in a preset

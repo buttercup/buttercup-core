@@ -1,4 +1,4 @@
-const describe = require("../system/Descriptor.js");
+const describe = require("../Descriptor.js");
 
 module.exports = {
     /**

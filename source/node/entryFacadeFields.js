@@ -1,4 +1,4 @@
-const { createFieldDescriptor, getEntryValue } = require("../tools/entry.js");
+const { createFieldDescriptor, getEntryValue } = require("./tools/entry.js");
 
 function createBaseFields(entry) {
     return [createFieldDescriptor(entry, "Title", "property", "title")];

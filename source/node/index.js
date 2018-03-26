@@ -3,26 +3,26 @@ const datasources = require("@buttercup/datasources");
 const Credentials = require("@buttercup/credentials");
 
 module.exports = {
-    Archive: require("./system/Archive.js"),
-    ArchiveManager: require("./system/archiveManagement/ArchiveManager.js"),
-    ArchiveSource: require("./system/archiveManagement/ArchiveSource.js"),
-    Workspace: require("./system/Workspace.js"),
+    Archive: require("./Archive.js"),
+    ArchiveManager: require("./archiveManagement/ArchiveManager.js"),
+    ArchiveSource: require("./archiveManagement/ArchiveSource.js"),
+    Workspace: require("./Workspace.js"),
 
     Credentials: Credentials,
 
-    Group: require("./system/Group.js"),
-    Entry: require("./system/Entry.js"),
-    entryFacade: require("./system/entryFacade.js"),
+    Group: require("./Group.js"),
+    Entry: require("./Entry.js"),
+    entryFacade: require("./entryFacade.js"),
 
     Datasources: datasources,
 
-    Flattener: require("./system/Flattener.js"),
-    Descriptor: require("./system/Descriptor.js"),
-    EntryFinder: require("./system/EntryFinder.js"),
+    Flattener: require("./Flattener.js"),
+    Descriptor: require("./Descriptor.js"),
+    EntryFinder: require("./EntryFinder.js"),
 
     storage: {
-        StorageInterface: require("./system/storage/StorageInterface.js"),
-        MemoryStorageInterface: require("./system/storage/MemoryStorageInterface.js")
+        StorageInterface: require("./storage/StorageInterface.js"),
+        MemoryStorageInterface: require("./storage/MemoryStorageInterface.js")
     },
 
     tools: {

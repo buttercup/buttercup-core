@@ -1,10 +1,10 @@
-var Inigo = require("./InigoGenerator.js"),
-    Entry = require("./Entry.js"),
-    encoding = require("../tools/encoding.js"),
-    searching = require("../tools/searching-raw.js"),
-    sharing = require("../tools/sharing.js"),
-    GroupCollectionDecorator = require("../decorators/GroupCollection.js"),
-    EntryCollectionDecorator = require("../decorators/EntryCollection.js");
+const Inigo = require("./InigoGenerator.js");
+const Entry = require("./Entry.js");
+const encoding = require("./tools/encoding.js");
+const searching = require("./tools/searching-raw.js");
+const sharing = require("./tools/sharing.js");
+const GroupCollectionDecorator = require("./decorators/GroupCollection.js");
+const EntryCollectionDecorator = require("./decorators/EntryCollection.js");
 
 /**
  * Buttercup Group

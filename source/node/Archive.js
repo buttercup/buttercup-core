@@ -1,17 +1,16 @@
 const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
+const Westley = require("./Westley.js");
+const Inigo = require("./InigoGenerator.js");
+const Flattener = require("./Flattener.js");
+const Group = require("./Group.js");
+const Entry = require("./Entry.js");
+const GroupCollectionDecorator = require("./decorators/GroupCollection.js");
+const EntryCollectionDecorator = require("./decorators/EntryCollection.js");
+const ArchiveComparator = require("./ArchiveComparator.js");
 
-var Westley = require("./Westley.js"),
-    Inigo = require("./InigoGenerator.js"),
-    Flattener = require("./Flattener.js"),
-    Group = require("./Group.js"),
-    Entry = require("./Entry.js"),
-    GroupCollectionDecorator = require("../decorators/GroupCollection.js"),
-    EntryCollectionDecorator = require("../decorators/EntryCollection.js"),
-    ArchiveComparator = require("./ArchiveComparator.js");
-
-var signing = require("../tools/signing.js"),
-    rawSearching = require("../tools/searching-raw.js"),
-    encoding = require("../tools/encoding.js");
+const signing = require("./tools/signing.js");
+const rawSearching = require("./tools/searching-raw.js");
+const encoding = require("./tools/encoding.js");
 
 /**
  * Buttercup Archive

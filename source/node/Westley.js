@@ -1,9 +1,9 @@
 const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
 const Inigo = require("./InigoGenerator.js");
-const commandTools = require("../tools/command.js");
-const searchingTools = require("../tools/searching-raw.js");
-const entryTools = require("../tools/entry.js");
-const encodingTools = require("../tools/encoding.js");
+const commandTools = require("./tools/command.js");
+const searchingTools = require("./tools/searching-raw.js");
+const entryTools = require("./tools/entry.js");
+const encodingTools = require("./tools/encoding.js");
 
 const VALID_COMMAND_EXP = /^[a-z]{3}[ ].+$/;
 

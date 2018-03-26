@@ -1,7 +1,7 @@
-var Inigo = require("./InigoGenerator.js"),
-    encoding = require("../tools/encoding.js"),
-    searching = require("../tools/searching-raw.js"),
-    entryTools = require("../tools/entry.js");
+const Inigo = require("./InigoGenerator.js");
+const encoding = require("./tools/encoding.js");
+const searching = require("./tools/searching-raw.js");
+const entryTools = require("./tools/entry.js");
 
 /**
  * Managed entry class
