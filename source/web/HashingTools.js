@@ -39,10 +39,9 @@ function checkBrowserSupport() {
  * @see checkBrowserSupport
  * @returns {Promise.<ArrayBuffer>} A promise that resolves with an ArrayBuffer
  */
-function deriveKeyFromPassword(password, salt, rounds, bits /* , algorithm */) {
+function deriveKeyFromPassword(password, salt, rounds, bits) {
     checkBrowserSupport();
     const subtleCrypto = window.crypto.subtle;
-
     let params = {
             name: "PBKDF2",
             hash: "SHA-256",
@@ -78,11 +77,11 @@ function deriveKeyFromPassword(password, salt, rounds, bits /* , algorithm */) {
 
 /**
  * Perform patching of the PBKDF2 function in iocane
- * @param {Function|undefined=} handler Optionally override the internal PBKDF2 engine
+ * @param {Function=} handler Optionally override the internal PBKDF2 engine
  */
 function patchCorePBKDF(handler = deriveKeyFromPassword) {
     const { vendor } = require("./index.js");
-    vendor.iocane.components.setPBKDF2(handler);
+    vendor.iocane.configure().overrideKeyDerivation(handler);
 }
 
 function joinBuffers(buffer1, buffer2) {

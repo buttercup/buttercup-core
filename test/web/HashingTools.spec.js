@@ -4,10 +4,11 @@ const { deriveKeyFromPassword, patchCorePBKDF } = require("../../source/web/Hash
 describe("HashingTools", function() {
     describe("patchCorePBKDF", function() {
         it("sets the correct method in iocane", function() {
-            sinon.spy(Buttercup.vendor.iocane.components, "setPBKDF2");
+            const iocaneGlobalConfig = Buttercup.vendor.iocane.configure();
+            sinon.spy(iocaneGlobalConfig, "overrideKeyDerivation");
             patchCorePBKDF();
-            expect(Buttercup.vendor.iocane.components.setPBKDF2.calledWithExactly(deriveKeyFromPassword)).to.be.true;
-            expect(Buttercup.vendor.iocane.components.setPBKDF2.calledOnce).to.be.true;
+            expect(iocaneGlobalConfig.overrideKeyDerivation.calledWithExactly(deriveKeyFromPassword)).to.be.true;
+            expect(iocaneGlobalConfig.overrideKeyDerivation.calledOnce).to.be.true;
         });
     });
 });
