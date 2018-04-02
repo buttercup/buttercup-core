@@ -30,6 +30,7 @@ module.exports = {
         entry: require("./tools/entry.js"),
         export: require("./tools/export.js"),
         uuid: require("./tools/uuid.js"),
+        request: require("./tools/request.js"),
         signing: require("./tools/signing.js"),
         searching: {
             instance: require("./tools/searching-instance.js"),
