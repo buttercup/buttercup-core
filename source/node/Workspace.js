@@ -1,7 +1,6 @@
-const Archive = require("./Archive.js");
-const Inigo = require("./InigoGenerator.js");
-const Comparator = require("./ArchiveComparator.js");
 const { getQueue } = require("./Queue.js");
+const Archive = require("./Archive.js");
+const Comparator = require("./ArchiveComparator.js");
 
 /**
  * Extract the command portion of a history item
@@ -13,26 +12,6 @@ const { getQueue } = require("./Queue.js");
  */
 function getCommandType(fullCommand) {
     return fullCommand && fullCommand.length >= 3 ? fullCommand.substr(0, 3) : "";
-}
-
-/**
- * Shared workspace item
- * @typedef {Object} WorkspaceItem
- * @property {Archive} archive - An archive instance
- * @property {String} password - The master password
- * @property {TextDatasource} datasource - A datasource instance
- */
-
-/**
- * Check if an item is writeable
- * @param {WorkspaceItem} item The item to check
- * @returns {Boolean} True if the item is writeable
- * @private
- * @static
- * @memberof Workspace
- */
-function itemIsWriteable(item) {
-    return item && item.saveable && item.archive && item.archive.readOnly === false;
 }
 
 /**
@@ -53,109 +32,28 @@ function stripDestructiveCommands(history) {
     });
 }
 
-/**
- * Workspace
- * @class Workspace
- */
 class Workspace {
     constructor() {
-        this._archives = [];
+        this._archive = null;
+        this._datasource = null;
+        this._masterCredentials = null;
     }
 
-    get isSaving() {
-        try {
-            const saveChannel = this.saveChannel;
-            return saveChannel.isRunning;
-        } catch (err) {
-            return false;
-        }
+    get archive() {
+        return this._archive;
     }
 
-    /**
-     * The primary archive item
-     * @type {WorkspaceItem}
-     * @memberof Workspace
-     * @instance
-     * @public
-     * @name primary
-     */
-    get primary() {
-        return this._archives[0] ? this._archives[0] : null;
+    get datasource() {
+        return this._datasource;
+    }
+
+    get masterCredentials() {
+        return this._masterCredentials;
     }
 
     get saveChannel() {
         const topicID = this.primary.archive.getID();
         return getQueue().channel(`workspace:${topicID}`);
-    }
-
-    /**
-     * Add a shared archive item
-     * @param {Archive} archive The archive instance
-     * @param {TextDatasource} datasource The datasource instance
-     * @param {Credentials} masterCredentials The master credentials (password)
-     * @param {Boolean=} saveable Whether the archive is remotely saveable or not (default: true)
-     * @returns {Workspace} Self
-     */
-    addSharedArchive(archive, datasource, masterCredentials, saveable) {
-        saveable = saveable === undefined ? true : saveable;
-        if (this._archives.length <= 0) {
-            this._archives[0] = null;
-        }
-        this._archives.push({
-            archive: archive,
-            datasource: datasource,
-            credentials: masterCredentials,
-            saveable: saveable
-        });
-        return this;
-    }
-
-    /**
-     * Get all archive items
-     * @returns {Array.<WorkspaceItem>} All of the items
-     */
-    getAllItems() {
-        return [].concat(this._archives);
-    }
-
-    /**
-     * Get all the saveable items
-     * @returns {Array.<WorkspaceItem>} All of the saveable items
-     */
-    getSaveableItems() {
-        return this._archives.filter(function(item) {
-            return item && item.saveable;
-        });
-    }
-
-    /**
-     * Imbue the primary archive with shared groups from all of the other archives
-     * @throws {Error} Throws if the primary archive is not set
-     * @returns {Workspace} Self
-     * @deprecated To be removed
-     */
-    imbue() {
-        let items = this.getAllItems(),
-            // take the primary off the front
-            primary = items.shift();
-        if (!primary) {
-            throw new Error("No primary archive");
-        }
-        const primaryArchive = primary.archive;
-        // clear first
-        primaryArchive.discardSharedGroups();
-        items.forEach(function(item) {
-            item.archive
-                .getGroups()
-                .filter(group => group.isShared())
-                .forEach(function(group) {
-                    // mark as foreign
-                    group._getRemoteObject()._foreign = true;
-                    // add each shared group
-                    primaryArchive.sharedGroups.push(group);
-                });
-        });
-        return this;
     }
 
     /**
@@ -166,35 +64,25 @@ class Workspace {
      *      there are differences, false if there is not
      */
     localDiffersFromRemote() {
-        return Promise.all(
-            this.getSaveableItems().map(function(item) {
-                return item.datasource
-                    .load(item.credentials)
-                    .then(history => Archive.createFromHistory(history))
-                    .then(function(loadedItem) {
-                        var comparator = new Comparator(item.archive, loadedItem);
-                        return comparator.archivesDiffer();
-                    });
-            })
-        ).then(function(differences) {
-            return differences.some(differs => differs);
-        });
+        return this.datasource
+            .load(this.masterCredentials)
+            .then(history => Archive.createFromHistory(history))
+            .then(function(loadedItem) {
+                var comparator = new Comparator(this.archive, loadedItem);
+                return comparator.archivesDiffer();
+            });
     }
 
     /**
-     * Merge an item from its remote counterpart
+     * Merge remote contents
      * Detects differences between a local and a remote item, and merges the
      * two copies together.
-     * @param {WorkspaceItem} item The local item
      * @returns {Promise.<Archive>} A promise that resolves with the newly merged archive -
      *      This archive is automatically saved over the original local copy.
      */
-    mergeItemFromRemote(item) {
-        if (!itemIsWriteable(item)) {
-            throw new Error("Archive not writeable");
-        }
-        return item.datasource.load(item.credentials).then(function(stagedArchive) {
-            const comparator = new Comparator(item.archive, stagedArchive);
+    mergeFromRemote() {
+        return this.datasource.load(this.masterCredentials).then(function(stagedArchive) {
+            const comparator = new Comparator(this.archive, stagedArchive);
             const differences = comparator.calculateDifferences();
             // only strip if there are multiple updates
             const stripDestructive = differences.secondary.length > 0;
@@ -214,72 +102,27 @@ class Workspace {
                 .forEach(function(command) {
                     newArchive._getWestley().execute(command);
                 });
-            item.archive = newArchive;
+            this._archive = newArchive;
             return newArchive;
         });
     }
 
     /**
-     * Merge all saveable remote copies into their local counterparts
-     * @see mergeItemFromRemote
-     * @see imbue
-     * @returns {Promise.<Archive[]>} A promise that resolves with an array of merged Archives
-     */
-    mergeSaveablesFromRemote() {
-        return Promise.all(
-            this.getSaveableItems().map(item => {
-                return this.mergeItemFromRemote(item);
-            })
-        ).then(archives => {
-            this.imbue();
-            return archives;
-        });
-    }
-
-    /**
-     * Save all saveable archives to their remotes
-     * @returns {Promise} A promise that resolves when all saveable archives have been saved
+     * Save the archive to the remote
+     * @returns {Promise} A promise that resolves when saving has completed
      */
     save() {
         return this.saveChannel.enqueue(
-            () =>
-                Promise.all(
-                    this.getSaveableItems().map(function(item) {
-                        return item.datasource.save(item.archive.getHistory(), item.credentials);
-                    })
-                ),
+            () => this.datasource.save(this.archive.getHistory(), this.masterCredentials),
             /* priority */ undefined,
             /* stack */ "saving"
         );
     }
 
-    /**
-     * Set the primary archive
-     * @param {Archive} archive The Archive instance
-     * @param {TextDatasource} datasource The datasource instance
-     * @param {Credentials} masterCredentials The master password
-     * @returns {Workspace} Self
-     */
-    setPrimaryArchive(archive, datasource, masterCredentials) {
-        this._archives[0] = {
-            archive: archive,
-            datasource: datasource,
-            credentials: masterCredentials,
-            saveable: true
-        };
-        return this;
-    }
-
-    /**
-     * Update the master password of the primary archive
-     * @param {Credentials} masterCredentials The new credentials
-     * @returns {Workspace} Self
-     */
-    updatePrimaryCredentials(masterCredentials) {
-        Object.assign(this._archives[0], {
-            credentials: masterCredentials
-        });
-        return this;
+    setArchive(archive, datasource, masterCredentials) {
+        this._archive = archive;
+        this._datasource = datasource;
+        this._masterCredentials = masterCredentials;
     }
 }
 
