@@ -66,7 +66,7 @@ function credentialsToSource(sourceCredentials, archiveCredentials, initialise =
         })
         .then(function __datasourceToSource(result) {
             const workspace = new Workspace();
-            workspace.setPrimaryArchive(result.archive, result.datasource, archiveCredentials);
+            workspace.setArchive(result.archive, result.datasource, archiveCredentials);
             return {
                 workspace,
                 sourceCredentials,

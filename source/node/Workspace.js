@@ -39,18 +39,38 @@ class Workspace {
         this._masterCredentials = null;
     }
 
+    /**
+     * The archive instance
+     * @type {Archive}
+     * @memberof Workspace
+     */
     get archive() {
         return this._archive;
     }
 
+    /**
+     * The datasource instance for the archive
+     * @type {TextDatasource}
+     * @memberof Workspace
+     */
     get datasource() {
         return this._datasource;
     }
 
+    /**
+     * The master credentials for the archive
+     * @type {Credentials}
+     * @memberof Workspace
+     */
     get masterCredentials() {
         return this._masterCredentials;
     }
 
+    /**
+     * The save channel for queuing save actions
+     * @type {Channel}
+     * @memberof Workspace
+     */
     get saveChannel() {
         const topicID = this.primary.archive.getID();
         return getQueue().channel(`workspace:${topicID}`);
@@ -62,6 +82,7 @@ class Workspace {
      * them and their local counterparts. Does not change/update the local items.
      * @returns {Promise.<Boolean>} A promise that resolves with a boolean - true if
      *      there are differences, false if there is not
+     * @memberof Workspace
      */
     localDiffersFromRemote() {
         return this.datasource
@@ -79,6 +100,7 @@ class Workspace {
      * two copies together.
      * @returns {Promise.<Archive>} A promise that resolves with the newly merged archive -
      *      This archive is automatically saved over the original local copy.
+     * @memberof Workspace
      */
     mergeFromRemote() {
         return this.datasource.load(this.masterCredentials).then(function(stagedArchive) {
@@ -110,6 +132,7 @@ class Workspace {
     /**
      * Save the archive to the remote
      * @returns {Promise} A promise that resolves when saving has completed
+     * @memberof Workspace
      */
     save() {
         return this.saveChannel.enqueue(
@@ -119,9 +142,25 @@ class Workspace {
         );
     }
 
+    /**
+     * Set the archive and its accompanying data on the workspace
+     * @param {Archive} archive The archive instance
+     * @param {TextDatasource} datasource The datasource for the archive
+     * @param {*} masterCredentials The master credentials for the archive
+     * @memberof Workspace
+     */
     setArchive(archive, datasource, masterCredentials) {
         this._archive = archive;
         this._datasource = datasource;
+        this._masterCredentials = masterCredentials;
+    }
+
+    /**
+     * Update the master password of the archive
+     * @param {Credentials} masterCredentials The new credentials
+     * @memberof Workspace
+     */
+    updatePrimaryCredentials(masterCredentials) {
         this._masterCredentials = masterCredentials;
     }
 }
