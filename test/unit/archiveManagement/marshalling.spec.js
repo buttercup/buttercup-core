@@ -51,7 +51,7 @@ describe("marshalling", function() {
                 expect(result)
                     .to.have.property("workspace")
                     .that.is.an.instanceOf(Workspace);
-                expect(result.workspace.primary.archive.getID()).to.equal(this.archive.getID());
+                expect(result.workspace.archive.getID()).to.equal(this.archive.getID());
             });
         });
 

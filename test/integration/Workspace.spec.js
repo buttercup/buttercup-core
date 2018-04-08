@@ -8,7 +8,7 @@ describe("Workspace", function() {
         this.archive = Archive.createWithDefaults();
         this.ds = new TextDatasource("");
         this.workspace = new Workspace();
-        this.workspace.setPrimaryArchive(this.archive, this.ds, Credentials.fromPassword("testing"));
+        this.workspace.setArchive(this.archive, this.ds, Credentials.fromPassword("testing"));
     });
 
     it("repeated workspace.save() calls fire the datasource.save method only once", function() {

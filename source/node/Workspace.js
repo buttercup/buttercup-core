@@ -23,7 +23,7 @@ function getCommandType(fullCommand) {
  * @memberof Workspace
  */
 function stripDestructiveCommands(history) {
-    let destructiveSlugs = Object.keys(Inigo.Command)
+    const destructiveSlugs = Object.keys(Inigo.Command)
         .map(key => Inigo.Command[key])
         .filter(command => command.d)
         .map(command => command.s);
@@ -72,7 +72,7 @@ class Workspace {
      * @memberof Workspace
      */
     get saveChannel() {
-        const topicID = this.primary.archive.getID();
+        const topicID = this.archive.getID();
         return getQueue().channel(`workspace:${topicID}`);
     }
 
@@ -89,7 +89,7 @@ class Workspace {
             .load(this.masterCredentials)
             .then(history => Archive.createFromHistory(history))
             .then(function(loadedItem) {
-                var comparator = new Comparator(this.archive, loadedItem);
+                const comparator = new Comparator(this.archive, loadedItem);
                 return comparator.archivesDiffer();
             });
     }
