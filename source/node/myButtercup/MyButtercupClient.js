@@ -1,4 +1,5 @@
 const Credentials = require("@buttercup/credentials");
+const { hasValidSignature } = require("@buttercup/signing");
 const { getQueue } = require("../Queue.js");
 const { API_ARCHIVE, API_OWN_DIGEST } = require("./locations.js");
 const { getFetchMethod } = require("../tools/request.js");
@@ -11,6 +12,13 @@ let __shared;
 function handleGetResponse(res) {
     if (res.status < 200 || res.status >= 300) {
         throw new Error(`Invalid API response status: ${res.status} ${res.statusText}`);
+    }
+    return res;
+}
+
+function handleWriteResponse(res) {
+    if (res.status === 400) {
+        throw new Error(`Invalid API response status: ${res.status} ${res.statusText} (archive may already exist)`);
     }
     return res;
 }
@@ -33,6 +41,7 @@ class MyButtercupClient {
             };
             return fetch(url, fetchOptions)
                 .then(handleGetResponse)
+                .then(res => res.json())
                 .then(res => {
                     const { status, archive, update_id: updateID } = res;
                     if (status !== "ok") {
@@ -48,6 +57,11 @@ class MyButtercupClient {
                     const { archive: rootArchive } = this._rootArchives[rootArchiveID];
                     const [archivePasswordsGroup] = rootArchive.findGroupsByTitle("archive-passwords");
                     const [passEntry] = archivePasswordsGroup.findEntriesByProperty("title", archiveID);
+                    if (!passEntry) {
+                        throw new Error(
+                            `Failed fetching MyButtercup archive: No archive found in account root for ID: ${archiveID}`
+                        );
+                    }
                     const masterPassword = passEntry.getProperty("password");
                     return {
                         archive,
@@ -61,11 +75,6 @@ class MyButtercupClient {
     getArchiveQueue(archiveID) {
         return getQueue().channel(`mybuttercup:archive:${archiveID}`);
     }
-
-    // isLoadingRootArchive(rootID) {
-    //     const queue = this.getArchiveQueue(rootID);
-    //     return queue.isRunning;
-    // }
 
     updateDigest(token, masterAccountCredentials) {
         const fetch = getFetchMethod();
@@ -97,7 +106,62 @@ class MyButtercupClient {
             });
     }
 
-    writeArchive(rootArchiveID, archiveID, encryptedContents, updateID) {}
+    writeArchive(
+        { token, rootArchiveID, archiveID, encryptedContents, updateID, masterAccountCredentials, isNew = false } = {}
+    ) {
+        const fetch = getFetchMethod();
+        const method = isNew ? "POST" : "PUT";
+        const errorPrefix = "Failed writing archive:";
+        if (!token) {
+            return Promise.reject(new Error(`${errorPrefix} No token present`));
+        }
+        if (!rootArchiveID) {
+            return Promise.reject(new Error(`${errorPrefix} Root archive ID is required`));
+        }
+        if (!archiveID) {
+            return Promise.reject(new Error(`${errorPrefix} Target archive ID is required`));
+        }
+        if (!encryptedContents) {
+            return Promise.reject(new Error(`${errorPrefix} Contents empty or not provided`));
+        }
+        if (!hasValidSignature(encryptedContents)) {
+            return Promise.reject(new Error(`${errorPrefix} No signature found on encrypted contents`));
+        }
+        if (typeof updateID !== "number") {
+            return Promise.reject(new Error(`${errorPrefix} Update ID must be a number`));
+        }
+        if (!masterAccountCredentials) {
+            return Promise.reject(new Error(`${errorPrefix} Credentials must be provided`));
+        }
+        const url = API_ARCHIVE.replace("[ID]", archiveID);
+        return this._loadRootArchive(rootArchiveID, masterAccountCredentials)
+            .then(() =>
+                this.getArchiveQueue(archiveID).enqueue(() => {
+                    const url = API_ARCHIVE.replace("[ID]", archiveID);
+                    const fetch = getFetchMethod();
+                    const fetchOptions = {
+                        method,
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            update_id: updateID,
+                            archive: encryptedContents
+                        })
+                    };
+                    return fetch(url, fetchOptions);
+                })
+            )
+            .then(handleWriteResponse)
+            .then(res => res.json())
+            .then(res => {
+                const { status } = res;
+                if (status !== "ok") {
+                    throw new Error(`${errorPrefix} Invalid API response status: ${status}`);
+                }
+            });
+    }
 
     _initialiseAccount(token) {}
 
