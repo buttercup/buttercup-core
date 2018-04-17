@@ -31,7 +31,7 @@ module.exports = {
         export: require("./tools/export.js"),
         uuid: require("./tools/uuid.js"),
         request: require("./tools/request.js"),
-        signing: require("./tools/signing.js"),
+        signing: require("@buttercup/signing"),
         searching: {
             instance: require("./tools/searching-instance.js"),
             raw: require("./tools/searching-raw.js")

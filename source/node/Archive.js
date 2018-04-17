@@ -1,3 +1,4 @@
+const { getFormat } = require("@buttercup/signing");
 const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
 const Westley = require("./Westley.js");
 const Inigo = require("./InigoGenerator.js");
@@ -7,8 +8,6 @@ const Entry = require("./Entry.js");
 const GroupCollectionDecorator = require("./decorators/GroupCollection.js");
 const EntryCollectionDecorator = require("./decorators/EntryCollection.js");
 const ArchiveComparator = require("./ArchiveComparator.js");
-
-const signing = require("./tools/signing.js");
 const rawSearching = require("./tools/searching-raw.js");
 const encoding = require("./tools/encoding.js");
 
@@ -37,7 +36,7 @@ class Archive extends AsyncEventEmitter {
         // set format
         this._getWestley().execute(
             Inigo.create(Inigo.Command.Format)
-                .addArgument(signing.getFormat())
+                .addArgument(getFormat())
                 .generateCommand()
         );
         // set ID
