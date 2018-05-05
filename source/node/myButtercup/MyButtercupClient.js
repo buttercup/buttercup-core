@@ -163,7 +163,9 @@ class MyButtercupClient {
             });
     }
 
-    _initialiseAccount(token) {}
+    _initialiseAccount(token) {
+        // create a new root archive
+    }
 
     _loadRootArchive(rootID, masterAccountCredentials) {
         const queue = this.getArchiveQueue(rootID);
