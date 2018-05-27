@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v1.7.1
+_2018-05-27_
+
+ * Update `iocane` to `0.10.2` (future proofing)
+
 ## v1.7.0
 _2018-05-27_
 
