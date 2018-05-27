@@ -68,7 +68,7 @@
     "eventemitter3": "~2.0.3",
     "fuse.js": "~2.7.2",
     "gzip-js": "~0.3.2",
-    "iocane": "~0.10.1",
+    "iocane": "~0.10.2",
     "node-fetch": "~1.6.3",
     "opencollective": "~1.0.3",
     "string-hash": "^1.1.3",
