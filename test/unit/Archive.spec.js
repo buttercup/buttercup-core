@@ -39,7 +39,7 @@ describe("Archive", function() {
 
         it("adds a group to the archive", function() {
             const group = this.archive.createGroup("new");
-            expect(this.archive.getGroups().map(group => group.getID())).to.contain(group.getID());
+            expect(this.archive.getGroups().map(group => group.id)).to.contain(group.id);
         });
     });
 
@@ -82,6 +82,50 @@ describe("Archive", function() {
             expect(this.group.getEntries()).to.have.length.above(0);
             this.archive.emptyTrash();
             expect(this.group.getEntries()).to.have.lengthOf(0);
+        });
+    });
+
+    describe("getAttribute", function() {
+        beforeEach(function() {
+            this.archive = new Archive();
+            this.archive.setAttribute("testing", "string");
+        });
+
+        it("returns the correct value", function() {
+            expect(this.archive.getAttribute("testing")).to.equal("string");
+        });
+
+        it("returns undefined if the attribute doesn't exist", function() {
+            expect(this.archive.getAttribute("nope")).to.be.undefined;
+        });
+    });
+
+    describe("getAttributes", function() {
+        beforeEach(function() {
+            this.archive = new Archive();
+            this.archive.setAttribute("one", "first");
+            this.archive.setAttribute("two", "second");
+        });
+
+        it("returns an object holding all the attributes", function() {
+            expect(this.archive.getAttributes()).to.deep.equal({
+                one: "first",
+                two: "second"
+            });
+        });
+    });
+
+    describe("getEntryByID", function() {
+        beforeEach(function() {
+            this.archive = new Archive();
+            const group = this.archive.createGroup("test");
+            this.entry1 = group.createEntry("one");
+            this.entry2 = group.createEntry("two");
+        });
+
+        it("gets the correct entry", function() {
+            const foundEntry = this.archive.getEntryByID(this.entry1.id);
+            expect(foundEntry.id).to.equal(this.entry1.id);
         });
     });
 });

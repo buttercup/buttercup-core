@@ -48,6 +48,15 @@ class Archive extends AsyncEventEmitter {
     }
 
     /**
+     * The archive ID
+     * @type {String}
+     * @memberof Archive
+     */
+    get id() {
+        return this._getWestley().getDataset().archiveID;
+    }
+
+    /**
      * Whether the archive is read only or not
      * @property {Boolean} readOnly
      * @memberof Archive
@@ -118,18 +127,6 @@ class Archive extends AsyncEventEmitter {
     }
 
     /**
-     * Check if the archive is equal to another (by ID)
-     * @param {Archive} archive Another archive instance
-     * @returns {Boolean} True if they are equal
-     * @memberof Archive;
-     */
-    equals(archive) {
-        let thisID = this.getID(),
-            remoteID = archive.getID();
-        return thisID === remoteID;
-    }
-
-    /**
      * Get the value of an attribute
      * @param {String} attributeName The attribute to get
      * @returns {undefined|String} The value of the attribute or undefined if not set
@@ -159,8 +156,8 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     getEntryByID(entryID) {
-        var westley = this._getWestley(),
-            entryRaw = rawSearching.findEntryByID(westley.getDataset().groups, entryID);
+        const westley = this._getWestley();
+        const entryRaw = rawSearching.findEntryByID(westley.getDataset().groups, entryID);
         return entryRaw === null ? null : new Entry(this, entryRaw);
     }
 
@@ -203,14 +200,6 @@ class Archive extends AsyncEventEmitter {
      */
     getHistory() {
         return [...this._getWestley().getHistory()];
-    }
-
-    /**
-     * Get the archive ID
-     * @returns {String} The ID or an empty string if not set
-     */
-    getID() {
-        return this._getWestley().getDataset().archiveID || "";
     }
 
     /**
@@ -266,7 +255,7 @@ class Archive extends AsyncEventEmitter {
      */
     toObject(groupOutputFlags) {
         return {
-            archiveID: this.getID(),
+            archiveID: this.id,
             format: this.getFormat(),
             attributes: this.getAttributes(),
             groups: this.getGroups().map(group => group.toObject(groupOutputFlags))
@@ -310,7 +299,7 @@ Archive.createFromHistory = function(history) {
         westley = archive._getWestley();
     westley.clear();
     history.forEach(westley.execute.bind(westley));
-    if (archive.getID() === "") {
+    if (!archive.id) {
         // generate a new ID
         archive._generateID();
     }

@@ -16,7 +16,7 @@ module.exports = {
          */
         inst.findGroupByID = function findGroupByID(id) {
             let foundGroups = instanceSearching.findGroupsByCheck(inst.getGroups(), function(group) {
-                return group.getID() === id;
+                return group.id === id;
             });
             return foundGroups && foundGroups.length === 1 ? foundGroups[0] : null;
         };

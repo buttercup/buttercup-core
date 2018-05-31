@@ -31,8 +31,18 @@ class Group {
     }
 
     /**
+     * The entry ID
+     * @type {String}
+     * @memberof Group
+     */
+    get id() {
+        return this._getRemoteObject().id;
+    }
+
+    /**
      * Get the instance type
      * @type {String}
+     * @memberof Group
      */
     get type() {
         return "Group";
@@ -45,7 +55,7 @@ class Group {
      * @memberof Group
      */
     createEntry(title) {
-        var entry = Entry.createNew(this._getArchive(), this.getID());
+        var entry = Entry.createNew(this._getArchive(), this.id);
         if (title) {
             entry.setProperty("title", title);
         }
@@ -59,7 +69,7 @@ class Group {
      * @memberof Group
      */
     createGroup(title) {
-        var group = Group.createNew(this._getArchive(), this.getID());
+        var group = Group.createNew(this._getArchive(), this.id);
         if (title) {
             group.setTitle(title);
         }
@@ -89,7 +99,7 @@ class Group {
         // No trash or already in trash, so just delete
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteGroup)
-                .addArgument(this.getID())
+                .addArgument(this.id)
                 .generateCommand()
         );
         this._getWestley().pad();
@@ -107,7 +117,7 @@ class Group {
     deleteAttribute(attr) {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteGroupAttribute)
-                .addArgument(this.getID())
+                .addArgument(this.id)
                 .addArgument(attr)
                 .generateCommand()
         );
@@ -159,13 +169,13 @@ class Group {
     getGroup() {
         const archive = this._getArchive();
         const topmostGroupIDs = archive.getGroups().map(function(group) {
-            return group.getID();
+            return group.id;
         });
-        if (topmostGroupIDs.indexOf(this.getID()) >= 0) {
+        if (topmostGroupIDs.indexOf(this.id) >= 0) {
             // parent is archive
             return null;
         }
-        const parentInfo = searching.findGroupContainingGroupID(archive._getWestley().getDataset(), this.getID());
+        const parentInfo = searching.findGroupContainingGroupID(archive._getWestley().getDataset(), this.id);
         if (parentInfo) {
             return new Group(archive, parentInfo.group);
         }
@@ -198,15 +208,6 @@ class Group {
     }
 
     /**
-     * Get the group ID
-     * @returns {string} The ID of the group
-     * @memberof Group
-     */
-    getID() {
-        return this._getRemoteObject().id;
-    }
-
-    /**
      * Get the group title
      * @returns {string} The title of the group
      * @memberof Group
@@ -231,7 +232,7 @@ class Group {
     isInTrash() {
         let trash = this._getArchive().getTrashGroup();
         if (trash) {
-            let thisGroup = trash.getGroupByID(this.getID());
+            let thisGroup = trash.getGroupByID(this.id);
             return thisGroup !== null;
         }
         return false;
@@ -268,7 +269,7 @@ class Group {
         if (target.type === "Group") {
             // moving to a group
             targetArchive = target._getArchive();
-            targetGroupID = target.getID();
+            targetGroupID = target.id;
         } else if (target.type === "Archive") {
             // moving to an archive
             targetArchive = target;
@@ -286,7 +287,7 @@ class Group {
             // target is local, so create commands here
             this._getWestley().execute(
                 Inigo.create(Inigo.Command.MoveGroup)
-                    .addArgument(this.getID())
+                    .addArgument(this.id)
                     .addArgument(targetGroupID)
                     .generateCommand()
             );
@@ -320,7 +321,7 @@ class Group {
     setAttribute(attributeName, value) {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetGroupAttribute)
-                .addArgument(this.getID())
+                .addArgument(this.id)
                 .addArgument(attributeName)
                 .addArgument(value)
                 .generateCommand()
@@ -337,7 +338,7 @@ class Group {
     setTitle(title) {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetGroupTitle)
-                .addArgument(this.getID())
+                .addArgument(this.id)
                 .addArgument(title)
                 .generateCommand()
         );
@@ -370,8 +371,8 @@ class Group {
                 attributes[attrKey] = groupAttributes[attrKey];
             }
         }
-        let output = {
-            id: this.getID(),
+        const output = {
+            id: this.id,
             title: this.getTitle(),
             attributes: attributes,
             foreign: this.isForeign(),

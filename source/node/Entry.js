@@ -48,7 +48,7 @@ class Entry {
         // delete it
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteEntry)
-                .addArgument(this.getID())
+                .addArgument(this.id)
                 .generateCommand()
         );
         this._getWestley().pad();
@@ -67,7 +67,7 @@ class Entry {
     deleteAttribute(attr) {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteEntryAttribute)
-                .addArgument(this.getID())
+                .addArgument(this.id)
                 .addArgument(attr)
                 .generateCommand()
         );
@@ -85,7 +85,7 @@ class Entry {
     deleteMeta(property) {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteEntryMeta)
-                .addArgument(this.getID())
+                .addArgument(this.id)
                 .addArgument(property)
                 .generateCommand()
         );
@@ -129,27 +129,13 @@ class Entry {
      */
     getGroup() {
         // @todo move to a new searching library
-        const parentInfo = searching.findGroupContainingEntryID(
-            this._getWestley().getDataset().groups || [],
-            this.getID()
-        );
+        const parentInfo = searching.findGroupContainingEntryID(this._getWestley().getDataset().groups || [], this.id);
         if (parentInfo && parentInfo.group) {
             // require Group here due to circular references:
             const Group = require("./Group.js");
             return new Group(this._getArchive(), parentInfo.group);
         }
         return null;
-    }
-
-    /**
-     * Get the entry ID
-     * @deprecated Use `entry.id` instead
-     * @see Entry#id
-     * @returns {String} The entry's ID
-     * @memberof Entry
-     */
-    getID() {
-        return this._getRemoteObject().id;
     }
 
     /**
@@ -210,11 +196,10 @@ class Entry {
      * @memberof Entry
      */
     moveToGroup(group) {
-        const targetID = group.getID();
         this._getWestley().execute(
             Inigo.create(Inigo.Command.MoveEntry)
-                .addArgument(this.getID())
-                .addArgument(targetID)
+                .addArgument(this.id)
+                .addArgument(group.id)
                 .generateCommand()
         );
         this._getWestley().pad();
@@ -255,7 +240,7 @@ class Entry {
         const value = val || "";
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetEntryMeta)
-                .addArgument(this.getID())
+                .addArgument(this.id)
                 .addArgument(metaKey)
                 .addArgument(value)
                 .generateCommand()
@@ -275,7 +260,7 @@ class Entry {
         const value = val || "";
         this._getWestley().execute(
             Inigo.create(Inigo.Command.SetEntryProperty)
-                .addArgument(this.getID())
+                .addArgument(this.id)
                 .addArgument(prop)
                 .addArgument(value)
                 .generateCommand()
