@@ -8,7 +8,7 @@ module.exports = {
     ArchiveSource: require("./archiveManagement/ArchiveSource.js"),
     Workspace: require("./Workspace.js"),
 
-    Credentials: Credentials,
+    Credentials,
 
     Group: require("./Group.js"),
     Entry: require("./Entry.js"),

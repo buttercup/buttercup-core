@@ -41,8 +41,6 @@ class Archive extends AsyncEventEmitter {
         );
         // set ID
         this._generateID();
-        // shared groups
-        this._sharedGroups = [];
         // add group searching
         GroupCollectionDecorator.decorate(this);
         // add entry searching
@@ -66,15 +64,6 @@ class Archive extends AsyncEventEmitter {
     }
 
     /**
-     * An array of shared groups
-     * @property {Array.<Group>} sharedGroups
-     * @instance
-     */
-    get sharedGroups() {
-        return this._sharedGroups;
-    }
-
-    /**
      * Get the instance type
      * @type {String}
      */
@@ -89,7 +78,7 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     createGroup(title) {
-        var group = Group.createNew(this);
+        const group = Group.createNew(this);
         if (title) {
             group.setTitle(title);
         }
@@ -112,20 +101,11 @@ class Archive extends AsyncEventEmitter {
     }
 
     /**
-     * Clear the shared groups array
-     * @returns {Archive} Self
-     */
-    discardSharedGroups() {
-        this._sharedGroups = [];
-        return this;
-    }
-
-    /**
      * Remove all entries and groups from the trash (permanent)
      * @throws {Error} Throws if there is no trash group
      */
     emptyTrash() {
-        let trash = this.getTrashGroup();
+        const trash = this.getTrashGroup();
         if (!trash) {
             throw new Error("No trash group found");
         }
@@ -133,7 +113,7 @@ class Archive extends AsyncEventEmitter {
             group.delete(/* skip trash */ true);
         });
         trash.getEntries().forEach(function(entry) {
-            entry.delete();
+            entry.delete(/* skip trash */ true);
         });
     }
 
@@ -213,13 +193,7 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     getGroups() {
-        var archive = this,
-            westley = this._getWestley();
-        return (westley.getDataset().groups || [])
-            .map(function(rawGroup) {
-                return new Group(archive, rawGroup);
-            })
-            .concat(this.sharedGroups);
+        return (this._getWestley().getDataset().groups || []).map(rawGroup => new Group(this, rawGroup));
     }
 
     /**
@@ -228,8 +202,7 @@ class Archive extends AsyncEventEmitter {
      * @returns {Array.<String>} The command array
      */
     getHistory() {
-        let history = this._getWestley().getHistory();
-        return [].concat(history);
+        return [...this._getWestley().getHistory()];
     }
 
     /**
@@ -246,7 +219,7 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     getTrashGroup() {
-        var groups = this.getGroups();
+        const groups = this.getGroups();
         for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
             if (groups[i].isTrash()) {
                 return groups[i];

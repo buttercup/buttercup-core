@@ -30,16 +30,17 @@ class Entry {
      * If the entry is in the trash already, it is removed (including if there is no
      *    trash group). If the entry is in a normal group and a trash group exists, it
      *  is moved there instead of being deleted.
+     * @param {Boolean=} skipTrash Skip the trash and force-delete the entry
      * @memberof Entry
      * @see moveToGroup
      * @see Archive.getTrashGroup
      * @returns {Boolean} Whether or not the item was deleted
      */
-    delete() {
+    delete(skipTrash = false) {
         const trashGroup = this._getArchive().getTrashGroup();
         const parentGroup = this.getGroup();
         const canTrash = trashGroup && parentGroup && (!parentGroup.isTrash() && !parentGroup.isInTrash());
-        if (canTrash) {
+        if (canTrash && !skipTrash) {
             // trash it
             this.moveToGroup(trashGroup);
             return false;

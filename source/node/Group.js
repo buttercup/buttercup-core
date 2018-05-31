@@ -74,8 +74,7 @@ class Group {
      * @param {Boolean=} skipTrash Skip the trash
      * @returns {Boolean} True when deleted, false when moved to trash
      */
-    delete(skipTrash) {
-        skipTrash = skipTrash === undefined ? false : skipTrash;
+    delete(skipTrash = false) {
         if (this.isTrash()) {
             throw new Error("Trash group cannot be deleted");
         }
