@@ -128,4 +128,89 @@ describe("Archive", function() {
             expect(foundEntry.id).to.equal(this.entry1.id);
         });
     });
+
+    describe("getFormat", function() {
+        beforeEach(function() {
+            this.archive = new Archive();
+        });
+
+        it("returns the format", function() {
+            expect(this.archive.getFormat()).to.equal("buttercup/a");
+        });
+    });
+
+    describe("getGroupByID", function() {
+        beforeEach(function() {
+            this.archive = new Archive();
+            this.top = this.archive.createGroup("top");
+            this.bottom = this.top.createGroup("bottom");
+        });
+
+        it("gets the correct group", function() {
+            const found = this.archive.getGroupByID(this.bottom.id);
+            expect(found.id).to.equal(this.bottom.id);
+        });
+
+        it("returns null if not found", function() {
+            const found = this.archive.getGroupByID("");
+            expect(found).to.be.null;
+        });
+    });
+
+    describe("getGroups", function() {
+        beforeEach(function() {
+            this.archive = new Archive();
+            this.group = this.archive.createGroup("test");
+        });
+
+        it("returns an array", function() {
+            expect(this.archive.getGroups()).to.be.an("array");
+        });
+
+        it("contains expected groups", function() {
+            expect(this.archive.getGroups().map(g => g.id)).to.contain(this.group.id);
+        });
+    });
+
+    describe("getHistory", function() {
+        beforeEach(function() {
+            this.archive = new Archive();
+        });
+
+        it("returns an array", function() {
+            expect(this.archive.getHistory()).to.be.an("array");
+        });
+    });
+
+    describe("getTrashGroup", function() {
+        it("returns null when no trash", function() {
+            const archive = new Archive();
+            expect(archive.getTrashGroup()).to.be.null;
+        });
+
+        it("returns the trash group", function() {
+            const archive = Archive.createWithDefaults();
+            expect(archive.getTrashGroup()).to.be.an.instanceof(Group);
+        });
+    });
+
+    describe("optimise", function() {
+        it("requests history for flattening", function() {
+            const archive = Archive.createWithDefaults();
+            sinon.spy(archive._getWestley(), "getHistory");
+            archive.optimise();
+            expect(archive._getWestley().getHistory.calledOnce).to.be.true;
+        });
+    });
+
+    describe("setAttribute", function() {
+        beforeEach(function() {
+            this.archive = new Archive();
+        });
+
+        it("sets attributes", function() {
+            this.archive.setAttribute("testing", "123");
+            expect(this.archive.getAttribute("testing")).to.equal("123");
+        });
+    });
 });

@@ -223,7 +223,7 @@ class Archive extends AsyncEventEmitter {
      * @returns {Archive} Self
      */
     optimise() {
-        var flattener = new Flattener(this._getWestley());
+        const flattener = new Flattener(this._getWestley());
         if (flattener.canBeFlattened()) {
             flattener.flatten();
         }
