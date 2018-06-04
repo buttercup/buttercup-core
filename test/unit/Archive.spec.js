@@ -13,6 +13,31 @@ describe("Archive", function() {
         expect(archive.getGroups()).to.have.lengthOf(0);
     });
 
+    describe("static:createFromHistory", function() {
+        beforeEach(function() {
+            this.history = [
+                "aid 95d8023d-f1a0-4bda-9ac3-a39b6613293c",
+                "cmm utf8+base64:QnV0dGVyY3VwIGFyY2hpdmUgY3JlYXRlZCAoMjAxOC02LTQp",
+                "fmt utf8+base64:YnV0dGVyY3VwL2E=",
+                "saa utf8+base64:YXR0cg== utf8+base64:dGVzdA==",
+                "pad 15485e19-7f0c-4a28-a74c-6c00a5cc0418",
+                "cgr 0 f35882ed-cee3-4144-b8fa-b3f8038175be",
+                "tgr f35882ed-cee3-4144-b8fa-b3f8038175be utf8+base64:bWFpbg==",
+                "pad 84115b0d-b7bc-43aa-ba9d-3ae5db2e71d7"
+            ];
+        });
+
+        it("creates an archive", function() {
+            const archive = Archive.createFromHistory(this.history);
+            expect(archive).to.be.an.instanceof(Archive);
+        });
+
+        it("sets the correct ID", function() {
+            const archive = Archive.createFromHistory(this.history);
+            expect(archive.id).to.equal("95d8023d-f1a0-4bda-9ac3-a39b6613293c");
+        });
+    });
+
     describe("static:createWithDefaults", function() {
         it("populates the archive with a 'General' group", function() {
             const archive = Archive.createWithDefaults();
@@ -211,6 +236,44 @@ describe("Archive", function() {
         it("sets attributes", function() {
             this.archive.setAttribute("testing", "123");
             expect(this.archive.getAttribute("testing")).to.equal("123");
+        });
+    });
+
+    describe("toObject", function() {
+        beforeEach(function() {
+            this.archive = new Archive();
+            this.archive.setAttribute("attr", "test");
+            const group = this.archive.createGroup("main");
+            const entry = group.createEntry("entry");
+        });
+
+        it("outputs correct top-level properties", function() {
+            const obj = this.archive.toObject();
+            expect(obj).to.have.property("archiveID", this.archive.id);
+            expect(obj).to.have.property("format", this.archive.getFormat());
+        });
+
+        it("outputs archive attributes", function() {
+            const obj = this.archive.toObject();
+            expect(obj)
+                .to.have.property("attributes")
+                .that.deep.equals({ attr: "test" });
+        });
+
+        it("outputs groups", function() {
+            const obj = this.archive.toObject();
+            expect(obj)
+                .to.have.property("groups")
+                .that.has.lengthOf(1);
+            expect(obj.groups[0].title).to.equal("main");
+        });
+
+        it("outputs entries", function() {
+            const obj = this.archive.toObject();
+            expect(obj.groups[0])
+                .to.have.property("entries")
+                .that.has.lengthOf(1);
+            expect(obj.groups[0].entries[0].properties.title).to.equal("entry");
         });
     });
 });
