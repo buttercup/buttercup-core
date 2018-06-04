@@ -27,18 +27,6 @@ module.exports = {
                 .execute(command)
                 .pad();
         });
-        // remove from shared groups
-        let index = -1;
-        targetArchive.sharedGroups.some(function(group, ind) {
-            if (group.getID() === movingGroup.getID()) {
-                index = ind;
-                return true;
-            }
-            return false;
-        });
-        if (index >= 0) {
-            targetArchive.sharedGroups.splice(index, 1);
-        }
         // delete
         movingGroup.delete(/* skip trash */ true);
     }
