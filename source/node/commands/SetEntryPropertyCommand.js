@@ -22,7 +22,8 @@ class SetEntryPropertyCommand extends BaseCommand {
         if (!entry) {
             throw new Error("Entry not found for ID");
         }
-        entry[propertyName] = value;
+        entry.properties = entry.properties || {};
+        entry.properties[propertyName] = value;
     }
 }
 

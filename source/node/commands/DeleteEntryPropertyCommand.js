@@ -1,17 +1,15 @@
 const BaseCommand = require("./BaseCommand.js");
 
 /**
- * Command for the deletion of meta data on an entry
- * @class DeleteEntryMetaCommand
+ * Command for the deletion of property data on an entry
  * @augments BaseCommand
- * @deprecated To be removed
  */
-class DeleteEntryMetaCommand extends BaseCommand {
+class DeleteEntryPropertyCommand extends BaseCommand {
     /**
-     * Execute the deletion of a meta property
+     * Execute the deletion of a property
      * @param {ArchiveDataset} obj The archive dataset
      * @param {String} entryID The ID of the entry
-     * @param {String} propertyName The name of the meta property to delete
+     * @param {String} propertyName The name of the property to delete
      */
     execute(obj, entryID, propertyName) {
         obj.groups = obj.groups || [];
@@ -22,9 +20,9 @@ class DeleteEntryMetaCommand extends BaseCommand {
         entry.properties = entry.properties || {};
         var deleted = delete entry.properties[propertyName];
         if (!deleted) {
-            throw new Error("Failed deleting meta property");
+            throw new Error(`Failed deleting property: ${propertyName}`);
         }
     }
 }
 
-module.exports = DeleteEntryMetaCommand;
+module.exports = DeleteEntryPropertyCommand;

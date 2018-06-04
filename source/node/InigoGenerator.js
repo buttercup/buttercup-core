@@ -71,6 +71,7 @@ InigoCommand.Command = {
     DeleteEntry: { s: "den", d: true, args: [ARG.ItemID] },
     DeleteEntryAttribute: { s: "dea", d: true, args: [ARG.ItemID, ARG.StringValue] },
     DeleteEntryMeta: { s: "dem", d: true, args: [ARG.ItemID, ARG.StringValue] },
+    DeleteEntryProperty: { s: "dep", d: true, args: [ARG.ItemID, ARG.StringValue] },
     DeleteGroup: { s: "dgr", d: true, args: [ARG.ItemID] },
     DeleteGroupAttribute: { s: "dga", d: true, args: [ARG.ItemID, ARG.StringValue] },
     Format: { s: "fmt", d: false, args: [ARG.StringValue] },

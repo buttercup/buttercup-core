@@ -16,6 +16,7 @@ const commandClasses = {
     dea: require("./commands/DeleteEntryAttributeCommand.js"),
     dem: require("./commands/DeleteEntryMetaCommand.js"),
     den: require("./commands/DeleteEntryCommand.js"),
+    dep: require("./commands/DeleteEntryPropertyCommand.js"),
     dga: require("./commands/DeleteGroupAttributeCommand.js"),
     dgr: require("./commands/DeleteGroupCommand.js"),
     fmt: require("./commands/FormatCommand.js"),

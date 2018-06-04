@@ -4,6 +4,7 @@ const BaseCommand = require("./BaseCommand.js");
  * Command for setting meta properties on entries
  * @class SetEntryMetaCommand
  * @augments BaseCommand
+ * @deprecated To be removed
  */
 class SetEntryMetaCommand extends BaseCommand {
     /**
@@ -19,8 +20,8 @@ class SetEntryMetaCommand extends BaseCommand {
         if (!entry) {
             throw new Error("Entry not found for ID");
         }
-        entry.meta = entry.meta || {};
-        entry.meta[propertyName] = value;
+        entry.properties = entry.properties || {};
+        entry.properties[propertyName] = value;
     }
 }
 

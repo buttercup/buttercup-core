@@ -99,7 +99,8 @@ describe("Entry", function() {
             expect(this.entry.getProperty()).to.deep.equal({
                 title: "entry",
                 username: "anthony",
-                password: "passw0rd"
+                password: "passw0rd",
+                metakey: "metaval"
             });
         });
 

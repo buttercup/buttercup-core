@@ -81,10 +81,29 @@ class Entry {
      * @param {String} property The meta property to delete
      * @memberof Entry
      * @returns {Entry} Self
+     * @deprecated Meta will be removed in version 3
      */
     deleteMeta(property) {
         this._getWestley().execute(
             Inigo.create(Inigo.Command.DeleteEntryMeta)
+                .addArgument(this.id)
+                .addArgument(property)
+                .generateCommand()
+        );
+        this._getWestley().pad();
+        return this;
+    }
+
+    /**
+     * Delete a property
+     * @throws {Error} Throws if property doesn't exist, or cannot be deleted
+     * @param {String} property The property to delete
+     * @memberof Entry
+     * @returns {Entry} Self
+     */
+    deleteProperty(property) {
+        this._getWestley().execute(
+            Inigo.create(Inigo.Command.DeleteEntryProperty)
                 .addArgument(this.id)
                 .addArgument(property)
                 .generateCommand()
@@ -151,10 +170,10 @@ class Entry {
      * @deprecated Meta will be removed in version 3
      */
     getMeta(property) {
-        const meta = this._getRemoteObject().meta || {};
+        const meta = this._getRemoteObject().properties || {};
         if (typeof property === "undefined") {
             // No property, return entire object
-            return Object.assign({}, meta);
+            return Object.assign({}, properties);
         }
         // Find the first meta key that matches the requested one regardless of case:
         const metaKey = Object.keys(meta).find(key => key.toLowerCase() === property.toLowerCase());
@@ -171,15 +190,11 @@ class Entry {
      * @memberof Entry
      */
     getProperty(property) {
-        const raw = this._getRemoteObject();
+        const raw = this._getRemoteObject().properties;
         if (typeof property === "undefined") {
-            return entryTools.getValidProperties().reduce((props, propName) => {
-                return Object.assign(props, {
-                    [propName]: raw[propName]
-                });
-            }, {});
+            return Object.assign({}, raw);
         }
-        return raw.hasOwnProperty(property) && entryTools.isValidProperty(property) ? raw[property] : undefined;
+        return raw.hasOwnProperty(property) ? raw[property] : undefined;
     }
 
     /**
@@ -237,7 +252,7 @@ class Entry {
      * @deprecated Meta will be removed in version 3
      */
     setMeta(prop, val) {
-        const meta = this._getRemoteObject().meta || {};
+        const meta = this._getRemoteObject().properties || {};
         // Try to find a key that matches the requested property, even in a different case. If it
         // exists, use that to set instead:
         const metaKey = Object.keys(meta).find(key => key.toLowerCase() === prop.toLowerCase()) || prop;
@@ -280,19 +295,12 @@ class Entry {
      */
     toObject() {
         const properties = {};
-        const meta = {};
         const attributes = {};
-        const remoteMeta = this._getRemoteObject().meta || {};
+        const remoteProperties = this._getRemoteObject().properties || {};
         const remoteAttrs = this._getRemoteObject().attributes || {};
-        entryTools.getValidProperties().forEach(propName => {
-            const val = this.getProperty(propName);
-            if (val !== undefined) {
-                properties[propName] = val;
-            }
-        });
-        for (let metaName in remoteMeta) {
-            if (remoteMeta.hasOwnProperty(metaName)) {
-                meta[metaName] = remoteMeta[metaName];
+        for (let propertyName in remoteProperties) {
+            if (remoteProperties.hasOwnProperty(propertyName)) {
+                properties[propertyName] = remoteProperties[propertyName];
             }
         }
         for (let attrName in remoteAttrs) {
@@ -303,7 +311,6 @@ class Entry {
         return {
             attributes,
             id: this.id,
-            meta,
             properties
         };
     }
