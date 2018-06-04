@@ -60,6 +60,13 @@ describe("Entry", function() {
         it("returns undefined if the attribute doesn't exist", function() {
             expect(this.entry.getAttribute("nothere")).to.be.undefined;
         });
+
+        it("returns an object if no parameter is provided", function() {
+            expect(this.entry.getAttribute()).to.deep.equal({
+                attrib: "ok",
+                attrib2: "also-ok"
+            });
+        });
     });
 
     describe("getAttributes", function() {

@@ -116,6 +116,7 @@ class Entry {
      * Get all attributes
      * @returns {Object} Attributes object
      * @memberof Entry
+     * @deprecated Will be removed in version 3 - use `getAttribute()` instead
      */
     getAttributes() {
         const attributes = this._getRemoteObject().attributes || {};
@@ -126,6 +127,7 @@ class Entry {
      * Get the containing group for the entry
      * @returns {Group|null} The parent group
      * @memberof Entry
+     * @deprecated Will throw for no group in version 3
      */
     getGroup() {
         // @todo move to a new searching library
@@ -146,6 +148,7 @@ class Entry {
      * @returns {String|undefined|Object} The meta value or an object
      *  containing all meta keys and values if no meta name specified
      * @memberof Entry
+     * @deprecated Meta will be removed in version 3
      */
     getMeta(property) {
         const meta = this._getRemoteObject().meta || {};
@@ -231,6 +234,7 @@ class Entry {
      * @param {String=} val The value to set
      * @returns {Entry} Returns self
      * @memberof Entry
+     * @deprecated Meta will be removed in version 3
      */
     setMeta(prop, val) {
         const meta = this._getRemoteObject().meta || {};

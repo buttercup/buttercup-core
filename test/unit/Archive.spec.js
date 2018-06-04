@@ -123,6 +123,12 @@ describe("Archive", function() {
         it("returns undefined if the attribute doesn't exist", function() {
             expect(this.archive.getAttribute("nope")).to.be.undefined;
         });
+
+        it("returns an object if no parameter is provided", function() {
+            expect(this.archive.getAttribute()).to.deep.equal({
+                testing: "string"
+            });
+        });
     });
 
     describe("getAttributes", function() {

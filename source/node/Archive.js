@@ -129,11 +129,16 @@ class Archive extends AsyncEventEmitter {
     /**
      * Get the value of an attribute
      * @param {String} attributeName The attribute to get
-     * @returns {undefined|String} The value of the attribute or undefined if not set
+     * @returns {undefined|String|Object} The value of the attribute or undefined if not
+     *  set. Returns an object if no attribute name is given.
      * @memberof Archive
+     * @deprecated Will be removed in version 3 - use `getAttribute()` instead
      */
     getAttribute(attributeName) {
         const dataset = this._getWestley().getDataset();
+        if (!attributeName) {
+            return Object.assign({}, dataset.attributes);
+        }
         if (dataset.attributes && dataset.attributes.hasOwnProperty(attributeName)) {
             return dataset.attributes[attributeName];
         }
