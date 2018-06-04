@@ -6,10 +6,13 @@ describe("Entry", function() {
     beforeEach(function() {
         this.archive = Archive.createWithDefaults();
         this.group = this.archive.createGroup("test");
+        this.otherGroup = this.archive.createGroup("second");
         this.entry = this.group.createEntry("entry");
         this.entry.setAttribute("attrib", "ok");
         this.entry.setAttribute("attrib2", "also-ok");
         this.entry.setMeta("metakey", "metaval");
+        this.entry.setProperty("username", "anthony");
+        this.entry.setProperty("password", "passw0rd");
     });
 
     describe("get:id", function() {
@@ -82,6 +85,62 @@ describe("Entry", function() {
         it("returns parent group", function() {
             expect(this.entry.getGroup()).to.be.an.instanceof(Group);
             expect(this.entry.getGroup().id).to.equal(this.group.id);
+        });
+    });
+
+    describe("getProperty", function() {
+        it("returns property values", function() {
+            expect(this.entry.getProperty("title")).to.equal("entry");
+            expect(this.entry.getProperty("username")).to.equal("anthony");
+            expect(this.entry.getProperty("password")).to.equal("passw0rd");
+        });
+
+        it("returns an object if no parameter provided", function() {
+            expect(this.entry.getProperty()).to.deep.equal({
+                title: "entry",
+                username: "anthony",
+                password: "passw0rd"
+            });
+        });
+
+        it("returns undefined if the property doesn't exist", function() {
+            expect(this.entry.getProperty("age")).to.be.undefined;
+        });
+    });
+
+    describe("isInTrash", function() {
+        it("returns correctly", function() {
+            expect(this.entry.isInTrash()).to.be.false;
+            this.entry.delete();
+            expect(this.entry.isInTrash()).to.be.true;
+        });
+    });
+
+    describe("moveToGroup", function() {
+        it("moves entry to another group", function() {
+            expect(this.group.getEntries()).to.have.lengthOf(1);
+            expect(this.otherGroup.getEntries()).to.have.lengthOf(0);
+            this.entry.moveToGroup(this.otherGroup);
+            expect(this.group.getEntries()).to.have.lengthOf(0);
+            expect(this.otherGroup.getEntries()).to.have.lengthOf(1);
+        });
+    });
+
+    describe("setAttribute", function() {
+        it("sets attributes", function() {
+            this.entry.setAttribute("one", "two");
+            expect(this.entry.getAttribute("one")).to.equal("two");
+            this.entry.setAttribute("one", "three");
+            expect(this.entry.getAttribute("one")).to.equal("three");
+        });
+    });
+
+    describe("setProperty", function() {
+        it("sets properties", function() {
+            this.entry.setProperty("username", "two");
+            expect(this.entry.getProperty("username")).to.equal("two");
+            this.entry.setProperty("username", "three");
+            expect(this.entry.getProperty("username")).to.equal("three");
         });
     });
 });
