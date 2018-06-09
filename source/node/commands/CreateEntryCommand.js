@@ -14,11 +14,13 @@ class CreateEntryCommand extends BaseCommand {
      */
     execute(obj, groupID, entryID) {
         obj.groups = obj.groups || [];
-        var entry = {
+        const entry = {
             id: entryID,
-            title: ""
+            properties: {
+                title: ""
+            }
         };
-        var group = this.searchTools.findGroupByID(obj.groups, groupID);
+        const group = this.searchTools.findGroupByID(obj.groups, groupID);
         if (!group) {
             throw new Error("Invalid group ID");
         }
