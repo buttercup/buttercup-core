@@ -54,8 +54,18 @@ describe("Group", function() {
         it("sends the group to the trash", function() {
             const trash = this.archive.getTrashGroup();
             expect(trash.getGroups().map(g => g.id)).to.not.contain(this.group.id);
-            this.group.delete();
+            const deleted = this.group.delete();
             expect(trash.getGroups().map(g => g.id)).to.contain(this.group.id);
+            expect(deleted).to.be.false;
+        });
+
+        it("can force-delete the group", function() {
+            const trash = this.archive.getTrashGroup();
+            const groupID = this.group.id;
+            expect(trash.getGroups().map(g => g.id)).to.not.contain(groupID);
+            const deleted = this.group.delete(/* skip */ true);
+            expect(trash.getGroups().map(g => g.id)).to.not.contain(groupID);
+            expect(deleted).to.be.true;
         });
     });
 });
