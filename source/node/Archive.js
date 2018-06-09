@@ -75,6 +75,7 @@ class Archive extends AsyncEventEmitter {
     /**
      * Get the instance type
      * @type {String}
+     * @readonly
      */
     get type() {
         return "Archive";

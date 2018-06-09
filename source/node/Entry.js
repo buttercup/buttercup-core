@@ -26,6 +26,15 @@ class Entry {
     }
 
     /**
+     * Get the instance type
+     * @type {String}
+     * @readonly
+     */
+    get type() {
+        return "Entry";
+    }
+
+    /**
      * Delete the entry - either trashes the entry, or removes it completely.
      * If the entry is in the trash already, it is removed (including if there is no
      *    trash group). If the entry is in a normal group and a trash group exists, it
