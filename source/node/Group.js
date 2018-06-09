@@ -42,7 +42,7 @@ class Group {
     /**
      * Get the instance type
      * @type {String}
-     * @memberof Group
+     * @readonly
      */
     get type() {
         return "Group";
@@ -50,7 +50,7 @@ class Group {
 
     /**
      * Create a new entry with a title
-     * @param {string=} title The title of the new entry
+     * @param {String=} title The title of the new entry
      * @returns {Entry} The new entry
      * @memberof Group
      */
@@ -93,7 +93,7 @@ class Group {
             inTrash = this.isInTrash();
         if (!inTrash && hasTrash && !skipTrash) {
             // Not in trash, and a trash group exists, so move it there
-            this.moveToGroup(trashGroup);
+            this.moveTo(trashGroup);
             return false;
         }
         // No trash or already in trash, so just delete
@@ -283,7 +283,7 @@ class Group {
         if (targetArchive.readOnly) {
             throw new Error("Cannot move group: target archive is read-only");
         }
-        if (this._getArchive().equals(targetArchive)) {
+        if (this._getArchive().id === targetArchive.id) {
             // target is local, so create commands here
             this._getWestley().execute(
                 Inigo.create(Inigo.Command.MoveGroup)
@@ -297,18 +297,6 @@ class Group {
             sharing.moveGroupBetweenArchives(this, target);
         }
         return this;
-    }
-
-    /**
-     * Move the group into another
-     * @param {Group} group The target group (new parent)
-     * @returns {Group} Returns self
-     * @memberof Group
-     * @deprecated Use `moveTo` instead
-     * @see moveTo
-     */
-    moveToGroup(group) {
-        return this.moveTo(group);
     }
 
     /**
