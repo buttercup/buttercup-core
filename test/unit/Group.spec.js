@@ -6,6 +6,8 @@ describe("Group", function() {
     beforeEach(function() {
         this.archive = Archive.createWithDefaults();
         this.group = this.archive.createGroup("test");
+        this.group.setAttribute("abc", "123");
+        this.group.setAttribute("another", "attribute");
         this.entry1 = this.group.createEntry("entry1");
         this.entry2 = this.group.createEntry("entry2");
     });
@@ -66,6 +68,66 @@ describe("Group", function() {
             const deleted = this.group.delete(/* skip */ true);
             expect(trash.getGroups().map(g => g.id)).to.not.contain(groupID);
             expect(deleted).to.be.true;
+        });
+
+        it("throws if group is trash", function() {
+            const trash = this.archive.getTrashGroup();
+            expect(() => {
+                trash.delete();
+            }).to.throw(/cannot be deleted/i);
+        });
+    });
+
+    describe("deleteAttribute", function() {
+        it("deletes attributes", function() {
+            expect(this.group.getAttribute("abc")).to.equal("123");
+            this.group.deleteAttribute("abc");
+            expect(this.group.getAttribute("abc")).to.be.undefined;
+        });
+
+        it("returns the Group instance", function() {
+            const output = this.group.deleteAttribute("abc");
+            expect(output).to.equal(this.group);
+        });
+    });
+
+    describe("getAttribute", function() {
+        it("returns the attribute value", function() {
+            expect(this.group.getAttribute("abc")).to.equal("123");
+        });
+
+        it("returns undefined if the attribute doesn't exist", function() {
+            expect(this.group.getAttribute("def")).to.be.undefined;
+        });
+
+        it("returns all attributes when no name provided", function() {
+            expect(this.group.getAttribute()).to.deep.equal({
+                another: "attribute",
+                abc: "123"
+            });
+        });
+    });
+
+    describe("getEntries", function() {
+        it("returns an array", function() {
+            expect(this.group.getEntries()).to.be.an("array");
+        });
+
+        it("contains expected entries", function() {
+            const entries = this.group.getEntries().map(e => e.id);
+            expect(entries).to.contain(this.entry1.id);
+            expect(entries).to.contain(this.entry2.id);
+        });
+    });
+
+    describe("getGroup", function() {
+        it("returns null if parent is the archive", function() {
+            expect(this.group.getGroup()).to.be.null;
+        });
+
+        it("returns parent group", function() {
+            const sub = this.group.createGroup("sub");
+            expect(sub.getGroup().id).to.equal(this.group.id);
         });
     });
 });

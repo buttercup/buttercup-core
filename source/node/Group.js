@@ -127,20 +127,26 @@ class Group {
 
     /**
      * Get an attribute
-     * @param {string} attributeName The name of the attribute
-     * @returns {string|undefined} Returns the attribute or undefined if not found
+     * @param {String=} attributeName The name of the attribute. If none provided
+     *  the entire attributes object is returned.
+     * @returns {String|undefined|Object} Returns the attribute or undefined if not found.
+     *  If no attribute name is provided an object containing all attributes is returned.
      * @memberof Group
      */
     getAttribute(attributeName) {
-        const raw = this._getRemoteObject();
-        return raw.attributes && raw.attributes.hasOwnProperty(attributeName)
-            ? raw.attributes[attributeName]
-            : undefined;
+        const attributes = this._getRemoteObject().attributes || {};
+        if (typeof attributeName === "undefined") {
+            // No property, return entire object
+            return Object.assign({}, attributes);
+        }
+        return attributes.hasOwnProperty(attributeName) ? attributes[attributeName] : undefined;
     }
 
     /**
      * Get all attributes
      * @returns {Object} Attributes object
+     * @memberof Group
+     * @deprecated Will be removed in version 3 - use `getAttribute()` instead
      */
     getAttributes() {
         const raw = this._getRemoteObject();
@@ -191,7 +197,7 @@ class Group {
      * @see findGroupByID
      */
     getGroupByID(groupID) {
-        let groupRaw = searching.findGroupByID(this._getRemoteObject().groups || [], groupID);
+        const groupRaw = searching.findGroupByID(this._getRemoteObject().groups || [], groupID);
         return groupRaw === null ? null : new Group(this._getArchive(), groupRaw);
     }
 
