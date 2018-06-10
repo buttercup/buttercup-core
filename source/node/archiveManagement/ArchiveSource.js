@@ -161,7 +161,7 @@ class ArchiveSource extends AsyncEventEmitter {
     /**
      * Dehydrate the source for storage
      * Returns a secure string with locked (encrypted) credentials, even when the
-     *  source is in the UNLOCKED state. This method does NOT store the source - 
+     *  source is in the UNLOCKED state. This method does NOT store the source -
      *  this must be done separately.
      * @returns {Promise.<String>} A promise that resolves with the dehydrated
      *  source information

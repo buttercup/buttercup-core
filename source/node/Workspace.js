@@ -118,8 +118,7 @@ class Workspace {
             const newArchive = new Archive();
             newArchive._getWestley().clear();
             // merge all history and execute on new archive
-            base
-                .concat(newHistoryStaged)
+            base.concat(newHistoryStaged)
                 .concat(newHistoryMain)
                 .forEach(function(command) {
                     newArchive._getWestley().execute(command);

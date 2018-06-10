@@ -106,9 +106,15 @@ class MyButtercupClient {
             });
     }
 
-    writeArchive(
-        { token, rootArchiveID, archiveID, encryptedContents, updateID, masterAccountCredentials, isNew = false } = {}
-    ) {
+    writeArchive({
+        token,
+        rootArchiveID,
+        archiveID,
+        encryptedContents,
+        updateID,
+        masterAccountCredentials,
+        isNew = false
+    } = {}) {
         const fetch = getFetchMethod();
         const method = isNew ? "POST" : "PUT";
         const errorPrefix = "Failed writing archive:";
