@@ -23,7 +23,6 @@ class Group {
         this._archive = archive;
         this._westley = archive._getWestley();
         this._remoteObject = remoteObj;
-        this._remoteObject._foreign = false;
         // add group searching
         GroupCollectionDecorator.decorate(this);
         // add entry searching
@@ -210,15 +209,6 @@ class Group {
     }
 
     /**
-     * Check if the group is foreign (from another archive)
-     * @returns {Boolean} True if it is foreign
-     * @memberof Group
-     */
-    isForeign() {
-        return this._getRemoteObject()._foreign === true;
-    }
-
-    /**
      * Check if the group is in the trash
      * @returns {Boolean} Whether or not the group is within the trash group
      */
@@ -229,14 +219,6 @@ class Group {
             return thisGroup !== null;
         }
         return false;
-    }
-
-    /**
-     * Check if the group is shared
-     * @returns {Boolean} True if the group is a shared group
-     */
-    isShared() {
-        return this.getAttribute(Group.Attributes.Role) === "shared";
     }
 
     /**
@@ -355,9 +337,7 @@ class Group {
         const output = {
             id: this.id,
             title: this.getTitle(),
-            attributes: attributes,
-            foreign: this.isForeign(),
-            shared: this.isShared()
+            attributes: attributes
         };
         if (outputFlags & Group.OutputFlag.Entries) {
             output.entries = this.getEntries().map(entry => entry.toObject());
