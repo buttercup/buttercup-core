@@ -223,4 +223,102 @@ describe("Group", function() {
             expect(archive2.findGroupByID(gid)).to.not.be.null;
         });
     });
+
+    describe("setAttribute", function() {
+        it("sets attribute values", function() {
+            this.group.setAttribute("testing", "000");
+            expect(this.group.getAttribute("testing")).to.equal("000");
+        });
+    });
+
+    describe("setTitle", function() {
+        it("sets the group title", function() {
+            this.group.setTitle("a title");
+            expect(this.group.getTitle()).to.equal("a title");
+        });
+    });
+
+    describe("toObject", function() {
+        it("returns an object", function() {
+            expect(this.group.toObject()).to.be.an("object");
+        });
+
+        it("outputs the group ID", function() {
+            expect(this.group.toObject()).to.have.property("id", this.group.id);
+        });
+
+        it("outputs the group title", function() {
+            expect(this.group.toObject()).to.have.property("title", "test");
+        });
+
+        it("outputs empty group title when title not set", function() {
+            const group = this.group.createGroup();
+            expect(group.toObject()).to.have.property("title", "");
+        });
+
+        it("outputs attributes", function() {
+            const output = this.group.toObject();
+            expect(output)
+                .to.have.property("attributes")
+                .that.deep.equals({
+                    abc: "123",
+                    another: "attribute"
+                });
+        });
+
+        it("contains groups by default", function() {
+            const output = this.group.toObject();
+            expect(output)
+                .to.have.property("groups")
+                .that.is.an("array");
+        });
+
+        it("contains entries by default", function() {
+            const output = this.group.toObject();
+            expect(output)
+                .to.have.property("entries")
+                .that.is.an("array");
+        });
+
+        it("can be configured to only output entries", function() {
+            const output = this.group.toObject(Group.OutputFlag.Entries);
+            expect(output)
+                .to.have.property("entries")
+                .that.is.an("array");
+            expect(output).to.not.have.property("groups");
+        });
+
+        it("can be configured to only output groups", function() {
+            const output = this.group.toObject(Group.OutputFlag.Groups);
+            expect(output)
+                .to.have.property("groups")
+                .that.is.an("array");
+            expect(output).to.not.have.property("entries");
+        });
+
+        it("can be configured to only output group details (no entries or groups)", function() {
+            const output = this.group.toObject(Group.OutputFlag.OnlyGroup);
+            expect(output).to.not.have.property("groups");
+            expect(output).to.not.have.property("entries");
+            expect(output).to.have.property("id");
+            expect(output).to.have.property("title");
+            expect(output).to.have.property("attributes");
+        });
+    });
+
+    describe("toString", function() {
+        it("returns a JSON string", function() {
+            const str = this.group.toString();
+            expect(str).to.be.a("string");
+            const obj = JSON.parse(str);
+            expect(obj).to.have.property("id", this.group.id);
+        });
+
+        it("passes output flags to toObject", function() {
+            sinon.spy(this.group, "toObject");
+            this.group.toString(Group.OutputFlag.Entries);
+            expect(this.group.toObject.calledOnce).to.be.true;
+            expect(this.group.toObject.calledWithExactly(Group.OutputFlag.Entries)).to.be.true;
+        });
+    });
 });

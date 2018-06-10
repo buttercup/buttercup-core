@@ -325,9 +325,7 @@ class Group {
      *      // output only the group info
      *      group.toObject(Group.OutputFlag.OnlyGroup)
      */
-    toObject(outputFlags) {
-        outputFlags = outputFlags === undefined ? Group.OutputFlag.Entries | Group.OutputFlag.Groups : outputFlags;
-        // @todo use object cloning
+    toObject(outputFlags = Group.OutputFlag.Entries | Group.OutputFlag.Groups) {
         var attributes = {},
             groupAttributes = this._remoteObject.attributes || {};
         for (var attrKey in groupAttributes) {
