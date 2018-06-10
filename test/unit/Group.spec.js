@@ -159,4 +159,68 @@ describe("Group", function() {
             expect(sub.getGroup().id).to.equal(this.group.id);
         });
     });
+
+    describe("getGroups", function() {
+        it("returns an array", function() {
+            expect(this.group.getGroups()).to.be.an("array");
+        });
+
+        it("contains expected groups", function() {
+            const gid1 = this.group.createGroup("one").id;
+            const gid2 = this.group.createGroup("two").id;
+            expect(this.group.getGroups().map(g => g.id)).to.contain(gid1);
+            expect(this.group.getGroups().map(g => g.id)).to.contain(gid2);
+        });
+    });
+
+    describe("getTitle", function() {
+        it("returns the title", function() {
+            expect(this.group.getTitle()).to.equal("test");
+        });
+
+        it("returns an empty string for untitled group", function() {
+            const group = this.group.createGroup();
+            expect(group.getTitle()).to.equal("");
+        });
+    });
+
+    describe("isInTrash", function() {
+        it("returns false when not in trash", function() {
+            expect(this.group.isInTrash()).to.be.false;
+        });
+
+        it("returns true when in trash", function() {
+            this.group.delete();
+            expect(this.group.isInTrash()).to.be.true;
+        });
+    });
+
+    describe("isTrash", function() {
+        it("returns false when not trash", function() {
+            expect(this.group.isTrash()).to.be.false;
+        });
+
+        it("returns true when group is trash", function() {
+            const trash = this.archive.getTrashGroup();
+            expect(trash.isTrash()).to.be.true;
+        });
+    });
+
+    describe("moveTo", function() {
+        it("moves a group into another", function() {
+            const parent1 = this.archive.createGroup("parent1");
+            const parent2 = this.archive.createGroup("parent2");
+            const child = parent1.createGroup("child");
+            child.moveTo(parent2);
+            expect(parent2.getGroups().map(g => g.id)).to.contain(child.id);
+        });
+
+        it("moves a group into another archive", function() {
+            const archive2 = new Archive();
+            const gid = this.group.id;
+            this.group.moveTo(archive2);
+            expect(this.archive.findGroupByID(gid)).to.be.null;
+            expect(archive2.findGroupByID(gid)).to.not.be.null;
+        });
+    });
 });

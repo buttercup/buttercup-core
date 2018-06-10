@@ -211,6 +211,7 @@ class Group {
     /**
      * Check if the group is in the trash
      * @returns {Boolean} Whether or not the group is within the trash group
+     * @memberof Group
      */
     isInTrash() {
         const trash = this._getArchive().getTrashGroup();
