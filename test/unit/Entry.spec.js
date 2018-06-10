@@ -55,6 +55,13 @@ describe("Entry", function() {
         });
     });
 
+    describe("deleteProperty", function() {
+        it("deletes properties", function() {
+            this.entry.deleteProperty("username");
+            expect(this.entry.getProperty("username")).to.be.undefined;
+        });
+    });
+
     describe("getAttribute", function() {
         it("returns attributes", function() {
             expect(this.entry.getAttribute("attrib")).to.equal("ok");
