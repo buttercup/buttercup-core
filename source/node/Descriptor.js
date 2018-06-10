@@ -1,6 +1,6 @@
-var Inigo = require("./InigoGenerator.js");
+const Inigo = require("./InigoGenerator.js");
 
-var Commands = Inigo.Command;
+const { Command } = Inigo;
 
 /**
  * Describe an archive dataset - to history commands
@@ -19,14 +19,14 @@ module.exports = function describe(dataset, parentGroupID) {
         // Archive
         if (dataset.format) {
             commands.push(
-                Inigo.create(Commands.Format)
+                Inigo.create(Command.Format)
                     .addArgument(dataset.format)
                     .generateCommand()
             );
         }
         if (dataset.archiveID) {
             commands.push(
-                Inigo.create(Commands.ArchiveID)
+                Inigo.create(Command.ArchiveID)
                     .addArgument(dataset.archiveID)
                     .generateCommand()
             );
@@ -34,7 +34,7 @@ module.exports = function describe(dataset, parentGroupID) {
         if (dataset.attributes) {
             Object.keys(dataset.attributes).forEach(function(attributeName) {
                 commands.push(
-                    Inigo.create(Commands.SetArchiveAttribute)
+                    Inigo.create(Command.SetArchiveAttribute)
                         .addArgument(attributeName)
                         .addArgument(dataset.attributes[attributeName])
                         .generateCommand()
@@ -47,14 +47,14 @@ module.exports = function describe(dataset, parentGroupID) {
             throw new Error("No parent group ID specified");
         }
         commands.push(
-            Inigo.create(Commands.CreateGroup)
+            Inigo.create(Command.CreateGroup)
                 .addArgument(parentGroupID)
                 .addArgument(currentGroupID)
                 .generateCommand()
         );
         if (dataset.title) {
             commands.push(
-                Inigo.create(Commands.SetGroupTitle)
+                Inigo.create(Command.SetGroupTitle)
                     .addArgument(currentGroupID)
                     .addArgument(dataset.title)
                     .generateCommand()
@@ -64,7 +64,7 @@ module.exports = function describe(dataset, parentGroupID) {
             for (var attributeName in dataset.attributes) {
                 if (dataset.attributes.hasOwnProperty(attributeName)) {
                     commands.push(
-                        Inigo.create(Commands.SetGroupAttribute)
+                        Inigo.create(Command.SetGroupAttribute)
                             .addArgument(currentGroupID)
                             .addArgument(attributeName)
                             .addArgument(dataset.attributes[attributeName])
@@ -77,15 +77,16 @@ module.exports = function describe(dataset, parentGroupID) {
     }
     entries.forEach(function(entry) {
         commands.push(
-            Inigo.create(Commands.CreateEntry)
+            Inigo.create(Command.CreateEntry)
                 .addArgument(currentGroupID)
                 .addArgument(entry.id)
                 .generateCommand()
         );
+        // Deprecated: this will soon be removed (v3):
         ["title", "username", "password"].forEach(function(property) {
             if (entry[property]) {
                 commands.push(
-                    Inigo.create(Commands.SetEntryProperty)
+                    Inigo.create(Command.SetEntryProperty)
                         .addArgument(entry.id)
                         .addArgument(property)
                         .addArgument(entry[property])
@@ -93,11 +94,24 @@ module.exports = function describe(dataset, parentGroupID) {
                 );
             }
         });
+        if (entry.properties) {
+            for (let propertyName in entry.properties) {
+                if (entry.properties.hasOwnProperty(propertyName)) {
+                    commands.push(
+                        Inigo.create(Command.SetEntryProperty)
+                            .addArgument(entry.id)
+                            .addArgument(propertyName)
+                            .addArgument(entry.properties[propertyName])
+                            .generateCommand()
+                    );
+                }
+            }
+        }
         if (entry.meta) {
             for (var metaName in entry.meta) {
                 if (entry.meta.hasOwnProperty(metaName)) {
                     commands.push(
-                        Inigo.create(Commands.SetEntryMeta)
+                        Inigo.create(Command.SetEntryMeta)
                             .addArgument(entry.id)
                             .addArgument(metaName)
                             .addArgument(entry.meta[metaName])
@@ -110,7 +124,7 @@ module.exports = function describe(dataset, parentGroupID) {
             for (var attributeName in entry.attributes) {
                 if (entry.attributes.hasOwnProperty(attributeName)) {
                     commands.push(
-                        Inigo.create(Commands.SetEntryAttribute)
+                        Inigo.create(Command.SetEntryAttribute)
                             .addArgument(entry.id)
                             .addArgument(attributeName)
                             .addArgument(entry.attributes[attributeName])
