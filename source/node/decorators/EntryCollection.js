@@ -29,7 +29,7 @@ function findEntriesByCheck(groupParent, check, key, value) {
                 break;
             }
             case "id": {
-                return value === entry.getID();
+                return value === entry.id;
             }
             default:
                 throw new Error(`Unknown check instruction: ${check}`);

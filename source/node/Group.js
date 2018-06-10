@@ -189,19 +189,6 @@ class Group {
     }
 
     /**
-     * Get a child group (deep) by its ID
-     * @param {String} groupID The ID of the group to get
-     * @returns {Group|null} The found group or null
-     * @memberof Group
-     * @deprecated To be removed
-     * @see findGroupByID
-     */
-    getGroupByID(groupID) {
-        const groupRaw = searching.findGroupByID(this._getRemoteObject().groups || [], groupID);
-        return groupRaw === null ? null : new Group(this._getArchive(), groupRaw);
-    }
-
-    /**
      * Get the groups within the group
      * @returns {Array.<Group>} An array of child groups
      * @memberof Group
@@ -236,9 +223,9 @@ class Group {
      * @returns {Boolean} Whether or not the group is within the trash group
      */
     isInTrash() {
-        let trash = this._getArchive().getTrashGroup();
+        const trash = this._getArchive().getTrashGroup();
         if (trash) {
-            let thisGroup = trash.getGroupByID(this.id);
+            const thisGroup = trash.findGroupByID(this.id);
             return thisGroup !== null;
         }
         return false;

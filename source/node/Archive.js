@@ -156,38 +156,12 @@ class Archive extends AsyncEventEmitter {
     }
 
     /**
-     * Find an entry by its ID
-     * @param {String} entryID The entry's ID
-     * @returns {Entry|null} The found entry or null
-     * @memberof Archive
-     */
-    getEntryByID(entryID) {
-        const westley = this._getWestley();
-        const entryRaw = rawSearching.findEntryByID(westley.getDataset().groups, entryID);
-        return entryRaw === null ? null : new Entry(this, entryRaw);
-    }
-
-    /**
      * Get the archive format
      * @returns {string} The format of the archive
      * @memberof Archive
      */
     getFormat() {
         return this._getWestley().getDataset().format;
-    }
-
-    /**
-     * Find a group by its ID
-     * @param {String} groupID The group's ID
-     * @returns {Group|null} The group with the provided ID
-     * @memberof Archive
-     * @deprecated To be removed
-     * @see findGroupByID
-     */
-    getGroupByID(groupID) {
-        var westley = this._getWestley(),
-            groupRaw = rawSearching.findGroupByID(westley.getDataset().groups, groupID);
-        return groupRaw === null ? null : new Group(this, groupRaw);
     }
 
     /**

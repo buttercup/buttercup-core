@@ -110,6 +110,38 @@ describe("Archive", function() {
         });
     });
 
+    describe("findEntryByID", function() {
+        beforeEach(function() {
+            this.archive = new Archive();
+            const group = this.archive.createGroup("test");
+            this.entry1 = group.createEntry("one");
+            this.entry2 = group.createEntry("two");
+        });
+
+        it("gets the correct entry", function() {
+            const foundEntry = this.archive.findEntryByID(this.entry1.id);
+            expect(foundEntry.id).to.equal(this.entry1.id);
+        });
+    });
+
+    describe("findGroupByID", function() {
+        beforeEach(function() {
+            this.archive = new Archive();
+            this.top = this.archive.createGroup("top");
+            this.bottom = this.top.createGroup("bottom");
+        });
+
+        it("gets the correct group", function() {
+            const found = this.archive.findGroupByID(this.bottom.id);
+            expect(found.id).to.equal(this.bottom.id);
+        });
+
+        it("returns null if not found", function() {
+            const found = this.archive.findGroupByID("");
+            expect(found).to.be.null;
+        });
+    });
+
     describe("getAttribute", function() {
         beforeEach(function() {
             this.archive = new Archive();
@@ -146,20 +178,6 @@ describe("Archive", function() {
         });
     });
 
-    describe("getEntryByID", function() {
-        beforeEach(function() {
-            this.archive = new Archive();
-            const group = this.archive.createGroup("test");
-            this.entry1 = group.createEntry("one");
-            this.entry2 = group.createEntry("two");
-        });
-
-        it("gets the correct entry", function() {
-            const foundEntry = this.archive.getEntryByID(this.entry1.id);
-            expect(foundEntry.id).to.equal(this.entry1.id);
-        });
-    });
-
     describe("getFormat", function() {
         beforeEach(function() {
             this.archive = new Archive();
@@ -167,24 +185,6 @@ describe("Archive", function() {
 
         it("returns the format", function() {
             expect(this.archive.getFormat()).to.equal("buttercup/a");
-        });
-    });
-
-    describe("getGroupByID", function() {
-        beforeEach(function() {
-            this.archive = new Archive();
-            this.top = this.archive.createGroup("top");
-            this.bottom = this.top.createGroup("bottom");
-        });
-
-        it("gets the correct group", function() {
-            const found = this.archive.getGroupByID(this.bottom.id);
-            expect(found.id).to.equal(this.bottom.id);
-        });
-
-        it("returns null if not found", function() {
-            const found = this.archive.getGroupByID("");
-            expect(found).to.be.null;
         });
     });
 

@@ -91,6 +91,35 @@ describe("Group", function() {
         });
     });
 
+    describe("findEntryByID", function() {
+        beforeEach(function() {
+            this.entry1 = this.group.createEntry("one");
+            this.entry2 = this.group.createEntry("two");
+        });
+
+        it("gets the correct entry", function() {
+            const foundEntry = this.group.findEntryByID(this.entry1.id);
+            expect(foundEntry.id).to.equal(this.entry1.id);
+        });
+    });
+
+    describe("findGroupByID", function() {
+        beforeEach(function() {
+            this.top = this.group.createGroup("top");
+            this.bottom = this.top.createGroup("bottom");
+        });
+
+        it("gets the correct group", function() {
+            const found = this.group.findGroupByID(this.bottom.id);
+            expect(found.id).to.equal(this.bottom.id);
+        });
+
+        it("returns null if not found", function() {
+            const found = this.group.findGroupByID("");
+            expect(found).to.be.null;
+        });
+    });
+
     describe("getAttribute", function() {
         it("returns the attribute value", function() {
             expect(this.group.getAttribute("abc")).to.equal("123");
