@@ -19,7 +19,7 @@ const PRESERVE_LAST_LINES = 1000;
  */
 function mustBePreserved(command) {
     var commandName = command.substr(0, 3);
-    // Note: "fmt" and "aid" are generated automatically and does not need to be preserved
+    // Note: "fmt" and "aid" are generated automatically and do not need to be preserved
     return ["cmm"].indexOf(commandName) >= 0;
 }
 
@@ -50,14 +50,13 @@ class Flattener {
      * @public
      * @memberof Flattener
      */
-    flatten(force) {
-        force = force === undefined ? false : force;
-        var history = this._westley.getHistory(),
-            availableLines = history.length - PRESERVE_LAST_LINES,
+    flatten(force = false) {
+        const history = this._westley.getHistory();
+        const preservedLines = [];
+        const tempWestley = new Westley();
+        let availableLines = history.length - PRESERVE_LAST_LINES,
             cleanHistory,
-            preservedLines = [],
-            i,
-            tempWestley = new Westley();
+            i;
         // check if possible to flatten
         if (availableLines <= 0) {
             if (!force) {
