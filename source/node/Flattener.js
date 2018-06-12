@@ -2,12 +2,19 @@ const describe = require("./Descriptor.js");
 const Westley = require("./Westley.js");
 
 /**
- * Number of dataset lines to preserve by default (minimum)
+ * Minimum history lines before flattening can occur
  * @type {Number}
- * @private
+ * @static
  * @memberof Flattener
  */
-const PRESERVE_LAST_LINES = 1000;
+const FLATTENING_MIN_LINES = 1500;
+/**
+ * Number of lines to preserve (most recent)
+ * @type {Number}
+ * @static
+ * @memberof Flattener
+ */
+const PRESERVE_LINES = 1000;
 
 /**
  * Check if a command should be preserved (not flattened)
@@ -24,9 +31,7 @@ function mustBePreserved(command) {
 }
 
 /**
- * Flatten archives
- * @class Flattener
- * @param {Westley} westley The Westley instance
+ * Flattener class for flattening archive history sets
  */
 class Flattener {
     constructor(westley) {
@@ -34,31 +39,39 @@ class Flattener {
     }
 
     /**
+     * The working Westley instance
+     * @type {Westley}
+     * @readonly
+     * @memberof Flattener
+     */
+    get westley() {
+        return this._westley;
+    }
+
+    /**
      * Check if the dataset can be flattened
      * @returns {Boolean} True if it can be flattened
-     * @public
      * @memberof Flattener
      */
     canBeFlattened() {
-        return this._westley.getHistory().length > PRESERVE_LAST_LINES;
+        return this.westley.getHistory().length >= FLATTENING_MIN_LINES;
     }
 
     /**
      * Flatten a dataset
      * @param {Boolean=} force Force flattening even if it is detected to be unnecessary
      * @returns {Boolean} True if flattening occurred, false otherwise
-     * @public
      * @memberof Flattener
      */
     flatten(force = false) {
         const history = this._westley.getHistory();
         const preservedLines = [];
         const tempWestley = new Westley();
-        let availableLines = history.length - PRESERVE_LAST_LINES,
+        let availableLines = history.length - PRESERVE_LINES,
             cleanHistory,
             i;
         // check if possible to flatten
-        if (availableLines <= 0) {
+        if (availableLines <= 0 || !this.canBeFlattened()) {
             if (!force) {
                 return false;
             }
@@ -86,17 +99,11 @@ class Flattener {
         newHistory.forEach(this._westley.execute.bind(this._westley));
         return true;
     }
-
-    /**
-     * Get the number of lines to preserve by default
-     * @returns {Number} The number of lines
-     * @memberof Flattener
-     * @public
-     * @see PRESERVE_LAST_LINES
-     */
-    getPreservationCount() {
-        return PRESERVE_LAST_LINES;
-    }
 }
+
+Object.assign(Flattener, {
+    FLATTENING_MIN_LINES,
+    PRESERVE_LINES
+});
 
 module.exports = Flattener;

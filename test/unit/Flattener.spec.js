@@ -38,10 +38,10 @@ describe("Flattener", function() {
             expect(group.getTitle()).to.equal("test2");
         });
 
-        // it("doesn't flatten multiple times", function() {
-        //     this.flattener.flatten();
-        //     const flattened = this.flattener.flatten();
-        //     expect(flattened).to.be.false;
-        // });
+        it("doesn't flatten multiple times", function() {
+            this.flattener.flatten();
+            const flattened = this.flattener.flatten();
+            expect(flattened).to.be.false;
+        });
     });
 });
