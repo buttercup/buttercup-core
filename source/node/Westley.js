@@ -76,7 +76,7 @@ class Westley extends AsyncEventEmitter {
     /**
      * Execute a command - stored in history and modifies the dataset
      * @param {String} command The command to execute
-     * @param {Boolean=} append Wether to append to the end of the history list (default true)
+     * @param {Boolean=} append Whether to append to the end of the history list (default true)
      * @returns {Westley} Returns self
      * @memberof Westley
      */

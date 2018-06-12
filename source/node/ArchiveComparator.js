@@ -101,7 +101,7 @@ ArchiveComparator.prototype.archivesDiffer = function archivesDiffer() {
  *        is found, or the command differences as two arrays
  * @memberof ArchiveComparator
  */
-ArchiveComparator.prototype.calculateDifferences = function() {
+ArchiveComparator.prototype.calculateDifferences = function calculateDifferences() {
     var commonIndexes = calculateCommonRecentCommand(this._archiveA, this._archiveB);
     if (commonIndexes === false) {
         return false;
