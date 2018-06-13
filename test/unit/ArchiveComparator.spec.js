@@ -39,4 +39,46 @@ describe("ArchiveComparator", function() {
             expect(comparator.archivesDiffer()).to.be.true;
         });
     });
+
+    describe("calculateDifferences", function() {
+        beforeEach(function() {
+            this.archive1 = Archive.createWithDefaults();
+            this.archive2 = new Archive();
+            this.archive2._getWestley().clear();
+            this.archive1.getHistory().forEach(command => this.archive2._getWestley().execute(command));
+            this.archive1.createGroup("diff group");
+        });
+
+        it("returns expected properties", function() {
+            const comparator = new ArchiveComparator(this.archive1, this.archive2);
+            const diffs = comparator.calculateDifferences();
+            expect(diffs)
+                .to.have.property("original")
+                .that.is.an("array");
+            expect(diffs)
+                .to.have.property("secondary")
+                .that.is.an("array");
+            expect(diffs)
+                .to.have.property("common")
+                .that.is.an("array");
+        });
+
+        it("common history matches archive with shorter history", function() {
+            const comparator = new ArchiveComparator(this.archive1, this.archive2);
+            const { common } = comparator.calculateDifferences();
+            expect(common).to.deep.equal(this.archive2.getHistory());
+        });
+
+        it("common and original histories make up longer archive history", function() {
+            const comparator = new ArchiveComparator(this.archive1, this.archive2);
+            const { common, original } = comparator.calculateDifferences();
+            expect([...common, ...original]).to.deep.equal(this.archive1.getHistory());
+        });
+
+        it("shorter history diff is empty", function() {
+            const comparator = new ArchiveComparator(this.archive1, this.archive2);
+            const { secondary } = comparator.calculateDifferences();
+            expect(secondary).to.have.lengthOf(0);
+        });
+    });
 });

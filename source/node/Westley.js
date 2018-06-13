@@ -122,7 +122,7 @@ class Westley extends AsyncEventEmitter {
      * @memberof Westley
      */
     getHistory() {
-        return this._history;
+        return [...this._history];
     }
 
     /**
