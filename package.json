@@ -27,6 +27,7 @@
     "test:ci:web": "run-s test:web",
     "test:format": "prettier-check '{source,test}/**/*.js'",
     "test:integration": "mocha -r test/index.js 'test/integration/**/*.spec.js'",
+    "test:integration:watch": "nodemon --exec 'npm run test:integration'",
     "test:unit": "nyc mocha -r test/index.js 'test/unit/**/*.spec.js'",
     "test:unit:watch": "nodemon --exec 'npm run test:unit'",
     "test:web": "karma start"
