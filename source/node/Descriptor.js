@@ -95,17 +95,15 @@ module.exports = function describe(dataset, parentGroupID) {
             }
         });
         if (entry.properties) {
-            for (let propertyName in entry.properties) {
-                if (entry.properties.hasOwnProperty(propertyName)) {
-                    commands.push(
-                        Inigo.create(Command.SetEntryProperty)
-                            .addArgument(entry.id)
-                            .addArgument(propertyName)
-                            .addArgument(entry.properties[propertyName])
-                            .generateCommand()
-                    );
-                }
-            }
+            Object.keys(entry.properties).forEach(propertyName => {
+                commands.push(
+                    Inigo.create(Command.SetEntryProperty)
+                        .addArgument(entry.id)
+                        .addArgument(propertyName)
+                        .addArgument(entry.properties[propertyName])
+                        .generateCommand()
+                );
+            });
         }
         if (entry.meta) {
             for (var metaName in entry.meta) {

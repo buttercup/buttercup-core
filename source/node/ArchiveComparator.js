@@ -1,7 +1,5 @@
-"use strict";
-
-var encoding = require("./tools/encoding.js"),
-    compare = require("./tools/compare.js");
+const encoding = require("./tools/encoding.js");
+const compare = require("./tools/compare.js");
 
 /**
  * Calculate the common command indexes between 2 archives.
@@ -76,7 +74,7 @@ function getPaddingID(command) {
  * @param {Archive} originalArchive The primary archive
  * @param {Archive} secondaryArchive The secondary archive
  */
-var ArchiveComparator = function(originalArchive, secondaryArchive) {
+const ArchiveComparator = function(originalArchive, secondaryArchive) {
     this._archiveA = originalArchive;
     this._archiveB = secondaryArchive;
 };

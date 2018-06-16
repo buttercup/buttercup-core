@@ -13,12 +13,12 @@ class DeleteEntryPropertyCommand extends BaseCommand {
      */
     execute(obj, entryID, propertyName) {
         obj.groups = obj.groups || [];
-        var entry = this.searchTools.findEntryByID(obj.groups, entryID);
+        const entry = this.searchTools.findEntryByID(obj.groups, entryID);
         if (!entry) {
-            throw new Error("Entry not found for ID");
+            throw new Error(`Entry not found for ID: ${entryID}`);
         }
         entry.properties = entry.properties || {};
-        var deleted = delete entry.properties[propertyName];
+        const deleted = delete entry.properties[propertyName];
         if (!deleted) {
             throw new Error(`Failed deleting property: ${propertyName}`);
         }

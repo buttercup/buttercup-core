@@ -103,7 +103,7 @@ class Workspace {
      * @memberof Workspace
      */
     mergeFromRemote() {
-        return this.datasource.load(this.masterCredentials).then(function(stagedArchive) {
+        return this.datasource.load(this.masterCredentials).then(stagedArchive => {
             const comparator = new Comparator(this.archive, stagedArchive);
             const differences = comparator.calculateDifferences();
             // only strip if there are multiple updates
