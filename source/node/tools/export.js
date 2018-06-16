@@ -1,5 +1,3 @@
-"use strict";
-
 module.exports = {
     /**
      * Export an archive to Buttercup format

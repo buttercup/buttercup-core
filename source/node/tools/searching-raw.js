@@ -1,5 +1,3 @@
-"use strict";
-
 var searching = (module.exports = {
     findEntryByID: function(groups, id) {
         for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {

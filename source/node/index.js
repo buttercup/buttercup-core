@@ -1,55 +1,37 @@
 const iocane = require("iocane");
-const webdavFS = require("webdav-fs");
-const OriginalArchiveManager = require("./system/ArchiveManager.js");
-
-OriginalArchiveManager.v2 = {
-    ArchiveManager: require("./system/archiveManagement/ArchiveManager.js"),
-    ArchiveSource: require("./system/archiveManagement/ArchiveSource.js")
-};
+const datasources = require("@buttercup/datasources");
+const Credentials = require("@buttercup/credentials");
 
 module.exports = {
-    Archive: require("./system/Archive.js"),
-    ArchiveManager: OriginalArchiveManager,
-    Westley: require("./system/Westley.js"),
-    Inigo: require("./system/InigoGenerator.js"),
-    Workspace: require("./system/Workspace.js"),
+    Archive: require("./Archive.js"),
+    ArchiveManager: require("./archiveManagement/ArchiveManager.js"),
+    ArchiveSource: require("./archiveManagement/ArchiveSource.js"),
+    Workspace: require("./Workspace.js"),
 
-    createCredentials: require("./system/credentials.js"),
-    Model: require("./system/Model.js"),
+    Credentials,
 
-    Group: require("./system/Group.js"),
-    Entry: require("./system/Entry.js"),
-    entryFacade: require("./system/entryFacade.js"),
+    Group: require("./Group.js"),
+    Entry: require("./Entry.js"),
+    entryFacade: require("./entryFacade.js"),
 
-    DatasourceAdapter: require("./system/DatasourceAdapter.js"),
-    TextDatasource: require("./system/TextDatasource.js"),
-    FileDatasource: require("./system/FileDatasource.js"),
-    OwnCloudDatasource: require("./system/OwnCloudDatasource.js"),
-    NextcloudDatasource: require("./system/NextcloudDatasource.js"),
-    WebDAVDatasource: require("./system/WebDAVDatasource.js"),
-    BoxDatasource: require("./system/BoxDatasource.js"),
-    MyButtercupDatasource: require("./system/MyButtercupDatasource.js"),
-    DropboxDatasource: require("./system/DropboxDatasource.js"),
+    Datasources: datasources,
 
-    Flattener: require("./system/Flattener.js"),
-    Descriptor: require("./system/Descriptor.js"),
-    EntryFinder: require("./system/EntryFinder.js"),
+    Flattener: require("./Flattener.js"),
+    Descriptor: require("./Descriptor.js"),
+    EntryFinder: require("./EntryFinder.js"),
 
     storage: {
-        StorageInterface: require("./system/storage/StorageInterface.js"),
-        MemoryStorageInterface: require("./system/storage/MemoryStorageInterface.js")
-    },
-
-    archiveManagement: {
-        marshalling: require("./system/archiveManagement/marshalling.js")
+        StorageInterface: require("./storage/StorageInterface.js"),
+        MemoryStorageInterface: require("./storage/MemoryStorageInterface.js")
     },
 
     tools: {
         encoding: require("./tools/encoding.js"),
         entry: require("./tools/entry.js"),
         export: require("./tools/export.js"),
-        overrides: require("./tools/overridable.js"),
-        signing: require("./tools/signing.js"),
+        uuid: require("./tools/uuid.js"),
+        request: require("./tools/request.js"),
+        signing: require("@buttercup/signing"),
         searching: {
             instance: require("./tools/searching-instance.js"),
             raw: require("./tools/searching-raw.js")
@@ -58,6 +40,6 @@ module.exports = {
 
     vendor: {
         iocane,
-        webdavFS
+        webdav: datasources.webdav
     }
 };

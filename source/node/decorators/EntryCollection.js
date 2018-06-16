@@ -1,6 +1,4 @@
-"use strict";
-
-var instanceSearching = require("../tools/searching-instance.js");
+const instanceSearching = require("../tools/searching-instance.js");
 
 /**
  * Find entries by searching properties/meta
@@ -31,7 +29,7 @@ function findEntriesByCheck(groupParent, check, key, value) {
                 break;
             }
             case "id": {
-                return value === entry.getID();
+                return value === entry.id;
             }
             default:
                 throw new Error(`Unknown check instruction: ${check}`);

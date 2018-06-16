@@ -1,17 +1,20 @@
 const path = require("path");
-const Buttercup = require("../source/node/index.js");
+const { Archive, Credentials, Datasources, vendor } = require("../source/node/index.js");
 const packageInfo = require("../package.json");
 
-const createCredentials = Buttercup.createCredentials;
+const { FileDatasource } = Datasources;
+const { iocane } = vendor;
 const { version } = packageInfo;
 
-const outputDir = path.resolve(__dirname, "../tests/_archives");
+const outputDir = path.resolve(__dirname, "../test/resources/archives");
 const outputFile = path.join(outputDir, `/test-archive-${version}.bcup`);
+
+iocane.configure().setDerivationRounds(10);
 
 console.log("Building archive...");
 
 // Archive
-const archive = new Buttercup.Archive();
+const archive = new Archive();
 const mainGroup = archive.createGroup("test-group-main");
 const mainEntry = mainGroup.createEntry("test-entry-main");
 
@@ -21,7 +24,7 @@ mainEntry.setMeta("test-meta", "test-value 8");
 
 // Datasource
 console.log("Saving archive: " + outputFile);
-const datasource = new Buttercup.FileDatasource(outputFile);
-datasource.save(archive, createCredentials.fromPassword("this is a long password used for a test archive!"));
+const datasource = new FileDatasource(outputFile);
+datasource.save(archive.getHistory(), Credentials.fromPassword("this is a long password used for a test archive!"));
 
 console.log("Test archive completed for version: " + version);

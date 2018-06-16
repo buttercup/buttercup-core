@@ -1,6 +1,4 @@
-"use strict";
-
-var PRIMATIVES = ["string", "number", "boolean", "undefined"];
+const PRIMATIVES = ["string", "number", "boolean", "undefined"];
 
 /**
  * De-dupe an array

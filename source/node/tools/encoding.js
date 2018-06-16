@@ -1,16 +1,7 @@
-"use strict";
-
-const gzip = require("gzip-js");
-
-const { getTextHasher, getUUIDGenerator } = require("./overridable.js");
+const { getUUIDGenerator } = require("./uuid.js");
 
 const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
 const ENCODED_STRING_PREFIX = "utf8+base64:";
-
-var __gzipOptions = {
-    level: 9,
-    timestamp: parseInt(Date.now() / 1000, 10)
-};
 
 const lib = (module.exports = {
     /**
@@ -18,21 +9,6 @@ const lib = (module.exports = {
      * @type {String}
      */
     ENCODED_STRING_PREFIX,
-
-    /**
-     * Compress text using GZIP
-     * @param {String} text The text to compress
-     * @returns {String} Compressed text
-     */
-    compress: function(text) {
-        var compressed = gzip.zip(text, __gzipOptions),
-            compressedLength = compressed.length,
-            outputText = "";
-        for (var i = 0; i < compressedLength; i += 1) {
-            outputText += String.fromCharCode(compressed[i]);
-        }
-        return outputText;
-    },
 
     /**
      * Decode an encoded property/meta value
@@ -43,29 +19,9 @@ const lib = (module.exports = {
         if (lib.isEncoded(value) !== true) {
             throw new Error("Cannot decode: provided value is not encoded");
         }
-        value = value.substr(ENCODED_STRING_PREFIX.length);
-        let buff = Buffer.from(value, "base64");
+        const newValue = value.substr(ENCODED_STRING_PREFIX.length);
+        const buff = Buffer.from(newValue, "base64");
         return buff.toString("utf8");
-    },
-
-    /**
-     * Decompress a compressed string (GZIP)
-     * @param {String} text The compressed text
-     * @returns {String} Decompressed text
-     */
-    decompress: function(text) {
-        var compressedData = [],
-            textLen = text.length;
-        for (var i = 0; i < textLen; i += 1) {
-            compressedData.push(text.charCodeAt(i));
-        }
-        var decompressedData = gzip.unzip(compressedData),
-            decompressedLength = decompressedData.length,
-            outputText = "";
-        for (var j = 0; j < decompressedLength; j += 1) {
-            outputText += String.fromCharCode(decompressedData[j]);
-        }
-        return outputText;
     },
 
     /**
