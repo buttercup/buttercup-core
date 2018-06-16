@@ -16,12 +16,12 @@ function createNewRoot() {
 }
 
 function processArchiveKeys(archive) {
-    const { public, private } = createNewKey();
+    const { public: publicKey, private: privateKey } = createNewKey();
     const group = archive.createGroup("keys");
     const pubKeyEntry = group.createEntry("public-key");
-    pubKey.setProperty("password", public);
+    pubKey.setProperty("password", publicKey);
     const privKeyEntry = group.createEntry("private-key");
-    privKeyEntry.setProperty("password", private);
+    privKeyEntry.setProperty("password", privateKey);
 }
 
 module.exports = {

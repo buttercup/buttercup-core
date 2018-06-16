@@ -1,5 +1,18 @@
 # Core library changelog
 
+## **v2.0.0-0**
+_2018-06-16_
+
+ * **New major** pre-release
+   * Refactored codebase
+   * Datasources, Credentials and signing split to separate repos
+   * iocane upgrade and new API
+   * Deprecation of meta
+     * Meta is now mapped to properties within the archive instance (meta commands do not create meta properties internally)
+   * Removed debug statements
+   * Fixed several minor bugs
+   * Improved flattening algorithm to prevent excessive operations
+
 ## v1.7.1
 _2018-05-27_
 

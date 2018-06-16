@@ -9,7 +9,7 @@ const PASSWORD = "this is a long password used for a test archive!";
 
 describe("reading old archives", function() {
     fs.readdirSync(ARCHIVES_DIR).forEach(filename => {
-        const [, version] = /test-archive-(\d+\.\d+\.\d+)\.bcup/.exec(filename);
+        const [, version] = /test-archive-(\d+\.\d+\.\d+(\-[0-9a-zA-Z.]+)?)\.bcup/.exec(filename);
         describe(`v${version}`, function() {
             const readArchive = () => {
                 const fds = new FileDatasource(path.join(ARCHIVES_DIR, filename));
