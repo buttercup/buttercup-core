@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v2.0.0-1
+_2018-06-19_
+
+ * Upgrade credentials to 1.1.1
+   * Fix typo in `Credentials.fromSecureString`
+
 ## **v2.0.0-0**
 _2018-06-16_
 
