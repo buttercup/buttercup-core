@@ -27,7 +27,7 @@ function stripDestructiveCommands(history) {
         .map(key => Inigo.Command[key])
         .filter(command => command.d)
         .map(command => command.s);
-    return history.filter(function(command) {
+    return history.filter(command => {
         return destructiveSlugs.indexOf(getCommandType(command)) < 0;
     });
 }
@@ -88,7 +88,7 @@ class Workspace {
         return this.datasource
             .load(this.masterCredentials)
             .then(history => Archive.createFromHistory(history))
-            .then(function(loadedItem) {
+            .then(loadedItem => {
                 const comparator = new Comparator(this.archive, loadedItem);
                 return comparator.archivesDiffer();
             });
