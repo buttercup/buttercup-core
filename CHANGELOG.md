@@ -1,10 +1,12 @@
 # Core library changelog
 
-## v2.0.0-1
+## v2.0.0-1 - v2.0.0-2
 _2018-06-19_
 
  * Upgrade credentials to 1.1.1
    * Fix typo in `Credentials.fromSecureString`
+ * Upgrade datasources to 1.1.1
+   * Fix webdav file fetching (force text)
 
 ## **v2.0.0-0**
 _2018-06-16_
