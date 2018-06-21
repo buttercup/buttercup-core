@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.0.0
+_2018-06-21_
+
+ * Stable 2.0 release!
+
 ## v2.0.0-1 - v2.0.0-3
 _2018-06-19_
 
