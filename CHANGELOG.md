@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.0.1
+_2018-06-22_
+
+ * Bugfix: `Workspace#mergeFromRemote` bad load for `ArchiveComparator`
+
 ## v2.0.0
 _2018-06-21_
 
