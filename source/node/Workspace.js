@@ -72,7 +72,7 @@ class Workspace {
      * @memberof Workspace
      */
     get saveChannel() {
-        const topicID = this.archive.getID();
+        const topicID = this.archive.id;
         return getQueue().channel(`workspace:${topicID}`);
     }
 

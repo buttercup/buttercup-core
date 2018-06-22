@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.0.2
+_2018-06-22_
+
+ * Bugfix: `Archive#getID()` call
+
 ## v2.0.1
 _2018-06-22_
 
