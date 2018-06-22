@@ -1,6 +1,6 @@
 const { getQueue } = require("./Queue.js");
 const Archive = require("./Archive.js");
-const Comparator = require("./ArchiveComparator.js");
+const ArchiveComparator = require("./ArchiveComparator.js");
 
 /**
  * Extract the command portion of a history item
@@ -89,7 +89,7 @@ class Workspace {
             .load(this.masterCredentials)
             .then(history => Archive.createFromHistory(history))
             .then(loadedItem => {
-                const comparator = new Comparator(this.archive, loadedItem);
+                const comparator = new ArchiveComparator(this.archive, loadedItem);
                 return comparator.archivesDiffer();
             });
     }
@@ -103,29 +103,32 @@ class Workspace {
      * @memberof Workspace
      */
     mergeFromRemote() {
-        return this.datasource.load(this.masterCredentials).then(stagedArchive => {
-            const comparator = new Comparator(this.archive, stagedArchive);
-            const differences = comparator.calculateDifferences();
-            // only strip if there are multiple updates
-            const stripDestructive = differences.secondary.length > 0;
-            const newHistoryMain = stripDestructive
-                ? stripDestructiveCommands(differences.original)
-                : differences.original;
-            const newHistoryStaged = stripDestructive
-                ? stripDestructiveCommands(differences.secondary)
-                : differences.secondary;
-            const base = differences.common;
-            const newArchive = new Archive();
-            newArchive._getWestley().clear();
-            // merge all history and execute on new archive
-            base.concat(newHistoryStaged)
-                .concat(newHistoryMain)
-                .forEach(function(command) {
-                    newArchive._getWestley().execute(command);
-                });
-            this._archive = newArchive;
-            return newArchive;
-        });
+        return this.datasource
+            .load(this.masterCredentials)
+            .then(history => Archive.createFromHistory(history))
+            .then(stagedArchive => {
+                const comparator = new ArchiveComparator(this.archive, stagedArchive);
+                const differences = comparator.calculateDifferences();
+                // only strip if there are multiple updates
+                const stripDestructive = differences.secondary.length > 0;
+                const newHistoryMain = stripDestructive
+                    ? stripDestructiveCommands(differences.original)
+                    : differences.original;
+                const newHistoryStaged = stripDestructive
+                    ? stripDestructiveCommands(differences.secondary)
+                    : differences.secondary;
+                const base = differences.common;
+                const newArchive = new Archive();
+                newArchive._getWestley().clear();
+                // merge all history and execute on new archive
+                base.concat(newHistoryStaged)
+                    .concat(newHistoryMain)
+                    .forEach(function(command) {
+                        newArchive._getWestley().execute(command);
+                    });
+                this._archive = newArchive;
+                return newArchive;
+            });
     }
 
     /**

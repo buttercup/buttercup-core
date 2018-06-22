@@ -7,7 +7,6 @@ const Group = require("./Group.js");
 const Entry = require("./Entry.js");
 const GroupCollectionDecorator = require("./decorators/GroupCollection.js");
 const EntryCollectionDecorator = require("./decorators/EntryCollection.js");
-const ArchiveComparator = require("./ArchiveComparator.js");
 const rawSearching = require("./tools/searching-raw.js");
 const encoding = require("./tools/encoding.js");
 
