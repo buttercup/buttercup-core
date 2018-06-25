@@ -3,26 +3,26 @@ const facadeFieldFactories = require("./entryFacadeFields.js");
 const { createFieldDescriptor } = require("./tools/entry.js");
 
 /**
- * Add meta fields to a fields array that are not mentioned in a preset
- * Facades are creaded by presets which don't mention all meta values (custom user
+ * Add extra fields to a fields array that are not mentioned in a preset
+ * Facades are creaded by presets which don't mention all property values (custom user
  * added items). This method adds the unmentioned items to the facade fields so that
  * they can be edited as well.
  * @param {Entry} entry An Entry instance
  * @param {Array.<EntryFacadeField>} fields An array of fields
  * @returns {Array.<EntryFacadeField>} A new array with all combined fields
  */
-function addMetaFieldsNonDestructive(entry, fields) {
-    const exists = metaName => fields.find(item => item.field === "meta" && item.property === metaName);
-    const meta = entry.toObject().meta || {};
+function addExtraFieldsNonDestructive(entry, fields) {
+    const exists = propName => fields.find(item => item.field === "property" && item.property === propName);
+    const properties = entry.toObject().properties || {};
     return [
         ...fields,
-        ...Object.keys(meta)
+        ...Object.keys(properties)
             .filter(name => !exists(name))
             .map(name =>
                 createFieldDescriptor(
                     entry, // Entry instance
                     name, // Title
-                    "meta", // Type
+                    "property", // Type
                     name // Property name
                 )
             )
@@ -54,20 +54,20 @@ function applyFieldDescriptor(entry, descriptor) {
 function consumeEntryFacade(entry, facade) {
     const facadeType = getEntryFacadeType(entry);
     if (facade && facade.type) {
-        const meta = entry.getMeta();
+        const properties = entry.getProperty();
         const attributes = entry.getAttribute();
         if (facade.type !== facadeType) {
             throw new Error(`Failed consuming entry data: Expected type "${facadeType}" but received "${facade.type}"`);
         }
         // update data
         (facade.fields || []).forEach(field => applyFieldDescriptor(entry, field));
-        // remove missing meta
-        Object.keys(meta).forEach(metaKey => {
+        // remove missing properties
+        Object.keys(properties).forEach(propKey => {
             const correspondingField = facade.fields.find(
-                ({ field, property }) => field === "meta" && property === metaKey
+                ({ field, property }) => field === "property" && property === propKey
             );
             if (typeof correspondingField === "undefined") {
-                entry.deleteMeta(metaKey);
+                entry.deleteProperty(propKey);
             }
         });
         // remove missing attributes
@@ -101,7 +101,7 @@ function createEntryFacade(entry) {
     const fields = createFields(entry);
     return {
         type: facadeType,
-        fields: addMetaFieldsNonDestructive(entry, fields)
+        fields: addExtraFieldsNonDestructive(entry, fields)
     };
 }
 
@@ -126,8 +126,6 @@ function setEntryValue(entry, property, name, value) {
     switch (property) {
         case "property":
             return entry.setProperty(name, value);
-        case "meta":
-            return entry.setMeta(name, value);
         case "attribute":
             return entry.setAttribute(name, value);
         default:

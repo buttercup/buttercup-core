@@ -1,16 +1,10 @@
 const { objectValues } = require("./polyfill.js");
 
-const EntryProperty = {
-    Password: "password",
-    Title: "title",
-    Username: "username"
-};
-
 /**
  * Entry facade data field
  * @typedef {Object} EntryFacadeField
  * @property {String} title - The user-friendly title of the field
- * @property {String} field - The type of data to map back to on the Entry instance (property/meta/attribute)
+ * @property {String} field - The type of data to map back to on the Entry instance (property/attribute)
  * @property {String} property - The property name within the field type of the Entry instance
  * @property {String} value - The value of the property (read/write)
  * @property {Boolean} secret - Wether or not the value should be hidden while viewing (masked)
@@ -23,7 +17,7 @@ const EntryProperty = {
  * Create a descriptor for a field to be used within a facade
  * @param {Entry} entry The entry instance to process
  * @param {String} title The field title
- * @param {String} entryPropertyType The type of entry property (property/meta/attribute)
+ * @param {String} entryPropertyType The type of entry property (property/attribute)
  * @param {String} entryPropertyName The name of the property
  * @param {Object} options The options for the field
  * @returns {EntryFacadeField} The field descriptor
@@ -69,14 +63,6 @@ function getEntryValue(entry, property, name) {
 }
 
 /**
- * Get an array of valid property names
- * @returns {Array.<String>} An array of names
- */
-function getValidProperties() {
-    return objectValues(EntryProperty);
-}
-
-/**
  * Check if a property name is valid
  * @param {String} name The name to check
  * @returns {Boolean} True if the name is valid
@@ -95,6 +81,5 @@ function isValidProperty(name) {
 module.exports = {
     createFieldDescriptor,
     getEntryValue,
-    getValidProperties,
     isValidProperty
 };
