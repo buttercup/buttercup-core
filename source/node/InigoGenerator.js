@@ -1,5 +1,10 @@
 const encoding = require("./tools/encoding.js");
 
+/**
+ * @class Inigo command generator
+ * @constructor
+ * @param {String} cmdKey The key for the command
+ */
 function InigoCommand(cmdKey) {
     this._commandKey = cmdKey;
     this._commandArgs = [];

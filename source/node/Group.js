@@ -7,8 +7,7 @@ const GroupCollectionDecorator = require("./decorators/GroupCollection.js");
 const EntryCollectionDecorator = require("./decorators/EntryCollection.js");
 
 /**
- * Buttercup Group
- * @class Group
+ * Group implementation
  * @mixes GroupCollection
  * @mixes EntryCollection
  */

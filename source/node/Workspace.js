@@ -32,6 +32,11 @@ function stripDestructiveCommands(history) {
     });
 }
 
+/**
+ * Workspace class implementation
+ * Workspaces organise Archives and Datasources, and perform saves
+ * and merges with remote changes.
+ */
 class Workspace {
     constructor() {
         this._archive = null;

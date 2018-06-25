@@ -1,5 +1,5 @@
 const iocane = require("iocane");
-const datasources = require("@buttercup/datasources");
+const Datasources = require("@buttercup/datasources");
 const Credentials = require("@buttercup/credentials");
 
 module.exports = {
@@ -9,12 +9,11 @@ module.exports = {
     Workspace: require("./Workspace.js"),
 
     Credentials,
+    Datasources,
 
     Group: require("./Group.js"),
     Entry: require("./Entry.js"),
     entryFacade: require("./entryFacade.js"),
-
-    Datasources: datasources,
 
     Flattener: require("./Flattener.js"),
     Descriptor: require("./Descriptor.js"),

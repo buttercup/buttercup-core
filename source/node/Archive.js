@@ -12,7 +12,7 @@ const encoding = require("./tools/encoding.js");
 
 /**
  * Buttercup Archive
- * @class Archive
+ * @augments AsyncEventEmitter
  * @mixes GroupCollection
  * @mixes EntryCollection
  */

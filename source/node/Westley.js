@@ -32,9 +32,10 @@ const commandClasses = {
 };
 
 /**
- * Westley. Archive object dataset and history manager. Handles parsing and
+ * Westley class
+ * Archive object dataset and history manager. Handles parsing and
  * revenge for the princess.
- * @class Westley
+ * @augments AsyncEventEmitter
  */
 class Westley extends AsyncEventEmitter {
     constructor() {

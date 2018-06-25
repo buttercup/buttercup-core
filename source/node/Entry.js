@@ -3,6 +3,12 @@ const encoding = require("./tools/encoding.js");
 const searching = require("./tools/searching-raw.js");
 const entryTools = require("./tools/entry.js");
 
+/**
+ * Entry class implementation
+ * Entries form the low-level data structures used in Buttercup, and
+ * are intended to represent logical collections of properties, like
+ * a login for a website.
+ */
 class Entry {
     /**
      * Create a new managed entry instance
