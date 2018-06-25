@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.0.3
+_2018-06-25_
+
+ * Bugfix: Remove meta references from Entry facades
+
 ## v2.0.2
 _2018-06-22_
 

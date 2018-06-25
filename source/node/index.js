@@ -39,6 +39,6 @@ module.exports = {
 
     vendor: {
         iocane,
-        webdav: datasources.webdav
+        webdav: Datasources.webdav
     }
 };
