@@ -27,7 +27,7 @@ function createFieldDescriptor(
     title,
     entryPropertyType,
     entryPropertyName,
-    { multiline = false, secret = false, formatting = false } = {}
+    { multiline = false, secret = false, formatting = false, removeable = false } = {}
 ) {
     const value = getEntryValue(entry, entryPropertyType, entryPropertyName);
     return {
@@ -37,7 +37,8 @@ function createFieldDescriptor(
         value,
         secret,
         multiline,
-        formatting
+        formatting,
+        removeable
     };
 }
 

@@ -27,7 +27,8 @@ function createCreditCardFields(entry) {
             formatting: {
                 format: [{ char: /\d/, repeat: 4 }],
                 placeholder: "DDD or DDDD"
-            }
+            },
+            secret: true
         }),
         createFieldDescriptor(entry, "Valid From", "property", "valid_from", {
             formatting: {
@@ -39,7 +40,8 @@ function createCreditCardFields(entry) {
                     { char: /\d/, repeat: 3 }
                 ],
                 placeholder: "MM/YYYY"
-            }
+            },
+            secret: true
         }),
         createFieldDescriptor(entry, "Expiry", "property", "expiry", {
             formatting: {
@@ -51,7 +53,8 @@ function createCreditCardFields(entry) {
                     { char: /\d/, repeat: 3 }
                 ],
                 placeholder: "MM/YYYY"
-            }
+            },
+            secret: true
         })
     ];
 }
@@ -62,6 +65,10 @@ function createLoginFields(entry) {
         createFieldDescriptor(entry, "Username", "property", "username"),
         createFieldDescriptor(entry, "Password", "property", "password", { secret: true })
     ];
+}
+
+function createNoteFields(entry) {
+    return [...createBaseFields(entry), createFieldDescriptor(entry, "Note", "property", "note", { multiline: true })];
 }
 
 function createSSHKeyFields(entry) {
@@ -79,6 +86,7 @@ function createWebsiteFields(entry) {
 module.exports = {
     credit_card: createCreditCardFields,
     login: createLoginFields,
+    note: createNoteFields,
     ssh_key: createSSHKeyFields,
     website: createWebsiteFields
 };
