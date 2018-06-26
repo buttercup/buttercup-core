@@ -23,7 +23,8 @@ function addExtraFieldsNonDestructive(entry, fields) {
                     entry, // Entry instance
                     name, // Title
                     "property", // Type
-                    name // Property name
+                    name, // Property name
+                    { removeable: true }
                 )
             )
     ];

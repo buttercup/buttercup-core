@@ -64,6 +64,10 @@ function createLoginFields(entry) {
     ];
 }
 
+function createNoteFields(entry) {
+    return [...createBaseFields(entry), createFieldDescriptor(entry, "Note", "property", "note", { multiline: true })];
+}
+
 function createSSHKeyFields(entry) {
     return [
         ...createBaseFields(entry),
@@ -79,6 +83,7 @@ function createWebsiteFields(entry) {
 module.exports = {
     credit_card: createCreditCardFields,
     login: createLoginFields,
+    note: createNoteFields,
     ssh_key: createSSHKeyFields,
     website: createWebsiteFields
 };
