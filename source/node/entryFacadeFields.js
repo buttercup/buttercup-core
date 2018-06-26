@@ -27,7 +27,8 @@ function createCreditCardFields(entry) {
             formatting: {
                 format: [{ char: /\d/, repeat: 4 }],
                 placeholder: "DDD or DDDD"
-            }
+            },
+            secret: true
         }),
         createFieldDescriptor(entry, "Valid From", "property", "valid_from", {
             formatting: {
@@ -39,7 +40,8 @@ function createCreditCardFields(entry) {
                     { char: /\d/, repeat: 3 }
                 ],
                 placeholder: "MM/YYYY"
-            }
+            },
+            secret: true
         }),
         createFieldDescriptor(entry, "Expiry", "property", "expiry", {
             formatting: {
@@ -51,7 +53,8 @@ function createCreditCardFields(entry) {
                     { char: /\d/, repeat: 3 }
                 ],
                 placeholder: "MM/YYYY"
-            }
+            },
+            secret: true
         })
     ];
 }
