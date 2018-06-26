@@ -47,6 +47,15 @@ describe("entryFacade", function() {
             expect(usernameField).to.have.property("value", "jane");
             expect(passwordField).to.have.property("value", "p4ss");
         });
+
+        it("sets base fields as non-removeable", function() {
+            this.entry.setProperty("misc", "123");
+            const facade = createEntryFacade(this.entry);
+            const usernameField = facade.fields.find(f => f.property === "username");
+            const miscField = facade.fields.find(f => f.property === "misc");
+            expect(usernameField).to.have.property("removeable", false);
+            expect(miscField).to.have.property("removeable", true);
+        });
     });
 
     describe("consumeEntryFacade", function() {
