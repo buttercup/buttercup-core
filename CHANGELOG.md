@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v2.1.0
+_2018-06-26_
+
+ * Add `removeable: false` property to Entry facades
+ * Add `note` facade type
+
 ## v2.0.3
 _2018-06-25_
 
