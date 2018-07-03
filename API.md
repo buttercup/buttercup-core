@@ -170,6 +170,9 @@ Takes data from the descriptor and writes it to the entry.</p>
 ## Typedefs
 
 <dl>
+<dt><a href="#ArchiveSourceOptions">ArchiveSourceOptions</a> : <code>Object</code></dt>
+<dd><p>New source options</p>
+</dd>
 <dt><a href="#ArchiveSourceDescription">ArchiveSourceDescription</a></dt>
 <dd></dd>
 <dt><a href="#ArchiveDataset">ArchiveDataset</a> : <code>Object</code></dt>
@@ -701,7 +704,7 @@ Archive source class
 **Extends**: <code>AsyncEventEmitter</code>  
 
 * [ArchiveSource](#ArchiveSource) ⇐ <code>AsyncEventEmitter</code>
-    * [new ArchiveSource(name, sourceCredentials, archiveCredentials, [id])](#new_ArchiveSource_new)
+    * [new ArchiveSource(name, sourceCredentials, archiveCredentials, [newSourceOptions])](#new_ArchiveSource_new)
     * _instance_
         * [.colour](#ArchiveSource+colour) : <code>String</code>
         * [.description](#ArchiveSource+description) : [<code>ArchiveSourceDescription</code>](#ArchiveSourceDescription)
@@ -719,7 +722,7 @@ Archive source class
 
 <a name="new_ArchiveSource_new"></a>
 
-### new ArchiveSource(name, sourceCredentials, archiveCredentials, [id])
+### new ArchiveSource(name, sourceCredentials, archiveCredentials, [newSourceOptions])
 Constructor for an archive source
 
 
@@ -728,7 +731,7 @@ Constructor for an archive source
 | name | <code>String</code> | The name of the source |
 | sourceCredentials | <code>String</code> | Encrypted archive source credentials |
 | archiveCredentials | <code>String</code> | Encrypted archive credentials |
-| [id] | <code>String</code> | Optional source ID (Do not pass for new source) |
+| [newSourceOptions] | [<code>ArchiveSourceOptions</code>](#ArchiveSourceOptions) | Specify source creation options |
 
 <a name="ArchiveSource+colour"></a>
 
@@ -3826,6 +3829,19 @@ Generate a UUID (v4)
 
 **Kind**: global function  
 **Returns**: <code>String</code> - The new UUID  
+<a name="ArchiveSourceOptions"></a>
+
+## ArchiveSourceOptions : <code>Object</code>
+New source options
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [id] | <code>String</code> | Override source ID generation |
+| [type] | <code>String</code> | Specify the source type |
+
 <a name="ArchiveSourceDescription"></a>
 
 ## ArchiveSourceDescription
