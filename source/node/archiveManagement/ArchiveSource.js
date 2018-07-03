@@ -30,7 +30,7 @@ const Status = {
  */
 function rehydrate(dehydratedString) {
     const { name, id, sourceCredentials, archiveCredentials, type, colour, order } = JSON.parse(dehydratedString);
-    const source = new ArchiveSource(name, sourceCredentials, archiveCredentials, id);
+    const source = new ArchiveSource(name, sourceCredentials, archiveCredentials, { id, type });
     source.type = type;
     if (colour) {
         source._colour = colour;
@@ -47,13 +47,20 @@ function rehydrate(dehydratedString) {
  */
 class ArchiveSource extends AsyncEventEmitter {
     /**
+     * New source options
+     * @typedef {Object} ArchiveSourceOptions
+     * @property {String=} id - Override source ID generation
+     * @property {String=} type - Specify the source type
+     */
+
+    /**
      * Constructor for an archive source
      * @param {String} name The name of the source
      * @param {String} sourceCredentials Encrypted archive source credentials
      * @param {String} archiveCredentials Encrypted archive credentials
-     * @param {String=} id Optional source ID (Do not pass for new source)
+     * @param {ArchiveSourceOptions=} newSourceOptions Specify source creation options
      */
-    constructor(name, sourceCredentials, archiveCredentials, id = getUniqueID()) {
+    constructor(name, sourceCredentials, archiveCredentials, { id = getUniqueID(), type = "" } = {}) {
         super();
         if (Credentials.isSecureString(sourceCredentials) !== true) {
             throw new VError("Failed constructing archive source: Source credentials not in encrypted form");
@@ -69,7 +76,7 @@ class ArchiveSource extends AsyncEventEmitter {
         this._archiveCredentials = archiveCredentials;
         this._workspace = null;
         this._colour = DefaultColour;
-        this.type = "";
+        this.type = type;
         this.order = DefaultOrder;
     }
 
