@@ -1,25 +1,14 @@
-# git files and directories
-.git
-.gitignore
-
-# our development node_modules - these will be installed by users through npm
-node_modules
-
-# this contains test information, not needed for a user
-build
 .babelrc
-
-# our unit tests
-test
-tests
-coverage
-
-# codeclimate configuration
 .codeclimate.yml
-
-# eslint configuration
 .eslintignore
 .eslintrc
-
-# travis configuration
+.git
+.gitignore
+.history
+.nyc_output
 .travis.yml
+.vscode
+coverage
+node_modules
+test
+tests
