@@ -49,6 +49,7 @@ function createFieldDescriptor(
  * @param {String} name The property name
  * @returns {String} The property value
  * @throws {Error} Throws for unknown property types
+ * @deprecated Not in use - To be removed
  */
 function getEntryValue(entry, property, name) {
     switch (property) {
