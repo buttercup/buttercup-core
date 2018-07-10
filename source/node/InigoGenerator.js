@@ -46,7 +46,7 @@ InigoCommand.CommandArgument = {
         encode: false
     },
     StringKey: {
-        test: /^\w+$/,
+        test: /\w+/,
         wrap: function(txt) {
             return encoding.encodeStringValue(txt);
         },
