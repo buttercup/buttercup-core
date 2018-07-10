@@ -150,7 +150,11 @@ Takes data from the descriptor and writes it to the entry.</p>
 <dt><a href="#createFieldDescriptor">createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options)</a> ⇒ <code><a href="#EntryFacadeField">EntryFacadeField</a></code></dt>
 <dd><p>Create a descriptor for a field to be used within a facade</p>
 </dd>
-<dt><a href="#getEntryValue">getEntryValue(entry, property, name)</a> ⇒ <code>String</code></dt>
+<dt><a href="#getEntryURLs">getEntryURLs(properties, preference)</a></dt>
+<dd><p>Get URLs from an entry&#39;s propertyies
+Allows for preferential sorting</p>
+</dd>
+<dt><del><a href="#getEntryValue">getEntryValue(entry, property, name)</a> ⇒ <code>String</code></del></dt>
 <dd><p>Get a value on an entry for a specific property type</p>
 </dd>
 <dt><a href="#isValidProperty">isValidProperty(name)</a> ⇒ <code>Boolean</code></dt>
@@ -2538,6 +2542,7 @@ a login for a website.
         * ~~[.getGroup()](#Entry+getGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>~~
         * ~~[.getMeta([property])](#Entry+getMeta) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>~~
         * [.getProperty([property])](#Entry+getProperty) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
+        * [.getURLs([urlTypePreference])](#Entry+getURLs) ⇒ <code>Array.&lt;String&gt;</code>
         * [.isInTrash()](#Entry+isInTrash) ⇒ <code>Boolean</code>
         * [.moveToGroup(group)](#Entry+moveToGroup) ⇒ [<code>Entry</code>](#Entry)
         * [.setAttribute(attributeName, value)](#Entry+setAttribute) ⇒ [<code>Entry</code>](#Entry)
@@ -2711,6 +2716,24 @@ values is returned.
 | Param | Type | Description |
 | --- | --- | --- |
 | [property] | <code>String</code> | The name of the property to fetch |
+
+<a name="Entry+getURLs"></a>
+
+### entry.getURLs([urlTypePreference]) ⇒ <code>Array.&lt;String&gt;</code>
+Get an array of URLs from the Entry
+Returns an array of detected URL values in the Entry's properties. The
+types of URLs can be configured by providing a preference:
+ - "general" - General URLs (of any type, preferring "URL" named props)
+ - "login" - Prefer URLs whose key has "login" in it
+ - "icon" - Return only icon-like URLs
+ - "any" - Return all found URLs
+
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: <code>Array.&lt;String&gt;</code> - An array of URLs  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [urlTypePreference] | <code>String</code> | The URL type preference |
 
 <a name="Entry+isInTrash"></a>
 
@@ -3821,9 +3844,24 @@ Create a descriptor for a field to be used within a facade
 | entryPropertyName | <code>String</code> | The name of the property |
 | options | <code>Object</code> | The options for the field |
 
+<a name="getEntryURLs"></a>
+
+## getEntryURLs(properties, preference)
+Get URLs from an entry's propertyies
+Allows for preferential sorting
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| properties | <code>Object</code> | The entry properties |
+| preference | <code>\*</code> |  |
+
 <a name="getEntryValue"></a>
 
-## getEntryValue(entry, property, name) ⇒ <code>String</code>
+## ~~getEntryValue(entry, property, name) ⇒ <code>String</code>~~
+***Deprecated***
+
 Get a value on an entry for a specific property type
 
 **Kind**: global function  

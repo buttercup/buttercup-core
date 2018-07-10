@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v2.2.0
+_2018-07-10_
+
+ * Bugfix: Entry property names could not be made up of special characters
+ * `Entry#getURLs`
+
 ## v2.1.0
 _2018-06-26_
 
