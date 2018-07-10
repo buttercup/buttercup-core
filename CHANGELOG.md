@@ -12,6 +12,11 @@ _2018-06-26_
  * Add `removeable: false` property to Entry facades
  * Add `note` facade type
 
+## v2.0.4
+_2018-07-03_
+
+ * Support `ArchiveSource` creation with type
+
 ## v2.0.3
 _2018-06-25_
 
