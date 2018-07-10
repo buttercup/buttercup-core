@@ -161,5 +161,12 @@ describe("Entry", function() {
             this.entry.setProperty("username", "three");
             expect(this.entry.getProperty("username")).to.equal("three");
         });
+
+        it("sets complex property names", function() {
+            this.entry.setProperty("-", "one");
+            this.entry.setProperty("©öoł", "two");
+            expect(this.entry.getProperty("-")).to.equal("one");
+            expect(this.entry.getProperty("©öoł")).to.equal("two");
+        });
     });
 });
