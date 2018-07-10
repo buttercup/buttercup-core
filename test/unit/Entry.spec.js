@@ -13,6 +13,8 @@ describe("Entry", function() {
         this.entry.setMeta("metakey", "metaval");
         this.entry.setProperty("username", "anthony");
         this.entry.setProperty("password", "passw0rd");
+        this.entry.setProperty("url", "test.com");
+        this.entry.setProperty("login-url", "test.com/login");
     });
 
     describe("get:id", function() {
@@ -107,12 +109,21 @@ describe("Entry", function() {
                 title: "entry",
                 username: "anthony",
                 password: "passw0rd",
-                metakey: "metaval"
+                metakey: "metaval",
+                url: "test.com",
+                "login-url": "test.com/login"
             });
         });
 
         it("returns undefined if the property doesn't exist", function() {
             expect(this.entry.getProperty("age")).to.be.undefined;
+        });
+    });
+
+    describe("getURLs", function() {
+        it("returns an array of URLs", function() {
+            const urls = this.entry.getURLs();
+            expect(urls).to.deep.equal(["test.com", "test.com/login"]);
         });
     });
 
@@ -149,6 +160,13 @@ describe("Entry", function() {
             expect(this.entry.getProperty("username")).to.equal("two");
             this.entry.setProperty("username", "three");
             expect(this.entry.getProperty("username")).to.equal("three");
+        });
+
+        it("sets complex property names", function() {
+            this.entry.setProperty("-", "one");
+            this.entry.setProperty("©öoł", "two");
+            expect(this.entry.getProperty("-")).to.equal("one");
+            expect(this.entry.getProperty("©öoł")).to.equal("two");
         });
     });
 });

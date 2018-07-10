@@ -1,7 +1,7 @@
 const Inigo = require("./InigoGenerator.js");
 const encoding = require("./tools/encoding.js");
 const searching = require("./tools/searching-raw.js");
-const entryTools = require("./tools/entry.js");
+const { getEntryURLs } = require("./tools/entry.js");
 
 /**
  * Entry class implementation
@@ -210,6 +210,22 @@ class Entry {
             return Object.assign({}, raw);
         }
         return raw.hasOwnProperty(property) ? raw[property] : undefined;
+    }
+
+    /**
+     * Get an array of URLs from the Entry
+     * Returns an array of detected URL values in the Entry's properties. The
+     * types of URLs can be configured by providing a preference:
+     *  - "general" - General URLs (of any type, preferring "URL" named props)
+     *  - "login" - Prefer URLs whose key has "login" in it
+     *  - "icon" - Return only icon-like URLs
+     *  - "any" - Return all found URLs
+     * @param {String=} urlTypePreference The URL type preference
+     * @returns {Array.<String>} An array of URLs
+     * @memberof Entry
+     */
+    getURLs(urlTypePreference) {
+        return getEntryURLs(this.getProperty(), urlTypePreference);
     }
 
     /**
