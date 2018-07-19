@@ -19,6 +19,10 @@ module.exports = {
     Descriptor: require("./Descriptor.js"),
     EntryFinder: require("./EntryFinder.js"),
 
+    MyButtercupClient: require("./myButtercup/MyButtercupClient.js"),
+    MyButtercupDatasource: require("./myButtercup/MyButtercupDatasource.js"),
+    MyButtercupRootDatasource: require("./myButtercup/MyButtercupRootDatasource.js"),
+
     storage: {
         StorageInterface: require("./storage/StorageInterface.js"),
         MemoryStorageInterface: require("./storage/MemoryStorageInterface.js")
