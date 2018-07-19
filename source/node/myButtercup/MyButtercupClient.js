@@ -1,7 +1,8 @@
+const { escape } = require("querystring");
 const Credentials = require("@buttercup/credentials");
 const { hasValidSignature } = require("@buttercup/signing");
 const { getQueue } = require("../Queue.js");
-const { API_ARCHIVE, API_OWN_DIGEST } = require("./locations.js");
+const { API_ARCHIVE, API_OWN_DIGEST, OAUTH_CLIENT_ID_BROWSER_EXT, OAUTH_REDIRECT_URI } = require("./locations.js");
 const { getFetchMethod } = require("../tools/request.js");
 const MyButtercupRootDatasource = require("./MyButtercupRootDatasource.js");
 
@@ -24,6 +25,11 @@ function handleWriteResponse(res) {
 }
 
 class MyButtercupClient {
+    static generateAuthorisationURL(clientID) {
+        const redir = escape(OAUTH_REDIRECT_URI);
+        return `https://my.buttercup.pw/oauth/authorize?response_type=token&client_id=${clientID}&redirect_uri=${redir}`;
+    }
+
     constructor() {
         this._digests = {};
         this._rootArchives = {};
@@ -86,6 +92,7 @@ class MyButtercupClient {
         };
         return fetch(API_OWN_DIGEST, fetchOptions)
             .then(handleGetResponse)
+            .then(res => res.json())
             .then(res => {
                 const { status } = res;
                 switch (status) {
