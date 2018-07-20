@@ -13,13 +13,14 @@ function createNewKey() {
 function createNewRoot() {
     const archive = new Archive();
     processArchiveKeys(archive);
+    return Promise.resolve(archive);
 }
 
 function processArchiveKeys(archive) {
     const { public: publicKey, private: privateKey } = createNewKey();
     const group = archive.createGroup("keys");
     const pubKeyEntry = group.createEntry("public-key");
-    pubKey.setProperty("password", publicKey);
+    pubKeyEntry.setProperty("password", publicKey);
     const privKeyEntry = group.createEntry("private-key");
     privKeyEntry.setProperty("password", privateKey);
 }

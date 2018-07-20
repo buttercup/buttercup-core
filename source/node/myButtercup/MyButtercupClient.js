@@ -2,9 +2,20 @@ const { escape } = require("querystring");
 const Credentials = require("@buttercup/credentials");
 const { hasValidSignature } = require("@buttercup/signing");
 const { getQueue } = require("../Queue.js");
-const { API_ARCHIVE, API_OWN_DIGEST, OAUTH_CLIENT_ID_BROWSER_EXT, OAUTH_REDIRECT_URI } = require("./locations.js");
+const {
+    API_ARCHIVE,
+    API_ARCHIVE_NEW,
+    API_OWN_DIGEST,
+    API_OWN_KEY,
+    API_OWN_ORG,
+    ARCHIVE_TYPE_NORMAL,
+    ARCHIVE_TYPE_ROOT,
+    OAUTH_CLIENT_ID_BROWSER_EXT,
+    OAUTH_REDIRECT_URI
+} = require("./symbols.js");
 const { getFetchMethod } = require("../tools/request.js");
 const MyButtercupRootDatasource = require("./MyButtercupRootDatasource.js");
+const { createNewRoot } = require("./init.js");
 
 const NOOP = () => {};
 
@@ -17,9 +28,22 @@ function handleGetResponse(res) {
     return res;
 }
 
+function handlePutKeyResponse(res) {
+    if (res.status !== 200) {
+        throw new Error(`Failed writing public key: Invalid API response status: ${res.status} ${res.statusText}`);
+    }
+    return res;
+}
+
 function handleWriteResponse(res) {
     if (res.status === 400) {
-        throw new Error(`Invalid API response status: ${res.status} ${res.statusText} (archive may already exist)`);
+        throw new Error(
+            `Invalid API response status: ${res.status} ${
+                res.statusText
+            } (archive may already exist or information was invalid)`
+        );
+    } else if (res.status >= 300) {
+        throw new Error(`Invalid API response status: ${res.status} ${res.statusText}`);
     }
     return res;
 }
@@ -95,15 +119,22 @@ class MyButtercupClient {
             .then(res => res.json())
             .then(res => {
                 const { status } = res;
+                console.log(res);
                 switch (status) {
                     case "init":
-                        return this._initialiseAccount(token).then(() =>
+                        return this._initialiseAccount(token, masterAccountCredentials).then(() =>
                             this.updateDigest(token, masterAccountCredentials)
                         );
                     case "ok": {
                         const rootArchiveID = res.root_archive;
+                        const personalOrgID = res.personal_org_id;
                         this._digests[rootArchiveID] = res;
-                        return this._loadRootArchive(rootArchiveID, masterAccountCredentials).then(() => ({
+                        return this._loadRootArchive(
+                            token,
+                            rootArchiveID,
+                            personalOrgID,
+                            masterAccountCredentials
+                        ).then(() => ({
                             rootArchiveID
                         }));
                     }
@@ -120,7 +151,10 @@ class MyButtercupClient {
         encryptedContents,
         updateID,
         masterAccountCredentials,
-        isNew = false
+        isNew = false,
+        isRoot = false,
+        organisationID,
+        name = "Untitled"
     } = {}) {
         const fetch = getFetchMethod();
         const method = isNew ? "POST" : "PUT";
@@ -128,10 +162,10 @@ class MyButtercupClient {
         if (!token) {
             return Promise.reject(new Error(`${errorPrefix} No token present`));
         }
-        if (!rootArchiveID) {
+        if (!rootArchiveID && !isRoot) {
             return Promise.reject(new Error(`${errorPrefix} Root archive ID is required`));
         }
-        if (!archiveID) {
+        if (!archiveID && !isNew) {
             return Promise.reject(new Error(`${errorPrefix} Target archive ID is required`));
         }
         if (!encryptedContents) {
@@ -146,11 +180,15 @@ class MyButtercupClient {
         if (!masterAccountCredentials) {
             return Promise.reject(new Error(`${errorPrefix} Credentials must be provided`));
         }
-        const url = API_ARCHIVE.replace("[ID]", archiveID);
-        return this._loadRootArchive(rootArchiveID, masterAccountCredentials)
+        const initialWork = isRoot
+            ? Promise.resolve()
+            : this._getOwnOrganisationID(token).then(orgID =>
+                  this._loadRootArchive(token, rootArchiveID, orgID, masterAccountCredentials)
+              );
+        return initialWork
             .then(() =>
                 this.getArchiveQueue(archiveID).enqueue(() => {
-                    const url = API_ARCHIVE.replace("[ID]", archiveID);
+                    const url = isNew ? API_ARCHIVE_NEW : API_ARCHIVE.replace("[ID]", archiveID);
                     const fetch = getFetchMethod();
                     const fetchOptions = {
                         method,
@@ -159,8 +197,11 @@ class MyButtercupClient {
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
+                            name,
                             update_id: updateID,
-                            archive: encryptedContents
+                            archive: encryptedContents,
+                            organisation_id: organisationID,
+                            type: isRoot ? ARCHIVE_TYPE_ROOT : ARCHIVE_TYPE_NORMAL
                         })
                     };
                     return fetch(url, fetchOptions);
@@ -176,11 +217,44 @@ class MyButtercupClient {
             });
     }
 
-    _initialiseAccount(token) {
-        // create a new root archive
+    _getOwnOrganisationID(token) {
+        const fetch = getFetchMethod();
+        const fetchOptions = {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
+        return fetch(API_OWN_ORG, fetchOptions)
+            .then(handleGetResponse)
+            .then(res => res.json())
+            .then(resp => resp.org_id);
     }
 
-    _loadRootArchive(rootID, masterAccountCredentials) {
+    _initialiseAccount(token, masterAccountCredentials) {
+        // create a new root archive
+        return (
+            createNewRoot()
+                .then(rootArchive => {
+                    const [keysGroup] = rootArchive.findGroupsByTitle("keys");
+                    const [pubKeyEntry] = keysGroup.findEntriesByProperty("title", "public-key");
+                    const pubKey = pubKeyEntry.getProperty("password");
+                    return this._setPublicKey(token, pubKey).then(() => rootArchive);
+                })
+                // write to remote
+                .then(rootArchive => {
+                    return this._getOwnOrganisationID(token).then(organisationID => {
+                        const datasource = new MyButtercupRootDatasource(token, /* root ID: */ null);
+                        return datasource.save(rootArchive.getHistory(), masterAccountCredentials, {
+                            isNew: true,
+                            organisationID
+                        });
+                    });
+                })
+        );
+    }
+
+    _loadRootArchive(token, rootID, personalOrgID, masterAccountCredentials) {
         const queue = this.getArchiveQueue(rootID);
         if (queue.isRunning) {
             return queue.enqueue(NOOP);
@@ -188,7 +262,7 @@ class MyButtercupClient {
             return Promise.resolve();
         }
         return queue.enqueue(() => {
-            const datasource = new MyButtercupRootDatasource(rootID);
+            const datasource = new MyButtercupRootDatasource(token, rootID, personalOrgID);
             return datasource.load(masterAccountCredentials).then(archive => {
                 this._rootArchives[rootID] = {
                     archive,
@@ -196,6 +270,21 @@ class MyButtercupClient {
                 };
             });
         });
+    }
+
+    _setPublicKey(token, publicKey) {
+        const fetch = getFetchMethod();
+        const fetchOptions = {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                public_key: publicKey
+            })
+        };
+        return fetch(API_OWN_KEY, fetchOptions).then(handlePutKeyResponse);
     }
 }
 
