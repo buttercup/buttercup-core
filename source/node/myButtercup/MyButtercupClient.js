@@ -119,7 +119,6 @@ class MyButtercupClient {
             .then(res => res.json())
             .then(res => {
                 const { status } = res;
-                console.log(res);
                 switch (status) {
                     case "init":
                         return this._initialiseAccount(token, masterAccountCredentials).then(() =>
