@@ -79,9 +79,7 @@ class MyButtercupDatasource extends TextDatasource {
                         .updateDigest(this._token, masterAccountCredentials)
                         .then(({ rootArchiveID }) => {
                             this._rootArchiveID = rootArchiveID;
-                            return client.loadRootArchive(this._token, this._rootArchiveID, masterAccountCredentials);
-                        })
-                        .then(({ archive }) => {
+                            const { archive } = client.rootArchives[rootArchiveID];
                             let [archivesGroup] = archive.findGroupsByTitle("archives");
                             if (!archivesGroup) {
                                 archivesGroup = archive.createGroup("archives");

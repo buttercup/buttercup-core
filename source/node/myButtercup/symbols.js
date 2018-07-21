@@ -14,6 +14,7 @@ const API_OWN_ORG = joinURL(ROOT_API, "/own/org");
 const ARCHIVE_TYPE_NORMAL = "normal";
 const ARCHIVE_TYPE_ROOT = "root";
 
+const OAUTH_AUTHORISE_URI = `${ROOT_URL}/oauth/authorize`;
 const OAUTH_CLIENT_ID_BROWSER_EXT = "bcup_browser_ext";
 const OAUTH_REDIRECT_URI = `${ROOT_URL}/oauth/authorized/`;
 
@@ -26,6 +27,7 @@ module.exports = {
     API_OWN_ORG,
     ARCHIVE_TYPE_NORMAL,
     ARCHIVE_TYPE_ROOT,
+    OAUTH_AUTHORISE_URI,
     OAUTH_CLIENT_ID_BROWSER_EXT,
     OAUTH_REDIRECT_URI
 };

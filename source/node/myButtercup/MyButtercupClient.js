@@ -2,6 +2,7 @@ const { escape } = require("querystring");
 const Credentials = require("@buttercup/credentials");
 const { hasValidSignature } = require("@buttercup/signing");
 const { getQueue } = require("../Queue.js");
+const Archive = require("../Archive.js");
 const {
     API_ARCHIVE,
     API_ARCHIVE_NEW,
@@ -10,6 +11,7 @@ const {
     API_OWN_ORG,
     ARCHIVE_TYPE_NORMAL,
     ARCHIVE_TYPE_ROOT,
+    OAUTH_AUTHORISE_URI,
     OAUTH_CLIENT_ID_BROWSER_EXT,
     OAUTH_REDIRECT_URI
 } = require("./symbols.js");
@@ -51,12 +53,16 @@ function handleWriteResponse(res) {
 class MyButtercupClient {
     static generateAuthorisationURL(clientID) {
         const redir = escape(OAUTH_REDIRECT_URI);
-        return `https://my.buttercup.pw/oauth/authorize?response_type=token&client_id=${clientID}&redirect_uri=${redir}`;
+        return `${OAUTH_AUTHORISE_URI}?response_type=token&client_id=${clientID}&redirect_uri=${redir}`;
     }
 
     constructor() {
         this._digests = {};
         this._rootArchives = {};
+    }
+
+    get rootArchives() {
+        return this._rootArchives;
     }
 
     fetchArchive(token, rootArchiveID, archiveID) {
@@ -122,13 +128,16 @@ class MyButtercupClient {
         return queue.enqueue(() => {
             const datasource = new MyButtercupRootDatasource(token, rootID);
             // @todo use workspace for root merging
-            return datasource.load(masterAccountCredentials).then(archive => {
-                this._rootArchives[rootID] = {
-                    archive,
-                    datasource
-                };
-                return { ...this._rootArchives[rootID] };
-            });
+            return datasource
+                .load(masterAccountCredentials)
+                .then(history => Archive.createFromHistory(history))
+                .then(archive => {
+                    this._rootArchives[rootID] = {
+                        archive,
+                        datasource
+                    };
+                    return { ...this._rootArchives[rootID] };
+                });
         });
     }
 
