@@ -59,8 +59,14 @@ class MyButtercupClient {
         this._rootArchives = {};
     }
 
-    fetchArchive(rootArchiveID, archiveID) {
-        return this.getArchiveQueue(archiveID).enqueue(() => {
+    fetchArchive(token, rootArchiveID, archiveID) {
+        return Promise.resolve().then(() => {
+            if (!rootArchiveID) {
+                throw new Error(`Invalid root archive ID: ${rootArchiveID}`);
+            }
+            if (!archiveID) {
+                throw new Error(`Invalid archive ID: ${archiveID}`);
+            }
             const url = API_ARCHIVE.replace("[ID]", archiveID);
             const fetch = getFetchMethod();
             const fetchOptions = {
@@ -106,6 +112,35 @@ class MyButtercupClient {
         return getQueue().channel(`mybuttercup:archive:${archiveID}`);
     }
 
+    loadRootArchive(token, rootID, masterAccountCredentials) {
+        const queue = this.getArchiveQueue(rootID);
+        if (queue.isRunning) {
+            return queue.enqueue(NOOP).then(() => ({ ...this._rootArchives[rootID] }));
+        } else if (this._rootArchives.hasOwnProperty(rootID)) {
+            return Promise.resolve({ ...this._rootArchives[rootID] });
+        }
+        return queue.enqueue(() => {
+            const datasource = new MyButtercupRootDatasource(token, rootID);
+            // @todo use workspace for root merging
+            return datasource.load(masterAccountCredentials).then(archive => {
+                this._rootArchives[rootID] = {
+                    archive,
+                    datasource
+                };
+                return { ...this._rootArchives[rootID] };
+            });
+        });
+    }
+
+    saveRootArchive(token, rootID, masterAccountCredentials) {
+        const queue = this.getArchiveQueue(rootID);
+        return queue.enqueue(() => {
+            // @todo use workspace for root merging
+            const { archive, datasource } = this._rootArchives[rootID];
+            return datasource.save(archive.getHistory(), masterAccountCredentials);
+        });
+    }
+
     updateDigest(token, masterAccountCredentials) {
         const fetch = getFetchMethod();
         const fetchOptions = {
@@ -128,12 +163,7 @@ class MyButtercupClient {
                         const rootArchiveID = res.root_archive;
                         const personalOrgID = res.personal_org_id;
                         this._digests[rootArchiveID] = res;
-                        return this._loadRootArchive(
-                            token,
-                            rootArchiveID,
-                            personalOrgID,
-                            masterAccountCredentials
-                        ).then(() => ({
+                        return this.loadRootArchive(token, rootArchiveID, masterAccountCredentials).then(() => ({
                             rootArchiveID
                         }));
                     }
@@ -149,6 +179,7 @@ class MyButtercupClient {
         archiveID,
         encryptedContents,
         updateID,
+        newUpdateID,
         masterAccountCredentials,
         isNew = false,
         isRoot = false,
@@ -182,7 +213,7 @@ class MyButtercupClient {
         const initialWork = isRoot
             ? Promise.resolve()
             : this._getOwnOrganisationID(token).then(orgID =>
-                  this._loadRootArchive(token, rootArchiveID, orgID, masterAccountCredentials)
+                  this.loadRootArchive(token, rootArchiveID, masterAccountCredentials)
               );
         return initialWork
             .then(() =>
@@ -198,6 +229,7 @@ class MyButtercupClient {
                         body: JSON.stringify({
                             name,
                             update_id: updateID,
+                            new_update_id: newUpdateID,
                             archive: encryptedContents,
                             organisation_id: organisationID,
                             type: isRoot ? ARCHIVE_TYPE_ROOT : ARCHIVE_TYPE_NORMAL
@@ -209,10 +241,14 @@ class MyButtercupClient {
             .then(handleWriteResponse)
             .then(res => res.json())
             .then(res => {
-                const { status } = res;
+                const { status, update_id: updateID, archive_id: archiveID } = res;
                 if (status !== "ok") {
                     throw new Error(`${errorPrefix} Invalid API response status: ${status}`);
                 }
+                return {
+                    updateID,
+                    archiveID
+                };
             });
     }
 
@@ -251,24 +287,6 @@ class MyButtercupClient {
                     });
                 })
         );
-    }
-
-    _loadRootArchive(token, rootID, personalOrgID, masterAccountCredentials) {
-        const queue = this.getArchiveQueue(rootID);
-        if (queue.isRunning) {
-            return queue.enqueue(NOOP);
-        } else if (this._rootArchives.hasOwnProperty(rootID)) {
-            return Promise.resolve();
-        }
-        return queue.enqueue(() => {
-            const datasource = new MyButtercupRootDatasource(token, rootID, personalOrgID);
-            return datasource.load(masterAccountCredentials).then(archive => {
-                this._rootArchives[rootID] = {
-                    archive,
-                    datasource
-                };
-            });
-        });
     }
 
     _setPublicKey(token, publicKey) {

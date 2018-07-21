@@ -16,7 +16,7 @@ class MyButtercupRootDatasource extends TextDatasource {
     load(credentials) {
         const { getSharedClient } = require("./MyButtercupClient.js");
         const client = getSharedClient();
-        return client.fetchArchive(this.archiveID, this.archiveID).then(({ archive, updateID }) => {
+        return client.fetchArchive(this._token, this.archiveID, this.archiveID).then(({ archive, updateID }) => {
             this._updateID = updateID;
             this.setContent(archive);
             return super.load(credentials);
@@ -26,19 +26,25 @@ class MyButtercupRootDatasource extends TextDatasource {
     save(history, credentials, { isNew = false, organisationID } = {}) {
         const { getSharedClient } = require("./MyButtercupClient.js");
         const client = getSharedClient();
-        return super.save(history, credentials).then(encryptedContents =>
-            client.writeArchive({
-                token: this._token,
-                rootArchiveID: this.archiveID,
-                archiveID: this.archiveID,
-                encryptedContents,
-                updateID: isNew ? generateNewUpdateID() : this._updateID,
-                masterAccountCredentials: credentials,
-                isNew,
-                isRoot: true,
-                organisationID
-            })
-        );
+        return super
+            .save(history, credentials)
+            .then(encryptedContents =>
+                client.writeArchive({
+                    token: this._token,
+                    rootArchiveID: this.archiveID,
+                    archiveID: this.archiveID,
+                    encryptedContents,
+                    updateID: isNew ? generateNewUpdateID() : this._updateID,
+                    masterAccountCredentials: credentials,
+                    isNew,
+                    isRoot: true,
+                    organisationID
+                })
+            )
+            .then(({ updateID, archiveID }) => {
+                this._updateID = updateID;
+                this._archiveID = archiveID;
+            });
     }
 }
 
