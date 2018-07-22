@@ -3,7 +3,7 @@ const { TextDatasource, registerDatasource } = require("@buttercup/datasources")
 const Credentials = require("@buttercup/credentials");
 const { getSharedClient } = require("./MyButtercupClient.js");
 const { generateNewUpdateID } = require("./helpers.js");
-const { getRandomStringGenerator } = require("../tools/random.js");
+const { generateRandomString } = require("../tools/random.js");
 
 class MyButtercupDatasource extends TextDatasource {
     constructor(token, archiveID) {

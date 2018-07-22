@@ -1,6 +1,7 @@
 const iocane = require("iocane");
 const Datasources = require("@buttercup/datasources");
 const Credentials = require("@buttercup/credentials");
+const { getSharedPatcher } = require("./patching.js");
 
 module.exports = {
     Archive: require("./Archive.js"),
@@ -45,5 +46,7 @@ module.exports = {
         dropbox: Datasources.dropboxClientPatcher,
         iocane,
         webdav: Datasources.webdav
-    }
+    },
+
+    getHotPatcher: getSharedPatcher
 };

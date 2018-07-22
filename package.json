@@ -65,6 +65,7 @@
     "@buttercup/signing": "^0.1.0",
     "eventemitter3": "^3.1.0",
     "fuse.js": "^2.7.4",
+    "hot-patcher": "^0.3.0",
     "iocane": "^1.0.2",
     "is-promise": "^2.1.0",
     "node-fetch": "^2.3.0",

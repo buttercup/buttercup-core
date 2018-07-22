@@ -1,4 +1,4 @@
-let __randomStringGenerator;
+const { getSharedPatcher } = require("../patching.js");
 
 const RANDOM_STRING_CHARSET =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789~!@#$%^&*()_+-=[]{}|;:,.<>?";
@@ -10,22 +10,28 @@ const RANDOM_STRING_CHARSET =
  * @returns {Promise.<String>} The new random string
  */
 function generateRandomString(length, charset = RANDOM_STRING_CHARSET) {
-    if (!length || length <= 0) {
-        return Promise.reject(new Error(`Failed generating random string: invalid length requested: ${length}`));
-    }
-    const chars = charset.length;
-    let output = "";
-    for (let i = 0; i < length; i += 1) {
-        const rndInd = Math.floor(Math.random() * chars);
-        output += charset[rndInd];
-    }
-    return Promise.resolve(output);
+    return getSharedPatcher().patchInline(
+        "buttercup/randomString",
+        (strLen, characters) => {
+            if (!strLen || strLen <= 0) {
+                return Promise.reject(
+                    new Error(`Failed generating random string: invalid length requested: ${strLen}`)
+                );
+            }
+            const chars = characters.length;
+            let output = "";
+            for (let i = 0; i < strLen; i += 1) {
+                const rndInd = Math.floor(Math.random() * chars);
+                output += characters[rndInd];
+            }
+            return Promise.resolve(output);
+        },
+        length,
+        charset
+    );
 }
 
 module.exports = {
     RANDOM_STRING_CHARSET,
-    getRandomStringGenerator: () => __randomStringGenerator || generateRandomString,
-    setRandomStringGenerator: generator => {
-        __randomStringGenerator = generator;
-    }
+    generateRandomString
 };
