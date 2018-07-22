@@ -4,15 +4,16 @@ const instanceSearching = require("../tools/searching-instance.js");
  * Find entries by searching properties/meta
  * When used within a group, that group's entries are also searched'
  * @param {Archive|Group} groupParent The target archive or group
- * @param {string} check Information to check (id/property/meta)
+ * @param {string} check Information to check (id/property)
  * @param {string} key The key (property/meta-value) to search with (not needed for check=id)
  * @param {RegExp|string} value The value to search for
+ * @param {Boolean=} exact Match string values entirely (default: false)
  * @returns {Array.<Entry>} An array of found entries
  * @private
  * @static
  * @memberof EntryCollection
  */
-function findEntriesByCheck(groupParent, check, key, value) {
+function findEntriesByCheck(groupParent, check, key, value, exact = false) {
     // If the groupParent object is a Group, use it as the only search group,
     // otherwise just take the children groups (groupParent is probably an
     // Archive instance):
@@ -36,9 +37,8 @@ function findEntriesByCheck(groupParent, check, key, value) {
         }
         if (value instanceof RegExp) {
             return value.test(itemValue);
-        } else {
-            return itemValue.indexOf(value) >= 0;
         }
+        return exact ? itemValue === value : itemValue.indexOf(value) >= 0;
     });
 }
 
@@ -56,7 +56,7 @@ module.exports = {
          * @memberof EntryCollection
          */
         inst.findEntryByID = function findEntryByID(id) {
-            let entries = findEntriesByCheck(inst, "id", null, id);
+            const entries = findEntriesByCheck(inst, "id", null, id);
             return entries && entries.length === 1 ? entries[0] : null;
         };
 
@@ -67,6 +67,7 @@ module.exports = {
          * @param {RegExp|string} value The value to search for
          * @returns {Array.<Entry>} An array of found entries
          * @memberof EntryCollection
+         * @deprecated Meta is deprecated: Use properties instead
          */
         inst.findEntriesByMeta = function findEntriesByMeta(metaName, value) {
             return findEntriesByCheck(inst, "meta", metaName, value);
@@ -80,8 +81,8 @@ module.exports = {
          * @returns {Array.<Entry>} An array of found extries
          * @memberof EntryCollection
          */
-        inst.findEntriesByProperty = function findEntriesByProperty(property, value) {
-            return findEntriesByCheck(inst, "property", property, value);
+        inst.findEntriesByProperty = function findEntriesByProperty(property, value, exact = false) {
+            return findEntriesByCheck(inst, "property", property, value, exact);
         };
     }
 };

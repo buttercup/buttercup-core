@@ -32,12 +32,8 @@ class MyButtercupDatasource extends TextDatasource {
     save(history, masterAccountCredentials) {
         const client = getSharedClient();
         const isNew = !this._archiveID;
-        let privateCredentials;
         return this._getArchiveCredentials(masterAccountCredentials)
-            .then(creds => {
-                privateCredentials = creds;
-            })
-            .then(() => super.save(history, masterAccountCredentials))
+            .then(privateCredentials => super.save(history, privateCredentials))
             .then(encryptedContents => {
                 return client
                     .updateDigest(this._token, masterAccountCredentials)
@@ -136,7 +132,7 @@ class MyButtercupDatasource extends TextDatasource {
                 if (!targetEntry) {
                     throw new VError("No associated root entry found for new archive");
                 }
-                targetEntry.setProperty("title", archiveID);
+                targetEntry.setProperty("title", archiveID.toString());
             })
             .catch(err => {
                 throw new VError(err, "Failed updating credentials for MyButtercup archive");

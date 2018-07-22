@@ -98,7 +98,11 @@ class MyButtercupClient {
                     // root archive should already be loaded by now
                     const { archive: rootArchive } = this._rootArchives[rootArchiveID];
                     const [archivePasswordsGroup] = rootArchive.findGroupsByTitle("archives");
-                    const [passEntry] = archivePasswordsGroup.findEntriesByProperty("title", archiveID);
+                    const [passEntry] = archivePasswordsGroup.findEntriesByProperty(
+                        "title",
+                        archiveID.toString(),
+                        /* exact: */ true
+                    );
                     if (!passEntry) {
                         throw new Error(
                             `Failed fetching MyButtercup archive: No archive found in account root for ID: ${archiveID}`
