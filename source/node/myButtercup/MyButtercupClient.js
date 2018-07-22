@@ -97,7 +97,7 @@ class MyButtercupClient {
                     }
                     // root archive should already be loaded by now
                     const { archive: rootArchive } = this._rootArchives[rootArchiveID];
-                    const [archivePasswordsGroup] = rootArchive.findGroupsByTitle("archive-passwords");
+                    const [archivePasswordsGroup] = rootArchive.findGroupsByTitle("archives");
                     const [passEntry] = archivePasswordsGroup.findEntriesByProperty("title", archiveID);
                     if (!passEntry) {
                         throw new Error(
@@ -142,12 +142,9 @@ class MyButtercupClient {
     }
 
     saveRootArchive(token, rootID, masterAccountCredentials) {
-        const queue = this.getArchiveQueue(rootID);
-        return queue.enqueue(() => {
-            // @todo use workspace for root merging
-            const { archive, datasource } = this._rootArchives[rootID];
-            return datasource.save(archive.getHistory(), masterAccountCredentials);
-        });
+        // @todo use workspace for root merging
+        const { archive, datasource } = this._rootArchives[rootID];
+        return datasource.save(archive.getHistory(), masterAccountCredentials);
     }
 
     updateDigest(token, masterAccountCredentials) {
@@ -173,7 +170,8 @@ class MyButtercupClient {
                         const personalOrgID = res.personal_org_id;
                         this._digests[rootArchiveID] = res;
                         return this.loadRootArchive(token, rootArchiveID, masterAccountCredentials).then(() => ({
-                            rootArchiveID
+                            rootArchiveID,
+                            personalOrgID
                         }));
                     }
                     default:

@@ -35,6 +35,7 @@ class MyButtercupRootDatasource extends TextDatasource {
                     archiveID: this.archiveID,
                     encryptedContents,
                     updateID: isNew ? generateNewUpdateID() : this._updateID,
+                    newUpdateID: isNew ? null : generateNewUpdateID(),
                     masterAccountCredentials: credentials,
                     isNew,
                     isRoot: true,

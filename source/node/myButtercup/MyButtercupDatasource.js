@@ -39,20 +39,23 @@ class MyButtercupDatasource extends TextDatasource {
             })
             .then(() => super.save(history, masterAccountCredentials))
             .then(encryptedContents => {
-                return client.updateDigest(this._token, masterAccountCredentials).then(({ rootArchiveID }) =>
-                    client.writeArchive({
-                        token: this._token,
-                        rootArchiveID: this.archiveID,
-                        archiveID: this.archiveID,
-                        encryptedContents,
-                        updateID: isNew ? generateNewUpdateID() : this._updateID,
-                        newUpdateID: isNew ? null : generateNewUpdateID(),
-                        masterAccountCredentials,
-                        isNew,
-                        isRoot: false,
-                        organisationID
-                    })
-                );
+                return client
+                    .updateDigest(this._token, masterAccountCredentials)
+                    .then(({ rootArchiveID, personalOrgID }) =>
+                        client.writeArchive({
+                            token: this._token,
+                            rootArchiveID,
+                            archiveID: this.archiveID,
+                            encryptedContents,
+                            updateID: isNew ? generateNewUpdateID() : this._updateID,
+                            newUpdateID: isNew ? null : generateNewUpdateID(),
+                            masterAccountCredentials,
+                            isNew,
+                            isRoot: false,
+                            // @todo this will have to point dynamically:
+                            organisationID: personalOrgID
+                        })
+                    );
             })
             .then(({ updateID, archiveID }) => {
                 this._updateID = updateID;
@@ -117,6 +120,7 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     _updateNewArchiveID(archiveID, masterAccountCredentials) {
+        const client = getSharedClient();
         return client
             .loadRootArchive(this._token, this._rootArchiveID, masterAccountCredentials)
             .then(({ archive }) => {
