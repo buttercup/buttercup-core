@@ -41,7 +41,7 @@ class MyButtercupDatasource extends TextDatasource {
                         client.writeArchive({
                             token: this._token,
                             rootArchiveID,
-                            archiveID: this.archiveID,
+                            archiveID: this._archiveID,
                             encryptedContents,
                             updateID: isNew ? generateNewUpdateID() : this._updateID,
                             newUpdateID: isNew ? null : generateNewUpdateID(),
