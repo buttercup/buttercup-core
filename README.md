@@ -117,3 +117,11 @@ fileDatasource
 ```
 
 To see all available Datasources, checkout the [`@buttercup/datasources`](https://github.com/buttercup/datasources) project. Credentials can be found at [`@buttercup/credentials`](https://github.com/buttercup/credentials). Both are bundled with the core library.
+
+### Considerations
+Buttercup is an encryption library that is designed to work with very sensitive data. Using its APIs in a public space is **strongly not recommended** - any bad actor could simply hijack and misuse sensitive data passed through Buttercup. Use Buttercup in settings where security and privacy can be ensured:
+
+ * Do use it in NodeJS by directly requiring items from its API, but ensure that your application is final
+   * Be cautious using it in applications that are intended to run in a shared environment - Buttercup has several methods that can be overridden, which may pose a security risk in shared environments such as Node applications.
+ * **Do not** use it in public spaces such as via a global variable
+ * Do use it in bundled applications and executables, such as within an Electron app
