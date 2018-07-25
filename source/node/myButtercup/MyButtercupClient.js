@@ -125,9 +125,9 @@ class MyButtercupClient {
     loadRootArchive(token, rootID, masterAccountCredentials) {
         const queue = this.getArchiveQueue(rootID);
         if (queue.isRunning) {
-            return queue.enqueue(NOOP).then(() => ({ ...this._rootArchives[rootID] }));
+            return queue.enqueue(NOOP).then(() => Object.assign({}, this._rootArchives[rootID]));
         } else if (this._rootArchives.hasOwnProperty(rootID)) {
-            return Promise.resolve({ ...this._rootArchives[rootID] });
+            return Promise.resolve(Object.assign({}, this._rootArchives[rootID]));
         }
         return queue.enqueue(() => {
             const datasource = new MyButtercupRootDatasource(token, rootID);
@@ -140,7 +140,7 @@ class MyButtercupClient {
                         archive,
                         datasource
                     };
-                    return { ...this._rootArchives[rootID] };
+                    return Object.assign({}, this._rootArchives[rootID]);
                 });
         });
     }
