@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.3.0
+_2018-07-28_
+
+ * Add ID parameter to `Group.createNew()` (for importing purposes)
+
 ## v2.2.0
 _2018-07-10_
 
