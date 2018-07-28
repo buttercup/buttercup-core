@@ -425,7 +425,7 @@ Group.OutputFlag = Object.freeze({
  * @throws {Error} Throws if the target group is the trash group,
  *      or if the target group is within the trash group
  */
-Group.createNew = function(archive, parentID) {
+Group.createNew = function(archive, parentID, id = encoding.getUniqueID()) {
     parentID = parentID || "0";
     if (parentID !== "0") {
         // check if group is trash/in-trash
@@ -437,15 +437,14 @@ Group.createNew = function(archive, parentID) {
         }
     }
     // generate unique ID for the new Group
-    var id = encoding.getUniqueID(),
-        westley = archive._getWestley();
+    const westley = archive._getWestley();
     westley.execute(
         Inigo.create(Inigo.Command.CreateGroup)
             .addArgument(parentID)
             .addArgument(id)
             .generateCommand()
     );
-    var group = searching.findGroupByID(westley.getDataset().groups, id);
+    const group = searching.findGroupByID(westley.getDataset().groups, id);
     return new Group(archive, group);
 };
 
