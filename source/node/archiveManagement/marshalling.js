@@ -35,14 +35,19 @@ function credentialsToDatasource(sourceCredentials) {
  * @param {Credentials} sourceCredentials The remote archive credentials
  * @param {Credentials} archiveCredentials Credentials for unlocking the archive
  * @param {Boolean=} initialise Whether or not to initialise a new archive (defaults to false)
+ * @param {String=} contentOverride Content for overriding the fetch operation in the
+ *  datasource, for loading offline content
  * @returns {Promise.<Object>} A promise that resolves with an object containing a workspace,
  *  the source credentials and archive credentials
  */
-function credentialsToSource(sourceCredentials, archiveCredentials, initialise = false) {
+function credentialsToSource(sourceCredentials, archiveCredentials, initialise = false, contentOverride = null) {
     return credentialsToDatasource(sourceCredentials)
         .then(function __handleInitialisation(result) {
             const datasource = result.datasource;
             const defaultArchive = Archive.createWithDefaults();
+            if (typeof contentOverride === "string") {
+                datasource.setContent(contentOverride);
+            }
             return initialise
                 ? datasource.save(defaultArchive.getHistory(), archiveCredentials).then(() =>
                       Object.assign(

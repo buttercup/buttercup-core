@@ -4,6 +4,7 @@ const Credentials = require("@buttercup/credentials");
 const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
 const getUniqueID = require("../tools/encoding.js").getUniqueID;
 const credentialsToSource = require("./marshalling.js").credentialsToSource;
+const { getSourceOfflineArchive, sourceHasOfflineCopy, storeSourceOfflineCopy } = require("./offline.js");
 
 const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;
 
@@ -68,6 +69,7 @@ class ArchiveSource extends AsyncEventEmitter {
         if (Credentials.isSecureString(archiveCredentials) !== true) {
             throw new VError("Failed constructing archive source: Archive credentials not in encrypted form");
         }
+        this._storageInterface = null;
         this._queue = new ChannelQueue();
         this._name = name;
         this._id = id;
@@ -147,6 +149,16 @@ class ArchiveSource extends AsyncEventEmitter {
     }
 
     /**
+     * The attached manager's storage interface
+     * @type {StorageInterface}
+     * @memberof ArchiveSource
+     * @readonly
+     */
+    get storageInterface() {
+        return this._storageInterface;
+    }
+
+    /**
      * Workspace instance for the source
      * Is null when the source is locked
      * @type {Workspace|null}
@@ -163,6 +175,17 @@ class ArchiveSource extends AsyncEventEmitter {
         }
         this._colour = newColour;
         this.emit("sourceColourUpdated", this.description);
+    }
+
+    /**
+     * Check if the source has an offline copy
+     * @param {String} sourceID The source ID
+     * @returns {Promise.<Boolean>} A promise which resolves with whether an offline
+     *  copy is available or not
+     * @memberof ArchiveSource
+     */
+    checkOfflineCopy(sourceID) {
+        return sourceHasOfflineCopy(this.storageInterface, sourceID);
     }
 
     /**
@@ -252,13 +275,15 @@ class ArchiveSource extends AsyncEventEmitter {
      * @param {String} masterPassword The master password
      * @param {Boolean=} initialiseRemote Optionally initialise the remote (replaces
      *  remote archive) (defaults to false)
+     * @param {String=} contentOverride Content for overriding the fetch operation in the
+     *  datasource, for loading offline content
      * @memberof ArchiveSource
      * @throws {VError} Rejects if not in locked state
      * @throws {VError} Rejects if not able to create the source from the encrypted
      *  credentials
      * @fires ArchiveSource#sourceUnlocked
      */
-    unlock(masterPassword, initialiseRemote = false) {
+    unlock(masterPassword, initialiseRemote = false, contentOverride = null) {
         if (this.status !== Status.LOCKED) {
             return Promise.reject(
                 new VError(`Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`)
@@ -271,14 +296,15 @@ class ArchiveSource extends AsyncEventEmitter {
                 Credentials.fromSecureString(this._archiveCredentials, masterPassword)
             ])
                 .then(([sourceCredentials, archiveCredentials] = []) => {
-                    return credentialsToSource(sourceCredentials, archiveCredentials, initialiseRemote)
+                    return credentialsToSource(sourceCredentials, archiveCredentials, initialiseRemote, contentOverride)
                         .then(sourceInfo => {
-                            const { workspace, sourceCredentials, archiveCredentials } = sourceInfo;
+                            const { workspace, sourceCredentials, archiveCredentials, datasource } = sourceInfo;
                             this._workspace = workspace;
                             this._sourceCredentials = sourceCredentials;
                             this._archiveCredentials = archiveCredentials;
                             this._status = Status.UNLOCKED;
                             this.type = sourceCredentials.type;
+                            return storeSourceOfflineCopy(this.storageInterface, this.id, datasource._content);
                         })
                         .catch(err => {
                             throw new VError(err, "Failed mapping credentials to a source");
