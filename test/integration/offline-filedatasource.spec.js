@@ -4,8 +4,6 @@ const rimraf = require("rimraf").sync;
 const { FileDatasource } = require("@buttercup/datasources");
 const Credentials = require("@buttercup/credentials");
 const Archive = require("../../source/node/Archive.js");
-const ArchiveManager = require("../../source/node/archiveManagement/ArchiveManager.js");
-const ArchiveSource = require("../../source/node/archiveManagement/ArchiveSource.js");
 
 const FILENAME = path.resolve(__dirname, "./offline.test.bcup");
 
