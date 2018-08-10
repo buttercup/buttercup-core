@@ -7,7 +7,7 @@ function getSourceOfflineArchive(storage, sourceID) {
 
 function sourceHasOfflineCopy(storage, sourceID) {
     return getSourceOfflineArchive(storage, sourceID).then(
-        archiveContents => archiveContents && archiveContents.length > 0
+        archiveContents => !!archiveContents && archiveContents.length > 0
     );
 }
 
