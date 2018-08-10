@@ -15,7 +15,10 @@ function credentialsToDatasource(sourceCredentials) {
     return Promise.resolve()
         .then(function() {
             const datasourceDescriptionRaw = sourceCredentials.getValueOrFail("datasource");
-            const datasourceDescription = JSON.parse(datasourceDescriptionRaw);
+            const datasourceDescription =
+                typeof datasourceDescriptionRaw === "string"
+                    ? JSON.parse(datasourceDescriptionRaw)
+                    : datasourceDescriptionRaw;
             if (typeof datasourceDescription.type !== "string") {
                 throw new VError("Invalid or missing type");
             }
