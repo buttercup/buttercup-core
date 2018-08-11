@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v2.4.0
+_2018-08-11_
+
+ * Add offline support to `ArchiveManager` and `ArchiveSource`
+ * Add readOnly mode operation for `ArchiveSource` loading when content is overridden
+
 ## v2.3.0
 _2018-07-28_
 
