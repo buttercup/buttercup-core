@@ -52,6 +52,12 @@ describe("ArchiveManager & ArchiveSource", function() {
         });
     });
 
+    it("sets the archive's status to readOnly", function() {
+        return this.archiveSource.unlock("test", false, this.content).then(() => {
+            expect(this.archiveSource.workspace.archive.readOnly).to.be.true;
+        });
+    });
+
     it("detects offline content availability after one unlock", function() {
         fs.writeFileSync(FILENAME, this.content);
         return this.archiveSource
