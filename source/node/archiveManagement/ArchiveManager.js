@@ -88,6 +88,7 @@ class ArchiveManager extends AsyncEventEmitter {
             return this._enqueueStateChange(() => {
                 // Store the source
                 this.sources.push(archiveSource);
+                archiveSource._storageInterface = this.storageInterface;
                 // Configure the order
                 archiveSource.order = order;
                 // Emit an updated event for the source having been added

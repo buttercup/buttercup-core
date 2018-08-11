@@ -4,6 +4,7 @@ const Credentials = require("@buttercup/credentials");
 const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
 const getUniqueID = require("../tools/encoding.js").getUniqueID;
 const credentialsToSource = require("./marshalling.js").credentialsToSource;
+const { getSourceOfflineArchive, sourceHasOfflineCopy, storeSourceOfflineCopy } = require("./offline.js");
 
 const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;
 
@@ -68,6 +69,7 @@ class ArchiveSource extends AsyncEventEmitter {
         if (Credentials.isSecureString(archiveCredentials) !== true) {
             throw new VError("Failed constructing archive source: Archive credentials not in encrypted form");
         }
+        this._storageInterface = null;
         this._queue = new ChannelQueue();
         this._name = name;
         this._id = id;
@@ -147,6 +149,16 @@ class ArchiveSource extends AsyncEventEmitter {
     }
 
     /**
+     * The attached manager's storage interface
+     * @type {StorageInterface}
+     * @memberof ArchiveSource
+     * @readonly
+     */
+    get storageInterface() {
+        return this._storageInterface;
+    }
+
+    /**
      * Workspace instance for the source
      * Is null when the source is locked
      * @type {Workspace|null}
@@ -163,6 +175,16 @@ class ArchiveSource extends AsyncEventEmitter {
         }
         this._colour = newColour;
         this.emit("sourceColourUpdated", this.description);
+    }
+
+    /**
+     * Check if the source has an offline copy
+     * @returns {Promise.<Boolean>} A promise which resolves with whether an offline
+     *  copy is available or not
+     * @memberof ArchiveSource
+     */
+    checkOfflineCopy() {
+        return sourceHasOfflineCopy(this.storageInterface, this.id);
     }
 
     /**
@@ -212,6 +234,18 @@ class ArchiveSource extends AsyncEventEmitter {
     }
 
     /**
+     * Get offline content, if it exists
+     * @returns {Promise.<String|null>} A promise a resolves with the content, or null
+     *  if it doesn't exist
+     * @memberof ArchiveSource
+     */
+    getOfflineContent() {
+        return this.checkOfflineCopy().then(
+            hasContent => (hasContent ? getSourceOfflineArchive(this.storageInterface, this.id) : null)
+        );
+    }
+
+    /**
      * Lock the source
      * Encrypts the credentials and performs dehydration, placing the source into
      *  a LOCKED state. No saving is performed before locking.
@@ -252,45 +286,77 @@ class ArchiveSource extends AsyncEventEmitter {
      * @param {String} masterPassword The master password
      * @param {Boolean=} initialiseRemote Optionally initialise the remote (replaces
      *  remote archive) (defaults to false)
+     * @param {String|Boolean=} contentOverride Content for overriding the fetch operation in the
+     *  datasource, for loading offline content. Can be set to the content (string) or to 'true',
+     *  which will attempt to load the content from the ArchiveManager's storage.
      * @memberof ArchiveSource
      * @throws {VError} Rejects if not in locked state
      * @throws {VError} Rejects if not able to create the source from the encrypted
      *  credentials
      * @fires ArchiveSource#sourceUnlocked
      */
-    unlock(masterPassword, initialiseRemote = false) {
+    unlock(masterPassword, initialiseRemote = false, contentOverride = null) {
         if (this.status !== Status.LOCKED) {
             return Promise.reject(
                 new VError(`Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`)
             );
         }
         this._status = Status.PENDING;
+        let offlineContent = contentOverride;
         return this._enqueueStateChange(() => {
-            return Promise.all([
-                Credentials.fromSecureString(this._sourceCredentials, masterPassword),
-                Credentials.fromSecureString(this._archiveCredentials, masterPassword)
-            ])
-                .then(([sourceCredentials, archiveCredentials] = []) => {
-                    return credentialsToSource(sourceCredentials, archiveCredentials, initialiseRemote)
-                        .then(sourceInfo => {
-                            const { workspace, sourceCredentials, archiveCredentials } = sourceInfo;
-                            this._workspace = workspace;
-                            this._sourceCredentials = sourceCredentials;
-                            this._archiveCredentials = archiveCredentials;
-                            this._status = Status.UNLOCKED;
-                            this.type = sourceCredentials.type;
-                        })
-                        .catch(err => {
-                            throw new VError(err, "Failed mapping credentials to a source");
-                        });
-                })
-                .then(() => {
-                    this.emit("sourceUnlocked", this.description);
-                })
-                .catch(err => {
-                    this._status = Status.LOCKED;
-                    throw new VError(err, `Failed unlocking source: ${this.id}`);
-                });
+            return (
+                this
+                    // Request offline content first, in case it is requested
+                    .getOfflineContent()
+                    .then(availableOfflineContent => {
+                        // If the content override flag is set to 'true', we need to use
+                        // offline content
+                        if (contentOverride === true && availableOfflineContent !== null) {
+                            offlineContent = availableOfflineContent;
+                        }
+                    })
+                    // Continue on, loading the encrypted credentials
+                    .then(() =>
+                        Promise.all([
+                            Credentials.fromSecureString(this._sourceCredentials, masterPassword),
+                            Credentials.fromSecureString(this._archiveCredentials, masterPassword)
+                        ])
+                    )
+                    .then(([sourceCredentials, archiveCredentials] = []) => {
+                        // Map unlocked credentials to a source (info)
+                        return credentialsToSource(
+                            sourceCredentials,
+                            archiveCredentials,
+                            initialiseRemote,
+                            offlineContent
+                        )
+                            .then(sourceInfo => {
+                                // Build the source components
+                                const { workspace, sourceCredentials, archiveCredentials } = sourceInfo;
+                                this._workspace = workspace;
+                                this._sourceCredentials = sourceCredentials;
+                                this._archiveCredentials = archiveCredentials;
+                                this._status = Status.UNLOCKED;
+                                this.type = sourceCredentials.type;
+                                // Store an offline copy for later use
+                                return storeSourceOfflineCopy(
+                                    this.storageInterface,
+                                    this.id,
+                                    workspace.datasource._content
+                                );
+                            })
+                            .catch(err => {
+                                throw new VError(err, "Failed mapping credentials to a source");
+                            });
+                    })
+                    .then(() => {
+                        this.emit("sourceUnlocked", this.description);
+                    })
+                    .catch(err => {
+                        this._status = Status.LOCKED;
+                        throw new VError(err, `Failed unlocking source: ${this.id}`);
+                    })
+            );
         });
     }
 
