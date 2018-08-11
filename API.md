@@ -113,7 +113,7 @@ and merges with remote changes.</p>
 <dt><a href="#credentialsToDatasource">credentialsToDatasource(sourceCredentials)</a> ⇒ <code>Promise.&lt;{datasource, credentials}&gt;</code></dt>
 <dd><p>Convert credentials of a remote archive to a datasource</p>
 </dd>
-<dt><a href="#credentialsToSource">credentialsToSource(sourceCredentials, archiveCredentials, [initialise])</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dt><a href="#credentialsToSource">credentialsToSource(sourceCredentials, archiveCredentials, [initialise], [contentOverride])</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Convert credentials to a source for the ArchiveManager</p>
 </dd>
 <dt><a href="#addExtraFieldsNonDestructive">addExtraFieldsNonDestructive(entry, fields)</a> ⇒ <code><a href="#EntryFacadeField">Array.&lt;EntryFacadeField&gt;</a></code></dt>
@@ -715,10 +715,13 @@ Archive source class
         * [.id](#ArchiveSource+id) : <code>String</code>
         * [.name](#ArchiveSource+name) : <code>String</code>
         * [.status](#ArchiveSource+status) : <code>ArchiveSourceStatus</code>
+        * [.storageInterface](#ArchiveSource+storageInterface) : <code>StorageInterface</code>
         * [.workspace](#ArchiveSource+workspace) : [<code>Workspace</code>](#Workspace) \| <code>null</code>
+        * [.checkOfflineCopy()](#ArchiveSource+checkOfflineCopy) ⇒ <code>Promise.&lt;Boolean&gt;</code>
         * [.dehydrate()](#ArchiveSource+dehydrate) ⇒ <code>Promise.&lt;String&gt;</code>
+        * [.getOfflineContent()](#ArchiveSource+getOfflineContent) ⇒ <code>Promise.&lt;(String\|null)&gt;</code>
         * [.lock()](#ArchiveSource+lock) ⇒ <code>Promise.&lt;String&gt;</code>
-        * [.unlock(masterPassword, [initialiseRemote])](#ArchiveSource+unlock)
+        * [.unlock(masterPassword, [initialiseRemote], contentOverride)](#ArchiveSource+unlock)
         * [.updateArchiveCredentials(masterPassword)](#ArchiveSource+updateArchiveCredentials) ⇒ <code>Promise.&lt;String&gt;</code>
     * _static_
         * [.Status](#ArchiveSource.Status)
@@ -771,6 +774,13 @@ Source status
 
 **Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
 **Read only**: true  
+<a name="ArchiveSource+storageInterface"></a>
+
+### archiveSource.storageInterface : <code>StorageInterface</code>
+The attached manager's storage interface
+
+**Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
+**Read only**: true  
 <a name="ArchiveSource+workspace"></a>
 
 ### archiveSource.workspace : [<code>Workspace</code>](#Workspace) \| <code>null</code>
@@ -779,6 +789,14 @@ Is null when the source is locked
 
 **Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
 **Read only**: true  
+<a name="ArchiveSource+checkOfflineCopy"></a>
+
+### archiveSource.checkOfflineCopy() ⇒ <code>Promise.&lt;Boolean&gt;</code>
+Check if the source has an offline copy
+
+**Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
+**Returns**: <code>Promise.&lt;Boolean&gt;</code> - A promise which resolves with whether an offline
+ copy is available or not  
 <a name="ArchiveSource+dehydrate"></a>
 
 ### archiveSource.dehydrate() ⇒ <code>Promise.&lt;String&gt;</code>
@@ -794,6 +812,14 @@ Returns a secure string with locked (encrypted) credentials, even when the
 
 - <code>VError</code> Rejects is source in PENDING state
 
+<a name="ArchiveSource+getOfflineContent"></a>
+
+### archiveSource.getOfflineContent() ⇒ <code>Promise.&lt;(String\|null)&gt;</code>
+Get offline content, if it exists
+
+**Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
+**Returns**: <code>Promise.&lt;(String\|null)&gt;</code> - A promise a resolves with the content, or null
+ if it doesn't exist  
 <a name="ArchiveSource+lock"></a>
 
 ### archiveSource.lock() ⇒ <code>Promise.&lt;String&gt;</code>
@@ -810,7 +836,7 @@ Encrypts the credentials and performs dehydration, placing the source into
 **Emits**: <code>ArchiveSource#event:sourceLocked</code>  
 <a name="ArchiveSource+unlock"></a>
 
-### archiveSource.unlock(masterPassword, [initialiseRemote])
+### archiveSource.unlock(masterPassword, [initialiseRemote], contentOverride)
 Unlock the source
 
 **Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
@@ -826,6 +852,7 @@ Unlock the source
 | --- | --- | --- | --- |
 | masterPassword | <code>String</code> |  | The master password |
 | [initialiseRemote] | <code>Boolean</code> | <code>false</code> | Optionally initialise the remote (replaces  remote archive) (defaults to false) |
+| contentOverride | <code>String</code> \| <code>Boolean</code> | <code></code> | Content for overriding the fetch operation in the  datasource, for loading offline content. Can be set to the content (string) or to 'true',  which will attempt to load the content from the ArchiveManager's storage. |
 
 <a name="ArchiveSource+updateArchiveCredentials"></a>
 
@@ -3641,7 +3668,7 @@ Convert credentials of a remote archive to a datasource
 
 <a name="credentialsToSource"></a>
 
-## credentialsToSource(sourceCredentials, archiveCredentials, [initialise]) ⇒ <code>Promise.&lt;Object&gt;</code>
+## credentialsToSource(sourceCredentials, archiveCredentials, [initialise], [contentOverride]) ⇒ <code>Promise.&lt;Object&gt;</code>
 Convert credentials to a source for the ArchiveManager
 
 **Kind**: global function  
@@ -3653,6 +3680,7 @@ Convert credentials to a source for the ArchiveManager
 | sourceCredentials | <code>Credentials</code> |  | The remote archive credentials |
 | archiveCredentials | <code>Credentials</code> |  | Credentials for unlocking the archive |
 | [initialise] | <code>Boolean</code> | <code>false</code> | Whether or not to initialise a new archive (defaults to false) |
+| [contentOverride] | <code>String</code> | <code></code> | Content for overriding the fetch operation in the  datasource, for loading offline content |
 
 <a name="addExtraFieldsNonDestructive"></a>
 
