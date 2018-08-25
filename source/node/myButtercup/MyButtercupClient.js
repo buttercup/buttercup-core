@@ -9,6 +9,7 @@ const {
     API_OWN_DIGEST,
     API_OWN_KEY,
     API_OWN_ORG,
+    API_OWN_ORGS,
     ARCHIVE_TYPE_NORMAL,
     ARCHIVE_TYPE_ROOT,
     OAUTH_AUTHORISE_URI,
@@ -116,6 +117,22 @@ class MyButtercupClient {
                     };
                 });
         });
+    }
+
+    fetchOrganisations(token) {
+        const fetch = getFetchMethod();
+        const fetchOptions = {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
+        return fetch(API_OWN_ORGS, fetchOptions)
+            .then(handleGetResponse)
+            .then(res => res.json())
+            .then(res => {
+                return res.orgs;
+            });
     }
 
     getArchiveQueue(archiveID) {

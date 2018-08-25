@@ -10,6 +10,7 @@ const API_OWN_ARCHIVE = joinURL(ROOT_API, "/own/archive");
 const API_OWN_DIGEST = joinURL(ROOT_API, "/own/digest");
 const API_OWN_KEY = joinURL(ROOT_API, "/own/key");
 const API_OWN_ORG = joinURL(ROOT_API, "/own/org");
+const API_OWN_ORGS = joinURL(ROOT_API, "/own/orgs");
 
 const ARCHIVE_TYPE_NORMAL = "normal";
 const ARCHIVE_TYPE_ROOT = "root";
@@ -25,6 +26,7 @@ module.exports = {
     API_OWN_DIGEST,
     API_OWN_KEY,
     API_OWN_ORG,
+    API_OWN_ORGS,
     ARCHIVE_TYPE_NORMAL,
     ARCHIVE_TYPE_ROOT,
     OAUTH_AUTHORISE_URI,
