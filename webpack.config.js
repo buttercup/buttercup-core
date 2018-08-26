@@ -6,12 +6,11 @@ const { DefinePlugin } = webpack;
 
 const SOURCE = path.resolve(__dirname, "./source");
 const WEB_ENTRY = path.join(SOURCE, "web/index.js");
+const ENV = process.env.NODE_ENV || "production";
 const DIST = path.resolve(__dirname, "./dist");
 
 const baseConfig = {
-    
     entry: WEB_ENTRY,
-
     module: {
         rules: [
             {
@@ -32,28 +31,24 @@ const baseConfig = {
             }
         ]
     },
-
     node: {
         fs: "empty",
         net: "empty"
     },
-
     output: {
         path: DIST,
         filename: "buttercup-web.js",
         library: "Buttercup",
         libraryTarget: "umd"
     },
-
     plugins: [
         new DefinePlugin({
             BUTTERCUP_WEB: true
         })
     ]
-
 };
 
-module.exports = [
+const configs = [
     baseConfig,
     Object.assign({}, baseConfig, {
         output: Object.assign({}, baseConfig.output, {
@@ -65,3 +60,7 @@ module.exports = [
         ]
     })
 ];
+
+module.exports = ENV === "production"
+    ? configs
+    : baseConfig;

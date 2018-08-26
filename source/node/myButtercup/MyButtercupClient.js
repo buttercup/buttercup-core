@@ -6,6 +6,7 @@ const Archive = require("../Archive.js");
 const {
     API_ARCHIVE,
     API_ARCHIVE_NEW,
+    API_ORG_ARCHIVES,
     API_OWN_DIGEST,
     API_OWN_KEY,
     API_OWN_ORG,
@@ -117,6 +118,23 @@ class MyButtercupClient {
                     };
                 });
         });
+    }
+
+    fetchOrganisationArchives(token, orgID) {
+        const fetch = getFetchMethod();
+        const fetchOptions = {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
+        const url = API_ORG_ARCHIVES.replace(":id", orgID);
+        return fetch(url, fetchOptions)
+            .then(handleGetResponse)
+            .then(res => res.json())
+            .then(res => {
+                return res.archives;
+            });
     }
 
     fetchOrganisations(token) {
