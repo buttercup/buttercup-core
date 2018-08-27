@@ -184,6 +184,10 @@ class ArchiveSource extends AsyncEventEmitter {
      * @memberof ArchiveSource
      */
     checkOfflineCopy() {
+        if (!this.storageInterface) {
+            // No storage interface, so no offline copy
+            return Promise.resolve(false);
+        }
         return sourceHasOfflineCopy(this.storageInterface, this.id);
     }
 

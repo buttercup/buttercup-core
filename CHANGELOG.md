@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v2.4.1
+_2018-08-27_
+
+ * **Bugfix**:
+   * Handle `ArchiveSource#unlock` calls when no `storageInterface` is set
+
 ## v2.4.0
 _2018-08-11_
 
