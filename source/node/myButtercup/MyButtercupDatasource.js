@@ -65,6 +65,14 @@ class MyButtercupDatasource extends TextDatasource {
             });
     }
 
+    toObject() {
+        return {
+            type: "mybuttercup",
+            token: this._token,
+            archiveID: this._archiveID
+        };
+    }
+
     _getArchiveCredentials(masterAccountCredentials) {
         const isNew = !this._archiveID;
         const generateRandomString = getRandomStringGenerator();
@@ -139,6 +147,17 @@ class MyButtercupDatasource extends TextDatasource {
             });
     }
 }
+
+MyButtercupDatasource.fromObject = obj => {
+    if (obj.type === "mybuttercup") {
+        return new MyButtercupDatasource(obj.token, obj.archiveID);
+    }
+    throw new Error(`Unknown or invalid type: ${obj.type}`);
+};
+
+MyButtercupDatasource.fromString = str => {
+    return MyButtercupDatasource.fromObject(JSON.parse(str));
+};
 
 registerDatasource("mybuttercup", MyButtercupDatasource);
 
