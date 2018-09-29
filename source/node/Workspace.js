@@ -1,6 +1,7 @@
 const { getQueue } = require("./Queue.js");
 const Archive = require("./Archive.js");
 const ArchiveComparator = require("./ArchiveComparator.js");
+const Inigo = require("./InigoGenerator.js");
 
 /**
  * Extract the command portion of a history item
