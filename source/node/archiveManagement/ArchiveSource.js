@@ -83,6 +83,15 @@ class ArchiveSource extends AsyncEventEmitter {
     }
 
     /**
+     * Whether this source can be auto updated or not
+     * @type {Boolean}
+     * @memberof ArchiveSource
+     */
+    get canBeUpdated() {
+        return this.workspace.archive._getWestley().isDirty === false;
+    }
+
+    /**
      * Source colour
      * @type {String}
      * @memberof ArchiveSource

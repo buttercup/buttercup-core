@@ -167,6 +167,20 @@ class Workspace {
     }
 
     /**
+     * Update the archive
+     * @returns {Promise} A promise that resolves once the update has
+     *  completed
+     * @memberof Workspace
+     */
+    update() {
+        return this.localDiffersFromRemote().then(differs => {
+            if (differs) {
+                return this.mergeFromRemote();
+            }
+        });
+    }
+
+    /**
      * Update the master password of the archive
      * @param {Credentials} masterCredentials The new credentials
      * @memberof Workspace

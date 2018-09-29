@@ -4,6 +4,7 @@ const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
 const MemoryStorageInterface = require("../storage/MemoryStorageInterface.js");
 const ArchiveSource = require("./ArchiveSource.js");
 
+const DEFAULT_AUTO_UPDATE_DELAY = 1000 * 60 * 2.5; // 2.5 mins
 const STORAGE_KEY_PREFIX = "bcup_archivemgr_";
 const STORAGE_KEY_PREFIX_TEST = /^bcup_archivemgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
@@ -22,6 +23,18 @@ class ArchiveManager extends AsyncEventEmitter {
         this._storageInterface = storageInterface;
         this._sources = [];
         this._queue = new ChannelQueue();
+        this._autoUpdateTimer = null;
+        this._autoUpdateDelay = null;
+    }
+
+    /**
+     * Detect if auto-updating is enabled
+     * @type {Boolean}
+     * @memberof ArchiveManager
+     * @readonly
+     */
+    get autoUpdateEnabled() {
+        return this._autoUpdateDelay && this._autoUpdateDelay > 0;
     }
 
     /**
@@ -72,6 +85,16 @@ class ArchiveManager extends AsyncEventEmitter {
      */
     get unlockedSources() {
         return this.sources.filter(source => source.status === ArchiveSource.Status.UNLOCKED);
+    }
+
+    /**
+     * All auto-updateable sources
+     * @type {Array.<ArchiveSource>}
+     * @memberof ArchiveManager
+     * @readonly
+     */
+    get updateableSources() {
+        return this.sources.filter(source => source.canBeUpdated);
     }
 
     /**
@@ -249,12 +272,56 @@ class ArchiveManager extends AsyncEventEmitter {
         this._emitSourcesListUpdated();
     }
 
+    /**
+     * Toggle auto updating of sources
+     * @param {Boolean=} enable Enable or disable auto updating. Leave empty
+     *  to invert the setting
+     * @param {Number} delay Milliseconds between updates
+     * @memberof ArchiveManager
+     */
+    toggleAutoUpdating(enable = !this.autoUpdateEnabled, delay = DEFAULT_AUTO_UPDATE_DELAY) {
+        if (enable) {
+            this._autoUpdateDelay = delay;
+            this._startAutoUpdateTimer();
+        } else {
+            this._autoUpdateDelay = null;
+            clearTimeout(this._autoUpdateTimer);
+            this._autoUpdateTimer = null;
+        }
+    }
+
+    _autoUpdateSources() {
+        const updateableSources = this.updateableSources;
+        if (updateableSources.length <= 0) {
+            return Promise.resolve();
+        }
+        return Promise.all(
+            updateableSources.map(source =>
+                source.workspace.update().catch(err => {
+                    // we ignore auto-update errors
+                    console.error(`Failed auto-updating source: ${source.id}`);
+                })
+            )
+        );
+    }
+
     _emitSourcesListUpdated() {
         this.emit("sourcesUpdated", this.sourcesList);
     }
 
     _enqueueStateChange(cb) {
         return this._queue.channel("state").enqueue(cb);
+    }
+
+    _startAutoUpdateTimer() {
+        clearTimeout(this._autoUpdateTimer);
+        this._autoUpdateTimer = setTimeout(() => {
+            this._autoUpdateSources().then(() => {
+                if (this.autoUpdateEnabled) {
+                    this._startAutoUpdateTimer();
+                }
+            });
+        }, this._autoUpdateDelay);
     }
 
     _storeDehydratedSource(id, dehydratedSource) {
