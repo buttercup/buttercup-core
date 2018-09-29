@@ -131,6 +131,7 @@ class Workspace {
                     .forEach(function(command) {
                         newArchive._getWestley().execute(command);
                     });
+                newArchive._getWestley().clearDirtyState();
                 this._archive = newArchive;
                 return newArchive;
             });
@@ -143,7 +144,10 @@ class Workspace {
      */
     save() {
         return this.saveChannel.enqueue(
-            () => this.datasource.save(this.archive.getHistory(), this.masterCredentials),
+            () =>
+                this.datasource.save(this.archive.getHistory(), this.masterCredentials).then(() => {
+                    this.archive._getWestley().clearDirtyState();
+                }),
             /* priority */ undefined,
             /* stack */ "saving"
         );

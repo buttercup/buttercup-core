@@ -42,6 +42,19 @@ class Westley extends AsyncEventEmitter {
         super();
         this.clear();
         this._readOnly = false;
+        this._dirty = false;
+    }
+
+    /**
+     * Whether the instance is dirty or not (unsaved changes)
+     * @type {Boolean}
+     * @memberof Westley
+     * @instance
+     * @public
+     * @readonly
+     */
+    get isDirty() {
+        return this._dirty;
     }
 
     /**
@@ -75,6 +88,14 @@ class Westley extends AsyncEventEmitter {
     }
 
     /**
+     * Clear the dirty state of the instance
+     * @memberof Westley
+     */
+    clearDirtyState() {
+        this._dirty = false;
+    }
+
+    /**
      * Execute a command - stored in history and modifies the dataset
      * @param {String} command The command to execute
      * @param {Boolean=} append Whether to append to the end of the history list (default true)
@@ -104,6 +125,7 @@ class Westley extends AsyncEventEmitter {
             commandObject,
             [this._dataset].concat(this._processCommandParameters(commandKey, commandComponents))
         );
+        this._dirty = true;
         this.emit("commandExecuted");
         return this;
     }
