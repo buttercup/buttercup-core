@@ -126,7 +126,7 @@ class Westley extends AsyncEventEmitter {
             [this._dataset].concat(this._processCommandParameters(commandKey, commandComponents))
         );
         this._dirty = true;
-        this.emit("commandExecuted");
+        this.emit("commandExecuted", { command });
         return this;
     }
 
