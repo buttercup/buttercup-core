@@ -48,4 +48,25 @@ describe("ArchiveManager", function() {
             });
         });
     });
+
+    describe("toggleAutoUpdating", function() {
+        afterEach(function() {
+            this.manager.toggleAutoUpdating(false);
+        });
+
+        it("starts the timer when enabled", function() {
+            sinon.spy(this.manager, "_startAutoUpdateTimer");
+            this.manager.toggleAutoUpdating(true);
+            expect(this.manager._startAutoUpdateTimer.calledOnce).to.be.true;
+        });
+
+        it("stops the timer when disabled", function() {
+            this.manager.toggleAutoUpdating(true);
+            expect(this.manager._autoUpdateDelay).to.be.above(0);
+            expect(this.manager._autoUpdateTimer).to.not.be.null;
+            this.manager.toggleAutoUpdating(false);
+            expect(this.manager._autoUpdateDelay).to.be.null;
+            expect(this.manager._autoUpdateTimer).to.be.null;
+        });
+    });
 });
