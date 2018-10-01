@@ -1,6 +1,7 @@
 const { getQueue } = require("./Queue.js");
 const Archive = require("./Archive.js");
 const ArchiveComparator = require("./ArchiveComparator.js");
+const Inigo = require("./InigoGenerator.js");
 
 /**
  * Extract the command portion of a history item
@@ -131,6 +132,7 @@ class Workspace {
                     .forEach(function(command) {
                         newArchive._getWestley().execute(command);
                     });
+                newArchive._getWestley().clearDirtyState();
                 this._archive = newArchive;
                 return newArchive;
             });
@@ -143,7 +145,10 @@ class Workspace {
      */
     save() {
         return this.saveChannel.enqueue(
-            () => this.datasource.save(this.archive.getHistory(), this.masterCredentials),
+            () =>
+                this.datasource.save(this.archive.getHistory(), this.masterCredentials).then(() => {
+                    this.archive._getWestley().clearDirtyState();
+                }),
             /* priority */ undefined,
             /* stack */ "saving"
         );
@@ -160,6 +165,20 @@ class Workspace {
         this._archive = archive;
         this._datasource = datasource;
         this._masterCredentials = masterCredentials;
+    }
+
+    /**
+     * Update the archive
+     * @returns {Promise} A promise that resolves once the update has
+     *  completed
+     * @memberof Workspace
+     */
+    update() {
+        return this.localDiffersFromRemote().then(differs => {
+            if (differs) {
+                return this.mergeFromRemote();
+            }
+        });
     }
 
     /**
