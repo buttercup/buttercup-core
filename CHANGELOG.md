@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v2.5.0
+_2018-10-02_
+
+ * Auto-update functionality for `ArchiveManager`
+ * Update dependencies to latest stable
+
 ## v2.4.1
 _2018-08-27_
 

@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "build": "webpack",
+    "docs": "npm run generate:docs",
     "format": "prettier --write '{source,test}/**/*.js'",
     "generate:archive": "node scripts/generate_test_archive.js",
     "generate:docs": "run-p generate:docs:node generate:docs:web",

@@ -550,11 +550,13 @@ Archive manager class
 
 * [ArchiveManager](#ArchiveManager) ⇐ <code>AsyncEventEmitter</code>
     * [new ArchiveManager([storageInterface])](#new_ArchiveManager_new)
+    * [.autoUpdateEnabled](#ArchiveManager+autoUpdateEnabled) : <code>Boolean</code>
     * [.nextSourceOrder](#ArchiveManager+nextSourceOrder) : <code>Number</code>
     * [.sources](#ArchiveManager+sources) : [<code>Array.&lt;ArchiveSource&gt;</code>](#ArchiveSource)
     * [.sourcesList](#ArchiveManager+sourcesList) : [<code>Array.&lt;ArchiveSourceDescription&gt;</code>](#ArchiveSourceDescription)
     * [.storageInterface](#ArchiveManager+storageInterface) : <code>StorageInterface</code>
     * [.unlockedSources](#ArchiveManager+unlockedSources) : [<code>Array.&lt;ArchiveSource&gt;</code>](#ArchiveSource)
+    * [.updateableSources](#ArchiveManager+updateableSources) : [<code>Array.&lt;ArchiveSource&gt;</code>](#ArchiveSource)
     * [.addSource(archiveSource, [obj])](#ArchiveManager+addSource)
     * [.dehydrate()](#ArchiveManager+dehydrate) ⇒ <code>Promise</code>
     * [.dehydrateSource(sourceID)](#ArchiveManager+dehydrateSource) ⇒ <code>Promise</code>
@@ -563,6 +565,7 @@ Archive manager class
     * [.removeSource(sourceID)](#ArchiveManager+removeSource) ⇒ <code>Promise</code>
     * [.reorderSource(sourceID, position)](#ArchiveManager+reorderSource)
     * [.reorderSources()](#ArchiveManager+reorderSources)
+    * [.toggleAutoUpdating([enable], delay)](#ArchiveManager+toggleAutoUpdating)
 
 <a name="new_ArchiveManager_new"></a>
 
@@ -574,6 +577,13 @@ Constructor for the archive manager
 | --- | --- | --- |
 | [storageInterface] | <code>StorageInterface</code> | The storage interface to use -  defaults to storing in memory |
 
+<a name="ArchiveManager+autoUpdateEnabled"></a>
+
+### archiveManager.autoUpdateEnabled : <code>Boolean</code>
+Detect if auto-updating is enabled
+
+**Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
+**Read only**: true  
 <a name="ArchiveManager+nextSourceOrder"></a>
 
 ### archiveManager.nextSourceOrder : <code>Number</code>
@@ -606,6 +616,13 @@ The current storage interface
 
 ### archiveManager.unlockedSources : [<code>Array.&lt;ArchiveSource&gt;</code>](#ArchiveSource)
 All unlocked sources
+
+**Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
+**Read only**: true  
+<a name="ArchiveManager+updateableSources"></a>
+
+### archiveManager.updateableSources : [<code>Array.&lt;ArchiveSource&gt;</code>](#ArchiveSource)
+All auto-updateable sources
 
 **Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
 **Read only**: true  
@@ -699,6 +716,18 @@ Reorder a source
 Reorder all sources
 
 **Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
+<a name="ArchiveManager+toggleAutoUpdating"></a>
+
+### archiveManager.toggleAutoUpdating([enable], delay)
+Toggle auto updating of sources
+
+**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [enable] | <code>Boolean</code> | Enable or disable auto updating. Leave empty  to invert the setting |
+| delay | <code>Number</code> | Milliseconds between updates |
+
 <a name="ArchiveSource"></a>
 
 ## ArchiveSource ⇐ <code>AsyncEventEmitter</code>
@@ -710,6 +739,7 @@ Archive source class
 * [ArchiveSource](#ArchiveSource) ⇐ <code>AsyncEventEmitter</code>
     * [new ArchiveSource(name, sourceCredentials, archiveCredentials, [newSourceOptions])](#new_ArchiveSource_new)
     * _instance_
+        * [.canBeUpdated](#ArchiveSource+canBeUpdated) : <code>Boolean</code>
         * [.colour](#ArchiveSource+colour) : <code>String</code>
         * [.description](#ArchiveSource+description) : [<code>ArchiveSourceDescription</code>](#ArchiveSourceDescription)
         * [.id](#ArchiveSource+id) : <code>String</code>
@@ -740,6 +770,12 @@ Constructor for an archive source
 | archiveCredentials | <code>String</code> | Encrypted archive credentials |
 | [newSourceOptions] | [<code>ArchiveSourceOptions</code>](#ArchiveSourceOptions) | Specify source creation options |
 
+<a name="ArchiveSource+canBeUpdated"></a>
+
+### archiveSource.canBeUpdated : <code>Boolean</code>
+Whether this source can be auto updated or not
+
+**Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
 <a name="ArchiveSource+colour"></a>
 
 ### archiveSource.colour : <code>String</code>
@@ -3392,15 +3428,25 @@ revenge for the princess.
 **Extends**: <code>AsyncEventEmitter</code>  
 
 * [Westley](#Westley) ⇐ <code>AsyncEventEmitter</code>
+    * [.isDirty](#Westley+isDirty) : <code>Boolean</code>
     * [.readOnly](#Westley+readOnly)
     * [.readOnly](#Westley+readOnly)
     * [.clear()](#Westley+clear) ⇒ [<code>Westley</code>](#Westley)
+    * [.clearDirtyState()](#Westley+clearDirtyState)
     * [.execute(command, [append])](#Westley+execute) ⇒ [<code>Westley</code>](#Westley)
     * [.getDataset()](#Westley+getDataset) ⇒ <code>Object</code>
     * [.getHistory()](#Westley+getHistory) ⇒ <code>Array.&lt;String&gt;</code>
     * [.pad()](#Westley+pad) ⇒ [<code>Westley</code>](#Westley)
     * [._getCommandForKey(commandKey)](#Westley+_getCommandForKey) ⇒ <code>Command</code>
 
+<a name="Westley+isDirty"></a>
+
+### westley.isDirty : <code>Boolean</code>
+Whether the instance is dirty or not (unsaved changes)
+
+**Kind**: instance property of [<code>Westley</code>](#Westley)  
+**Access**: public  
+**Read only**: true  
 <a name="Westley+readOnly"></a>
 
 ### westley.readOnly
@@ -3430,6 +3476,12 @@ Clear the dataset and history
 
 **Kind**: instance method of [<code>Westley</code>](#Westley)  
 **Returns**: [<code>Westley</code>](#Westley) - Returns self  
+<a name="Westley+clearDirtyState"></a>
+
+### westley.clearDirtyState()
+Clear the dirty state of the instance
+
+**Kind**: instance method of [<code>Westley</code>](#Westley)  
 <a name="Westley+execute"></a>
 
 ### westley.execute(command, [append]) ⇒ [<code>Westley</code>](#Westley)
@@ -3495,6 +3547,7 @@ and merges with remote changes.
     * [.mergeFromRemote()](#Workspace+mergeFromRemote) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.save()](#Workspace+save) ⇒ <code>Promise</code>
     * [.setArchive(archive, datasource, masterCredentials)](#Workspace+setArchive)
+    * [.update()](#Workspace+update) ⇒ <code>Promise</code>
     * [.updatePrimaryCredentials(masterCredentials)](#Workspace+updatePrimaryCredentials)
 
 <a name="Workspace+archive"></a>
@@ -3561,6 +3614,14 @@ Set the archive and its accompanying data on the workspace
 | datasource | <code>TextDatasource</code> | The datasource for the archive |
 | masterCredentials | <code>\*</code> | The master credentials for the archive |
 
+<a name="Workspace+update"></a>
+
+### workspace.update() ⇒ <code>Promise</code>
+Update the archive
+
+**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
+**Returns**: <code>Promise</code> - A promise that resolves once the update has
+ completed  
 <a name="Workspace+updatePrimaryCredentials"></a>
 
 ### workspace.updatePrimaryCredentials(masterCredentials)
