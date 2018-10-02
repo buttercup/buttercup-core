@@ -55,5 +55,26 @@ describe("ArchiveManager", function() {
                     expect(this.source.workspace.update.calledOnce).to.be.true;
                 });
         });
+
+        it("can be paused using `interruptAutoUpdate`", function() {
+            return this.source
+                .unlock("test")
+                .then(() => {
+                    sinon.stub(this.source.workspace, "update").returns(Promise.resolve());
+                    this.source.workspace.archive.createGroup("test group");
+                    this.manager.toggleAutoUpdating(true, 150);
+                    return sleep(200);
+                })
+                .then(() =>
+                    this.manager.interruptAutoUpdate(() => {
+                        return sleep(600);
+                    })
+                )
+                .then(() => sleep(200))
+                .then(() => {
+                    expect(this.manager.autoUpdateEnabled).to.be.true;
+                    expect(this.source.workspace.update.callCount).to.equal(2);
+                });
+        });
     });
 });

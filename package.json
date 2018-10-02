@@ -65,6 +65,7 @@
     "eventemitter3": "^3.1.0",
     "fuse.js": "^2.7.4",
     "iocane": "^1.0.1",
+    "is-promise": "^2.1.0",
     "node-fetch": "^2.2.0",
     "node-rsa": "^1.0.0",
     "string-hash": "^1.1.3",
