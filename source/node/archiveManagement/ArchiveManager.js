@@ -1,10 +1,12 @@
 const VError = require("verror");
 const ChannelQueue = require("@buttercup/channel-queue");
+const isPromise = require("is-promise");
 const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
 const MemoryStorageInterface = require("../storage/MemoryStorageInterface.js");
 const ArchiveSource = require("./ArchiveSource.js");
 
 const DEFAULT_AUTO_UPDATE_DELAY = 1000 * 60 * 2.5; // 2.5 mins
+const NOOP = () => {};
 const STORAGE_KEY_PREFIX = "bcup_archivemgr_";
 const STORAGE_KEY_PREFIX_TEST = /^bcup_archivemgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
@@ -167,6 +169,48 @@ class ArchiveManager extends AsyncEventEmitter {
     }
 
     /**
+     * Wait for and interrupt state changes when auto-update is running
+     * @returns {Promise} A promise that resolves when ready
+     * @memberof ArchiveManager
+     * @example
+     *  archiveManager.interruptAutoUpdate(() => {
+     *      // Do something with auto-updating paused
+     *  });
+     */
+    interruptAutoUpdate(cb) {
+        return this._enqueueStateChange(NOOP).then(() =>
+            this._queue.channel("autoUpdateInterrupt").enqueue(() => {
+                const enabled = this.autoUpdateEnabled;
+                const delay = this._autoUpdateDelay;
+                this.toggleAutoUpdating(false);
+                const restoreAutoUpdating = () => {
+                    this.toggleAutoUpdating(enabled, delay);
+                };
+                let retVal;
+                try {
+                    retVal = cb();
+                } catch (err) {
+                    restoreAutoUpdating();
+                    throw err;
+                }
+                if (!isPromise(retVal)) {
+                    restoreAutoUpdating();
+                    return retVal;
+                }
+                return retVal
+                    .then(res => {
+                        restoreAutoUpdating();
+                        return res;
+                    })
+                    .catch(err => {
+                        restoreAutoUpdating();
+                        throw err;
+                    });
+            })
+        );
+    }
+
+    /**
      * Rehydrate sources from storage
      * @returns {Promise} A promise that resolves once rehydration has completed
      * @memberof ArchiveManager
@@ -291,18 +335,20 @@ class ArchiveManager extends AsyncEventEmitter {
     }
 
     _autoUpdateSources() {
-        const updateableSources = this.updateableSources;
-        if (updateableSources.length <= 0) {
-            return Promise.resolve();
-        }
-        return Promise.all(
-            updateableSources.map(source =>
-                source.workspace.update().catch(err => {
-                    // we ignore auto-update errors
-                    console.error(`Failed auto-updating source: ${source.id}`);
-                })
-            )
-        );
+        return this._enqueueStateChange(() => {
+            const updateableSources = this.updateableSources;
+            if (updateableSources.length <= 0) {
+                return Promise.resolve();
+            }
+            return Promise.all(
+                updateableSources.map(source =>
+                    source.workspace.update().catch(err => {
+                        // we ignore auto-update errors
+                        console.error(`Failed auto-updating source: ${source.id}`);
+                    })
+                )
+            );
+        });
     }
 
     _emitSourcesListUpdated() {
