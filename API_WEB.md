@@ -570,6 +570,7 @@ Archive manager class
     * [.dehydrate()](#ArchiveManager+dehydrate) ⇒ <code>Promise</code>
     * [.dehydrateSource(sourceID)](#ArchiveManager+dehydrateSource) ⇒ <code>Promise</code>
     * [.getSourceForID(sourceID)](#ArchiveManager+getSourceForID) ⇒ [<code>ArchiveSource</code>](#ArchiveSource) \| <code>null</code>
+    * [.interruptAutoUpdate()](#ArchiveManager+interruptAutoUpdate) ⇒ <code>Promise</code>
     * [.rehydrate()](#ArchiveManager+rehydrate) ⇒ <code>Promise</code>
     * [.removeSource(sourceID)](#ArchiveManager+removeSource) ⇒ <code>Promise</code>
     * [.reorderSource(sourceID, position)](#ArchiveManager+reorderSource)
@@ -680,6 +681,19 @@ Get a source for an ID
 | --- | --- | --- |
 | sourceID | <code>String</code> | The source ID |
 
+<a name="ArchiveManager+interruptAutoUpdate"></a>
+
+### archiveManager.interruptAutoUpdate() ⇒ <code>Promise</code>
+Wait for and interrupt state changes when auto-update is running
+
+**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
+**Returns**: <code>Promise</code> - A promise that resolves when ready  
+**Example**  
+```js
+archiveManager.interruptAutoUpdate(() => {
+     // Do something with auto-updating paused
+ });
+```
 <a name="ArchiveManager+rehydrate"></a>
 
 ### archiveManager.rehydrate() ⇒ <code>Promise</code>

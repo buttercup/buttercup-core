@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.6.0
+_2018-10-02_
+
+ * Auto-update interrupt on `ArchiveManager`
+
 ## v2.5.0
 _2018-10-02_
 
