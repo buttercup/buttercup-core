@@ -190,15 +190,19 @@ class ArchiveManager extends AsyncEventEmitter {
                 try {
                     retVal = cb();
                 } catch (err) {
+                    // Callback died, so restore and throw
                     restoreAutoUpdating();
                     throw err;
                 }
                 if (!isPromise(retVal)) {
+                    // No promise, so restore immediately:
                     restoreAutoUpdating();
                     return retVal;
                 }
                 return retVal
                     .then(res => {
+                        // Wait until after the promise has completed
+                        // or failed:
                         restoreAutoUpdating();
                         return res;
                     })
