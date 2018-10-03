@@ -1,3 +1,4 @@
+const { TextDatasource } = require("@buttercup/datasources");
 const { getQueue } = require("./Queue.js");
 const Archive = require("./Archive.js");
 const ArchiveComparator = require("./ArchiveComparator.js");
@@ -91,6 +92,10 @@ class Workspace {
      * @memberof Workspace
      */
     localDiffersFromRemote() {
+        if (this.datasource instanceof TextDatasource === false) {
+            // Only clear if not a TextDatasource
+            this.datasource.setContent("");
+        }
         return this.datasource
             .load(this.masterCredentials)
             .then(history => Archive.createFromHistory(history))
@@ -109,6 +114,10 @@ class Workspace {
      * @memberof Workspace
      */
     mergeFromRemote() {
+        if (this.datasource instanceof TextDatasource === false) {
+            // Only clear if not a TextDatasource
+            this.datasource.setContent("");
+        }
         return this.datasource
             .load(this.masterCredentials)
             .then(history => Archive.createFromHistory(history))
