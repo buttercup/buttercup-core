@@ -570,12 +570,12 @@ Archive manager class
     * [.dehydrate()](#ArchiveManager+dehydrate) ⇒ <code>Promise</code>
     * [.dehydrateSource(sourceID)](#ArchiveManager+dehydrateSource) ⇒ <code>Promise</code>
     * [.getSourceForID(sourceID)](#ArchiveManager+getSourceForID) ⇒ [<code>ArchiveSource</code>](#ArchiveSource) \| <code>null</code>
-    * [.interruptAutoUpdate()](#ArchiveManager+interruptAutoUpdate) ⇒ <code>Promise</code>
+    * [.interruptAutoUpdate(cb)](#ArchiveManager+interruptAutoUpdate) ⇒ <code>Promise</code>
     * [.rehydrate()](#ArchiveManager+rehydrate) ⇒ <code>Promise</code>
     * [.removeSource(sourceID)](#ArchiveManager+removeSource) ⇒ <code>Promise</code>
     * [.reorderSource(sourceID, position)](#ArchiveManager+reorderSource)
     * [.reorderSources()](#ArchiveManager+reorderSources)
-    * [.toggleAutoUpdating([enable], delay)](#ArchiveManager+toggleAutoUpdating)
+    * [.toggleAutoUpdating([enable], [delay])](#ArchiveManager+toggleAutoUpdating)
 
 <a name="new_ArchiveManager_new"></a>
 
@@ -683,11 +683,16 @@ Get a source for an ID
 
 <a name="ArchiveManager+interruptAutoUpdate"></a>
 
-### archiveManager.interruptAutoUpdate() ⇒ <code>Promise</code>
+### archiveManager.interruptAutoUpdate(cb) ⇒ <code>Promise</code>
 Wait for and interrupt state changes when auto-update is running
 
 **Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
 **Returns**: <code>Promise</code> - A promise that resolves when ready  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| cb | <code>function</code> | The callback to execute during the auto-update interruption |
+
 **Example**  
 ```js
 archiveManager.interruptAutoUpdate(() => {
@@ -741,7 +746,7 @@ Reorder all sources
 **Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
 <a name="ArchiveManager+toggleAutoUpdating"></a>
 
-### archiveManager.toggleAutoUpdating([enable], delay)
+### archiveManager.toggleAutoUpdating([enable], [delay])
 Toggle auto updating of sources
 
 **Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
@@ -749,7 +754,7 @@ Toggle auto updating of sources
 | Param | Type | Description |
 | --- | --- | --- |
 | [enable] | <code>Boolean</code> | Enable or disable auto updating. Leave empty  to invert the setting |
-| delay | <code>Number</code> | Milliseconds between updates |
+| [delay] | <code>Number</code> | Milliseconds between updates |
 
 <a name="ArchiveSource"></a>
 

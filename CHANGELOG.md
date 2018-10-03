@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.6.1
+_2018-10-03_
+
+ * Add missing event for auto-update
+
 ## v2.6.0
 _2018-10-02_
 
