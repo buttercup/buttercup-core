@@ -170,6 +170,7 @@ class ArchiveManager extends AsyncEventEmitter {
 
     /**
      * Wait for and interrupt state changes when auto-update is running
+     * @param {Function} cb The callback to execute during the auto-update interruption
      * @returns {Promise} A promise that resolves when ready
      * @memberof ArchiveManager
      * @example
@@ -324,7 +325,7 @@ class ArchiveManager extends AsyncEventEmitter {
      * Toggle auto updating of sources
      * @param {Boolean=} enable Enable or disable auto updating. Leave empty
      *  to invert the setting
-     * @param {Number} delay Milliseconds between updates
+     * @param {Number=} delay Milliseconds between updates
      * @memberof ArchiveManager
      */
     toggleAutoUpdating(enable = !this.autoUpdateEnabled, delay = DEFAULT_AUTO_UPDATE_DELAY) {
@@ -339,6 +340,7 @@ class ArchiveManager extends AsyncEventEmitter {
     }
 
     _autoUpdateSources() {
+        this.emit("autoUpdateStart");
         return this._enqueueStateChange(() => {
             const updateableSources = this.updateableSources;
             if (updateableSources.length <= 0) {
@@ -351,7 +353,9 @@ class ArchiveManager extends AsyncEventEmitter {
                         console.error(`Failed auto-updating source: ${source.id}`);
                     })
                 )
-            );
+            ).then(() => {
+                this.emit("autoUpdateStop");
+            });
         });
     }
 
