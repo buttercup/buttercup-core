@@ -1,9 +1,10 @@
 # Core library changelog
 
-## v2.6.1
+## v2.6.2
 _2018-10-03_
 
  * Add missing event for auto-update
+ * **Bugfix**: Auto update wouldn't run on _clean_ archives
 
 ## v2.6.0
 _2018-10-02_
