@@ -88,7 +88,7 @@ class ArchiveSource extends AsyncEventEmitter {
      * @memberof ArchiveSource
      */
     get canBeUpdated() {
-        return this.status === Status.UNLOCKED && this.workspace.archive._getWestley().isDirty === true;
+        return this.status === Status.UNLOCKED && this.workspace.archive._getWestley().isDirty === false;
     }
 
     /**

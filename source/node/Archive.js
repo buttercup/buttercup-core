@@ -278,6 +278,8 @@ Archive.createFromHistory = function(history) {
         westley = archive._getWestley();
     westley.clear();
     history.forEach(westley.execute.bind(westley));
+    // clean
+    westley.clearDirtyState();
     if (!archive.id) {
         // generate a new ID
         archive._generateID();

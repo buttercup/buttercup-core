@@ -47,7 +47,6 @@ describe("ArchiveManager", function() {
                 .unlock("test")
                 .then(() => {
                     sinon.stub(this.source.workspace, "update").returns(Promise.resolve());
-                    this.source.workspace.archive.createGroup("test group");
                     this.manager.toggleAutoUpdating(true, 150);
                     return sleep(200);
                 })
@@ -56,12 +55,25 @@ describe("ArchiveManager", function() {
                 });
         });
 
-        it("can be paused using `interruptAutoUpdate`", function() {
+        it("does not call update on unlocked sources that are dirty", function() {
             return this.source
                 .unlock("test")
                 .then(() => {
                     sinon.stub(this.source.workspace, "update").returns(Promise.resolve());
                     this.source.workspace.archive.createGroup("test group");
+                    this.manager.toggleAutoUpdating(true, 150);
+                    return sleep(200);
+                })
+                .then(() => {
+                    expect(this.source.workspace.update.calledOnce).to.be.false;
+                });
+        });
+
+        it("can be paused using `interruptAutoUpdate`", function() {
+            return this.source
+                .unlock("test")
+                .then(() => {
+                    sinon.stub(this.source.workspace, "update").returns(Promise.resolve());
                     this.manager.toggleAutoUpdating(true, 150);
                     return sleep(200);
                 })
