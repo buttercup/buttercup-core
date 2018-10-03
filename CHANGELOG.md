@@ -1,13 +1,17 @@
 # Core library changelog
 
-## v2.6.2
+## v2.6.3
 _2018-10-03_
 
  * Add missing event for auto-update
- * **Bugfix**: Auto update wouldn't run on _clean_ archives
+ * **Bugfix**:
+   * Auto update wouldn't run on _clean_ archives
+   * `Workspace#localDiffersFromRemote` and `Workspace#mergeFromRemote` used cached copy of archive, preventing loading again
 
 ## v2.6.0
 _2018-10-02_
+
+**Deprecated**
 
  * Auto-update interrupt on `ArchiveManager`
 
