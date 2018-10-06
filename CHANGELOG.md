@@ -1,5 +1,12 @@
 # Core library changelog
 
+## v2.6.4
+_2018-10-06_
+
+ * Update datasources dependencies (security)
+ * **Bugfix**:
+   * `webdav` wouldn't connect with Seafile instances
+
 ## v2.6.3
 _2018-10-03_
 
