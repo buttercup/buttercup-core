@@ -92,7 +92,7 @@ class Workspace {
      * @memberof Workspace
      */
     localDiffersFromRemote() {
-        if (this.datasource instanceof TextDatasource === false) {
+        if (this.datasource.toObject().type !== "text") {
             // Only clear if not a TextDatasource
             this.datasource.setContent("");
         }
@@ -114,7 +114,7 @@ class Workspace {
      * @memberof Workspace
      */
     mergeFromRemote() {
-        if (this.datasource instanceof TextDatasource === false) {
+        if (this.datasource.toObject().type !== "text") {
             // Only clear if not a TextDatasource
             this.datasource.setContent("");
         }
