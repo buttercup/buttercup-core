@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v2.6.5
+_2018-10-07_
+
+ * **Bugfix**:
+   * `Workspace#localDiffersFromRemote` and `Workspace#mergeFromRemote` used invalid instance-of check for detecting `TextDatasource`s
+
 ## v2.6.4
 _2018-10-06_
 
