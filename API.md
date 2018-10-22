@@ -148,7 +148,7 @@ Takes data from the descriptor and writes it to the entry.</p>
 <dd><p>Create a descriptor for a field to be used within a facade</p>
 </dd>
 <dt><a href="#getEntryURLs">getEntryURLs(properties, preference)</a></dt>
-<dd><p>Get URLs from an entry&#39;s propertyies
+<dd><p>Get URLs from an entry&#39;s properties
 Allows for preferential sorting</p>
 </dd>
 <dt><del><a href="#getEntryValue">getEntryValue(entry, property, name)</a> ⇒ <code>String</code></del></dt>
