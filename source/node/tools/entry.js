@@ -51,7 +51,7 @@ function createFieldDescriptor(
 }
 
 /**
- * Get URLs from an entry's propertyies
+ * Get URLs from an entry's properties
  * Allows for preferential sorting
  * @param {Object} properties The entry properties
  * @param {*} preference
