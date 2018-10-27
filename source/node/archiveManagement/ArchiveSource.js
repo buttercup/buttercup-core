@@ -302,13 +302,16 @@ class ArchiveSource extends AsyncEventEmitter {
      * @param {String|Boolean=} contentOverride Content for overriding the fetch operation in the
      *  datasource, for loading offline content. Can be set to the content (string) or to 'true',
      *  which will attempt to load the content from the ArchiveManager's storage.
+     * @param {Boolean=} storeOfflineCopy Whether or not to store an offline copy. Defaults to
+     *  true.
      * @memberof ArchiveSource
+     * @deprecated Function signature will change in an upcoming version
      * @throws {VError} Rejects if not in locked state
      * @throws {VError} Rejects if not able to create the source from the encrypted
      *  credentials
      * @fires ArchiveSource#sourceUnlocked
      */
-    unlock(masterPassword, initialiseRemote = false, contentOverride = null) {
+    unlock(masterPassword, initialiseRemote = false, contentOverride = null, storeOfflineCopy = true) {
         if (this.status !== Status.LOCKED) {
             return Promise.reject(
                 new VError(`Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`)
@@ -351,12 +354,14 @@ class ArchiveSource extends AsyncEventEmitter {
                                 this._archiveCredentials = archiveCredentials;
                                 this._status = Status.UNLOCKED;
                                 this.type = sourceCredentials.type;
-                                // Store an offline copy for later use
-                                return storeSourceOfflineCopy(
-                                    this.storageInterface,
-                                    this.id,
-                                    workspace.datasource._content
-                                );
+                                if (storeOfflineCopy) {
+                                    // Store an offline copy for later use
+                                    return storeSourceOfflineCopy(
+                                        this.storageInterface,
+                                        this.id,
+                                        workspace.datasource._content
+                                    );
+                                }
                             })
                             .catch(err => {
                                 throw new VError(err, "Failed mapping credentials to a source");
