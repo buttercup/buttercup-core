@@ -151,7 +151,7 @@ Takes data from the descriptor and writes it to the entry.</p>
 <dd><p>Create a descriptor for a field to be used within a facade</p>
 </dd>
 <dt><a href="#getEntryURLs">getEntryURLs(properties, preference)</a></dt>
-<dd><p>Get URLs from an entry&#39;s propertyies
+<dd><p>Get URLs from an entry&#39;s properties
 Allows for preferential sorting</p>
 </dd>
 <dt><del><a href="#getEntryValue">getEntryValue(entry, property, name)</a> ⇒ <code>String</code></del></dt>
@@ -779,7 +779,7 @@ Archive source class
         * [.dehydrate()](#ArchiveSource+dehydrate) ⇒ <code>Promise.&lt;String&gt;</code>
         * [.getOfflineContent()](#ArchiveSource+getOfflineContent) ⇒ <code>Promise.&lt;(String\|null)&gt;</code>
         * [.lock()](#ArchiveSource+lock) ⇒ <code>Promise.&lt;String&gt;</code>
-        * [.unlock(masterPassword, [initialiseRemote], contentOverride)](#ArchiveSource+unlock)
+        * ~~[.unlock(masterPassword, [initialiseRemote], contentOverride, [storeOfflineCopy])](#ArchiveSource+unlock)~~
         * [.updateArchiveCredentials(masterPassword)](#ArchiveSource+updateArchiveCredentials) ⇒ <code>Promise.&lt;String&gt;</code>
     * _static_
         * [.Status](#ArchiveSource.Status)
@@ -900,7 +900,9 @@ Encrypts the credentials and performs dehydration, placing the source into
 **Emits**: <code>ArchiveSource#event:sourceLocked</code>  
 <a name="ArchiveSource+unlock"></a>
 
-### archiveSource.unlock(masterPassword, [initialiseRemote], contentOverride)
+### ~~archiveSource.unlock(masterPassword, [initialiseRemote], contentOverride, [storeOfflineCopy])~~
+***Deprecated***
+
 Unlock the source
 
 **Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
@@ -917,6 +919,7 @@ Unlock the source
 | masterPassword | <code>String</code> |  | The master password |
 | [initialiseRemote] | <code>Boolean</code> | <code>false</code> | Optionally initialise the remote (replaces  remote archive) (defaults to false) |
 | contentOverride | <code>String</code> \| <code>Boolean</code> | <code></code> | Content for overriding the fetch operation in the  datasource, for loading offline content. Can be set to the content (string) or to 'true',  which will attempt to load the content from the ArchiveManager's storage. |
+| [storeOfflineCopy] | <code>Boolean</code> | <code>true</code> | Whether or not to store an offline copy. Defaults to  true. |
 
 <a name="ArchiveSource+updateArchiveCredentials"></a>
 
@@ -3955,7 +3958,7 @@ Create a descriptor for a field to be used within a facade
 <a name="getEntryURLs"></a>
 
 ## getEntryURLs(properties, preference)
-Get URLs from an entry's propertyies
+Get URLs from an entry's properties
 Allows for preferential sorting
 
 **Kind**: global function  

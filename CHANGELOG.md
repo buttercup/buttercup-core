@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.7.0
+_2018-10-27_
+
+ * Ability to disable caching of vaults from within `ArchiveSource`
+
 ## v2.6.5
 _2018-10-07_
 
