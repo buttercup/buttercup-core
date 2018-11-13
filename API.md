@@ -459,14 +459,14 @@ Convert the archive to an object
 
 <a name="Archive+_generateID"></a>
 
-### archive._generateID()
+### archive.\_generateID()
 Generate an archive ID
 
 **Kind**: instance method of [<code>Archive</code>](#Archive)  
 **Access**: protected  
 <a name="Archive+_getWestley"></a>
 
-### archive._getWestley() ⇒ [<code>Westley</code>](#Westley)
+### archive.\_getWestley() ⇒ [<code>Westley</code>](#Westley)
 Get the underlying Westley instance
 
 **Kind**: instance method of [<code>Archive</code>](#Archive)  
@@ -2618,6 +2618,7 @@ a login for a website.
         * ~~[.getGroup()](#Entry+getGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>~~
         * ~~[.getMeta([property])](#Entry+getMeta) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>~~
         * [.getProperty([property])](#Entry+getProperty) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
+        * [.getProperties(propertyExpression)](#Entry+getProperties) ⇒ <code>Array</code>
         * [.getURLs([urlTypePreference])](#Entry+getURLs) ⇒ <code>Array.&lt;String&gt;</code>
         * [.isInTrash()](#Entry+isInTrash) ⇒ <code>Boolean</code>
         * [.moveToGroup(group)](#Entry+moveToGroup) ⇒ [<code>Entry</code>](#Entry)
@@ -2793,6 +2794,20 @@ values is returned.
 | --- | --- | --- |
 | [property] | <code>String</code> | The name of the property to fetch |
 
+<a name="Entry+getProperties"></a>
+
+### entry.getProperties(propertyExpression) ⇒ <code>Array</code>
+Get property values via RegExp expressions.
+If no property expression is specified, it returns the empty behavior of
+{@see Entry.getProperty}.
+
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: <code>Array</code> - The values of the properties that matched the expression.  
+
+| Param | Type |
+| --- | --- |
+| propertyExpression | <code>RegExp</code> \| <code>String</code> | 
+
 <a name="Entry+getURLs"></a>
 
 ### entry.getURLs([urlTypePreference]) ⇒ <code>Array.&lt;String&gt;</code>
@@ -2888,7 +2903,7 @@ toString override
 **Returns**: <code>String</code> - The string representation of the Entry  
 <a name="Entry+_getArchive"></a>
 
-### entry._getArchive() ⇒ [<code>Archive</code>](#Archive)
+### entry.\_getArchive() ⇒ [<code>Archive</code>](#Archive)
 Get the archive reference
 
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
@@ -2896,7 +2911,7 @@ Get the archive reference
 **Access**: protected  
 <a name="Entry+_getRemoteObject"></a>
 
-### entry._getRemoteObject() ⇒ <code>Object</code>
+### entry.\_getRemoteObject() ⇒ <code>Object</code>
 Get the remote object that mirrors the data represented here
 
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
@@ -2904,7 +2919,7 @@ Get the remote object that mirrors the data represented here
 **Access**: protected  
 <a name="Entry+_getWestley"></a>
 
-### entry._getWestley() ⇒ [<code>Westley</code>](#Westley)
+### entry.\_getWestley() ⇒ [<code>Westley</code>](#Westley)
 Get the Westley reference
 
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
@@ -3025,13 +3040,13 @@ Flatten a dataset
 
 <a name="Flattener.FLATTENING_MIN_LINES"></a>
 
-### Flattener.FLATTENING_MIN_LINES : <code>Number</code>
+### Flattener.FLATTENING\_MIN\_LINES : <code>Number</code>
 Minimum history lines before flattening can occur
 
 **Kind**: static constant of [<code>Flattener</code>](#Flattener)  
 <a name="Flattener.PRESERVE_LINES"></a>
 
-### Flattener.PRESERVE_LINES : <code>Number</code>
+### Flattener.PRESERVE\_LINES : <code>Number</code>
 Number of lines to preserve (most recent)
 
 **Kind**: static constant of [<code>Flattener</code>](#Flattener)  
@@ -3354,7 +3369,7 @@ Export the group to a JSON string
 
 <a name="Group+_getArchive"></a>
 
-### group._getArchive() ⇒ [<code>Archive</code>](#Archive)
+### group.\_getArchive() ⇒ [<code>Archive</code>](#Archive)
 Get the archive instance reference
 
 **Kind**: instance method of [<code>Group</code>](#Group)  
@@ -3362,7 +3377,7 @@ Get the archive instance reference
 **Access**: protected  
 <a name="Group+_getRemoteObject"></a>
 
-### group._getRemoteObject() ⇒ <code>Object</code>
+### group.\_getRemoteObject() ⇒ <code>Object</code>
 Get the remotely-managed object (group)
 
 **Kind**: instance method of [<code>Group</code>](#Group)  
@@ -3370,7 +3385,7 @@ Get the remotely-managed object (group)
 **Access**: protected  
 <a name="Group+_getWestley"></a>
 
-### group._getWestley() ⇒ [<code>Westley</code>](#Westley)
+### group.\_getWestley() ⇒ [<code>Westley</code>](#Westley)
 Get the delta managing instance for the archive
 
 **Kind**: instance method of [<code>Group</code>](#Group)  
@@ -3540,7 +3555,7 @@ Insert a padding in the archive (used for delta tracking)
 **Returns**: [<code>Westley</code>](#Westley) - Returns self  
 <a name="Westley+_getCommandForKey"></a>
 
-### westley._getCommandForKey(commandKey) ⇒ <code>Command</code>
+### westley.\_getCommandForKey(commandKey) ⇒ <code>Command</code>
 Gets a command by its key from the cache with its dependencies injected
 
 **Kind**: instance method of [<code>Westley</code>](#Westley)  
