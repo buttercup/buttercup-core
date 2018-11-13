@@ -150,7 +150,7 @@ describe("Entry", function() {
         });
 
         it("returns an empty array when no matches are found", function() {
-            expect(this.entry.getProperties(/non-existent-property/)).to.equal([]);
+            expect(this.entry.getProperties(/non-existent-property/)).to.deep.equal([]);
         });
     });
 
