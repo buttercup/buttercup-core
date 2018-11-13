@@ -213,6 +213,31 @@ class Entry {
     }
 
     /**
+     * Get property values via RegExp expressions.
+     * If no property expression is specified, it returns the empty behavior of
+     * {@see Entry.getProperty}.
+     * @param {RegExp|String} propertyExpression
+     * @returns {Array} The values of the properties that matched the expression.
+     * @memberof Entry
+     */
+    getProperties(propertyExpression) {
+        if (typeof propertyExpression === "undefined") {
+            return this.getProperty();
+        }
+
+        const raw = this._getRemoteObject().properties;
+        var result = [];
+
+        if (!(propertyExpression instanceof RegExp)) {
+            propertyExpression = new RegExp(propertyExpression);
+        }
+
+        const matchingKeys = Object.keys(raw).filter(k => propertyExpression.test(k));
+
+        return matchingKeys.map(k => raw[k]);
+    }
+
+    /**
      * Get an array of URLs from the Entry
      * Returns an array of detected URL values in the Entry's properties. The
      * types of URLs can be configured by providing a preference:
