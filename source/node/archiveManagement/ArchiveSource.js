@@ -253,8 +253,8 @@ class ArchiveSource extends AsyncEventEmitter {
      * @memberof ArchiveSource
      */
     getOfflineContent() {
-        return this.checkOfflineCopy().then(
-            hasContent => (hasContent ? getSourceOfflineArchive(this.storageInterface, this.id) : null)
+        return this.checkOfflineCopy().then(hasContent =>
+            hasContent ? getSourceOfflineArchive(this.storageInterface, this.id) : null
         );
     }
 

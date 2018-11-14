@@ -226,15 +226,17 @@ class ArchiveManager extends AsyncEventEmitter {
             .getAllKeys()
             .then(keys =>
                 Promise.all(
-                    keys.filter(key => STORAGE_KEY_PREFIX_TEST.test(key)).map(key =>
-                        this.storageInterface
-                            .getValue(key)
-                            .then(dehydratedSource => ArchiveSource.rehydrate(dehydratedSource))
-                            .then(source => this.addSource(source, { emitUpdated: false, order: source.order }))
-                            .catch(function __handleDehydratedReadError(err) {
-                                throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
-                            })
-                    )
+                    keys
+                        .filter(key => STORAGE_KEY_PREFIX_TEST.test(key))
+                        .map(key =>
+                            this.storageInterface
+                                .getValue(key)
+                                .then(dehydratedSource => ArchiveSource.rehydrate(dehydratedSource))
+                                .then(source => this.addSource(source, { emitUpdated: false, order: source.order }))
+                                .catch(function __handleDehydratedReadError(err) {
+                                    throw new VError(err, `Failed rehydrating item from storage with key: ${key}`);
+                                })
+                        )
                 )
             )
             .then(() => {

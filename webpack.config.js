@@ -4,7 +4,8 @@ const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 const { DefinePlugin } = webpack;
 
-const WEB_ENTRY = path.resolve(__dirname, "./source/web/index.js");
+const SOURCE = path.resolve(__dirname, "./source");
+const WEB_ENTRY = path.join(SOURCE, "web/index.js");
 const DIST = path.resolve(__dirname, "./dist");
 
 const baseConfig = {
@@ -19,6 +20,10 @@ const baseConfig = {
             },
             {
                 test: /\.js$/,
+                include: [
+                    SOURCE,
+                    /node_modules\/(got|cacheable-request)/
+                ],
                 use: "babel-loader"
             },
             {
@@ -29,7 +34,8 @@ const baseConfig = {
     },
 
     node: {
-        fs: "empty"
+        fs: "empty",
+        net: "empty"
     },
 
     output: {

@@ -92,13 +92,15 @@ function getEntryURLs(properties, preference = ENTRY_URL_TYPE_ANY) {
 }
 
 function getEntryFacadeURLs(facade, preference) {
-    const props = facade.fields.filter(item => item.field === "property").reduce(
-        (output, field) =>
-            Object.assign(output, {
-                [field.property]: field.value
-            }),
-        {}
-    );
+    const props = facade.fields
+        .filter(item => item.field === "property")
+        .reduce(
+            (output, field) =>
+                Object.assign(output, {
+                    [field.property]: field.value
+                }),
+            {}
+        );
     return getEntryURLs(props, preference);
 }
 
