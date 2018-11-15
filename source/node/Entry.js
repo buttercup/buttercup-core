@@ -226,7 +226,6 @@ class Entry {
         }
 
         const raw = this._getRemoteObject().properties;
-        var result = [];
 
         if (!(propertyExpression instanceof RegExp)) {
             propertyExpression = new RegExp(propertyExpression);
