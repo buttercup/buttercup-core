@@ -13,6 +13,7 @@ describe("Entry", function() {
         this.entry.setMeta("metakey", "metaval");
         this.entry.setProperty("username", "anthony");
         this.entry.setProperty("password", "passw0rd");
+        this.entry.setProperty("passphrase", "hunter22");
         this.entry.setProperty("url", "test.com");
         this.entry.setProperty("login-url", "test.com/login");
     });
@@ -109,6 +110,7 @@ describe("Entry", function() {
                 title: "entry",
                 username: "anthony",
                 password: "passw0rd",
+                passphrase: "hunter22",
                 metakey: "metaval",
                 url: "test.com",
                 "login-url": "test.com/login"
@@ -117,6 +119,38 @@ describe("Entry", function() {
 
         it("returns undefined if the property doesn't exist", function() {
             expect(this.entry.getProperty("age")).to.be.undefined;
+        });
+    });
+
+    describe("getProperties", function() {
+        it("returns exact property values", function() {
+            expect(this.entry.getProperties(/title/)).to.deep.equal(["entry"]);
+            expect(this.entry.getProperties(/username/)).to.deep.equal(["anthony"]);
+            expect(this.entry.getProperties(/password/)).to.deep.equal(["passw0rd"]);
+        });
+
+        it("returns properties based on regexp", function() {
+            expect(this.entry.getProperties(/pass.*/)).to.deep.equal(["passw0rd", "hunter22"]);
+        });
+
+        it("interprets strings as regexp", function() {
+            expect(this.entry.getProperties("pass.*")).to.deep.equal(["passw0rd", "hunter22"]);
+        });
+
+        it("returns an object with no parameter provided", function() {
+            expect(this.entry.getProperties()).to.deep.equal({
+                title: "entry",
+                username: "anthony",
+                password: "passw0rd",
+                passphrase: "hunter22",
+                metakey: "metaval",
+                url: "test.com",
+                "login-url": "test.com/login"
+            });
+        });
+
+        it("returns an empty array when no matches are found", function() {
+            expect(this.entry.getProperties(/non-existent-property/)).to.deep.equal([]);
         });
     });
 
