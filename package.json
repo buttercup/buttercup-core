@@ -60,7 +60,7 @@
   "dependencies": {
     "@buttercup/channel-queue": "^0.3.0",
     "@buttercup/credentials": "^1.1.1",
-    "@buttercup/datasources": "^1.4.0-rc3",
+    "@buttercup/datasources": "^2.0.0",
     "@buttercup/signing": "^0.1.0",
     "eventemitter3": "^3.1.0",
     "fuse.js": "^2.7.4",
