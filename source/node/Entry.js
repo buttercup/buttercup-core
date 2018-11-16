@@ -228,7 +228,7 @@ class Entry {
         const isRexp = propertyExpression instanceof RegExp;
         return Object.keys(raw).reduce((aggr, key) => {
             const matches = isRexp ? propertyExpression.test(key) : propertyExpression === key;
-            return matches ? { ...aggr, [key]: raw[key] } : aggr;
+            return matches ? Object.assign(aggr, { [key]: raw[key] }) : aggr;
         }, {});
     }
 
