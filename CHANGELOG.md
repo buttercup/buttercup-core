@@ -1,6 +1,6 @@
 # Core library changelog
 
-## v2.8.0
+## v2.8.1
 _2018-11-16_
 
  * New Dropbox client
