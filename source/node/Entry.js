@@ -217,23 +217,19 @@ class Entry {
      * If no property expression is specified, it returns the empty behavior of
      * {@see Entry.getProperty}.
      * @param {RegExp|String} propertyExpression
-     * @returns {Array} The values of the properties that matched the expression.
+     * @returns {Object} A key-value object of the matching properties
      * @memberof Entry
      */
     getProperties(propertyExpression) {
         if (typeof propertyExpression === "undefined") {
             return this.getProperty();
         }
-
         const raw = this._getRemoteObject().properties;
-
-        if (!(propertyExpression instanceof RegExp)) {
-            propertyExpression = new RegExp(propertyExpression);
-        }
-
-        const matchingKeys = Object.keys(raw).filter(k => propertyExpression.test(k));
-
-        return matchingKeys.map(k => raw[k]);
+        const isRexp = propertyExpression instanceof RegExp;
+        return Object.keys(raw).reduce((aggr, key) => {
+            const matches = isRexp ? propertyExpression.test(key) : propertyExpression === key;
+            return matches ? { ...aggr, [key]: raw[key] } : aggr;
+        }, {});
     }
 
     /**

@@ -124,17 +124,22 @@ describe("Entry", function() {
 
     describe("getProperties", function() {
         it("returns exact property values", function() {
-            expect(this.entry.getProperties(/title/)).to.deep.equal(["entry"]);
-            expect(this.entry.getProperties(/username/)).to.deep.equal(["anthony"]);
-            expect(this.entry.getProperties(/password/)).to.deep.equal(["passw0rd"]);
+            expect(this.entry.getProperties(/title/)).to.deep.equal({ title: "entry" });
+            expect(this.entry.getProperties(/username/)).to.deep.equal({ username: "anthony" });
+            expect(this.entry.getProperties(/password/)).to.deep.equal({ password: "passw0rd" });
         });
 
         it("returns properties based on regexp", function() {
-            expect(this.entry.getProperties(/pass.*/)).to.deep.equal(["passw0rd", "hunter22"]);
+            expect(this.entry.getProperties(/pass.*/)).to.deep.equal({
+                password: "passw0rd",
+                passphrase: "hunter22"
+            });
         });
 
-        it("interprets strings as regexp", function() {
-            expect(this.entry.getProperties("pass.*")).to.deep.equal(["passw0rd", "hunter22"]);
+        it("compares strings as strings", function() {
+            expect(this.entry.getProperties("password")).to.deep.equal({
+                password: "passw0rd"
+            });
         });
 
         it("returns an object with no parameter provided", function() {
@@ -150,7 +155,7 @@ describe("Entry", function() {
         });
 
         it("returns an empty array when no matches are found", function() {
-            expect(this.entry.getProperties(/non-existent-property/)).to.deep.equal([]);
+            expect(this.entry.getProperties(/non-existent-property/)).to.deep.equal({});
         });
     });
 
