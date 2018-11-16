@@ -1,5 +1,12 @@
 # Core library changelog
 
+## v2.8.0
+_2018-11-16_
+
+ * New Dropbox client
+ * New WebDAV client
+ * Add `Entry#getProperties` method
+
 ## v2.7.0
 _2018-10-27_
 

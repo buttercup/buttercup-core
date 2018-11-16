@@ -2618,6 +2618,7 @@ a login for a website.
         * ~~[.getGroup()](#Entry+getGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>~~
         * ~~[.getMeta([property])](#Entry+getMeta) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>~~
         * [.getProperty([property])](#Entry+getProperty) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
+        * [.getProperties(propertyExpression)](#Entry+getProperties) ⇒ <code>Object</code>
         * [.getURLs([urlTypePreference])](#Entry+getURLs) ⇒ <code>Array.&lt;String&gt;</code>
         * [.isInTrash()](#Entry+isInTrash) ⇒ <code>Boolean</code>
         * [.moveToGroup(group)](#Entry+moveToGroup) ⇒ [<code>Entry</code>](#Entry)
@@ -2792,6 +2793,20 @@ values is returned.
 | Param | Type | Description |
 | --- | --- | --- |
 | [property] | <code>String</code> | The name of the property to fetch |
+
+<a name="Entry+getProperties"></a>
+
+### entry.getProperties(propertyExpression) ⇒ <code>Object</code>
+Get property values via RegExp expressions.
+If no property expression is specified, it returns the empty behavior of
+{@see Entry.getProperty}.
+
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Returns**: <code>Object</code> - A key-value object of the matching properties  
+
+| Param | Type |
+| --- | --- |
+| propertyExpression | <code>RegExp</code> \| <code>String</code> | 
 
 <a name="Entry+getURLs"></a>
 
