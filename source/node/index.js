@@ -38,6 +38,7 @@ module.exports = {
     },
 
     vendor: {
+        dropbox: Datasources.dropboxClientPatcher,
         iocane,
         webdav: Datasources.webdav
     }
