@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.9.0
+_2018-12-03_
+
+ * Expose Dropbox request patcher
+
 ## v2.8.1
 _2018-11-16_
 
