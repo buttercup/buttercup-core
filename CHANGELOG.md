@@ -1,6 +1,11 @@
 # Core library changelog
 
-## v2.9.0
+## v2.9.1
+_2018-12-05_
+
+ * Datasource instantiation register for post processing datasource instances
+
+## ~~v2.9.0~~
 _2018-12-03_
 
  * Expose Dropbox request patcher
