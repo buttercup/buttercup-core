@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.9.2
+_2018-12-08_
+
+ * Execute datasource instantiation callbacks for _each_ datasource type
+
 ## v2.9.1
 _2018-12-05_
 
