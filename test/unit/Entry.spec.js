@@ -11,6 +11,7 @@ describe("Entry", function() {
         this.entry.setAttribute("attrib", "ok");
         this.entry.setAttribute("attrib2", "also-ok");
         this.entry.setMeta("metakey", "metaval");
+        this.entry.setProperty("username", "tony");
         this.entry.setProperty("username", "anthony");
         this.entry.setProperty("password", "passw0rd");
         this.entry.setProperty("passphrase", "hunter22");
@@ -95,6 +96,46 @@ describe("Entry", function() {
         it("returns parent group", function() {
             expect(this.entry.getGroup()).to.be.an.instanceof(Group);
             expect(this.entry.getGroup().id).to.equal(this.group.id);
+        });
+    });
+
+    describe("getHistory", function() {
+        it("contains property sets", function() {
+            const count = this.entry.getHistory().filter(item => item.type === "set-property").length;
+            expect(count).to.be.above(0);
+        });
+
+        it("contains attribute sets", function() {
+            const count = this.entry.getHistory().filter(item => item.type === "set-attribute").length;
+            expect(count).to.be.above(0);
+        });
+
+        it("contains property deletions", function() {
+            this.entry.deleteProperty("username");
+            const count = this.entry.getHistory().filter(item => item.type === "remove-property").length;
+            expect(count).to.be.above(0);
+        });
+
+        it("contains attribute deletions", function() {
+            this.entry.deleteAttribute("attrib2");
+            const count = this.entry.getHistory().filter(item => item.type === "remove-attribute").length;
+            expect(count).to.be.above(0);
+        });
+
+        it("contains multiple set-property items", function() {
+            const setUsernames = this.entry
+                .getHistory()
+                .filter(item => item.type === "set-property" && item.property === "username");
+            expect(setUsernames[0]).to.deep.equal({
+                type: "set-property",
+                property: "username",
+                value: "tony"
+            });
+            expect(setUsernames[1]).to.deep.equal({
+                type: "set-property",
+                property: "username",
+                value: "anthony"
+            });
         });
     });
 
