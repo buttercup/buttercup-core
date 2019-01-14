@@ -4,6 +4,15 @@ const searching = require("./tools/searching-raw.js");
 const { getEntryURLs } = require("./tools/entry.js");
 
 /**
+ * @typedef {Object} EntryHistoryItem
+ * @property {String} type - The type of history item
+ * @property {String=} origin - The origin group ID for a moved-entry
+ * @property {String=} destination - The destination group ID for a moved-entry
+ * @property {String=} property - The property/attribute name of the change
+ * @property {String=} value - The value that was changed (resulting)
+ */
+
+/**
  * Entry class implementation
  * Entries form the low-level data structures used in Buttercup, and
  * are intended to represent logical collections of properties, like
@@ -172,6 +181,15 @@ class Entry {
             return new Group(this._getArchive(), parentInfo.group);
         }
         return null;
+    }
+
+    /**
+     * Get the history of the entry
+     * @returns {Array.<EntryHistoryItem>}
+     * @memberof Entry
+     */
+    getHistory() {
+        return this._getRemoteObject().history || [];
     }
 
     /**

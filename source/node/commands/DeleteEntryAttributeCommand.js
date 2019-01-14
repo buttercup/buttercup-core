@@ -14,15 +14,22 @@ class DeleteEntryAttributeCommand extends BaseCommand {
      */
     execute(obj, entryID, attributeName) {
         obj.groups = obj.groups || [];
-        var entry = this.searchTools.findEntryByID(obj.groups, entryID);
+        const entry = this.searchTools.findEntryByID(obj.groups, entryID);
         if (!entry) {
             throw new Error("Entry not found for ID");
         }
         entry.attributes = entry.attributes || {};
-        var deleted = delete entry.attributes[attributeName];
+        const value = entry.attributes[attributeName];
+        const deleted = delete entry.attributes[attributeName];
         if (!deleted) {
             throw new Error("Failed deleting attribute");
         }
+        entry.history = entry.history || [];
+        entry.history.push({
+            type: "remove-attribute",
+            property: attributeName,
+            value
+        });
     }
 }
 

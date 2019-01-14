@@ -21,6 +21,12 @@ class SetEntryAttributeCommand extends BaseCommand {
         }
         entry.attributes = entry.attributes || {};
         entry.attributes[attributeName] = value;
+        entry.history = entry.history || [];
+        entry.history.push({
+            type: "set-attribute",
+            property: attributeName,
+            value
+        });
     }
 }
 

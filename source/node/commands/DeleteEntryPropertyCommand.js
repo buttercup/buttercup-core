@@ -18,10 +18,17 @@ class DeleteEntryPropertyCommand extends BaseCommand {
             throw new Error(`Entry not found for ID: ${entryID}`);
         }
         entry.properties = entry.properties || {};
+        const value = entry.properties[propertyName];
         const deleted = delete entry.properties[propertyName];
         if (!deleted) {
             throw new Error(`Failed deleting property: ${propertyName}`);
         }
+        entry.history = entry.history || [];
+        entry.history.push({
+            type: "remove-property",
+            property: propertyName,
+            value
+        });
     }
 }
 

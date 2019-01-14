@@ -27,6 +27,12 @@ class MoveEntryCommand extends BaseCommand {
         var movedEntry = originGroup.entries.splice(originIndex, 1)[0];
         targetGroup.entries = targetGroup.entries || [];
         targetGroup.entries.push(movedEntry);
+        movedEntry.history = movedEntry.history || [];
+        movedEntry.history.push({
+            type: "move-group",
+            origin: originGroup,
+            destination: targetGroupID
+        });
     }
 }
 

@@ -22,6 +22,12 @@ class SetEntryMetaCommand extends BaseCommand {
         }
         entry.properties = entry.properties || {};
         entry.properties[propertyName] = value;
+        entry.history = entry.history || [];
+        entry.history.push({
+            type: "set-property",
+            property: propertyName,
+            value
+        });
     }
 }
 
