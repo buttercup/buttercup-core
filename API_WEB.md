@@ -190,6 +190,8 @@ Allows for preferential sorting</p>
 <dd></dd>
 <dt><a href="#ArchiveDataset">ArchiveDataset</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#EntryHistoryItem">EntryHistoryItem</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#EntryFacade">EntryFacade</a> : <code>Object</code></dt>
 <dd><p>Entry facade for data input</p>
 </dd>
@@ -2625,6 +2627,7 @@ a login for a website.
         * [.getAttribute([attributeName])](#Entry+getAttribute) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
         * ~~[.getAttributes()](#Entry+getAttributes) ⇒ <code>Object</code>~~
         * ~~[.getGroup()](#Entry+getGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>~~
+        * [.getHistory()](#Entry+getHistory) ⇒ [<code>Array.&lt;EntryHistoryItem&gt;</code>](#EntryHistoryItem)
         * ~~[.getMeta([property])](#Entry+getMeta) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>~~
         * [.getProperty([property])](#Entry+getProperty) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
         * [.getProperties(propertyExpression)](#Entry+getProperties) ⇒ <code>Object</code>
@@ -2771,6 +2774,12 @@ Get the containing group for the entry
 
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
 **Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The parent group  
+<a name="Entry+getHistory"></a>
+
+### entry.getHistory() ⇒ [<code>Array.&lt;EntryHistoryItem&gt;</code>](#EntryHistoryItem)
+Get the history of the entry
+
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
 <a name="Entry+getMeta"></a>
 
 ### ~~entry.getMeta([property]) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>~~
@@ -4126,6 +4135,20 @@ New source options
 | groups | <code>Array.&lt;Object&gt;</code> | Array of groups |
 | entries | <code>Array.&lt;Object&gt;</code> | Array of entries |
 | attributes | <code>Object</code> | Archive attributes |
+
+<a name="EntryHistoryItem"></a>
+
+## EntryHistoryItem : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| type | <code>String</code> | The type of history item |
+| [origin] | <code>String</code> | The origin group ID for a moved-entry |
+| [destination] | <code>String</code> | The destination group ID for a moved-entry |
+| [property] | <code>String</code> | The property/attribute name of the change |
+| [value] | <code>String</code> | The value that was changed (resulting) |
 
 <a name="EntryFacade"></a>
 

@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.10.0
+_2019-01-14_
+
+ * Entry history
+
 ## v2.9.2
 _2018-12-08_
 
