@@ -405,6 +405,16 @@ class ArchiveSource extends AsyncEventEmitter {
         });
     }
 
+    /**
+     * Update source credentials
+     * (Useful for updating tokens when authentication parameters change)
+     * @param {String} masterPassword The master password
+     * @param {Function} callback Callback that's fired with the source crendentials
+     *  and datasource. If the source is locked, only the source credentials are
+     *  provided (datasource is `null` in this case)
+     * @returns {Promise} A promise that resolves when the update is complete
+     * @memberof ArchiveSource
+     */
     updateSourceCredentials(masterPassword, callback) {
         if (this.status === Status.PENDING) {
             return Promise.reject(
