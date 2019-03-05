@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "build": "webpack",
+    "dev": "webpack --watch --progress",
     "docs": "npm run generate:docs",
     "format": "prettier --write '{source,test}/**/*.js'",
     "generate:archive": "node scripts/generate_test_archive.js",
@@ -60,7 +61,7 @@
   "dependencies": {
     "@buttercup/channel-queue": "^0.3.0",
     "@buttercup/credentials": "^1.1.1",
-    "@buttercup/datasources": "^2.2.1",
+    "@buttercup/datasources": "^2.4.0",
     "@buttercup/signing": "^0.1.0",
     "eventemitter3": "^3.1.0",
     "fuse.js": "^2.7.4",
