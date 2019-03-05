@@ -405,6 +405,33 @@ class ArchiveSource extends AsyncEventEmitter {
         });
     }
 
+    updateSourceCredentials(masterPassword, callback) {
+        if (this.status === Status.PENDING) {
+            return Promise.reject(
+                new VError(`Failed updating source credentials: Source can not be in pending state: ${this.id}`)
+            );
+        } else if (this.status === Status.LOCKED) {
+            return Credentials.fromSecureString(this._sourceCredentials, masterPassword)
+                .then(sourceCredentials => {
+                    return Promise.resolve()
+                        .then(() => callback(sourceCredentials, null))
+                        .then(() => sourceCredentials.toSecureString(masterPassword));
+                })
+                .then(updatedSourceCredentials => {
+                    this._sourceCredentials = updatedSourceCredentials;
+                    return this.dehydrate();
+                });
+        }
+        return Promise.resolve()
+            .then(() => callback(this._sourceCredentials, this.workspace.datasource))
+            .then(() =>
+                this._enqueueStateChange(() => {
+                    return this.workspace.save();
+                })
+            )
+            .then(() => this.dehydrate());
+    }
+
     _enqueueStateChange(cb) {
         return this._queue.channel("state").enqueue(cb);
     }
