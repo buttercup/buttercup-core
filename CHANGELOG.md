@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v2.11.0
+_2019-03-05_
+
+ * Google Drive support
+ * Support for updating source credentials (eg. expired API token renewal)
+
 ## v2.10.0
 _2019-01-14_
 

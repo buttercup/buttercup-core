@@ -783,6 +783,7 @@ Archive source class
         * [.lock()](#ArchiveSource+lock) ⇒ <code>Promise.&lt;String&gt;</code>
         * ~~[.unlock(masterPassword, [initialiseRemote], contentOverride, [storeOfflineCopy])](#ArchiveSource+unlock)~~
         * [.updateArchiveCredentials(masterPassword)](#ArchiveSource+updateArchiveCredentials) ⇒ <code>Promise.&lt;String&gt;</code>
+        * [.updateSourceCredentials(masterPassword, callback)](#ArchiveSource+updateSourceCredentials) ⇒ <code>Promise</code>
     * _static_
         * [.Status](#ArchiveSource.Status)
         * [.rehydrate(dehydratedString)](#ArchiveSource.rehydrate) ⇒ [<code>ArchiveSource</code>](#ArchiveSource)
@@ -941,6 +942,20 @@ which should be SAVED.
 | Param | Type | Description |
 | --- | --- | --- |
 | masterPassword | <code>String</code> | New master password |
+
+<a name="ArchiveSource+updateSourceCredentials"></a>
+
+### archiveSource.updateSourceCredentials(masterPassword, callback) ⇒ <code>Promise</code>
+Update source credentials
+(Useful for updating tokens when authentication parameters change)
+
+**Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
+**Returns**: <code>Promise</code> - A promise that resolves when the update is complete  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| masterPassword | <code>String</code> | The master password |
+| callback | <code>function</code> | Callback that's fired with the source crendentials  and datasource. If the source is locked, only the source credentials are  provided (datasource is `null` in this case) |
 
 <a name="ArchiveSource.Status"></a>
 
