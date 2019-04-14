@@ -128,6 +128,7 @@ class ArchiveManager extends AsyncEventEmitter {
                 archiveSource.on("sourceLocked", details => handleDetailsChange("sourceLocked", details));
                 archiveSource.on("sourceUnlocked", details => handleDetailsChange("sourceUnlocked", details));
                 archiveSource.on("sourceColourUpdated", details => handleDetailsChange("sourceColourUpdated", details));
+                archiveSource.on("sourceUpdated", () => this.dehydrate());
                 return archiveSource
                     .dehydrate()
                     .then(dehydratedSource => this._storeDehydratedSource(archiveSource.id, dehydratedSource));

@@ -44,6 +44,10 @@ function credentialsToDatasource(sourceCredentials) {
  *  the source credentials and archive credentials
  */
 function credentialsToSource(sourceCredentials, archiveCredentials, initialise = false, contentOverride = null) {
+    let updated = false;
+    const onUpdate = () => {
+        updated = true;
+    };
     return credentialsToDatasource(sourceCredentials)
         .then(function __handleInitialisation(result) {
             const datasource = result.datasource;
@@ -51,6 +55,7 @@ function credentialsToSource(sourceCredentials, archiveCredentials, initialise =
             if (typeof contentOverride === "string") {
                 datasource.setContent(contentOverride);
             }
+            datasource.once("updated", onUpdate);
             return initialise
                 ? datasource.save(defaultArchive.getHistory(), archiveCredentials).then(() =>
                       Object.assign(
@@ -80,11 +85,13 @@ function credentialsToSource(sourceCredentials, archiveCredentials, initialise =
                 const westley = result.archive._getWestley();
                 westley.readOnly = true;
             }
+            result.datasource.removeListener("updated", onUpdate);
             workspace.setArchive(result.archive, result.datasource, archiveCredentials);
             return {
                 workspace,
                 sourceCredentials,
-                archiveCredentials
+                archiveCredentials,
+                updated
             };
         });
 }

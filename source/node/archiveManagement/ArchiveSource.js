@@ -348,7 +348,7 @@ class ArchiveSource extends AsyncEventEmitter {
                         )
                             .then(sourceInfo => {
                                 // Build the source components
-                                const { workspace, sourceCredentials, archiveCredentials } = sourceInfo;
+                                const { workspace, sourceCredentials, archiveCredentials, updated } = sourceInfo;
                                 this._workspace = workspace;
                                 this._sourceCredentials = sourceCredentials;
                                 this._archiveCredentials = archiveCredentials;
@@ -362,13 +362,22 @@ class ArchiveSource extends AsyncEventEmitter {
                                         workspace.datasource._content
                                     );
                                 }
+                                workspace.datasource.on("updated", () => {
+                                    this.updateCredentialsFromDatasource();
+                                    this.emit("sourceUpdated");
+                                });
+                                return updated;
                             })
                             .catch(err => {
                                 throw new VError(err, "Failed mapping credentials to a source");
                             });
                     })
-                    .then(() => {
+                    .then(updatedDuringUnlock => {
                         this.emit("sourceUnlocked", this.description);
+                        if (updatedDuringUnlock) {
+                            this.updateCredentialsFromDatasource();
+                            this.emit("sourceUpdated");
+                        }
                     })
                     .catch(err => {
                         this._status = Status.LOCKED;
@@ -405,6 +414,23 @@ class ArchiveSource extends AsyncEventEmitter {
         });
     }
 
+    updateCredentialsFromDatasource() {
+        if (this.status !== Status.UNLOCKED) {
+            return Promise.reject(new VError(`Failed updating source credentials: Source is not unlocked: ${this.id}`));
+        }
+        const { datasource } = this._workspace;
+        const datasourceDescriptionRaw = this._sourceCredentials.getValueOrFail("datasource");
+        const datasourceDescription =
+            typeof datasourceDescriptionRaw === "string"
+                ? JSON.parse(datasourceDescriptionRaw)
+                : datasourceDescriptionRaw;
+        datasourceDescription.token = datasource.token;
+        if (datasource.refreshToken) {
+            datasourceDescription.refreshToken = datasource.refreshToken;
+        }
+        this._sourceCredentials.setValue("datasource", datasourceDescription);
+    }
+
     /**
      * Update source credentials
      * (Useful for updating tokens when authentication parameters change)
@@ -414,6 +440,7 @@ class ArchiveSource extends AsyncEventEmitter {
      *  provided (datasource is `null` in this case)
      * @returns {Promise} A promise that resolves when the update is complete
      * @memberof ArchiveSource
+     * @deprecated Deprecated in favour of datasource update methods
      */
     updateSourceCredentials(masterPassword, callback) {
         if (this.status === Status.PENDING) {
