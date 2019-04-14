@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.12.0
+_2019-04-14_
+
+ * Improved Google Drive authorisation handling
+
 ## v2.11.0
 _2019-03-05_
 
