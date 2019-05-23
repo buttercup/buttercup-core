@@ -19,7 +19,8 @@ const {
 } = require("./symbols.js");
 const { getFetchMethod } = require("../tools/request.js");
 const MyButtercupRootDatasource = require("./MyButtercupRootDatasource.js");
-const { createNewRoot } = require("./init.js");
+const MyButtercupDatasource = require("./MyButtercupDatasource.js");
+const { createNewRoot, createPersonalArchive } = require("./init.js");
 
 const NOOP = () => {};
 
@@ -331,6 +332,11 @@ class MyButtercupClient {
                             organisationID
                         });
                     });
+                })
+                .then(() => {
+                    const personalArchive = createPersonalArchive();
+                    const datasource = new MyButtercupDatasource(token, null);
+                    return datasource.save(personalArchive.getHistory(), masterAccountCredentials);
                 })
         );
     }

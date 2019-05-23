@@ -16,6 +16,11 @@ function createNewRoot() {
     return Promise.resolve(archive);
 }
 
+function createPersonalArchive() {
+    const archive = Archive.createWithDefaults();
+    return archive;
+}
+
 function processArchiveKeys(archive) {
     const { public: publicKey, private: privateKey } = createNewKey();
     const group = archive.createGroup("keys");
@@ -26,5 +31,6 @@ function processArchiveKeys(archive) {
 }
 
 module.exports = {
-    createNewRoot
+    createNewRoot,
+    createPersonalArchive
 };

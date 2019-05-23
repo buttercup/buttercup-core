@@ -21,7 +21,8 @@ const baseConfig = {
                 test: /\.js$/,
                 include: [
                     SOURCE,
-                    /node_modules\/(got|cacheable-request)/
+                    /node_modules\/(got|cacheable-request)/,
+                    /node_modules\/\@buttercup\/datasources/
                 ],
                 use: "babel-loader"
             },
