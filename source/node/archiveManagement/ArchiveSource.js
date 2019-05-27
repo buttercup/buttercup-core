@@ -52,6 +52,8 @@ class ArchiveSource extends AsyncEventEmitter {
      * @typedef {Object} ArchiveSourceOptions
      * @property {String=} id - Override source ID generation
      * @property {String=} type - Specify the source type
+     * @property {String=} grouping - Optional identifier to group
+     *  sources together
      */
 
     /**
@@ -61,7 +63,12 @@ class ArchiveSource extends AsyncEventEmitter {
      * @param {String} archiveCredentials Encrypted archive credentials
      * @param {ArchiveSourceOptions=} newSourceOptions Specify source creation options
      */
-    constructor(name, sourceCredentials, archiveCredentials, { id = getUniqueID(), type = "" } = {}) {
+    constructor(
+        name,
+        sourceCredentials,
+        archiveCredentials,
+        { id = getUniqueID(), grouping = getUniqueID(), type = "" } = {}
+    ) {
         super();
         if (Credentials.isSecureString(sourceCredentials) !== true) {
             throw new VError("Failed constructing archive source: Source credentials not in encrypted form");
@@ -80,6 +87,7 @@ class ArchiveSource extends AsyncEventEmitter {
         this._colour = DefaultColour;
         this.type = type;
         this.order = DefaultOrder;
+        this.grouping = grouping;
     }
 
     /**

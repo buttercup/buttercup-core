@@ -1,7 +1,6 @@
 const VError = require("verror");
 const { TextDatasource, registerDatasource } = require("@buttercup/datasources");
 const Credentials = require("@buttercup/credentials");
-const { getSharedClient } = require("./MyButtercupClient.js");
 const { generateNewUpdateID } = require("./helpers.js");
 const { generateRandomString } = require("../tools/random.js");
 
@@ -15,6 +14,7 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     load(masterAccountCredentials) {
+        const { getSharedClient } = require("./MyButtercupClient.js");
         const client = getSharedClient();
         return client
             .updateDigest(this._token, masterAccountCredentials)
@@ -29,7 +29,8 @@ class MyButtercupDatasource extends TextDatasource {
             });
     }
 
-    save(history, masterAccountCredentials) {
+    save(history, masterAccountCredentials, { name } = {}) {
+        const { getSharedClient } = require("./MyButtercupClient.js");
         const client = getSharedClient();
         const isNew = !this._archiveID;
         return this._getArchiveCredentials(masterAccountCredentials)
@@ -49,7 +50,8 @@ class MyButtercupDatasource extends TextDatasource {
                             isNew,
                             isRoot: false,
                             // @todo this will have to point dynamically:
-                            organisationID: personalOrgID
+                            organisationID: personalOrgID,
+                            name
                         })
                     );
             })
@@ -74,9 +76,9 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     _getArchiveCredentials(masterAccountCredentials) {
-        const isNew = !this._archiveID;
-        const generateRandomString = getRandomStringGenerator();
+        const { getSharedClient } = require("./MyButtercupClient.js");
         const client = getSharedClient();
+        const isNew = !this._archiveID;
         if (isNew) {
             // generate and save new creds for a new archive
             return generateRandomString(32)
@@ -124,6 +126,7 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     _updateNewArchiveID(archiveID, masterAccountCredentials) {
+        const { getSharedClient } = require("./MyButtercupClient.js");
         const client = getSharedClient();
         return client
             .loadRootArchive(this._token, this._rootArchiveID, masterAccountCredentials)

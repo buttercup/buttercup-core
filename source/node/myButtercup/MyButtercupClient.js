@@ -59,6 +59,13 @@ class MyButtercupClient {
         return `${OAUTH_AUTHORISE_URI}?response_type=token&client_id=${clientID}&redirect_uri=${redir}`;
     }
 
+    static getSharedClient() {
+        if (!__shared) {
+            __shared = new MyButtercupClient();
+        }
+        return __shared;
+    }
+
     constructor() {
         this._digests = {};
         this._rootArchives = {};
@@ -206,8 +213,7 @@ class MyButtercupClient {
                             this.updateDigest(token, masterAccountCredentials)
                         );
                     case "ok": {
-                        const rootArchiveID = res.root_archive;
-                        const personalOrgID = res.personal_org_id;
+                        const { root_archive: rootArchiveID, personal_org_id: personalOrgID } = res;
                         this._digests[rootArchiveID] = res;
                         return this.loadRootArchive(token, rootArchiveID, masterAccountCredentials).then(() => ({
                             rootArchiveID,
@@ -336,7 +342,9 @@ class MyButtercupClient {
                 .then(() => {
                     const personalArchive = createPersonalArchive();
                     const datasource = new MyButtercupDatasource(token, null);
-                    return datasource.save(personalArchive.getHistory(), masterAccountCredentials);
+                    return datasource.save(personalArchive.getHistory(), masterAccountCredentials, {
+                        name: "Personal"
+                    });
                 })
         );
     }
@@ -356,12 +364,5 @@ class MyButtercupClient {
         return fetch(API_OWN_KEY, fetchOptions).then(handlePutKeyResponse);
     }
 }
-
-MyButtercupClient.getSharedClient = function getSharedClient() {
-    if (!__shared) {
-        __shared = new MyButtercupClient();
-    }
-    return __shared;
-};
 
 module.exports = MyButtercupClient;

@@ -1,8 +1,6 @@
 const { TextDatasource, registerDatasource } = require("@buttercup/datasources");
 const { generateNewUpdateID } = require("./helpers.js");
 
-console.log("TDS", TextDatasource);
-
 class MyButtercupRootDatasource extends TextDatasource {
     constructor(token, archiveID) {
         super();
