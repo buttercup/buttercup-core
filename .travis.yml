@@ -7,19 +7,19 @@ matrix:
         - NAME="Node stable"
     - language: node_js
       script: npm run test:ci:node
-      node_js: 9
+      node_js: 11
       env:
-        - NAME="Node 9"
+        - NAME="Node 11"
+    - language: node_js
+      script: npm run test:ci:node
+      node_js: 10
+      env:
+        - NAME="Node 10"
     - language: node_js
       script: npm run test:ci:node
       node_js: 8
       env:
         - NAME="Node 8"
-    - language: node_js
-      script: npm run test:ci:node
-      node_js: 7
-      env:
-        - NAME="Node 7"
     - language: node_js
       script: npm run test:ci:node
       node_js: 6
