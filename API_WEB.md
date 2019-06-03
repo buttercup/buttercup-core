@@ -129,13 +129,13 @@ they can be edited as well.</p>
 <dd><p>Apply a facade field descriptor to an entry
 Takes data from the descriptor and writes it to the entry.</p>
 </dd>
-<dt><a href="#consumeEntryFacade">consumeEntryFacade(entry, facade)</a></dt>
+<dt><del><a href="#consumeEntryFacade">consumeEntryFacade(entry, facade)</a></del></dt>
 <dd><p>Process a modified entry facade</p>
 </dd>
-<dt><a href="#createEntryFacade">createEntryFacade(entry)</a> ⇒ <code><a href="#EntryFacade">EntryFacade</a></code></dt>
+<dt><del><a href="#createEntryFacade">createEntryFacade(entry)</a> ⇒ <code><a href="#EntryFacade">EntryFacade</a></code></del></dt>
 <dd><p>Create a data/input facade for an Entry instance</p>
 </dd>
-<dt><a href="#getEntryFacadeType">getEntryFacadeType(entry)</a> ⇒ <code>String</code></dt>
+<dt><del><a href="#getEntryFacadeType">getEntryFacadeType(entry)</a> ⇒ <code>String</code></del></dt>
 <dd><p>Get the facade type for an entry</p>
 </dd>
 <dt><a href="#setEntryValue">setEntryValue(entry, property, name, value)</a></dt>
@@ -783,7 +783,7 @@ Archive source class
         * [.lock()](#ArchiveSource+lock) ⇒ <code>Promise.&lt;String&gt;</code>
         * ~~[.unlock(masterPassword, [initialiseRemote], contentOverride, [storeOfflineCopy])](#ArchiveSource+unlock)~~
         * [.updateArchiveCredentials(masterPassword)](#ArchiveSource+updateArchiveCredentials) ⇒ <code>Promise.&lt;String&gt;</code>
-        * [.updateSourceCredentials(masterPassword, callback)](#ArchiveSource+updateSourceCredentials) ⇒ <code>Promise</code>
+        * ~~[.updateSourceCredentials(masterPassword, callback)](#ArchiveSource+updateSourceCredentials) ⇒ <code>Promise</code>~~
     * _static_
         * [.Status](#ArchiveSource.Status)
         * [.rehydrate(dehydratedString)](#ArchiveSource.rehydrate) ⇒ [<code>ArchiveSource</code>](#ArchiveSource)
@@ -945,7 +945,9 @@ which should be SAVED.
 
 <a name="ArchiveSource+updateSourceCredentials"></a>
 
-### archiveSource.updateSourceCredentials(masterPassword, callback) ⇒ <code>Promise</code>
+### ~~archiveSource.updateSourceCredentials(masterPassword, callback) ⇒ <code>Promise</code>~~
+***Deprecated***
+
 Update source credentials
 (Useful for updating tokens when authentication parameters change)
 
@@ -3902,7 +3904,9 @@ Takes data from the descriptor and writes it to the entry.
 
 <a name="consumeEntryFacade"></a>
 
-## consumeEntryFacade(entry, facade)
+## ~~consumeEntryFacade(entry, facade)~~
+***Deprecated***
+
 Process a modified entry facade
 
 **Kind**: global function  
@@ -3914,7 +3918,9 @@ Process a modified entry facade
 
 <a name="createEntryFacade"></a>
 
-## createEntryFacade(entry) ⇒ [<code>EntryFacade</code>](#EntryFacade)
+## ~~createEntryFacade(entry) ⇒ [<code>EntryFacade</code>](#EntryFacade)~~
+***Deprecated***
+
 Create a data/input facade for an Entry instance
 
 **Kind**: global function  
@@ -3926,7 +3932,9 @@ Create a data/input facade for an Entry instance
 
 <a name="getEntryFacadeType"></a>
 
-## getEntryFacadeType(entry) ⇒ <code>String</code>
+## ~~getEntryFacadeType(entry) ⇒ <code>String</code>~~
+***Deprecated***
+
 Get the facade type for an entry
 
 **Kind**: global function  

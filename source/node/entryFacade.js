@@ -51,6 +51,7 @@ function applyFieldDescriptor(entry, descriptor) {
  * Process a modified entry facade
  * @param {Entry} entry The entry to apply processed data on
  * @param {EntryFacade} facade The facade object
+ * @deprecated To be removed in favour of @buttercup/facades
  */
 function consumeEntryFacade(entry, facade) {
     const facadeType = getEntryFacadeType(entry);
@@ -89,6 +90,7 @@ function consumeEntryFacade(entry, facade) {
  * Create a data/input facade for an Entry instance
  * @param {Entry} entry The Entry instance
  * @returns {EntryFacade} A newly created facade
+ * @deprecated To be removed in favour of @buttercup/facades
  */
 function createEntryFacade(entry) {
     if (entry instanceof Entry !== true) {
@@ -110,6 +112,7 @@ function createEntryFacade(entry) {
  * Get the facade type for an entry
  * @param {Entry} entry The entry instance
  * @returns {String} The facade type
+ * @deprecated To be removed in favour of @buttercup/facades
  */
 function getEntryFacadeType(entry) {
     return entry.getAttribute(Entry.Attributes.FacadeType) || "login";
