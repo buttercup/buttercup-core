@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v2.13.0
+_2019-06-03_
+
+ * TOTP URI attribute
+ * Deprecations for entry facade methods
+
 ## v2.12.0
 _2019-04-14_
 
