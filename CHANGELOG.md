@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.14.0
+_2019-07-11_
+
+ * Entry property time prefix attribute
+
 ## v2.13.0
 _2019-06-03_
 
