@@ -426,7 +426,8 @@ class Entry {
 
 Entry.Attributes = Object.freeze({
     FacadeType: "BC_ENTRY_FACADE_TYPE",
-    TOTPProperty: "BC_ENTRY_TOTP_PROPERTY"
+    FieldTypePrefix: "BC_ENTRY_FIELD_TYPE:",
+    TOTPProperty: "BC_ENTRY_TOTP_PROPERTY" // Deprecated
 });
 
 /**
