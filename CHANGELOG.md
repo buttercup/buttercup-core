@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.15.0
+_2019-07-16_
+
+ * Dropbox client upgrade: New request library (cowl)
+
 ## v2.14.0
 _2019-07-11_
 
