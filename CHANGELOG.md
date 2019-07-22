@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.15.1
+_2019-07-22_
+
+ * Dropbox / Google Drive request client upgrades (browser stability)
+
 ## v2.15.0
 _2019-07-16_
 
