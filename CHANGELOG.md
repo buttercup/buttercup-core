@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v2.15.2
+_2019-07-23_
+
+ * **Bugfix**:
+   * Dropbox client PUT requests failing
+
 ## v2.15.1
 _2019-07-22_
 
