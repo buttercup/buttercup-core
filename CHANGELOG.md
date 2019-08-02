@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v2.15.4
+_2019-08-02_
+
+ * Google Drive client upgrade for `UInt8Array` incompatibilities
+
 ## v2.15.3
 _2019-08-02_
 
