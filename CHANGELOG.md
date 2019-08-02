@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v2.15.3
+_2019-08-02_
+
+ * **Bugfix**:
+   * Google Drive Datasource not re-authorising on failure
+
 ## v2.15.2
 _2019-07-23_
 

@@ -242,6 +242,10 @@ Buttercup Archive
         * [.findGroupsByTitle](#Archive+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
         * [.findEntriesByMeta](#Archive+findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.findEntriesByProperty](#Archive+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+        * [.findGroupByID](#Archive+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
+        * [.findGroupsByTitle](#Archive+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
+        * [.findEntriesByMeta](#Archive+findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+        * [.findEntriesByProperty](#Archive+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.createGroup([title])](#Archive+createGroup) ⇒ [<code>Group</code>](#Group)
         * [.deleteAttribute(attributeName)](#Archive+deleteAttribute) ⇒ [<code>Archive</code>](#Archive)
         * [.emptyTrash()](#Archive+emptyTrash)
@@ -256,6 +260,7 @@ Buttercup Archive
         * [.toObject(groupOutputFlags)](#Archive+toObject) ⇒ <code>Object</code>
         * [._generateID()](#Archive+_generateID)
         * [._getWestley()](#Archive+_getWestley) ⇒ [<code>Westley</code>](#Westley)
+        * [.inst.findEntryByID(id)](#Archive+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
         * [.inst.findEntryByID(id)](#Archive+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
     * _static_
         * [.createFromHistory(history)](#Archive.createFromHistory) ⇒ [<code>Archive</code>](#Archive)
@@ -287,6 +292,60 @@ Get the instance type
 
 **Kind**: instance property of [<code>Archive</code>](#Archive)  
 **Read only**: true  
+<a name="Archive+findGroupByID"></a>
+
+### archive.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
+Find a group by its ID
+
+**Kind**: instance property of [<code>Archive</code>](#Archive)  
+**Mixes**: [<code>findGroupByID</code>](#GroupCollection.findGroupByID)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The group or null if not found  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The group ID to search for |
+
+<a name="Archive+findGroupsByTitle"></a>
+
+### archive.findGroupsByTitle ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
+Find groups by their title
+
+**Kind**: instance property of [<code>Archive</code>](#Archive)  
+**Mixes**: [<code>findGroupsByTitle</code>](#GroupCollection.findGroupsByTitle)  
+**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of groups  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| title | <code>String</code> \| <code>RegExp</code> | The group title |
+
+<a name="Archive+findEntriesByMeta"></a>
+
+### archive.findEntriesByMeta ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+Find entries that match a certain meta property
+
+**Kind**: instance property of [<code>Archive</code>](#Archive)  
+**Mixes**: [<code>findEntriesByMeta</code>](#EntryCollection.findEntriesByMeta)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| metaName | <code>String</code> | The meta property to search for |
+| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
+
+<a name="Archive+findEntriesByProperty"></a>
+
+### archive.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+Find all entries that match a certain property
+
+**Kind**: instance property of [<code>Archive</code>](#Archive)  
+**Mixes**: [<code>findEntriesByProperty</code>](#EntryCollection.findEntriesByProperty)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found extries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| property | <code>string</code> | The property to search with |
+| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
+
 <a name="Archive+findGroupByID"></a>
 
 ### archive.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
@@ -461,19 +520,32 @@ Convert the archive to an object
 
 <a name="Archive+_generateID"></a>
 
-### archive._generateID()
+### archive.\_generateID()
 Generate an archive ID
 
 **Kind**: instance method of [<code>Archive</code>](#Archive)  
 **Access**: protected  
 <a name="Archive+_getWestley"></a>
 
-### archive._getWestley() ⇒ [<code>Westley</code>](#Westley)
+### archive.\_getWestley() ⇒ [<code>Westley</code>](#Westley)
 Get the underlying Westley instance
 
 **Kind**: instance method of [<code>Archive</code>](#Archive)  
 **Returns**: [<code>Westley</code>](#Westley) - The Westley instance  
 **Access**: protected  
+<a name="Archive+findEntryByID"></a>
+
+### archive.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
+Find an entry by its ID
+
+**Kind**: instance method of [<code>Archive</code>](#Archive)  
+**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
+**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The ID to search for |
+
 <a name="Archive+findEntryByID"></a>
 
 ### archive.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
@@ -2929,7 +3001,7 @@ toString override
 **Returns**: <code>String</code> - The string representation of the Entry  
 <a name="Entry+_getArchive"></a>
 
-### entry._getArchive() ⇒ [<code>Archive</code>](#Archive)
+### entry.\_getArchive() ⇒ [<code>Archive</code>](#Archive)
 Get the archive reference
 
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
@@ -2937,7 +3009,7 @@ Get the archive reference
 **Access**: protected  
 <a name="Entry+_getRemoteObject"></a>
 
-### entry._getRemoteObject() ⇒ <code>Object</code>
+### entry.\_getRemoteObject() ⇒ <code>Object</code>
 Get the remote object that mirrors the data represented here
 
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
@@ -2945,7 +3017,7 @@ Get the remote object that mirrors the data represented here
 **Access**: protected  
 <a name="Entry+_getWestley"></a>
 
-### entry._getWestley() ⇒ [<code>Westley</code>](#Westley)
+### entry.\_getWestley() ⇒ [<code>Westley</code>](#Westley)
 Get the Westley reference
 
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
@@ -3066,13 +3138,13 @@ Flatten a dataset
 
 <a name="Flattener.FLATTENING_MIN_LINES"></a>
 
-### Flattener.FLATTENING_MIN_LINES : <code>Number</code>
+### Flattener.FLATTENING\_MIN\_LINES : <code>Number</code>
 Minimum history lines before flattening can occur
 
 **Kind**: static constant of [<code>Flattener</code>](#Flattener)  
 <a name="Flattener.PRESERVE_LINES"></a>
 
-### Flattener.PRESERVE_LINES : <code>Number</code>
+### Flattener.PRESERVE\_LINES : <code>Number</code>
 Number of lines to preserve (most recent)
 
 **Kind**: static constant of [<code>Flattener</code>](#Flattener)  
@@ -3089,6 +3161,10 @@ Group implementation
     * _instance_
         * [.id](#Group+id) : <code>String</code>
         * [.type](#Group+type) : <code>String</code>
+        * [.findGroupByID](#Group+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
+        * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
+        * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+        * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.findGroupByID](#Group+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
         * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
         * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
@@ -3113,6 +3189,7 @@ Group implementation
         * [._getArchive()](#Group+_getArchive) ⇒ [<code>Archive</code>](#Archive)
         * [._getRemoteObject()](#Group+_getRemoteObject) ⇒ <code>Object</code>
         * [._getWestley()](#Group+_getWestley) ⇒ [<code>Westley</code>](#Westley)
+        * [.inst.findEntryByID(id)](#Group+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
         * [.inst.findEntryByID(id)](#Group+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
     * _static_
         * [.Attributes](#Group.Attributes) : <code>enum</code>
@@ -3143,6 +3220,60 @@ Get the instance type
 
 **Kind**: instance property of [<code>Group</code>](#Group)  
 **Read only**: true  
+<a name="Group+findGroupByID"></a>
+
+### group.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
+Find a group by its ID
+
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Mixes**: [<code>findGroupByID</code>](#GroupCollection.findGroupByID)  
+**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The group or null if not found  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The group ID to search for |
+
+<a name="Group+findGroupsByTitle"></a>
+
+### group.findGroupsByTitle ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
+Find groups by their title
+
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Mixes**: [<code>findGroupsByTitle</code>](#GroupCollection.findGroupsByTitle)  
+**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of groups  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| title | <code>String</code> \| <code>RegExp</code> | The group title |
+
+<a name="Group+findEntriesByMeta"></a>
+
+### group.findEntriesByMeta ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+Find entries that match a certain meta property
+
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Mixes**: [<code>findEntriesByMeta</code>](#EntryCollection.findEntriesByMeta)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| metaName | <code>String</code> | The meta property to search for |
+| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
+
+<a name="Group+findEntriesByProperty"></a>
+
+### group.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+Find all entries that match a certain property
+
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Mixes**: [<code>findEntriesByProperty</code>](#EntryCollection.findEntriesByProperty)  
+**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found extries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| property | <code>string</code> | The property to search with |
+| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
+
 <a name="Group+findGroupByID"></a>
 
 ### group.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
@@ -3395,7 +3526,7 @@ Export the group to a JSON string
 
 <a name="Group+_getArchive"></a>
 
-### group._getArchive() ⇒ [<code>Archive</code>](#Archive)
+### group.\_getArchive() ⇒ [<code>Archive</code>](#Archive)
 Get the archive instance reference
 
 **Kind**: instance method of [<code>Group</code>](#Group)  
@@ -3403,7 +3534,7 @@ Get the archive instance reference
 **Access**: protected  
 <a name="Group+_getRemoteObject"></a>
 
-### group._getRemoteObject() ⇒ <code>Object</code>
+### group.\_getRemoteObject() ⇒ <code>Object</code>
 Get the remotely-managed object (group)
 
 **Kind**: instance method of [<code>Group</code>](#Group)  
@@ -3411,12 +3542,25 @@ Get the remotely-managed object (group)
 **Access**: protected  
 <a name="Group+_getWestley"></a>
 
-### group._getWestley() ⇒ [<code>Westley</code>](#Westley)
+### group.\_getWestley() ⇒ [<code>Westley</code>](#Westley)
 Get the delta managing instance for the archive
 
 **Kind**: instance method of [<code>Group</code>](#Group)  
 **Returns**: [<code>Westley</code>](#Westley) - The internal Westley object  
 **Access**: protected  
+<a name="Group+findEntryByID"></a>
+
+### group.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
+Find an entry by its ID
+
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
+**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The ID to search for |
+
 <a name="Group+findEntryByID"></a>
 
 ### group.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
@@ -3581,7 +3725,7 @@ Insert a padding in the archive (used for delta tracking)
 **Returns**: [<code>Westley</code>](#Westley) - Returns self  
 <a name="Westley+_getCommandForKey"></a>
 
-### westley._getCommandForKey(commandKey) ⇒ <code>Command</code>
+### westley.\_getCommandForKey(commandKey) ⇒ <code>Command</code>
 Gets a command by its key from the cache with its dependencies injected
 
 **Kind**: instance method of [<code>Westley</code>](#Westley)  
