@@ -1,7 +1,7 @@
 const VError = require("verror");
 const ChannelQueue = require("@buttercup/channel-queue");
 const Credentials = require("@buttercup/credentials");
-const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
+const EventEmitter = require("eventemitter3");
 const getUniqueID = require("../tools/encoding.js").getUniqueID;
 const credentialsToSource = require("./marshalling.js").credentialsToSource;
 const { getSourceOfflineArchive, sourceHasOfflineCopy, storeSourceOfflineCopy } = require("./offline.js");
@@ -44,9 +44,9 @@ function rehydrate(dehydratedString) {
 
 /**
  * Archive source class
- * @augments AsyncEventEmitter
+ * @augments EventEmitter
  */
-class ArchiveSource extends AsyncEventEmitter {
+class ArchiveSource extends EventEmitter {
     /**
      * New source options
      * @typedef {Object} ArchiveSourceOptions

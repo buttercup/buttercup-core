@@ -1,5 +1,5 @@
 const { getFormat } = require("@buttercup/signing");
-const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
+const EventEmitter = require("eventemitter3");
 const Westley = require("./Westley.js");
 const Inigo = require("./InigoGenerator.js");
 const Flattener = require("./Flattener.js");
@@ -12,11 +12,11 @@ const encoding = require("./tools/encoding.js");
 
 /**
  * Buttercup Archive
- * @augments AsyncEventEmitter
+ * @augments EventEmitter
  * @mixes GroupCollection
  * @mixes EntryCollection
  */
-class Archive extends AsyncEventEmitter {
+class Archive extends EventEmitter {
     constructor() {
         super();
         // create Westley instance

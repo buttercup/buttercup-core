@@ -1,4 +1,4 @@
-const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
+const EventEmitter = require("eventemitter3");
 const Inigo = require("./InigoGenerator.js");
 const commandTools = require("./tools/command.js");
 const searchingTools = require("./tools/searching-raw.js");
@@ -35,9 +35,9 @@ const commandClasses = {
  * Westley class
  * Archive object dataset and history manager. Handles parsing and
  * revenge for the princess.
- * @augments AsyncEventEmitter
+ * @augments EventEmitter
  */
-class Westley extends AsyncEventEmitter {
+class Westley extends EventEmitter {
     constructor() {
         super();
         this.clear();

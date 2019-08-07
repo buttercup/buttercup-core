@@ -1,7 +1,7 @@
 const VError = require("verror");
 const ChannelQueue = require("@buttercup/channel-queue");
 const isPromise = require("is-promise");
-const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
+const EventEmitter = require("eventemitter3");
 const MemoryStorageInterface = require("../storage/MemoryStorageInterface.js");
 const ArchiveSource = require("./ArchiveSource.js");
 
@@ -12,9 +12,9 @@ const STORAGE_KEY_PREFIX_TEST = /^bcup_archivemgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-
 
 /**
  * Archive manager class
- * @augments AsyncEventEmitter
+ * @augments EventEmitter
  */
-class ArchiveManager extends AsyncEventEmitter {
+class ArchiveManager extends EventEmitter {
     /**
      * Constructor for the archive manager
      * @param {StorageInterface=} storageInterface The storage interface to use -
