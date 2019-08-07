@@ -1,5 +1,5 @@
 const Fuse = require("fuse.js");
-const { getAllEntries } = require("./tools/searching-instance.js");
+const { getAllEntries } = require("./tools/vaultSearch.js");
 
 /**
  * Flatten entries into a searchable structure

@@ -32,7 +32,7 @@ module.exports = {
         request: require("./tools/request.js"),
         signing: require("@buttercup/signing"),
         searching: {
-            instance: require("./tools/searching-instance.js"),
+            instance: require("./tools/vaultSearch.js"),
             raw: require("./tools/searching-raw.js")
         }
     },
