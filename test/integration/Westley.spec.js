@@ -1,5 +1,5 @@
 const Westley = require("../../source/node/Westley.js");
-const Inigo = require("../../source/node/InigoGenerator.js");
+const Inigo = require("../../source/node/Inigo.js");
 const { getUUIDGenerator } = require("../../source/node/tools/uuid.js");
 
 const { Command } = Inigo;
