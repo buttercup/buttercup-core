@@ -49,6 +49,7 @@ const COMMANDS = {
     sga: executeSetGroupAttribute,
     tgr: executeTitleGroup
 };
+const VALID_COMMAND_EXP = /^[a-z]{3}[ ].+$/;
 
 class Westley extends EventEmitter {
     constructor() {
@@ -79,6 +80,9 @@ class Westley extends EventEmitter {
     }
 
     execute(command) {
+        if (!VALID_COMMAND_EXP.test(command)) {
+            throw new Error("Invalid command");
+        }
         const commandComponents = extractCommandComponents(command);
         const commandKey = commandComponents.shift().toLowerCase();
         const executeCommand = COMMANDS[commandKey];
