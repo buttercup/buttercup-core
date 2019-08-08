@@ -22,7 +22,7 @@ describe("tools/describe", function() {
             this.dataset = this.archive.toObject();
         });
 
-        it.only("outputs an array", function() {
+        it("outputs an array", function() {
             const output = describeArchiveDataset(this.dataset);
             expect(output).to.be.an("array");
         });

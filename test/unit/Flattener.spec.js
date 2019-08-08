@@ -6,7 +6,7 @@ describe("Flattener", function() {
         this.archive = new Archive();
         const group = this.archive.createGroup("test");
         group.createEntry("test");
-        for (let i = 0; i < 5000; i += 1) {
+        for (let i = 0; i < 18000; i += 1) {
             group.setTitle(`Group title #${i}`);
         }
         group.setTitle("test2");

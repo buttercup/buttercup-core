@@ -7,14 +7,14 @@ const Westley = require("./Westley.js");
  * @static
  * @memberof Flattener
  */
-const FLATTENING_MIN_LINES = 1500;
+const FLATTENING_MIN_LINES = 11000;
 /**
  * Number of lines to preserve (most recent)
  * @type {Number}
  * @static
  * @memberof Flattener
  */
-const PRESERVE_LINES = 1000;
+const PRESERVE_LINES = 10000;
 
 /**
  * Check if a command should be preserved (not flattened)
