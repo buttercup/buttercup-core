@@ -46,9 +46,9 @@ describe("Group", function() {
             expect(this.group.getGroups().map(g => g.id)).to.contain(group.id);
         });
 
-        it("can create title-less groups", function() {
+        it("can create groups with the correct default title", function() {
             const group = this.group.createGroup();
-            expect(group.getTitle()).to.equal("");
+            expect(group.getTitle()).to.equal("New group");
         });
     });
 
@@ -178,9 +178,9 @@ describe("Group", function() {
             expect(this.group.getTitle()).to.equal("test");
         });
 
-        it("returns an empty string for untitled group", function() {
+        it("returns the correct string for untitled group", function() {
             const group = this.group.createGroup();
-            expect(group.getTitle()).to.equal("");
+            expect(group.getTitle()).to.equal("New group");
         });
     });
 
@@ -253,7 +253,7 @@ describe("Group", function() {
 
         it("outputs empty group title when title not set", function() {
             const group = this.group.createGroup();
-            expect(group.toObject()).to.have.property("title", "");
+            expect(group.toObject()).to.have.property("title", "New group");
         });
 
         it("outputs attributes", function() {

@@ -54,7 +54,7 @@ class Flattener {
      * @memberof Flattener
      */
     canBeFlattened() {
-        return this.westley.getHistory().length >= FLATTENING_MIN_LINES;
+        return this.westley.history.length >= FLATTENING_MIN_LINES;
     }
 
     /**
@@ -64,7 +64,7 @@ class Flattener {
      * @memberof Flattener
      */
     flatten(force = false) {
-        const history = this._westley.getHistory();
+        const history = this._westley.history;
         const preservedLines = [];
         const tempWestley = new Westley();
         let availableLines = history.length - PRESERVE_LINES,
@@ -87,14 +87,14 @@ class Flattener {
             tempWestley.execute(currentCommand);
         }
         // describe the archive at its current state
-        cleanHistory = describe(tempWestley.getDataset());
+        cleanHistory = describe(tempWestley.dataset);
         // prepare to replay
-        var newHistory = []
+        const newHistory = []
             .concat(preservedLines) // preserved commands that cannot be stripped
             .concat(cleanHistory) // the newly flattened description commands
             .concat(history.slice(availableLines)); // the existing history minus the flattened portion
         // clear the system
-        this._westley.clear();
+        this._westley.initialise();
         // replay all history (expensive)
         newHistory.forEach(this._westley.execute.bind(this._westley));
         return true;

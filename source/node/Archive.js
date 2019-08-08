@@ -1,13 +1,12 @@
 const { getFormat } = require("@buttercup/signing");
 const EventEmitter = require("eventemitter3");
 const Westley = require("./Westley.js");
-const Inigo = require("./InigoGenerator.js");
+const Inigo = require("./Inigo.js");
 const Flattener = require("./Flattener.js");
 const Group = require("./Group.js");
 const Entry = require("./Entry.js");
 const GroupCollectionDecorator = require("./decorators/GroupCollection.js");
 const EntryCollectionDecorator = require("./decorators/EntryCollection.js");
-const rawSearching = require("./tools/searching-raw.js");
 const encoding = require("./tools/encoding.js");
 
 /**
@@ -52,7 +51,7 @@ class Archive extends EventEmitter {
      * @memberof Archive
      */
     get id() {
-        return this._getWestley().getDataset().archiveID;
+        return this._getWestley().dataset.archiveID;
     }
 
     /**
@@ -135,7 +134,7 @@ class Archive extends EventEmitter {
      * @deprecated Will be removed in version 3 - use `getAttribute()` instead
      */
     getAttribute(attributeName) {
-        const dataset = this._getWestley().getDataset();
+        const dataset = this._getWestley().dataset;
         if (!attributeName) {
             return Object.assign({}, dataset.attributes);
         }
@@ -150,7 +149,7 @@ class Archive extends EventEmitter {
      * @returns {Object} Attributes object
      */
     getAttributes() {
-        const dataset = this._getWestley().getDataset();
+        const dataset = this._getWestley().dataset;
         return Object.assign({}, dataset.attributes || {});
     }
 
@@ -160,7 +159,7 @@ class Archive extends EventEmitter {
      * @memberof Archive
      */
     getFormat() {
-        return this._getWestley().getDataset().format;
+        return this._getWestley().dataset.format;
     }
 
     /**
@@ -169,7 +168,7 @@ class Archive extends EventEmitter {
      * @memberof Archive
      */
     getGroups() {
-        return (this._getWestley().getDataset().groups || []).map(rawGroup => new Group(this, rawGroup));
+        return (this._getWestley().dataset.groups || []).map(rawGroup => new Group(this, rawGroup));
     }
 
     /**
@@ -178,7 +177,7 @@ class Archive extends EventEmitter {
      * @returns {Array.<String>} The command array
      */
     getHistory() {
-        return [...this._getWestley().getHistory()];
+        return this._getWestley().history;
     }
 
     /**
@@ -276,7 +275,7 @@ class Archive extends EventEmitter {
 Archive.createFromHistory = function(history) {
     var archive = new Archive(),
         westley = archive._getWestley();
-    westley.clear();
+    westley.initialise();
     history.forEach(westley.execute.bind(westley));
     // clean
     westley.clearDirtyState();

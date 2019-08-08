@@ -4,6 +4,62 @@ const {
     findGroupContainingEntryID,
     findGroupContainingGroupID
 } = require("./tools/rawVaultSearch.js");
+const { encodeStringValue } = require("./tools/encoding.js");
+
+const COMMAND_ARGUMENT = {
+    ItemID: {
+        test: /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i,
+        wrap: function(txt) {
+            return txt;
+        },
+        encode: false
+    },
+    ItemIDOrRoot: {
+        test: /^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|0)$/i,
+        wrap: function(txt) {
+            return txt;
+        },
+        encode: false
+    },
+    StringKey: {
+        test: /\S+/,
+        wrap: function(txt) {
+            return encodeStringValue(txt);
+        },
+        encode: true
+    },
+    StringValue: {
+        test: /(^[\s\S]+$|^$)/,
+        wrap: function(txt) {
+            return encodeStringValue(txt);
+        },
+        encode: true
+    }
+};
+const ARG = COMMAND_ARGUMENT;
+const COMMAND_MANIFEST = {
+    ArchiveID: { s: "aid", d: false, args: [ARG.ItemID] },
+    Comment: { s: "cmm", d: false, args: [ARG.StringValue] },
+    CreateEntry: { s: "cen", d: false, args: [ARG.ItemID, ARG.ItemID] },
+    CreateGroup: { s: "cgr", d: false, args: [ARG.ItemIDOrRoot, ARG.ItemID] },
+    DeleteArchiveAttribute: { s: "daa", d: true, args: [ARG.StringValue] },
+    DeleteEntry: { s: "den", d: true, args: [ARG.ItemID] },
+    DeleteEntryAttribute: { s: "dea", d: true, args: [ARG.ItemID, ARG.StringValue] },
+    DeleteEntryMeta: { s: "dem", d: true, args: [ARG.ItemID, ARG.StringValue] },
+    DeleteEntryProperty: { s: "dep", d: true, args: [ARG.ItemID, ARG.StringValue] },
+    DeleteGroup: { s: "dgr", d: true, args: [ARG.ItemID] },
+    DeleteGroupAttribute: { s: "dga", d: true, args: [ARG.ItemID, ARG.StringValue] },
+    Format: { s: "fmt", d: false, args: [ARG.StringValue] },
+    MoveEntry: { s: "men", d: false, args: [ARG.ItemID, ARG.ItemID] },
+    MoveGroup: { s: "mgr", d: false, args: [ARG.ItemID, ARG.ItemIDOrRoot] },
+    Pad: { s: "pad", d: false, args: [ARG.ItemID] },
+    SetArchiveAttribute: { s: "saa", d: false, args: [ARG.StringValue, ARG.StringValue] },
+    SetEntryAttribute: { s: "sea", d: false, args: [ARG.ItemID, ARG.StringValue, ARG.StringValue] },
+    SetEntryMeta: { s: "sem", d: false, args: [ARG.ItemID, ARG.StringValue, ARG.StringValue] },
+    SetEntryProperty: { s: "sep", d: false, args: [ARG.ItemID, ARG.StringKey, ARG.StringValue] },
+    SetGroupAttribute: { s: "sga", d: false, args: [ARG.ItemID, ARG.StringValue, ARG.StringValue] },
+    SetGroupTitle: { s: "tgr", d: false, args: [ARG.ItemID, ARG.StringValue] }
+};
 
 function executeArchiveID(archive, id) {
     if (archive.archiveID) {
@@ -189,8 +245,8 @@ function executeSetArchiveAttribute(archive, attribute, value) {
 }
 
 function executeSetEntryAttribute(archive, entryID, attribute, value) {
-    obj.groups = obj.groups || [];
-    const entry = findEntryByID(obj.groups, entryID);
+    archive.groups = archive.groups || [];
+    const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
         throw new Error(`Entry not found for ID: ${entryID}`);
     }
@@ -240,7 +296,10 @@ function executeTitleGroup(archive, groupID, title) {
 }
 
 module.exports = {
+    COMMAND_ARGUMENT,
+    COMMAND_MANIFEST,
     executeArchiveID,
+    executeComment,
     executeCreateEntry,
     executeCreateGroup,
     executeDeleteArchiveAttribute,

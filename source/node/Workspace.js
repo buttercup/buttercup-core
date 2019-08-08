@@ -2,7 +2,7 @@ const { TextDatasource } = require("@buttercup/datasources");
 const { getQueue } = require("./Queue.js");
 const Archive = require("./Archive.js");
 const ArchiveComparator = require("./ArchiveComparator.js");
-const Inigo = require("./InigoGenerator.js");
+const Inigo = require("./Inigo.js");
 
 /**
  * Extract the command portion of a history item
@@ -134,7 +134,7 @@ class Workspace {
                     : differences.secondary;
                 const base = differences.common;
                 const newArchive = new Archive();
-                newArchive._getWestley().clear();
+                newArchive._getWestley().initialise();
                 // merge all history and execute on new archive
                 base.concat(newHistoryStaged)
                     .concat(newHistoryMain)

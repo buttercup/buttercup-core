@@ -20,8 +20,8 @@ const compare = require("./tools/compare.js");
  * @memberof ArchiveComparator
  */
 function calculateCommonRecentCommand(archiveA, archiveB) {
-    var historyA = archiveA._getWestley().getHistory(),
-        historyB = archiveB._getWestley().getHistory(),
+    var historyA = archiveA._getWestley().history,
+        historyB = archiveB._getWestley().history,
         aLen = historyA.length,
         bLen = historyB.length,
         a,
@@ -100,7 +100,7 @@ ArchiveComparator.prototype.archivesDiffer = function archivesDiffer() {
  * @memberof ArchiveComparator
  */
 ArchiveComparator.prototype.calculateDifferences = function calculateDifferences() {
-    var commonIndexes = calculateCommonRecentCommand(this._archiveA, this._archiveB);
+    const commonIndexes = calculateCommonRecentCommand(this._archiveA, this._archiveB);
     if (commonIndexes === false) {
         return false;
     }

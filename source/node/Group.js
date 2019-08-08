@@ -1,7 +1,7 @@
-const Inigo = require("./InigoGenerator.js");
+const Inigo = require("./Inigo.js");
 const Entry = require("./Entry.js");
 const encoding = require("./tools/encoding.js");
-const searching = require("./tools/searching-raw.js");
+const { findGroupByID, findGroupContainingGroupID } = require("./tools/rawVaultSearch.js");
 const sharing = require("./tools/sharing.js");
 const GroupCollectionDecorator = require("./decorators/GroupCollection.js");
 const EntryCollectionDecorator = require("./decorators/EntryCollection.js");
@@ -179,7 +179,7 @@ class Group {
             // parent is archive
             return null;
         }
-        const parentInfo = searching.findGroupContainingGroupID(archive._getWestley().getDataset(), this.id);
+        const parentInfo = findGroupContainingGroupID(archive._getWestley().dataset, this.id);
         if (parentInfo) {
             return new Group(archive, parentInfo.group);
         }
@@ -444,7 +444,7 @@ Group.createNew = function(archive, parentID, id = encoding.getUniqueID()) {
             .addArgument(id)
             .generateCommand()
     );
-    const group = searching.findGroupByID(westley.getDataset().groups, id);
+    const group = findGroupByID(westley.dataset.groups, id);
     return new Group(archive, group);
 };
 

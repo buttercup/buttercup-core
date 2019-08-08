@@ -1,6 +1,6 @@
-const Inigo = require("./InigoGenerator.js");
+const Inigo = require("./Inigo.js");
 const encoding = require("./tools/encoding.js");
-const searching = require("./tools/searching-raw.js");
+const { findEntryByID, findGroupContainingEntryID } = require("./tools/rawVaultSearch.js");
 const { getEntryURLs } = require("./tools/entry.js");
 
 /**
@@ -174,7 +174,7 @@ class Entry {
      */
     getGroup() {
         // @todo move to a new searching library
-        const parentInfo = searching.findGroupContainingEntryID(this._getWestley().getDataset().groups || [], this.id);
+        const parentInfo = findGroupContainingEntryID(this._getWestley().dataset.groups || [], this.id);
         if (parentInfo && parentInfo.group) {
             // require Group here due to circular references:
             const Group = require("./Group.js");
@@ -459,7 +459,7 @@ Entry.createNew = function(archive, groupID) {
             .generateCommand()
     );
     // get the raw dataset for the new entry
-    var entry = searching.findEntryByID(westley.getDataset().groups, id);
+    var entry = findEntryByID(westley.dataset.groups, id);
     return new Entry(archive, entry);
 };
 

@@ -1,4 +1,4 @@
-const Inigo = require("./InigoGenerator.js");
+const Inigo = require("./Inigo.js");
 
 const { Command } = Inigo;
 

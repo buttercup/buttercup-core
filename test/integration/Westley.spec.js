@@ -22,7 +22,7 @@ describe("Westley", function() {
                         .addArgument(id)
                         .generateCommand()
                 );
-                expect(this.westley.getDataset()).to.have.property("archiveID", id);
+                expect(this.westley.dataset).to.have.property("archiveID", id);
             });
         });
 
@@ -35,7 +35,7 @@ describe("Westley", function() {
                         .addArgument(id)
                         .generateCommand()
                 );
-                expect(this.westley.getDataset().groups[0]).to.have.property("id", id);
+                expect(this.westley.dataset.groups[0]).to.have.property("id", id);
             });
         });
     });
