@@ -1,5 +1,4 @@
-const encoding = require("./tools/encoding.js");
-const compare = require("./tools/compare.js");
+const { objectsDiffer } = require("./tools/compare.js");
 
 /**
  * Calculate the common command indexes between 2 archives.
@@ -16,27 +15,16 @@ const compare = require("./tools/compare.js");
  *        are the indexes where the common padding occurs, and historyA and historyB are
  *        the history arrays for the archives.
  * @private
- * @static
- * @memberof ArchiveComparator
  */
 function calculateCommonRecentCommand(archiveA, archiveB) {
-    var historyA = archiveA._getWestley().history,
-        historyB = archiveB._getWestley().history,
-        aLen = historyA.length,
-        bLen = historyB.length,
-        a,
-        b;
-    for (a = aLen - 1; a >= 0; a -= 1) {
+    const historyA = archiveA._getWestley().history;
+    const historyB = archiveB._getWestley().history;
+    for (let a = historyA.length - 1; a >= 9; a -= 1) {
         if (getCommandType(historyA[a]) === "pad") {
-            var paddingA = getPaddingID(historyA[a]);
-            for (b = bLen - 1; b >= 0; b -= 1) {
+            const paddingA = getPaddingID(historyA[a]);
+            for (let b = historyB.length - 1; b >= 0; b -= 1) {
                 if (getCommandType(historyB[b]) === "pad" && getPaddingID(historyB[b]) === paddingA) {
-                    return {
-                        a: a,
-                        b: b,
-                        historyA: historyA,
-                        historyB: historyB
-                    };
+                    return { a, b, historyA, historyB };
                 }
             }
         }
@@ -49,8 +37,6 @@ function calculateCommonRecentCommand(archiveA, archiveB) {
  * @param {String} fullCommand The command
  * @returns {String} The 3-character command name
  * @private
- * @static
- * @memberof ArchiveComparator
  */
 function getCommandType(fullCommand) {
     return fullCommand && fullCommand.length >= 3 ? fullCommand.substr(0, 3) : "";
@@ -61,8 +47,6 @@ function getCommandType(fullCommand) {
  * @param {String} command Padding command
  * @returns {String} The UUID of the padding command
  * @private
- * @static
- * @memberof ArchiveComparator
  */
 function getPaddingID(command) {
     return command.split(" ")[1];
@@ -70,45 +54,49 @@ function getPaddingID(command) {
 
 /**
  * Archive comparison class
- * @class ArchiveComparator
- * @param {Archive} originalArchive The primary archive
- * @param {Archive} secondaryArchive The secondary archive
  */
-const ArchiveComparator = function(originalArchive, secondaryArchive) {
-    this._archiveA = originalArchive;
-    this._archiveB = secondaryArchive;
-};
-
-/**
- * Check if the current archives differ
- * @returns {Boolean} True if the archives are different
- * @memberof ArchiveComparator
- */
-ArchiveComparator.prototype.archivesDiffer = function archivesDiffer() {
-    let objA = this._archiveA.toObject(),
-        objB = this._archiveB.toObject();
-    // ignore the IDs
-    delete objA.archiveID;
-    delete objB.archiveID;
-    return compare.objectsDiffer(objA, objB);
-};
-
-/**
- * Calculate the differences, in commands, between the two archives
- * @returns {{ original:Array, secondary:Array }|Boolean} Returns false if no common base
- *        is found, or the command differences as two arrays
- * @memberof ArchiveComparator
- */
-ArchiveComparator.prototype.calculateDifferences = function calculateDifferences() {
-    const commonIndexes = calculateCommonRecentCommand(this._archiveA, this._archiveB);
-    if (commonIndexes === false) {
-        return false;
+class ArchiveComparator {
+    /**
+     * Constructor for the archive comparator
+     * @param {Archive} originalArchive The primary archive
+     * @param {Archive} secondaryArchive The secondary archive
+     */
+    constructor(originalArchive, secondaryArchive) {
+        this._archiveA = originalArchive;
+        this._archiveB = secondaryArchive;
     }
-    return {
-        original: commonIndexes.historyA.splice(commonIndexes.a + 1, commonIndexes.historyA.length),
-        secondary: commonIndexes.historyB.splice(commonIndexes.b + 1, commonIndexes.historyB.length),
-        common: commonIndexes.historyA
-    };
-};
+
+    /**
+     * Check if the current archives differ
+     * @returns {Boolean} True if the archives are different
+     * @memberof ArchiveComparator
+     */
+    archivesDiffer() {
+        const objA = this._archiveA.toObject();
+        const objB = this._archiveB.toObject();
+        // ignore the IDs
+        delete objA.archiveID;
+        delete objB.archiveID;
+        return objectsDiffer(objA, objB);
+    }
+
+    /**
+     * Calculate the differences, in commands, between the two archives
+     * @returns {{ original:Array, secondary:Array }|Boolean} Returns false if no common base
+     *        is found, or the command differences as two arrays
+     * @memberof ArchiveComparator
+     */
+    calculateDifferences() {
+        const commonIndexes = calculateCommonRecentCommand(this._archiveA, this._archiveB);
+        if (commonIndexes === false) {
+            return false;
+        }
+        return {
+            original: commonIndexes.historyA.splice(commonIndexes.a + 1, commonIndexes.historyA.length),
+            secondary: commonIndexes.historyB.splice(commonIndexes.b + 1, commonIndexes.historyB.length),
+            common: commonIndexes.historyA
+        };
+    }
+}
 
 module.exports = ArchiveComparator;
