@@ -1,4 +1,4 @@
-const describe = require("../Descriptor.js");
+const { describeArchiveDataset } = require("./describe.js");
 
 /**
  * Move a group between archives
@@ -11,11 +11,11 @@ function moveGroupBetweenArchives(movingGroup, target) {
     if (target.type === "Archive") {
         // destination is an archive
         targetArchive = target;
-        groupDesc = describe(movingGroup._getRemoteObject(), "0");
+        groupDesc = describeArchiveDataset(movingGroup._getRemoteObject(), "0");
     } else if (target.type === "Group") {
         // destination is a group
         targetArchive = target._getArchive();
-        groupDesc = describe(movingGroup._getRemoteObject(), target.getID());
+        groupDesc = describeArchiveDataset(movingGroup._getRemoteObject(), target.getID());
     } else {
         throw new Error(`Unknown remote type: ${target.type}`);
     }

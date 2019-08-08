@@ -16,7 +16,6 @@ module.exports = {
     entryFacade: require("./entryFacade.js"),
 
     Flattener: require("./Flattener.js"),
-    Descriptor: require("./Descriptor.js"),
     EntryFinder: require("./EntryFinder.js"),
 
     storage: {
@@ -25,6 +24,7 @@ module.exports = {
     },
 
     tools: {
+        describe: require("./tools/describe.js"),
         encoding: require("./tools/encoding.js"),
         entry: require("./tools/entry.js"),
         export: require("./tools/export.js"),

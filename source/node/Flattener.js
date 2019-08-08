@@ -1,4 +1,4 @@
-const describe = require("./Descriptor.js");
+const { describeArchiveDataset } = require("./tools/describe.js");
 const Westley = require("./Westley.js");
 
 /**
@@ -67,9 +67,7 @@ class Flattener {
         const history = this._westley.history;
         const preservedLines = [];
         const tempWestley = new Westley();
-        let availableLines = history.length - PRESERVE_LINES,
-            cleanHistory,
-            i;
+        let availableLines = history.length - PRESERVE_LINES;
         // check if possible to flatten
         if (availableLines <= 0 || !this.canBeFlattened()) {
             if (!force) {
@@ -79,7 +77,7 @@ class Flattener {
         }
         // execute early history
         var currentCommand;
-        for (i = 0; i < availableLines; i += 1) {
+        for (let i = 0; i < availableLines; i += 1) {
             currentCommand = history[i];
             if (mustBePreserved(currentCommand)) {
                 preservedLines.push(currentCommand);
@@ -87,7 +85,7 @@ class Flattener {
             tempWestley.execute(currentCommand);
         }
         // describe the archive at its current state
-        cleanHistory = describe(tempWestley.dataset);
+        const cleanHistory = describeArchiveDataset(tempWestley.dataset);
         // prepare to replay
         const newHistory = []
             .concat(preservedLines) // preserved commands that cannot be stripped

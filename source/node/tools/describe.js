@@ -1,4 +1,4 @@
-const Inigo = require("./Inigo.js");
+const Inigo = require("../Inigo.js");
 
 const { Command } = Inigo;
 
@@ -7,11 +7,8 @@ const { Command } = Inigo;
  * @param {Object} dataset The archive dataset
  * @param {String} parentGroupID The ID of the parent group
  * @returns {Array.<String>} An array of commands
- * @module Descriptor
- * @type {Function}
  */
-module.exports = function describe(dataset, parentGroupID) {
-    /*eslint complexity: 0*/
+function describeArchiveDataset(dataset, parentGroupID) {
     var currentGroupID = dataset.id || "0",
         entries = currentGroupID === "0" ? [] : dataset.entries || [];
     var commands = [];
@@ -82,18 +79,6 @@ module.exports = function describe(dataset, parentGroupID) {
                 .addArgument(entry.id)
                 .generateCommand()
         );
-        // Deprecated: this will soon be removed (v3):
-        ["title", "username", "password"].forEach(function(property) {
-            if (entry[property]) {
-                commands.push(
-                    Inigo.create(Command.SetEntryProperty)
-                        .addArgument(entry.id)
-                        .addArgument(property)
-                        .addArgument(entry[property])
-                        .generateCommand()
-                );
-            }
-        });
         if (entry.properties) {
             Object.keys(entry.properties).forEach(propertyName => {
                 commands.push(
@@ -104,19 +89,6 @@ module.exports = function describe(dataset, parentGroupID) {
                         .generateCommand()
                 );
             });
-        }
-        if (entry.meta) {
-            for (var metaName in entry.meta) {
-                if (entry.meta.hasOwnProperty(metaName)) {
-                    commands.push(
-                        Inigo.create(Command.SetEntryMeta)
-                            .addArgument(entry.id)
-                            .addArgument(metaName)
-                            .addArgument(entry.meta[metaName])
-                            .generateCommand()
-                    );
-                }
-            }
         }
         if (entry.attributes) {
             for (var attributeName in entry.attributes) {
@@ -134,7 +106,11 @@ module.exports = function describe(dataset, parentGroupID) {
         commands.push(Inigo.generatePaddingCommand());
     });
     (dataset.groups || []).forEach(function(group) {
-        commands = commands.concat(describe(group, currentGroupID));
+        commands = commands.concat(describeArchiveDataset(group, currentGroupID));
     });
     return commands;
+}
+
+module.exports = {
+    describeArchiveDataset
 };
