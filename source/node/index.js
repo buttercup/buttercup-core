@@ -27,13 +27,14 @@ module.exports = {
         encoding: require("./tools/encoding.js"),
         entry: require("./tools/entry.js"),
         export: require("./tools/export.js"),
-        uuid: require("./tools/uuid.js"),
+        permissions: require("./tools/permissions.js"),
         request: require("./tools/request.js"),
         signing: require("@buttercup/signing"),
         searching: {
             instance: require("./tools/vaultSearch.js"),
             raw: require("./tools/rawVaultSearch.js")
-        }
+        },
+        uuid: require("./tools/uuid.js")
     },
 
     vendor: {

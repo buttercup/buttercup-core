@@ -1,3 +1,4 @@
+const ArchiveMember = require("./ArchiveMember.js");
 const Inigo = require("./Inigo.js");
 const encoding = require("./tools/encoding.js");
 const { findEntryByID, findGroupContainingEntryID } = require("./tools/rawVaultSearch.js");
@@ -17,14 +18,16 @@ const { getEntryURLs } = require("./tools/entry.js");
  * Entries form the low-level data structures used in Buttercup, and
  * are intended to represent logical collections of properties, like
  * a login for a website.
+ * @augments ArchiveMember
  */
-class Entry {
+class Entry extends ArchiveMember {
     /**
      * Create a new managed entry instance
      * @param {Archive} archive The main archive instance
      * @param {Object} remoteObj The remote object reference
      */
     constructor(archive, remoteObj) {
+        super();
         this._archive = archive;
         this._westley = archive._getWestley();
         this._remoteObject = remoteObj;

@@ -1,3 +1,4 @@
+const ArchiveMember = require("./ArchiveMember.js");
 const Inigo = require("./Inigo.js");
 const Entry = require("./Entry.js");
 const encoding = require("./tools/encoding.js");
@@ -10,8 +11,9 @@ const EntryCollectionDecorator = require("./decorators/EntryCollection.js");
  * Group implementation
  * @mixes GroupCollection
  * @mixes EntryCollection
+ * @augments ArchiveMember
  */
-class Group {
+class Group extends ArchiveMember {
     /**
      * Managed group class
      * @param {Archive} archive The archive instance
@@ -19,6 +21,7 @@ class Group {
      * @constructor
      */
     constructor(archive, remoteObj) {
+        super();
         this._archive = archive;
         this._westley = archive._getWestley();
         this._remoteObject = remoteObj;
