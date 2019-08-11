@@ -2,8 +2,7 @@ const {
     ENTRY_URL_TYPE_GENERAL,
     ENTRY_URL_TYPE_ICON,
     ENTRY_URL_TYPE_LOGIN,
-    getEntryURLs,
-    getEntryFacadeURLs
+    getEntryURLs
 } = require("../../../source/node/tools/entry.js");
 
 describe("tools/entry", function() {
@@ -62,26 +61,6 @@ describe("tools/entry", function() {
             );
             expect(urls).to.have.lengthOf(1);
             expect(urls[0]).to.equal("test.com/favicon.ico");
-        });
-    });
-
-    describe("getEntryFacadeURLs", function() {
-        it("gets URLs from a facade", function() {
-            const facade = {
-                fields: [
-                    {
-                        field: "property",
-                        property: "username",
-                        value: "person"
-                    },
-                    {
-                        field: "property",
-                        property: "uri",
-                        value: "https://github.com"
-                    }
-                ]
-            };
-            expect(getEntryFacadeURLs(facade)).to.deep.equal(["https://github.com"]);
         });
     });
 });

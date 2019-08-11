@@ -13,7 +13,6 @@ module.exports = {
 
     Group: require("./Group.js"),
     Entry: require("./Entry.js"),
-    entryFacade: require("./entryFacade.js"),
 
     Flattener: require("./Flattener.js"),
     EntryFinder: require("./EntryFinder.js"),
