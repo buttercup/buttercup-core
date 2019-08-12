@@ -61,7 +61,7 @@ const COMMAND_MANIFEST = {
     SetGroupTitle: { s: "tgr", d: false, args: [ARG.ItemID, ARG.StringValue] }
 };
 
-function executeArchiveID(archive, id) {
+function executeArchiveID(archive, opts, id) {
     if (archive.archiveID) {
         // ID already set
         throw new Error("ID already set");
@@ -73,13 +73,14 @@ function executeComment() {
     // Comment has no action
 }
 
-function executeCreateEntry(archive, groupID, entryID) {
+function executeCreateEntry(archive, opts, groupID, entryID) {
     archive.groups = archive.groups || [];
     const entry = {
         id: entryID,
         properties: {
             title: ""
-        }
+        },
+        shared: opts.shared
     };
     const group = findGroupByID(archive.groups, groupID);
     if (!group) {
@@ -89,11 +90,12 @@ function executeCreateEntry(archive, groupID, entryID) {
     group.entries.push(entry);
 }
 
-function executeCreateGroup(archive, parentID, newID) {
+function executeCreateGroup(archive, opts, parentID, newID) {
     archive.groups = archive.groups || [];
     const group = {
         id: newID,
-        title: "New group"
+        title: "New group",
+        shared: opts.shared
     };
     if (parentID === "0") {
         archive.groups.push(group);
@@ -107,7 +109,7 @@ function executeCreateGroup(archive, parentID, newID) {
     }
 }
 
-function executeDeleteArchiveAttribute(archive, attribute) {
+function executeDeleteArchiveAttribute(archive, opts, attribute) {
     const attributes = archive.attributes || {};
     if (attributes.hasOwnProperty(attribute) !== true) {
         throw new Error(`Vault contains no such attribute: ${attribute}`);
@@ -118,7 +120,7 @@ function executeDeleteArchiveAttribute(archive, attribute) {
     }
 }
 
-function executeDeleteEntry(archive, entryID) {
+function executeDeleteEntry(archive, opts, entryID) {
     archive.groups = archive.groups || [];
     const { group, index } = findGroupContainingEntryID(archive.groups, entryID);
     if (!group) {
@@ -127,7 +129,7 @@ function executeDeleteEntry(archive, entryID) {
     group.entries.splice(index, 1);
 }
 
-function executeDeleteEntryAttribute(archive, entryID, attribute) {
+function executeDeleteEntryAttribute(archive, opts, entryID, attribute) {
     archive.groups = archive.groups || [];
     const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
@@ -147,7 +149,7 @@ function executeDeleteEntryAttribute(archive, entryID, attribute) {
     });
 }
 
-function executeDeleteEntryProperty(archive, entryID, property) {
+function executeDeleteEntryProperty(archive, opts, entryID, property) {
     archive.groups = archive.groups || [];
     const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
@@ -167,7 +169,7 @@ function executeDeleteEntryProperty(archive, entryID, property) {
     });
 }
 
-function executeDeleteGroup(archive, groupID) {
+function executeDeleteGroup(archive, opts, groupID) {
     archive.groups = archive.groups || [];
     const { group, index } = findGroupContainingGroupID(archive, groupID);
     if (!group) {
@@ -176,7 +178,7 @@ function executeDeleteGroup(archive, groupID) {
     group.groups.splice(index, 1);
 }
 
-function executeDeleteGroupAttribute(archive, groupID, attribute) {
+function executeDeleteGroupAttribute(archive, opts, groupID, attribute) {
     archive.groups = archive.groups || [];
     const group = findGroupByID(archive.groups, groupID);
     if (!group) {
@@ -189,14 +191,14 @@ function executeDeleteGroupAttribute(archive, groupID, attribute) {
     }
 }
 
-function executeFormat(archive, format) {
+function executeFormat(archive, opts, format) {
     if (archive.format) {
         throw new Error("Format already set");
     }
     archive.format = format;
 }
 
-function executeMoveEntry(archive, entryID, groupID) {
+function executeMoveEntry(archive, opts, entryID, groupID) {
     archive.groups = archive.groups || [];
     const { group: originGroup, index: originIndex } = findGroupContainingEntryID(archive.groups, entryID);
     if (!originGroup) {
@@ -217,7 +219,7 @@ function executeMoveEntry(archive, entryID, groupID) {
     });
 }
 
-function executeMoveGroup(archive, groupID, targetGroupID) {
+function executeMoveGroup(archive, opts, groupID, targetGroupID) {
     archive.groups = archive.groups || [];
     const { group: originGroup, index: originIndex } = findGroupContainingGroupID(archive, groupID);
     if (!originGroup) {
@@ -239,12 +241,12 @@ function executePad() {
     // Comment has no action
 }
 
-function executeSetArchiveAttribute(archive, attribute, value) {
+function executeSetArchiveAttribute(archive, opts, attribute, value) {
     archive.attributes = archive.attributes || {};
     archive.attributes[attribute] = value;
 }
 
-function executeSetEntryAttribute(archive, entryID, attribute, value) {
+function executeSetEntryAttribute(archive, opts, entryID, attribute, value) {
     archive.groups = archive.groups || [];
     const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
@@ -260,7 +262,7 @@ function executeSetEntryAttribute(archive, entryID, attribute, value) {
     });
 }
 
-function executeSetEntryProperty(archive, entryID, property, value) {
+function executeSetEntryProperty(archive, opts, entryID, property, value) {
     archive.groups = archive.groups || [];
     const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
@@ -276,7 +278,7 @@ function executeSetEntryProperty(archive, entryID, property, value) {
     });
 }
 
-function executeSetGroupAttribute(archive, groupID, attribute, value) {
+function executeSetGroupAttribute(archive, opts, groupID, attribute, value) {
     archive.groups = archive.groups || [];
     const group = findGroupByID(archive.groups, groupID);
     if (!group) {
@@ -286,7 +288,7 @@ function executeSetGroupAttribute(archive, groupID, attribute, value) {
     group.attributes[attribute] = value;
 }
 
-function executeTitleGroup(archive, groupID, title) {
+function executeTitleGroup(archive, opts, groupID, title) {
     archive.groups = archive.groups || [];
     const group = findGroupByID(archive.groups, groupID);
     if (!group) {
