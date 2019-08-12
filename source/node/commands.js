@@ -80,7 +80,7 @@ function executeCreateEntry(archive, opts, groupID, entryID) {
         properties: {
             title: ""
         },
-        shared: opts.shared
+        shareID: opts.shareID
     };
     const group = findGroupByID(archive.groups, groupID);
     if (!group) {
@@ -95,7 +95,7 @@ function executeCreateGroup(archive, opts, parentID, newID) {
     const group = {
         id: newID,
         title: "New group",
-        shared: opts.shared
+        shareID: opts.shareID
     };
     if (parentID === "0") {
         archive.groups.push(group);

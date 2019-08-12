@@ -49,7 +49,7 @@ const COMMANDS = {
     sga: executeSetGroupAttribute,
     tgr: executeTitleGroup
 };
-const SHARE_COMMAND_EXP = /^\$[a-z]{3}\s/;
+const SHARE_COMMAND_EXP = /^\$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\s/;
 const VALID_COMMAND_EXP = /^[a-z]{3}\s.+$/;
 
 class Westley extends EventEmitter {
@@ -82,10 +82,11 @@ class Westley extends EventEmitter {
 
     execute(command) {
         let currentCommand = command,
-            shared = false;
+            shareID = null;
         if (SHARE_COMMAND_EXP.test(currentCommand)) {
-            currentCommand = currentCommand.replace(/^\$/, "");
-            shared = true;
+            const shareMatch = /^\$([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/.exec(currentCommand);
+            shareID = shareMatch[1];
+            currentCommand = currentCommand.replace(SHARE_COMMAND_EXP, "");
         }
         if (!VALID_COMMAND_EXP.test(currentCommand)) {
             throw new Error(`Invalid command: ${command}`);
@@ -98,7 +99,7 @@ class Westley extends EventEmitter {
                 this.dataset,
                 {
                     // opts
-                    shared
+                    shareID
                 },
                 ...this._processCommandParameters(commandKey, commandComponents)
             ]);
