@@ -62,6 +62,10 @@ const COMMAND_MANIFEST = {
 };
 
 function executeArchiveID(archive, opts, id) {
+    if (opts.shareID) {
+        // Don't set archive ID from a share
+        return;
+    }
     if (archive.archiveID) {
         // ID already set
         throw new Error("ID already set");
@@ -192,6 +196,10 @@ function executeDeleteGroupAttribute(archive, opts, groupID, attribute) {
 }
 
 function executeFormat(archive, opts, format) {
+    if (opts.shareID) {
+        // Don't set archive format from a share
+        return;
+    }
     if (archive.format) {
         throw new Error("Format already set");
     }
