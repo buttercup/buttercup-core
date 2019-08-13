@@ -49,7 +49,8 @@ const COMMANDS = {
     sga: executeSetGroupAttribute,
     tgr: executeTitleGroup
 };
-const VALID_COMMAND_EXP = /^[a-z]{3}[ ].+$/;
+const SHARE_COMMAND_EXP = /^\$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\s/;
+const VALID_COMMAND_EXP = /^[a-z]{3}\s.+$/;
 
 class Westley extends EventEmitter {
     constructor() {
@@ -80,15 +81,26 @@ class Westley extends EventEmitter {
     }
 
     execute(command) {
-        if (!VALID_COMMAND_EXP.test(command)) {
-            throw new Error("Invalid command");
+        let currentCommand = command,
+            shareID = null;
+        if (SHARE_COMMAND_EXP.test(currentCommand)) {
+            const shareMatch = /^\$([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/.exec(currentCommand);
+            shareID = shareMatch[1];
+            currentCommand = currentCommand.replace(SHARE_COMMAND_EXP, "");
         }
-        const commandComponents = extractCommandComponents(command);
+        if (!VALID_COMMAND_EXP.test(currentCommand)) {
+            throw new Error(`Invalid command: ${command}`);
+        }
+        const commandComponents = extractCommandComponents(currentCommand);
         const commandKey = commandComponents.shift().toLowerCase();
         const executeCommand = COMMANDS[commandKey];
         try {
             executeCommand.apply(null, [
                 this.dataset,
+                {
+                    // opts
+                    shareID
+                },
                 ...this._processCommandParameters(commandKey, commandComponents)
             ]);
             this._history.push(command);
