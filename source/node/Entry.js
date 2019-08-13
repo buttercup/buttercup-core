@@ -22,28 +22,6 @@ const { getEntryURLs } = require("./tools/entry.js");
  */
 class Entry extends ArchiveMember {
     /**
-     * Create a new managed entry instance
-     * @param {Archive} archive The main archive instance
-     * @param {Object} remoteObj The remote object reference
-     */
-    constructor(archive, remoteObj) {
-        super();
-        this._archive = archive;
-        this._westley = archive._getWestley();
-        this._remoteObject = remoteObj;
-    }
-
-    /**
-     * The ID of the entry
-     * @readonly
-     * @type {String}
-     * @memberof Entry
-     */
-    get id() {
-        return this._getRemoteObject().id;
-    }
-
-    /**
      * Get the instance type
      * @type {String}
      * @readonly
@@ -394,36 +372,6 @@ class Entry extends ArchiveMember {
      */
     toString() {
         return JSON.stringify(this.toObject());
-    }
-
-    /**
-     * Get the archive reference
-     * @returns {Archive} The Archive reference
-     * @memberof Entry
-     * @protected
-     */
-    _getArchive() {
-        return this._archive;
-    }
-
-    /**
-     * Get the remote object that mirrors the data represented here
-     * @returns {Object} The remote object (in-memory copy)
-     * @memberof Entry
-     * @protected
-     */
-    _getRemoteObject() {
-        return this._remoteObject;
-    }
-
-    /**
-     * Get the Westley reference
-     * @returns {Westley} The internal Westley reference
-     * @memberof Entry
-     * @protected
-     */
-    _getWestley() {
-        return this._westley;
     }
 }
 

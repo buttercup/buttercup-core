@@ -1,13 +1,18 @@
 const { prependSharePrefix, removeSharePrefix } = require("../tools/sharing.js");
 
 class Share {
-    constructor(shareID, history) {
+    constructor(shareID, history, permissions = []) {
         this._id = shareID;
         this._history = removeSharePrefix(history);
+        this._permissions = permissions;
     }
 
     get id() {
         return this._id;
+    }
+
+    get permissions() {
+        return [...this._permissions];
     }
 
     applyToArchive(archive) {
@@ -15,7 +20,11 @@ class Share {
             throw new Error("Target archive has already had share applied");
         }
         const westley = archive._getWestley();
+        westley.executionOptions = {
+            permissions: this.permissions
+        };
         this.getPrefixedHistory().forEach(line => westley.execute(line));
+        westley.executionOptions = {};
     }
 
     archiveHasAppliedShare(archive) {

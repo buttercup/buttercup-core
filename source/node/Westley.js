@@ -58,6 +58,7 @@ class Westley extends EventEmitter {
         this.initialise();
         this._dirty = false;
         this._readOnly = false;
+        this.executionOptions = {};
     }
 
     get dataset() {
@@ -97,10 +98,13 @@ class Westley extends EventEmitter {
         try {
             executeCommand.apply(null, [
                 this.dataset,
-                {
-                    // opts
-                    shareID
-                },
+                Object.assign(
+                    {
+                        // opts
+                        shareID
+                    },
+                    this.executionOptions
+                ),
                 ...this._processCommandParameters(commandKey, commandComponents)
             ]);
             this._history.push(command);

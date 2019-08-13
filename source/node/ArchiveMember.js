@@ -4,8 +4,26 @@ const { PERM_MANAGE, PERM_READ, PERM_WRITE } = require("./tools/permissions.js")
  * Base archive member class (for Entry, Group etc.)
  */
 class ArchiveMember {
-    constructor() {
-        this._permissions = [PERM_MANAGE, PERM_READ, PERM_WRITE];
+    /**
+     * Constructor for the archive member base class
+     * @param {Archive} archive Archive reference
+     * @param {Object} remoteObj Remote datasource reference
+     */
+    constructor(archive, remoteObj) {
+        this._archive = archive;
+        this._remoteObject = remoteObj;
+        this._westley = archive._getWestley();
+        remoteObj.permissions = remoteObj.permissions || [PERM_MANAGE, PERM_READ, PERM_WRITE];
+    }
+
+    /**
+     * The ID of the entry
+     * @readonly
+     * @type {String}
+     * @memberof ArchiveMember
+     */
+    get id() {
+        return this._getRemoteObject().id;
     }
 
     /**
@@ -14,7 +32,7 @@ class ArchiveMember {
      * @memberof ArchiveMember
      */
     get permissions() {
-        return [...this._permissions];
+        return [...this._getRemoteObject().permissions];
     }
 
     /**
@@ -24,7 +42,7 @@ class ArchiveMember {
      */
     grantPermission(perm) {
         if (!this.hasPermission(perm)) {
-            this._permissions.push(perm);
+            this._getRemoteObject().permissions.push(perm);
         }
     }
 
@@ -35,7 +53,7 @@ class ArchiveMember {
      * @memberof ArchiveMember
      */
     hasPermission(perm) {
-        return this._permissions.includes(perm);
+        return this._getRemoteObject().permissions.includes(perm);
     }
 
     /**
@@ -43,7 +61,7 @@ class ArchiveMember {
      * @memberof ArchiveMember
      */
     revokeAllPermissions() {
-        this._permissions = [];
+        this._getRemoteObject().permissions = [];
     }
 
     /**
@@ -52,7 +70,38 @@ class ArchiveMember {
      * @memberof ArchiveMember
      */
     revokePermission(perm) {
-        this._permissions = this._permissions.filter(current => current !== perm);
+        const remoteObj = this._getRemoteObject();
+        remoteObj.permissions = remoteObj.filter(current => current !== perm);
+    }
+
+    /**
+     * Get the archive reference
+     * @returns {Archive} The Archive reference
+     * @memberof ArchiveMember
+     * @protected
+     */
+    _getArchive() {
+        return this._archive;
+    }
+
+    /**
+     * Get the remote object that mirrors the data represented here
+     * @returns {Object} The remote object (in-memory copy)
+     * @memberof ArchiveMember
+     * @protected
+     */
+    _getRemoteObject() {
+        return this._remoteObject;
+    }
+
+    /**
+     * Get the Westley reference
+     * @returns {Westley} The internal Westley reference
+     * @memberof ArchiveMember
+     * @protected
+     */
+    _getWestley() {
+        return this._westley;
     }
 }
 

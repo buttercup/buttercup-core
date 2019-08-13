@@ -21,23 +21,11 @@ class Group extends ArchiveMember {
      * @constructor
      */
     constructor(archive, remoteObj) {
-        super();
-        this._archive = archive;
-        this._westley = archive._getWestley();
-        this._remoteObject = remoteObj;
+        super(archive, remoteObj);
         // add group searching
         GroupCollectionDecorator.decorate(this);
         // add entry searching
         EntryCollectionDecorator.decorate(this);
-    }
-
-    /**
-     * The entry ID
-     * @type {String}
-     * @memberof Group
-     */
-    get id() {
-        return this._getRemoteObject().id;
     }
 
     /**
@@ -358,36 +346,6 @@ class Group extends ArchiveMember {
      */
     toString(outputFlags) {
         return JSON.stringify(this.toObject(outputFlags));
-    }
-
-    /**
-     * Get the archive instance reference
-     * @protected
-     * @returns {Archive} The archive instance
-     * @memberof Group
-     */
-    _getArchive() {
-        return this._archive;
-    }
-
-    /**
-     * Get the remotely-managed object (group)
-     * @protected
-     * @returns {Object} The object instance for the group
-     * @memberof Group
-     */
-    _getRemoteObject() {
-        return this._remoteObject;
-    }
-
-    /**
-     * Get the delta managing instance for the archive
-     * @protected
-     * @returns {Westley} The internal Westley object
-     * @memberof Group
-     */
-    _getWestley() {
-        return this._westley;
     }
 }
 
