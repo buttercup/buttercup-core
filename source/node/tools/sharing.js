@@ -28,6 +28,8 @@ function extractSharesFromHistory(history) {
     );
 }
 
+function mergeHistories(initial, incoming) {}
+
 /**
  * Move a group between archives
  * @param {Group} movingGroup The group to move
@@ -77,6 +79,7 @@ function removeSharePrefix(history) {
 
 module.exports = {
     extractSharesFromHistory,
+    mergeHistories,
     moveGroupBetweenArchives,
     prependSharePrefix,
     removeSharePrefix

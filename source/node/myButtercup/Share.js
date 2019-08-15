@@ -1,9 +1,12 @@
-const { prependSharePrefix, removeSharePrefix } = require("../tools/sharing.js");
+const { mergeHistories, prependSharePrefix, removeSharePrefix } = require("../tools/sharing.js");
+const { hashHistory } = require("../tools/hash.js");
 
 class Share {
     constructor(shareID, history, permissions = []) {
         this._id = shareID;
         this._history = removeSharePrefix(history);
+        this._lastHash = hashHistory(this._history);
+        this._dirty = false;
         this._permissions = permissions;
     }
 
@@ -33,6 +36,18 @@ class Share {
 
     getPrefixedHistory() {
         return prependSharePrefix(this._history, this.id);
+    }
+
+    updateHistory(history) {
+        const incoming = removeSharePrefix(history);
+        const incomingHash = hashHistory(incoming);
+        if (incomingHash === this._lastHash) {
+            return false;
+        }
+        this._history = mergeHistories(this._history, incoming);
+        this._lastHash = hashHistory(this._history);
+        this._dirty = true;
+        return true;
     }
 }
 

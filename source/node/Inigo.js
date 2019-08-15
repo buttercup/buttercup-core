@@ -1,5 +1,5 @@
 const { getUniqueID } = require("./tools/encoding.js");
-const { COMMAND_MANIFEST } = require("./commands.js");
+const { COMMAND_MANIFEST } = require("./tools/command.js");
 
 /**
  * @class Inigo command generator

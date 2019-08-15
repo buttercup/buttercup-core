@@ -3,6 +3,8 @@ const { getQueue } = require("./Queue.js");
 const Archive = require("./Archive.js");
 const ArchiveComparator = require("./ArchiveComparator.js");
 const Inigo = require("./Inigo.js");
+const { extractSharesFromHistory } = require("./tools/sharing.js");
+const { stripDestructiveCommands } = require("./tools/history.js");
 
 /**
  * Extract the command portion of a history item
@@ -17,24 +19,6 @@ function getCommandType(fullCommand) {
 }
 
 /**
- * Strip destructive commands from a history collection
- * @param {Array.<String>} history The history
- * @returns {Array.<String>} The history minus any destructive commands
- * @private
- * @static
- * @memberof Workspace
- */
-function stripDestructiveCommands(history) {
-    const destructiveSlugs = Object.keys(Inigo.Command)
-        .map(key => Inigo.Command[key])
-        .filter(command => command.d)
-        .map(command => command.s);
-    return history.filter(command => {
-        return destructiveSlugs.indexOf(getCommandType(command)) < 0;
-    });
-}
-
-/**
  * Workspace class implementation
  * Workspaces organise Archives and Datasources, and perform saves
  * and merges with remote changes.
@@ -44,6 +28,7 @@ class Workspace {
         this._archive = null;
         this._datasource = null;
         this._masterCredentials = null;
+        this._shares = [];
     }
 
     /**
@@ -197,6 +182,32 @@ class Workspace {
      */
     updatePrimaryCredentials(masterCredentials) {
         this._masterCredentials = masterCredentials;
+    }
+
+    _applyShares() {
+        this._shares.forEach(share => {
+            if (!share.archiveHasAppliedShare(this.archive)) {
+                share.applyToArchive(this.archive);
+            }
+        });
+    }
+
+    _unloadShares() {
+        const westley = this._archive._getWestley();
+        const extractedShares = extractSharesFromHistory(westley.history);
+        // Reset archive history (without shares)
+        const { base } = extractedShares;
+        delete extractedShares.base;
+        westley.initialise();
+        base.forEach(line => westley.execute(line));
+        // Update share payloads
+        Object.keys(extractedShares).forEach(shareID => {
+            const share = this._shares.find(share => share.id === shareID);
+            if (!share) {
+                throw new Error(`Failed updating extracted share: No share found in workspace for ID: ${shareID}`);
+            }
+            share.updateHistory(extractedShares[shareID]);
+        });
     }
 }
 

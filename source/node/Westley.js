@@ -1,7 +1,6 @@
 const VError = require("verror");
 const EventEmitter = require("eventemitter3");
 const {
-    COMMAND_MANIFEST,
     executeArchiveID,
     executeComment,
     executeCreateEntry,
@@ -23,7 +22,7 @@ const {
     executeTitleGroup
 } = require("./commands.js");
 const Inigo = require("./Inigo.js");
-const { extractCommandComponents } = require("./tools/command.js");
+const { COMMAND_MANIFEST, extractCommandComponents } = require("./tools/command.js");
 const { decodeStringValue, isEncoded } = require("./tools/encoding.js");
 
 const COMMANDS = {
