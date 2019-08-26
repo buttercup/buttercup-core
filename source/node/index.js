@@ -17,6 +17,11 @@ module.exports = {
     Flattener: require("./Flattener.js"),
     EntryFinder: require("./EntryFinder.js"),
 
+    MyButtercup: {
+        MyButtercupClient: require("./myButtercup/MyButtercupClient.js"),
+        MyButtercupClientManager: require("./myButtercup/MyButtercupClientManager.js")
+    },
+
     storage: {
         StorageInterface: require("./storage/StorageInterface.js"),
         MemoryStorageInterface: require("./storage/MemoryStorageInterface.js")
@@ -28,7 +33,6 @@ module.exports = {
         entry: require("./tools/entry.js"),
         export: require("./tools/export.js"),
         permissions: require("./tools/permissions.js"),
-        request: require("./tools/request.js"),
         signing: require("@buttercup/signing"),
         searching: {
             instance: require("./tools/vaultSearch.js"),
