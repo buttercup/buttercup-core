@@ -2,7 +2,7 @@ const { escape: escapeURI } = require("querystring");
 const VError = require("verror");
 const { request } = require("cowl");
 const {
-    API_ARCHIVE,
+    API_OWN_ARCHIVE,
     API_OWN_DIGEST,
     OAUTH_AUTHORISE_URI,
     OAUTH_REDIRECT_URI,
@@ -115,13 +115,9 @@ class MyButtercupClient {
         return this._refreshToken;
     }
 
-    async fetchUserArchive() {
-        if (!this.digest) {
-            await this.retrieveDigest();
-        }
-        const { archive_id: archiveID } = this.digest;
+    fetchUserArchive() {
         const requestOptions = {
-            url: API_ARCHIVE.replace("[ID]", archiveID),
+            url: API_OWN_ARCHIVE,
             method: "GET",
             headers: {
                 Authorization: `Bearer ${this.accessToken}`
@@ -140,6 +136,33 @@ class MyButtercupClient {
                 return {
                     archive,
                     updateID
+                };
+            })
+            .catch(err => {
+                throw new VError(err, "Failed retrieving vault");
+            });
+    }
+
+    fetchUserArchiveDetails() {
+        const requestOptions = {
+            url: API_OWN_ARCHIVE_DETAILS,
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            }
+        };
+        return request(requestOptions)
+            .then(resp => {
+                const {
+                    data: {
+                        details: { id, updateID, created, lastUpdate }
+                    }
+                } = resp;
+                return {
+                    id,
+                    updateID,
+                    created,
+                    lastUpdate
                 };
             })
             .catch(err => {
@@ -173,13 +196,9 @@ class MyButtercupClient {
             });
     }
 
-    async writeUserArchive(contents, previousUpdateID, newUpdateID) {
-        if (!this.digest) {
-            await this.retrieveDigest();
-        }
-        const { archive_id: archiveID } = this.digest;
+    writeUserArchive(contents, previousUpdateID, newUpdateID) {
         const requestOptions = {
-            url: API_ARCHIVE.replace("[ID]", archiveID),
+            url: API_OWN_ARCHIVE,
             method: "PUT",
             headers: {
                 Authorization: `Bearer ${this.accessToken}`,

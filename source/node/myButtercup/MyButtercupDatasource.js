@@ -27,6 +27,15 @@ class MyButtercupDatasource extends TextDatasource {
         // @todo token renewal - maybe in client itself?
     }
 
+    localDiffersFromRemote() {
+        return this._client
+            .fetchUserArchiveDetails()
+            .then(({ updateID }) => updateID !== this._updateID)
+            .catch(err => {
+                throw new VError(err, "Failed comparing remote/local vault status");
+            });
+    }
+
     save(history, credentials) {
         const newUpdateID = generateNewUpdateID();
         return super

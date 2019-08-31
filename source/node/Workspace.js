@@ -77,6 +77,9 @@ class Workspace {
      * @memberof Workspace
      */
     localDiffersFromRemote() {
+        if (typeof this.datasource.localDiffersFromRemote === "function") {
+            return this.datasource.localDiffersFromRemote();
+        }
         if (this.datasource.toObject().type !== "text") {
             // Only clear if not a TextDatasource
             this.datasource.setContent("");
