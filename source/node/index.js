@@ -17,10 +17,8 @@ module.exports = {
     Flattener: require("./Flattener.js"),
     EntryFinder: require("./EntryFinder.js"),
 
-    MyButtercup: {
-        MyButtercupClient: require("./myButtercup/MyButtercupClient.js"),
-        MyButtercupClientManager: require("./myButtercup/MyButtercupClientManager.js")
-    },
+    MyButtercupClient: require("./myButtercup/MyButtercupClient.js"),
+    MyButtercupDatasource: require("./myButtercup/MyButtercupDatasource.js"),
 
     storage: {
         StorageInterface: require("./storage/StorageInterface.js"),

@@ -10,11 +10,13 @@ const API_OWN_ORGS = joinURL(ROOT_API, "/own/orgs");
 
 const OAUTH_AUTHORISE_URI = `${ROOT_URL}/oauth/authorize`;
 const OAUTH_REDIRECT_URI = `${ROOT_URL}/oauth/authorized/`;
+const OAUTH_TOKEN_URI = `${ROOT_URL}/oauth/token`;
 
 module.exports = {
     API_ARCHIVE,
     API_OWN_DIGEST,
     API_OWN_ORGS,
     OAUTH_AUTHORISE_URI,
-    OAUTH_REDIRECT_URI
+    OAUTH_REDIRECT_URI,
+    OAUTH_TOKEN_URI
 };
