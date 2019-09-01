@@ -377,8 +377,7 @@ class Entry extends ArchiveMember {
 
 Entry.Attributes = Object.freeze({
     FacadeType: "BC_ENTRY_FACADE_TYPE",
-    FieldTypePrefix: "BC_ENTRY_FIELD_TYPE:",
-    TOTPProperty: "BC_ENTRY_TOTP_PROPERTY" // Deprecated
+    FieldTypePrefix: "BC_ENTRY_FIELD_TYPE:"
 });
 
 /**
