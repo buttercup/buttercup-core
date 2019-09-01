@@ -16,14 +16,14 @@ class MyButtercupDatasource extends TextDatasource {
     load(credentials) {
         return this._client
             .fetchUserArchive()
-            .catch(err => {
-                throw new VError(err, "Failed retrieving vault contents");
-            })
             .then(({ archive, updateID }) => {
                 this._updateID = updateID;
                 this.setContent(archive);
-                return super.load(credentials);
-            });
+            })
+            .catch(err => {
+                throw new VError(err, "Failed retrieving vault contents");
+            })
+            .then(() => super.load(credentials));
         // @todo token renewal - maybe in client itself?
     }
 
