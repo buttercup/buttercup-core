@@ -5,6 +5,7 @@ const ArchiveComparator = require("./ArchiveComparator.js");
 const Inigo = require("./Inigo.js");
 const { extractSharesFromHistory } = require("./tools/sharing.js");
 const { stripDestructiveCommands } = require("./tools/history.js");
+const { initialiseShares } = require("./myButtercup/sharing.js");
 
 /**
  * Extract the command portion of a history item
@@ -59,13 +60,22 @@ class Workspace {
     }
 
     /**
-     * The save channel for queuing save actions
+     * The saving/updating channel for queuing workspace async actions
      * @type {Channel}
      * @memberof Workspace
      */
-    get saveChannel() {
+    get channel() {
         const topicID = this.archive.id;
         return getQueue().channel(`workspace:${topicID}`);
+    }
+
+    /**
+     * Current workspace share instances
+     * @type {Array.<Share>}
+     * @memberof Workspace
+     */
+    get shares() {
+        return this._shares;
     }
 
     /**
@@ -141,7 +151,7 @@ class Workspace {
      * @memberof Workspace
      */
     save() {
-        return this.saveChannel.enqueue(
+        return this.channel.enqueue(
             () =>
                 this.datasource.save(this.archive.getHistory(), this.masterCredentials).then(() => {
                     this.archive._getWestley().clearDirtyState();
@@ -170,12 +180,19 @@ class Workspace {
      *  completed
      * @memberof Workspace
      */
-    update() {
-        return this.localDiffersFromRemote().then(differs => {
-            if (differs) {
-                return this.mergeFromRemote();
-            }
-        });
+    update({ skipDiff = false } = {}) {
+        return this.channel.enqueue(
+            () =>
+                (skipDiff ? Promise.resolve() : this.localDiffersFromRemote())
+                    .then(differs => {
+                        if (differs) {
+                            return this.mergeFromRemote();
+                        }
+                    })
+                    .then(() => initialiseShares(this)),
+            /* priority */ undefined,
+            /* stack */ "updating"
+        );
     }
 
     /**

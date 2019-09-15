@@ -28,7 +28,9 @@ function extractSharesFromHistory(history) {
     );
 }
 
-function mergeHistories(initial, incoming) {}
+function mergeHistories(initial, incoming) {
+    // @todo Share merging
+}
 
 /**
  * Move a group between archives

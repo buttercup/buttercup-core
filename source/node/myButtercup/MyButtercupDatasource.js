@@ -13,6 +13,10 @@ class MyButtercupDatasource extends TextDatasource {
         this._updateID = null;
     }
 
+    get client() {
+        return this._client;
+    }
+
     load(credentials) {
         return this._client
             .fetchUserArchive()
@@ -28,7 +32,7 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     localDiffersFromRemote() {
-        return this._client
+        return this.client
             .fetchUserArchiveDetails()
             .then(({ updateID }) => updateID !== this._updateID)
             .catch(err => {
@@ -40,7 +44,7 @@ class MyButtercupDatasource extends TextDatasource {
         const newUpdateID = generateNewUpdateID();
         return super
             .save(history, credentials)
-            .then(encryptedContents => this._client.writeUserArchive(encryptedContents, this._updateID, newUpdateID))
+            .then(encryptedContents => this.client.writeUserArchive(encryptedContents, this._updateID, newUpdateID))
             .then(() => {
                 // Successful, set the new updateID
                 this._updateID = newUpdateID;

@@ -4,6 +4,7 @@ const { request } = require("cowl");
 const {
     API_OWN_ARCHIVE,
     API_OWN_DIGEST,
+    API_SHARES,
     OAUTH_AUTHORISE_URI,
     OAUTH_REDIRECT_URI,
     OAUTH_TOKEN_URI
@@ -47,6 +48,25 @@ const {
  * @property {String} accessToken An OAuth2 access token for API requests
  * @property {String} refreshToken An OAuth2 refresh token
  */
+
+function demultiplexShares(sharesTxt) {
+    const shares = {};
+    const lines = sharesTxt.split("\n");
+    while (lines.length > 0) {
+        const propLine = lines.shift();
+        if (!/^\<--\(/.test(propLine)) {
+            continue;
+        }
+        const payload = JSON.parse(propLine.replace(/^\<--\(/, "").replace(/\)--\>$/, ""));
+        if (!payload.id) {
+            throw new Error(`Multiplexed share definition invalid:\n\t${propLine}`);
+        }
+        shares[payload.id] = Object.assign(payload, {
+            contents: lines.shift()
+        });
+    }
+    return shares;
+}
 
 class MyButtercupClient {
     /**
@@ -113,6 +133,25 @@ class MyButtercupClient {
 
     get refreshToken() {
         return this._refreshToken;
+    }
+
+    fetchShares(ids) {
+        if (ids.length <= 0) {
+            return Promise.resolve({});
+        }
+        const requestOptions = {
+            url: `${API_SHARES}?ids=${ids.join(",")}`,
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            },
+            responseType: "text"
+        };
+        return request(requestOptions)
+            .then(resp => demultiplexShares(resp.data))
+            .catch(err => {
+                throw new VError(err, "Failed retrieving shares");
+            });
     }
 
     fetchUserArchive() {
@@ -219,6 +258,30 @@ class MyButtercupClient {
                 throw new VError(err, "Failed uploading updated vault contents");
             });
     }
+
+    _handleRequestFailure(err) {
+        if (err.responseHeaders && typeof err.responseHeaders === "object") {
+            if (err.responseHeaders["x-mb-oauth"]) {
+                switch (err.responseHeaders["x-mb-oauth"]) {
+                    case "token_expired":
+                        return this._refreshToken();
+                    default:
+                        throw new VError(
+                            {
+                                cause: err,
+                                info: {
+                                    "x-mb-oauth": err.responseHeaders["x-mb-oauth"]
+                                }
+                            },
+                            `Unrecognised authorisation failure type: ${err.responseHeaders["x-mb-oauth"]}`
+                        );
+                }
+            }
+        }
+        throw err;
+    }
+
+    _refreshToken() {}
 }
 
 module.exports = MyButtercupClient;

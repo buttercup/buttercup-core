@@ -127,7 +127,7 @@ class Archive extends EventEmitter {
 
     /**
      * Get the value of an attribute
-     * @param {String} attributeName The attribute to get
+     * @param {String=} attributeName The attribute to get
      * @returns {undefined|String|Object} The value of the attribute or undefined if not
      *  set. Returns an object if no attribute name is given.
      * @memberof Archive

@@ -87,12 +87,12 @@ function credentialsToSource(sourceCredentials, archiveCredentials, initialise =
             }
             result.datasource.removeListener("updated", onUpdate);
             workspace.setArchive(result.archive, result.datasource, archiveCredentials);
-            return {
+            return workspace.update({ skipDiff: true }).then(() => ({
                 workspace,
                 sourceCredentials,
                 archiveCredentials,
                 updated
-            };
+            }));
         });
 }
 
