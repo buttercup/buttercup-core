@@ -1,6 +1,7 @@
 const { escape: escapeURI } = require("querystring");
 const VError = require("verror");
 const { request } = require("cowl");
+const EventEmitter = require("eventemitter3");
 const {
     API_OWN_ARCHIVE,
     API_OWN_DIGEST,
@@ -68,7 +69,7 @@ function demultiplexShares(sharesTxt) {
     return shares;
 }
 
-class MyButtercupClient {
+class MyButtercupClient extends EventEmitter {
     /**
      * Exchange an auth code for tokens
      * @param {String} authCode OAuth2 auth code, retrieved from browser-
@@ -114,10 +115,13 @@ class MyButtercupClient {
         return `${OAUTH_AUTHORISE_URI}?response_type=code&client_id=${clientID}&redirect_uri=${redir}`;
     }
 
-    constructor(accessToken, refreshToken) {
+    constructor(clientID, clientSecret, accessToken, refreshToken) {
+        super();
         this._accessToken = accessToken;
         this._refreshToken = refreshToken;
         this._lastDigest = null;
+        this._clientID = clientID;
+        this._clientSecret = clientSecret;
     }
 
     get accessToken() {
@@ -149,6 +153,7 @@ class MyButtercupClient {
         };
         return request(requestOptions)
             .then(resp => demultiplexShares(resp.data))
+            .catch(err => this._handleRequestFailure(err))
             .catch(err => {
                 throw new VError(err, "Failed retrieving shares");
             });
@@ -177,6 +182,7 @@ class MyButtercupClient {
                     updateID
                 };
             })
+            .catch(err => this._handleRequestFailure(err))
             .catch(err => {
                 throw new VError(err, "Failed retrieving vault");
             });
@@ -204,6 +210,7 @@ class MyButtercupClient {
                     lastUpdate
                 };
             })
+            .catch(err => this._handleRequestFailure(err))
             .catch(err => {
                 throw new VError(err, "Failed retrieving vault");
             });
@@ -230,6 +237,7 @@ class MyButtercupClient {
                 this._lastDigest = digest;
                 return digest;
             })
+            .catch(err => this._handleRequestFailure(err))
             .catch(err => {
                 throw new VError(err, "Failed retrieving digest information");
             });
@@ -254,6 +262,7 @@ class MyButtercupClient {
                     throw new Error("Invalid vault update response: Changes may not have been saved");
                 }
             })
+            .catch(err => this._handleRequestFailure(err))
             .catch(err => {
                 throw new VError(err, "Failed uploading updated vault contents");
             });
@@ -264,7 +273,7 @@ class MyButtercupClient {
             if (err.responseHeaders["x-mb-oauth"]) {
                 switch (err.responseHeaders["x-mb-oauth"]) {
                     case "token_expired":
-                        return this._refreshToken();
+                        return this._performTokenRefresh();
                     default:
                         throw new VError(
                             {
@@ -281,7 +290,35 @@ class MyButtercupClient {
         throw err;
     }
 
-    _refreshToken() {}
+    _performTokenRefresh() {
+        const baseAuth = Buffer.from(`${this._clientID}:${this._clientSecret}`, "utf8").toString("base64");
+        const requestOptions = {
+            url: OAUTH_TOKEN_URI,
+            method: "POST",
+            headers: {
+                Authorization: `Basic ${baseAuth}`,
+                // Authorization: `Bearer ${this.refreshToken}`
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `grant_type=refresh_token&refresh_token=${this.refreshToken}`
+        };
+        return request(requestOptions)
+            .then(resp => {
+                const {
+                    data: { access_token: accessToken, token_type: tokenType }
+                } = resp;
+                if (!/^[Bb]earer$/.test(tokenType)) {
+                    throw new Error(`Invalid token type: ${tokenType}`);
+                } else if (!accessToken) {
+                    throw new Error("Access token was not returned by the server");
+                }
+                this._accessToken = accessToken;
+                this.emit("tokensUpdated");
+            })
+            .catch(err => {
+                throw new VError(err, "Failed exchanging refresh token for new access token");
+            });
+    }
 }
 
 module.exports = MyButtercupClient;

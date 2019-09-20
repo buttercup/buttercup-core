@@ -5,12 +5,15 @@ const MyButtercupClient = require("./MyButtercupClient.js");
 const { generateNewUpdateID } = require("./update.js");
 
 class MyButtercupDatasource extends TextDatasource {
-    constructor(accessToken, refreshToken) {
+    constructor(clientID, clientSecret, accessToken, refreshToken) {
         super();
         this._accessToken = accessToken;
         this._refreshToken = refreshToken;
-        this._client = new MyButtercupClient(accessToken, refreshToken);
+        this._clientID = clientID;
+        this._clientSecret = clientSecret;
+        this._client = null;
         this._updateID = null;
+        this._createNewClient();
     }
 
     get client() {
@@ -65,7 +68,9 @@ class MyButtercupDatasource extends TextDatasource {
         return {
             type: "mybuttercup",
             accessToken: this._accessToken,
-            refreshToken: this._refreshToken
+            refreshToken: this._refreshToken,
+            clientID: this._clientID,
+            clientSecret: this._clientSecret
         };
     }
 
@@ -78,14 +83,31 @@ class MyButtercupDatasource extends TextDatasource {
     updateTokens(accessToken, refreshToken) {
         this._accessToken = accessToken;
         this._refreshToken = refreshToken;
-        this._client = new MyButtercupClient(accessToken, refreshToken);
+        this._createNewClient();
         this.emit("updated");
+    }
+
+    /**
+     * Create a new MyButtercupClient instance and attach
+     * event listeners
+     * @protected
+     * @memberof MyButtercupDatasource
+     */
+    _createNewClient() {
+        if (this.client) {
+            this.client.off("tokensUpdated", this._onTokensUpdated);
+        }
+        this._onTokensUpdated = () => {
+            this.updateTokens(this.client.accessToken, this.client.refreshToken);
+        };
+        this._client = new MyButtercupClient(this._clientID, this._clientSecret, this._accessToken, this._refreshToken);
+        this._client.on("tokensUpdated", this._onTokensUpdated);
     }
 }
 
 MyButtercupDatasource.fromObject = obj => {
     if (obj.type === "mybuttercup") {
-        return new MyButtercupDatasource(obj.accessToken, obj.refreshToken);
+        return new MyButtercupDatasource(obj.clientID, obj.clientSecret, obj.accessToken, obj.refreshToken);
     }
     throw new Error(`Unknown or invalid type: ${obj.type}`);
 };
