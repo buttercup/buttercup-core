@@ -53,7 +53,6 @@ class MyButtercupDatasource extends TextDatasource {
                 this._updateID = newUpdateID;
             })
             .catch(err => {
-                // @todo handle token renewal - maybe in client itself?
                 // @todo handle update ID clash/merge
                 throw new VError(err, "Failed uploading new vault contents");
             });
@@ -92,6 +91,7 @@ class MyButtercupDatasource extends TextDatasource {
      * event listeners
      * @protected
      * @memberof MyButtercupDatasource
+     * @fires MyButtercupDatasource#updatedClient
      */
     _createNewClient() {
         if (this.client) {
@@ -102,6 +102,12 @@ class MyButtercupDatasource extends TextDatasource {
         };
         this._client = new MyButtercupClient(this._clientID, this._clientSecret, this._accessToken, this._refreshToken);
         this._client.on("tokensUpdated", this._onTokensUpdated);
+        /**
+         * On client updated
+         * @event MyButtercupDatasource#updatedClient
+         * @type {Object}
+         */
+        this.emit("updatedClient", this._client);
     }
 }
 

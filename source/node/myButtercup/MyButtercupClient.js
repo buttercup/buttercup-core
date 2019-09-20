@@ -4,6 +4,7 @@ const { request } = require("cowl");
 const EventEmitter = require("eventemitter3");
 const {
     API_OWN_ARCHIVE,
+    API_OWN_ARCHIVE_DETAILS,
     API_OWN_DIGEST,
     API_SHARES,
     OAUTH_AUTHORISE_URI,
@@ -182,7 +183,7 @@ class MyButtercupClient extends EventEmitter {
                     updateID
                 };
             })
-            .catch(err => this._handleRequestFailure(err))
+            .catch(err => this._handleRequestFailure(err).then(() => this.fetchUserArchive()))
             .catch(err => {
                 throw new VError(err, "Failed retrieving vault");
             });
@@ -210,7 +211,7 @@ class MyButtercupClient extends EventEmitter {
                     lastUpdate
                 };
             })
-            .catch(err => this._handleRequestFailure(err))
+            .catch(err => this._handleRequestFailure(err).then(() => this.fetchUserArchiveDetails()))
             .catch(err => {
                 throw new VError(err, "Failed retrieving vault");
             });
@@ -237,7 +238,7 @@ class MyButtercupClient extends EventEmitter {
                 this._lastDigest = digest;
                 return digest;
             })
-            .catch(err => this._handleRequestFailure(err))
+            .catch(err => this._handleRequestFailure(err).then(() => this.retrieveDigest()))
             .catch(err => {
                 throw new VError(err, "Failed retrieving digest information");
             });
@@ -262,13 +263,17 @@ class MyButtercupClient extends EventEmitter {
                     throw new Error("Invalid vault update response: Changes may not have been saved");
                 }
             })
-            .catch(err => this._handleRequestFailure(err))
+            .catch(err =>
+                this._handleRequestFailure(err).then(() =>
+                    this.writeUserArchive(contents, previousUpdateID, newUpdateID)
+                )
+            )
             .catch(err => {
                 throw new VError(err, "Failed uploading updated vault contents");
             });
     }
 
-    _handleRequestFailure(err) {
+    async _handleRequestFailure(err) {
         if (err.responseHeaders && typeof err.responseHeaders === "object") {
             if (err.responseHeaders["x-mb-oauth"]) {
                 switch (err.responseHeaders["x-mb-oauth"]) {
@@ -290,6 +295,13 @@ class MyButtercupClient extends EventEmitter {
         throw err;
     }
 
+    /**
+     * Refresh tokens
+     * @memberof MyButtercupClient
+     * @protected
+     * @returns {Promise}
+     * @fires MyButtercupClient#tokensUpdated
+     */
     _performTokenRefresh() {
         const baseAuth = Buffer.from(`${this._clientID}:${this._clientSecret}`, "utf8").toString("base64");
         const requestOptions = {
@@ -313,6 +325,10 @@ class MyButtercupClient extends EventEmitter {
                     throw new Error("Access token was not returned by the server");
                 }
                 this._accessToken = accessToken;
+                /**
+                 * On tokens updated
+                 * @event MyButtercupClient#tokensUpdated
+                 */
                 this.emit("tokensUpdated");
             })
             .catch(err => {

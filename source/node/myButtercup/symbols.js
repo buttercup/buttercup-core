@@ -5,7 +5,7 @@ const ROOT_URL = "http://localhost:8000";
 const ROOT_API = joinURL(ROOT_URL, "/api/core/v1");
 
 const API_OWN_ARCHIVE = joinURL(ROOT_API, "/own/archive");
-const API_OWN_ARCHIVE_DETAILS = joinURL(ROOT_API, "/own/archive");
+const API_OWN_ARCHIVE_DETAILS = joinURL(ROOT_API, "/own/archive/details");
 const API_OWN_DIGEST = joinURL(ROOT_API, "/own/digest");
 const API_OWN_ORGS = joinURL(ROOT_API, "/own/orgs");
 const API_SHARES = joinURL(ROOT_API, "/shares");
