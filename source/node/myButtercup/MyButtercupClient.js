@@ -3,6 +3,7 @@ const VError = require("verror");
 const { request } = require("cowl");
 const EventEmitter = require("eventemitter3");
 const {
+    API_ORG_USERS,
     API_OWN_ARCHIVE,
     API_OWN_ARCHIVE_DETAILS,
     API_OWN_DIGEST,
@@ -46,6 +47,14 @@ const {
  */
 
 /**
+ * @typedef {Object} MyButtercupUsersListItem
+ * @property {Number} user_id The ID of the user
+ * @property {Number} organisation_id The organisation ID the user was found in
+ * @property {String} name The name of the user
+ * @property {String} public_key The public key for the user
+ */
+
+/**
  * @typedef {Object} MyButtercupTokenResult
  * @property {String} accessToken An OAuth2 access token for API requests
  * @property {String} refreshToken An OAuth2 refresh token
@@ -70,6 +79,10 @@ function demultiplexShares(sharesTxt) {
     return shares;
 }
 
+/**
+ * My Buttercup client
+ * @augments EventEmitter
+ */
 class MyButtercupClient extends EventEmitter {
     /**
      * Exchange an auth code for tokens
@@ -116,6 +129,13 @@ class MyButtercupClient extends EventEmitter {
         return `${OAUTH_AUTHORISE_URI}?response_type=code&client_id=${clientID}&redirect_uri=${redir}`;
     }
 
+    /**
+     * Create a new client instance
+     * @param {String} clientID The client identifier
+     * @param {String} clientSecret The client secret
+     * @param {String} accessToken Access token
+     * @param {String} refreshToken Refresh token
+     */
     constructor(clientID, clientSecret, accessToken, refreshToken) {
         super();
         this._accessToken = accessToken;
@@ -125,17 +145,29 @@ class MyButtercupClient extends EventEmitter {
         this._clientSecret = clientSecret;
     }
 
+    /**
+     * The current access token
+     * @type {String}
+     * @readonly
+     */
     get accessToken() {
         return this._accessToken;
     }
 
     /**
+     * The last client digest response
      * @type {MyButtercupDigest|null}
+     * @readonly
      */
     get digest() {
         return this._lastDigest;
     }
 
+    /**
+     * The refresh token
+     * @type {String}
+     * @readonly
+     */
     get refreshToken() {
         return this._refreshToken;
     }
@@ -241,6 +273,64 @@ class MyButtercupClient extends EventEmitter {
             .catch(err => this._handleRequestFailure(err).then(() => this.retrieveDigest()))
             .catch(err => {
                 throw new VError(err, "Failed retrieving digest information");
+            });
+    }
+
+    /**
+     * Get the list of users available to address for the user
+     * @returns {Promise.<MyButtercupUsersListItem[]>}
+     * @memberof MyButtercupClient
+     */
+    async retrieveUsersList() {
+        if (!this.digest) {
+            await this.retrieveDigest();
+        }
+        const orgIDs = this.digest.organisations.map(org => org.id);
+        if (orgIDs.length <= 0) {
+            return [];
+        }
+        const users = [];
+        let work = Promise.resolve();
+        orgIDs.forEach(orgID => {
+            work = work
+                .then(() => this.retrieveUsersListForOrganisation(orgID))
+                .then(orgUsers => {
+                    users.push(...orgUsers);
+                });
+        });
+        return work
+            .then(() => users)
+            .catch(err => {
+                throw new VError(err, "Failed retrieving users list");
+            });
+    }
+
+    /**
+     * Get the list of users for an organisation
+     * (User must be present in organisation, or this method will fail)
+     * @param {Number} orgID The ID of the organisation
+     * @returns {Promise.<MyButtercupUsersListItem[]>}
+     * @memberof MyButtercupClient
+     */
+    retrieveUsersListForOrganisation(orgID) {
+        const requestOptions = {
+            url: API_ORG_USERS.replace("[ORG_ID]", orgID),
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            }
+        };
+        return request(requestOptions)
+            .then(resp => {
+                const { data } = resp;
+                if (data.status !== "ok" || !data.users) {
+                    throw new Error("Invalid users list response");
+                }
+                return data.users;
+            })
+            .catch(err => this._handleRequestFailure(err).then(() => this.retrieveUsersListForOrganisation(orgID)))
+            .catch(err => {
+                throw new VError(err, "Failed retrieving organisation users");
             });
     }
 
