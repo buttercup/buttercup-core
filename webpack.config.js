@@ -16,6 +16,8 @@ if (process.env.ANALYSE === "bundle") {
 }
 
 const baseConfig = {
+    devtool: false,
+
     entry: WEB_ENTRY,
 
     mode: "development",

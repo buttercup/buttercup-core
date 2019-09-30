@@ -24,7 +24,7 @@
     "generate:docs:node": "jsdoc2md 'source/node/**/*.js' > API.md",
     "generate:docs:web": "jsdoc2md 'source/{web,node}/**/*.js' > API_WEB.md",
     "prepublishOnly": "npm run build",
-    "test": "run-s test:unit test:integration test:web test:format",
+    "test": "run-s test:unit test:integration test:web test:web:production test:format",
     "test:ci:node": "run-s test:unit test:integration test:format",
     "test:ci:web": "run-s test:web",
     "test:format": "prettier-check '{source,test}/**/*.js'",
@@ -32,7 +32,8 @@
     "test:integration:watch": "nodemon --exec 'npm run test:integration'",
     "test:unit": "nyc mocha -r test/index.js 'test/unit/**/*.spec.js'",
     "test:unit:watch": "nodemon --exec 'npm run test:unit'",
-    "test:web": "karma start"
+    "test:web": "karma start",
+    "test:web:production": "BUNDLE=production karma start"
   },
   "lint-staged": {
     "{source,test}/**/*.js": [
@@ -78,7 +79,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "babel-loader": "^8.0.6",
