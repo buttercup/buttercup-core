@@ -1,34 +1,37 @@
 const path = require("path");
-const webpack = require("webpack");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
-
-const { DefinePlugin } = webpack;
+const { DefinePlugin } = require("webpack");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const SOURCE = path.resolve(__dirname, "./source");
 const WEB_ENTRY = path.join(SOURCE, "web/index.js");
 const DIST = path.resolve(__dirname, "./dist");
 
+const plugins = [
+    new DefinePlugin({
+        BUTTERCUP_WEB: true
+    })
+];
+if (process.env.ANALYSE === "bundle") {
+    plugins.push(new BundleAnalyzerPlugin());
+}
+
 const baseConfig = {
-    
     entry: WEB_ENTRY,
+
+    mode: "development",
 
     module: {
         rules: [
             {
-                test: /iconv-loader/,
+                test: /(iconv-loader|bluebird)/,
                 use: "null-loader"
             },
             {
                 test: /\.js$/,
                 include: [
-                    SOURCE,
-                    /node_modules\/(got|cacheable-request)/
+                    SOURCE
                 ],
                 use: "babel-loader"
-            },
-            {
-                test: /\.json$/,
-                use: "json-loader"
             }
         ]
     },
@@ -45,23 +48,15 @@ const baseConfig = {
         libraryTarget: "umd"
     },
 
-    plugins: [
-        new DefinePlugin({
-            BUTTERCUP_WEB: true
-        })
-    ]
-
+    plugins
 };
 
 module.exports = [
     baseConfig,
     Object.assign({}, baseConfig, {
+        mode: "production",
         output: Object.assign({}, baseConfig.output, {
             filename: "buttercup-web.min.js"
-        }),
-        plugins: [
-            ...baseConfig.plugins,
-            new UglifyJSPlugin()
-        ]
+        })
     })
 ];
