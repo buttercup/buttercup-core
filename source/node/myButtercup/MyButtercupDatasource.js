@@ -31,7 +31,6 @@ class MyButtercupDatasource extends TextDatasource {
                 throw new VError(err, "Failed retrieving vault contents");
             })
             .then(() => super.load(credentials));
-        // @todo token renewal - maybe in client itself?
     }
 
     localDiffersFromRemote() {

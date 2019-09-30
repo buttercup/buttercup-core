@@ -1,4 +1,3 @@
-const { escape: escapeURI } = require("querystring");
 const VError = require("verror");
 const { request } = require("cowl");
 const EventEmitter = require("eventemitter3");
@@ -125,7 +124,7 @@ class MyButtercupClient extends EventEmitter {
     }
 
     static generateAuthorisationURL(clientID) {
-        const redir = escapeURI(OAUTH_REDIRECT_URI);
+        const redir = encodeURIComponent(OAUTH_REDIRECT_URI);
         return `${OAUTH_AUTHORISE_URI}?response_type=code&client_id=${clientID}&redirect_uri=${redir}`;
     }
 
