@@ -2,8 +2,8 @@ const VError = require("verror");
 const ChannelQueue = require("@buttercup/channel-queue");
 const Credentials = require("@buttercup/credentials");
 const EventEmitter = require("eventemitter3");
-const getUniqueID = require("../tools/encoding.js").getUniqueID;
-const credentialsToSource = require("./marshalling.js").credentialsToSource;
+const { getUniqueID } = require("../tools/encoding.js");
+const { credentialsToSource } = require("./marshalling.js");
 const { getSourceOfflineArchive, sourceHasOfflineCopy, storeSourceOfflineCopy } = require("./offline.js");
 
 const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;
@@ -434,16 +434,8 @@ class ArchiveSource extends EventEmitter {
             return Promise.reject(new VError(`Failed updating source credentials: Source is not unlocked: ${this.id}`));
         }
         const { datasource } = this._workspace;
-        const datasourceDescriptionRaw = this._sourceCredentials.getValueOrFail("datasource");
-        const datasourceDescription =
-            typeof datasourceDescriptionRaw === "string"
-                ? JSON.parse(datasourceDescriptionRaw)
-                : datasourceDescriptionRaw;
-        datasourceDescription.token = datasource.token;
-        if (datasource.refreshToken) {
-            datasourceDescription.refreshToken = datasource.refreshToken;
-        }
-        this._sourceCredentials.setValue("datasource", datasourceDescription);
+        const newDescription = datasource.toObject();
+        this._sourceCredentials.setValue("datasource", newDescription);
     }
 
     /**

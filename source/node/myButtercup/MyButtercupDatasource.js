@@ -8,8 +8,8 @@ const { generateNewUpdateID } = require("./update.js");
 class MyButtercupDatasource extends TextDatasource {
     constructor(remoteVaultID, clientID, clientSecret, accessToken, refreshToken) {
         super();
-        this._accessToken = accessToken;
-        this._refreshToken = refreshToken;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
         this._clientID = clientID;
         this._clientSecret = clientSecret;
         this._client = null;
@@ -79,8 +79,8 @@ class MyButtercupDatasource extends TextDatasource {
     toObject() {
         return {
             type: "mybuttercup",
-            accessToken: this._accessToken,
-            refreshToken: this._refreshToken,
+            accessToken: this.accessToken,
+            refreshToken: this.refreshToken,
             clientID: this._clientID,
             clientSecret: this._clientSecret,
             vaultID: this._vaultID
@@ -93,10 +93,13 @@ class MyButtercupDatasource extends TextDatasource {
      * @param {String} refreshToken The refresh token
      * @memberof MyButtercupDatasource
      */
-    updateTokens(accessToken, refreshToken) {
-        this._accessToken = accessToken;
-        this._refreshToken = refreshToken;
-        this._createNewClient();
+    updateTokens(accessToken, refreshToken, updateClientTokens = true) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        if (updateClientTokens) {
+            this._client._accessToken = accessToken;
+            this._client._refreshToken = refreshToken;
+        }
         this.emit("updated");
     }
 
@@ -112,9 +115,9 @@ class MyButtercupDatasource extends TextDatasource {
             this.client.off("tokensUpdated", this._onTokensUpdated);
         }
         this._onTokensUpdated = () => {
-            this.updateTokens(this.client.accessToken, this.client.refreshToken);
+            this.updateTokens(this.client.accessToken, this.client.refreshToken, false);
         };
-        this._client = new MyButtercupClient(this._clientID, this._clientSecret, this._accessToken, this._refreshToken);
+        this._client = new MyButtercupClient(this._clientID, this._clientSecret, this.accessToken, this.refreshToken);
         this._client.on("tokensUpdated", this._onTokensUpdated);
         /**
          * On client updated
@@ -126,16 +129,7 @@ class MyButtercupDatasource extends TextDatasource {
 }
 
 MyButtercupDatasource.fromObject = obj => {
-    if (obj.type === "mybuttercup") {
-        return new MyButtercupDatasource(
-            obj.vaultID,
-            obj.clientID,
-            obj.clientSecret,
-            obj.accessToken,
-            obj.refreshToken
-        );
-    }
-    throw new Error(`Unknown or invalid type: ${obj.type}`);
+    return new MyButtercupDatasource(obj.vaultID, obj.clientID, obj.clientSecret, obj.accessToken, obj.refreshToken);
 };
 
 MyButtercupDatasource.fromString = str => {
