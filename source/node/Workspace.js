@@ -88,7 +88,7 @@ class Workspace {
      */
     localDiffersFromRemote() {
         if (typeof this.datasource.localDiffersFromRemote === "function") {
-            return this.datasource.localDiffersFromRemote();
+            return this.datasource.localDiffersFromRemote(this.masterCredentials, this.archive.getHistory());
         }
         if (this.datasource.toObject().type !== "text") {
             // Only clear if not a TextDatasource

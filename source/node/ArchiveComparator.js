@@ -30,7 +30,7 @@ class ArchiveComparator {
 
     /**
      * Calculate the differences, in commands, between the two archives
-     * @returns {{ original:Array, secondary:Array }|null} Returns false if no common base
+     * @returns {{ original:Array, secondary:Array }|null} Returns null if no common base
      *        is found, or the command differences as two arrays
      * @memberof ArchiveComparator
      */

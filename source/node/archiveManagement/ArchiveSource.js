@@ -30,8 +30,10 @@ const Status = {
  * @static
  */
 function rehydrate(dehydratedString) {
-    const { name, id, sourceCredentials, archiveCredentials, type, colour, order } = JSON.parse(dehydratedString);
-    const source = new ArchiveSource(name, sourceCredentials, archiveCredentials, { id, type });
+    const { name, id, sourceCredentials, archiveCredentials, type, colour, order, meta = {} } = JSON.parse(
+        dehydratedString
+    );
+    const source = new ArchiveSource(name, sourceCredentials, archiveCredentials, { id, type, meta });
     source.type = type;
     if (colour) {
         source._colour = colour;
@@ -52,6 +54,7 @@ class ArchiveSource extends EventEmitter {
      * @typedef {Object} ArchiveSourceOptions
      * @property {String=} id - Override source ID generation
      * @property {String=} type - Specify the source type
+     * @property {Object=} meta - Optional additional meta data (stored unencrypted)
      */
 
     /**
@@ -61,7 +64,7 @@ class ArchiveSource extends EventEmitter {
      * @param {String} archiveCredentials Encrypted archive credentials
      * @param {ArchiveSourceOptions=} newSourceOptions Specify source creation options
      */
-    constructor(name, sourceCredentials, archiveCredentials, { id = getUniqueID(), type = "" } = {}) {
+    constructor(name, sourceCredentials, archiveCredentials, { id = getUniqueID(), type = "", meta = {} } = {}) {
         super();
         if (Credentials.isSecureString(sourceCredentials) !== true) {
             throw new VError("Failed constructing archive source: Source credentials not in encrypted form");
@@ -78,6 +81,7 @@ class ArchiveSource extends EventEmitter {
         this._archiveCredentials = archiveCredentials;
         this._workspace = null;
         this._colour = DefaultColour;
+        this._meta = meta || {};
         this.type = type;
         this.order = DefaultOrder;
     }
@@ -135,6 +139,16 @@ class ArchiveSource extends EventEmitter {
      */
     get id() {
         return this._id;
+    }
+
+    /**
+     * Meta data included with the source (not encrypted)
+     * @type {Object}
+     * @memberof ArchiveSource
+     * @readonly
+     */
+    get meta() {
+        return this._meta;
     }
 
     /**
@@ -223,7 +237,8 @@ class ArchiveSource extends EventEmitter {
                         type: this.type,
                         status: Status.LOCKED,
                         colour: this.colour,
-                        order: this.order
+                        order: this.order,
+                        meta: this.meta
                     };
                     if (this.status === Status.LOCKED) {
                         payload.sourceCredentials = this._sourceCredentials;

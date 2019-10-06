@@ -1,17 +1,19 @@
 const VError = require("verror");
 const { TextDatasource, registerDatasource } = require("@buttercup/datasources");
 const Credentials = require("@buttercup/credentials");
+const { calculateHistoryDifferences } = require("../tools/compare.js");
 const MyButtercupClient = require("./MyButtercupClient.js");
 const { generateNewUpdateID } = require("./update.js");
 
 class MyButtercupDatasource extends TextDatasource {
-    constructor(clientID, clientSecret, accessToken, refreshToken) {
+    constructor(remoteVaultID, clientID, clientSecret, accessToken, refreshToken) {
         super();
         this._accessToken = accessToken;
         this._refreshToken = refreshToken;
         this._clientID = clientID;
         this._clientSecret = clientSecret;
         this._client = null;
+        this._vaultID = remoteVaultID;
         this._updateID = null;
         this._createNewClient();
     }
@@ -33,10 +35,22 @@ class MyButtercupDatasource extends TextDatasource {
             .then(() => super.load(credentials));
     }
 
-    localDiffersFromRemote() {
+    localDiffersFromRemote(masterCredentials, archiveHistory) {
         return this.client
             .fetchUserArchiveDetails()
-            .then(({ updateID }) => updateID !== this._updateID)
+            .then(({ updateID }) => {
+                if (updateID !== this._updateID) {
+                    return true;
+                }
+                this.setContent("");
+                return this.load(masterCredentials).then(incomingHistory => {
+                    const diffs = calculateHistoryDifferences(archiveHistory, incomingHistory);
+                    if (!diffs) {
+                        return true;
+                    }
+                    return diffs.original.length > 0 || diffs.secondary.length > 0;
+                });
+            })
             .catch(err => {
                 throw new VError(err, "Failed comparing remote/local vault status");
             });
@@ -68,7 +82,8 @@ class MyButtercupDatasource extends TextDatasource {
             accessToken: this._accessToken,
             refreshToken: this._refreshToken,
             clientID: this._clientID,
-            clientSecret: this._clientSecret
+            clientSecret: this._clientSecret,
+            vaultID: this._vaultID
         };
     }
 
@@ -112,7 +127,13 @@ class MyButtercupDatasource extends TextDatasource {
 
 MyButtercupDatasource.fromObject = obj => {
     if (obj.type === "mybuttercup") {
-        return new MyButtercupDatasource(obj.clientID, obj.clientSecret, obj.accessToken, obj.refreshToken);
+        return new MyButtercupDatasource(
+            obj.vaultID,
+            obj.clientID,
+            obj.clientSecret,
+            obj.accessToken,
+            obj.refreshToken
+        );
     }
     throw new Error(`Unknown or invalid type: ${obj.type}`);
 };
