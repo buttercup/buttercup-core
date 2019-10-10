@@ -346,7 +346,7 @@ class ArchiveSource extends AsyncEventEmitter {
                             initialiseRemote,
                             offlineContent
                         )
-                            .then(sourceInfo => {
+                            .then(async sourceInfo => {
                                 // Build the source components
                                 const { workspace, sourceCredentials, archiveCredentials, updated } = sourceInfo;
                                 this._workspace = workspace;
@@ -356,7 +356,7 @@ class ArchiveSource extends AsyncEventEmitter {
                                 this.type = sourceCredentials.type;
                                 if (storeOfflineCopy) {
                                     // Store an offline copy for later use
-                                    return storeSourceOfflineCopy(
+                                    await storeSourceOfflineCopy(
                                         this.storageInterface,
                                         this.id,
                                         workspace.datasource._content
