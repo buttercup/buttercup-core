@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v2.16.1
+_2019-10-10_
+
+ * **Bugfix**:
+   * Vault meta changes wouldn't write when storing an offline cache
+
 ## v2.16.0
 _2019-10-06_
 
