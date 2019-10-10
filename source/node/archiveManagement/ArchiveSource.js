@@ -346,7 +346,7 @@ class ArchiveSource extends AsyncEventEmitter {
                             initialiseRemote,
                             offlineContent
                         )
-                            .then(async sourceInfo => {
+                            .then(sourceInfo => {
                                 // Build the source components
                                 const { workspace, sourceCredentials, archiveCredentials, updated } = sourceInfo;
                                 this._workspace = workspace;
@@ -354,18 +354,18 @@ class ArchiveSource extends AsyncEventEmitter {
                                 this._archiveCredentials = archiveCredentials;
                                 this._status = Status.UNLOCKED;
                                 this.type = sourceCredentials.type;
-                                if (storeOfflineCopy) {
-                                    // Store an offline copy for later use
-                                    await storeSourceOfflineCopy(
-                                        this.storageInterface,
-                                        this.id,
-                                        workspace.datasource._content
-                                    );
-                                }
                                 workspace.datasource.on("updated", () => {
                                     this.updateCredentialsFromDatasource();
                                     this.emit("sourceUpdated");
                                 });
+                                if (storeOfflineCopy) {
+                                    // Store an offline copy for later use
+                                    return storeSourceOfflineCopy(
+                                        this.storageInterface,
+                                        this.id,
+                                        workspace.datasource._content
+                                    ).then(() => updated);
+                                }
                                 return updated;
                             })
                             .catch(err => {
