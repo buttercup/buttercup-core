@@ -115,7 +115,6 @@ class MyButtercupClient {
         masterAccountCredentials,
         isNew = false
     } = {}) {
-        const fetch = getFetchMethod();
         const method = isNew ? "POST" : "PUT";
         const errorPrefix = "Failed writing archive:";
         if (!token) {
@@ -139,7 +138,6 @@ class MyButtercupClient {
         if (!masterAccountCredentials) {
             return Promise.reject(new Error(`${errorPrefix} Credentials must be provided`));
         }
-        const url = API_ARCHIVE.replace("[ID]", archiveID);
         return this._loadRootArchive(rootArchiveID, masterAccountCredentials)
             .then(() =>
                 this.getArchiveQueue(archiveID).enqueue(() => {
