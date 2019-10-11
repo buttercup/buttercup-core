@@ -6,7 +6,7 @@ const FormData = require("form-data");
 /**
  * A Fetch WebAPI implementation based on the Axios client
  */
-async function axiosFetch(axios, transfomer, input, init = {}) {
+function axiosFetch(axios, transfomer, input, init = {}) {
     // Convert the `fetch` style arguments into a Axios style config
     transfomer = transfomer || identity;
 
@@ -30,20 +30,20 @@ async function axiosFetch(axios, transfomer, input, init = {}) {
         init
     );
 
-    const result = await axios.request(config);
+    return axios.request(config).then(result => {
+        // Convert the Axios style response into a `fetch` style response
+        const responseBody = typeof result.data === `object` ? JSON.stringify(result.data) : result.data;
 
-    // Convert the Axios style response into a `fetch` style response
-    const responseBody = typeof result.data === `object` ? JSON.stringify(result.data) : result.data;
+        const headers = new Headers();
+        Object.entries(result.headers).forEach(function([key, value]) {
+            headers.append(key, value);
+        });
 
-    const headers = new Headers();
-    Object.entries(result.headers).forEach(function([key, value]) {
-        headers.append(key, value);
-    });
-
-    return new Response(responseBody, {
-        status: result.status,
-        statusText: result.statusText,
-        headers
+        return new Response(responseBody, {
+            status: result.status,
+            statusText: result.statusText,
+            headers
+        });
     });
 }
 
