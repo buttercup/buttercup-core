@@ -1,5 +1,5 @@
-const { buildAxiosFetch } = require("@lifeomic/axios-fetch");
 const axios = require("axios");
+const { buildAxiosFetch } = require("./axios-fetch");
 const nodeFetch = buildAxiosFetch(axios);
 
 let __fetchMethod;
