@@ -14,7 +14,7 @@ const {
 const { ensureVaultContentsEncrypted } = require("../tools/validation.js");
 
 /**
- * @typedef {Object} MyButtercupShare
+ * @typedef {Object} MyButtercupShareBase
  * @property {String} id The share ID
  * @property {String} title The share title
  * @property {Boolean} perm_read Permission to read
@@ -23,11 +23,16 @@ const { ensureVaultContentsEncrypted } = require("../tools/validation.js");
  */
 
 /**
- * @typedef {MyButtercupShare} MyButtercupIncomingShare
+ * @typedef {MyButtercupShareBase} MyButtercupIncomingShare
  * @property {String} share_password_enc Encrypted password for the share
  * @property {Number} sharing_user_id The user that shared the item
  * @property {String} sharing_user_key The public key of the user for the share (used
  *  for decrypting the share password)
+ */
+
+/**
+ * @typedef {MyButtercupShareBase} MyButtercupEncryptedShare
+ * @property {String} content Encrypted share content
  */
 
 /**
@@ -58,6 +63,14 @@ const { ensureVaultContentsEncrypted } = require("../tools/validation.js");
  * @typedef {Object} MyButtercupTokenResult
  * @property {String} accessToken An OAuth2 access token for API requests
  * @property {String} refreshToken An OAuth2 refresh token
+ */
+
+/**
+ * @typedef {Object} MyButtercupArchiveDetails
+ * @property {Number} id The remote vault ID
+ * @property {Number} updateID The current update ID for the vault
+ * @property {String} created The creation date
+ * @property {String} lastUpdate The last update date
  */
 
 function demultiplexShares(sharesTxt) {
@@ -181,6 +194,12 @@ class MyButtercupClient extends EventEmitter {
         return this._refreshToken;
     }
 
+    /**
+     * Fetch user shares
+     * @param {String[]} ids Share IDs
+     * @returns {Promise.<Object.<String, MyButtercupEncryptedShare>>}
+     * @memberof MyButtercupClient
+     */
     fetchShares(ids) {
         if (ids.length <= 0) {
             return Promise.resolve({});
@@ -201,6 +220,12 @@ class MyButtercupClient extends EventEmitter {
             });
     }
 
+    /**
+     * Fetch user vault contents
+     * @returns {Promise.<{ archive: String, updateID: Number}>} The user's
+     *  vault contents
+     * @memberof MyButtercupClient
+     */
     fetchUserArchive() {
         const requestOptions = {
             url: API_OWN_ARCHIVE,
@@ -230,6 +255,11 @@ class MyButtercupClient extends EventEmitter {
             });
     }
 
+    /**
+     * Fetch the user's vault details
+     * @returns {Promise.<MyButtercupArchiveDetails>} The details of the vault
+     * @memberof MyButtercupClient
+     */
     fetchUserArchiveDetails() {
         const requestOptions = {
             url: API_OWN_ARCHIVE_DETAILS,
@@ -260,7 +290,8 @@ class MyButtercupClient extends EventEmitter {
 
     /**
      * Fetch and set account digest information
-     * @returns {MyButtercupDigest}
+     * @returns {Promise.<MyButtercupDigest>} Digest information
+     * @memberof MyButtercupClient
      */
     retrieveDigest() {
         const requestOptions = {

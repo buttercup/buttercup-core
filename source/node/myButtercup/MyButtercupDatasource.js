@@ -5,7 +5,48 @@ const { calculateHistoryDifferences } = require("../tools/compare.js");
 const MyButtercupClient = require("./MyButtercupClient.js");
 const { generateNewUpdateID } = require("./update.js");
 
+/**
+ * My Buttercup datasource
+ * @augments TextDatasource
+ */
 class MyButtercupDatasource extends TextDatasource {
+    /**
+     * Create a new instance from its object representation
+     * @param {Object} obj The object to create from
+     * @returns {MyButtercupDatasource}
+     * @memberof MyButtercupDatasource
+     * @static
+     */
+    static fromObject(obj) {
+        return new MyButtercupDatasource(
+            obj.vaultID,
+            obj.clientID,
+            obj.clientSecret,
+            obj.accessToken,
+            obj.refreshToken
+        );
+    }
+
+    /**
+     * Create a new instance from its string representation
+     * @param {String} str The string to create from
+     * @returns {MyButtercupDatasource}
+     * @memberof MyButtercupDatasource
+     * @static
+     */
+    static fromString(str) {
+        return MyButtercupDatasource.fromObject(JSON.parse(str));
+    }
+
+    /**
+     * Constructor for the datasource
+     * @param {Number} remoteVaultID The vault ID
+     * @param {String} clientID The OAuth2 client ID
+     * @param {String} clientSecret The OAuth2 client secret
+     * @param {String} accessToken The OAuth2 access token
+     * @param {String} refreshToken The OAuth2 refresh token
+     * @memberof MyButtercupDatasource
+     */
     constructor(remoteVaultID, clientID, clientSecret, accessToken, refreshToken) {
         super();
         this.accessToken = accessToken;
@@ -18,10 +59,21 @@ class MyButtercupDatasource extends TextDatasource {
         this._createNewClient();
     }
 
+    /**
+     * @type {MyButtercupClient}
+     * @readonly
+     * @memberof MyButtercupDatasource
+     */
     get client() {
         return this._client;
     }
 
+    /**
+     * Load vault history from remote
+     * @param {Credentials} credentials The archive credentials
+     * @returns {Promise.<String[]>} Array of history lines
+     * @memberof MyButtercupDatasource
+     */
     load(credentials) {
         return this._client
             .fetchUserArchive()
@@ -35,6 +87,14 @@ class MyButtercupDatasource extends TextDatasource {
             .then(() => super.load(credentials));
     }
 
+    /**
+     * Override for history difference checking
+     * @see Workspace#localDiffersFromRemote
+     * @param {Credentials} masterCredentials Master service credentials
+     * @param {String[]} archiveHistory Archive history lines
+     * @returns {Promise.<Boolean>} True if differing, false otherwise
+     * @memberof MyButtercupDatasource
+     */
     localDiffersFromRemote(masterCredentials, archiveHistory) {
         return this.client
             .fetchUserArchiveDetails()
@@ -56,6 +116,13 @@ class MyButtercupDatasource extends TextDatasource {
             });
     }
 
+    /**
+     * Save vault contents to remote
+     * @param {String[]} history The vault history lines
+     * @param {Credentials} credentials Vault credentials
+     * @returns {Promise}
+     * @memberof MyButtercupDatasource
+     */
     save(history, credentials) {
         const newUpdateID = generateNewUpdateID();
         return super
@@ -127,14 +194,6 @@ class MyButtercupDatasource extends TextDatasource {
         this.emit("updatedClient", this._client);
     }
 }
-
-MyButtercupDatasource.fromObject = obj => {
-    return new MyButtercupDatasource(obj.vaultID, obj.clientID, obj.clientSecret, obj.accessToken, obj.refreshToken);
-};
-
-MyButtercupDatasource.fromString = str => {
-    return MyButtercupDatasource.fromObject(JSON.parse(str));
-};
 
 registerDatasource("mybuttercup", MyButtercupDatasource);
 
