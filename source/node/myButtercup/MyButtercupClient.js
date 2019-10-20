@@ -123,6 +123,15 @@ class MyButtercupClient extends EventEmitter {
             });
     }
 
+    /**
+     * Generate an OAuth2 authorisation URL using the client ID of the current
+     * application platform (eg. Buttercup browser extension)
+     * @param {String} clientID The OAuth2 client ID registered on
+     *  my.buttercup.pw
+     * @returns {String} The generated URL
+     * @memberof MyButtercupClient
+     * @static
+     */
     static generateAuthorisationURL(clientID) {
         const redir = encodeURIComponent(OAUTH_REDIRECT_URI);
         return `${OAUTH_AUTHORISE_URI}?response_type=code&client_id=${clientID}&redirect_uri=${redir}`;
@@ -333,6 +342,17 @@ class MyButtercupClient extends EventEmitter {
             });
     }
 
+    /**
+     * Write the user vault contents back to the server
+     * @param {String} contents Encrypted vault contents
+     * @param {Number} previousUpdateID The previous update ID received
+     *  from the server
+     * @param {Number} newUpdateID The new update ID to set after a
+     *  successful write
+     * @returns {Promise} A promise that resolves once the write has
+     *  been completed
+     * @memberof MyButtercupClient
+     */
     writeUserArchive(contents, previousUpdateID, newUpdateID) {
         const requestOptions = {
             url: API_OWN_ARCHIVE,
@@ -362,6 +382,15 @@ class MyButtercupClient extends EventEmitter {
             });
     }
 
+    /**
+     * Handle a request failure (processes token expiration etc.)
+     * @param {Error} err The received error from making a request
+     * @throws {Error} Throws if the error was not catchable
+     * @returns {Promise} Returns a promise if an action can be taken
+     *  to remedy the situation
+     * @memberof MyButtercupClient
+     * @protected
+     */
     async _handleRequestFailure(err) {
         if (err.responseHeaders && typeof err.responseHeaders === "object") {
             if (err.responseHeaders["x-mb-oauth"]) {
