@@ -11,6 +11,7 @@ const {
     OAUTH_REDIRECT_URI,
     OAUTH_TOKEN_URI
 } = require("./symbols.js");
+const { ensureVaultContentsEncrypted } = require("../tools/validation.js");
 
 /**
  * @typedef {Object} MyButtercupShare
@@ -353,7 +354,7 @@ class MyButtercupClient extends EventEmitter {
      *  been completed
      * @memberof MyButtercupClient
      */
-    writeUserArchive(contents, previousUpdateID, newUpdateID) {
+    async writeUserArchive(contents, previousUpdateID, newUpdateID) {
         const requestOptions = {
             url: API_OWN_ARCHIVE,
             method: "PUT",
@@ -365,6 +366,8 @@ class MyButtercupClient extends EventEmitter {
             },
             body: contents
         };
+        // Test encrypted - throws if not
+        ensureVaultContentsEncrypted(contents);
         return request(requestOptions)
             .then(resp => {
                 const { data: payload } = resp;
