@@ -165,6 +165,7 @@ class MyButtercupClient extends EventEmitter {
         this._lastDigest = null;
         this._clientID = clientID;
         this._clientSecret = clientSecret;
+        this.request = request;
     }
 
     /**
@@ -212,9 +213,9 @@ class MyButtercupClient extends EventEmitter {
             },
             responseType: "text"
         };
-        return request(requestOptions)
+        return this.request(requestOptions)
             .then(resp => demultiplexShares(resp.data))
-            .catch(err => this._handleRequestFailure(err))
+            .catch(err => this._handleRequestFailure(err).then(() => this.fetchShares(ids)))
             .catch(err => {
                 throw new VError(err, "Failed retrieving shares");
             });
@@ -235,7 +236,7 @@ class MyButtercupClient extends EventEmitter {
             },
             responseType: "text"
         };
-        return request(requestOptions)
+        return this.request(requestOptions)
             .then(resp => {
                 // Archive requests contain the archive contents in the
                 // body as text - update ID is contained within the headers
@@ -268,7 +269,7 @@ class MyButtercupClient extends EventEmitter {
                 Authorization: `Bearer ${this.accessToken}`
             }
         };
-        return request(requestOptions)
+        return this.request(requestOptions)
             .then(resp => {
                 const {
                     data: {
@@ -301,7 +302,7 @@ class MyButtercupClient extends EventEmitter {
                 Authorization: `Bearer ${this.accessToken}`
             }
         };
-        return request(requestOptions)
+        return this.request(requestOptions)
             .then(resp => {
                 const { data: digest } = resp;
                 if (digest.status !== "ok") {
@@ -360,7 +361,7 @@ class MyButtercupClient extends EventEmitter {
                 Authorization: `Bearer ${this.accessToken}`
             }
         };
-        return request(requestOptions)
+        return this.request(requestOptions)
             .then(resp => {
                 const { data } = resp;
                 if (data.status !== "ok" || !data.users) {
@@ -399,7 +400,7 @@ class MyButtercupClient extends EventEmitter {
         };
         // Test encrypted - throws if not
         ensureVaultContentsEncrypted(contents);
-        return request(requestOptions)
+        return this.request(requestOptions)
             .then(resp => {
                 const { data: payload } = resp;
                 if (payload.status !== "ok") {
@@ -466,7 +467,7 @@ class MyButtercupClient extends EventEmitter {
             },
             body: `grant_type=refresh_token&refresh_token=${this.refreshToken}`
         };
-        return request(requestOptions)
+        return this.request(requestOptions)
             .then(resp => {
                 const {
                     data: { access_token: accessToken, token_type: tokenType }
