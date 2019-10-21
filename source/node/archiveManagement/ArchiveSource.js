@@ -369,18 +369,18 @@ class ArchiveSource extends EventEmitter {
                                 this._archiveCredentials = archiveCredentials;
                                 this._status = Status.UNLOCKED;
                                 this.type = sourceCredentials.type;
+                                workspace.datasource.on("updated", () => {
+                                    this.updateCredentialsFromDatasource();
+                                    this.emit("sourceUpdated");
+                                });
                                 if (storeOfflineCopy) {
                                     // Store an offline copy for later use
                                     return storeSourceOfflineCopy(
                                         this.storageInterface,
                                         this.id,
                                         workspace.datasource._content
-                                    );
+                                    ).then(() => updated);
                                 }
-                                workspace.datasource.on("updated", () => {
-                                    this.updateCredentialsFromDatasource();
-                                    this.emit("sourceUpdated");
-                                });
                                 return updated;
                             })
                             .catch(err => {
