@@ -1,74 +1,22 @@
-## Modules
-
-<dl>
-<dt><a href="#module_Descriptor">Descriptor</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
-<dd><p>Describe an archive dataset - to history commands</p>
-</dd>
-<dt><a href="#module_command">command</a></dt>
-<dd><p>Command related tools</p>
-</dd>
-</dl>
-
 ## Classes
 
 <dl>
-<dt><a href="#Archive">Archive</a> ⇐ <code>AsyncEventEmitter</code></dt>
+<dt><a href="#Archive">Archive</a> ⇐ <code>EventEmitter</code></dt>
 <dd><p>Buttercup Archive</p>
 </dd>
 <dt><a href="#ArchiveComparator">ArchiveComparator</a></dt>
-<dd></dd>
-<dt><a href="#ArchiveManager">ArchiveManager</a> ⇐ <code>AsyncEventEmitter</code></dt>
+<dd><p>Archive comparison class</p>
+</dd>
+<dt><a href="#ArchiveManager">ArchiveManager</a> ⇐ <code>EventEmitter</code></dt>
 <dd><p>Archive manager class</p>
 </dd>
-<dt><a href="#ArchiveSource">ArchiveSource</a> ⇐ <code>AsyncEventEmitter</code></dt>
+<dt><a href="#ArchiveSource">ArchiveSource</a> ⇐ <code>EventEmitter</code></dt>
 <dd><p>Archive source class</p>
 </dd>
-<dt><a href="#FormatCommand">FormatCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#BaseCommand">BaseCommand</a></dt>
-<dd></dd>
-<dt><a href="#CommentCommand">CommentCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#CreateEntryCommand">CreateEntryCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#CreateGroupCommand">CreateGroupCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#DeleteArchiveAttributeCommand">DeleteArchiveAttributeCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#DeleteEntryAttributeCommand">DeleteEntryAttributeCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#DeleteEntryCommand">DeleteEntryCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><del><a href="#DeleteEntryMetaCommand">DeleteEntryMetaCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></del></dt>
-<dd></dd>
-<dt><a href="#DeleteEntryPropertyCommand">DeleteEntryPropertyCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd><p>Command for the deletion of property data on an entry</p>
+<dt><a href="#ArchiveMember">ArchiveMember</a></dt>
+<dd><p>Base archive member class (for Entry, Group etc.)</p>
 </dd>
-<dt><a href="#DeleteGroupAttributeCommand">DeleteGroupAttributeCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#DeleteGroupCommand">DeleteGroupCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#FormatCommand">FormatCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#MoveEntryCommand">MoveEntryCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#MoveGroupCommand">MoveGroupCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#PadCommand">PadCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#SetArchiveAttributeCommand">SetArchiveAttributeCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#SetEntryAttributeCommand">SetEntryAttributeCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><del><a href="#SetEntryMetaCommand">SetEntryMetaCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></del></dt>
-<dd></dd>
-<dt><a href="#SetEntryPropertyCommand">SetEntryPropertyCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#SetGroupAttributeCommand">SetGroupAttributeCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#TitleGroupCommand">TitleGroupCommand</a> ⇐ <code><a href="#BaseCommand">BaseCommand</a></code></dt>
-<dd></dd>
-<dt><a href="#Entry">Entry</a></dt>
+<dt><a href="#Entry">Entry</a> ⇐ <code><a href="#ArchiveMember">ArchiveMember</a></code></dt>
 <dd><p>Entry class implementation
 Entries form the low-level data structures used in Buttercup, and
 are intended to represent logical collections of properties, like
@@ -80,16 +28,14 @@ a login for a website.</p>
 <dt><a href="#Flattener">Flattener</a></dt>
 <dd><p>Flattener class for flattening archive history sets</p>
 </dd>
-<dt><a href="#Group">Group</a></dt>
+<dt><a href="#Group">Group</a> ⇐ <code><a href="#ArchiveMember">ArchiveMember</a></code></dt>
 <dd><p>Group implementation</p>
 </dd>
 <dt><a href="#InigoCommand">InigoCommand</a></dt>
 <dd><p>Inigo command generator</p>
 </dd>
-<dt><a href="#Westley">Westley</a> ⇐ <code>AsyncEventEmitter</code></dt>
-<dd><p>Westley class
-Archive object dataset and history manager. Handles parsing and
-revenge for the princess.</p>
+<dt><a href="#MyButtercupClient">MyButtercupClient</a> ⇐ <code>EventEmitter</code></dt>
+<dd><p>My Buttercup client</p>
 </dd>
 <dt><a href="#Workspace">Workspace</a></dt>
 <dd><p>Workspace class implementation
@@ -119,36 +65,45 @@ and merges with remote changes.</p>
 <dt><a href="#credentialsToSource">credentialsToSource(sourceCredentials, archiveCredentials, [initialise], [contentOverride])</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Convert credentials to a source for the ArchiveManager</p>
 </dd>
-<dt><a href="#addExtraFieldsNonDestructive">addExtraFieldsNonDestructive(entry, fields)</a> ⇒ <code><a href="#EntryFacadeField">Array.&lt;EntryFacadeField&gt;</a></code></dt>
-<dd><p>Add extra fields to a fields array that are not mentioned in a preset
-Facades are creaded by presets which don&#39;t mention all property values (custom user
-added items). This method adds the unmentioned items to the facade fields so that
-they can be edited as well.</p>
-</dd>
-<dt><a href="#applyFieldDescriptor">applyFieldDescriptor(entry, descriptor)</a></dt>
-<dd><p>Apply a facade field descriptor to an entry
-Takes data from the descriptor and writes it to the entry.</p>
-</dd>
-<dt><del><a href="#consumeEntryFacade">consumeEntryFacade(entry, facade)</a></del></dt>
-<dd><p>Process a modified entry facade</p>
-</dd>
-<dt><del><a href="#createEntryFacade">createEntryFacade(entry)</a> ⇒ <code><a href="#EntryFacade">EntryFacade</a></code></del></dt>
-<dd><p>Create a data/input facade for an Entry instance</p>
-</dd>
-<dt><del><a href="#getEntryFacadeType">getEntryFacadeType(entry)</a> ⇒ <code>String</code></del></dt>
-<dd><p>Get the facade type for an entry</p>
-</dd>
-<dt><a href="#setEntryValue">setEntryValue(entry, property, name, value)</a></dt>
-<dd><p>Set a value on an entry</p>
-</dd>
 <dt><a href="#flattenEntries">flattenEntries(archives)</a> ⇒ <code><a href="#EntrySearchInfo">Array.&lt;EntrySearchInfo&gt;</a></code></dt>
 <dd><p>Flatten entries into a searchable structure</p>
+</dd>
+<dt><a href="#generateNewUpdateID">generateNewUpdateID()</a> ⇒ <code>Number</code></dt>
+<dd><p>Generate a new update ID</p>
+</dd>
+<dt><a href="#extractCommandComponents">extractCommandComponents(command)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
+<dd><p>Extract command components from a string</p>
+</dd>
+<dt><a href="#calculateCommonRecentCommand">calculateCommonRecentCommand(historyA, historyB)</a> ⇒ <code>null</code> | <code>Object</code></dt>
+<dd><p>Calculate the common command indexes between 2 histories.
+The common index is where a padding ID matches that of the other history,
+at some point. If we assume one history may have been flattened, we cannot
+assume that the entire past history will be the same, but
+we can assume that at that point, the histories produce the same structure.
+Because the histories may be different in the future, we use the newest
+matching pad ID to create a common link between the 2 histories.</p>
+</dd>
+<dt><a href="#calculateHistoryDifferences">calculateHistoryDifferences()</a> ⇒ <code>Object</code> | <code>Boolean</code></dt>
+<dd><p>Calculate the differences, in commands, between two histories</p>
 </dd>
 <dt><a href="#dedupe">dedupe(arr)</a> ⇒ <code>Array</code></dt>
 <dd><p>De-dupe an array</p>
 </dd>
-<dt><a href="#createFieldDescriptor">createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options)</a> ⇒ <code><a href="#EntryFacadeField">EntryFacadeField</a></code></dt>
-<dd><p>Create a descriptor for a field to be used within a facade</p>
+<dt><a href="#describeArchiveDataset">describeArchiveDataset(dataset, parentGroupID)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
+<dd><p>Describe an archive dataset - to history commands</p>
+</dd>
+<dt><a href="#decodeStringValue">decodeStringValue(value)</a> ⇒ <code>String</code></dt>
+<dd><p>Decode an encoded property/meta value</p>
+</dd>
+<dt><a href="#encodeStringValue">encodeStringValue(value)</a> ⇒ <code>String</code></dt>
+<dd><p>Encode a raw value into safe storage form
+Uses base64 for encoding</p>
+</dd>
+<dt><a href="#getUniqueID">getUniqueID()</a> ⇒ <code>String</code></dt>
+<dd><p>Get a unique identifier (UUID v4)</p>
+</dd>
+<dt><a href="#isEncoded">isEncoded(text)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>Check if a string value is encoded</p>
 </dd>
 <dt><a href="#getEntryURLs">getEntryURLs(properties, preference)</a></dt>
 <dd><p>Get URLs from an entry&#39;s properties
@@ -160,6 +115,30 @@ Allows for preferential sorting</p>
 <dt><a href="#isValidProperty">isValidProperty(name)</a> ⇒ <code>Boolean</code></dt>
 <dd><p>Check if a property name is valid</p>
 </dd>
+<dt><a href="#stripDestructiveCommands">stripDestructiveCommands(history)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
+<dd><p>Strip destructive commands from a history collection</p>
+</dd>
+<dt><a href="#findGroupContainingEntryID">findGroupContainingEntryID(groups, id)</a> ⇒ <code><a href="#FoundGroupResult">FoundGroupResult</a></code></dt>
+<dd><p>Find a raw group that contains an entry with an ID</p>
+</dd>
+<dt><a href="#findGroupContainingGroupID">findGroupContainingGroupID(group, id)</a> ⇒ <code><a href="#FoundGroupResult">FoundGroupResult</a></code></dt>
+<dd><p>Find a raw group that contains a group with an ID</p>
+</dd>
+<dt><a href="#extractSharesFromHistory">extractSharesFromHistory(history)</a> ⇒ <code>Object</code></dt>
+<dd><p>Extract shares from a history collection</p>
+</dd>
+<dt><a href="#moveGroupBetweenArchives">moveGroupBetweenArchives(movingGroup, target)</a></dt>
+<dd><p>Move a group between archives</p>
+</dd>
+<dt><a href="#prependSharePrefix">prependSharePrefix(history)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
+<dd><p>Prepend the share prefix to every line that doesn&#39;t have it</p>
+</dd>
+<dt><a href="#removeSharePrefix">removeSharePrefix(history)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
+<dd><p>Remove the share prefix to every line that has it</p>
+</dd>
+<dt><a href="#generateUUID">generateUUID()</a> ⇒ <code>String</code></dt>
+<dd><p>Generate a UUID (v4)</p>
+</dd>
 <dt><a href="#findEntriesByCheck">findEntriesByCheck(groups, compareFn)</a> ⇒ <code><a href="#Entry">Array.&lt;Entry&gt;</a></code></dt>
 <dd><p>Find entry instances by filtering with a compare function</p>
 </dd>
@@ -168,9 +147,6 @@ Allows for preferential sorting</p>
 </dd>
 <dt><a href="#getAllEntries">getAllEntries(groups)</a> ⇒ <code><a href="#Entry">Array.&lt;Entry&gt;</a></code></dt>
 <dd><p>Get all entries within a collection of groups</p>
-</dd>
-<dt><a href="#generateUUID">generateUUID()</a> ⇒ <code>String</code></dt>
-<dd><p>Generate a UUID (v4)</p>
 </dd>
 <dt><a href="#deriveKeyFromPassword">deriveKeyFromPassword(password, salt, rounds, bits)</a> ⇒ <code>Promise.&lt;ArrayBuffer&gt;</code></dt>
 <dd><p>Derive a key from a password</p>
@@ -188,61 +164,40 @@ Allows for preferential sorting</p>
 </dd>
 <dt><a href="#ArchiveSourceDescription">ArchiveSourceDescription</a></dt>
 <dd></dd>
-<dt><a href="#ArchiveDataset">ArchiveDataset</a> : <code>Object</code></dt>
-<dd></dd>
 <dt><a href="#EntryHistoryItem">EntryHistoryItem</a> : <code>Object</code></dt>
 <dd></dd>
-<dt><a href="#EntryFacade">EntryFacade</a> : <code>Object</code></dt>
-<dd><p>Entry facade for data input</p>
-</dd>
 <dt><a href="#EntrySearchInfo">EntrySearchInfo</a> : <code>Object</code></dt>
 <dd></dd>
-<dt><a href="#EntryFacadeField">EntryFacadeField</a> : <code>Object</code></dt>
-<dd><p>Entry facade data field</p>
-</dd>
+<dt><a href="#MyButtercupShareBase">MyButtercupShareBase</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#MyButtercupIncomingShare">MyButtercupIncomingShare</a> : <code><a href="#MyButtercupShareBase">MyButtercupShareBase</a></code></dt>
+<dd></dd>
+<dt><a href="#MyButtercupEncryptedShare">MyButtercupEncryptedShare</a> : <code><a href="#MyButtercupShareBase">MyButtercupShareBase</a></code></dt>
+<dd></dd>
+<dt><a href="#MyButtercupOrganisation">MyButtercupOrganisation</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#MyButtercupDigest">MyButtercupDigest</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#MyButtercupUsersListItem">MyButtercupUsersListItem</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#MyButtercupTokenResult">MyButtercupTokenResult</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#MyButtercupArchiveDetails">MyButtercupArchiveDetails</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#FoundGroupResult">FoundGroupResult</a> : <code>Object</code></dt>
 <dd></dd>
 </dl>
 
-<a name="module_Descriptor"></a>
-
-## Descriptor ⇒ <code>Array.&lt;String&gt;</code>
-Describe an archive dataset - to history commands
-
-**Returns**: <code>Array.&lt;String&gt;</code> - An array of commands  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| dataset | <code>Object</code> | The archive dataset |
-| parentGroupID | <code>String</code> | The ID of the parent group |
-
-<a name="module_command"></a>
-
-## command
-Command related tools
-
-<a name="module_command.extractCommandComponents"></a>
-
-### command.extractCommandComponents(command) ⇒ <code>Array.&lt;String&gt;</code>
-Extract command components from a string
-
-**Kind**: static method of [<code>command</code>](#module_command)  
-**Returns**: <code>Array.&lt;String&gt;</code> - The separated parts  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| command | <code>String</code> | The command to extract from |
-
 <a name="Archive"></a>
 
-## Archive ⇐ <code>AsyncEventEmitter</code>
+## Archive ⇐ <code>EventEmitter</code>
 Buttercup Archive
 
 **Kind**: global class  
-**Extends**: <code>AsyncEventEmitter</code>  
+**Extends**: <code>EventEmitter</code>  
 **Mixes**: [<code>GroupCollection</code>](#GroupCollection), [<code>EntryCollection</code>](#EntryCollection)  
 
-* [Archive](#Archive) ⇐ <code>AsyncEventEmitter</code>
+* [Archive](#Archive) ⇐ <code>EventEmitter</code>
     * _instance_
         * [.id](#Archive+id) : <code>String</code>
         * [.readOnly](#Archive+readOnly)
@@ -258,7 +213,7 @@ Buttercup Archive
         * [.createGroup([title])](#Archive+createGroup) ⇒ [<code>Group</code>](#Group)
         * [.deleteAttribute(attributeName)](#Archive+deleteAttribute) ⇒ [<code>Archive</code>](#Archive)
         * [.emptyTrash()](#Archive+emptyTrash)
-        * ~~[.getAttribute(attributeName)](#Archive+getAttribute) ⇒ <code>undefined</code> \| <code>String</code> \| <code>Object</code>~~
+        * ~~[.getAttribute([attributeName])](#Archive+getAttribute) ⇒ <code>undefined</code> \| <code>String</code> \| <code>Object</code>~~
         * [.getAttributes()](#Archive+getAttributes) ⇒ <code>Object</code>
         * [.getFormat()](#Archive+getFormat) ⇒ <code>string</code>
         * [.getGroups()](#Archive+getGroups) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
@@ -268,7 +223,7 @@ Buttercup Archive
         * [.setAttribute(attributeName, value)](#Archive+setAttribute) ⇒ [<code>Archive</code>](#Archive)
         * [.toObject(groupOutputFlags)](#Archive+toObject) ⇒ <code>Object</code>
         * [._generateID()](#Archive+_generateID)
-        * [._getWestley()](#Archive+_getWestley) ⇒ [<code>Westley</code>](#Westley)
+        * [._getWestley()](#Archive+_getWestley) ⇒ <code>Westley</code>
         * [.inst.findEntryByID(id)](#Archive+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
         * [.inst.findEntryByID(id)](#Archive+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
     * _static_
@@ -445,7 +400,7 @@ Remove all entries and groups from the trash (permanent)
 
 <a name="Archive+getAttribute"></a>
 
-### ~~archive.getAttribute(attributeName) ⇒ <code>undefined</code> \| <code>String</code> \| <code>Object</code>~~
+### ~~archive.getAttribute([attributeName]) ⇒ <code>undefined</code> \| <code>String</code> \| <code>Object</code>~~
 ***Deprecated***
 
 Get the value of an attribute
@@ -456,7 +411,7 @@ Get the value of an attribute
 
 | Param | Type | Description |
 | --- | --- | --- |
-| attributeName | <code>String</code> | The attribute to get |
+| [attributeName] | <code>String</code> | The attribute to get |
 
 <a name="Archive+getAttributes"></a>
 
@@ -536,11 +491,11 @@ Generate an archive ID
 **Access**: protected  
 <a name="Archive+_getWestley"></a>
 
-### archive.\_getWestley() ⇒ [<code>Westley</code>](#Westley)
+### archive.\_getWestley() ⇒ <code>Westley</code>
 Get the underlying Westley instance
 
 **Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: [<code>Westley</code>](#Westley) - The Westley instance  
+**Returns**: <code>Westley</code> - The Westley instance  
 **Access**: protected  
 <a name="Archive+findEntryByID"></a>
 
@@ -590,17 +545,19 @@ Create an Archive with the default template
 <a name="ArchiveComparator"></a>
 
 ## ArchiveComparator
+Archive comparison class
+
 **Kind**: global class  
 
 * [ArchiveComparator](#ArchiveComparator)
     * [new ArchiveComparator(originalArchive, secondaryArchive)](#new_ArchiveComparator_new)
     * [.archivesDiffer()](#ArchiveComparator+archivesDiffer) ⇒ <code>Boolean</code>
-    * [.calculateDifferences()](#ArchiveComparator+calculateDifferences) ⇒ <code>Object</code> \| <code>Boolean</code>
+    * [.calculateDifferences()](#ArchiveComparator+calculateDifferences) ⇒ <code>Object</code> \| <code>null</code>
 
 <a name="new_ArchiveComparator_new"></a>
 
 ### new ArchiveComparator(originalArchive, secondaryArchive)
-Archive comparison class
+Constructor for the archive comparator
 
 
 | Param | Type | Description |
@@ -617,21 +574,21 @@ Check if the current archives differ
 **Returns**: <code>Boolean</code> - True if the archives are different  
 <a name="ArchiveComparator+calculateDifferences"></a>
 
-### archiveComparator.calculateDifferences() ⇒ <code>Object</code> \| <code>Boolean</code>
+### archiveComparator.calculateDifferences() ⇒ <code>Object</code> \| <code>null</code>
 Calculate the differences, in commands, between the two archives
 
 **Kind**: instance method of [<code>ArchiveComparator</code>](#ArchiveComparator)  
-**Returns**: <code>Object</code> \| <code>Boolean</code> - Returns false if no common base
+**Returns**: <code>Object</code> \| <code>null</code> - Returns null if no common base
        is found, or the command differences as two arrays  
 <a name="ArchiveManager"></a>
 
-## ArchiveManager ⇐ <code>AsyncEventEmitter</code>
+## ArchiveManager ⇐ <code>EventEmitter</code>
 Archive manager class
 
 **Kind**: global class  
-**Extends**: <code>AsyncEventEmitter</code>  
+**Extends**: <code>EventEmitter</code>  
 
-* [ArchiveManager](#ArchiveManager) ⇐ <code>AsyncEventEmitter</code>
+* [ArchiveManager](#ArchiveManager) ⇐ <code>EventEmitter</code>
     * [new ArchiveManager([storageInterface])](#new_ArchiveManager_new)
     * [.autoUpdateEnabled](#ArchiveManager+autoUpdateEnabled) : <code>Boolean</code>
     * [.nextSourceOrder](#ArchiveManager+nextSourceOrder) : <code>Number</code>
@@ -832,19 +789,20 @@ Toggle auto updating of sources
 
 <a name="ArchiveSource"></a>
 
-## ArchiveSource ⇐ <code>AsyncEventEmitter</code>
+## ArchiveSource ⇐ <code>EventEmitter</code>
 Archive source class
 
 **Kind**: global class  
-**Extends**: <code>AsyncEventEmitter</code>  
+**Extends**: <code>EventEmitter</code>  
 
-* [ArchiveSource](#ArchiveSource) ⇐ <code>AsyncEventEmitter</code>
+* [ArchiveSource](#ArchiveSource) ⇐ <code>EventEmitter</code>
     * [new ArchiveSource(name, sourceCredentials, archiveCredentials, [newSourceOptions])](#new_ArchiveSource_new)
     * _instance_
         * [.canBeUpdated](#ArchiveSource+canBeUpdated) : <code>Boolean</code>
         * [.colour](#ArchiveSource+colour) : <code>String</code>
         * [.description](#ArchiveSource+description) : [<code>ArchiveSourceDescription</code>](#ArchiveSourceDescription)
         * [.id](#ArchiveSource+id) : <code>String</code>
+        * [.meta](#ArchiveSource+meta) : <code>Object</code>
         * [.name](#ArchiveSource+name) : <code>String</code>
         * [.status](#ArchiveSource+status) : <code>ArchiveSourceStatus</code>
         * [.storageInterface](#ArchiveSource+storageInterface) : <code>StorageInterface</code>
@@ -896,6 +854,13 @@ Get the source description
 
 ### archiveSource.id : <code>String</code>
 Source ID
+
+**Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
+**Read only**: true  
+<a name="ArchiveSource+meta"></a>
+
+### archiveSource.meta : <code>Object</code>
+Meta data included with the source (not encrypted)
 
 **Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
 **Read only**: true  
@@ -1057,1658 +1022,128 @@ Rehydrate a dehydrated archive source
 | --- | --- | --- |
 | dehydratedString | <code>String</code> | A dehydrated archive source |
 
-<a name="FormatCommand"></a>
+<a name="ArchiveMember"></a>
 
-## FormatCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
+## ArchiveMember
+Base archive member class (for Entry, Group etc.)
 
-* [FormatCommand](#FormatCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new FormatCommand()](#new_FormatCommand_new)
-    * [new FormatCommand()](#new_FormatCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, format)](#FormatCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_FormatCommand_new"></a>
-
-### new FormatCommand()
-Command for setting the archive ID
-
-<a name="new_FormatCommand_new"></a>
-
-### new FormatCommand()
-Command for setting the archive format
-
-<a name="BaseCommand+entryTools"></a>
-
-### formatCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>FormatCommand</code>](#FormatCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### formatCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>FormatCommand</code>](#FormatCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="FormatCommand+execute"></a>
-
-### formatCommand.execute(obj, format)
-Execute the setting of the format
-
-**Kind**: instance method of [<code>FormatCommand</code>](#FormatCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| format | <code>String</code> | The archive format |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### formatCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>FormatCommand</code>](#FormatCommand)  
-**Overrides**: [<code>executeCallbacks</code>](#BaseCommand+executeCallbacks)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### formatCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>FormatCommand</code>](#FormatCommand)  
-**Overrides**: [<code>setCallback</code>](#BaseCommand+setCallback)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="BaseCommand"></a>
-
-## BaseCommand
 **Kind**: global class  
 
-* [BaseCommand](#BaseCommand)
-    * [new BaseCommand()](#new_BaseCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.entryTools](#BaseCommand+entryTools)
-    * [.searchTools](#BaseCommand+searchTools)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
+* [ArchiveMember](#ArchiveMember)
+    * [new ArchiveMember(archive, remoteObj)](#new_ArchiveMember_new)
+    * [.id](#ArchiveMember+id) : <code>String</code>
+    * [.permissions](#ArchiveMember+permissions) : <code>Array.&lt;String&gt;</code>
+    * [.grantPermission(perm)](#ArchiveMember+grantPermission)
+    * [.hasPermission(perm)](#ArchiveMember+hasPermission) ⇒ <code>Boolean</code>
+    * [.revokeAllPermissions()](#ArchiveMember+revokeAllPermissions)
+    * [.revokePermission(perm)](#ArchiveMember+revokePermission)
+    * [._getArchive()](#ArchiveMember+_getArchive) ⇒ [<code>Archive</code>](#Archive)
+    * [._getRemoteObject()](#ArchiveMember+_getRemoteObject) ⇒ <code>Object</code>
+    * [._getWestley()](#ArchiveMember+_getWestley) ⇒ <code>Westley</code>
 
-<a name="new_BaseCommand_new"></a>
+<a name="new_ArchiveMember_new"></a>
 
-### new BaseCommand()
-Base command class
+### new ArchiveMember(archive, remoteObj)
+Constructor for the archive member base class
 
-<a name="BaseCommand+entryTools"></a>
-
-### baseCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>BaseCommand</code>](#BaseCommand)  
-<a name="BaseCommand+searchTools"></a>
-
-### baseCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>BaseCommand</code>](#BaseCommand)  
-<a name="BaseCommand+entryTools"></a>
-
-### baseCommand.entryTools
-Set the entry tools module
-
-**Kind**: instance property of [<code>BaseCommand</code>](#BaseCommand)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| et | <code>Object</code> | The entry tools module |
+| archive | [<code>Archive</code>](#Archive) | Archive reference |
+| remoteObj | <code>Object</code> | Remote datasource reference |
 
-<a name="BaseCommand+searchTools"></a>
+<a name="ArchiveMember+id"></a>
 
-### baseCommand.searchTools
-Set the search tools module
+### archiveMember.id : <code>String</code>
+The ID of the entry
 
-**Kind**: instance property of [<code>BaseCommand</code>](#BaseCommand)  
+**Kind**: instance property of [<code>ArchiveMember</code>](#ArchiveMember)  
+**Read only**: true  
+<a name="ArchiveMember+permissions"></a>
 
-| Param | Type | Description |
-| --- | --- | --- |
-| st | <code>Object</code> | The search tools module |
+### archiveMember.permissions : <code>Array.&lt;String&gt;</code>
+The current granted permissions
 
-<a name="BaseCommand+executeCallbacks"></a>
+**Kind**: instance property of [<code>ArchiveMember</code>](#ArchiveMember)  
+<a name="ArchiveMember+grantPermission"></a>
 
-### baseCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
+### archiveMember.grantPermission(perm)
+Grant a new permission to the member
 
-**Kind**: instance method of [<code>BaseCommand</code>](#BaseCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### baseCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>BaseCommand</code>](#BaseCommand)  
+**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
+| perm | <code>String</code> | The permission to grant |
 
-<a name="CommentCommand"></a>
+<a name="ArchiveMember+hasPermission"></a>
 
-## CommentCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
+### archiveMember.hasPermission(perm) ⇒ <code>Boolean</code>
+Check if the member has a permission
 
-* [CommentCommand](#CommentCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new CommentCommand()](#new_CommentCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, comment)](#CommentCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_CommentCommand_new"></a>
-
-### new CommentCommand()
-Command for archive comments
-
-<a name="BaseCommand+entryTools"></a>
-
-### commentCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>CommentCommand</code>](#CommentCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### commentCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>CommentCommand</code>](#CommentCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="CommentCommand+execute"></a>
-
-### commentCommand.execute(obj, comment)
-Execute comment callbacks
-
-**Kind**: instance method of [<code>CommentCommand</code>](#CommentCommand)  
-**See**: BaseCommand.executeCallbacks  
+**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| comment | <code>String</code> | The comment |
+| perm | <code>String</code> | The permission to check for |
 
-<a name="BaseCommand+executeCallbacks"></a>
+<a name="ArchiveMember+revokeAllPermissions"></a>
 
-### commentCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
+### archiveMember.revokeAllPermissions()
+Revoke all permissions
 
-**Kind**: instance method of [<code>CommentCommand</code>](#CommentCommand)  
+**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
+<a name="ArchiveMember+revokePermission"></a>
 
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
+### archiveMember.revokePermission(perm)
+Revoke a single permission
 
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### commentCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>CommentCommand</code>](#CommentCommand)  
+**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
+| perm | <code>String</code> | The permission to revoke |
 
-<a name="CreateEntryCommand"></a>
+<a name="ArchiveMember+_getArchive"></a>
 
-## CreateEntryCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
+### archiveMember.\_getArchive() ⇒ [<code>Archive</code>](#Archive)
+Get the archive reference
 
-* [CreateEntryCommand](#CreateEntryCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new CreateEntryCommand()](#new_CreateEntryCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, groupID, entryID)](#CreateEntryCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
+**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
+**Returns**: [<code>Archive</code>](#Archive) - The Archive reference  
+**Access**: protected  
+<a name="ArchiveMember+_getRemoteObject"></a>
 
-<a name="new_CreateEntryCommand_new"></a>
+### archiveMember.\_getRemoteObject() ⇒ <code>Object</code>
+Get the remote object that mirrors the data represented here
 
-### new CreateEntryCommand()
-Command for creating entries
+**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
+**Returns**: <code>Object</code> - The remote object (in-memory copy)  
+**Access**: protected  
+<a name="ArchiveMember+_getWestley"></a>
 
-<a name="BaseCommand+entryTools"></a>
+### archiveMember.\_getWestley() ⇒ <code>Westley</code>
+Get the Westley reference
 
-### createEntryCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>CreateEntryCommand</code>](#CreateEntryCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### createEntryCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>CreateEntryCommand</code>](#CreateEntryCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="CreateEntryCommand+execute"></a>
-
-### createEntryCommand.execute(obj, groupID, entryID)
-Execute the entry creation
-
-**Kind**: instance method of [<code>CreateEntryCommand</code>](#CreateEntryCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| groupID | <code>String</code> | The ID of the group to create within |
-| entryID | <code>String</code> | The ID of the entry to create |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### createEntryCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>CreateEntryCommand</code>](#CreateEntryCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### createEntryCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>CreateEntryCommand</code>](#CreateEntryCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="CreateGroupCommand"></a>
-
-## CreateGroupCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [CreateGroupCommand](#CreateGroupCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new CreateGroupCommand()](#new_CreateGroupCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, parentID, newID)](#CreateGroupCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_CreateGroupCommand_new"></a>
-
-### new CreateGroupCommand()
-Command for creating groups
-
-<a name="BaseCommand+entryTools"></a>
-
-### createGroupCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>CreateGroupCommand</code>](#CreateGroupCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### createGroupCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>CreateGroupCommand</code>](#CreateGroupCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="CreateGroupCommand+execute"></a>
-
-### createGroupCommand.execute(obj, parentID, newID)
-Execute the group creation
-
-**Kind**: instance method of [<code>CreateGroupCommand</code>](#CreateGroupCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| parentID | <code>String</code> | The ID of the parent group to create within |
-| newID | <code>String</code> | The ID of the new group |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### createGroupCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>CreateGroupCommand</code>](#CreateGroupCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### createGroupCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>CreateGroupCommand</code>](#CreateGroupCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="DeleteArchiveAttributeCommand"></a>
-
-## DeleteArchiveAttributeCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [DeleteArchiveAttributeCommand](#DeleteArchiveAttributeCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new DeleteArchiveAttributeCommand()](#new_DeleteArchiveAttributeCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, attributeName)](#DeleteArchiveAttributeCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_DeleteArchiveAttributeCommand_new"></a>
-
-### new DeleteArchiveAttributeCommand()
-Command for deleting attributes stored on the archive object
-
-<a name="BaseCommand+entryTools"></a>
-
-### deleteArchiveAttributeCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>DeleteArchiveAttributeCommand</code>](#DeleteArchiveAttributeCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### deleteArchiveAttributeCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>DeleteArchiveAttributeCommand</code>](#DeleteArchiveAttributeCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="DeleteArchiveAttributeCommand+execute"></a>
-
-### deleteArchiveAttributeCommand.execute(obj, attributeName)
-Execute the deletion of an attribute
-
-**Kind**: instance method of [<code>DeleteArchiveAttributeCommand</code>](#DeleteArchiveAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| attributeName | <code>String</code> | The name of the attribute to delete |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### deleteArchiveAttributeCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>DeleteArchiveAttributeCommand</code>](#DeleteArchiveAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### deleteArchiveAttributeCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>DeleteArchiveAttributeCommand</code>](#DeleteArchiveAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="DeleteEntryAttributeCommand"></a>
-
-## DeleteEntryAttributeCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [DeleteEntryAttributeCommand](#DeleteEntryAttributeCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new DeleteEntryAttributeCommand()](#new_DeleteEntryAttributeCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, entryID, attributeName)](#DeleteEntryAttributeCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_DeleteEntryAttributeCommand_new"></a>
-
-### new DeleteEntryAttributeCommand()
-Command for the deletion of entry attributes
-
-<a name="BaseCommand+entryTools"></a>
-
-### deleteEntryAttributeCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>DeleteEntryAttributeCommand</code>](#DeleteEntryAttributeCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### deleteEntryAttributeCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>DeleteEntryAttributeCommand</code>](#DeleteEntryAttributeCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="DeleteEntryAttributeCommand+execute"></a>
-
-### deleteEntryAttributeCommand.execute(obj, entryID, attributeName)
-Execute the deletion of an attribute
-
-**Kind**: instance method of [<code>DeleteEntryAttributeCommand</code>](#DeleteEntryAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| entryID | <code>String</code> | The ID of the entry |
-| attributeName | <code>String</code> | The name of the attribute to delete |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### deleteEntryAttributeCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>DeleteEntryAttributeCommand</code>](#DeleteEntryAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### deleteEntryAttributeCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>DeleteEntryAttributeCommand</code>](#DeleteEntryAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="DeleteEntryCommand"></a>
-
-## DeleteEntryCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [DeleteEntryCommand](#DeleteEntryCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new DeleteEntryCommand()](#new_DeleteEntryCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, entryID)](#DeleteEntryCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_DeleteEntryCommand_new"></a>
-
-### new DeleteEntryCommand()
-Command for the deletion of entries
-
-<a name="BaseCommand+entryTools"></a>
-
-### deleteEntryCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>DeleteEntryCommand</code>](#DeleteEntryCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### deleteEntryCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>DeleteEntryCommand</code>](#DeleteEntryCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="DeleteEntryCommand+execute"></a>
-
-### deleteEntryCommand.execute(obj, entryID)
-Execute the entry deletion
-
-**Kind**: instance method of [<code>DeleteEntryCommand</code>](#DeleteEntryCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| entryID | <code>String</code> | The ID of the entry to delete |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### deleteEntryCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>DeleteEntryCommand</code>](#DeleteEntryCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### deleteEntryCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>DeleteEntryCommand</code>](#DeleteEntryCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="DeleteEntryMetaCommand"></a>
-
-## ~~DeleteEntryMetaCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)~~
-***Deprecated***
-
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* ~~[DeleteEntryMetaCommand](#DeleteEntryMetaCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)~~
-    * [new DeleteEntryMetaCommand()](#new_DeleteEntryMetaCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, entryID, propertyName)](#DeleteEntryMetaCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_DeleteEntryMetaCommand_new"></a>
-
-### new DeleteEntryMetaCommand()
-Command for the deletion of meta data on an entry
-
-<a name="BaseCommand+entryTools"></a>
-
-### deleteEntryMetaCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>DeleteEntryMetaCommand</code>](#DeleteEntryMetaCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### deleteEntryMetaCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>DeleteEntryMetaCommand</code>](#DeleteEntryMetaCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="DeleteEntryMetaCommand+execute"></a>
-
-### deleteEntryMetaCommand.execute(obj, entryID, propertyName)
-Execute the deletion of a meta property
-
-**Kind**: instance method of [<code>DeleteEntryMetaCommand</code>](#DeleteEntryMetaCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| entryID | <code>String</code> | The ID of the entry |
-| propertyName | <code>String</code> | The name of the meta property to delete |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### deleteEntryMetaCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>DeleteEntryMetaCommand</code>](#DeleteEntryMetaCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### deleteEntryMetaCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>DeleteEntryMetaCommand</code>](#DeleteEntryMetaCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="DeleteEntryPropertyCommand"></a>
-
-## DeleteEntryPropertyCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-Command for the deletion of property data on an entry
-
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [DeleteEntryPropertyCommand](#DeleteEntryPropertyCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, entryID, propertyName)](#DeleteEntryPropertyCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="BaseCommand+entryTools"></a>
-
-### deleteEntryPropertyCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>DeleteEntryPropertyCommand</code>](#DeleteEntryPropertyCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### deleteEntryPropertyCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>DeleteEntryPropertyCommand</code>](#DeleteEntryPropertyCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="DeleteEntryPropertyCommand+execute"></a>
-
-### deleteEntryPropertyCommand.execute(obj, entryID, propertyName)
-Execute the deletion of a property
-
-**Kind**: instance method of [<code>DeleteEntryPropertyCommand</code>](#DeleteEntryPropertyCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| entryID | <code>String</code> | The ID of the entry |
-| propertyName | <code>String</code> | The name of the property to delete |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### deleteEntryPropertyCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>DeleteEntryPropertyCommand</code>](#DeleteEntryPropertyCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### deleteEntryPropertyCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>DeleteEntryPropertyCommand</code>](#DeleteEntryPropertyCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="DeleteGroupAttributeCommand"></a>
-
-## DeleteGroupAttributeCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [DeleteGroupAttributeCommand](#DeleteGroupAttributeCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new DeleteGroupAttributeCommand()](#new_DeleteGroupAttributeCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, groupID, attributeName)](#DeleteGroupAttributeCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_DeleteGroupAttributeCommand_new"></a>
-
-### new DeleteGroupAttributeCommand()
-Command for deleting group attributes
-
-<a name="BaseCommand+entryTools"></a>
-
-### deleteGroupAttributeCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>DeleteGroupAttributeCommand</code>](#DeleteGroupAttributeCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### deleteGroupAttributeCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>DeleteGroupAttributeCommand</code>](#DeleteGroupAttributeCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="DeleteGroupAttributeCommand+execute"></a>
-
-### deleteGroupAttributeCommand.execute(obj, groupID, attributeName)
-Execute the deletion of a group attribute
-
-**Kind**: instance method of [<code>DeleteGroupAttributeCommand</code>](#DeleteGroupAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| groupID | <code>String</code> | The ID of the group |
-| attributeName | <code>String</code> | The attribute to delete |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### deleteGroupAttributeCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>DeleteGroupAttributeCommand</code>](#DeleteGroupAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### deleteGroupAttributeCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>DeleteGroupAttributeCommand</code>](#DeleteGroupAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="DeleteGroupCommand"></a>
-
-## DeleteGroupCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [DeleteGroupCommand](#DeleteGroupCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new DeleteGroupCommand()](#new_DeleteGroupCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, groupID)](#DeleteGroupCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_DeleteGroupCommand_new"></a>
-
-### new DeleteGroupCommand()
-Command for group deletion
-
-<a name="BaseCommand+entryTools"></a>
-
-### deleteGroupCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>DeleteGroupCommand</code>](#DeleteGroupCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### deleteGroupCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>DeleteGroupCommand</code>](#DeleteGroupCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="DeleteGroupCommand+execute"></a>
-
-### deleteGroupCommand.execute(obj, groupID)
-Execute the deletion of a group
-
-**Kind**: instance method of [<code>DeleteGroupCommand</code>](#DeleteGroupCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| groupID | <code>String</code> | The ID of the group to delete |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### deleteGroupCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>DeleteGroupCommand</code>](#DeleteGroupCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### deleteGroupCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>DeleteGroupCommand</code>](#DeleteGroupCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="FormatCommand"></a>
-
-## FormatCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [FormatCommand](#FormatCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new FormatCommand()](#new_FormatCommand_new)
-    * [new FormatCommand()](#new_FormatCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, format)](#FormatCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_FormatCommand_new"></a>
-
-### new FormatCommand()
-Command for setting the archive ID
-
-<a name="new_FormatCommand_new"></a>
-
-### new FormatCommand()
-Command for setting the archive format
-
-<a name="BaseCommand+entryTools"></a>
-
-### formatCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>FormatCommand</code>](#FormatCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### formatCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>FormatCommand</code>](#FormatCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="FormatCommand+execute"></a>
-
-### formatCommand.execute(obj, format)
-Execute the setting of the format
-
-**Kind**: instance method of [<code>FormatCommand</code>](#FormatCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| format | <code>String</code> | The archive format |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### formatCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>FormatCommand</code>](#FormatCommand)  
-**Overrides**: [<code>executeCallbacks</code>](#BaseCommand+executeCallbacks)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### formatCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>FormatCommand</code>](#FormatCommand)  
-**Overrides**: [<code>setCallback</code>](#BaseCommand+setCallback)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="MoveEntryCommand"></a>
-
-## MoveEntryCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [MoveEntryCommand](#MoveEntryCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new MoveEntryCommand()](#new_MoveEntryCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, entryID, targetGroupID)](#MoveEntryCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_MoveEntryCommand_new"></a>
-
-### new MoveEntryCommand()
-Command for the moving of entries
-
-<a name="BaseCommand+entryTools"></a>
-
-### moveEntryCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>MoveEntryCommand</code>](#MoveEntryCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### moveEntryCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>MoveEntryCommand</code>](#MoveEntryCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="MoveEntryCommand+execute"></a>
-
-### moveEntryCommand.execute(obj, entryID, targetGroupID)
-Execute the move
-
-**Kind**: instance method of [<code>MoveEntryCommand</code>](#MoveEntryCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| entryID | <code>String</code> | The ID of the entry to move |
-| targetGroupID | <code>String</code> | The ID of the group to move the entry to |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### moveEntryCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>MoveEntryCommand</code>](#MoveEntryCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### moveEntryCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>MoveEntryCommand</code>](#MoveEntryCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="MoveGroupCommand"></a>
-
-## MoveGroupCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [MoveGroupCommand](#MoveGroupCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new MoveGroupCommand()](#new_MoveGroupCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, groupID, targetGroupID)](#MoveGroupCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_MoveGroupCommand_new"></a>
-
-### new MoveGroupCommand()
-Command for moving groups
-
-<a name="BaseCommand+entryTools"></a>
-
-### moveGroupCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>MoveGroupCommand</code>](#MoveGroupCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### moveGroupCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>MoveGroupCommand</code>](#MoveGroupCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="MoveGroupCommand+execute"></a>
-
-### moveGroupCommand.execute(obj, groupID, targetGroupID)
-Execute the move
-
-**Kind**: instance method of [<code>MoveGroupCommand</code>](#MoveGroupCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| groupID | <code>String</code> | The ID of the group to move |
-| targetGroupID | <code>String</code> | The ID of the group to move to |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### moveGroupCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>MoveGroupCommand</code>](#MoveGroupCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### moveGroupCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>MoveGroupCommand</code>](#MoveGroupCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="PadCommand"></a>
-
-## PadCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [PadCommand](#PadCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new PadCommand()](#new_PadCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_PadCommand_new"></a>
-
-### new PadCommand()
-Command for padding
-Padding is used to identify "blocks" of history.
-
-<a name="BaseCommand+entryTools"></a>
-
-### padCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>PadCommand</code>](#PadCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### padCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>PadCommand</code>](#PadCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="BaseCommand+executeCallbacks"></a>
-
-### padCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>PadCommand</code>](#PadCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### padCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>PadCommand</code>](#PadCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="SetArchiveAttributeCommand"></a>
-
-## SetArchiveAttributeCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [SetArchiveAttributeCommand](#SetArchiveAttributeCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new SetArchiveAttributeCommand()](#new_SetArchiveAttributeCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, attributeName, value)](#SetArchiveAttributeCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_SetArchiveAttributeCommand_new"></a>
-
-### new SetArchiveAttributeCommand()
-Command for setting archive attributes
-
-<a name="BaseCommand+entryTools"></a>
-
-### setArchiveAttributeCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>SetArchiveAttributeCommand</code>](#SetArchiveAttributeCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### setArchiveAttributeCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>SetArchiveAttributeCommand</code>](#SetArchiveAttributeCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="SetArchiveAttributeCommand+execute"></a>
-
-### setArchiveAttributeCommand.execute(obj, attributeName, value)
-Execute the setting of an attribute
-
-**Kind**: instance method of [<code>SetArchiveAttributeCommand</code>](#SetArchiveAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| attributeName | <code>String</code> | The name of the attribute to set |
-| value | <code>String</code> | The value to set |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### setArchiveAttributeCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>SetArchiveAttributeCommand</code>](#SetArchiveAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### setArchiveAttributeCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>SetArchiveAttributeCommand</code>](#SetArchiveAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="SetEntryAttributeCommand"></a>
-
-## SetEntryAttributeCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [SetEntryAttributeCommand](#SetEntryAttributeCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new SetEntryAttributeCommand()](#new_SetEntryAttributeCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, entryID, attributeName, value)](#SetEntryAttributeCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_SetEntryAttributeCommand_new"></a>
-
-### new SetEntryAttributeCommand()
-Command for setting entry attributes
-
-<a name="BaseCommand+entryTools"></a>
-
-### setEntryAttributeCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>SetEntryAttributeCommand</code>](#SetEntryAttributeCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### setEntryAttributeCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>SetEntryAttributeCommand</code>](#SetEntryAttributeCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="SetEntryAttributeCommand+execute"></a>
-
-### setEntryAttributeCommand.execute(obj, entryID, attributeName, value)
-Execute the setting of an attribute
-
-**Kind**: instance method of [<code>SetEntryAttributeCommand</code>](#SetEntryAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| entryID | <code>String</code> | The ID of the entry |
-| attributeName | <code>String</code> | The name of the attribute to set |
-| value | <code>String</code> | The value to set |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### setEntryAttributeCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>SetEntryAttributeCommand</code>](#SetEntryAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### setEntryAttributeCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>SetEntryAttributeCommand</code>](#SetEntryAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="SetEntryMetaCommand"></a>
-
-## ~~SetEntryMetaCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)~~
-***Deprecated***
-
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* ~~[SetEntryMetaCommand](#SetEntryMetaCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)~~
-    * [new SetEntryMetaCommand()](#new_SetEntryMetaCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, entryID, propertyName, value)](#SetEntryMetaCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_SetEntryMetaCommand_new"></a>
-
-### new SetEntryMetaCommand()
-Command for setting meta properties on entries
-
-<a name="BaseCommand+entryTools"></a>
-
-### setEntryMetaCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>SetEntryMetaCommand</code>](#SetEntryMetaCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### setEntryMetaCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>SetEntryMetaCommand</code>](#SetEntryMetaCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="SetEntryMetaCommand+execute"></a>
-
-### setEntryMetaCommand.execute(obj, entryID, propertyName, value)
-Execute the setting of a meta property
-
-**Kind**: instance method of [<code>SetEntryMetaCommand</code>](#SetEntryMetaCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| entryID | <code>String</code> | The ID of the entry |
-| propertyName | <code>String</code> | The name of the meta property to set |
-| value | <code>String</code> | The value to set |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### setEntryMetaCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>SetEntryMetaCommand</code>](#SetEntryMetaCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### setEntryMetaCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>SetEntryMetaCommand</code>](#SetEntryMetaCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="SetEntryPropertyCommand"></a>
-
-## SetEntryPropertyCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [SetEntryPropertyCommand](#SetEntryPropertyCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new SetEntryPropertyCommand()](#new_SetEntryPropertyCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, entryID, propertyName, value)](#SetEntryPropertyCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_SetEntryPropertyCommand_new"></a>
-
-### new SetEntryPropertyCommand()
-Command for setting entry properties
-
-<a name="BaseCommand+entryTools"></a>
-
-### setEntryPropertyCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>SetEntryPropertyCommand</code>](#SetEntryPropertyCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### setEntryPropertyCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>SetEntryPropertyCommand</code>](#SetEntryPropertyCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="SetEntryPropertyCommand+execute"></a>
-
-### setEntryPropertyCommand.execute(obj, entryID, propertyName, value)
-Execute the setting of a property
-
-**Kind**: instance method of [<code>SetEntryPropertyCommand</code>](#SetEntryPropertyCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| entryID | <code>String</code> | The ID of the entry |
-| propertyName | <code>String</code> | The name of the property to set |
-| value | <code>String</code> | The value to set |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### setEntryPropertyCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>SetEntryPropertyCommand</code>](#SetEntryPropertyCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### setEntryPropertyCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>SetEntryPropertyCommand</code>](#SetEntryPropertyCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="SetGroupAttributeCommand"></a>
-
-## SetGroupAttributeCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [SetGroupAttributeCommand](#SetGroupAttributeCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new SetGroupAttributeCommand()](#new_SetGroupAttributeCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, groupID, attributeName, value)](#SetGroupAttributeCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_SetGroupAttributeCommand_new"></a>
-
-### new SetGroupAttributeCommand()
-Command for setting group attributes
-
-<a name="BaseCommand+entryTools"></a>
-
-### setGroupAttributeCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>SetGroupAttributeCommand</code>](#SetGroupAttributeCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### setGroupAttributeCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>SetGroupAttributeCommand</code>](#SetGroupAttributeCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="SetGroupAttributeCommand+execute"></a>
-
-### setGroupAttributeCommand.execute(obj, groupID, attributeName, value)
-Execute the setting of an attribute
-
-**Kind**: instance method of [<code>SetGroupAttributeCommand</code>](#SetGroupAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| groupID | <code>String</code> | The ID of the group |
-| attributeName | <code>String</code> | The name of the attribute to set |
-| value | <code>String</code> | The value to set |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### setGroupAttributeCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>SetGroupAttributeCommand</code>](#SetGroupAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### setGroupAttributeCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>SetGroupAttributeCommand</code>](#SetGroupAttributeCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
-<a name="TitleGroupCommand"></a>
-
-## TitleGroupCommand ⇐ [<code>BaseCommand</code>](#BaseCommand)
-**Kind**: global class  
-**Extends**: [<code>BaseCommand</code>](#BaseCommand)  
-
-* [TitleGroupCommand](#TitleGroupCommand) ⇐ [<code>BaseCommand</code>](#BaseCommand)
-    * [new TitleGroupCommand()](#new_TitleGroupCommand_new)
-    * [.entryTools](#BaseCommand+entryTools) : <code>Object</code>
-    * [.searchTools](#BaseCommand+searchTools) : <code>Object</code>
-    * [.execute(obj, groupID, title)](#TitleGroupCommand+execute)
-    * [.executeCallbacks(key)](#BaseCommand+executeCallbacks)
-    * [.setCallback(key, fn)](#BaseCommand+setCallback)
-
-<a name="new_TitleGroupCommand_new"></a>
-
-### new TitleGroupCommand()
-Command for titling groups
-
-<a name="BaseCommand+entryTools"></a>
-
-### titleGroupCommand.entryTools : <code>Object</code>
-Entry tools module
-
-**Kind**: instance property of [<code>TitleGroupCommand</code>](#TitleGroupCommand)  
-**Overrides**: [<code>entryTools</code>](#BaseCommand+entryTools)  
-<a name="BaseCommand+searchTools"></a>
-
-### titleGroupCommand.searchTools : <code>Object</code>
-Search tools module
-
-**Kind**: instance property of [<code>TitleGroupCommand</code>](#TitleGroupCommand)  
-**Overrides**: [<code>searchTools</code>](#BaseCommand+searchTools)  
-<a name="TitleGroupCommand+execute"></a>
-
-### titleGroupCommand.execute(obj, groupID, title)
-Execute the setting of the title
-
-**Kind**: instance method of [<code>TitleGroupCommand</code>](#TitleGroupCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | [<code>ArchiveDataset</code>](#ArchiveDataset) | The archive dataset |
-| groupID | <code>String</code> | The ID of the group to set |
-| title | <code>String</code> | The title to set |
-
-<a name="BaseCommand+executeCallbacks"></a>
-
-### titleGroupCommand.executeCallbacks(key)
-Execute all callbacks under a key
-Arguments passed after the key are provided to each callback
-
-**Kind**: instance method of [<code>TitleGroupCommand</code>](#TitleGroupCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-
-**Example**  
-```js
-executeCallbacks("functionName", 1, 2, "three")
-```
-<a name="BaseCommand+setCallback"></a>
-
-### titleGroupCommand.setCallback(key, fn)
-Add a callback for a key
-
-**Kind**: instance method of [<code>TitleGroupCommand</code>](#TitleGroupCommand)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>String</code> | The callback name |
-| fn | <code>function</code> | The callback function |
-
+**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
+**Returns**: <code>Westley</code> - The internal Westley reference  
+**Access**: protected  
 <a name="Entry"></a>
 
-## Entry
+## Entry ⇐ [<code>ArchiveMember</code>](#ArchiveMember)
 Entry class implementation
 Entries form the low-level data structures used in Buttercup, and
 are intended to represent logical collections of properties, like
 a login for a website.
 
 **Kind**: global class  
+**Extends**: [<code>ArchiveMember</code>](#ArchiveMember)  
 
-* [Entry](#Entry)
-    * [new Entry(archive, remoteObj)](#new_Entry_new)
+* [Entry](#Entry) ⇐ [<code>ArchiveMember</code>](#ArchiveMember)
     * _instance_
-        * [.id](#Entry+id) : <code>String</code>
         * [.type](#Entry+type) : <code>String</code>
+        * [.id](#ArchiveMember+id) : <code>String</code>
+        * [.permissions](#ArchiveMember+permissions) : <code>Array.&lt;String&gt;</code>
         * [.delete([skipTrash])](#Entry+delete) ⇒ <code>Boolean</code>
         * [.deleteAttribute(attr)](#Entry+deleteAttribute) ⇒ [<code>Entry</code>](#Entry)
         * ~~[.deleteMeta(property)](#Entry+deleteMeta) ⇒ [<code>Entry</code>](#Entry)~~
@@ -2728,30 +1163,16 @@ a login for a website.
         * [.setProperty(prop, [val])](#Entry+setProperty) ⇒ [<code>Entry</code>](#Entry)
         * [.toObject()](#Entry+toObject) ⇒ <code>Object</code>
         * [.toString()](#Entry+toString) ⇒ <code>String</code>
-        * [._getArchive()](#Entry+_getArchive) ⇒ [<code>Archive</code>](#Archive)
-        * [._getRemoteObject()](#Entry+_getRemoteObject) ⇒ <code>Object</code>
-        * [._getWestley()](#Entry+_getWestley) ⇒ [<code>Westley</code>](#Westley)
+        * [.grantPermission(perm)](#ArchiveMember+grantPermission)
+        * [.hasPermission(perm)](#ArchiveMember+hasPermission) ⇒ <code>Boolean</code>
+        * [.revokeAllPermissions()](#ArchiveMember+revokeAllPermissions)
+        * [.revokePermission(perm)](#ArchiveMember+revokePermission)
+        * [._getArchive()](#ArchiveMember+_getArchive) ⇒ [<code>Archive</code>](#Archive)
+        * [._getRemoteObject()](#ArchiveMember+_getRemoteObject) ⇒ <code>Object</code>
+        * [._getWestley()](#ArchiveMember+_getWestley) ⇒ <code>Westley</code>
     * _static_
         * [.createNew(archive, groupID)](#Entry.createNew) ⇒ [<code>Entry</code>](#Entry)
 
-<a name="new_Entry_new"></a>
-
-### new Entry(archive, remoteObj)
-Create a new managed entry instance
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archive | [<code>Archive</code>](#Archive) | The main archive instance |
-| remoteObj | <code>Object</code> | The remote object reference |
-
-<a name="Entry+id"></a>
-
-### entry.id : <code>String</code>
-The ID of the entry
-
-**Kind**: instance property of [<code>Entry</code>](#Entry)  
-**Read only**: true  
 <a name="Entry+type"></a>
 
 ### entry.type : <code>String</code>
@@ -2759,6 +1180,19 @@ Get the instance type
 
 **Kind**: instance property of [<code>Entry</code>](#Entry)  
 **Read only**: true  
+<a name="ArchiveMember+id"></a>
+
+### entry.id : <code>String</code>
+The ID of the entry
+
+**Kind**: instance property of [<code>Entry</code>](#Entry)  
+**Read only**: true  
+<a name="ArchiveMember+permissions"></a>
+
+### entry.permissions : <code>Array.&lt;String&gt;</code>
+The current granted permissions
+
+**Kind**: instance property of [<code>Entry</code>](#Entry)  
 <a name="Entry+delete"></a>
 
 ### entry.delete([skipTrash]) ⇒ <code>Boolean</code>
@@ -3008,7 +1442,46 @@ toString override
 
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
 **Returns**: <code>String</code> - The string representation of the Entry  
-<a name="Entry+_getArchive"></a>
+<a name="ArchiveMember+grantPermission"></a>
+
+### entry.grantPermission(perm)
+Grant a new permission to the member
+
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| perm | <code>String</code> | The permission to grant |
+
+<a name="ArchiveMember+hasPermission"></a>
+
+### entry.hasPermission(perm) ⇒ <code>Boolean</code>
+Check if the member has a permission
+
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| perm | <code>String</code> | The permission to check for |
+
+<a name="ArchiveMember+revokeAllPermissions"></a>
+
+### entry.revokeAllPermissions()
+Revoke all permissions
+
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+<a name="ArchiveMember+revokePermission"></a>
+
+### entry.revokePermission(perm)
+Revoke a single permission
+
+**Kind**: instance method of [<code>Entry</code>](#Entry)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| perm | <code>String</code> | The permission to revoke |
+
+<a name="ArchiveMember+_getArchive"></a>
 
 ### entry.\_getArchive() ⇒ [<code>Archive</code>](#Archive)
 Get the archive reference
@@ -3016,7 +1489,7 @@ Get the archive reference
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
 **Returns**: [<code>Archive</code>](#Archive) - The Archive reference  
 **Access**: protected  
-<a name="Entry+_getRemoteObject"></a>
+<a name="ArchiveMember+_getRemoteObject"></a>
 
 ### entry.\_getRemoteObject() ⇒ <code>Object</code>
 Get the remote object that mirrors the data represented here
@@ -3024,13 +1497,13 @@ Get the remote object that mirrors the data represented here
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
 **Returns**: <code>Object</code> - The remote object (in-memory copy)  
 **Access**: protected  
-<a name="Entry+_getWestley"></a>
+<a name="ArchiveMember+_getWestley"></a>
 
-### entry.\_getWestley() ⇒ [<code>Westley</code>](#Westley)
+### entry.\_getWestley() ⇒ <code>Westley</code>
 Get the Westley reference
 
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: [<code>Westley</code>](#Westley) - The internal Westley reference  
+**Returns**: <code>Westley</code> - The internal Westley reference  
 **Access**: protected  
 <a name="Entry.createNew"></a>
 
@@ -3112,7 +1585,7 @@ Flattener class for flattening archive history sets
 
 * [Flattener](#Flattener)
     * _instance_
-        * [.westley](#Flattener+westley) : [<code>Westley</code>](#Westley)
+        * [.westley](#Flattener+westley) : <code>Westley</code>
         * [.canBeFlattened()](#Flattener+canBeFlattened) ⇒ <code>Boolean</code>
         * [.flatten([force])](#Flattener+flatten) ⇒ <code>Boolean</code>
     * _static_
@@ -3121,7 +1594,7 @@ Flattener class for flattening archive history sets
 
 <a name="Flattener+westley"></a>
 
-### flattener.westley : [<code>Westley</code>](#Westley)
+### flattener.westley : <code>Westley</code>
 The working Westley instance
 
 **Kind**: instance property of [<code>Flattener</code>](#Flattener)  
@@ -3159,16 +1632,16 @@ Number of lines to preserve (most recent)
 **Kind**: static constant of [<code>Flattener</code>](#Flattener)  
 <a name="Group"></a>
 
-## Group
+## Group ⇐ [<code>ArchiveMember</code>](#ArchiveMember)
 Group implementation
 
 **Kind**: global class  
+**Extends**: [<code>ArchiveMember</code>](#ArchiveMember)  
 **Mixes**: [<code>GroupCollection</code>](#GroupCollection), [<code>EntryCollection</code>](#EntryCollection)  
 
-* [Group](#Group)
+* [Group](#Group) ⇐ [<code>ArchiveMember</code>](#ArchiveMember)
     * [new Group(archive, remoteObj)](#new_Group_new)
     * _instance_
-        * [.id](#Group+id) : <code>String</code>
         * [.type](#Group+type) : <code>String</code>
         * [.findGroupByID](#Group+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
         * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
@@ -3178,6 +1651,8 @@ Group implementation
         * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
         * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+        * [.id](#ArchiveMember+id) : <code>String</code>
+        * [.permissions](#ArchiveMember+permissions) : <code>Array.&lt;String&gt;</code>
         * [.createEntry([title])](#Group+createEntry) ⇒ [<code>Entry</code>](#Entry)
         * [.createGroup([title])](#Group+createGroup) ⇒ [<code>Group</code>](#Group)
         * [.delete([skipTrash])](#Group+delete) ⇒ <code>Boolean</code>
@@ -3195,11 +1670,15 @@ Group implementation
         * [.setTitle(title)](#Group+setTitle) ⇒ [<code>Group</code>](#Group)
         * [.toObject(outputFlags)](#Group+toObject) ⇒ <code>Object</code>
         * [.toString(outputFlags)](#Group+toString) ⇒ <code>string</code>
-        * [._getArchive()](#Group+_getArchive) ⇒ [<code>Archive</code>](#Archive)
-        * [._getRemoteObject()](#Group+_getRemoteObject) ⇒ <code>Object</code>
-        * [._getWestley()](#Group+_getWestley) ⇒ [<code>Westley</code>](#Westley)
         * [.inst.findEntryByID(id)](#Group+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
         * [.inst.findEntryByID(id)](#Group+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
+        * [.grantPermission(perm)](#ArchiveMember+grantPermission)
+        * [.hasPermission(perm)](#ArchiveMember+hasPermission) ⇒ <code>Boolean</code>
+        * [.revokeAllPermissions()](#ArchiveMember+revokeAllPermissions)
+        * [.revokePermission(perm)](#ArchiveMember+revokePermission)
+        * [._getArchive()](#ArchiveMember+_getArchive) ⇒ [<code>Archive</code>](#Archive)
+        * [._getRemoteObject()](#ArchiveMember+_getRemoteObject) ⇒ <code>Object</code>
+        * [._getWestley()](#ArchiveMember+_getWestley) ⇒ <code>Westley</code>
     * _static_
         * [.Attributes](#Group.Attributes) : <code>enum</code>
         * [.OutputFlag](#Group.OutputFlag) : <code>enum</code>
@@ -3216,12 +1695,6 @@ Managed group class
 | archive | [<code>Archive</code>](#Archive) | The archive instance |
 | remoteObj | <code>Object</code> | The remote object reference |
 
-<a name="Group+id"></a>
-
-### group.id : <code>String</code>
-The entry ID
-
-**Kind**: instance property of [<code>Group</code>](#Group)  
 <a name="Group+type"></a>
 
 ### group.type : <code>String</code>
@@ -3337,6 +1810,21 @@ Find all entries that match a certain property
 | property | <code>string</code> | The property to search with |
 | value | <code>RegExp</code> \| <code>string</code> | The value to search for |
 
+<a name="ArchiveMember+id"></a>
+
+### group.id : <code>String</code>
+The ID of the entry
+
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Overrides**: [<code>id</code>](#ArchiveMember+id)  
+**Read only**: true  
+<a name="ArchiveMember+permissions"></a>
+
+### group.permissions : <code>Array.&lt;String&gt;</code>
+The current granted permissions
+
+**Kind**: instance property of [<code>Group</code>](#Group)  
+**Overrides**: [<code>permissions</code>](#ArchiveMember+permissions)  
 <a name="Group+createEntry"></a>
 
 ### group.createEntry([title]) ⇒ [<code>Entry</code>](#Entry)
@@ -3533,56 +2021,102 @@ Export the group to a JSON string
 | --- | --- | --- |
 | outputFlags | <code>Number</code> | Output configuration flags to pass to `toObject` |
 
-<a name="Group+_getArchive"></a>
+<a name="Group+findEntryByID"></a>
+
+### group.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
+Find an entry by its ID
+
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
+**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The ID to search for |
+
+<a name="Group+findEntryByID"></a>
+
+### group.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
+Find an entry by its ID
+
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
+**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The ID to search for |
+
+<a name="ArchiveMember+grantPermission"></a>
+
+### group.grantPermission(perm)
+Grant a new permission to the member
+
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Overrides**: [<code>grantPermission</code>](#ArchiveMember+grantPermission)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| perm | <code>String</code> | The permission to grant |
+
+<a name="ArchiveMember+hasPermission"></a>
+
+### group.hasPermission(perm) ⇒ <code>Boolean</code>
+Check if the member has a permission
+
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Overrides**: [<code>hasPermission</code>](#ArchiveMember+hasPermission)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| perm | <code>String</code> | The permission to check for |
+
+<a name="ArchiveMember+revokeAllPermissions"></a>
+
+### group.revokeAllPermissions()
+Revoke all permissions
+
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Overrides**: [<code>revokeAllPermissions</code>](#ArchiveMember+revokeAllPermissions)  
+<a name="ArchiveMember+revokePermission"></a>
+
+### group.revokePermission(perm)
+Revoke a single permission
+
+**Kind**: instance method of [<code>Group</code>](#Group)  
+**Overrides**: [<code>revokePermission</code>](#ArchiveMember+revokePermission)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| perm | <code>String</code> | The permission to revoke |
+
+<a name="ArchiveMember+_getArchive"></a>
 
 ### group.\_getArchive() ⇒ [<code>Archive</code>](#Archive)
-Get the archive instance reference
+Get the archive reference
 
 **Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: [<code>Archive</code>](#Archive) - The archive instance  
+**Overrides**: [<code>\_getArchive</code>](#ArchiveMember+_getArchive)  
+**Returns**: [<code>Archive</code>](#Archive) - The Archive reference  
 **Access**: protected  
-<a name="Group+_getRemoteObject"></a>
+<a name="ArchiveMember+_getRemoteObject"></a>
 
 ### group.\_getRemoteObject() ⇒ <code>Object</code>
-Get the remotely-managed object (group)
+Get the remote object that mirrors the data represented here
 
 **Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: <code>Object</code> - The object instance for the group  
+**Overrides**: [<code>\_getRemoteObject</code>](#ArchiveMember+_getRemoteObject)  
+**Returns**: <code>Object</code> - The remote object (in-memory copy)  
 **Access**: protected  
-<a name="Group+_getWestley"></a>
+<a name="ArchiveMember+_getWestley"></a>
 
-### group.\_getWestley() ⇒ [<code>Westley</code>](#Westley)
-Get the delta managing instance for the archive
+### group.\_getWestley() ⇒ <code>Westley</code>
+Get the Westley reference
 
 **Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: [<code>Westley</code>](#Westley) - The internal Westley object  
+**Overrides**: [<code>\_getWestley</code>](#ArchiveMember+_getWestley)  
+**Returns**: <code>Westley</code> - The internal Westley reference  
 **Access**: protected  
-<a name="Group+findEntryByID"></a>
-
-### group.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
-Find an entry by its ID
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
-**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | The ID to search for |
-
-<a name="Group+findEntryByID"></a>
-
-### group.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
-Find an entry by its ID
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
-**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | The ID to search for |
-
 <a name="Group.Attributes"></a>
 
 ### Group.Attributes : <code>enum</code>
@@ -3633,117 +2167,192 @@ Inigo command generator
 | --- | --- | --- |
 | cmdKey | <code>String</code> | The key for the command |
 
-<a name="Westley"></a>
+<a name="MyButtercupClient"></a>
 
-## Westley ⇐ <code>AsyncEventEmitter</code>
-Westley class
-Archive object dataset and history manager. Handles parsing and
-revenge for the princess.
+## MyButtercupClient ⇐ <code>EventEmitter</code>
+My Buttercup client
 
 **Kind**: global class  
-**Extends**: <code>AsyncEventEmitter</code>  
+**Extends**: <code>EventEmitter</code>  
 
-* [Westley](#Westley) ⇐ <code>AsyncEventEmitter</code>
-    * [.isDirty](#Westley+isDirty) : <code>Boolean</code>
-    * [.readOnly](#Westley+readOnly)
-    * [.readOnly](#Westley+readOnly)
-    * [.clear()](#Westley+clear) ⇒ [<code>Westley</code>](#Westley)
-    * [.clearDirtyState()](#Westley+clearDirtyState)
-    * [.execute(command, [append])](#Westley+execute) ⇒ [<code>Westley</code>](#Westley)
-    * [.getDataset()](#Westley+getDataset) ⇒ <code>Object</code>
-    * [.getHistory()](#Westley+getHistory) ⇒ <code>Array.&lt;String&gt;</code>
-    * [.pad()](#Westley+pad) ⇒ [<code>Westley</code>](#Westley)
-    * [._getCommandForKey(commandKey)](#Westley+_getCommandForKey) ⇒ <code>Command</code>
+* [MyButtercupClient](#MyButtercupClient) ⇐ <code>EventEmitter</code>
+    * [new MyButtercupClient(clientID, clientSecret, accessToken, refreshToken)](#new_MyButtercupClient_new)
+    * _instance_
+        * [.accessToken](#MyButtercupClient+accessToken) : <code>String</code>
+        * [.digest](#MyButtercupClient+digest) : [<code>MyButtercupDigest</code>](#MyButtercupDigest) \| <code>null</code>
+        * [.refreshToken](#MyButtercupClient+refreshToken) : <code>String</code>
+        * [.fetchShares(ids)](#MyButtercupClient+fetchShares) ⇒ <code>Promise.&lt;Object.&lt;String, MyButtercupEncryptedShare&gt;&gt;</code>
+        * [.fetchUserArchive()](#MyButtercupClient+fetchUserArchive) ⇒ <code>Promise.&lt;{archive: String, updateID: Number}&gt;</code>
+        * [.fetchUserArchiveDetails()](#MyButtercupClient+fetchUserArchiveDetails) ⇒ [<code>Promise.&lt;MyButtercupArchiveDetails&gt;</code>](#MyButtercupArchiveDetails)
+        * [.retrieveDigest()](#MyButtercupClient+retrieveDigest) ⇒ [<code>Promise.&lt;MyButtercupDigest&gt;</code>](#MyButtercupDigest)
+        * [.retrieveUsersList()](#MyButtercupClient+retrieveUsersList) ⇒ <code>Promise.&lt;Array.&lt;MyButtercupUsersListItem&gt;&gt;</code>
+        * [.retrieveUsersListForOrganisation(orgID)](#MyButtercupClient+retrieveUsersListForOrganisation) ⇒ <code>Promise.&lt;Array.&lt;MyButtercupUsersListItem&gt;&gt;</code>
+        * [.writeUserArchive(contents, previousUpdateID, newUpdateID)](#MyButtercupClient+writeUserArchive) ⇒ <code>Promise</code>
+        * [._handleRequestFailure(err)](#MyButtercupClient+_handleRequestFailure) ⇒ <code>Promise</code>
+        * [._performTokenRefresh()](#MyButtercupClient+_performTokenRefresh) ⇒ <code>Promise</code>
+        * ["tokensUpdated"](#MyButtercupClient+event_tokensUpdated)
+    * _static_
+        * [.exchangeAuthCodeForTokens(authCode, clientID, clientSecret, redirectURI)](#MyButtercupClient.exchangeAuthCodeForTokens) ⇒ [<code>MyButtercupTokenResult</code>](#MyButtercupTokenResult)
+        * [.generateAuthorisationURL(clientID)](#MyButtercupClient.generateAuthorisationURL) ⇒ <code>String</code>
 
-<a name="Westley+isDirty"></a>
+<a name="new_MyButtercupClient_new"></a>
 
-### westley.isDirty : <code>Boolean</code>
-Whether the instance is dirty or not (unsaved changes)
+### new MyButtercupClient(clientID, clientSecret, accessToken, refreshToken)
+Create a new client instance
 
-**Kind**: instance property of [<code>Westley</code>](#Westley)  
-**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| clientID | <code>String</code> | The client identifier |
+| clientSecret | <code>String</code> | The client secret |
+| accessToken | <code>String</code> | Access token |
+| refreshToken | <code>String</code> | Refresh token |
+
+<a name="MyButtercupClient+accessToken"></a>
+
+### myButtercupClient.accessToken : <code>String</code>
+The current access token
+
+**Kind**: instance property of [<code>MyButtercupClient</code>](#MyButtercupClient)  
 **Read only**: true  
-<a name="Westley+readOnly"></a>
+<a name="MyButtercupClient+digest"></a>
 
-### westley.readOnly
-**Kind**: instance property of [<code>Westley</code>](#Westley)  
-**Access**: public  
-**Properties**
+### myButtercupClient.digest : [<code>MyButtercupDigest</code>](#MyButtercupDigest) \| <code>null</code>
+The last client digest response
 
-| Name | Type |
-| --- | --- |
-| readOnly | <code>Boolean</code> | 
+**Kind**: instance property of [<code>MyButtercupClient</code>](#MyButtercupClient)  
+**Read only**: true  
+<a name="MyButtercupClient+refreshToken"></a>
 
-<a name="Westley+readOnly"></a>
+### myButtercupClient.refreshToken : <code>String</code>
+The refresh token
 
-### westley.readOnly
-Set the read only value
+**Kind**: instance property of [<code>MyButtercupClient</code>](#MyButtercupClient)  
+**Read only**: true  
+<a name="MyButtercupClient+fetchShares"></a>
 
-**Kind**: instance property of [<code>Westley</code>](#Westley)  
+### myButtercupClient.fetchShares(ids) ⇒ <code>Promise.&lt;Object.&lt;String, MyButtercupEncryptedShare&gt;&gt;</code>
+Fetch user shares
 
-| Param | Type | Description |
-| --- | --- | --- |
-| newRO | <code>Boolean</code> | The new value |
-
-<a name="Westley+clear"></a>
-
-### westley.clear() ⇒ [<code>Westley</code>](#Westley)
-Clear the dataset and history
-
-**Kind**: instance method of [<code>Westley</code>](#Westley)  
-**Returns**: [<code>Westley</code>](#Westley) - Returns self  
-<a name="Westley+clearDirtyState"></a>
-
-### westley.clearDirtyState()
-Clear the dirty state of the instance
-
-**Kind**: instance method of [<code>Westley</code>](#Westley)  
-<a name="Westley+execute"></a>
-
-### westley.execute(command, [append]) ⇒ [<code>Westley</code>](#Westley)
-Execute a command - stored in history and modifies the dataset
-
-**Kind**: instance method of [<code>Westley</code>](#Westley)  
-**Returns**: [<code>Westley</code>](#Westley) - Returns self  
+**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| command | <code>String</code> | The command to execute |
-| [append] | <code>Boolean</code> | Whether to append to the end of the history list (default true) |
+| ids | <code>Array.&lt;String&gt;</code> | Share IDs |
 
-<a name="Westley+getDataset"></a>
+<a name="MyButtercupClient+fetchUserArchive"></a>
 
-### westley.getDataset() ⇒ <code>Object</code>
-Get the core dataset
+### myButtercupClient.fetchUserArchive() ⇒ <code>Promise.&lt;{archive: String, updateID: Number}&gt;</code>
+Fetch user vault contents
 
-**Kind**: instance method of [<code>Westley</code>](#Westley)  
-**Returns**: <code>Object</code> - The dataset object  
-<a name="Westley+getHistory"></a>
+**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
+**Returns**: <code>Promise.&lt;{archive: String, updateID: Number}&gt;</code> - The user's
+ vault contents  
+<a name="MyButtercupClient+fetchUserArchiveDetails"></a>
 
-### westley.getHistory() ⇒ <code>Array.&lt;String&gt;</code>
-Get the history (deltas)
+### myButtercupClient.fetchUserArchiveDetails() ⇒ [<code>Promise.&lt;MyButtercupArchiveDetails&gt;</code>](#MyButtercupArchiveDetails)
+Fetch the user's vault details
 
-**Kind**: instance method of [<code>Westley</code>](#Westley)  
-**Returns**: <code>Array.&lt;String&gt;</code> - The command array (history)  
-<a name="Westley+pad"></a>
+**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
+**Returns**: [<code>Promise.&lt;MyButtercupArchiveDetails&gt;</code>](#MyButtercupArchiveDetails) - The details of the vault  
+<a name="MyButtercupClient+retrieveDigest"></a>
 
-### westley.pad() ⇒ [<code>Westley</code>](#Westley)
-Insert a padding in the archive (used for delta tracking)
+### myButtercupClient.retrieveDigest() ⇒ [<code>Promise.&lt;MyButtercupDigest&gt;</code>](#MyButtercupDigest)
+Fetch and set account digest information
 
-**Kind**: instance method of [<code>Westley</code>](#Westley)  
-**Returns**: [<code>Westley</code>](#Westley) - Returns self  
-<a name="Westley+_getCommandForKey"></a>
+**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
+**Returns**: [<code>Promise.&lt;MyButtercupDigest&gt;</code>](#MyButtercupDigest) - Digest information  
+<a name="MyButtercupClient+retrieveUsersList"></a>
 
-### westley.\_getCommandForKey(commandKey) ⇒ <code>Command</code>
-Gets a command by its key from the cache with its dependencies injected
+### myButtercupClient.retrieveUsersList() ⇒ <code>Promise.&lt;Array.&lt;MyButtercupUsersListItem&gt;&gt;</code>
+Get the list of users available to address for the user
 
-**Kind**: instance method of [<code>Westley</code>](#Westley)  
-**Returns**: <code>Command</code> - Returns the command  
+**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
+<a name="MyButtercupClient+retrieveUsersListForOrganisation"></a>
+
+### myButtercupClient.retrieveUsersListForOrganisation(orgID) ⇒ <code>Promise.&lt;Array.&lt;MyButtercupUsersListItem&gt;&gt;</code>
+Get the list of users for an organisation
+(User must be present in organisation, or this method will fail)
+
+**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| orgID | <code>Number</code> | The ID of the organisation |
+
+<a name="MyButtercupClient+writeUserArchive"></a>
+
+### myButtercupClient.writeUserArchive(contents, previousUpdateID, newUpdateID) ⇒ <code>Promise</code>
+Write the user vault contents back to the server
+
+**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
+**Returns**: <code>Promise</code> - A promise that resolves once the write has
+ been completed  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contents | <code>String</code> | Encrypted vault contents |
+| previousUpdateID | <code>Number</code> | The previous update ID received  from the server |
+| newUpdateID | <code>Number</code> | The new update ID to set after a  successful write |
+
+<a name="MyButtercupClient+_handleRequestFailure"></a>
+
+### myButtercupClient.\_handleRequestFailure(err) ⇒ <code>Promise</code>
+Handle a request failure (processes token expiration etc.)
+
+**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
+**Returns**: <code>Promise</code> - Returns a promise if an action can be taken
+ to remedy the situation  
+**Throws**:
+
+- <code>Error</code> Throws if the error was not catchable
+
 **Access**: protected  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| commandKey | <code>String</code> | The key of the command |
+| err | <code>Error</code> | The received error from making a request |
+
+<a name="MyButtercupClient+_performTokenRefresh"></a>
+
+### myButtercupClient.\_performTokenRefresh() ⇒ <code>Promise</code>
+Refresh tokens
+
+**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
+**Emits**: [<code>tokensUpdated</code>](#MyButtercupClient+event_tokensUpdated)  
+**Access**: protected  
+<a name="MyButtercupClient+event_tokensUpdated"></a>
+
+### "tokensUpdated"
+On tokens updated
+
+**Kind**: event emitted by [<code>MyButtercupClient</code>](#MyButtercupClient)  
+<a name="MyButtercupClient.exchangeAuthCodeForTokens"></a>
+
+### MyButtercupClient.exchangeAuthCodeForTokens(authCode, clientID, clientSecret, redirectURI) ⇒ [<code>MyButtercupTokenResult</code>](#MyButtercupTokenResult)
+Exchange an auth code for tokens
+
+**Kind**: static method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| authCode | <code>String</code> | OAuth2 auth code, retrieved from browser-  based OAuth2 flow using a user's username and password |
+| clientID | <code>String</code> | The OAuth2 client ID |
+| clientSecret | <code>String</code> | The OAuth2 client secret |
+| redirectURI | <code>String</code> | The OAuth2 client redirect URI |
+
+<a name="MyButtercupClient.generateAuthorisationURL"></a>
+
+### MyButtercupClient.generateAuthorisationURL(clientID) ⇒ <code>String</code>
+Generate an OAuth2 authorisation URL using the client ID of the current
+application platform (eg. Buttercup browser extension)
+
+**Kind**: static method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
+**Returns**: <code>String</code> - The generated URL  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| clientID | <code>String</code> | The OAuth2 client ID registered on  my.buttercup.pw |
 
 <a name="Workspace"></a>
 
@@ -3758,7 +2367,8 @@ and merges with remote changes.
     * [.archive](#Workspace+archive) : [<code>Archive</code>](#Archive)
     * [.datasource](#Workspace+datasource) : <code>TextDatasource</code>
     * [.masterCredentials](#Workspace+masterCredentials) : <code>Credentials</code>
-    * [.saveChannel](#Workspace+saveChannel) : <code>Channel</code>
+    * [.channel](#Workspace+channel) : <code>Channel</code>
+    * [.shares](#Workspace+shares) : <code>Array.&lt;Share&gt;</code>
     * [.localDiffersFromRemote()](#Workspace+localDiffersFromRemote) ⇒ <code>Promise.&lt;Boolean&gt;</code>
     * [.mergeFromRemote()](#Workspace+mergeFromRemote) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
     * [.save()](#Workspace+save) ⇒ <code>Promise</code>
@@ -3784,10 +2394,16 @@ The datasource instance for the archive
 The master credentials for the archive
 
 **Kind**: instance property of [<code>Workspace</code>](#Workspace)  
-<a name="Workspace+saveChannel"></a>
+<a name="Workspace+channel"></a>
 
-### workspace.saveChannel : <code>Channel</code>
-The save channel for queuing save actions
+### workspace.channel : <code>Channel</code>
+The saving/updating channel for queuing workspace async actions
+
+**Kind**: instance property of [<code>Workspace</code>](#Workspace)  
+<a name="Workspace+shares"></a>
+
+### workspace.shares : <code>Array.&lt;Share&gt;</code>
+Current workspace share instances
 
 **Kind**: instance property of [<code>Workspace</code>](#Workspace)  
 <a name="Workspace+localDiffersFromRemote"></a>
@@ -4017,95 +2633,6 @@ Convert credentials to a source for the ArchiveManager
 | [initialise] | <code>Boolean</code> | <code>false</code> | Whether or not to initialise a new archive (defaults to false) |
 | [contentOverride] | <code>String</code> | <code></code> | Content for overriding the fetch operation in the  datasource, for loading offline content |
 
-<a name="addExtraFieldsNonDestructive"></a>
-
-## addExtraFieldsNonDestructive(entry, fields) ⇒ [<code>Array.&lt;EntryFacadeField&gt;</code>](#EntryFacadeField)
-Add extra fields to a fields array that are not mentioned in a preset
-Facades are creaded by presets which don't mention all property values (custom user
-added items). This method adds the unmentioned items to the facade fields so that
-they can be edited as well.
-
-**Kind**: global function  
-**Returns**: [<code>Array.&lt;EntryFacadeField&gt;</code>](#EntryFacadeField) - A new array with all combined fields  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| entry | [<code>Entry</code>](#Entry) | An Entry instance |
-| fields | [<code>Array.&lt;EntryFacadeField&gt;</code>](#EntryFacadeField) | An array of fields |
-
-<a name="applyFieldDescriptor"></a>
-
-## applyFieldDescriptor(entry, descriptor)
-Apply a facade field descriptor to an entry
-Takes data from the descriptor and writes it to the entry.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| entry | [<code>Entry</code>](#Entry) | The entry to apply to |
-| descriptor | [<code>EntryFacadeField</code>](#EntryFacadeField) | The descriptor object |
-
-<a name="consumeEntryFacade"></a>
-
-## ~~consumeEntryFacade(entry, facade)~~
-***Deprecated***
-
-Process a modified entry facade
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| entry | [<code>Entry</code>](#Entry) | The entry to apply processed data on |
-| facade | [<code>EntryFacade</code>](#EntryFacade) | The facade object |
-
-<a name="createEntryFacade"></a>
-
-## ~~createEntryFacade(entry) ⇒ [<code>EntryFacade</code>](#EntryFacade)~~
-***Deprecated***
-
-Create a data/input facade for an Entry instance
-
-**Kind**: global function  
-**Returns**: [<code>EntryFacade</code>](#EntryFacade) - A newly created facade  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| entry | [<code>Entry</code>](#Entry) | The Entry instance |
-
-<a name="getEntryFacadeType"></a>
-
-## ~~getEntryFacadeType(entry) ⇒ <code>String</code>~~
-***Deprecated***
-
-Get the facade type for an entry
-
-**Kind**: global function  
-**Returns**: <code>String</code> - The facade type  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| entry | [<code>Entry</code>](#Entry) | The entry instance |
-
-<a name="setEntryValue"></a>
-
-## setEntryValue(entry, property, name, value)
-Set a value on an entry
-
-**Kind**: global function  
-**Throws**:
-
-- <code>Error</code> Throws if the property type is not recognised
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| entry | [<code>Entry</code>](#Entry) | The entry instance |
-| property | <code>String</code> | Type of property ("property"/"meta"/"attribute") |
-| name | <code>String</code> | The property name |
-| value | <code>String</code> | The value to set |
-
 <a name="flattenEntries"></a>
 
 ## flattenEntries(archives) ⇒ [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
@@ -4118,6 +2645,54 @@ Flatten entries into a searchable structure
 | --- | --- | --- |
 | archives | [<code>Array.&lt;Archive&gt;</code>](#Archive) | An array of archives |
 
+<a name="generateNewUpdateID"></a>
+
+## generateNewUpdateID() ⇒ <code>Number</code>
+Generate a new update ID
+
+**Kind**: global function  
+**Returns**: <code>Number</code> - A randomly generated ID  
+<a name="extractCommandComponents"></a>
+
+## extractCommandComponents(command) ⇒ <code>Array.&lt;String&gt;</code>
+Extract command components from a string
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;String&gt;</code> - The separated parts  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| command | <code>String</code> | The command to extract from |
+
+<a name="calculateCommonRecentCommand"></a>
+
+## calculateCommonRecentCommand(historyA, historyB) ⇒ <code>null</code> \| <code>Object</code>
+Calculate the common command indexes between 2 histories.
+The common index is where a padding ID matches that of the other history,
+at some point. If we assume one history may have been flattened, we cannot
+assume that the entire past history will be the same, but
+we can assume that at that point, the histories produce the same structure.
+Because the histories may be different in the future, we use the newest
+matching pad ID to create a common link between the 2 histories.
+
+**Kind**: global function  
+**Returns**: <code>null</code> \| <code>Object</code> - Returns
+       null if no common point, or an object with the common information. `a` and `b`
+       are the indexes where the common padding occurs.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| historyA | <code>Array.&lt;String&gt;</code> | The original history |
+| historyB | <code>Array.&lt;String&gt;</code> | The secondary history |
+
+<a name="calculateHistoryDifferences"></a>
+
+## calculateHistoryDifferences() ⇒ <code>Object</code> \| <code>Boolean</code>
+Calculate the differences, in commands, between two histories
+
+**Kind**: global function  
+**Returns**: <code>Object</code> \| <code>Boolean</code> - Returns false if no common base
+       is found, or the command differences as two arrays  
 <a name="dedupe"></a>
 
 ## dedupe(arr) ⇒ <code>Array</code>
@@ -4130,21 +2705,62 @@ De-dupe an array
 | --- | --- | --- |
 | arr | <code>Array</code> | The array |
 
-<a name="createFieldDescriptor"></a>
+<a name="describeArchiveDataset"></a>
 
-## createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options) ⇒ [<code>EntryFacadeField</code>](#EntryFacadeField)
-Create a descriptor for a field to be used within a facade
+## describeArchiveDataset(dataset, parentGroupID) ⇒ <code>Array.&lt;String&gt;</code>
+Describe an archive dataset - to history commands
 
 **Kind**: global function  
-**Returns**: [<code>EntryFacadeField</code>](#EntryFacadeField) - The field descriptor  
+**Returns**: <code>Array.&lt;String&gt;</code> - An array of commands  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| entry | [<code>Entry</code>](#Entry) | The entry instance to process |
-| title | <code>String</code> | The field title |
-| entryPropertyType | <code>String</code> | The type of entry property (property/attribute) |
-| entryPropertyName | <code>String</code> | The name of the property |
-| options | <code>Object</code> | The options for the field |
+| dataset | <code>Object</code> | The archive dataset |
+| parentGroupID | <code>String</code> | The ID of the parent group |
+
+<a name="decodeStringValue"></a>
+
+## decodeStringValue(value) ⇒ <code>String</code>
+Decode an encoded property/meta value
+
+**Kind**: global function  
+**Returns**: <code>String</code> - The decoded value  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| value | <code>String</code> | The encoded value |
+
+<a name="encodeStringValue"></a>
+
+## encodeStringValue(value) ⇒ <code>String</code>
+Encode a raw value into safe storage form
+Uses base64 for encoding
+
+**Kind**: global function  
+**Returns**: <code>String</code> - The encoded result  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| value | <code>String</code> | The raw value to encode |
+
+<a name="getUniqueID"></a>
+
+## getUniqueID() ⇒ <code>String</code>
+Get a unique identifier (UUID v4)
+
+**Kind**: global function  
+**Returns**: <code>String</code> - A unique identifier  
+<a name="isEncoded"></a>
+
+## isEncoded(text) ⇒ <code>Boolean</code>
+Check if a string value is encoded
+
+**Kind**: global function  
+**Returns**: <code>Boolean</code> - True if the text is encoded  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>String</code> | The value to check |
 
 <a name="getEntryURLs"></a>
 
@@ -4191,6 +2807,106 @@ Check if a property name is valid
 | --- | --- | --- |
 | name | <code>String</code> | The name to check |
 
+<a name="stripDestructiveCommands"></a>
+
+## stripDestructiveCommands(history) ⇒ <code>Array.&lt;String&gt;</code>
+Strip destructive commands from a history collection
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;String&gt;</code> - The history minus any destructive commands  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| history | <code>Array.&lt;String&gt;</code> | The history |
+
+<a name="findGroupContainingEntryID"></a>
+
+## findGroupContainingEntryID(groups, id) ⇒ [<code>FoundGroupResult</code>](#FoundGroupResult)
+Find a raw group that contains an entry with an ID
+
+**Kind**: global function  
+**Returns**: [<code>FoundGroupResult</code>](#FoundGroupResult) - The parent group of the found entry  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| groups | <code>Array.&lt;Object&gt;</code> | An array of raw groups |
+| id | <code>String</code> | The entry ID to search for |
+
+<a name="findGroupContainingGroupID"></a>
+
+## findGroupContainingGroupID(group, id) ⇒ [<code>FoundGroupResult</code>](#FoundGroupResult)
+Find a raw group that contains a group with an ID
+
+**Kind**: global function  
+**Returns**: [<code>FoundGroupResult</code>](#FoundGroupResult) - The parent of the located group ID  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| group | <code>Object</code> | The group/archive to search in |
+| id | <code>String</code> | The group ID to search for |
+
+<a name="extractSharesFromHistory"></a>
+
+## extractSharesFromHistory(history) ⇒ <code>Object</code>
+Extract shares from a history collection
+
+**Kind**: global function  
+**Returns**: <code>Object</code> - The resulting separated histories. The object will
+ always contain a `base` property containing the non-share history.
+ Each share detected is set on the object under its share ID - being
+ set to an array of history lines (non-prefixed) for that share.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| history | <code>Array.&lt;String&gt;</code> | A history collection, containing shares |
+
+<a name="moveGroupBetweenArchives"></a>
+
+## moveGroupBetweenArchives(movingGroup, target)
+Move a group between archives
+
+**Kind**: global function  
+**Throws**:
+
+- <code>Error</code> Throws if the remote type is not recognised
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| movingGroup | [<code>Group</code>](#Group) | The group to move |
+| target | [<code>Group</code>](#Group) \| [<code>Archive</code>](#Archive) | The group to move to |
+
+<a name="prependSharePrefix"></a>
+
+## prependSharePrefix(history) ⇒ <code>Array.&lt;String&gt;</code>
+Prepend the share prefix to every line that doesn't have it
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;String&gt;</code> - Prefixed history lines  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| history | <code>Array.&lt;String&gt;</code> | Array of history lines |
+
+<a name="removeSharePrefix"></a>
+
+## removeSharePrefix(history) ⇒ <code>Array.&lt;String&gt;</code>
+Remove the share prefix to every line that has it
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;String&gt;</code> - Non-prefixed history lines  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| history | <code>Array.&lt;String&gt;</code> | Array of history lines |
+
+<a name="generateUUID"></a>
+
+## generateUUID() ⇒ <code>String</code>
+Generate a UUID (v4)
+
+**Kind**: global function  
+**Returns**: <code>String</code> - The new UUID  
 <a name="findEntriesByCheck"></a>
 
 ## findEntriesByCheck(groups, compareFn) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
@@ -4229,13 +2945,6 @@ Get all entries within a collection of groups
 | --- | --- | --- |
 | groups | [<code>Array.&lt;Group&gt;</code>](#Group) | An array of groups |
 
-<a name="generateUUID"></a>
-
-## generateUUID() ⇒ <code>String</code>
-Generate a UUID (v4)
-
-**Kind**: global function  
-**Returns**: <code>String</code> - The new UUID  
 <a name="deriveKeyFromPassword"></a>
 
 ## deriveKeyFromPassword(password, salt, rounds, bits) ⇒ <code>Promise.&lt;ArrayBuffer&gt;</code>
@@ -4275,6 +2984,7 @@ New source options
 | --- | --- | --- |
 | [id] | <code>String</code> | Override source ID generation |
 | [type] | <code>String</code> | Specify the source type |
+| [meta] | <code>Object</code> | Optional additional meta data (stored unencrypted) |
 
 <a name="ArchiveSourceDescription"></a>
 
@@ -4291,18 +3001,6 @@ New source options
 | colour | <code>String</code> | Colour for the source |
 | order | <code>Number</code> | The order of the source |
 
-<a name="ArchiveDataset"></a>
-
-## ArchiveDataset : <code>Object</code>
-**Kind**: global typedef  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| groups | <code>Array.&lt;Object&gt;</code> | Array of groups |
-| entries | <code>Array.&lt;Object&gt;</code> | Array of entries |
-| attributes | <code>Object</code> | Archive attributes |
-
 <a name="EntryHistoryItem"></a>
 
 ## EntryHistoryItem : <code>Object</code>
@@ -4317,19 +3015,6 @@ New source options
 | [property] | <code>String</code> | The property/attribute name of the change |
 | [value] | <code>String</code> | The value that was changed (resulting) |
 
-<a name="EntryFacade"></a>
-
-## EntryFacade : <code>Object</code>
-Entry facade for data input
-
-**Kind**: global typedef  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| type | <code>String</code> | The type of the facade |
-| fields | [<code>Array.&lt;EntryFacadeField&gt;</code>](#EntryFacadeField) | An array of fields |
-
 <a name="EntrySearchInfo"></a>
 
 ## EntrySearchInfo : <code>Object</code>
@@ -4341,24 +3026,104 @@ Entry facade for data input
 | entry | [<code>Entry</code>](#Entry) | The entry |
 | archive | [<code>Archive</code>](#Archive) | The associated archive |
 
-<a name="EntryFacadeField"></a>
+<a name="MyButtercupShareBase"></a>
 
-## EntryFacadeField : <code>Object</code>
-Entry facade data field
-
+## MyButtercupShareBase : <code>Object</code>
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| title | <code>String</code> | The user-friendly title of the field |
-| field | <code>String</code> | The type of data to map back to on the Entry instance (property/attribute) |
-| property | <code>String</code> | The property name within the field type of the Entry instance |
-| value | <code>String</code> | The value of the property (read/write) |
-| secret | <code>Boolean</code> | Wether or not the value should be hidden while viewing (masked) |
-| multiline | <code>Boolean</code> | Whether the value should be edited as a multiline value or not |
-| formatting | <code>Object</code> \| <code>Boolean</code> | Vendor formatting options object, or false if no formatting necessary |
-| maxLength | <code>Number</code> | Maximum recommended length of the value (defaults to -1) |
+| id | <code>String</code> | The share ID |
+| title | <code>String</code> | The share title |
+| perm_read | <code>Boolean</code> | Permission to read |
+| perm_write | <code>Boolean</code> | Permission to write changes |
+| perm_manage | <code>Boolean</code> | Permission to share with others, remove share access etc. |
+
+<a name="MyButtercupIncomingShare"></a>
+
+## MyButtercupIncomingShare : [<code>MyButtercupShareBase</code>](#MyButtercupShareBase)
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| share_password_enc | <code>String</code> | Encrypted password for the share |
+| sharing_user_id | <code>Number</code> | The user that shared the item |
+| sharing_user_key | <code>String</code> | The public key of the user for the share (used  for decrypting the share password) |
+
+<a name="MyButtercupEncryptedShare"></a>
+
+## MyButtercupEncryptedShare : [<code>MyButtercupShareBase</code>](#MyButtercupShareBase)
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | Encrypted share content |
+
+<a name="MyButtercupOrganisation"></a>
+
+## MyButtercupOrganisation : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>Number</code> | The organisation's ID |
+| name | <code>String</code> | The organisation name |
+| created | <code>String</code> | The creation date |
+
+<a name="MyButtercupDigest"></a>
+
+## MyButtercupDigest : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| archive_id | <code>Number</code> | The ID of the user's archive |
+| public_key | <code>String</code> | The RSA public key for the user |
+| messages | <code>Array.&lt;Object&gt;</code> | System messages for the user (internal processing) |
+| new_shares | [<code>Array.&lt;MyButtercupIncomingShare&gt;</code>](#MyButtercupIncomingShare) | An array of new shares to process |
+| organisations | [<code>Array.&lt;MyButtercupOrganisation&gt;</code>](#MyButtercupOrganisation) | An array of user organisations |
+
+<a name="MyButtercupUsersListItem"></a>
+
+## MyButtercupUsersListItem : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| user_id | <code>Number</code> | The ID of the user |
+| organisation_id | <code>Number</code> | The organisation ID the user was found in |
+| name | <code>String</code> | The name of the user |
+| public_key | <code>String</code> | The public key for the user |
+
+<a name="MyButtercupTokenResult"></a>
+
+## MyButtercupTokenResult : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| accessToken | <code>String</code> | An OAuth2 access token for API requests |
+| refreshToken | <code>String</code> | An OAuth2 refresh token |
+
+<a name="MyButtercupArchiveDetails"></a>
+
+## MyButtercupArchiveDetails : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>Number</code> | The remote vault ID |
+| updateID | <code>Number</code> | The current update ID for the vault |
+| created | <code>String</code> | The creation date |
+| lastUpdate | <code>String</code> | The last update date |
 
 <a name="FoundGroupResult"></a>
 

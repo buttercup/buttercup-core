@@ -1,5 +1,13 @@
 # Core library changelog
 
+## v3.0.0-rc1.0
+_2019-11-03_
+
+ * Pre-release v3
+   * My Buttercup client/datasource
+   * Shares (not yet connected)
+   * Refactorings
+
 ## v2.16.1
 _2019-10-10_
 
