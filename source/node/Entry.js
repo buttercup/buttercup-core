@@ -1,6 +1,7 @@
-const Inigo = require("./InigoGenerator.js");
+const ArchiveMember = require("./ArchiveMember.js");
+const Inigo = require("./Inigo.js");
 const encoding = require("./tools/encoding.js");
-const searching = require("./tools/searching-raw.js");
+const { findEntryByID, findGroupContainingEntryID } = require("./tools/rawVaultSearch.js");
 const { getEntryURLs } = require("./tools/entry.js");
 
 /**
@@ -17,29 +18,9 @@ const { getEntryURLs } = require("./tools/entry.js");
  * Entries form the low-level data structures used in Buttercup, and
  * are intended to represent logical collections of properties, like
  * a login for a website.
+ * @augments ArchiveMember
  */
-class Entry {
-    /**
-     * Create a new managed entry instance
-     * @param {Archive} archive The main archive instance
-     * @param {Object} remoteObj The remote object reference
-     */
-    constructor(archive, remoteObj) {
-        this._archive = archive;
-        this._westley = archive._getWestley();
-        this._remoteObject = remoteObj;
-    }
-
-    /**
-     * The ID of the entry
-     * @readonly
-     * @type {String}
-     * @memberof Entry
-     */
-    get id() {
-        return this._getRemoteObject().id;
-    }
-
+class Entry extends ArchiveMember {
     /**
      * Get the instance type
      * @type {String}
@@ -174,7 +155,7 @@ class Entry {
      */
     getGroup() {
         // @todo move to a new searching library
-        const parentInfo = searching.findGroupContainingEntryID(this._getWestley().getDataset().groups || [], this.id);
+        const parentInfo = findGroupContainingEntryID(this._getWestley().dataset.groups || [], this.id);
         if (parentInfo && parentInfo.group) {
             // require Group here due to circular references:
             const Group = require("./Group.js");
@@ -392,42 +373,11 @@ class Entry {
     toString() {
         return JSON.stringify(this.toObject());
     }
-
-    /**
-     * Get the archive reference
-     * @returns {Archive} The Archive reference
-     * @memberof Entry
-     * @protected
-     */
-    _getArchive() {
-        return this._archive;
-    }
-
-    /**
-     * Get the remote object that mirrors the data represented here
-     * @returns {Object} The remote object (in-memory copy)
-     * @memberof Entry
-     * @protected
-     */
-    _getRemoteObject() {
-        return this._remoteObject;
-    }
-
-    /**
-     * Get the Westley reference
-     * @returns {Westley} The internal Westley reference
-     * @memberof Entry
-     * @protected
-     */
-    _getWestley() {
-        return this._westley;
-    }
 }
 
 Entry.Attributes = Object.freeze({
     FacadeType: "BC_ENTRY_FACADE_TYPE",
-    FieldTypePrefix: "BC_ENTRY_FIELD_TYPE:",
-    TOTPProperty: "BC_ENTRY_TOTP_PROPERTY" // Deprecated
+    FieldTypePrefix: "BC_ENTRY_FIELD_TYPE:"
 });
 
 /**
@@ -459,7 +409,7 @@ Entry.createNew = function(archive, groupID) {
             .generateCommand()
     );
     // get the raw dataset for the new entry
-    var entry = searching.findEntryByID(westley.getDataset().groups, id);
+    var entry = findEntryByID(westley.dataset.groups, id);
     return new Entry(archive, entry);
 };
 

@@ -1,22 +1,21 @@
 const { getFormat } = require("@buttercup/signing");
-const AsyncEventEmitter = require("./events/AsyncEventEmitter.js");
+const EventEmitter = require("eventemitter3");
 const Westley = require("./Westley.js");
-const Inigo = require("./InigoGenerator.js");
+const Inigo = require("./Inigo.js");
 const Flattener = require("./Flattener.js");
 const Group = require("./Group.js");
 const Entry = require("./Entry.js");
 const GroupCollectionDecorator = require("./decorators/GroupCollection.js");
 const EntryCollectionDecorator = require("./decorators/EntryCollection.js");
-const rawSearching = require("./tools/searching-raw.js");
 const encoding = require("./tools/encoding.js");
 
 /**
  * Buttercup Archive
- * @augments AsyncEventEmitter
+ * @augments EventEmitter
  * @mixes GroupCollection
  * @mixes EntryCollection
  */
-class Archive extends AsyncEventEmitter {
+class Archive extends EventEmitter {
     constructor() {
         super();
         // create Westley instance
@@ -52,7 +51,7 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     get id() {
-        return this._getWestley().getDataset().archiveID;
+        return this._getWestley().dataset.archiveID;
     }
 
     /**
@@ -128,14 +127,14 @@ class Archive extends AsyncEventEmitter {
 
     /**
      * Get the value of an attribute
-     * @param {String} attributeName The attribute to get
+     * @param {String=} attributeName The attribute to get
      * @returns {undefined|String|Object} The value of the attribute or undefined if not
      *  set. Returns an object if no attribute name is given.
      * @memberof Archive
      * @deprecated Will be removed in version 3 - use `getAttribute()` instead
      */
     getAttribute(attributeName) {
-        const dataset = this._getWestley().getDataset();
+        const dataset = this._getWestley().dataset;
         if (!attributeName) {
             return Object.assign({}, dataset.attributes);
         }
@@ -150,7 +149,7 @@ class Archive extends AsyncEventEmitter {
      * @returns {Object} Attributes object
      */
     getAttributes() {
-        const dataset = this._getWestley().getDataset();
+        const dataset = this._getWestley().dataset;
         return Object.assign({}, dataset.attributes || {});
     }
 
@@ -160,7 +159,7 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     getFormat() {
-        return this._getWestley().getDataset().format;
+        return this._getWestley().dataset.format;
     }
 
     /**
@@ -169,7 +168,7 @@ class Archive extends AsyncEventEmitter {
      * @memberof Archive
      */
     getGroups() {
-        return (this._getWestley().getDataset().groups || []).map(rawGroup => new Group(this, rawGroup));
+        return (this._getWestley().dataset.groups || []).map(rawGroup => new Group(this, rawGroup));
     }
 
     /**
@@ -178,7 +177,7 @@ class Archive extends AsyncEventEmitter {
      * @returns {Array.<String>} The command array
      */
     getHistory() {
-        return [...this._getWestley().getHistory()];
+        return this._getWestley().history;
     }
 
     /**
@@ -276,7 +275,7 @@ class Archive extends AsyncEventEmitter {
 Archive.createFromHistory = function(history) {
     var archive = new Archive(),
         westley = archive._getWestley();
-    westley.clear();
+    westley.initialise();
     history.forEach(westley.execute.bind(westley));
     // clean
     westley.clearDirtyState();

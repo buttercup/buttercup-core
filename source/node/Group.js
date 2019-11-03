@@ -1,7 +1,8 @@
-const Inigo = require("./InigoGenerator.js");
+const ArchiveMember = require("./ArchiveMember.js");
+const Inigo = require("./Inigo.js");
 const Entry = require("./Entry.js");
 const encoding = require("./tools/encoding.js");
-const searching = require("./tools/searching-raw.js");
+const { findGroupByID, findGroupContainingGroupID } = require("./tools/rawVaultSearch.js");
 const sharing = require("./tools/sharing.js");
 const GroupCollectionDecorator = require("./decorators/GroupCollection.js");
 const EntryCollectionDecorator = require("./decorators/EntryCollection.js");
@@ -10,8 +11,9 @@ const EntryCollectionDecorator = require("./decorators/EntryCollection.js");
  * Group implementation
  * @mixes GroupCollection
  * @mixes EntryCollection
+ * @augments ArchiveMember
  */
-class Group {
+class Group extends ArchiveMember {
     /**
      * Managed group class
      * @param {Archive} archive The archive instance
@@ -19,22 +21,11 @@ class Group {
      * @constructor
      */
     constructor(archive, remoteObj) {
-        this._archive = archive;
-        this._westley = archive._getWestley();
-        this._remoteObject = remoteObj;
+        super(archive, remoteObj);
         // add group searching
         GroupCollectionDecorator.decorate(this);
         // add entry searching
         EntryCollectionDecorator.decorate(this);
-    }
-
-    /**
-     * The entry ID
-     * @type {String}
-     * @memberof Group
-     */
-    get id() {
-        return this._getRemoteObject().id;
     }
 
     /**
@@ -179,7 +170,7 @@ class Group {
             // parent is archive
             return null;
         }
-        const parentInfo = searching.findGroupContainingGroupID(archive._getWestley().getDataset(), this.id);
+        const parentInfo = findGroupContainingGroupID(archive._getWestley().dataset, this.id);
         if (parentInfo) {
             return new Group(archive, parentInfo.group);
         }
@@ -356,36 +347,6 @@ class Group {
     toString(outputFlags) {
         return JSON.stringify(this.toObject(outputFlags));
     }
-
-    /**
-     * Get the archive instance reference
-     * @protected
-     * @returns {Archive} The archive instance
-     * @memberof Group
-     */
-    _getArchive() {
-        return this._archive;
-    }
-
-    /**
-     * Get the remotely-managed object (group)
-     * @protected
-     * @returns {Object} The object instance for the group
-     * @memberof Group
-     */
-    _getRemoteObject() {
-        return this._remoteObject;
-    }
-
-    /**
-     * Get the delta managing instance for the archive
-     * @protected
-     * @returns {Westley} The internal Westley object
-     * @memberof Group
-     */
-    _getWestley() {
-        return this._westley;
-    }
 }
 
 /**
@@ -444,7 +405,7 @@ Group.createNew = function(archive, parentID, id = encoding.getUniqueID()) {
             .addArgument(id)
             .generateCommand()
     );
-    const group = searching.findGroupByID(westley.getDataset().groups, id);
+    const group = findGroupByID(westley.dataset.groups, id);
     return new Group(archive, group);
 };
 

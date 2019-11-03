@@ -1,4 +1,4 @@
-const instanceSearching = require("../tools/searching-instance.js");
+const instanceSearching = require("../tools/vaultSearch.js");
 
 /**
  * Find entries by searching properties/meta

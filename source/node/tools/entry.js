@@ -9,48 +9,6 @@ const URL_PROP = /(^|[a-zA-Z0-9_-]|\b)(ur[li]|UR[LI]|Ur[li])(\b|$|[_-])/;
 const URL_PROP_ICON = /icon[\s_-]*ur[li]/i;
 
 /**
- * Entry facade data field
- * @typedef {Object} EntryFacadeField
- * @property {String} title - The user-friendly title of the field
- * @property {String} field - The type of data to map back to on the Entry instance (property/attribute)
- * @property {String} property - The property name within the field type of the Entry instance
- * @property {String} value - The value of the property (read/write)
- * @property {Boolean} secret - Wether or not the value should be hidden while viewing (masked)
- * @property {Boolean} multiline - Whether the value should be edited as a multiline value or not
- * @property {Object|Boolean} formatting - Vendor formatting options object, or false if no formatting necessary
- * @property {Number} maxLength - Maximum recommended length of the value (defaults to -1)
- */
-
-/**
- * Create a descriptor for a field to be used within a facade
- * @param {Entry} entry The entry instance to process
- * @param {String} title The field title
- * @param {String} entryPropertyType The type of entry property (property/attribute)
- * @param {String} entryPropertyName The name of the property
- * @param {Object} options The options for the field
- * @returns {EntryFacadeField} The field descriptor
- */
-function createFieldDescriptor(
-    entry,
-    title,
-    entryPropertyType,
-    entryPropertyName,
-    { multiline = false, secret = false, formatting = false, removeable = false } = {}
-) {
-    const value = getEntryValue(entry, entryPropertyType, entryPropertyName);
-    return {
-        title,
-        field: entryPropertyType,
-        property: entryPropertyName,
-        value,
-        secret,
-        multiline,
-        formatting,
-        removeable
-    };
-}
-
-/**
  * Get URLs from an entry's properties
  * Allows for preferential sorting
  * @param {Object} properties The entry properties
@@ -89,19 +47,6 @@ function getEntryURLs(properties, preference = ENTRY_URL_TYPE_ANY) {
     }
     // Default is "any" URLs
     return objectValues(urlRef);
-}
-
-function getEntryFacadeURLs(facade, preference) {
-    const props = facade.fields
-        .filter(item => item.field === "property")
-        .reduce(
-            (output, field) =>
-                Object.assign(output, {
-                    [field.property]: field.value
-                }),
-            {}
-        );
-    return getEntryURLs(props, preference);
 }
 
 /**
@@ -147,9 +92,7 @@ module.exports = {
     ENTRY_URL_TYPE_GENERAL,
     ENTRY_URL_TYPE_ICON,
     ENTRY_URL_TYPE_LOGIN,
-    createFieldDescriptor,
     getEntryURLs,
-    getEntryFacadeURLs,
     getEntryValue,
     isValidProperty
 };

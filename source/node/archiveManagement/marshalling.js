@@ -83,16 +83,16 @@ function credentialsToSource(sourceCredentials, archiveCredentials, initialise =
                 // Content is overridden, so it cannot be modified:
                 // Setting to readOnly is a safety measure
                 const westley = result.archive._getWestley();
-                westley.readOnly = true;
+                westley._readOnly = true;
             }
             result.datasource.removeListener("updated", onUpdate);
             workspace.setArchive(result.archive, result.datasource, archiveCredentials);
-            return {
+            return workspace.update({ skipDiff: true }).then(() => ({
                 workspace,
                 sourceCredentials,
                 archiveCredentials,
                 updated
-            };
+            }));
         });
 }
 

@@ -13,11 +13,12 @@ module.exports = {
 
     Group: require("./Group.js"),
     Entry: require("./Entry.js"),
-    entryFacade: require("./entryFacade.js"),
 
     Flattener: require("./Flattener.js"),
-    Descriptor: require("./Descriptor.js"),
     EntryFinder: require("./EntryFinder.js"),
+
+    MyButtercupClient: require("./myButtercup/MyButtercupClient.js"),
+    MyButtercupDatasource: require("./myButtercup/MyButtercupDatasource.js"),
 
     storage: {
         StorageInterface: require("./storage/StorageInterface.js"),
@@ -25,16 +26,17 @@ module.exports = {
     },
 
     tools: {
+        describe: require("./tools/describe.js"),
         encoding: require("./tools/encoding.js"),
         entry: require("./tools/entry.js"),
         export: require("./tools/export.js"),
-        uuid: require("./tools/uuid.js"),
-        request: require("./tools/request.js"),
+        permissions: require("./tools/permissions.js"),
         signing: require("@buttercup/signing"),
         searching: {
-            instance: require("./tools/searching-instance.js"),
-            raw: require("./tools/searching-raw.js")
-        }
+            instance: require("./tools/vaultSearch.js"),
+            raw: require("./tools/rawVaultSearch.js")
+        },
+        uuid: require("./tools/uuid.js")
     },
 
     vendor: {

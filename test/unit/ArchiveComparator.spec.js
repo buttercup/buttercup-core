@@ -5,7 +5,7 @@ describe("ArchiveComparator", function() {
     beforeEach(function() {
         this.archive1 = new Archive();
         this.archive2 = new Archive();
-        this.archive2._getWestley().clear();
+        this.archive2._getWestley().initialise();
         this.archive1.getHistory().forEach(command => this.archive2._getWestley().execute(command));
     });
 
@@ -17,7 +17,7 @@ describe("ArchiveComparator", function() {
 
         it("returns false when no differences exist after modification", function() {
             this.archive1.createGroup("hai");
-            this.archive2._getWestley().clear();
+            this.archive2._getWestley().initialise();
             this.archive1.getHistory().forEach(command => this.archive2._getWestley().execute(command));
             const comparator = new ArchiveComparator(this.archive1, this.archive2);
             expect(comparator.archivesDiffer()).to.be.false;
@@ -25,7 +25,7 @@ describe("ArchiveComparator", function() {
 
         it("returns true when an archive is out of date", function() {
             this.archive1.createGroup("hai");
-            this.archive2._getWestley().clear();
+            this.archive2._getWestley().initialise();
             this.archive1.getHistory().forEach(command => this.archive2._getWestley().execute(command));
             this.archive1.createGroup("hai again");
             const comparator = new ArchiveComparator(this.archive1, this.archive2);
@@ -44,7 +44,7 @@ describe("ArchiveComparator", function() {
         beforeEach(function() {
             this.archive1 = Archive.createWithDefaults();
             this.archive2 = new Archive();
-            this.archive2._getWestley().clear();
+            this.archive2._getWestley().initialise();
             this.archive1.getHistory().forEach(command => this.archive2._getWestley().execute(command));
             this.archive1.createGroup("diff group");
         });

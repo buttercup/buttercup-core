@@ -1,6 +1,7 @@
 const Archive = require("../../source/node/Archive.js");
 const Entry = require("../../source/node/Entry.js");
 const Group = require("../../source/node/Group.js");
+const { PERM_MANAGE, PERM_READ, PERM_WRITE } = require("../../source/node/tools/permissions.js");
 
 describe("Entry", function() {
     beforeEach(function() {
@@ -22,6 +23,14 @@ describe("Entry", function() {
     describe("get:id", function() {
         it("returns the correct ID", function() {
             expect(this.entry.id).to.equal(this.entry._getRemoteObject().id);
+        });
+    });
+
+    describe("get:permissions", function() {
+        it("returns all permissions by default", function() {
+            expect(this.entry.permissions).to.contain(PERM_MANAGE);
+            expect(this.entry.permissions).to.contain(PERM_READ);
+            expect(this.entry.permissions).to.contain(PERM_WRITE);
         });
     });
 

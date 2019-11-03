@@ -1,6 +1,7 @@
 const Archive = require("../../source/node/Archive.js");
 const Entry = require("../../source/node/Entry.js");
 const Group = require("../../source/node/Group.js");
+const { PERM_MANAGE, PERM_READ, PERM_WRITE } = require("../../source/node/tools/permissions.js");
 
 describe("Group", function() {
     beforeEach(function() {
@@ -15,6 +16,14 @@ describe("Group", function() {
     describe("get:id", function() {
         it("returns the correct ID", function() {
             expect(this.group.id).to.equal(this.group._getRemoteObject().id);
+        });
+    });
+
+    describe("get:permissions", function() {
+        it("returns all permissions by default", function() {
+            expect(this.group.permissions).to.contain(PERM_MANAGE);
+            expect(this.group.permissions).to.contain(PERM_READ);
+            expect(this.group.permissions).to.contain(PERM_WRITE);
         });
     });
 
@@ -46,9 +55,9 @@ describe("Group", function() {
             expect(this.group.getGroups().map(g => g.id)).to.contain(group.id);
         });
 
-        it("can create title-less groups", function() {
+        it("can create groups with the correct default title", function() {
             const group = this.group.createGroup();
-            expect(group.getTitle()).to.equal("");
+            expect(group.getTitle()).to.equal("New group");
         });
     });
 
@@ -178,9 +187,9 @@ describe("Group", function() {
             expect(this.group.getTitle()).to.equal("test");
         });
 
-        it("returns an empty string for untitled group", function() {
+        it("returns the correct string for untitled group", function() {
             const group = this.group.createGroup();
-            expect(group.getTitle()).to.equal("");
+            expect(group.getTitle()).to.equal("New group");
         });
     });
 
@@ -253,7 +262,7 @@ describe("Group", function() {
 
         it("outputs empty group title when title not set", function() {
             const group = this.group.createGroup();
-            expect(group.toObject()).to.have.property("title", "");
+            expect(group.toObject()).to.have.property("title", "New group");
         });
 
         it("outputs attributes", function() {

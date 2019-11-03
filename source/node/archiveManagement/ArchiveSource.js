@@ -1,9 +1,9 @@
 const VError = require("verror");
 const ChannelQueue = require("@buttercup/channel-queue");
 const Credentials = require("@buttercup/credentials");
-const AsyncEventEmitter = require("../events/AsyncEventEmitter.js");
-const getUniqueID = require("../tools/encoding.js").getUniqueID;
-const credentialsToSource = require("./marshalling.js").credentialsToSource;
+const EventEmitter = require("eventemitter3");
+const { getUniqueID } = require("../tools/encoding.js");
+const { credentialsToSource } = require("./marshalling.js");
 const { getSourceOfflineArchive, sourceHasOfflineCopy, storeSourceOfflineCopy } = require("./offline.js");
 
 const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;
@@ -30,8 +30,10 @@ const Status = {
  * @static
  */
 function rehydrate(dehydratedString) {
-    const { name, id, sourceCredentials, archiveCredentials, type, colour, order } = JSON.parse(dehydratedString);
-    const source = new ArchiveSource(name, sourceCredentials, archiveCredentials, { id, type });
+    const { name, id, sourceCredentials, archiveCredentials, type, colour, order, meta = {} } = JSON.parse(
+        dehydratedString
+    );
+    const source = new ArchiveSource(name, sourceCredentials, archiveCredentials, { id, type, meta });
     source.type = type;
     if (colour) {
         source._colour = colour;
@@ -44,14 +46,15 @@ function rehydrate(dehydratedString) {
 
 /**
  * Archive source class
- * @augments AsyncEventEmitter
+ * @augments EventEmitter
  */
-class ArchiveSource extends AsyncEventEmitter {
+class ArchiveSource extends EventEmitter {
     /**
      * New source options
      * @typedef {Object} ArchiveSourceOptions
      * @property {String=} id - Override source ID generation
      * @property {String=} type - Specify the source type
+     * @property {Object=} meta - Optional additional meta data (stored unencrypted)
      */
 
     /**
@@ -61,7 +64,7 @@ class ArchiveSource extends AsyncEventEmitter {
      * @param {String} archiveCredentials Encrypted archive credentials
      * @param {ArchiveSourceOptions=} newSourceOptions Specify source creation options
      */
-    constructor(name, sourceCredentials, archiveCredentials, { id = getUniqueID(), type = "" } = {}) {
+    constructor(name, sourceCredentials, archiveCredentials, { id = getUniqueID(), type = "", meta = {} } = {}) {
         super();
         if (Credentials.isSecureString(sourceCredentials) !== true) {
             throw new VError("Failed constructing archive source: Source credentials not in encrypted form");
@@ -78,6 +81,7 @@ class ArchiveSource extends AsyncEventEmitter {
         this._archiveCredentials = archiveCredentials;
         this._workspace = null;
         this._colour = DefaultColour;
+        this._meta = meta || {};
         this.type = type;
         this.order = DefaultOrder;
     }
@@ -135,6 +139,16 @@ class ArchiveSource extends AsyncEventEmitter {
      */
     get id() {
         return this._id;
+    }
+
+    /**
+     * Meta data included with the source (not encrypted)
+     * @type {Object}
+     * @memberof ArchiveSource
+     * @readonly
+     */
+    get meta() {
+        return this._meta;
     }
 
     /**
@@ -223,7 +237,8 @@ class ArchiveSource extends AsyncEventEmitter {
                         type: this.type,
                         status: Status.LOCKED,
                         colour: this.colour,
-                        order: this.order
+                        order: this.order,
+                        meta: this.meta
                     };
                     if (this.status === Status.LOCKED) {
                         payload.sourceCredentials = this._sourceCredentials;
@@ -419,16 +434,8 @@ class ArchiveSource extends AsyncEventEmitter {
             return Promise.reject(new VError(`Failed updating source credentials: Source is not unlocked: ${this.id}`));
         }
         const { datasource } = this._workspace;
-        const datasourceDescriptionRaw = this._sourceCredentials.getValueOrFail("datasource");
-        const datasourceDescription =
-            typeof datasourceDescriptionRaw === "string"
-                ? JSON.parse(datasourceDescriptionRaw)
-                : datasourceDescriptionRaw;
-        datasourceDescription.token = datasource.token;
-        if (datasource.refreshToken) {
-            datasourceDescription.refreshToken = datasource.refreshToken;
-        }
-        this._sourceCredentials.setValue("datasource", datasourceDescription);
+        const newDescription = datasource.toObject();
+        this._sourceCredentials.setValue("datasource", newDescription);
     }
 
     /**

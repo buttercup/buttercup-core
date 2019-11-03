@@ -1,4 +1,4 @@
-const describe = require("./Descriptor.js");
+const { describeArchiveDataset } = require("./tools/describe.js");
 const Westley = require("./Westley.js");
 
 /**
@@ -7,14 +7,14 @@ const Westley = require("./Westley.js");
  * @static
  * @memberof Flattener
  */
-const FLATTENING_MIN_LINES = 1500;
+const FLATTENING_MIN_LINES = 11000;
 /**
  * Number of lines to preserve (most recent)
  * @type {Number}
  * @static
  * @memberof Flattener
  */
-const PRESERVE_LINES = 1000;
+const PRESERVE_LINES = 10000;
 
 /**
  * Check if a command should be preserved (not flattened)
@@ -54,7 +54,7 @@ class Flattener {
      * @memberof Flattener
      */
     canBeFlattened() {
-        return this.westley.getHistory().length >= FLATTENING_MIN_LINES;
+        return this.westley.history.length >= FLATTENING_MIN_LINES;
     }
 
     /**
@@ -64,12 +64,10 @@ class Flattener {
      * @memberof Flattener
      */
     flatten(force = false) {
-        const history = this._westley.getHistory();
+        const history = this._westley.history;
         const preservedLines = [];
         const tempWestley = new Westley();
-        let availableLines = history.length - PRESERVE_LINES,
-            cleanHistory,
-            i;
+        let availableLines = history.length - PRESERVE_LINES;
         // check if possible to flatten
         if (availableLines <= 0 || !this.canBeFlattened()) {
             if (!force) {
@@ -79,7 +77,7 @@ class Flattener {
         }
         // execute early history
         var currentCommand;
-        for (i = 0; i < availableLines; i += 1) {
+        for (let i = 0; i < availableLines; i += 1) {
             currentCommand = history[i];
             if (mustBePreserved(currentCommand)) {
                 preservedLines.push(currentCommand);
@@ -87,14 +85,14 @@ class Flattener {
             tempWestley.execute(currentCommand);
         }
         // describe the archive at its current state
-        cleanHistory = describe(tempWestley.getDataset());
+        const cleanHistory = describeArchiveDataset(tempWestley.dataset);
         // prepare to replay
-        var newHistory = []
+        const newHistory = []
             .concat(preservedLines) // preserved commands that cannot be stripped
             .concat(cleanHistory) // the newly flattened description commands
             .concat(history.slice(availableLines)); // the existing history minus the flattened portion
         // clear the system
-        this._westley.clear();
+        this._westley.initialise();
         // replay all history (expensive)
         newHistory.forEach(this._westley.execute.bind(this._westley));
         return true;

@@ -21,11 +21,6 @@ matrix:
       env:
         - NAME="Node 8"
     - language: node_js
-      script: npm run test:ci:node
-      node_js: 6
-      env: 
-        - NAME="Node 6"
-    - language: node_js
       node_js: 8
       sudo: required
       dist: trusty

@@ -83,7 +83,7 @@ describe("Archive", function() {
         it("throws if an attribute doesn't exist", function() {
             expect(() => {
                 this.archive.deleteAttribute("not-here");
-            }).to.throw(/doesn't exist/i);
+            }).to.throw(/no such attribute/i);
         });
     });
 
@@ -222,15 +222,6 @@ describe("Archive", function() {
         it("returns the trash group", function() {
             const archive = Archive.createWithDefaults();
             expect(archive.getTrashGroup()).to.be.an.instanceof(Group);
-        });
-    });
-
-    describe("optimise", function() {
-        it("requests history for flattening", function() {
-            const archive = Archive.createWithDefaults();
-            sinon.spy(archive._getWestley(), "getHistory");
-            archive.optimise();
-            expect(archive._getWestley().getHistory.calledOnce).to.be.true;
         });
     });
 
