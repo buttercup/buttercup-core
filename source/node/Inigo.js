@@ -12,11 +12,11 @@ function InigoCommand(cmdKey) {
 }
 
 InigoCommand.prototype.addArgument = function(arg) {
-    var newArgIndex = this._commandArgs.length,
-        argRules = this._commandKey.args,
-        newArgRule = argRules.length <= newArgIndex ? false : argRules[newArgIndex];
+    const newArgIndex = this._commandArgs.length;
+    const argRules = this._commandKey.args;
+    const newArgRule = argRules.length <= newArgIndex ? false : argRules[newArgIndex];
     if (newArgRule === false) {
-        throw new Error(`Failed adding argument for command "${this._commandKey.s}": too many arguments for command`);
+        throw new Error(`Failed adding argument for command "${this._commandKey.s}": too many arguments`);
     }
     if (!newArgRule.test.test(arg)) {
         throw new Error(

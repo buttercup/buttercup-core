@@ -1,15 +1,15 @@
 function findEntryByID(groups, id) {
-    for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
-        var group = groups[i];
+    for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
+        const group = groups[i];
         if (group.entries) {
-            for (var j = 0, entriesLen = group.entries.length; j < entriesLen; j += 1) {
+            for (let j = 0, entriesLen = group.entries.length; j < entriesLen; j += 1) {
                 if (group.entries[j].id === id) {
                     return group.entries[j];
                 }
             }
         }
         if (group.groups) {
-            var deepEntry = findEntryByID(group.groups, id);
+            const deepEntry = findEntryByID(group.groups, id);
             if (deepEntry) {
                 return deepEntry;
             }
@@ -19,12 +19,12 @@ function findEntryByID(groups, id) {
 }
 
 function findGroupByCheck(groups, checkFn) {
-    for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
+    for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
         if (checkFn(groups[i]) === true) {
             return groups[i];
         }
         if (groups[i].groups) {
-            var deepGroup = findGroupByCheck(groups[i].groups, checkFn);
+            const deepGroup = findGroupByCheck(groups[i].groups, checkFn);
             if (deepGroup) {
                 return deepGroup;
             }
@@ -58,8 +58,8 @@ function findGroupByTitle(groups, title) {
  * @returns {FoundGroupResult} The parent group of the found entry
  */
 function findGroupContainingEntryID(groups, id) {
-    for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
-        var group = groups[i];
+    for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
+        const group = groups[i];
         if (group.entries) {
             for (var j = 0, entriesLen = group.entries.length; j < entriesLen; j += 1) {
                 if (group.entries[j].id === id) {
@@ -71,7 +71,7 @@ function findGroupContainingEntryID(groups, id) {
             }
         }
         if (group.groups) {
-            var deepGroup = findGroupContainingEntryID(group.groups, id);
+            const deepGroup = findGroupContainingEntryID(group.groups, id);
             if (deepGroup.group) {
                 return deepGroup;
             }
@@ -90,15 +90,15 @@ function findGroupContainingEntryID(groups, id) {
  * @returns {FoundGroupResult} The parent of the located group ID
  */
 function findGroupContainingGroupID(group, id) {
-    var groups = group.groups || [];
-    for (var i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
+    const groups = group.groups || [];
+    for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
         if (groups[i].id === id) {
             return {
                 group: group,
                 index: i
             };
         }
-        var deepGroup = findGroupContainingGroupID(groups[i], id);
+        const deepGroup = findGroupContainingGroupID(groups[i], id);
         if (deepGroup.group) {
             return deepGroup;
         }

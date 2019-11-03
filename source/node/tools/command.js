@@ -54,39 +54,34 @@ const COMMAND_MANIFEST = {
     SetGroupAttribute: { s: "sga", d: false, args: [ARG.ItemID, ARG.StringValue, ARG.StringValue] },
     SetGroupTitle: { s: "tgr", d: false, args: [ARG.ItemID, ARG.StringValue] }
 };
+const PLACEHOLDER_ESCAPED = "__ESCAPED_QUOTE__";
+const PLACEHOLDER_QUOTED = "__QUOTEDSTR__";
 
 /**
  * Extract command components from a string
  * @param {String} command The command to extract from
  * @returns {String[]} The separated parts
  */
-function extractCommandComponents(command) {
-    var patt = /("[^"]*")/,
-        quotedStringPlaceholder = "__QUOTEDSTR__",
-        escapedQuotePlaceholder = "__ESCAPED_QUOTE__",
-        matches = [],
-        match;
-
-    command = command.replace(/\\\"/g, escapedQuotePlaceholder);
-
+function extractCommandComponents(cmd) {
+    const patt = /("[^"]*")/;
+    const matches = [];
+    let match;
+    let command = cmd.replace(/\\\"/g, PLACEHOLDER_ESCAPED);
+    // Replace complex command segments
     while ((match = patt.exec(command))) {
-        var matched = match[0];
-        command =
-            command.substr(0, match.index) + quotedStringPlaceholder + command.substr(match.index + matched.length);
+        const [matched] = match;
+        command = command.substr(0, match.index) + PLACEHOLDER_QUOTED + command.substr(match.index + matched.length);
         matches.push(matched.substring(1, matched.length - 1));
     }
-
-    var parts = command.split(" ");
-    parts = parts.map(function(part) {
-        var item = part.trim();
-        if (item === quotedStringPlaceholder) {
+    // Split command, map back to original values
+    return command.split(" ").map(part => {
+        let item = part.trim();
+        if (item === PLACEHOLDER_QUOTED) {
             item = matches.shift();
         }
-        item = item.replace(new RegExp(escapedQuotePlaceholder, "g"), '"');
+        item = item.replace(new RegExp(PLACEHOLDER_ESCAPED, "g"), '"');
         return item;
     });
-
-    return parts;
 }
 
 module.exports = {

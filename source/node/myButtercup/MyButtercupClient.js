@@ -81,7 +81,12 @@ function demultiplexShares(sharesTxt) {
         if (!/^\<--\(/.test(propLine)) {
             continue;
         }
-        const payload = JSON.parse(propLine.replace(/^\<--\(/, "").replace(/\)--\>$/, ""));
+        let payload;
+        try {
+            payload = JSON.parse(propLine.replace(/^\<--\(/, "").replace(/\)--\>$/, ""));
+        } catch (err) {
+            throw new VError(err, "Invalid share metadata");
+        }
         if (!payload.id) {
             throw new Error(`Multiplexed share definition invalid:\n\t${propLine}`);
         }
@@ -330,17 +335,8 @@ class MyButtercupClient extends EventEmitter {
         if (orgIDs.length <= 0) {
             return [];
         }
-        const users = [];
-        let work = Promise.resolve();
-        orgIDs.forEach(orgID => {
-            work = work
-                .then(() => this.retrieveUsersListForOrganisation(orgID))
-                .then(orgUsers => {
-                    users.push(...orgUsers);
-                });
-        });
-        return work
-            .then(() => users)
+        return Promise.all(orgIDs.map(orgID => this.retrieveUsersListForOrganisation(orgID)))
+            .then(results => results.reduce((output, users) => [...output, ...users], []))
             .catch(err => {
                 throw new VError(err, "Failed retrieving users list");
             });
@@ -462,7 +458,6 @@ class MyButtercupClient extends EventEmitter {
             method: "POST",
             headers: {
                 Authorization: `Basic ${baseAuth}`,
-                // Authorization: `Bearer ${this.refreshToken}`
                 "Content-Type": "application/x-www-form-urlencoded"
             },
             body: `grant_type=refresh_token&refresh_token=${this.refreshToken}`
