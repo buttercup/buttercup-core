@@ -201,6 +201,36 @@ class ArchiveSource extends EventEmitter {
     }
 
     /**
+     * Change the master vault password
+     * @param {String} oldPassword The original/current password
+     * @param {String} newPassword The new password to change to
+     * @returns {Promise}
+     * @memberof ArchiveSource
+     */
+    async changeMasterPassword(oldPassword, newPassword) {
+        if (oldPassword === newPassword) {
+            throw new Error("New password cannot be the same as the previous one");
+        } else if (!newPassword) {
+            throw new Error("New password must be specified");
+        }
+        if (this.status !== "unlocked") {
+            // Locked, so unlock
+            await this.unlock(oldPassword);
+        } else {
+            // Unlocked, so check password..
+            if (this._archiveCredentials.password !== oldPassword) {
+                throw new Error("Old password does not match current unlocked instance value");
+            }
+            // ..and then update
+            await this.workspace.mergeFromRemote();
+        }
+        // Clear offline cache
+        await storeSourceOfflineCopy(this.storageInterface, this.id, null);
+        // Change password
+        await this.updateArchiveCredentials(newPassword);
+    }
+
+    /**
      * Check if the source has an offline copy
      * @returns {Promise.<Boolean>} A promise which resolves with whether an offline
      *  copy is available or not
