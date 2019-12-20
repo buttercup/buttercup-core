@@ -807,6 +807,7 @@ Archive source class
         * [.status](#ArchiveSource+status) : <code>ArchiveSourceStatus</code>
         * [.storageInterface](#ArchiveSource+storageInterface) : <code>StorageInterface</code>
         * [.workspace](#ArchiveSource+workspace) : [<code>Workspace</code>](#Workspace) \| <code>null</code>
+        * [.changeMasterPassword(oldPassword, newPassword)](#ArchiveSource+changeMasterPassword) ⇒ <code>Promise</code>
         * [.checkOfflineCopy()](#ArchiveSource+checkOfflineCopy) ⇒ <code>Promise.&lt;Boolean&gt;</code>
         * [.dehydrate()](#ArchiveSource+dehydrate) ⇒ <code>Promise.&lt;String&gt;</code>
         * [.getOfflineContent()](#ArchiveSource+getOfflineContent) ⇒ <code>Promise.&lt;(String\|null)&gt;</code>
@@ -893,6 +894,18 @@ Is null when the source is locked
 
 **Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
 **Read only**: true  
+<a name="ArchiveSource+changeMasterPassword"></a>
+
+### archiveSource.changeMasterPassword(oldPassword, newPassword) ⇒ <code>Promise</code>
+Change the master vault password
+
+**Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| oldPassword | <code>String</code> | The original/current password |
+| newPassword | <code>String</code> | The new password to change to |
+
 <a name="ArchiveSource+checkOfflineCopy"></a>
 
 ### archiveSource.checkOfflineCopy() ⇒ <code>Promise.&lt;Boolean&gt;</code>

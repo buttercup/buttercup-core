@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v3.0.0-rc1.1
+_2019-12-20_
+
+ * Change password support
+
 ## v3.0.0-rc1.0
 _2019-11-03_
 
