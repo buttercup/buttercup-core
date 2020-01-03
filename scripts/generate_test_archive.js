@@ -1,15 +1,16 @@
 const path = require("path");
+require("@buttercup/app-env/native");
+const { getSharedAppEnv } = require("@buttercup/app-env");
 const { Archive, Credentials, Datasources, vendor } = require("../source/node/index.js");
 const packageInfo = require("../package.json");
 
 const { FileDatasource } = Datasources;
-const { iocane } = vendor;
 const { version } = packageInfo;
 
 const outputDir = path.resolve(__dirname, "../test/resources/archives");
 const outputFile = path.join(outputDir, `/test-archive-${version}.bcup`);
 
-iocane.configure().setDerivationRounds(10);
+getSharedAppEnv().getProperty("crypto/v1/setDerivationRounds")(10);
 
 console.log("Building archive...");
 

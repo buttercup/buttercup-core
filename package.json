@@ -79,6 +79,7 @@
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
+    "@buttercup/app-env": "^0.1.1",
     "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
@@ -108,6 +109,9 @@
     "webpack": "^4.41.0",
     "webpack-bundle-analyzer": "^3.5.2",
     "webpack-cli": "^3.3.9"
+  },
+  "peerDependencies": {
+    "buttercup/app-env": ">= 0.1.1"
   },
   "husky": {
     "hooks": {
