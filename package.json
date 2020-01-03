@@ -62,17 +62,14 @@
   "dependencies": {
     "@buttercup/channel-queue": "^0.3.0",
     "@buttercup/credentials": "^1.2.0",
-    "@buttercup/datasources": "^3.4.0",
+    "@buttercup/datasources": "^4.0.0",
     "@buttercup/signing": "^0.1.0",
     "cowl": "^0.8.0",
     "eventemitter3": "^3.1.0",
     "fuse.js": "^2.7.4",
-    "iocane": "^1.0.2",
     "is-promise": "^2.1.0",
-    "node-fetch": "^2.6.0",
     "node-rsa": "^1.0.5",
     "sha.js": "^2.4.11",
-    "string-hash": "^1.1.3",
     "url-join": "^4.0.1",
     "uuid": "^3.3.2",
     "verror": "^1.10.0"
