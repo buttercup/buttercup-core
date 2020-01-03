@@ -35,6 +35,11 @@
     "test:web": "karma start",
     "test:web:production": "BUNDLE=production karma start"
   },
+  "files": [
+    "source/**/*.js",
+    "dist/**/*.js",
+    "*.md"
+  ],
   "lint-staged": {
     "{source,test}/**/*.js": [
       "prettier --write",
@@ -110,7 +115,7 @@
     "webpack-cli": "^3.3.10"
   },
   "peerDependencies": {
-    "buttercup/app-env": ">= 0.1.1"
+    "@buttercup/app-env": ">= 0.1.1"
   },
   "husky": {
     "hooks": {
