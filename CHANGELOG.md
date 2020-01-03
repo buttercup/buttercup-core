@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v3.0.0-rc2.0
+_2020-01-03_
+
+ * App-env usage
+   * crypto simplification for web
+
 ## v3.0.0-rc1.1
 _2019-12-20_
 
