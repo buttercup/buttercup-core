@@ -1,4 +1,3 @@
-const iocane = require("iocane");
 const Datasources = require("@buttercup/datasources");
 const Credentials = require("@buttercup/credentials");
 
@@ -41,7 +40,6 @@ module.exports = {
 
     vendor: {
         dropbox: Datasources.dropboxClientPatcher,
-        iocane,
         webdav: Datasources.webdav
     }
 };

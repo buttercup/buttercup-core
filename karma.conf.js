@@ -7,7 +7,7 @@ module.exports = config => config.set({
 
     basePath: __dirname,
 
-    browsers: ["Chrome"],
+    browsers: ["ChromeHeadless"],
 
     captureTimeout: 60000,
 

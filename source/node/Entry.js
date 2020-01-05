@@ -44,7 +44,7 @@ class Entry extends ArchiveMember {
     delete(skipTrash = false) {
         const trashGroup = this._getArchive().getTrashGroup();
         const parentGroup = this.getGroup();
-        const canTrash = trashGroup && parentGroup && (!parentGroup.isTrash() && !parentGroup.isInTrash());
+        const canTrash = trashGroup && parentGroup && !parentGroup.isTrash() && !parentGroup.isInTrash();
         if (canTrash && !skipTrash) {
             // trash it
             this.moveToGroup(trashGroup);

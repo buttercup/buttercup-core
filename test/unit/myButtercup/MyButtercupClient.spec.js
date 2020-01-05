@@ -116,7 +116,12 @@ describe("MyButtercupClient", function() {
             sinon
                 .stub(this.client, "retrieveUsersListForOrganisation")
                 .onFirstCall()
-                .returns(Promise.resolve([{ user_id: 123, organisation_id: 5 }, { user_id: 456, organisation_id: 5 }]))
+                .returns(
+                    Promise.resolve([
+                        { user_id: 123, organisation_id: 5 },
+                        { user_id: 456, organisation_id: 5 }
+                    ])
+                )
                 .onSecondCall()
                 .returns(Promise.resolve([{ user_id: 789, organisation_id: 6 }]));
         });
@@ -135,7 +140,10 @@ describe("MyButtercupClient", function() {
                 Promise.resolve({
                     data: {
                         status: "ok",
-                        users: [{ user_id: 123, organisation_id: 5 }, { user_id: 456, organisation_id: 5 }]
+                        users: [
+                            { user_id: 123, organisation_id: 5 },
+                            { user_id: 456, organisation_id: 5 }
+                        ]
                     }
                 })
             );

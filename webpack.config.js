@@ -39,6 +39,7 @@ const baseConfig = {
     },
 
     node: {
+        crypto: "empty",
         fs: "empty",
         net: "empty"
     },

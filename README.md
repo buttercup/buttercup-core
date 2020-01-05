@@ -36,10 +36,11 @@ The core of the system, this **Buttercup Core**, boasts a few awesome features:
 This library also supports a variety of datasources for loading from and saving to:
 
  * WebDAV
- * [OwnCloud](https://owncloud.org/)
- * [Nextcloud](https://nextcloud.com/)
+   * _And providers like:_
+     * [OwnCloud](https://owncloud.org/)
+     * [Nextcloud](https://nextcloud.com/)
  * [Dropbox](https://www.dropbox.com/)
- * [Box](https://www.box.com/)
+ * [Google Drive](https://www.google.com/drive/)
  * Files
  * _Coming soon:_ my.buttercup service
 
@@ -50,14 +51,19 @@ You may want to read the [API documentation](https://github.com/buttercup/butter
 To use Buttercup in a NodeJS environment, you can simply install and require it:
 
 ```shell
-npm install buttercup --save
+npm install buttercup @buttercup/app-env --save
 ```
 
+_`@buttercup/app-env` is the environment bootstrap utility which configures complex core utilities like encryption and compression. It needs to be installed and then initialised **before** `buttercup` core in order for Buttercup to work._
+
+In a Node environment, for example:
+
 ```javascript
+require("@buttercup/app-env/native"); // Bootstrap using Native (node) functionality
 const { Archive } = require("buttercup");
 ```
 
-To use Buttercup in a browser, you probably want to include the `buttercup-web.js` or `buttercup-web.min.js` file in the `dist` directory.
+To use Buttercup in a browser, you probably want to include the `buttercup-web.js` or `buttercup-web.min.js` file in the `dist` directory. If you use Buttercup in a browser, ensure that you `import "@buttercup/app-env/web"` to correctly bootstrap for the web environment.
 
 ## Usage
 
@@ -122,6 +128,6 @@ To see all available Datasources, checkout the [`@buttercup/datasources`](https:
 Buttercup is an encryption library that is designed to work with very sensitive data. Using its APIs in a public space is **strongly not recommended** - any bad actor could simply hijack and misuse sensitive data passed through Buttercup. Use Buttercup in settings where security and privacy can be ensured:
 
  * Do use it in NodeJS by directly requiring items from its API, but ensure that your application is final
-   * Be cautious using it in applications that are intended to run in a shared environment - Buttercup has several methods that can be overridden, which may pose a security risk in shared environments such as Node applications.
- * **Do not** use it in public spaces such as via a global variable
+   * Be cautious using it in applications that are intended to run in a shared environment
+ * **Do not** use it in public spaces or websites such as via a global variable
  * Do use it in bundled applications and executables, such as within an Electron app
