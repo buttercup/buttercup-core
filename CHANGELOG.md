@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v3.0.0-rc2.1
+_2020-01-05_
+
+ * Reduced bundle / web size
+
 ## v3.0.0-rc2.0
 _2020-01-03_
 
