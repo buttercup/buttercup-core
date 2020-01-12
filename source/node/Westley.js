@@ -64,6 +64,10 @@ class Westley extends EventEmitter {
         return this._dataset;
     }
 
+    get entryChanges() {
+        // return [...this._entryChanges];
+    }
+
     get history() {
         return [...this._history];
     }

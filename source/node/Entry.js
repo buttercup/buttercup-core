@@ -5,15 +5,6 @@ const { findEntryByID, findGroupContainingEntryID } = require("./tools/rawVaultS
 const { getEntryURLs } = require("./tools/entry.js");
 
 /**
- * @typedef {Object} EntryHistoryItem
- * @property {String} type - The type of history item
- * @property {String=} origin - The origin group ID for a moved-entry
- * @property {String=} destination - The destination group ID for a moved-entry
- * @property {String=} property - The property/attribute name of the change
- * @property {String=} value - The value that was changed (resulting)
- */
-
-/**
  * Entry class implementation
  * Entries form the low-level data structures used in Buttercup, and
  * are intended to represent logical collections of properties, like
@@ -148,6 +139,15 @@ class Entry extends ArchiveMember {
     }
 
     /**
+     * Get an array of all history changes made to the entry
+     * @returns {Array.<EntryHistoryItem>}
+     * @memberof Entry
+     */
+    getChanges() {
+        return this._getRemoteObject().history || [];
+    }
+
+    /**
      * Get the containing group for the entry
      * @returns {Group|null} The parent group
      * @memberof Entry
@@ -166,11 +166,12 @@ class Entry extends ArchiveMember {
 
     /**
      * Get the history of the entry
-     * @returns {Array.<EntryHistoryItem>}
+     * @deprecated Use `getChanges` instead
+     * @returns {Array}
      * @memberof Entry
      */
     getHistory() {
-        return this._getRemoteObject().history || [];
+        return [];
     }
 
     /**
