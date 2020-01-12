@@ -340,23 +340,28 @@ class ArchiveSource extends EventEmitter {
     }
 
     /**
-     * Unlock the source
-     * @param {String} masterPassword The master password
-     * @param {Boolean=} initialiseRemote Optionally initialise the remote (replaces
-     *  remote archive) (defaults to false)
-     * @param {String|Boolean=} contentOverride Content for overriding the fetch operation in the
+     * @typedef {Object} ArchiveSourceUnlockOptions
+     * @property {Boolean=} initialiseRemote Optionally initialise the remote
+     *  (replaces remote archive) (defaults to false)
+     * @property {String|Boolean=} contentOverride Content for overriding the fetch operation in the
      *  datasource, for loading offline content. Can be set to the content (string) or to 'true',
      *  which will attempt to load the content from the ArchiveManager's storage.
-     * @param {Boolean=} storeOfflineCopy Whether or not to store an offline copy. Defaults to
+     * @property {Boolean=} storeOfflineCopy Whether or not to store an offline copy. Defaults to
      *  true.
+     */
+
+    /**
+     * Unlock the source
+     * @param {String} masterPassword The master password
+     * @param {ArchiveSourceUnlockOptions=} options Unlocking options
      * @memberof ArchiveSource
-     * @deprecated Function signature will change in an upcoming version
      * @throws {VError} Rejects if not in locked state
      * @throws {VError} Rejects if not able to create the source from the encrypted
      *  credentials
      * @fires ArchiveSource#sourceUnlocked
      */
-    unlock(masterPassword, initialiseRemote = false, contentOverride = null, storeOfflineCopy = true) {
+    unlock(masterPassword, options = {}) {
+        const { initialiseRemote = false, contentOverride = null, storeOfflineCopy = true } = options;
         if (this.status !== Status.LOCKED) {
             return Promise.reject(
                 new VError(`Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`)
@@ -459,6 +464,11 @@ class ArchiveSource extends EventEmitter {
         });
     }
 
+    /**
+     * Update the source credentials datasource records from the datasource on
+     * the workspace
+     * @memberof ArchiveSource
+     */
     updateCredentialsFromDatasource() {
         if (this.status !== Status.UNLOCKED) {
             return Promise.reject(new VError(`Failed updating source credentials: Source is not unlocked: ${this.id}`));
@@ -466,44 +476,6 @@ class ArchiveSource extends EventEmitter {
         const { datasource } = this._workspace;
         const newDescription = datasource.toObject();
         this._sourceCredentials.setValue("datasource", newDescription);
-    }
-
-    /**
-     * Update source credentials
-     * (Useful for updating tokens when authentication parameters change)
-     * @param {String} masterPassword The master password
-     * @param {Function} callback Callback that's fired with the source crendentials
-     *  and datasource. If the source is locked, only the source credentials are
-     *  provided (datasource is `null` in this case)
-     * @returns {Promise} A promise that resolves when the update is complete
-     * @memberof ArchiveSource
-     * @deprecated Deprecated in favour of datasource update methods
-     */
-    updateSourceCredentials(masterPassword, callback) {
-        if (this.status === Status.PENDING) {
-            return Promise.reject(
-                new VError(`Failed updating source credentials: Source can not be in pending state: ${this.id}`)
-            );
-        } else if (this.status === Status.LOCKED) {
-            return Credentials.fromSecureString(this._sourceCredentials, masterPassword)
-                .then(sourceCredentials => {
-                    return Promise.resolve()
-                        .then(() => callback(sourceCredentials, null))
-                        .then(() => sourceCredentials.toSecureString(masterPassword));
-                })
-                .then(updatedSourceCredentials => {
-                    this._sourceCredentials = updatedSourceCredentials;
-                    return this.dehydrate();
-                });
-        }
-        return Promise.resolve()
-            .then(() => callback(this._sourceCredentials, this.workspace.datasource))
-            .then(() =>
-                this._enqueueStateChange(() => {
-                    return this.workspace.save();
-                })
-            )
-            .then(() => this.dehydrate());
     }
 
     _enqueueStateChange(cb) {

@@ -1,11 +1,11 @@
 const instanceSearching = require("../tools/vaultSearch.js");
 
 /**
- * Find entries by searching properties/meta
+ * Find entries by searching properties
  * When used within a group, that group's entries are also searched'
  * @param {Archive|Group} groupParent The target archive or group
- * @param {string} check Information to check (id/property/meta)
- * @param {string} key The key (property/meta-value) to search with (not needed for check=id)
+ * @param {string} check Information to check (id/property)
+ * @param {string} key The key (property) to search with (not needed for check=id)
  * @param {RegExp|string} value The value to search for
  * @returns {Array.<Entry>} An array of found entries
  * @private
@@ -22,10 +22,6 @@ function findEntriesByCheck(groupParent, check, key, value) {
         switch (check) {
             case "property": {
                 itemValue = entry.getProperty(key) || "";
-                break;
-            }
-            case "meta": {
-                itemValue = entry.getMeta(key) || "";
                 break;
             }
             case "id": {
@@ -58,18 +54,6 @@ module.exports = {
         inst.findEntryByID = function findEntryByID(id) {
             let entries = findEntriesByCheck(inst, "id", null, id);
             return entries && entries.length === 1 ? entries[0] : null;
-        };
-
-        /**
-         * Find entries that match a certain meta property
-         * @name findEntriesByMeta
-         * @param {String} metaName The meta property to search for
-         * @param {RegExp|string} value The value to search for
-         * @returns {Array.<Entry>} An array of found entries
-         * @memberof EntryCollection
-         */
-        inst.findEntriesByMeta = function findEntriesByMeta(metaName, value) {
-            return findEntriesByCheck(inst, "meta", metaName, value);
         };
 
         /**

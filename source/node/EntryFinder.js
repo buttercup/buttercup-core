@@ -62,20 +62,10 @@ class EntryFinder {
      */
     initSearcher() {
         this._fuse = new Fuse(this.items, {
-            keys: ["property.title", "property.username", "meta.url"],
-            getFn: function _translateEntryForFuse(item, keyPath) {
+            keys: ["title", "username", "url", "uri"],
+            getFn: function _translateEntryForFuse(item, key) {
                 const entry = item.entry;
-                const [type, key] = keyPath.split(".");
-                switch (type) {
-                    case "property": {
-                        return entry.getProperty(key);
-                    }
-                    case "meta": {
-                        return entry.getMeta(key);
-                    }
-                    default:
-                        throw new Error(`Unknown entry property type: ${type}`);
-                }
+                return entry.getProperty(key);
             },
             shouldSort: true,
             threshold: 0.5,

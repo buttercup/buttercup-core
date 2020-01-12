@@ -132,17 +132,6 @@ class Group extends ArchiveMember {
     }
 
     /**
-     * Get all attributes
-     * @returns {Object} Attributes object
-     * @memberof Group
-     * @deprecated Will be removed in version 3 - use `getAttribute()` instead
-     */
-    getAttributes() {
-        const raw = this._getRemoteObject();
-        return Object.assign({}, raw.attributes || {});
-    }
-
-    /**
      * Get the entries within the group
      * @returns {Array.<Entry>} An array of entries
      * @memberof Group
