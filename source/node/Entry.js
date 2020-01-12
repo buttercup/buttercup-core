@@ -128,17 +128,6 @@ class Entry extends ArchiveMember {
     }
 
     /**
-     * Get all attributes
-     * @returns {Object} Attributes object
-     * @memberof Entry
-     * @deprecated Will be removed in version 3 - use `getAttribute()` instead
-     */
-    getAttributes() {
-        const attributes = this._getRemoteObject().attributes || {};
-        return Object.assign({}, attributes);
-    }
-
-    /**
      * Get an array of all history changes made to the entry
      * @returns {Array.<EntryHistoryItem>}
      * @memberof Entry
