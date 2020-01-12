@@ -163,21 +163,6 @@ describe("Archive", function() {
         });
     });
 
-    describe("getAttributes", function() {
-        beforeEach(function() {
-            this.archive = new Archive();
-            this.archive.setAttribute("one", "first");
-            this.archive.setAttribute("two", "second");
-        });
-
-        it("returns an object holding all the attributes", function() {
-            expect(this.archive.getAttributes()).to.deep.equal({
-                one: "first",
-                two: "second"
-            });
-        });
-    });
-
     describe("getFormat", function() {
         beforeEach(function() {
             this.archive = new Archive();
