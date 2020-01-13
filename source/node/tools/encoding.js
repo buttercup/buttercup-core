@@ -4,7 +4,7 @@ const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
 const ENCODED_STRING_PREFIX = "utf8+base64:";
 
 /**
- * Decode an encoded property/meta value
+ * Decode an encoded property value
  * @param {String} value The encoded value
  * @returns {String} The decoded value
  */

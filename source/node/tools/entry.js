@@ -50,28 +50,6 @@ function getEntryURLs(properties, preference = ENTRY_URL_TYPE_ANY) {
 }
 
 /**
- * Get a value on an entry for a specific property type
- * @param {Entry} entry The entry instance
- * @param {String} property The type of entry property (property/meta/attribute)
- * @param {String} name The property name
- * @returns {String} The property value
- * @throws {Error} Throws for unknown property types
- * @deprecated Not in use - To be removed
- */
-function getEntryValue(entry, property, name) {
-    switch (property) {
-        case "property":
-            return entry.getProperty(name);
-        case "meta":
-            return entry.getMeta(name);
-        case "attribute":
-            return entry.getAttribute(name);
-        default:
-            throw new Error(`Cannot retrieve value: Unknown property type: ${property}`);
-    }
-}
-
-/**
  * Check if a property name is valid
  * @param {String} name The name to check
  * @returns {Boolean} True if the name is valid
@@ -93,6 +71,5 @@ module.exports = {
     ENTRY_URL_TYPE_ICON,
     ENTRY_URL_TYPE_LOGIN,
     getEntryURLs,
-    getEntryValue,
     isValidProperty
 };

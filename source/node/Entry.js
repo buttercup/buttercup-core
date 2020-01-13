@@ -5,15 +5,6 @@ const { findEntryByID, findGroupContainingEntryID } = require("./tools/rawVaultS
 const { getEntryURLs } = require("./tools/entry.js");
 
 /**
- * @typedef {Object} EntryHistoryItem
- * @property {String} type - The type of history item
- * @property {String=} origin - The origin group ID for a moved-entry
- * @property {String=} destination - The destination group ID for a moved-entry
- * @property {String=} property - The property/attribute name of the change
- * @property {String=} value - The value that was changed (resulting)
- */
-
-/**
  * Entry class implementation
  * Entries form the low-level data structures used in Buttercup, and
  * are intended to represent logical collections of properties, like
@@ -81,25 +72,6 @@ class Entry extends ArchiveMember {
     }
 
     /**
-     * Delete a meta item
-     * @throws {Error} Throws if property doesn't exist, or cannot be deleted
-     * @param {String} property The meta property to delete
-     * @memberof Entry
-     * @returns {Entry} Self
-     * @deprecated Meta will be removed in version 3
-     */
-    deleteMeta(property) {
-        this._getWestley().execute(
-            Inigo.create(Inigo.Command.DeleteEntryMeta)
-                .addArgument(this.id)
-                .addArgument(property)
-                .generateCommand()
-        );
-        this._getWestley().pad();
-        return this;
-    }
-
-    /**
      * Delete a property
      * @throws {Error} Throws if property doesn't exist, or cannot be deleted
      * @param {String} property The property to delete
@@ -137,61 +109,39 @@ class Entry extends ArchiveMember {
     }
 
     /**
-     * Get all attributes
-     * @returns {Object} Attributes object
+     * Get an array of all history changes made to the entry
+     * @returns {Array.<EntryHistoryItem>}
      * @memberof Entry
-     * @deprecated Will be removed in version 3 - use `getAttribute()` instead
      */
-    getAttributes() {
-        const attributes = this._getRemoteObject().attributes || {};
-        return Object.assign({}, attributes);
+    getChanges() {
+        return this._getRemoteObject().history || [];
     }
 
     /**
      * Get the containing group for the entry
      * @returns {Group|null} The parent group
      * @memberof Entry
-     * @deprecated Will throw for no group in version 3
+     * @throws {Error} Throws if no parent group found
      */
     getGroup() {
         // @todo move to a new searching library
         const parentInfo = findGroupContainingEntryID(this._getWestley().dataset.groups || [], this.id);
-        if (parentInfo && parentInfo.group) {
-            // require Group here due to circular references:
-            const Group = require("./Group.js");
-            return new Group(this._getArchive(), parentInfo.group);
+        if (!parentInfo || !parentInfo.group) {
+            throw new Error(`No parent group found for entry: ${this.id}`);
         }
-        return null;
+        // require Group here due to circular references:
+        const Group = require("./Group.js");
+        return new Group(this._getArchive(), parentInfo.group);
     }
 
     /**
      * Get the history of the entry
-     * @returns {Array.<EntryHistoryItem>}
+     * @deprecated Use `getChanges` instead - Will be removed in next version
+     * @returns {Array}
      * @memberof Entry
      */
     getHistory() {
-        return this._getRemoteObject().history || [];
-    }
-
-    /**
-     * Get a meta value
-     * If no meta name is specified, an object with all meta keys and their
-     * values is returned.
-     * @param {String=} property The name of the meta property
-     * @returns {String|undefined|Object} The meta value or an object
-     *  containing all meta keys and values if no meta name specified
-     * @memberof Entry
-     * @deprecated Meta will be removed in version 3
-     */
-    getMeta(property) {
-        const meta = this._getRemoteObject().properties || {};
-        if (typeof property === "undefined") {
-            // No property, return entire object
-            return Object.assign({}, properties);
-        }
-        // Find the first meta key that matches the requested one regardless of case:
-        const metaKey = Object.keys(meta).find(key => key.toLowerCase() === property.toLowerCase());
-        return metaKey ? meta[metaKey] : undefined;
+        return [];
     }
 
     /**
@@ -286,31 +236,6 @@ class Entry extends ArchiveMember {
             Inigo.create(Inigo.Command.SetEntryAttribute)
                 .addArgument(this.id)
                 .addArgument(attributeName)
-                .addArgument(value)
-                .generateCommand()
-        );
-        this._getWestley().pad();
-        return this;
-    }
-
-    /**
-     * Set a meta value on the entry
-     * @param {String} prop The meta name
-     * @param {String=} val The value to set
-     * @returns {Entry} Returns self
-     * @memberof Entry
-     * @deprecated Meta will be removed in version 3
-     */
-    setMeta(prop, val) {
-        const meta = this._getRemoteObject().properties || {};
-        // Try to find a key that matches the requested property, even in a different case. If it
-        // exists, use that to set instead:
-        const metaKey = Object.keys(meta).find(key => key.toLowerCase() === prop.toLowerCase()) || prop;
-        const value = val || "";
-        this._getWestley().execute(
-            Inigo.create(Inigo.Command.SetEntryMeta)
-                .addArgument(this.id)
-                .addArgument(metaKey)
                 .addArgument(value)
                 .generateCommand()
         );

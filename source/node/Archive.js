@@ -131,7 +131,6 @@ class Archive extends EventEmitter {
      * @returns {undefined|String|Object} The value of the attribute or undefined if not
      *  set. Returns an object if no attribute name is given.
      * @memberof Archive
-     * @deprecated Will be removed in version 3 - use `getAttribute()` instead
      */
     getAttribute(attributeName) {
         const dataset = this._getWestley().dataset;
@@ -142,15 +141,6 @@ class Archive extends EventEmitter {
             return dataset.attributes[attributeName];
         }
         return undefined;
-    }
-
-    /**
-     * Get all attributes
-     * @returns {Object} Attributes object
-     */
-    getAttributes() {
-        const dataset = this._getWestley().dataset;
-        return Object.assign({}, dataset.attributes || {});
     }
 
     /**
@@ -235,7 +225,7 @@ class Archive extends EventEmitter {
         return {
             archiveID: this.id,
             format: this.getFormat(),
-            attributes: this.getAttributes(),
+            attributes: this.getAttribute(),
             groups: this.getGroups().map(group => group.toObject(groupOutputFlags))
         };
     }

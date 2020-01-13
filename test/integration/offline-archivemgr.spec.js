@@ -47,13 +47,13 @@ describe("ArchiveManager & ArchiveSource", function() {
 
     it("unlocks when override content is provided", function() {
         expect(this.archiveSource.status).to.equal("locked");
-        return this.archiveSource.unlock("test", false, this.content).then(() => {
+        return this.archiveSource.unlock("test", { contentOverride: this.content }).then(() => {
             expect(this.archiveSource.status).to.equal("unlocked");
         });
     });
 
     it("sets the archive's status to readOnly", function() {
-        return this.archiveSource.unlock("test", false, this.content).then(() => {
+        return this.archiveSource.unlock("test", { contentOverride: this.content }).then(() => {
             expect(this.archiveSource.workspace.archive.readOnly).to.be.true;
         });
     });
@@ -81,7 +81,7 @@ describe("ArchiveManager & ArchiveSource", function() {
             .then(() => {
                 rimraf(FILENAME);
             })
-            .then(() => this.archiveSource.unlock("test", false, true))
+            .then(() => this.archiveSource.unlock("test", { contentOverride: true }))
             .then(() => {
                 expect(this.archiveSource.status).to.equal("unlocked");
             });

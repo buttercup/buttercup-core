@@ -5,6 +5,7 @@ const {
     findGroupContainingGroupID
 } = require("./tools/rawVaultSearch.js");
 const { encodeStringValue } = require("./tools/encoding.js");
+const { generateEntryHistoryItem } = require("./tools/history.js");
 
 function executeArchiveID(archive, opts, id) {
     if (opts.shareID) {
@@ -97,11 +98,7 @@ function executeDeleteEntryAttribute(archive, opts, entryID, attribute) {
         throw new Error("Failed deleting attribute");
     }
     entry.history = entry.history || [];
-    entry.history.push({
-        type: "remove-attribute",
-        property: attribute,
-        value
-    });
+    entry.history.push(generateEntryHistoryItem(attribute, "attribute", value, null));
 }
 
 function executeDeleteEntryProperty(archive, opts, entryID, property) {
@@ -117,11 +114,7 @@ function executeDeleteEntryProperty(archive, opts, entryID, property) {
         throw new Error(`Failed deleting property: ${property}`);
     }
     entry.history = entry.history || [];
-    entry.history.push({
-        type: "remove-property",
-        property,
-        value
-    });
+    entry.history.push(generateEntryHistoryItem(property, "property", value, null));
 }
 
 function executeDeleteGroup(archive, opts, groupID) {
@@ -170,12 +163,6 @@ function executeMoveEntry(archive, opts, entryID, groupID) {
     const [movedEntry] = originGroup.entries.splice(originIndex, 1);
     targetGroup.entries = targetGroup.entries || [];
     targetGroup.entries.push(movedEntry);
-    movedEntry.history = movedEntry.history || [];
-    movedEntry.history.push({
-        type: "move-group",
-        origin: originGroup,
-        destination: groupID
-    });
 }
 
 function executeMoveGroup(archive, opts, groupID, targetGroupID) {
@@ -212,13 +199,10 @@ function executeSetEntryAttribute(archive, opts, entryID, attribute, value) {
         throw new Error(`Entry not found for ID: ${entryID}`);
     }
     entry.attributes = entry.attributes || {};
+    const previousValue = typeof entry.attributes[attribute] === "string" ? entry.attributes[attribute] : null;
     entry.attributes[attribute] = value;
     entry.history = entry.history || [];
-    entry.history.push({
-        type: "set-attribute",
-        property: attribute,
-        value
-    });
+    entry.history.push(generateEntryHistoryItem(attribute, "attribute", previousValue, value));
 }
 
 function executeSetEntryProperty(archive, opts, entryID, property, value) {
@@ -228,13 +212,10 @@ function executeSetEntryProperty(archive, opts, entryID, property, value) {
         throw new Error(`Entry not found for ID: ${entryID}`);
     }
     entry.properties = entry.properties || {};
+    const previousValue = typeof entry.properties[property] === "string" ? entry.properties[property] : null;
     entry.properties[property] = value;
     entry.history = entry.history || [];
-    entry.history.push({
-        type: "set-property",
-        property,
-        value
-    });
+    entry.history.push(generateEntryHistoryItem(property, "property", previousValue, value));
 }
 
 function executeSetGroupAttribute(archive, opts, groupID, attribute, value) {
