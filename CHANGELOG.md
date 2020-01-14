@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v3.0.0-rc3.0
+_2020-01-14_
+
+ * Improved Entry property history structure
+ * Many deprecated methods removed
+
 ## v3.0.0-rc2.1
 _2020-01-05_
 

@@ -90,7 +90,7 @@ matching pad ID to create a common link between the 2 histories.</p>
 <dd><p>Describe an archive dataset - to history commands</p>
 </dd>
 <dt><a href="#decodeStringValue">decodeStringValue(value)</a> ⇒ <code>String</code></dt>
-<dd><p>Decode an encoded property/meta value</p>
+<dd><p>Decode an encoded property value</p>
 </dd>
 <dt><a href="#encodeStringValue">encodeStringValue(value)</a> ⇒ <code>String</code></dt>
 <dd><p>Encode a raw value into safe storage form
@@ -106,11 +106,11 @@ Uses base64 for encoding</p>
 <dd><p>Get URLs from an entry&#39;s properties
 Allows for preferential sorting</p>
 </dd>
-<dt><del><a href="#getEntryValue">getEntryValue(entry, property, name)</a> ⇒ <code>String</code></del></dt>
-<dd><p>Get a value on an entry for a specific property type</p>
-</dd>
 <dt><a href="#isValidProperty">isValidProperty(name)</a> ⇒ <code>Boolean</code></dt>
 <dd><p>Check if a property name is valid</p>
+</dd>
+<dt><a href="#generateEntryHistoryItem">generateEntryHistoryItem(property, propertyType, originalValue, newValue)</a> ⇒ <code><a href="#EntryHistoryItem">EntryHistoryItem</a></code></dt>
+<dd><p>Generate a new entry history item</p>
 </dd>
 <dt><a href="#stripDestructiveCommands">stripDestructiveCommands(history)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
 <dd><p>Strip destructive commands from a history collection</p>
@@ -155,7 +155,7 @@ Allows for preferential sorting</p>
 </dd>
 <dt><a href="#ArchiveSourceDescription">ArchiveSourceDescription</a></dt>
 <dd></dd>
-<dt><a href="#EntryHistoryItem">EntryHistoryItem</a> : <code>Object</code></dt>
+<dt><a href="#ArchiveSourceUnlockOptions">ArchiveSourceUnlockOptions</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#EntrySearchInfo">EntrySearchInfo</a> : <code>Object</code></dt>
 <dd></dd>
@@ -174,6 +174,8 @@ Allows for preferential sorting</p>
 <dt><a href="#MyButtercupTokenResult">MyButtercupTokenResult</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#MyButtercupArchiveDetails">MyButtercupArchiveDetails</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#EntryHistoryItem">EntryHistoryItem</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#FoundGroupResult">FoundGroupResult</a> : <code>Object</code></dt>
 <dd></dd>
@@ -195,17 +197,14 @@ Buttercup Archive
         * [.type](#Archive+type) : <code>String</code>
         * [.findGroupByID](#Archive+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
         * [.findGroupsByTitle](#Archive+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-        * [.findEntriesByMeta](#Archive+findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.findEntriesByProperty](#Archive+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.findGroupByID](#Archive+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
         * [.findGroupsByTitle](#Archive+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-        * [.findEntriesByMeta](#Archive+findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.findEntriesByProperty](#Archive+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.createGroup([title])](#Archive+createGroup) ⇒ [<code>Group</code>](#Group)
         * [.deleteAttribute(attributeName)](#Archive+deleteAttribute) ⇒ [<code>Archive</code>](#Archive)
         * [.emptyTrash()](#Archive+emptyTrash)
-        * ~~[.getAttribute([attributeName])](#Archive+getAttribute) ⇒ <code>undefined</code> \| <code>String</code> \| <code>Object</code>~~
-        * [.getAttributes()](#Archive+getAttributes) ⇒ <code>Object</code>
+        * [.getAttribute([attributeName])](#Archive+getAttribute) ⇒ <code>undefined</code> \| <code>String</code> \| <code>Object</code>
         * [.getFormat()](#Archive+getFormat) ⇒ <code>string</code>
         * [.getGroups()](#Archive+getGroups) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
         * [.getHistory()](#Archive+getHistory) ⇒ <code>Array.&lt;String&gt;</code>
@@ -273,20 +272,6 @@ Find groups by their title
 | --- | --- | --- |
 | title | <code>String</code> \| <code>RegExp</code> | The group title |
 
-<a name="Archive+findEntriesByMeta"></a>
-
-### archive.findEntriesByMeta ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-Find entries that match a certain meta property
-
-**Kind**: instance property of [<code>Archive</code>](#Archive)  
-**Mixes**: [<code>findEntriesByMeta</code>](#EntryCollection.findEntriesByMeta)  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| metaName | <code>String</code> | The meta property to search for |
-| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
-
 <a name="Archive+findEntriesByProperty"></a>
 
 ### archive.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
@@ -326,20 +311,6 @@ Find groups by their title
 | Param | Type | Description |
 | --- | --- | --- |
 | title | <code>String</code> \| <code>RegExp</code> | The group title |
-
-<a name="Archive+findEntriesByMeta"></a>
-
-### archive.findEntriesByMeta ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-Find entries that match a certain meta property
-
-**Kind**: instance property of [<code>Archive</code>](#Archive)  
-**Mixes**: [<code>findEntriesByMeta</code>](#EntryCollection.findEntriesByMeta)  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| metaName | <code>String</code> | The meta property to search for |
-| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
 
 <a name="Archive+findEntriesByProperty"></a>
 
@@ -391,9 +362,7 @@ Remove all entries and groups from the trash (permanent)
 
 <a name="Archive+getAttribute"></a>
 
-### ~~archive.getAttribute([attributeName]) ⇒ <code>undefined</code> \| <code>String</code> \| <code>Object</code>~~
-***Deprecated***
-
+### archive.getAttribute([attributeName]) ⇒ <code>undefined</code> \| <code>String</code> \| <code>Object</code>
 Get the value of an attribute
 
 **Kind**: instance method of [<code>Archive</code>](#Archive)  
@@ -404,13 +373,6 @@ Get the value of an attribute
 | --- | --- | --- |
 | [attributeName] | <code>String</code> | The attribute to get |
 
-<a name="Archive+getAttributes"></a>
-
-### archive.getAttributes() ⇒ <code>Object</code>
-Get all attributes
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: <code>Object</code> - Attributes object  
 <a name="Archive+getFormat"></a>
 
 ### archive.getFormat() ⇒ <code>string</code>
@@ -803,9 +765,9 @@ Archive source class
         * [.dehydrate()](#ArchiveSource+dehydrate) ⇒ <code>Promise.&lt;String&gt;</code>
         * [.getOfflineContent()](#ArchiveSource+getOfflineContent) ⇒ <code>Promise.&lt;(String\|null)&gt;</code>
         * [.lock()](#ArchiveSource+lock) ⇒ <code>Promise.&lt;String&gt;</code>
-        * ~~[.unlock(masterPassword, [initialiseRemote], contentOverride, [storeOfflineCopy])](#ArchiveSource+unlock)~~
+        * [.unlock(masterPassword, [options])](#ArchiveSource+unlock)
         * [.updateArchiveCredentials(masterPassword)](#ArchiveSource+updateArchiveCredentials) ⇒ <code>Promise.&lt;String&gt;</code>
-        * ~~[.updateSourceCredentials(masterPassword, callback)](#ArchiveSource+updateSourceCredentials) ⇒ <code>Promise</code>~~
+        * [.updateCredentialsFromDatasource()](#ArchiveSource+updateCredentialsFromDatasource)
     * _static_
         * [.Status](#ArchiveSource.Status)
         * [.rehydrate(dehydratedString)](#ArchiveSource.rehydrate) ⇒ [<code>ArchiveSource</code>](#ArchiveSource)
@@ -944,9 +906,7 @@ Encrypts the credentials and performs dehydration, placing the source into
 **Emits**: <code>ArchiveSource#event:sourceLocked</code>  
 <a name="ArchiveSource+unlock"></a>
 
-### ~~archiveSource.unlock(masterPassword, [initialiseRemote], contentOverride, [storeOfflineCopy])~~
-***Deprecated***
-
+### archiveSource.unlock(masterPassword, [options])
 Unlock the source
 
 **Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
@@ -958,12 +918,10 @@ Unlock the source
 
 **Emits**: <code>ArchiveSource#event:sourceUnlocked</code>  
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| masterPassword | <code>String</code> |  | The master password |
-| [initialiseRemote] | <code>Boolean</code> | <code>false</code> | Optionally initialise the remote (replaces  remote archive) (defaults to false) |
-| contentOverride | <code>String</code> \| <code>Boolean</code> | <code></code> | Content for overriding the fetch operation in the  datasource, for loading offline content. Can be set to the content (string) or to 'true',  which will attempt to load the content from the ArchiveManager's storage. |
-| [storeOfflineCopy] | <code>Boolean</code> | <code>true</code> | Whether or not to store an offline copy. Defaults to  true. |
+| Param | Type | Description |
+| --- | --- | --- |
+| masterPassword | <code>String</code> | The master password |
+| [options] | [<code>ArchiveSourceUnlockOptions</code>](#ArchiveSourceUnlockOptions) | Unlocking options |
 
 <a name="ArchiveSource+updateArchiveCredentials"></a>
 
@@ -984,22 +942,13 @@ which should be SAVED.
 | --- | --- | --- |
 | masterPassword | <code>String</code> | New master password |
 
-<a name="ArchiveSource+updateSourceCredentials"></a>
+<a name="ArchiveSource+updateCredentialsFromDatasource"></a>
 
-### ~~archiveSource.updateSourceCredentials(masterPassword, callback) ⇒ <code>Promise</code>~~
-***Deprecated***
-
-Update source credentials
-(Useful for updating tokens when authentication parameters change)
+### archiveSource.updateCredentialsFromDatasource()
+Update the source credentials datasource records from the datasource on
+the workspace
 
 **Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Returns**: <code>Promise</code> - A promise that resolves when the update is complete  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| masterPassword | <code>String</code> | The master password |
-| callback | <code>function</code> | Callback that's fired with the source crendentials  and datasource. If the source is locked, only the source credentials are  provided (datasource is `null` in this case) |
-
 <a name="ArchiveSource.Status"></a>
 
 ### ArchiveSource.Status
@@ -1150,20 +1099,17 @@ a login for a website.
         * [.permissions](#ArchiveMember+permissions) : <code>Array.&lt;String&gt;</code>
         * [.delete([skipTrash])](#Entry+delete) ⇒ <code>Boolean</code>
         * [.deleteAttribute(attr)](#Entry+deleteAttribute) ⇒ [<code>Entry</code>](#Entry)
-        * ~~[.deleteMeta(property)](#Entry+deleteMeta) ⇒ [<code>Entry</code>](#Entry)~~
         * [.deleteProperty(property)](#Entry+deleteProperty) ⇒ [<code>Entry</code>](#Entry)
         * [.getAttribute([attributeName])](#Entry+getAttribute) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
-        * ~~[.getAttributes()](#Entry+getAttributes) ⇒ <code>Object</code>~~
-        * ~~[.getGroup()](#Entry+getGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>~~
-        * [.getHistory()](#Entry+getHistory) ⇒ [<code>Array.&lt;EntryHistoryItem&gt;</code>](#EntryHistoryItem)
-        * ~~[.getMeta([property])](#Entry+getMeta) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>~~
+        * [.getChanges()](#Entry+getChanges) ⇒ [<code>Array.&lt;EntryHistoryItem&gt;</code>](#EntryHistoryItem)
+        * [.getGroup()](#Entry+getGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
+        * ~~[.getHistory()](#Entry+getHistory) ⇒ <code>Array</code>~~
         * [.getProperty([property])](#Entry+getProperty) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
         * [.getProperties(propertyExpression)](#Entry+getProperties) ⇒ <code>Object</code>
         * [.getURLs([urlTypePreference])](#Entry+getURLs) ⇒ <code>Array.&lt;String&gt;</code>
         * [.isInTrash()](#Entry+isInTrash) ⇒ <code>Boolean</code>
         * [.moveToGroup(group)](#Entry+moveToGroup) ⇒ [<code>Entry</code>](#Entry)
         * [.setAttribute(attributeName, value)](#Entry+setAttribute) ⇒ [<code>Entry</code>](#Entry)
-        * ~~[.setMeta(prop, [val])](#Entry+setMeta) ⇒ [<code>Entry</code>](#Entry)~~
         * [.setProperty(prop, [val])](#Entry+setProperty) ⇒ [<code>Entry</code>](#Entry)
         * [.toObject()](#Entry+toObject) ⇒ <code>Object</code>
         * [.toString()](#Entry+toString) ⇒ <code>String</code>
@@ -1233,24 +1179,6 @@ Delete an attribute
 | --- | --- | --- |
 | attr | <code>String</code> | The attribute name |
 
-<a name="Entry+deleteMeta"></a>
-
-### ~~entry.deleteMeta(property) ⇒ [<code>Entry</code>](#Entry)~~
-***Deprecated***
-
-Delete a meta item
-
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: [<code>Entry</code>](#Entry) - Self  
-**Throws**:
-
-- <code>Error</code> Throws if property doesn't exist, or cannot be deleted
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| property | <code>String</code> | The meta property to delete |
-
 <a name="Entry+deleteProperty"></a>
 
 ### entry.deleteProperty(property) ⇒ [<code>Entry</code>](#Entry)
@@ -1283,47 +1211,31 @@ values is returned.
 | --- | --- | --- |
 | [attributeName] | <code>String</code> | The name of the attribute to fetch |
 
-<a name="Entry+getAttributes"></a>
+<a name="Entry+getChanges"></a>
 
-### ~~entry.getAttributes() ⇒ <code>Object</code>~~
-***Deprecated***
-
-Get all attributes
+### entry.getChanges() ⇒ [<code>Array.&lt;EntryHistoryItem&gt;</code>](#EntryHistoryItem)
+Get an array of all history changes made to the entry
 
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: <code>Object</code> - Attributes object  
 <a name="Entry+getGroup"></a>
 
-### ~~entry.getGroup() ⇒ [<code>Group</code>](#Group) \| <code>null</code>~~
-***Deprecated***
-
+### entry.getGroup() ⇒ [<code>Group</code>](#Group) \| <code>null</code>
 Get the containing group for the entry
 
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
 **Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The parent group  
+**Throws**:
+
+- <code>Error</code> Throws if no parent group found
+
 <a name="Entry+getHistory"></a>
 
-### entry.getHistory() ⇒ [<code>Array.&lt;EntryHistoryItem&gt;</code>](#EntryHistoryItem)
+### ~~entry.getHistory() ⇒ <code>Array</code>~~
+***Deprecated***
+
 Get the history of the entry
 
 **Kind**: instance method of [<code>Entry</code>](#Entry)  
-<a name="Entry+getMeta"></a>
-
-### ~~entry.getMeta([property]) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>~~
-***Deprecated***
-
-Get a meta value
-If no meta name is specified, an object with all meta keys and their
-values is returned.
-
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: <code>String</code> \| <code>undefined</code> \| <code>Object</code> - The meta value or an object
- containing all meta keys and values if no meta name specified  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [property] | <code>String</code> | The name of the meta property |
-
 <a name="Entry+getProperty"></a>
 
 ### entry.getProperty([property]) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
@@ -1403,21 +1315,6 @@ Set an attribute on the entry
 | --- | --- | --- |
 | attributeName | <code>String</code> | The name of the attribute |
 | value | <code>String</code> | The value to set |
-
-<a name="Entry+setMeta"></a>
-
-### ~~entry.setMeta(prop, [val]) ⇒ [<code>Entry</code>](#Entry)~~
-***Deprecated***
-
-Set a meta value on the entry
-
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: [<code>Entry</code>](#Entry) - Returns self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| prop | <code>String</code> | The meta name |
-| [val] | <code>String</code> | The value to set |
 
 <a name="Entry+setProperty"></a>
 
@@ -1649,11 +1546,9 @@ Group implementation
         * [.type](#Group+type) : <code>String</code>
         * [.findGroupByID](#Group+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
         * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-        * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.findGroupByID](#Group+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
         * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-        * [.findEntriesByMeta](#Group+findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.id](#ArchiveMember+id) : <code>String</code>
         * [.permissions](#ArchiveMember+permissions) : <code>Array.&lt;String&gt;</code>
@@ -1662,7 +1557,6 @@ Group implementation
         * [.delete([skipTrash])](#Group+delete) ⇒ <code>Boolean</code>
         * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ [<code>Group</code>](#Group)
         * [.getAttribute([attributeName])](#Group+getAttribute) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
-        * ~~[.getAttributes()](#Group+getAttributes) ⇒ <code>Object</code>~~
         * [.getEntries()](#Group+getEntries) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
         * [.getGroup()](#Group+getGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
         * [.getGroups()](#Group+getGroups) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
@@ -1732,20 +1626,6 @@ Find groups by their title
 | --- | --- | --- |
 | title | <code>String</code> \| <code>RegExp</code> | The group title |
 
-<a name="Group+findEntriesByMeta"></a>
-
-### group.findEntriesByMeta ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-Find entries that match a certain meta property
-
-**Kind**: instance property of [<code>Group</code>](#Group)  
-**Mixes**: [<code>findEntriesByMeta</code>](#EntryCollection.findEntriesByMeta)  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| metaName | <code>String</code> | The meta property to search for |
-| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
-
 <a name="Group+findEntriesByProperty"></a>
 
 ### group.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
@@ -1785,20 +1665,6 @@ Find groups by their title
 | Param | Type | Description |
 | --- | --- | --- |
 | title | <code>String</code> \| <code>RegExp</code> | The group title |
-
-<a name="Group+findEntriesByMeta"></a>
-
-### group.findEntriesByMeta ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-Find entries that match a certain meta property
-
-**Kind**: instance property of [<code>Group</code>](#Group)  
-**Mixes**: [<code>findEntriesByMeta</code>](#EntryCollection.findEntriesByMeta)  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| metaName | <code>String</code> | The meta property to search for |
-| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
 
 <a name="Group+findEntriesByProperty"></a>
 
@@ -1892,15 +1758,6 @@ Get an attribute
 | --- | --- | --- |
 | [attributeName] | <code>String</code> | The name of the attribute. If none provided  the entire attributes object is returned. |
 
-<a name="Group+getAttributes"></a>
-
-### ~~group.getAttributes() ⇒ <code>Object</code>~~
-***Deprecated***
-
-Get all attributes
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: <code>Object</code> - Attributes object  
 <a name="Group+getEntries"></a>
 
 ### group.getEntries() ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
@@ -2475,22 +2332,8 @@ Update the master password of the archive
 **Kind**: global mixin  
 
 * [EntryCollection](#EntryCollection) : <code>Object</code>
-    * [.findEntriesByMeta](#EntryCollection.findEntriesByMeta) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
     * [.findEntriesByProperty](#EntryCollection.findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
     * [.inst.findEntryByID(id)](#EntryCollection.inst.findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
-
-<a name="EntryCollection.findEntriesByMeta"></a>
-
-### EntryCollection.findEntriesByMeta ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-Find entries that match a certain meta property
-
-**Kind**: static property of [<code>EntryCollection</code>](#EntryCollection)  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| metaName | <code>String</code> | The meta property to search for |
-| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
 
 <a name="EntryCollection.findEntriesByProperty"></a>
 
@@ -2667,7 +2510,7 @@ Describe an archive dataset - to history commands
 <a name="decodeStringValue"></a>
 
 ## decodeStringValue(value) ⇒ <code>String</code>
-Decode an encoded property/meta value
+Decode an encoded property value
 
 **Kind**: global function  
 **Returns**: <code>String</code> - The decoded value  
@@ -2721,26 +2564,6 @@ Allows for preferential sorting
 | properties | <code>Object</code> | The entry properties |
 | preference | <code>\*</code> |  |
 
-<a name="getEntryValue"></a>
-
-## ~~getEntryValue(entry, property, name) ⇒ <code>String</code>~~
-***Deprecated***
-
-Get a value on an entry for a specific property type
-
-**Kind**: global function  
-**Returns**: <code>String</code> - The property value  
-**Throws**:
-
-- <code>Error</code> Throws for unknown property types
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| entry | [<code>Entry</code>](#Entry) | The entry instance |
-| property | <code>String</code> | The type of entry property (property/meta/attribute) |
-| name | <code>String</code> | The property name |
-
 <a name="isValidProperty"></a>
 
 ## isValidProperty(name) ⇒ <code>Boolean</code>
@@ -2752,6 +2575,20 @@ Check if a property name is valid
 | Param | Type | Description |
 | --- | --- | --- |
 | name | <code>String</code> | The name to check |
+
+<a name="generateEntryHistoryItem"></a>
+
+## generateEntryHistoryItem(property, propertyType, originalValue, newValue) ⇒ [<code>EntryHistoryItem</code>](#EntryHistoryItem)
+Generate a new entry history item
+
+**Kind**: global function  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| property | <code>String</code> |  | The property/attribute name |
+| propertyType | <code>String</code> |  | Either "property" or "attribute" |
+| originalValue | <code>String</code> \| <code>null</code> | <code></code> | The original value or null if it did not exist  before this change |
+| newValue | <code>String</code> \| <code>null</code> | <code></code> | The new value or null if it was deleted |
 
 <a name="stripDestructiveCommands"></a>
 
@@ -2920,19 +2757,17 @@ New source options
 | colour | <code>String</code> | Colour for the source |
 | order | <code>Number</code> | The order of the source |
 
-<a name="EntryHistoryItem"></a>
+<a name="ArchiveSourceUnlockOptions"></a>
 
-## EntryHistoryItem : <code>Object</code>
+## ArchiveSourceUnlockOptions : <code>Object</code>
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| type | <code>String</code> | The type of history item |
-| [origin] | <code>String</code> | The origin group ID for a moved-entry |
-| [destination] | <code>String</code> | The destination group ID for a moved-entry |
-| [property] | <code>String</code> | The property/attribute name of the change |
-| [value] | <code>String</code> | The value that was changed (resulting) |
+| [initialiseRemote] | <code>Boolean</code> | Optionally initialise the remote  (replaces remote archive) (defaults to false) |
+| contentOverride | <code>String</code> \| <code>Boolean</code> | Content for overriding the fetch operation in the  datasource, for loading offline content. Can be set to the content (string) or to 'true',  which will attempt to load the content from the ArchiveManager's storage. |
+| [storeOfflineCopy] | <code>Boolean</code> | Whether or not to store an offline copy. Defaults to  true. |
 
 <a name="EntrySearchInfo"></a>
 
@@ -3043,6 +2878,19 @@ New source options
 | updateID | <code>Number</code> | The current update ID for the vault |
 | created | <code>String</code> | The creation date |
 | lastUpdate | <code>String</code> | The last update date |
+
+<a name="EntryHistoryItem"></a>
+
+## EntryHistoryItem : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| property | <code>String</code> | The property/attribute name |
+| propertyType | <code>String</code> | Either "property" or "attribute" |
+| originalValue | <code>String</code> \| <code>null</code> | The original value or null if it did not exist  before this change |
+| newValue | <code>String</code> \| <code>null</code> | The new value or null if it was deleted |
 
 <a name="FoundGroupResult"></a>
 
