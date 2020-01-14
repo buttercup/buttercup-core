@@ -21,7 +21,7 @@ const mainEntry = mainGroup.createEntry("test-entry-main");
 
 mainEntry.setProperty("username", "user123한@test.рф");
 mainEntry.setProperty("password", "* পাসওয়ার্ড! ");
-mainEntry.setMeta("test-meta", "test-value 8");
+mainEntry.setProperty("test-meta", "test-value 8");
 
 // Datasource
 console.log("Saving archive: " + outputFile);
