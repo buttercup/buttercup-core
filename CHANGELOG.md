@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v3.0.0-rc3.1
+_2020-01-24_
+
+ * Support for Regular Expressions in entry property searching
+
 ## v3.0.0-rc3.0
 _2020-01-14_
 

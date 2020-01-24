@@ -283,8 +283,8 @@ Find all entries that match a certain property
 
 | Param | Type | Description |
 | --- | --- | --- |
-| property | <code>string</code> | The property to search with |
-| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
+| property | <code>RegExp</code> \| <code>String</code> | The property to search with |
+| value | <code>RegExp</code> \| <code>String</code> | The value to search for |
 
 <a name="Archive+findGroupByID"></a>
 
@@ -323,8 +323,8 @@ Find all entries that match a certain property
 
 | Param | Type | Description |
 | --- | --- | --- |
-| property | <code>string</code> | The property to search with |
-| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
+| property | <code>RegExp</code> \| <code>String</code> | The property to search with |
+| value | <code>RegExp</code> \| <code>String</code> | The value to search for |
 
 <a name="Archive+createGroup"></a>
 
@@ -1637,8 +1637,8 @@ Find all entries that match a certain property
 
 | Param | Type | Description |
 | --- | --- | --- |
-| property | <code>string</code> | The property to search with |
-| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
+| property | <code>RegExp</code> \| <code>String</code> | The property to search with |
+| value | <code>RegExp</code> \| <code>String</code> | The value to search for |
 
 <a name="Group+findGroupByID"></a>
 
@@ -1677,8 +1677,8 @@ Find all entries that match a certain property
 
 | Param | Type | Description |
 | --- | --- | --- |
-| property | <code>string</code> | The property to search with |
-| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
+| property | <code>RegExp</code> \| <code>String</code> | The property to search with |
+| value | <code>RegExp</code> \| <code>String</code> | The value to search for |
 
 <a name="ArchiveMember+id"></a>
 
@@ -2345,8 +2345,8 @@ Find all entries that match a certain property
 
 | Param | Type | Description |
 | --- | --- | --- |
-| property | <code>string</code> | The property to search with |
-| value | <code>RegExp</code> \| <code>string</code> | The value to search for |
+| property | <code>RegExp</code> \| <code>String</code> | The property to search with |
+| value | <code>RegExp</code> \| <code>String</code> | The value to search for |
 
 <a name="EntryCollection.inst.findEntryByID"></a>
 
