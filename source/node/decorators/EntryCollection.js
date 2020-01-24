@@ -16,24 +16,27 @@ function findEntriesByCheck(groupParent, check, key, value) {
     // If the groupParent object is a Group, use it as the only search group,
     // otherwise just take the children groups (groupParent is probably an
     // Archive instance):
-    let groups = groupParent.getEntries ? [groupParent] : groupParent.getGroups();
+    const groups = groupParent.getEntries ? [groupParent] : groupParent.getGroups();
     return instanceSearching.findEntriesByCheck(groups, function(entry) {
-        var itemValue;
         switch (check) {
             case "property": {
-                itemValue = entry.getProperty(key) || "";
-                break;
+                const props = entry.getProperties(key);
+                const propKeys = Object.keys(props);
+                return propKeys.length > 0
+                    ? propKeys.some(propKey => {
+                          const itemValue = props[propKey];
+                          if (value instanceof RegExp) {
+                              return value.test(itemValue);
+                          } else {
+                              return itemValue.indexOf(value) >= 0;
+                          }
+                      })
+                    : false;
             }
-            case "id": {
+            case "id":
                 return value === entry.id;
-            }
             default:
                 throw new Error(`Unknown check instruction: ${check}`);
-        }
-        if (value instanceof RegExp) {
-            return value.test(itemValue);
-        } else {
-            return itemValue.indexOf(value) >= 0;
         }
     });
 }
@@ -59,8 +62,8 @@ module.exports = {
         /**
          * Find all entries that match a certain property
          * @name findEntriesByProperty
-         * @param {string} property The property to search with
-         * @param {RegExp|string} value The value to search for
+         * @param {RegExp|String} property The property to search with
+         * @param {RegExp|String} value The value to search for
          * @returns {Array.<Entry>} An array of found extries
          * @memberof EntryCollection
          */
