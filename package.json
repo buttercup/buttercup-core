@@ -46,6 +46,11 @@
       "git add"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/buttercup/buttercup-core"
@@ -67,7 +72,7 @@
   "dependencies": {
     "@buttercup/channel-queue": "^0.5.0",
     "@buttercup/credentials": "^2.0.0",
-    "@buttercup/datasources": "^4.0.1",
+    "@buttercup/datasources": "^4.1.0",
     "@buttercup/signing": "^0.1.0",
     "cowl": "^0.8.0",
     "eventemitter3": "^3.1.0",
@@ -84,7 +89,7 @@
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
-    "@buttercup/app-env": "^0.1.1",
+    "@buttercup/app-env": "^0.2.0",
     "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
@@ -115,11 +120,6 @@
     "webpack-cli": "^3.3.10"
   },
   "peerDependencies": {
-    "@buttercup/app-env": ">= 0.1.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "@buttercup/app-env": ">= 0.2.0"
   }
 }
