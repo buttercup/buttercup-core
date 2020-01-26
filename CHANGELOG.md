@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v3.0.0-rc3.2
+_2020-01-26_
+
+ * Upgrade WebDAV library - reduced bundle size
+
 ## v3.0.0-rc3.1
 _2020-01-24_
 
