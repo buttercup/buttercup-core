@@ -1,3 +1,4 @@
+const { Base64 } = require("js-base64");
 const { getUUIDGenerator } = require("./uuid.js");
 
 const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
@@ -13,8 +14,7 @@ function decodeStringValue(value) {
         throw new Error("Cannot decode: provided value is not encoded");
     }
     const newValue = value.substr(ENCODED_STRING_PREFIX.length);
-    const buff = Buffer.from(newValue, "base64");
-    return buff.toString("utf8");
+    return Base64.decode(newValue);
 }
 
 /**
@@ -24,7 +24,7 @@ function decodeStringValue(value) {
  * @returns {String} The encoded result
  */
 function encodeStringValue(value) {
-    return ENCODED_STRING_PREFIX + Buffer.from(value, "utf8").toString("base64");
+    return `${ENCODED_STRING_PREFIX}${Base64.encode(value)}`;
 }
 
 /**

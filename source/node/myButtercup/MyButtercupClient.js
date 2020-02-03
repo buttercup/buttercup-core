@@ -1,6 +1,7 @@
 const VError = require("verror");
 const { request } = require("cowl");
 const EventEmitter = require("eventemitter3");
+const { Base64 } = require("js-base64");
 const {
     API_ORG_USERS,
     API_OWN_ARCHIVE,
@@ -114,7 +115,7 @@ class MyButtercupClient extends EventEmitter {
      * @static
      */
     static exchangeAuthCodeForTokens(authCode, clientID, clientSecret, redirectURI) {
-        const baseAuth = Buffer.from(`${clientID}:${clientSecret}`, "utf8").toString("base64");
+        const baseAuth = Base64.encode(`${clientID}:${clientSecret}`);
         const encodedRedir = encodeURIComponent(redirectURI);
         const requestOptions = {
             url: OAUTH_TOKEN_URI,
@@ -452,7 +453,7 @@ class MyButtercupClient extends EventEmitter {
      * @fires MyButtercupClient#tokensUpdated
      */
     _performTokenRefresh() {
-        const baseAuth = Buffer.from(`${this._clientID}:${this._clientSecret}`, "utf8").toString("base64");
+        const baseAuth = Base64.encode(`${this._clientID}:${this._clientSecret}`);
         const requestOptions = {
             url: OAUTH_TOKEN_URI,
             method: "POST",
