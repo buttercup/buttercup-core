@@ -36,9 +36,6 @@ The core of the system, this **Buttercup Core**, boasts a few awesome features:
 This library also supports a variety of datasources for loading from and saving to:
 
  * WebDAV
-   * _And providers like:_
-     * [OwnCloud](https://owncloud.org/)
-     * [Nextcloud](https://nextcloud.com/)
  * [Dropbox](https://www.dropbox.com/)
  * [Google Drive](https://www.google.com/drive/)
  * Files
