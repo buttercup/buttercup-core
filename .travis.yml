@@ -7,21 +7,16 @@ matrix:
         - NAME="Node stable"
     - language: node_js
       script: npm run test:ci:node
-      node_js: 11
+      node_js: 12
       env:
-        - NAME="Node 11"
+        - NAME="Node 12"
     - language: node_js
       script: npm run test:ci:node
       node_js: 10
       env:
         - NAME="Node 10"
     - language: node_js
-      script: npm run test:ci:node
-      node_js: 8
-      env:
-        - NAME="Node 8"
-    - language: node_js
-      node_js: 8
+      node_js: 12
       sudo: required
       dist: trusty
       env:
