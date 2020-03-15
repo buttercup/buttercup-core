@@ -1,5 +1,12 @@
 # Core library changelog
 
+## v3.0.0
+_2020-03-15_
+
+ * **Major release**
+   * App-Env environment handling
+   * Improved WebDAV client
+
 ## v3.0.0-rc3.2
 _2020-01-26_
 
