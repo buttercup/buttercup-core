@@ -1,5 +1,4 @@
-const VError = require("verror");
-const EventEmitter = require("eventemitter3");
+const VaultFormat = require("./VaultFormat.js");
 const {
     executeArchiveID,
     executeComment,
@@ -20,10 +19,10 @@ const {
     executeSetEntryProperty,
     executeSetGroupAttribute,
     executeTitleGroup
-} = require("./commands.js");
-const Inigo = require("./Inigo.js");
-const { COMMAND_MANIFEST, extractCommandComponents } = require("./tools/command.js");
-const { decodeStringValue, isEncoded } = require("./tools/encoding.js");
+} = require("./formatACommands.js");
+const { COMMAND_MANIFEST, InigoCommand: Inigo, extractCommandComponents } = require("./formatATools.js");
+const { decodeStringValue, isEncoded } = require("../tools/encoding.js");
+const { generateUUID } = require("../tools/uuid.js");
 
 const COMMANDS = {
     aid: executeArchiveID,
@@ -51,36 +50,26 @@ const COMMANDS = {
 const SHARE_COMMAND_EXP = /^\$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\s/;
 const VALID_COMMAND_EXP = /^[a-z]{3}\s.+$/;
 
-class Westley extends EventEmitter {
-    constructor() {
-        super();
-        this.initialise();
-        this._dirty = false;
-        this._readOnly = false;
-        this.executionOptions = {};
+class VaultFormatA extends VaultFormat {
+    execute(commandOrCommands) {
+        const commands = Array.isArray(commandOrCommands) ? commandOrCommands : [commandOrCommands];
+        commands.forEach(command => this._executeCommand(command));
+        this.dirty = true;
+        this.emit("commandsExecuted");
     }
 
-    get dataset() {
-        return this._dataset;
+    initialise() {
+        this.execute([
+            Inigo.create(Inigo.Command.Format)
+                .addArgument(getFormat())
+                .generateCommand(),
+            Inigo.create(Inigo.Command.ArchiveID)
+                .addArgument(generateUUID())
+                .generateCommand()
+        ]);
     }
 
-    get history() {
-        return [...this._history];
-    }
-
-    get isDirty() {
-        return this._dirty;
-    }
-
-    get readOnly() {
-        return this._readOnly;
-    }
-
-    clearDirtyState() {
-        this._dirty = false;
-    }
-
-    execute(command) {
+    _executeCommand(command) {
         let currentCommand = command,
             shareID = null;
         if (SHARE_COMMAND_EXP.test(currentCommand)) {
@@ -96,7 +85,7 @@ class Westley extends EventEmitter {
         const executeCommand = COMMANDS[commandKey];
         try {
             executeCommand.apply(null, [
-                this.dataset,
+                this.source,
                 Object.assign(
                     {
                         // opts
@@ -106,25 +95,14 @@ class Westley extends EventEmitter {
                 ),
                 ...this._processCommandParameters(commandKey, commandComponents)
             ]);
-            this._history.push(command);
+            this.history.push(command);
         } catch (err) {
             throw new VError(err, `Failed executing vault command: ${commandKey}`);
         }
-        this._dirty = true;
-        this.emit("commandExecuted", { command });
     }
 
-    initialise() {
-        this._dataset = {};
-        this._history = [];
-    }
-
-    /**
-     * Insert a padding in the archive (used for delta tracking)
-     * @memberof Westley
-     */
-    pad() {
-        this.execute(Inigo.generatePaddingCommand());
+    _pad() {
+        this.executeCommand(Inigo.generatePaddingCommand());
     }
 
     _processCommandParameters(commandKey, parameters) {
@@ -145,5 +123,3 @@ class Westley extends EventEmitter {
         });
     }
 }
-
-module.exports = Westley;
