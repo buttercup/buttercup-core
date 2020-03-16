@@ -14,6 +14,18 @@ class VaultFormat extends EventEmitter {
         this.source = source;
     }
 
+    createGroup() {
+        notImplemented();
+    }
+
+    deleteGroup() {
+        notImplemented();
+    }
+
+    deleteGroupAttribute() {
+        notImplemented();
+    }
+
     erase() {
         Object.keys(this.source).forEach(sourceKey => {
             this.source[sourceKey] = undefined;
@@ -26,7 +38,27 @@ class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
+    generateID() {
+        notImplemented();
+    }
+
     initialise() {
+        notImplemented();
+    }
+
+    moveGroup() {
+        notImplemented();
+    }
+
+    setGroupAttribute() {
+        notImplemented();
+    }
+
+    setGroupTitle() {
+        notImplemented();
+    }
+
+    setVaultAttribute() {
         notImplemented();
     }
 }

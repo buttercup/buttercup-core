@@ -51,6 +51,32 @@ const SHARE_COMMAND_EXP = /^\$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a
 const VALID_COMMAND_EXP = /^[a-z]{3}\s.+$/;
 
 class VaultFormatA extends VaultFormat {
+    createGroup(parentID, groupID) {
+        this.execute(
+            Inigo.create(Inigo.Command.CreateGroup)
+                .addArgument(parentID)
+                .addArgument(groupID)
+                .generateCommand()
+        );
+    }
+
+    deleteGroup(groupID) {
+        this.execute(
+            Inigo.create(Inigo.Command.DeleteGroup)
+                .addArgument(groupID)
+                .generateCommand()
+        );
+    }
+
+    deleteGroupAttribute(groupID, attribute) {
+        this.eecute(
+            Inigo.create(Inigo.Command.DeleteGroupAttribute)
+                .addArgument(groupID)
+                .addArgument(attribute)
+                .generateCommand()
+        );
+    }
+
     execute(commandOrCommands) {
         const commands = Array.isArray(commandOrCommands) ? commandOrCommands : [commandOrCommands];
         commands.forEach(command => this._executeCommand(command));
@@ -58,15 +84,58 @@ class VaultFormatA extends VaultFormat {
         this.emit("commandsExecuted");
     }
 
-    initialise() {
-        this.execute([
-            Inigo.create(Inigo.Command.Format)
-                .addArgument(getFormat())
-                .generateCommand(),
+    generateID() {
+        this.execute(
             Inigo.create(Inigo.Command.ArchiveID)
                 .addArgument(generateUUID())
                 .generateCommand()
-        ]);
+        );
+    }
+
+    initialise() {
+        this.execute(
+            Inigo.create(Inigo.Command.Format)
+                .addArgument(getFormat())
+                .generateCommand()
+        );
+        this.generateID();
+    }
+
+    moveGroup(groupID, newParentID) {
+        this.execute(
+            Inigo.create(Inigo.Command.MoveGroup)
+                .addArgument(groupID)
+                .addArgument(newParentID)
+                .generateCommand()
+        );
+    }
+
+    setGroupAttribute(groupID, attribute, value) {
+        this.execute(
+            Inigo.create(Inigo.Command.SetGroupAttribute)
+                .addArgument(groupID)
+                .addArgument(attribute)
+                .addArgument(value)
+                .generateCommand()
+        );
+    }
+
+    setGroupTitle(groupID, title) {
+        this.execute(
+            Inigo.create(Inigo.Command.SetGroupTitle)
+                .addArgument(groupID)
+                .addArgument(title)
+                .generateCommand()
+        );
+    }
+
+    setVaultAttribute(key, value) {
+        this.execute(
+            Inigo.create(Inigo.Command.SetArchiveAttribute)
+                .addArgument(key)
+                .addArgument(value)
+                .generateCommand()
+        );
     }
 
     _executeCommand(command) {

@@ -2,12 +2,52 @@ const EventEmitter = require("eventemitter3");
 const { getDefaultFormat } = require("../io/formatRouter.js");
 const { findGroupByID, findGroupsByTitle } = require("../search/groups.js");
 const { findEntriesByProperty, findEntryByID } = require("../search/entries.js");
+const Group = require("./Group.js");
 
 class Vault extends EventEmitter {
+    /**
+     * Create a new archive instance from a list of commands (history)
+     * @param {Array.<String>} history The command list
+     * @returns {Vault} The vault instance
+     * @static
+     * @memberof Vault
+     */
+    static createFromHistory(history) {
+        const vault = new Vault();
+        vault.format.erase();
+        vault.format.execute(history);
+        vault.format.dirty = false;
+        if (!vault.id) {
+            vault.format.generateID();
+        }
+        return vault;
+    }
+
+    /**
+     * Create a Vault with the default template
+     * @returns {Vault} The new vault
+     * @memberof Vault
+     * @static
+     */
+    static createWithDefaults() {
+        const vault = new Vault();
+        vault.createGroup("General");
+        vault.createGroup("Trash").setAttribute(Group.Attribute.Role, "trash");
+        return vault;
+    }
+
     _dataset = {};
 
     get id() {
         return this._dataset.id;
+    }
+
+    get readOnly() {
+        return false;
+    }
+
+    get type() {
+        return "Vault";
     }
 
     constructor(Format = getDefaultFormat()) {
@@ -17,6 +57,20 @@ class Vault extends EventEmitter {
             this.emit("vaultUpdated");
         });
         this.format.initialise();
+    }
+
+    /**
+     * Create a new group
+     * @param {String=} title The title for the group
+     * @returns {Group} The newly created group
+     * @memberof Vault
+     */
+    createGroup(title) {
+        const group = Group.createNew(this);
+        if (title) {
+            group.setTitle(title);
+        }
+        return group;
     }
 
     /**
@@ -62,8 +116,53 @@ class Vault extends EventEmitter {
         return findGroupsByTitle(this.getGroups(), title);
     }
 
+    /**
+     * Get the value of an attribute
+     * @param {String=} attributeName The attribute to get
+     * @returns {undefined|String|Object} The value of the attribute or undefined if not
+     *  set. Returns an object if no attribute name is given.
+     * @memberof Vault
+     */
+    getAttribute(attributeName) {
+        const dataset = this._dataset;
+        if (!attributeName) {
+            return Object.assign({}, dataset.attributes || {});
+        }
+        if (dataset.attributes && dataset.attributes.hasOwnProperty(attributeName)) {
+            return dataset.attributes[attributeName];
+        }
+        return undefined;
+    }
+
     getGroups() {
         // @todo groups
         return [];
     }
+
+    /**
+     * Get the trash group
+     * @returns {Group} The trash group
+     * @memberof Vault
+     */
+    getTrashGroup() {
+        let trashGroup = this.getGroups().find(group => group.isTrash());
+        if (!trashGroup) {
+            // @todo create Trash if not exist
+        }
+        return trashGroup;
+    }
+
+    /**
+     * Set an attribute on the archive
+     * @param {String} attribute The attribute to set
+     * @param {String} value The value to set for the attribute
+     * @returns {Vault} Self
+     * @memberof Vault
+     */
+    setAttribute(attribute, value) {
+        this.format.setVaultAttribute(attribute, value);
+        return this;
+    }
 }
+
+module.exports = Vault;
