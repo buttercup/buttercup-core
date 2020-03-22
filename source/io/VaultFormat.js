@@ -18,6 +18,18 @@ class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
+    deleteEntry() {
+        notImplemented();
+    }
+
+    deleteEntryAttribute() {
+        notImplemented();
+    }
+
+    deleteEntryProperty() {
+        notImplemented();
+    }
+
     deleteGroup() {
         notImplemented();
     }
@@ -46,7 +58,19 @@ class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
+    moveEntry() {
+        notImplemented();
+    }
+
     moveGroup() {
+        notImplemented();
+    }
+
+    setEntryAttribute() {
+        notImplemented();
+    }
+
+    setEntryProperty() {
         notImplemented();
     }
 

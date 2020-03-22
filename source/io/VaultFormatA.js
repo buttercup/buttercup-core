@@ -60,6 +60,32 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
+    deleteEntry(entryID) {
+        this.execute(
+            Inigo.create(Inigo.Command.DeleteEntry)
+                .addArgument(entryID)
+                .generateCommand()
+        );
+    }
+
+    deleteEntryAttribute(entryID, attribute) {
+        this.execute(
+            Inigo.create(Inigo.Command.DeleteEntryAttribute)
+                .addArgument(entryID)
+                .addArgument(attribute)
+                .generateCommand()
+        );
+    }
+
+    deleteEntryProperty(entryID, property) {
+        this.execute(
+            Inigo.create(Inigo.Command.DeleteEntryProperty)
+                .addArgument(entryID)
+                .addArgument(property)
+                .generateCommand()
+        );
+    }
+
     deleteGroup(groupID) {
         this.execute(
             Inigo.create(Inigo.Command.DeleteGroup)
@@ -101,11 +127,40 @@ class VaultFormatA extends VaultFormat {
         this.generateID();
     }
 
+    moveEntry(entryID, groupID) {
+        this.execute(
+            Inigo.create(Inigo.Command.MoveEntry)
+                .addArgument(entryID)
+                .addArgument(groupID)
+                .generateCommand()
+        );
+    }
+
     moveGroup(groupID, newParentID) {
         this.execute(
             Inigo.create(Inigo.Command.MoveGroup)
                 .addArgument(groupID)
                 .addArgument(newParentID)
+                .generateCommand()
+        );
+    }
+
+    setEntryAttribute(entryID, attribute, value) {
+        this.execute(
+            Inigo.create(Inigo.Command.SetEntryAttribute)
+                .addArgument(entryID)
+                .addArgument(attribute)
+                .addArgument(value)
+                .generateCommand()
+        );
+    }
+
+    setEntryProperty(entryID, property, value) {
+        this.execute(
+            Inigo.create(Inigo.Command.SetEntryProperty)
+                .addArgument(entryID)
+                .addArgument(property)
+                .addArgument(value)
                 .generateCommand()
         );
     }

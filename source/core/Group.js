@@ -101,7 +101,7 @@ class Group extends VaultItem {
      * @memberof Group
      */
     getAttribute(attribute) {
-        const attributes = this.vault._dataset.attributes || {};
+        const attributes = this._source.attributes || {};
         if (typeof attribute === "undefined") {
             return Object.assign({}, attributes);
         }
