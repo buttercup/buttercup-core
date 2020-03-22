@@ -1,6 +1,7 @@
 const TextDatasource = require("./TextDatasource.js");
 const { fireInstantiationHandlers, registerDatasource } = require("./DatasourceAdapter.js");
-const { getWebDAVFactory } = require("./tools/appEnv.js");
+const { getSharedAppEnv } = require("../env/appEnv");
+const { getCredentials } = require("../credentials/channel.js");
 
 /**
  * WebDAV datasource for reading and writing remote archives
@@ -9,21 +10,23 @@ const { getWebDAVFactory } = require("./tools/appEnv.js");
 class WebDAVDatasource extends TextDatasource {
     /**
      * Constructor for the datasource
-     * @param {string} endpoint URL for the WebDAV service (without resource path)
-     * @param {string} webDAVPath Resource path on the WebDAV service
-     * @param {Credentials=} credentials Credentials (username/password) for the WebDAV service
+     * @param {Credentials} credentials Credentials for the datasource
      */
-    constructor(endpoint, webDAVPath, credentials) {
-        super();
-        this._endpoint = endpoint;
-        this._path = webDAVPath;
-        const createClient = getWebDAVFactory();
-        this._client = credentials
-            ? createClient(endpoint, {
-                  username: credentials.username,
-                  password: credentials.password
-              })
-            : createClient(endpoint);
+    constructor(credentials) {
+        super(credentials);
+        const { data: credentialData } = getCredentials(credentials.id);
+        const { datasource: datasourceConfig, username, password } = credentialData;
+        const { endpoint, path } = datasourceConfig;
+        this._path = path;
+        const createClient = getSharedAppEnv().getProperty("net/webdav/v1/newClient");
+        if (typeof username === "string" && typeof password === "string") {
+            this._client = createClient(endpoint, {
+                username,
+                password
+            });
+        } else {
+            this._client = createClient(endpoint);
+        }
         fireInstantiationHandlers("webdav", this);
     }
 
@@ -34,15 +37,6 @@ class WebDAVDatasource extends TextDatasource {
      */
     get client() {
         return this._client;
-    }
-
-    /**
-     * The remote WebDAV endpoint
-     * @type {String}
-     * @memberof WebDAVDatasource
-     */
-    get endpoint() {
-        return this._endpoint;
     }
 
     /**
@@ -89,45 +83,7 @@ class WebDAVDatasource extends TextDatasource {
     supportsRemoteBypass() {
         return true;
     }
-
-    /**
-     * Output the datasource as an object
-     * @returns {Object} An object describing the datasource
-     * @memberof WebDAVDatasource
-     */
-    toObject() {
-        return {
-            type: "webdav",
-            endpoint: this.endpoint,
-            path: this.path
-        };
-    }
 }
-
-/**
- * Create an instance from an object
- * @param {Object} obj The WebDAV info object
- * @param {Credentials=} hostCredentials The server credentials
- * @static
- * @memberof WebDAVDatasource
- */
-WebDAVDatasource.fromObject = function fromObject(obj, hostCredentials) {
-    if (obj.type === "webdav") {
-        return new WebDAVDatasource(obj.endpoint, obj.path, hostCredentials);
-    }
-    throw new Error(`Unknown or invalid type: ${obj.type}`);
-};
-
-/**
- * Create an instance from a string
- * @param {String} str The string representation of the datasource
- * @param {Credentials=} hostCredentials The server credentials
- * @static
- * @memberof WebDAVDatasource
- */
-WebDAVDatasource.fromString = function fromString(str, hostCredentials) {
-    return WebDAVDatasource.fromObject(JSON.parse(str), hostCredentials);
-};
 
 registerDatasource("webdav", WebDAVDatasource);
 

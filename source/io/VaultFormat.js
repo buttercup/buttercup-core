@@ -1,10 +1,19 @@
 const EventEmitter = require("eventemitter3");
+const { getSharedAppEnv } = require("../env/appEnv.js");
 
 function notImplemented() {
     throw new Error("Not implemented");
 }
 
 class VaultFormat extends EventEmitter {
+    static encodeRaw() {
+        notImplemented();
+    }
+
+    static parseEncrypted() {
+        notImplemented();
+    }
+
     dirty = false;
     history = [];
     source = null;

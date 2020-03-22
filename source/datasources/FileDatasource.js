@@ -10,11 +10,15 @@ const { fireInstantiationHandlers, registerDatasource } = require("./DatasourceA
 class FileDatasource extends TextDatasource {
     /**
      * Constructor for the file datasource
-     * @param {string} filename The filename to load and save
+     * @param {Credentials} credentials The credentials instance with which to
+     *  use to configure the datasource
      */
-    constructor(filename) {
-        super();
-        this._filename = filename;
+    constructor(credentials) {
+        super(credentials);
+        const { data: credentialData } = getCredentials(credentials.id);
+        const { datasource: datasourceConfig } = credentialData;
+        const { path } = datasourceConfig;
+        this._filename = path;
         this.readFile = pify(fs.readFile);
         this.writeFile = pify(fs.writeFile);
         fireInstantiationHandlers("file", this);
@@ -64,46 +68,7 @@ class FileDatasource extends TextDatasource {
     supportsRemoteBypass() {
         return true;
     }
-
-    /**
-     * Output the datasource as an object
-     * @returns {Object} An object describing the datasource
-     * @memberof FileDatasource
-     */
-    toObject() {
-        return Object.assign(super.toObject(), {
-            type: "file",
-            path: this._filename
-        });
-    }
 }
-
-/**
- * Create an instance from an object
- * @param {Object} obj The object representation of a datasource
- * @returns {FileDatasource} A new instance
- * @throws {Error} Throws for an invalid type specification
- * @memberof FileDatasource
- * @static
- */
-FileDatasource.fromObject = function fromObject(obj) {
-    if (obj.type === "file") {
-        return new FileDatasource(obj.path);
-    }
-    throw new Error(`Unknown or invalid type: ${obj.type}`);
-};
-
-/**
- * Create an instance from a string
- * @param {String} str The string representation
- * @returns {FileDatasource} A new instance
- * @memberof FileDatasource
- * @static
- * @see FileDatasource.fromObject
- */
-FileDatasource.fromString = function fromString(str) {
-    return FileDatasource.fromObject(JSON.parse(str));
-};
 
 registerDatasource("file", FileDatasource);
 

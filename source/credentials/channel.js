@@ -1,5 +1,10 @@
 const __store = {};
 
+function credentialsAllowsPurpose(id, purpose) {
+    const { purposes } = getCredentials(id);
+    return purposes.includes(purpose);
+}
+
 function getCredentials(id) {
     return __store[id] || null;
 }
@@ -14,6 +19,7 @@ function setCredentials(id, value) {
 }
 
 module.exports = {
+    credentialsAllowsPurpose,
     getCredentials,
     removeCredentials,
     setCredentials

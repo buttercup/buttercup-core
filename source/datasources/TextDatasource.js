@@ -1,6 +1,8 @@
 const EventEmitter = require("events");
 const hash = require("hash.js");
-const { convertEncryptedContentToHistory, convertHistoryToEncryptedContent } = require("./tools/history.js");
+const Credentials = require("../credentials/Credentials.js");
+const { credentialsAllowsPurpose } = require("../credentials/channel.js");
+const { detectFormat, getDefaultFormat } = require("../io/formatRouter.js");
 const { fireInstantiationHandlers, registerDatasource } = require("./DatasourceAdapter.js");
 
 /**
@@ -9,23 +11,35 @@ const { fireInstantiationHandlers, registerDatasource } = require("./DatasourceA
 class TextDatasource extends EventEmitter {
     /**
      * Constructor for the text datasource
-     * @param {string} content The content to load from
+     * @param {Credentials} credentials The credentials and configuration for
+     *  the datasource
      */
-    constructor(content) {
+    constructor(credentials) {
         super();
-        this._content = content || "";
+        this._credentials = credentials;
+        this._credentials.restrictPurposes([Credentials.PURPOSE_SECURE_EXPORT]);
+        this._content = "";
         fireInstantiationHandlers("text", this);
     }
 
     /**
      * Whether the datasource currently has content
-     * Used to check if the datasource has encrypted content that can be loaded. May be used
-     * when attempting to open a vault in offline mode.
+     * Used to check if the datasource has encrypted content that can be
+     * loaded. May be used when attempting to open a vault in offline mode.
      * @type {Boolean}
      * @memberof TextDatasource
      */
     get hasContent() {
         return this._content && this._content.length > 0;
+    }
+
+    /**
+     * Dehydrate the datasource to encrypted text form
+     * @returns {Promise.<String>}
+     * @memberof TextDataSource
+     */
+    dehydrate() {
+        return this._credentials.toSecureString();
     }
 
     /**
@@ -55,9 +69,12 @@ class TextDatasource extends EventEmitter {
      */
     load(credentials) {
         if (!this._content) {
-            return Promise.reject(new Error("Failed to load archive: Content is empty"));
+            return Promise.reject(new Error("Failed to load vault: Content is empty"));
         }
-        return convertEncryptedContentToHistory(this._content, credentials);
+        if (credentialsAllowsPurpose(credentials.id, Credentials.PURPOSE_DECRYPT_VAULT) !== true) {
+            return Promise.reject(new Error("Provided credentials don't allow vault decryption"));
+        }
+        return detectFormat(this._content).parseEncrypted(this._content, credentials);
     }
 
     /**
@@ -67,8 +84,11 @@ class TextDatasource extends EventEmitter {
      * @returns {Promise.<string>} A promise resolving with the encrypted content
      * @memberof TextDatasource
      */
-    save(history, credentials) {
-        return convertHistoryToEncryptedContent(history, credentials);
+    save(vaultCommands, credentials) {
+        if (credentialsAllowsPurpose(credentials.id, Credentials.PURPOSE_ENCRYPT_VAULT) !== true) {
+            return Promise.reject(new Error("Provided credentials don't allow vault encryption"));
+        }
+        return getDefaultFormat().encodeRaw(vaultCommands, credentials);
     }
 
     /**
@@ -92,38 +112,38 @@ class TextDatasource extends EventEmitter {
         return false;
     }
 
-    /**
-     * Output the datasource as an object
-     * @returns {Object} The object representation
-     * @memberof TextDatasource
-     */
-    toObject() {
-        return {
-            type: "text",
-            content: this._content
-        };
-    }
+    // /**
+    //  * Output the datasource as an object
+    //  * @returns {Object} The object representation
+    //  * @memberof TextDatasource
+    //  */
+    // toObject() {
+    //     return {
+    //         type: "text",
+    //         content: this._content
+    //     };
+    // }
 
-    /**
-     * Output the datasource configuration as a string
-     * @returns {String} The string representation of the datasource
-     * @memberof TextDatasource
-     */
-    toString() {
-        return JSON.stringify(this.toObject());
-    }
+    // /**
+    //  * Output the datasource configuration as a string
+    //  * @returns {String} The string representation of the datasource
+    //  * @memberof TextDatasource
+    //  */
+    // toString() {
+    //     return JSON.stringify(this.toObject());
+    // }
 }
 
-TextDatasource.fromObject = function fromObject(obj) {
-    if (obj.type === "text") {
-        return new TextDatasource(obj.content);
-    }
-    throw new Error(`Unknown or invalid type: ${obj.type}`);
-};
+// TextDatasource.fromObject = function fromObject(obj) {
+//     if (obj.type === "text") {
+//         return new TextDatasource(obj.content);
+//     }
+//     throw new Error(`Unknown or invalid type: ${obj.type}`);
+// };
 
-TextDatasource.fromString = function fromString(str) {
-    return TextDatasource.fromObject(JSON.parse(str));
-};
+// TextDatasource.fromString = function fromString(str) {
+//     return TextDatasource.fromObject(JSON.parse(str));
+// };
 
 registerDatasource("text", TextDatasource);
 

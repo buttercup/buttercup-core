@@ -1,6 +1,7 @@
 const { createClient } = require("@buttercup/dropbox-client");
 const TextDatasource = require("./TextDatasource.js");
 const { fireInstantiationHandlers, registerDatasource } = require("./DatasourceAdapter.js");
+const { getCredentials } = require("../credentials/channel.js");
 
 /**
  * Datasource for Dropbox archives
@@ -9,14 +10,17 @@ const { fireInstantiationHandlers, registerDatasource } = require("./DatasourceA
 class DropboxDatasource extends TextDatasource {
     /**
      * Datasource for Dropbox accounts
-     * @param {String} accessToken The dropbox access token
-     * @param {String} resourcePath The file path
+     * @param {Credentials} credentials Credentials instance to configure the
+     *  datsource with
      */
-    constructor(accessToken, resourcePath) {
-        super();
-        this.path = resourcePath;
-        this.token = accessToken;
-        this.client = createClient(accessToken);
+    constructor(credentials) {
+        super(credentials);
+        const { data: credentialData } = getCredentials(credentials.id);
+        const { datasource: datasourceConfig } = credentialData;
+        const { token, path } = datasourceConfig;
+        this.path = path;
+        this.token = token;
+        this.client = createClient(token);
         fireInstantiationHandlers("dropbox", this);
     }
 
@@ -58,47 +62,7 @@ class DropboxDatasource extends TextDatasource {
     supportsRemoteBypass() {
         return true;
     }
-
-    /**
-     * Output the datasource as an object
-     * @returns {Object} An object describing the datasource
-     * @memberof DropboxDatasource
-     */
-    toObject() {
-        return {
-            type: "dropbox",
-            token: this.token,
-            path: this.path
-        };
-    }
 }
-
-/**
- * Create a new instance from an object
- * @param {Object} obj The object representation
- * @returns {DropboxDatasource} A new instance
- * @static
- * @memberof DropboxDatasource
- * @throws {Error} Throws if the type is invalid
- */
-DropboxDatasource.fromObject = function fromObject(obj) {
-    if (obj.type === "dropbox") {
-        return new DropboxDatasource(obj.token, obj.path);
-    }
-    throw new Error(`Unknown or invalid type: ${obj.type}`);
-};
-
-/**
- * Create a new instance from a string
- * @param {String} str The string representation
- * @returns {DropboxDatasource} A new instance
- * @throws {Error} Throws if the type is invalid
- * @memberof DropboxDatasource
- * @static
- */
-DropboxDatasource.fromString = function fromString(str) {
-    return DropboxDatasource.fromObject(JSON.parse(str));
-};
 
 registerDatasource("dropbox", DropboxDatasource);
 

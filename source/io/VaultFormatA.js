@@ -21,8 +21,10 @@ const {
     executeTitleGroup
 } = require("./formatA/commands.js");
 const { COMMAND_MANIFEST, InigoCommand: Inigo, extractCommandComponents } = require("./formatA/tools.js");
+const { hasValidSignature, sign, stripSignature } = require("./formatA/signing.js");
 const { decodeStringValue, isEncoded } = require("../tools/encoding.js");
 const { generateUUID } = require("../tools/uuid.js");
+const { getCredentials } = require("../credentials/channel.js");
 
 const COMMANDS = {
     aid: executeArchiveID,
@@ -50,7 +52,61 @@ const COMMANDS = {
 const SHARE_COMMAND_EXP = /^\$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\s/;
 const VALID_COMMAND_EXP = /^[a-z]{3}\s.+$/;
 
+/**
+ * Convert array of history lines to a string
+ * @param {Array.<String>} historyArray An array of history items
+ * @returns {String} The string representation
+ * @private
+ */
+function historyArrayToString(historyArray) {
+    return historyArray.join("\n");
+}
+
+/**
+ * Convert a history string to an array
+ * @param {String} historyString The history string
+ * @returns {Array.<String>} An array of history items
+ * @private
+ */
+function historyStringToArray(historyString) {
+    return historyString.split("\n");
+}
+
 class VaultFormatA extends VaultFormat {
+    static encodeRaw(rawContent, credentials) {
+        const compress = getSharedAppEnv().getProperty("compression/v1/compressText");
+        const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
+        const { data } = getCredentials(credentials.id);
+        return Promise.resolve()
+            .then(() => historyArrayToString(historyArr))
+            .then(history => compress(history))
+            .then(compressed => encrypt(compressed, data.password))
+            .then(sign);
+    }
+
+    static parseEncrypted(encryptedContent, credentials) {
+        const decompress = getSharedAppEnv().getProperty("compression/v1/decompressText");
+        const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
+        const { data } = getCredentials(credentials.id);
+        return Promise.resolve()
+            .then(() => {
+                if (!hasValidSignature(encText)) {
+                    throw new Error("No valid signature in vault");
+                }
+                return stripSignature(encText);
+            })
+            .then(encryptedData => decrypt(encryptedData, data.password))
+            .then(decrypted => {
+                if (decrypted && decrypted.length > 0) {
+                    const decompressed = decompress(decrypted);
+                    if (decompressed) {
+                        return historyStringToArray(decompressed);
+                    }
+                }
+                throw new Error("Failed reconstructing history: Decryption failed");
+            });
+    }
+
     createEntry(groupID, entryID) {
         this.execute(
             Inigo.create(Inigo.Command.CreateEntry)

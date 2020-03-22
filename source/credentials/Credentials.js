@@ -1,5 +1,5 @@
 const { generateUUID } = require("../tools/uuid.js");
-const { getCredentials, removeCredentials, setCredentials } = require("./channel.js");
+const { credentialsAllowsPurpose, getCredentials, removeCredentials, setCredentials } = require("./channel.js");
 const { getSharedAppEnv } = require("../env/appEnv.js");
 
 /**
@@ -53,6 +53,49 @@ function unsignEncryptedContent(content) {
  * and are inaccessible to public functions.
  */
 class Credentials {
+    static PURPOSE_DECRYPT_VAULT = "vault-decrypt";
+    static PURPOSE_ENCRYPT_VAULT = "vault-encrypt";
+    static PURPOSE_SECURE_EXPORT = "secure-export";
+
+    /**
+     * Get all available purposes
+     * @returns {Array.<String>}
+     * @memberof Credentials
+     * @static
+     */
+    static allPurposes() {
+        return [
+            Credentials.PURPOSE_DECRYPT_VAULT,
+            Credentials.PURPOSE_ENCRYPT_VAULT,
+            Credentials.PURPOSE_SECURE_EXPORT
+        ];
+    }
+
+    /**
+     * Create a new Credentials instance using an existing Credentials
+     * instance - This can be used to reset a credentials's purposes.
+     * @param {Credentials} credentials A credentials instance
+     * @param {String} masterPassword The master password used to
+     *  encrypt the instance being cloned
+     * @returns {Credentials}
+     * @memberof Credentials
+     * @static
+     * @throws {Error} Throws if no master password provided
+     * @throws {Error} Throws if master password does not match
+     *  original
+     */
+    static fromCredentials(credentials, masterPassword) {
+        if (!masterPassword) {
+            throw new Error("Master password is required for credentials cloning");
+        }
+        const credentialsData = getCredentials(credentials.id);
+        if (credentialsData.masterPassword !== masterPassword) {
+            throw new Error("Master password does not match that of the credentials to be cloned");
+        }
+        const newData = JSON.parse(JSON.stringify(credentialsData.data));
+        return new Credentials(newData, masterPassword);
+    }
+
     /**
      * Create a new Credentials instance from a Datasource configuration
      * @param {Object} datasourceConfig The configuration for the
@@ -125,19 +168,53 @@ class Credentials {
         });
         setCredentials(id, {
             data: obj,
-            masterPassword
+            masterPassword,
+            purposes: Credentials.allPurposes()
         });
     }
 
     /**
+     * Restrict the purposes that this set of credentials
+     * can be used for. Once a purpose is removed it can
+     * no longer be added again to the same instance.
+     * @param {Array.<String>} allowedPurposes An array of
+     *  new allowed purposes. If a purpose mentioned is
+     *  not currently permitted, it will be ignored.
+     * @returns {Credentials} Returns self
+     * @memberof Credentials
+     * @example
+     *  credentials.restrictPurposes(
+     *      Credentials.PURPOSE_SECURE_EXPORT
+     *  );
+     *  // credentials can only be exported to an
+     *  // encrypted string, and not used for things
+     *  // like encrypting datasource changes.
+     */
+    restrictPurposes(allowedPurposes) {
+        const creds = getCredentials(this.id);
+        const { purposes } = creds;
+        // Filter out purposes which have already been restricted
+        const finalPurposes = allowedPurposes.filter(newPurpose => purposes.includes(newPurpose));
+        setCredentials(
+            this.id,
+            Object.assign(creds, {
+                purposes: finalPurposes
+            })
+        );
+        return this;
+    }
+
+    /**
      * Convert the credentials to an encrypted string, for storage
-     * @param {string} masterPassword The password for encrypting
      * @returns {Promise} A promise that resolves with the encrypted credentials
-     * @see signEncryptedContent
      * @throws {Error} Rejects when masterPassword is not a string
+     * @throws {Error} Rejects if credentials don't permit secure export purposes
      * @memberof Credentials
      */
     toSecureString() {
+        if (credentialsAllowsPurpose(this.id, Credentials.PURPOSE_SECURE_EXPORT) !== true) {
+            return Promise.reject(new Error("Credential purposes don't allow for secure exports"));
+        }
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
         const { data, masterPassword } = getCredentials(this.id);
         if (typeof masterPassword !== "string") {
@@ -148,3 +225,5 @@ class Credentials {
         return encrypt(JSON.stringify(data), masterPassword).then(signEncryptedContent);
     }
 }
+
+module.exports = Credentials;

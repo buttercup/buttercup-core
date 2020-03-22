@@ -3,6 +3,7 @@ const VError = require("verror");
 const AuthManager = require("./AuthManager.js");
 const TextDatasource = require("./TextDatasource.js");
 const { fireInstantiationHandlers, registerDatasource } = require("./DatasourceAdapter.js");
+const { getCredentials, setCredentials } = require("../credentials/channel.js");
 
 const DATASOURCE_TYPE = "googledrive";
 
@@ -13,14 +14,16 @@ const DATASOURCE_TYPE = "googledrive";
 class GoogleDriveDatasource extends TextDatasource {
     /**
      * Datasource for Google Drive connections
-     * @param {String} fileID The Google Drive file identifier
-     * @param {String} accessToken Google access token
-     * @param {String=} refreshToken Google refresh token
+     * @param {Credentials} credentials The credentials instance with which to
+     *  configure the datasource with
      */
-    constructor(fileID, accessToken, refreshToken = null) {
-        super();
+    constructor(credentials) {
+        super(credentials);
+        const { data: credentialData } = getCredentials(credentials.id);
+        const { datasource: datasourceConfig } = credentialData;
+        const { token, refreshToken, fileID } = datasourceConfig;
         this.fileID = fileID;
-        this.updateTokens(accessToken, refreshToken);
+        this.updateTokens(token, refreshToken);
         this.authManager = AuthManager.getSharedManager();
         fireInstantiationHandlers(DATASOURCE_TYPE, this);
     }
@@ -100,20 +103,6 @@ class GoogleDriveDatasource extends TextDatasource {
     }
 
     /**
-     * Output the datasource as an object
-     * @returns {Object} An object describing the datasource
-     * @memberof GoogleDriveDatasource
-     */
-    toObject() {
-        return {
-            type: DATASOURCE_TYPE,
-            token: this.token,
-            refreshToken: this.refreshToken,
-            fileID: this.fileID
-        };
-    }
-
-    /**
      * Update the OAuth2 tokens
      * @param {String} accessToken The access token
      * @param {String=} refreshToken The refresh token
@@ -123,36 +112,15 @@ class GoogleDriveDatasource extends TextDatasource {
         this.token = accessToken;
         this.refreshToken = refreshToken;
         this.client = createClient(accessToken);
+        const credentialsData = getCredentials(this._credentials.id);
+        Object.assign(credentialsData.datasource, {
+            token: accessToken,
+            refreshToken: refreshToken
+        });
+        setCredentials(this._credentials.id, credentialsData);
         this.emit("updated");
     }
 }
-
-/**
- * Create a new instance from an object
- * @param {Object} obj The object representation
- * @returns {GoogleDriveDatasource} A new instance
- * @static
- * @memberof GoogleDriveDatasource
- * @throws {Error} Throws if the type is invalid
- */
-GoogleDriveDatasource.fromObject = function fromObject(obj) {
-    if (obj.type === DATASOURCE_TYPE) {
-        return new GoogleDriveDatasource(obj.fileID, obj.token, obj.refreshToken);
-    }
-    throw new Error(`Unknown or invalid type: ${obj.type}`);
-};
-
-/**
- * Create a new instance from a string
- * @param {String} str The string representation
- * @returns {GoogleDriveDatasource} A new instance
- * @throws {Error} Throws if the type is invalid
- * @memberof GoogleDriveDatasource
- * @static
- */
-GoogleDriveDatasource.fromString = function fromString(str) {
-    return GoogleDriveDatasource.fromObject(JSON.parse(str));
-};
 
 registerDatasource(DATASOURCE_TYPE, GoogleDriveDatasource);
 

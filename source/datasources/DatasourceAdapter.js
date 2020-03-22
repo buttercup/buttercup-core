@@ -1,5 +1,34 @@
+const { getCredentials } = require("./channel.js");
+
 const __datasources = {};
 const __postHandlers = [];
+
+/**
+ * Convert a Credentials instance to a Datasource
+ * @param {Credentials} credentials A Credentials instance that
+ *  contains a datasource configuration
+ * @returns {TextDatasource}
+ * @throws {Error} Throws if no datasource configuration in
+ *  credentials
+ * @throws {Error} Throws if no type specified in datasource
+ *  configuration
+ * @throws {Error} Throws if no datasource found for type
+ */
+function credentialsToDatasource(credentials) {
+    const { datasource } = getCredentials(credentials.id);
+    if (!datasource) {
+        throw new Error("No datasource configuration in credentials");
+    }
+    const { type } = datasource;
+    if (!type) {
+        throw new Error("No datasource type specified in datasource configuration");
+    }
+    const DSClass = __datasources[type];
+    if (!DSClass) {
+        throw new Error(`No datasource found for type: ${type}`);
+    }
+    return new DSClass(credentials);
+}
 
 /**
  * Execute all datasource postprocessors
@@ -14,28 +43,6 @@ function fireInstantiationHandlers(type, datasource) {
             console.error(err);
         }
     });
-}
-
-/**
- * Create a datasource from an object
- * The object must have the required properties (as output by the corresponding
- * `toObject` call of the datasource).
- * @param {Object} obj The object
- * @param {Credentials=} hostCredentials Credentials instance for remote host
- *  authentication (not required for File/Text datasources)
- * @returns {null|TextDatasource} A datasource instance or null of none found
- * @public
- */
-function objectToDatasource(obj, hostCredentials) {
-    const { type } = obj;
-    if (!type) {
-        throw new Error("No type specified");
-    }
-    const DSClass = __datasources[type];
-    if (DSClass && DSClass.fromObject) {
-        return DSClass.fromObject(obj, hostCredentials);
-    }
-    return null;
 }
 
 /**
@@ -72,23 +79,9 @@ function registerDatasourcePostProcessor(callback) {
     };
 }
 
-/**
- * Create a datasource from a string
- * @see objectToDatasource
- * @param {String} str The string representation of a datasource, as output by
- *  the `toString` method on the corresponding datasource
- * @param {Credentials=} hostCredentials The remote authentication credentials
- * @returns {null|TextDatasource} A new datasource instance or null of not found
- * @public
- */
-function stringToDatasource(str, hostCredentials) {
-    return objectToDatasource(JSON.parse(str), hostCredentials);
-}
-
 module.exports = {
+    credentialsToDatasource,
     fireInstantiationHandlers,
-    objectToDatasource,
     registerDatasource,
-    registerDatasourcePostProcessor,
-    stringToDatasource
+    registerDatasourcePostProcessor
 };
