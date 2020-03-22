@@ -1,9 +1,24 @@
 const VaultItem = require("./VaultItem.js");
-// const { generateUUID } = require("../tools/uuid.js");
+const { generateUUID } = require("../tools/uuid.js");
 const { getEntryURLs } = require("../tools/entry.js");
 const { findEntryByID, findGroupContainingEntryID } = require("../tools/rawVaultSearch.js");
 
 class Entry extends VaultItem {
+    static createNew(vault, parentGroupID) {
+        // Check if group is trash/in-trash
+        const group = vault.findGroupByID(parentGroupID);
+        if (!group) {
+            throw new Error(`Failed creating entry: no group found for ID: ${parentGroupID}`);
+        } else if (group.isTrash() || group.isInTrash()) {
+            throw new Error("Failed creating entry: cannot create within Trash group");
+        }
+        // Generate new entry ID
+        const id = generateUUID();
+        // Create new entry
+        vault.format.createEntry(parentGroupID, id);
+        return vault.findEntryByID(id);
+    }
+
     /**
      * Get the instance type
      * @type {String}

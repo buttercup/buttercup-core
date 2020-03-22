@@ -134,9 +134,13 @@ class Vault extends EventEmitter {
         return undefined;
     }
 
+    /**
+     * Get the top-level groups in the vault
+     * @returns {Array.<Group>}
+     * @memberof Vault
+     */
     getGroups() {
-        // @todo groups
-        return [];
+        return (this._dataset.groups || []).map(rawGroup => new Group(this, rawGroup));
     }
 
     /**
@@ -147,7 +151,8 @@ class Vault extends EventEmitter {
     getTrashGroup() {
         let trashGroup = this.getGroups().find(group => group.isTrash());
         if (!trashGroup) {
-            // @todo create Trash if not exist
+            trashGroup = this.createGroup("Trash");
+            trashGroup.setAttribute(Group.Attribute.Role, "trash");
         }
         return trashGroup;
     }

@@ -14,6 +14,10 @@ class VaultFormat extends EventEmitter {
         this.source = source;
     }
 
+    createEntry() {
+        notImplemented();
+    }
+
     createGroup() {
         notImplemented();
     }

@@ -1,5 +1,6 @@
 const VaultItem = require("./VaultItem.js");
 const { generateUUID } = require("../tools/uuid.js");
+const Entry = require("./Entry.js");
 
 class Group extends VaultItem {
     static Attribute = Object.freeze({
@@ -18,8 +19,7 @@ class Group extends VaultItem {
         }
         const id = generateUUID();
         vault.format.createGroup(parentID, id);
-        const group = vault.findGroupByID(id);
-        return new Group(vault, group);
+        return vault.findGroupByID(id);
     }
 
     get type() {
@@ -33,12 +33,11 @@ class Group extends VaultItem {
      * @memberof Group
      */
     createEntry(title) {
-        // @todo
-        // var entry = Entry.createNew(this._getArchive(), this.id);
-        // if (title) {
-        //     entry.setProperty("title", title);
-        // }
-        // return entry;
+        const entry = Entry.createNew(this.vault, this.id);
+        if (title) {
+            entry.setProperty("title", title);
+        }
+        return entry;
     }
 
     /**
@@ -114,11 +113,7 @@ class Group extends VaultItem {
      * @memberof Group
      */
     getEntries() {
-        // @todo
-        // var archive = this._getArchive();
-        // return (this._getRemoteObject().entries || []).map(function(rawEntry) {
-        //     return new Entry(archive, rawEntry);
-        // });
+        return (this._source.entries || []).map(rawEntry => new Entry(this.vault, rawEntry));
     }
 
     /**

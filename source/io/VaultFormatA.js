@@ -51,6 +51,15 @@ const SHARE_COMMAND_EXP = /^\$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a
 const VALID_COMMAND_EXP = /^[a-z]{3}\s.+$/;
 
 class VaultFormatA extends VaultFormat {
+    createEntry(groupID, entryID) {
+        this.execute(
+            Inigo.create(Inigo.Command.CreateEntry)
+                .addArgument(groupID)
+                .addArgument(entryID)
+                .generateCommand()
+        );
+    }
+
     createGroup(parentID, groupID) {
         this.execute(
             Inigo.create(Inigo.Command.CreateGroup)
