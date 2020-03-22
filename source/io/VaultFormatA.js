@@ -19,8 +19,8 @@ const {
     executeSetEntryProperty,
     executeSetGroupAttribute,
     executeTitleGroup
-} = require("./formatACommands.js");
-const { COMMAND_MANIFEST, InigoCommand: Inigo, extractCommandComponents } = require("./formatATools.js");
+} = require("./formatA/commands.js");
+const { COMMAND_MANIFEST, InigoCommand: Inigo, extractCommandComponents } = require("./formatA/tools.js");
 const { decodeStringValue, isEncoded } = require("../tools/encoding.js");
 const { generateUUID } = require("../tools/uuid.js");
 

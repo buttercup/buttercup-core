@@ -1,5 +1,5 @@
-const { encodeStringValue } = require("../tools/encoding.js");
-const { generateUUID } = require("../tools/uuid.js");
+const { encodeStringValue } = require("../../tools/encoding.js");
+const { generateUUID } = require("../../tools/uuid.js");
 
 const COMMAND_ARGUMENT = {
     ItemID: {
