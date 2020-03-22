@@ -3,7 +3,7 @@ const hash = require("hash.js");
 const Credentials = require("../credentials/Credentials.js");
 const { credentialsAllowsPurpose } = require("../credentials/channel.js");
 const { detectFormat, getDefaultFormat } = require("../io/formatRouter.js");
-const { fireInstantiationHandlers, registerDatasource } = require("./DatasourceAdapter.js");
+const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
 
 /**
  * Datasource for text input and output
@@ -20,6 +20,15 @@ class TextDatasource extends EventEmitter {
         this._credentials.restrictPurposes([Credentials.PURPOSE_SECURE_EXPORT]);
         this._content = "";
         fireInstantiationHandlers("text", this);
+    }
+
+    /**
+     * Datasource credentials
+     * @type {Credentials}
+     * @readonly
+     */
+    get credentials() {
+        return this._credentials;
     }
 
     /**
@@ -111,39 +120,7 @@ class TextDatasource extends EventEmitter {
     supportsRemoteBypass() {
         return false;
     }
-
-    // /**
-    //  * Output the datasource as an object
-    //  * @returns {Object} The object representation
-    //  * @memberof TextDatasource
-    //  */
-    // toObject() {
-    //     return {
-    //         type: "text",
-    //         content: this._content
-    //     };
-    // }
-
-    // /**
-    //  * Output the datasource configuration as a string
-    //  * @returns {String} The string representation of the datasource
-    //  * @memberof TextDatasource
-    //  */
-    // toString() {
-    //     return JSON.stringify(this.toObject());
-    // }
 }
-
-// TextDatasource.fromObject = function fromObject(obj) {
-//     if (obj.type === "text") {
-//         return new TextDatasource(obj.content);
-//     }
-//     throw new Error(`Unknown or invalid type: ${obj.type}`);
-// };
-
-// TextDatasource.fromString = function fromString(str) {
-//     return TextDatasource.fromObject(JSON.parse(str));
-// };
 
 registerDatasource("text", TextDatasource);
 

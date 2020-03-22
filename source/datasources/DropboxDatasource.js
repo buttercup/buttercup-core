@@ -1,6 +1,6 @@
 const { createClient } = require("@buttercup/dropbox-client");
 const TextDatasource = require("./TextDatasource.js");
-const { fireInstantiationHandlers, registerDatasource } = require("./DatasourceAdapter.js");
+const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
 const { getCredentials } = require("../credentials/channel.js");
 
 /**

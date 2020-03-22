@@ -1,5 +1,5 @@
 const TextDatasource = require("./TextDatasource.js");
-const { fireInstantiationHandlers, registerDatasource } = require("./DatasourceAdapter.js");
+const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
 const { getSharedAppEnv } = require("../env/appEnv");
 const { getCredentials } = require("../credentials/channel.js");
 

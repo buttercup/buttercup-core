@@ -76,18 +76,18 @@ class VaultFormatA extends VaultFormat {
     static encodeRaw(rawContent, credentials) {
         const compress = getSharedAppEnv().getProperty("compression/v1/compressText");
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
-        const { data } = getCredentials(credentials.id);
+        const { masterPassword } = getCredentials(credentials.id);
         return Promise.resolve()
             .then(() => historyArrayToString(historyArr))
             .then(history => compress(history))
-            .then(compressed => encrypt(compressed, data.password))
+            .then(compressed => encrypt(compressed, masterPassword))
             .then(sign);
     }
 
     static parseEncrypted(encryptedContent, credentials) {
         const decompress = getSharedAppEnv().getProperty("compression/v1/decompressText");
         const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
-        const { data } = getCredentials(credentials.id);
+        const { masterPassword } = getCredentials(credentials.id);
         return Promise.resolve()
             .then(() => {
                 if (!hasValidSignature(encText)) {
@@ -95,7 +95,7 @@ class VaultFormatA extends VaultFormat {
                 }
                 return stripSignature(encText);
             })
-            .then(encryptedData => decrypt(encryptedData, data.password))
+            .then(encryptedData => decrypt(encryptedData, masterPassword))
             .then(decrypted => {
                 if (decrypted && decrypted.length > 0) {
                     const decompressed = decompress(decrypted);

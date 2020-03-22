@@ -1,7 +1,7 @@
 const fs = require("fs");
 const pify = require("pify");
 const TextDatasource = require("./TextDatasource.js");
-const { fireInstantiationHandlers, registerDatasource } = require("./DatasourceAdapter.js");
+const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
 
 /**
  * File datasource for loading and saving files

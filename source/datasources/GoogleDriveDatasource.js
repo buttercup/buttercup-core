@@ -2,7 +2,7 @@ const { createClient } = require("@buttercup/googledrive-client");
 const VError = require("verror");
 const AuthManager = require("./AuthManager.js");
 const TextDatasource = require("./TextDatasource.js");
-const { fireInstantiationHandlers, registerDatasource } = require("./DatasourceAdapter.js");
+const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
 const { getCredentials, setCredentials } = require("../credentials/channel.js");
 
 const DATASOURCE_TYPE = "googledrive";
