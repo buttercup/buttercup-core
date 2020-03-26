@@ -27,6 +27,7 @@ class WebDAVDatasource extends TextDatasource {
         } else {
             this._client = createClient(endpoint);
         }
+        this.type = "webdav";
         fireInstantiationHandlers("webdav", this);
     }
 

@@ -1,27 +1,28 @@
 const { calculateHistoryDifferences, objectsDiffer } = require("./tools/compare.js");
+const { createVaultFacade } = require("../facades/vault.js");
 
 /**
- * Archive comparison class
+ * Vault comparison class
  */
-class ArchiveComparator {
+class VaultComparator {
     /**
      * Constructor for the archive comparator
-     * @param {Archive} originalArchive The primary archive
-     * @param {Archive} secondaryArchive The secondary archive
+     * @param {Vault} originalVault The primary archive
+     * @param {Vault} secondaryVault The secondary archive
      */
-    constructor(originalArchive, secondaryArchive) {
-        this._archiveA = originalArchive;
-        this._archiveB = secondaryArchive;
+    constructor(originalVault, secondaryVault) {
+        this._vaultA = originalVault;
+        this._vaultB = secondaryVault;
     }
 
     /**
      * Check if the current archives differ
      * @returns {Boolean} True if the archives are different
-     * @memberof ArchiveComparator
+     * @memberof VaultComparator
      */
     archivesDiffer() {
-        const objA = this._archiveA.toObject();
-        const objB = this._archiveB.toObject();
+        const objA = createVaultFacade(this._vaultA);
+        const objB = createVaultFacade(this._vaultB);
         // ignore the IDs
         delete objA.archiveID;
         delete objB.archiveID;
@@ -32,11 +33,11 @@ class ArchiveComparator {
      * Calculate the differences, in commands, between the two archives
      * @returns {{ original:Array, secondary:Array }|null} Returns null if no common base
      *        is found, or the command differences as two arrays
-     * @memberof ArchiveComparator
+     * @memberof VaultComparator
      */
     calculateDifferences() {
-        return calculateHistoryDifferences(this._archiveA._getWestley().history, this._archiveB._getWestley().history);
+        return calculateHistoryDifferences(this._vaultA.format.history, this._vaultB.format.history);
     }
 }
 
-module.exports = ArchiveComparator;
+module.exports = VaultComparator;

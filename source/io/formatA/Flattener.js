@@ -1,4 +1,4 @@
-const { describeArchiveDataset } = require("./tools/describe.js");
+const { describeArchiveDataset } = require("../../node/tools/describe.js");
 const Westley = require("./Westley.js");
 
 /**
@@ -7,14 +7,14 @@ const Westley = require("./Westley.js");
  * @static
  * @memberof Flattener
  */
-const FLATTENING_MIN_LINES = 11000;
+const FLATTENING_MIN_LINES = 6000;
 /**
  * Number of lines to preserve (most recent)
  * @type {Number}
  * @static
  * @memberof Flattener
  */
-const PRESERVE_LINES = 10000;
+const PRESERVE_LINES = 5000;
 
 /**
  * Check if a command should be preserved (not flattened)

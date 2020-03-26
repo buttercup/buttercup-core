@@ -21,6 +21,7 @@ class DropboxDatasource extends TextDatasource {
         this.path = path;
         this.token = token;
         this.client = createClient(token);
+        this.type = "dropbox";
         fireInstantiationHandlers("dropbox", this);
     }
 

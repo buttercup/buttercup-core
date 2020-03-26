@@ -21,6 +21,7 @@ const {
     executeTitleGroup
 } = require("./formatA/commands.js");
 const { COMMAND_MANIFEST, InigoCommand: Inigo, extractCommandComponents } = require("./formatA/tools.js");
+const Flattener = require("./formatA/Flattener.js");
 const { hasValidSignature, sign, stripSignature } = require("./formatA/signing.js");
 const { decodeStringValue, isEncoded } = require("../tools/encoding.js");
 const { generateUUID } = require("../tools/uuid.js");
@@ -208,6 +209,13 @@ class VaultFormatA extends VaultFormat {
                 .addArgument(newParentID)
                 .generateCommand()
         );
+    }
+
+    optimise() {
+        const flattener = new Flattener(this);
+        if (flattener.canBeFlattened()) {
+            flattener.flatten();
+        }
     }
 
     setEntryAttribute(entryID, attribute, value) {

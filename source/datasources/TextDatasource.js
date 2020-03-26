@@ -19,6 +19,7 @@ class TextDatasource extends EventEmitter {
         this._credentials = credentials;
         this._credentials.restrictPurposes([Credentials.PURPOSE_SECURE_EXPORT]);
         this._content = "";
+        this.type = "text";
         fireInstantiationHandlers("text", this);
     }
 

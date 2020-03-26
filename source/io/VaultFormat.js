@@ -79,6 +79,10 @@ class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
+    optimise() {
+        notImplemented();
+    }
+
     setEntryAttribute() {
         notImplemented();
     }

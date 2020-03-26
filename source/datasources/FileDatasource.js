@@ -21,6 +21,7 @@ class FileDatasource extends TextDatasource {
         this._filename = path;
         this.readFile = pify(fs.readFile);
         this.writeFile = pify(fs.writeFile);
+        this.type = "file";
         fireInstantiationHandlers("file", this);
     }
 

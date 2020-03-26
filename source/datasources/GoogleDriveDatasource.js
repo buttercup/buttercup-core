@@ -25,6 +25,7 @@ class GoogleDriveDatasource extends TextDatasource {
         this.fileID = fileID;
         this.updateTokens(token, refreshToken);
         this.authManager = AuthManager.getSharedManager();
+        this.type = DATASOURCE_TYPE;
         fireInstantiationHandlers(DATASOURCE_TYPE, this);
     }
 
