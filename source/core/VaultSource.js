@@ -13,6 +13,7 @@ const {
 } = require("../tools/vaultManagement.js");
 const { credentialsToDatasource } = require("../datasources/register.js");
 const { initialiseShares } = require("../myButtercup/sharing.js");
+const VaultComparator = require("./VaultComparator.js");
 
 const DEFAULT_COLOUR = "#000000";
 const DEFAULT_ORDER = 1000;
@@ -51,6 +52,8 @@ class VaultSource extends EventEmitter {
         this._order = order;
         this._cacheStorage = cacheStorage;
         this._sourceStorage = sourceStorage;
+        // Parent reference
+        this._vaultManager = null;
     }
 
     /**
@@ -107,7 +110,7 @@ class VaultSource extends EventEmitter {
             throw new VError(`Failed setting colour: Invalid format (expected hex): ${newColour}`);
         }
         this._colour = newColour;
-        this.emit("sourceColourUpdated", this.description);
+        this.emit("updated");
     }
 
     /**
@@ -119,6 +122,10 @@ class VaultSource extends EventEmitter {
      */
     async changeMasterPassword(oldPassword, newPassword) {
         // @todo
+    }
+
+    canBeUpdated() {
+        return this.status === VaultSource.STATUS_UNLOCKED && this._vault.format.dirty === false;
     }
 
     /**
@@ -205,39 +212,36 @@ class VaultSource extends EventEmitter {
             .load(this._credentials)
             .then(history => Vault.createFromHistory(history))
             .then(loadedItem => {
-                // @todo vault comparator
-                // const comparator = new ArchiveComparator(this.archive, loadedItem);
-                // return comparator.archivesDiffer();
+                const comparator = new VaultComparator(this._vault, loadedItem);
+                return comparator.vaultsDiffer();
             });
     }
 
-    lock() {
+    async lock() {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
-            return Promise.reject(
-                new VError(`Failed locking source: Source in invalid state (${this.status}): ${this.id}`)
-            );
+            throw new VError(`Failed locking source: Source in invalid state (${this.status}): ${this.id}`);
         }
         this._status = VaultSource.STATUS_PENDING;
         const currentCredentials = this._credentials;
         const currentVault = this._vault;
         const currentDatasource = this._datasource;
-        return this._enqueueStateChange(() => {
-            return this._credentials
-                .toSecureString()
-                .then(credentialsStr => {
-                    this._credentials = credentialsStr;
-                    this._datasource = null;
-                    this._vault = null;
-                    this._status = VaultSource.STATUS_LOCKED;
-                    return this.dehydrate();
-                })
-                .catch(err => {
-                    this._credentials = currentCredentials;
-                    this._datasource = currentDatasource;
-                    this._vault = currentVault;
-                    this._status = VaultSource.STATUS_UNLOCKED;
-                    throw new VError(err, "Failed unlocking source");
-                });
+        await this._enqueueStateChange(async () => {
+            try {
+                const credentialsStr = await this._credentials.toSecureString();
+                this._credentials = credentialsStr;
+                this._datasource = null;
+                this._vault = null;
+                this._status = VaultSource.STATUS_LOCKED;
+                const dehydratedStr = await this.dehydrate();
+                this.emit("locked");
+                return dehydratedStr;
+            } catch (err) {
+                this._credentials = currentCredentials;
+                this._datasource = currentDatasource;
+                this._vault = currentVault;
+                this._status = VaultSource.STATUS_UNLOCKED;
+                throw new VError(err, "Failed locking source");
+            }
         });
     }
 
@@ -245,43 +249,36 @@ class VaultSource extends EventEmitter {
      * Merge remote contents
      * Detects differences between a local and a remote item, and merges the
      * two copies together.
-     * @returns {Promise.<Archive>} A promise that resolves with the newly merged archive -
+     * @returns {Promise.<Vault>} A promise that resolves with the newly merged archive -
      *      This archive is automatically saved over the original local copy.
      * @memberof VaultSource
      */
-    mergeFromRemote() {
+    async mergeFromRemote() {
         if (this._datasource.type !== "text") {
             // Only clear if not a TextDatasource
             this._datasource.setContent("");
         }
-        return this._datasource
-            .load(this._credentials)
-            .then(history => Vault.createFromHistory(history))
-            .then(stagedArchive => {
-                // @todo vault comparator
-                // const comparator = new ArchiveComparator(this.archive, stagedArchive);
-                // const differences = comparator.calculateDifferences();
-                // // only strip if there are multiple updates
-                // const stripDestructive = differences.secondary.length > 0;
-                // const newHistoryMain = stripDestructive
-                //     ? stripDestructiveCommands(differences.original)
-                //     : differences.original;
-                // const newHistoryStaged = stripDestructive
-                //     ? stripDestructiveCommands(differences.secondary)
-                //     : differences.secondary;
-                // const base = differences.common;
-                // const newArchive = new Archive();
-                // newArchive._getWestley().initialise();
-                // // merge all history and execute on new archive
-                // base.concat(newHistoryStaged)
-                //     .concat(newHistoryMain)
-                //     .forEach(function(command) {
-                //         newArchive._getWestley().execute(command);
-                //     });
-                // newArchive._getWestley().clearDirtyState();
-                // this._archive = newArchive;
-                // return newArchive;
+        const history = await this._datasource.load(this._credentials);
+        const stagedVault = Vault.createFromHistory(history);
+        const comparator = new VaultComparator(this._vault, stagedVault);
+        const differences = comparator.calculateDifferences();
+        // only strip if there are multiple updates
+        const stripDestructive = differences.secondary.length > 0;
+        const newHistoryMain = stripDestructive ? stripDestructiveCommands(differences.original) : differences.original;
+        const newHistoryStaged = stripDestructive
+            ? stripDestructiveCommands(differences.secondary)
+            : differences.secondary;
+        const base = differences.common;
+        const newVault = new Vault();
+        // merge all history and execute on new vault
+        base.concat(newHistoryStaged)
+            .concat(newHistoryMain)
+            .forEach(command => {
+                newVault.format.execute(command);
             });
+        newVault.format.dirty = false;
+        this._vault = newVault;
+        return newVault;
     }
 
     /**

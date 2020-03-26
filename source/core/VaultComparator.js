@@ -6,9 +6,9 @@ const { createVaultFacade } = require("../facades/vault.js");
  */
 class VaultComparator {
     /**
-     * Constructor for the archive comparator
-     * @param {Vault} originalVault The primary archive
-     * @param {Vault} secondaryVault The secondary archive
+     * Constructor for the vault comparator
+     * @param {Vault} originalVault The primary vault
+     * @param {Vault} secondaryVault The secondary vault
      */
     constructor(originalVault, secondaryVault) {
         this._vaultA = originalVault;
@@ -16,11 +16,11 @@ class VaultComparator {
     }
 
     /**
-     * Check if the current archives differ
-     * @returns {Boolean} True if the archives are different
+     * Check if the current vaults differ
+     * @returns {Boolean} True if the vauld are different
      * @memberof VaultComparator
      */
-    archivesDiffer() {
+    vaultsDiffer() {
         const objA = createVaultFacade(this._vaultA);
         const objB = createVaultFacade(this._vaultB);
         // ignore the IDs
@@ -30,9 +30,9 @@ class VaultComparator {
     }
 
     /**
-     * Calculate the differences, in commands, between the two archives
+     * Calculate the differences, in commands, between the two vaults
      * @returns {{ original:Array, secondary:Array }|null} Returns null if no common base
-     *        is found, or the command differences as two arrays
+     *  is found, or the command differences as two arrays
      * @memberof VaultComparator
      */
     calculateDifferences() {
