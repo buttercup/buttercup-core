@@ -1,4 +1,4 @@
-const { getCredentials } = require("./channel.js");
+const { getCredentials } = require("../credentials/channel.js");
 
 const __datasources = {};
 const __postHandlers = [];
