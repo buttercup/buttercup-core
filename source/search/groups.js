@@ -11,7 +11,7 @@ function findGroupByID(parentGroups, groupID) {
  */
 function findGroupsByCheck(groups, compareFn) {
     const foundGroups = groups.filter(compareFn);
-    groups.forEach(function(group) {
+    groups.forEach(group => {
         const subFound = findGroupsByCheck(group.getGroups(), compareFn);
         if (subFound.length > 0) {
             foundGroups.push(...subFound);

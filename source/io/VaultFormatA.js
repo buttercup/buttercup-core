@@ -22,7 +22,8 @@ const {
 } = require("./formatA/commands.js");
 const { COMMAND_MANIFEST, InigoCommand: Inigo, extractCommandComponents } = require("./formatA/tools.js");
 const Flattener = require("./formatA/Flattener.js");
-const { hasValidSignature, sign, stripSignature } = require("./formatA/signing.js");
+const { getFormat, hasValidSignature, sign, stripSignature } = require("./formatA/signing.js");
+const { describeVaultDataset } = require("./formatA/describe.js");
 const { decodeStringValue, isEncoded } = require("../tools/encoding.js");
 const { generateUUID } = require("../tools/uuid.js");
 const { getCredentials } = require("../credentials/channel.js");
@@ -51,6 +52,7 @@ const COMMANDS = {
     tgr: executeTitleGroup
 };
 const SHARE_COMMAND_EXP = /^\$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\s/;
+const UUID_LEN = 36;
 const VALID_COMMAND_EXP = /^[a-z]{3}\s.+$/;
 
 /**
@@ -85,6 +87,31 @@ class VaultFormatA extends VaultFormat {
             .then(sign);
     }
 
+    /**
+     * Extract shares from a history collection
+     * @param {String[]} history A history collection, containing shares
+     * @returns {Object} The resulting separated histories. The object will
+     *  always contain a `base` property containing the non-share history.
+     *  Each share detected is set on the object under its share ID - being
+     *  set to an array of history lines (non-prefixed) for that share.
+     */
+    static extractSharesFromHistory(history) {
+        return history.reduce(
+            (output, line) => {
+                if (SHARE_COMMAND_EXP.test(line)) {
+                    const shareID = line.substring(1, 1 + UUID_LEN);
+                    const command = line.replace(SHARE_COMMAND_EXP, "");
+                    output[shareID] = output[shareID] || [];
+                    output[shareID].push(command);
+                } else {
+                    output.base.push(line);
+                }
+                return output;
+            },
+            { base: [] }
+        );
+    }
+
     static parseEncrypted(encryptedContent, credentials) {
         const decompress = getSharedAppEnv().getProperty("compression/v1/decompressText");
         const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
@@ -106,6 +133,13 @@ class VaultFormatA extends VaultFormat {
                 }
                 throw new Error("Failed reconstructing history: Decryption failed");
             });
+    }
+
+    cloneEntry(entry, targetGroupID) {}
+
+    cloneGroup(group, targetGroupID) {
+        const groupDesc = describeVaultDataset(group._source, targetGroupID);
+        this.execute(groupDesc);
     }
 
     createEntry(groupID, entryID) {
@@ -161,7 +195,7 @@ class VaultFormatA extends VaultFormat {
     }
 
     deleteGroupAttribute(groupID, attribute) {
-        this.eecute(
+        this.execute(
             Inigo.create(Inigo.Command.DeleteGroupAttribute)
                 .addArgument(groupID)
                 .addArgument(attribute)
@@ -182,6 +216,10 @@ class VaultFormatA extends VaultFormat {
                 .addArgument(generateUUID())
                 .generateCommand()
         );
+    }
+
+    getFormat() {
+        return VaultFormatA;
     }
 
     initialise() {
@@ -320,3 +358,5 @@ class VaultFormatA extends VaultFormat {
         });
     }
 }
+
+module.exports = VaultFormatA;

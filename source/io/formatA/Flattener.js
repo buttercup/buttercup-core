@@ -1,20 +1,5 @@
-const { describeArchiveDataset } = require("../../node/tools/describe.js");
-const Westley = require("./Westley.js");
-
-/**
- * Minimum history lines before flattening can occur
- * @type {Number}
- * @static
- * @memberof Flattener
- */
-const FLATTENING_MIN_LINES = 6000;
-/**
- * Number of lines to preserve (most recent)
- * @type {Number}
- * @static
- * @memberof Flattener
- */
-const PRESERVE_LINES = 5000;
+const { describeVaultDataset } = require("./describe.js");
+const VaultFormatA = require("../VaultFormatA.js");
 
 /**
  * Check if a command should be preserved (not flattened)
@@ -25,7 +10,7 @@ const PRESERVE_LINES = 5000;
  * @memberof Flattener
  */
 function mustBePreserved(command) {
-    var commandName = command.substr(0, 3);
+    const commandName = command.substr(0, 3);
     // Note: "fmt" and "aid" are generated automatically and do not need to be preserved
     return ["cmm"].indexOf(commandName) >= 0;
 }
@@ -34,18 +19,23 @@ function mustBePreserved(command) {
  * Flattener class for flattening archive history sets
  */
 class Flattener {
-    constructor(westley) {
-        this._westley = westley;
-    }
-
     /**
-     * The working Westley instance
-     * @type {Westley}
-     * @readonly
+     * Minimum history lines before flattening can occur
+     * @type {Number}
+     * @static
      * @memberof Flattener
      */
-    get westley() {
-        return this._westley;
+    static FLATTENING_MIN_LINES = 6000;
+    /**
+     * Number of lines to preserve (most recent)
+     * @type {Number}
+     * @static
+     * @memberof Flattener
+     */
+    static PRESERVE_LINES = 5000;
+
+    constructor(format) {
+        this.format = format;
     }
 
     /**
@@ -54,7 +44,7 @@ class Flattener {
      * @memberof Flattener
      */
     canBeFlattened() {
-        return this.westley.history.length >= FLATTENING_MIN_LINES;
+        return this.format.history.length >= FLATTENING_MIN_LINES;
     }
 
     /**
@@ -64,9 +54,9 @@ class Flattener {
      * @memberof Flattener
      */
     flatten(force = false) {
-        const history = this._westley.history;
+        const history = this.format.history;
         const preservedLines = [];
-        const tempWestley = new Westley();
+        const tempFormat = new VaultFormatA();
         let availableLines = history.length - PRESERVE_LINES;
         // check if possible to flatten
         if (availableLines <= 0 || !this.canBeFlattened()) {
@@ -76,32 +66,29 @@ class Flattener {
             availableLines = history.length;
         }
         // execute early history
-        var currentCommand;
+        let currentCommand;
         for (let i = 0; i < availableLines; i += 1) {
             currentCommand = history[i];
             if (mustBePreserved(currentCommand)) {
                 preservedLines.push(currentCommand);
             }
-            tempWestley.execute(currentCommand);
+            tempFormat.execute(currentCommand);
         }
         // describe the archive at its current state
-        const cleanHistory = describeArchiveDataset(tempWestley.dataset);
+        const cleanHistory = describeVaultDataset(tempFormat.source);
         // prepare to replay
-        const newHistory = []
-            .concat(preservedLines) // preserved commands that cannot be stripped
-            .concat(cleanHistory) // the newly flattened description commands
-            .concat(history.slice(availableLines)); // the existing history minus the flattened portion
+        const newHistory = [
+            ...preservedLines, // preserved commands that cannot be stripped
+            ...cleanHistory, // the newly flattened description commands
+            ...history.slice(availableLines) // the existing history minus the flattened portion
+        ];
         // clear the system
-        this._westley.initialise();
+        this.format.clear();
         // replay all history (expensive)
-        newHistory.forEach(this._westley.execute.bind(this._westley));
+        this.format.execute(newHistory);
+        // newHistory.forEach(this.format.execute.bind(this._westley));
         return true;
     }
 }
-
-Object.assign(Flattener, {
-    FLATTENING_MIN_LINES,
-    PRESERVE_LINES
-});
 
 module.exports = Flattener;

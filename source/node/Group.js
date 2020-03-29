@@ -249,7 +249,7 @@ class Group extends ArchiveMember {
             this._getWestley().pad();
         } else {
             // target is in another archive, so move there
-            sharing.moveGroupBetweenArchives(this, target);
+            sharing.moveGroupBetweenVaults(this, target);
         }
         return this;
     }

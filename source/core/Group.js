@@ -1,6 +1,7 @@
 const VaultItem = require("./VaultItem.js");
 const { generateUUID } = require("../tools/uuid.js");
 const Entry = require("./Entry.js");
+const { moveGroupBetweenVaults } = require("../tools/sharing.js");
 
 class Group extends VaultItem {
     static Attribute = Object.freeze({
@@ -122,7 +123,7 @@ class Group extends VaultItem {
      * @memberof Group
      */
     getGroups() {
-        return (this.vault._dataset.groups || []).map(raw => new Group(this.vault, raw));
+        return (this._source.groups || []).map(raw => new Group(this.vault, raw));
     }
 
     /**
@@ -209,10 +210,8 @@ class Group extends VaultItem {
             // target is local, so create commands here
             this.vault.format.moveGroup(this.id, targetGroupID);
         } else {
-            // @todo
-            throw new Error("Not implemented");
             // target is in another archive, so move there
-            // sharing.moveGroupBetweenArchives(this, target);
+            moveGroupBetweenVaults(this, target);
         }
         return this;
     }

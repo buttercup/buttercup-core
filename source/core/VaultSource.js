@@ -406,22 +406,21 @@ class VaultSource extends EventEmitter {
     }
 
     _unloadShares() {
-        // @todo
-        // const westley = this._archive._getWestley();
-        // const extractedShares = extractSharesFromHistory(westley.history);
-        // // Reset archive history (without shares)
-        // const { base } = extractedShares;
-        // delete extractedShares.base;
-        // westley.initialise();
-        // base.forEach(line => westley.execute(line));
-        // // Update share payloads
-        // Object.keys(extractedShares).forEach(shareID => {
-        //     const share = this._shares.find(share => share.id === shareID);
-        //     if (!share) {
-        //         throw new Error(`Failed updating extracted share: No share found in workspace for ID: ${shareID}`);
-        //     }
-        //     share.updateHistory(extractedShares[shareID]);
-        // });
+        const Format = this.vault.format.getFormat();
+        const extractedShares = Format.extractSharesFromHistory(this.vault.format.history);
+        // Reset archive history (without shares)
+        const { base } = extractedShares;
+        delete extractedShares.base;
+        this.vault.format.clear();
+        this.vault.format.execute(base);
+        // Update share payloads
+        Object.keys(extractedShares).forEach(shareID => {
+            const share = this._shares.find(share => share.id === shareID);
+            if (!share) {
+                throw new Error(`Failed updating extracted share: No share found in workspace for ID: ${shareID}`);
+            }
+            share.updateHistory(extractedShares[shareID]);
+        });
     }
 }
 

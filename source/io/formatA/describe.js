@@ -1,14 +1,14 @@
-const Inigo = require("../Inigo.js");
+const { InigoCommand: Inigo } = require("./tools.js");
 
 const { Command } = Inigo;
 
 /**
- * Describe an archive dataset - to history commands
- * @param {Object} dataset The archive dataset
+ * Describe a vault dataset - to history commands
+ * @param {Object} dataset The vault dataset
  * @param {String} parentGroupID The ID of the parent group
  * @returns {Array.<String>} An array of commands
  */
-function describeArchiveDataset(dataset, parentGroupID) {
+function describeVaultDataset(dataset, parentGroupID) {
     var currentGroupID = dataset.id || "0",
         entries = currentGroupID === "0" ? [] : dataset.entries || [];
     var commands = [];
@@ -112,5 +112,5 @@ function describeArchiveDataset(dataset, parentGroupID) {
 }
 
 module.exports = {
-    describeArchiveDataset
+    describeVaultDataset
 };

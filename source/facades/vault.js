@@ -172,18 +172,18 @@ function consumeGroupFacade(group, facade) {
  */
 
 /**
- * Create an archive facade from an Archive instance
+ * Create a vault facade from an Archive instance
  * @param {Vault} archive A vault instance
  * @returns {VaultFacade} A vault facade
  */
-function createVaultFacade(archive) {
+function createVaultFacade(vault) {
     return {
         _tag: uuid(),
         type: "vault",
-        id: archive.id,
-        attributes: archive.getAttribute(),
-        groups: getGroupsFacades(archive),
-        entries: getEntriesFacades(archive)
+        id: vault.id,
+        attributes: vault.getAttribute(),
+        groups: getGroupsFacades(vault),
+        entries: getEntriesFacades(vault)
     };
 }
 

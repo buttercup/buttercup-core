@@ -5,18 +5,18 @@ const {
     findGroupContainingGroupID
 } = require("../../tools/rawVaultSearch.js");
 const { encodeStringValue } = require("../../tools/encoding.js");
-const { generateEntryHistoryItem } = require("../../tools/history.js");
+const { generateEntryHistoryItem } = require("./tools.js");
 
-function executeArchiveID(archive, opts, id) {
+function executeArchiveID(vault, opts, id) {
     if (opts.shareID) {
-        // Don't set archive ID from a share
+        // Don't set vault ID from a share
         return;
     }
-    if (archive.archiveID) {
+    if (vault.id) {
         // ID already set
-        throw new Error("ID already set");
+        throw new Error("Vault ID already set");
     }
-    archive.archiveID = id;
+    vault.id = id;
 }
 
 function executeComment() {

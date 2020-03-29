@@ -10,6 +10,10 @@ class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
+    static extractSharesFromHistory() {
+        notImplemented();
+    }
+
     static parseEncrypted() {
         notImplemented();
     }
@@ -21,6 +25,23 @@ class VaultFormat extends EventEmitter {
     constructor(source) {
         super();
         this.source = source;
+    }
+
+    clear() {
+        this.history = [];
+        if (this.source) {
+            for (const key in this.source) {
+                delete this.source[key];
+            }
+        }
+    }
+
+    cloneEntry() {
+        notImplemented();
+    }
+
+    cloneGroup() {
+        notImplemented();
     }
 
     createEntry() {
@@ -65,6 +86,10 @@ class VaultFormat extends EventEmitter {
 
     generateID() {
         notImplemented();
+    }
+
+    getFormat() {
+        return VaultFormat;
     }
 
     initialise() {
