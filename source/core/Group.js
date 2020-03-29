@@ -1,7 +1,9 @@
 const VaultItem = require("./VaultItem.js");
-const { generateUUID } = require("../tools/uuid.js");
 const Entry = require("./Entry.js");
+const { generateUUID } = require("../tools/uuid.js");
 const { moveGroupBetweenVaults } = require("../tools/sharing.js");
+const { findGroupByID, findGroupsByTitle } = require("../search/groups.js");
+const { findEntriesByProperty, findEntryByID } = require("../search/entries.js");
 
 class Group extends VaultItem {
     static Attribute = Object.freeze({
@@ -90,6 +92,49 @@ class Group extends VaultItem {
     deleteAttribute(attr) {
         this.vault.format.deleteGroupAttribute(this.id, attr);
         return this;
+    }
+
+    /**
+     * Find an entry by its ID
+     * @param {String} id The ID to search for
+     * @returns {null|Entry} Null if not found, or the Entry instance
+     * @memberof Group
+     */
+    findEntryByID(id) {
+        return findEntryByID([this], id);
+    }
+
+    /**
+     * Find all entries that match a certain property
+     * @name findEntriesByProperty
+     * @param {RegExp|String} property The property to search with
+     * @param {RegExp|String} value The value to search for
+     * @returns {Array.<Entry>} An array of found extries
+     * @memberof Group
+     */
+    findEntriesByProperty(property, value) {
+        return findEntriesByProperty([this], property, value);
+    }
+
+    /**
+     * Find a group by its ID
+     * @param {String} id The group ID to search for
+     * @returns {Group|null} The group or null if not found
+     * @memberof Group
+     */
+    findGroupByID(id) {
+        return findGroupByID([this], id);
+    }
+
+    /**
+     * Find groups by their title
+     * @name findGroupsByTitle
+     * @param {String|RegExp} title The group title
+     * @returns {Array.<Group>} An array of groups
+     * @memberof Group
+     */
+    findGroupsByTitle(title) {
+        return findGroupsByTitle([this], title);
     }
 
     /**
