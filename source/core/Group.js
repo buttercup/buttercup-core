@@ -197,7 +197,7 @@ class Group extends VaultItem {
      * @memberof Group
      */
     getTitle() {
-        return this.source.title || "";
+        return this._source.title || "";
     }
 
     /**

@@ -1,6 +1,8 @@
 const uuid = require("uuid/v4");
 const { consumeEntryFacade, createEntryFacade } = require("./entry.js");
-const { ENTRY_FACADE_TYPE_ATTRIBUTE } = require("./symbols.js");
+const Entry = require("../core/Entry.js");
+
+const { ENTRY_FACADE_TYPE_ATTRIBUTE } = Entry.Attributes;
 
 /**
  * Consume an archive facade and apply the differences to the archive

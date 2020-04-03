@@ -98,6 +98,16 @@ class VaultSource extends EventEmitter {
         return this._type;
     }
 
+    /**
+     * Vault reference
+     * @type {Vault|null}
+     * @memberof VaultSource
+     * @readonly
+     */
+    get vault() {
+        return this._vault;
+    }
+
     set colour(newColour) {
         if (COLOUR_TEST.test(newColour) !== true) {
             throw new VError(`Failed setting colour: Invalid format (expected hex): ${newColour}`);

@@ -1,6 +1,9 @@
 const facadeFieldFactories = require("./entryFields.js");
 const { createFieldDescriptor, getEntryValueType, setEntryValueType } = require("./tools.js");
-const { ENTRY_FACADE_TYPE_ATTRIBUTE, ENTRY_TYPE_LOGIN } = require("./symbols.js");
+const { ENTRY_TYPE_LOGIN } = require("./symbols.js");
+const Entry = require("../core/Entry.js");
+
+const { FacadeType: FacadeTypeAttribute } = Entry.Attributes;
 
 /**
  * Add extra fields to a fields array that are not mentioned in a preset
@@ -14,7 +17,7 @@ const { ENTRY_FACADE_TYPE_ATTRIBUTE, ENTRY_TYPE_LOGIN } = require("./symbols.js"
 function addExtraFieldsNonDestructive(entry, fields) {
     const exists = (propName, fieldType) =>
         fields.find(item => item.propertyType === fieldType && item.property === propName);
-    const { properties = {}, attributes = {} } = entry.toObject();
+    const { properties = {}, attributes = {} } = entry._source;
     return [
         ...fields,
         ...Object.keys(properties)
@@ -130,12 +133,12 @@ function createEntryFacade(entry, { type } = {}) {
         throw new Error(`Failed creating entry facade: No factory found for type "${facadeType}"`);
     }
     const fields = entry ? addExtraFieldsNonDestructive(entry, createFields(entry)) : createFields(entry);
-    if (!fields.find(field => field.propertyType === "attribute" && field.property === ENTRY_FACADE_TYPE_ATTRIBUTE)) {
+    if (!fields.find(field => field.propertyType === "attribute" && field.property === FacadeTypeAttribute)) {
         const entryTypeField = createFieldDescriptor(
             entry, // Entry instance
             "", // Title
             "attribute", // Type
-            ENTRY_FACADE_TYPE_ATTRIBUTE // Property name
+            FacadeTypeAttribute // Property name
         );
         entryTypeField.value = facadeType;
         fields.push(entryTypeField);
@@ -158,7 +161,7 @@ function getEntryFacadeType(entry) {
     if (!entry) {
         return "login";
     }
-    return entry.getAttribute(ENTRY_FACADE_TYPE_ATTRIBUTE) || "login";
+    return entry.getAttribute(FacadeTypeAttribute) || "login";
 }
 
 /**

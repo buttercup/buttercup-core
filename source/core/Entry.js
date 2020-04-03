@@ -4,6 +4,11 @@ const { getEntryURLs } = require("../tools/entry.js");
 const { findEntryByID, findGroupContainingEntryID } = require("../tools/rawVaultSearch.js");
 
 class Entry extends VaultItem {
+    static Attributes = Object.freeze({
+        FacadeType: "BC_ENTRY_FACADE_TYPE",
+        FieldTypePrefix: "BC_ENTRY_FIELD_TYPE:"
+    });
+
     static createNew(vault, parentGroupID) {
         // Check if group is trash/in-trash
         const group = vault.findGroupByID(parentGroupID);
@@ -96,6 +101,15 @@ class Entry extends VaultItem {
             return Object.assign({}, attributes);
         }
         return attributes.hasOwnProperty(attribute) ? attributes[attribute] : undefined;
+    }
+
+    /**
+     * Get an array of all history changes made to the entry
+     * @returns {Array.<EntryHistoryItem>}
+     * @memberof Entry
+     */
+    getChanges() {
+        return this._source.history || [];
     }
 
     /**

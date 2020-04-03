@@ -119,10 +119,10 @@ class VaultFormatA extends VaultFormat {
         const { masterPassword } = getCredentials(credentials.id);
         return Promise.resolve()
             .then(() => {
-                if (!hasValidSignature(encText)) {
+                if (!hasValidSignature(encryptedContent)) {
                     throw new Error("No valid signature in vault");
                 }
-                return stripSignature(encText);
+                return stripSignature(encryptedContent);
             })
             .then(encryptedData => decrypt(encryptedData, masterPassword))
             .then(decrypted => {

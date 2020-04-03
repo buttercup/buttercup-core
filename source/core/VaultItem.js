@@ -28,6 +28,15 @@ class VaultItem {
     }
 
     /**
+     * The current granted permissions
+     * @type {Array.<String>}
+     * @memberof VaultItem
+     */
+    get permissions() {
+        return [...this._source.permissions];
+    }
+
+    /**
      * The vault this item belongs to
      * @readonly
      * @type {Vault}
@@ -35,15 +44,6 @@ class VaultItem {
      */
     get vault() {
         return this._vault;
-    }
-
-    /**
-     * The current granted permissions
-     * @type {Array.<String>}
-     * @memberof VaultItem
-     */
-    get permissions() {
-        return [...this._source.permissions];
     }
 
     /**

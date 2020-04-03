@@ -12,13 +12,6 @@ const DEFAULT_ENTRY_TYPE = "login";
 const DEFAULT_FIELD_TYPE = "text";
 
 /**
- * Facade type flag for an entry (specifies what type of entry it is)
- * @type {String}
- * @memberof module:ButtercupFacades
- */
-const ENTRY_FACADE_TYPE_ATTRIBUTE = "BC_ENTRY_FACADE_TYPE";
-
-/**
  * Credit-card entry type
  * @type {String}
  * @memberof module:ButtercupFacades
@@ -135,7 +128,6 @@ const FIELD_VALUE_TYPES = {
 module.exports = {
     DEFAULT_ENTRY_TYPE,
     DEFAULT_FIELD_TYPE,
-    ENTRY_FACADE_TYPE_ATTRIBUTE,
     ENTRY_TYPE_CREDITCARD,
     ENTRY_TYPE_LOGIN,
     ENTRY_TYPE_NOTE,
