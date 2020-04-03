@@ -146,7 +146,7 @@ class Credentials {
      * @memberof Credentials
      */
     static fromSecureString(content, masterPassword) {
-        const encrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
+        const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
         return decrypt(unsignEncryptedContent(content), masterPassword)
             .then(decryptedContent => JSON.parse(decryptedContent))
             .then(credentialsData => new Credentials(credentialsData, masterPassword));

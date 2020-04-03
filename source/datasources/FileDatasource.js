@@ -2,6 +2,7 @@ const fs = require("fs");
 const pify = require("pify");
 const TextDatasource = require("./TextDatasource.js");
 const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
+const { getCredentials } = require("../credentials/channel.js");
 
 /**
  * File datasource for loading and saving files

@@ -26,13 +26,8 @@ class VaultSource extends EventEmitter {
     static rehydrate(dehydratedString) {}
 
     constructor(name, type, credentialsString, config = {}) {
-        const {
-            cacheStorage = new MemoryStorageInterface(),
-            colour = DEFAULT_COLOUR,
-            id = getUniqueID(),
-            order = DEFAULT_ORDER,
-            sourceStorage = new MemoryStorageInterface()
-        } = config;
+        super();
+        const { colour = DEFAULT_COLOUR, id = getUniqueID(), order = DEFAULT_ORDER } = config;
         // Queue for managing state transitions
         this._queue = new ChannelQueue();
         // Credentials state and status go hand-in-hand:
@@ -50,8 +45,6 @@ class VaultSource extends EventEmitter {
         this._type = type;
         this._colour = colour;
         this._order = order;
-        this._cacheStorage = cacheStorage;
-        this._sourceStorage = sourceStorage;
         // Parent reference
         this._vaultManager = null;
     }
@@ -135,15 +128,11 @@ class VaultSource extends EventEmitter {
      * @memberof VaultSource
      */
     checkOfflineCopy() {
-        if (!this._cacheStorage) {
-            // No storage interface, so no offline copy
-            return Promise.resolve(false);
-        }
-        return sourceHasOfflineCopy(this._cacheStorage, this.id);
+        return sourceHasOfflineCopy(this._vaultManager._cacheStorage, this.id);
     }
 
     dehydrate() {
-        if (this.status === Status.PENDING) {
+        if (this.status === VaultSource.STATUS_PENDING) {
             return Promise.reject(new VError(`Failed dehydrating source: Source in pending state: ${this.id}`));
         }
         return this._enqueueStateChange(() => {
@@ -183,7 +172,7 @@ class VaultSource extends EventEmitter {
      */
     getOfflineContent() {
         return this.checkOfflineCopy().then(hasContent =>
-            hasContent ? getSourceOfflineArchive(this._cacheStorage, this.id) : null
+            hasContent ? getSourceOfflineArchive(this._vaultManager._cacheStorage, this.id) : null
         );
     }
 
@@ -340,7 +329,11 @@ class VaultSource extends EventEmitter {
                         .then(() => {
                             if (storeOfflineCopy) {
                                 // Store an offline copy for later use
-                                return storeSourceOfflineCopy(this._cacheStorage, this.id, datasource._content);
+                                return storeSourceOfflineCopy(
+                                    this._vaultManager._cacheStorage,
+                                    this.id,
+                                    datasource._content
+                                );
                             }
                         })
                         .then(() => {

@@ -24,6 +24,7 @@ const { COMMAND_MANIFEST, InigoCommand: Inigo, extractCommandComponents } = requ
 const Flattener = require("./formatA/Flattener.js");
 const { getFormat, hasValidSignature, sign, stripSignature } = require("./formatA/signing.js");
 const { describeVaultDataset } = require("./formatA/describe.js");
+const { getSharedAppEnv } = require("../env/appEnv.js");
 const { decodeStringValue, isEncoded } = require("../tools/encoding.js");
 const { generateUUID } = require("../tools/uuid.js");
 const { getCredentials } = require("../credentials/channel.js");
@@ -81,7 +82,7 @@ class VaultFormatA extends VaultFormat {
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
         const { masterPassword } = getCredentials(credentials.id);
         return Promise.resolve()
-            .then(() => historyArrayToString(historyArr))
+            .then(() => historyArrayToString(rawContent))
             .then(history => compress(history))
             .then(compressed => encrypt(compressed, masterPassword))
             .then(sign);

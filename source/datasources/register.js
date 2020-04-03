@@ -15,7 +15,7 @@ const __postHandlers = [];
  * @throws {Error} Throws if no datasource found for type
  */
 function credentialsToDatasource(credentials) {
-    const { datasource } = getCredentials(credentials.id);
+    const { datasource } = getCredentials(credentials.id).data;
     if (!datasource) {
         throw new Error("No datasource configuration in credentials");
     }

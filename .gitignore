@@ -11,3 +11,4 @@ node_modules
 /stats.json
 *.test.js
 source/test.js
+/test.bcup
