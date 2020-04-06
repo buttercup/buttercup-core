@@ -106,6 +106,10 @@ function different(object1, object2) {
  * Vault comparison class
  */
 class VaultComparator {
+    static calculateHistoryDifferences(historyA, historyB) {
+        return calculateHistoryDifferences(historyA, historyB);
+    }
+
     /**
      * Constructor for the vault comparator
      * @param {Vault} originalVault The primary vault
@@ -123,7 +127,7 @@ class VaultComparator {
      * @memberof VaultComparator
      */
     calculateDifferences() {
-        return calculateHistoryDifferences(this._vaultA.format.history, this._vaultB.format.history);
+        return VaultComparator.calculateHistoryDifferences(this._vaultA.format.history, this._vaultB.format.history);
     }
 
     /**

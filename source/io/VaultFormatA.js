@@ -22,7 +22,7 @@ const {
 } = require("./formatA/commands.js");
 const { COMMAND_MANIFEST, InigoCommand: Inigo, extractCommandComponents } = require("./formatA/tools.js");
 const Flattener = require("./formatA/Flattener.js");
-const { getFormat, hasValidSignature, sign, stripSignature } = require("./formatA/signing.js");
+const { getFormat, hasValidSignature, sign, stripSignature, vaultContentsEncrypted } = require("./formatA/signing.js");
 const { describeVaultDataset } = require("./formatA/describe.js");
 const { getSharedAppEnv } = require("../env/appEnv.js");
 const { decodeStringValue, isEncoded } = require("../tools/encoding.js");
@@ -111,6 +111,10 @@ class VaultFormatA extends VaultFormat {
             },
             { base: [] }
         );
+    }
+
+    static isEncrypted(contents) {
+        return vaultContentsEncrypted(contents);
     }
 
     static parseEncrypted(encryptedContent, credentials) {

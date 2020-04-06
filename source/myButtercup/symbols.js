@@ -1,6 +1,7 @@
 const joinURL = require("url-join");
 
-const ROOT_URL = "https://my.buttercup.pw";
+// const ROOT_URL = "https://my.buttercup.pw";
+const ROOT_URL = "http://localhost:8000";
 const ROOT_API = joinURL(ROOT_URL, "/api/core/v1");
 
 const API_ORG_USERS = joinURL(ROOT_API, "organisation/[ORG_ID]/users");

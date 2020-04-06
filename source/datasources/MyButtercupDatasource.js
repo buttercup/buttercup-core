@@ -1,9 +1,11 @@
 const VError = require("verror");
-const { TextDatasource, registerDatasource } = require("@buttercup/datasources");
+const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
+const TextDatasource = require("./TextDatasource.js");
 const Credentials = require("@buttercup/credentials");
-const { calculateHistoryDifferences } = require("../tools/compare.js");
-const MyButtercupClient = require("./MyButtercupClient.js");
-const { generateNewUpdateID } = require("./update.js");
+const VaultComparator = require("../core/VaultComparator.js");
+const MyButtercupClient = require("../myButtercup/MyButtercupClient.js");
+const { generateNewUpdateID } = require("../myButtercup/update.js");
+const { getCredentials } = require("../credentials/channel.js");
 
 /**
  * My Buttercup datasource
@@ -11,52 +13,24 @@ const { generateNewUpdateID } = require("./update.js");
  */
 class MyButtercupDatasource extends TextDatasource {
     /**
-     * Create a new instance from its object representation
-     * @param {Object} obj The object to create from
-     * @returns {MyButtercupDatasource}
-     * @memberof MyButtercupDatasource
-     * @static
-     */
-    static fromObject(obj) {
-        return new MyButtercupDatasource(
-            obj.vaultID,
-            obj.clientID,
-            obj.clientSecret,
-            obj.accessToken,
-            obj.refreshToken
-        );
-    }
-
-    /**
-     * Create a new instance from its string representation
-     * @param {String} str The string to create from
-     * @returns {MyButtercupDatasource}
-     * @memberof MyButtercupDatasource
-     * @static
-     */
-    static fromString(str) {
-        return MyButtercupDatasource.fromObject(JSON.parse(str));
-    }
-
-    /**
      * Constructor for the datasource
-     * @param {Number} remoteVaultID The vault ID
-     * @param {String} clientID The OAuth2 client ID
-     * @param {String} clientSecret The OAuth2 client secret
-     * @param {String} accessToken The OAuth2 access token
-     * @param {String} refreshToken The OAuth2 refresh token
+     * @param {Credentials} credentials Credentials for the datasource
      * @memberof MyButtercupDatasource
      */
-    constructor(remoteVaultID, clientID, clientSecret, accessToken, refreshToken) {
-        super();
+    constructor(credentials) {
+        super(credentials);
+        const { data: credentialData } = getCredentials(credentials.id);
+        const { datasource: datasourceConfig, password } = credentialData;
+        const { accessToken, clientID, clientSecret, refreshToken, vaultID } = datasourceConfig;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this._clientID = clientID;
         this._clientSecret = clientSecret;
         this._client = null;
-        this._vaultID = remoteVaultID;
+        this._vaultID = vaultID;
         this._updateID = null;
         this._createNewClient();
+        fireInstantiationHandlers("mybuttercup", this);
     }
 
     /**
@@ -104,7 +78,7 @@ class MyButtercupDatasource extends TextDatasource {
                 }
                 this.setContent("");
                 return this.load(masterCredentials).then(incomingHistory => {
-                    const diffs = calculateHistoryDifferences(archiveHistory, incomingHistory);
+                    const diffs = VaultComparator.calculateHistoryDifferences(archiveHistory, incomingHistory);
                     if (!diffs) {
                         return true;
                     }
@@ -136,22 +110,6 @@ class MyButtercupDatasource extends TextDatasource {
                 // @todo handle update ID clash/merge
                 throw new VError(err, "Failed uploading new vault contents");
             });
-    }
-
-    /**
-     * Output the datasource as an object
-     * @returns {Object} An object describing the datasource
-     * @memberof MyButtercupDatasource
-     */
-    toObject() {
-        return {
-            type: "mybuttercup",
-            accessToken: this.accessToken,
-            refreshToken: this.refreshToken,
-            clientID: this._clientID,
-            clientSecret: this._clientSecret,
-            vaultID: this._vaultID
-        };
     }
 
     /**

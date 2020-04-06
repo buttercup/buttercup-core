@@ -14,6 +14,10 @@ class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
+    static isEncrypted() {
+        notImplemented();
+    }
+
     static parseEncrypted() {
         notImplemented();
     }

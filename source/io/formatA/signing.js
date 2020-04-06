@@ -45,10 +45,24 @@ function stripSignature(text) {
     return text.substr(sigLen, text.length - sigLen);
 }
 
+/**
+ * Check if vault contents are in encrypted form
+ * @param {String} contents The vault contents
+ * @returns {Boolean} True if encrypted, false otherwise
+ */
+function vaultContentsEncrypted(contents) {
+    if (typeof contents === "string" && hasValidSignature(contents)) {
+        const exSig = stripSignature(contents);
+        return /["\s\t\n~]/.test(exSig) === false;
+    }
+    return false;
+}
+
 module.exports = {
     getFormat,
     getSignature,
     hasValidSignature,
     sign,
-    stripSignature
+    stripSignature,
+    vaultContentsEncrypted
 };
