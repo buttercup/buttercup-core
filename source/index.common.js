@@ -10,6 +10,8 @@ const DropboxDatasource = require("./datasources/DropboxDatasource.js");
 const GoogleDriveDatasource = require("./datasources/GoogleDriveDatasource.js");
 const MyButtercupDatasource = require("./datasources/MyButtercupDatasource.js");
 const MyButtercupClient = require("./myButtercup/MyButtercupClient.js");
+const DatasourceAuthManager = require("./datasources/DatasourceAuthManager.js");
+const { registerDatasource } = require("./datasources/register.js");
 const { consumeGroupFacade, consumeVaultFacade, createGroupFacade, createVaultFacade } = require("./facades/vault.js");
 const { isOTPURI, isVaultFacade } = require("./facades/detection.js");
 const { consumeEntryFacade, createEntryFacade } = require("./facades/entry.js");
@@ -68,6 +70,8 @@ module.exports = {
     DropboxDatasource,
     GoogleDriveDatasource,
     MyButtercupDatasource,
+    DatasourceAuthManager,
+    registerDatasource,
 
     MyButtercupClient,
 

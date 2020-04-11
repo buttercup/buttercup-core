@@ -17,7 +17,7 @@ let __sharedManager;
  * Authentication manager
  * @augments EventEmitter
  */
-class AuthManager extends EventEmitter {
+class DatasourceAuthManager extends EventEmitter {
     constructor() {
         super();
         this._handlers = {};
@@ -29,7 +29,7 @@ class AuthManager extends EventEmitter {
      * @param {TextDatasource} datasourceInst The datasource instance
      * @returns {Promise} A promise that resolves once execution has completed
      * @throws {Error} Throws if no handlers have been specified
-     * @memberof AuthManager
+     * @memberof DatasourceAuthManager
      */
     executeAuthHandlers(datasourceType, datasourceInst) {
         const handlers = this._handlers[datasourceType];
@@ -64,7 +64,7 @@ class AuthManager extends EventEmitter {
      *          datasource.refreshToken = refreshToken;
      *      });
      *  });
-     * @memberof AuthManager
+     * @memberof DatasourceAuthManager
      * @throws {Error} Throws if the handler argument is not a function
      */
     registerHandler(datasourceType, handler) {
@@ -77,17 +77,17 @@ class AuthManager extends EventEmitter {
 }
 
 /**
- * Get the shared AuthManager instance
- * @returns {AuthManager} The shared auth manager instance
+ * Get the shared DatasourceAuthManager instance
+ * @returns {DatasourceAuthManager} The shared auth manager instance
  * @static
- * @memberof AuthManager
+ * @memberof DatasourceAuthManager
  */
-AuthManager.getSharedManager = function getSharedManager() {
+DatasourceAuthManager.getSharedManager = function getSharedManager() {
     if (!__sharedManager) {
-        __sharedManager = new AuthManager();
+        __sharedManager = new DatasourceAuthManager();
         markGlobalPresence();
     }
     return __sharedManager;
 };
 
-module.exports = AuthManager;
+module.exports = DatasourceAuthManager;

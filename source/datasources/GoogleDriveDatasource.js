@@ -1,6 +1,6 @@
 const { createClient } = require("@buttercup/googledrive-client");
 const VError = require("verror");
-const AuthManager = require("./AuthManager.js");
+const DatasourceAuthManager = require("./DatasourceAuthManager.js");
 const TextDatasource = require("./TextDatasource.js");
 const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
 const { getCredentials, setCredentials } = require("../credentials/channel.js");
@@ -25,7 +25,7 @@ class GoogleDriveDatasource extends TextDatasource {
         const { token, refreshToken, fileID } = datasourceConfig;
         this.fileID = fileID;
         this.updateTokens(token, refreshToken);
-        this.authManager = AuthManager.getSharedManager();
+        this.authManager = DatasourceAuthManager.getSharedManager();
         this.type = DATASOURCE_TYPE;
         fireInstantiationHandlers(DATASOURCE_TYPE, this);
     }
