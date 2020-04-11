@@ -6,6 +6,7 @@ const { getCredentials } = require("../credentials/channel.js");
 /**
  * WebDAV datasource for reading and writing remote archives
  * @augments TextDatasource
+ * @memberof module:Buttercup
  */
 class WebDAVDatasource extends TextDatasource {
     /**

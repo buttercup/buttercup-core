@@ -51,6 +51,7 @@ function unsignEncryptedContent(content) {
  * credentials to be shared or transferred outside of the
  * environment. Credential properties are stored in memory
  * and are inaccessible to public functions.
+ * @memberof module:Buttercup
  */
 class Credentials {
     static PURPOSE_DECRYPT_VAULT = "vault-decrypt";

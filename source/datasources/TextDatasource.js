@@ -7,6 +7,7 @@ const { fireInstantiationHandlers, registerDatasource } = require("./register.js
 
 /**
  * Datasource for text input and output
+ * @memberof module:Buttercup
  */
 class TextDatasource extends EventEmitter {
     /**

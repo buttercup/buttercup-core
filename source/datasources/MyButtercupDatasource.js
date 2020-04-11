@@ -10,6 +10,7 @@ const { getCredentials } = require("../credentials/channel.js");
 /**
  * My Buttercup datasource
  * @augments TextDatasource
+ * @memberof module:Buttercup
  */
 class MyButtercupDatasource extends TextDatasource {
     /**

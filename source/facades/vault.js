@@ -8,6 +8,7 @@ const { FacadeType } = Entry.Attributes;
  * Consume a group facade and apply the differences to a group instance
  * @param {Group} group The group instance to apply to
  * @param {GroupFacade} facade The facade to apply
+ * @memberof module:Buttercup
  */
 function consumeGroupFacade(group, facade) {
     const { id, title, type, attributes } = facade;
@@ -47,6 +48,7 @@ function consumeGroupFacade(group, facade) {
  * instance
  * @param {Vault} vault The vault instance to apply to
  * @param {VaultFacade} facade The facade to apply
+ * @memberof module:Buttercup
  */
 function consumeVaultFacade(vault, facade) {
     if (!vault || (vault && vault.type !== "Vault")) {
@@ -177,6 +179,7 @@ function consumeVaultFacade(vault, facade) {
  * Create a vault facade from an Vault instance
  * @param {Vault} vault A vault instance
  * @returns {VaultFacade} A vault facade
+ * @memberof module:Buttercup
  */
 function createVaultFacade(vault) {
     return {
@@ -204,6 +207,7 @@ function createVaultFacade(vault) {
  * Create a group facade from a Group instance
  * @param {Group} group The group instance
  * @param {String=} parentID The parent ID of the group
+ * @memberof module:Buttercup
  */
 function createGroupFacade(group, parentID = "0") {
     return {

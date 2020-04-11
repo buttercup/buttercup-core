@@ -52,7 +52,7 @@ const VALID_VALUE_TYPES = [
  * @param {String} entryPropertyName The name of the property
  * @param {Object} options The options for the field
  * @returns {EntryFacadeField} The field descriptor
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 function createFieldDescriptor(
     entry,

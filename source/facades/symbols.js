@@ -1,44 +1,44 @@
 /**
  * Default entry type
  * @type {String}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const DEFAULT_ENTRY_TYPE = "login";
 /**
  * Default entry field type
  * @type {String}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const DEFAULT_FIELD_TYPE = "text";
 
 /**
  * Credit-card entry type
  * @type {String}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const ENTRY_TYPE_CREDITCARD = "credit_card";
 /**
  * Login (default) entry type
  * @type {String}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const ENTRY_TYPE_LOGIN = "login";
 /**
  * Note entry type
  * @type {String}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const ENTRY_TYPE_NOTE = "note";
 /**
  * SSH public/private key-pair entry type
  * @type {String}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const ENTRY_TYPE_SSHKEY = "ssh_key";
 /**
  * Website entry type (includes URL)
  * @type {String}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const ENTRY_TYPE_WEBSITE = "website";
 
@@ -51,7 +51,7 @@ const ENTRY_TYPE_WEBSITE = "website";
 /**
  * Entry types collection (all available)
  * @type {Object.<String,FlagSpecification>}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const ENTRY_TYPES = {
     [ENTRY_TYPE_CREDITCARD]: {
@@ -79,32 +79,32 @@ const ENTRY_TYPES = {
 /**
  * Note type entry field value
  * @type {String}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const FIELD_VALUE_TYPE_NOTE = "note";
 /**
  * OTP (One Time Password) type entry field value
  * @type {String}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const FIELD_VALUE_TYPE_OTP = "otp";
 /**
  * Password type entry field value
  * @type {String}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const FIELD_VALUE_TYPE_PASSWORD = "password";
 /**
  * Text (default) type entry field value
  * @type {String}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const FIELD_VALUE_TYPE_TEXT = "text";
 
 /**
  * Entry field value types collection (all available)
  * @type {Object.<String,FlagSpecification>}
- * @memberof module:ButtercupFacades
+ * @memberof module:Buttercup
  */
 const FIELD_VALUE_TYPES = {
     [FIELD_VALUE_TYPE_NOTE]: {

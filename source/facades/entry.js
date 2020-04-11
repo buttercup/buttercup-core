@@ -78,6 +78,7 @@ function applyFieldDescriptor(entry, descriptor) {
  * Process a modified entry facade
  * @param {Entry} entry The entry to apply processed data on
  * @param {EntryFacade} facade The facade object
+ * @memberof module:Buttercup
  */
 function consumeEntryFacade(entry, facade) {
     const facadeType = getEntryFacadeType(entry);
@@ -123,6 +124,7 @@ function consumeEntryFacade(entry, facade) {
  * @param {Entry=} entry The Entry instance
  * @param {CreateEntryFacadeOptions=} ops Options for the entry facade creation
  * @returns {EntryFacade} A newly created facade
+ * @memberof module:Buttercup
  */
 function createEntryFacade(entry, { type } = {}) {
     if (entry && entry.type !== "Entry") {

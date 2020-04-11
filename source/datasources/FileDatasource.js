@@ -7,6 +7,7 @@ const { getCredentials } = require("../credentials/channel.js");
 /**
  * File datasource for loading and saving files
  * @augments TextDatasource
+ * @memberof module:Buttercup
  */
 class FileDatasource extends TextDatasource {
     /**

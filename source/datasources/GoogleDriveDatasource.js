@@ -10,6 +10,7 @@ const DATASOURCE_TYPE = "googledrive";
 /**
  * Datasource for Google Drive archives
  * @augments TextDatasource
+ * @memberof module:Buttercup
  */
 class GoogleDriveDatasource extends TextDatasource {
     /**

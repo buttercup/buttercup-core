@@ -6,6 +6,7 @@ const { getCredentials } = require("../credentials/channel.js");
 /**
  * Datasource for Dropbox archives
  * @augments TextDatasource
+ * @memberof module:Buttercup
  */
 class DropboxDatasource extends TextDatasource {
     /**
