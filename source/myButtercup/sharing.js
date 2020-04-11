@@ -1,11 +1,12 @@
-const { convertEncryptedContentToHistory } = require("@buttercup/datasources");
-const Credentials = require("@buttercup/credentials");
+const { detectFormat } = require("../io/formatRouter.js");
+const Credentials = require("../credentials/Credentials.js");
 const Share = require("./Share.js");
 
 const ARCHIVE_SHARE_ATTRIBUTE_PREFIX = "BC_SHARE:";
 
 function decryptShareHistory(encryptedContents, password) {
-    return convertEncryptedContentToHistory(encryptedContents, Credentials.fromPassword(password));
+    const Format = detectFormat(encryptedContents);
+    return Format.parseEncrypted(encryptedContents, Credentials.fromPassword(password));
 }
 
 function initialiseShares(workspace) {

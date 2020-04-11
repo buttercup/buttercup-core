@@ -2,12 +2,50 @@ const uuid = require("uuid/v4");
 const { consumeEntryFacade, createEntryFacade } = require("./entry.js");
 const Entry = require("../core/Entry.js");
 
-const { ENTRY_FACADE_TYPE_ATTRIBUTE } = Entry.Attributes;
+const { FacadeType } = Entry.Attributes;
 
 /**
- * Consume an archive facade and apply the differences to the archive
+ * Consume a group facade and apply the differences to a group instance
+ * @param {Group} group The group instance to apply to
+ * @param {GroupFacade} facade The facade to apply
+ */
+function consumeGroupFacade(group, facade) {
+    const { id, title, type, attributes } = facade;
+    const existingEntries = group.getEntries();
+    const existingAttributes = group.getAttribute();
+    if (type !== "group") {
+        throw new Error(`Failed consuming group facade: Invalid facade type: ${type}`);
+    }
+    if (id !== group.id) {
+        throw new Error(
+            `Failed consuming group facade: Provided facade ID (${id}) does not match target group's ID: ${group.id}`
+        );
+    }
+    if (!title || title.trim().length <= 0) {
+        throw new Error("Failed consuming group facade: Title must not be empty");
+    }
+    if (group.getTitle() !== title) {
+        group.setTitle(title);
+    }
+    // Check attributes
+    Object.keys(existingAttributes)
+        .filter(attr => !attributes.hasOwnProperty(attr))
+        .forEach(attr => {
+            // Remove missing
+            group.deleteAttribute(attr);
+        });
+    Object.keys(attributes).forEach(attr => {
+        if (!existingAttributes[attr] || existingAttributes[attr] !== attributes[attr]) {
+            // Different value
+            group.setAttribute(attr, attributes[attr]);
+        }
+    });
+}
+
+/**
+ * Consume a vault facade and apply the differences to the vault
  * instance
- * @param {Vault} archive The archive instance to apply to
+ * @param {Vault} vault The vault instance to apply to
  * @param {VaultFacade} facade The facade to apply
  */
 function consumeVaultFacade(vault, facade) {
@@ -23,13 +61,13 @@ function consumeVaultFacade(vault, facade) {
     if (type !== "vault") {
         throw new Error(`Failed consuming vault facade: Invalid facade type: ${type}`);
     }
-    if (id !== archive.id) {
+    if (id !== vault.id) {
         throw new Error(
-            `Failed consuming vault facade: Provided facade ID (${id}) does not match target vault ID: ${archive.id}`
+            `Failed consuming vault facade: Provided facade ID (${id}) does not match target vault ID: ${vault.id}`
         );
     }
     // Create comparison facade
-    let { groups: currentGroups, entries: currentEntries, attributes: currentAttributes } = createVaultFacade(archive);
+    let { groups: currentGroups, entries: currentEntries, attributes: currentAttributes } = createVaultFacade(vault);
     // Handle group removal
     currentGroups.forEach(currentGroupFacade => {
         const existing = groups.find(group => group.id === currentGroupFacade.id);
@@ -57,7 +95,7 @@ function consumeVaultFacade(vault, facade) {
             // Handle group move
             const { id: groupID, parentID: groupParentID } = groupFacade;
             const ref = vault.findGroupByID(groupID);
-            const refGroup = ref.getGroup();
+            const refGroup = ref.getParentGroup();
             if ((refGroup === null && groupParentID !== "0") || (refGroup !== null && refGroup.id !== groupParentID)) {
                 // Group has different parent, so move
                 ref.moveTo(groupParentID === "0" ? vault : vault.findGroupByID(groupParentID));
@@ -104,7 +142,7 @@ function consumeVaultFacade(vault, facade) {
             const newEntry = targetGroup.createEntry();
             entryFacade.id = newEntry.id;
             if (entryFacade.type) {
-                newEntry.setAttribute(ENTRY_FACADE_TYPE_ATTRIBUTE, entryFacade.type);
+                newEntry.setAttribute(FacadeType, entryFacade.type);
             }
         }
         const entryToUpdate = vault.findEntryByID(entryFacade.id);
@@ -126,56 +164,18 @@ function consumeVaultFacade(vault, facade) {
 }
 
 /**
- * Consume a group facade and apply the differences to a group instance
- * @param {Group} group The group instance to apply to
- * @param {GroupFacade} facade The facade to apply
- */
-function consumeGroupFacade(group, facade) {
-    const { id, title, type, attributes } = facade;
-    const existingEntries = group.getEntries();
-    const existingAttributes = group.getAttribute();
-    if (type !== "group") {
-        throw new Error(`Failed consuming group facade: Invalid facade type: ${type}`);
-    }
-    if (id !== group.id) {
-        throw new Error(
-            `Failed consuming group facade: Provided facade ID (${id}) does not match target group's ID: ${group.id}`
-        );
-    }
-    if (!title || title.trim().length <= 0) {
-        throw new Error("Failed consuming group facade: Title must not be empty");
-    }
-    if (group.getTitle() !== title) {
-        group.setTitle(title);
-    }
-    // Check attributes
-    Object.keys(existingAttributes)
-        .filter(attr => !attributes.hasOwnProperty(attr))
-        .forEach(attr => {
-            // Remove missing
-            group.deleteAttribute(attr);
-        });
-    Object.keys(attributes).forEach(attr => {
-        if (!existingAttributes[attr] || existingAttributes[attr] !== attributes[attr]) {
-            // Different value
-            group.setAttribute(attr, attributes[attr]);
-        }
-    });
-}
-
-/**
  * @typedef {Object} VaultFacade
  * @property {String} type - The facade type: "vault"
- * @property {String} id - The archive ID
- * @property {Object} attributes - A key/value list of all the archive attributes
+ * @property {String} id - The vault ID
+ * @property {Object} attributes - A key/value list of all the vault attributes
  * @property {Array.<GroupFacade>} groups - An array of group facades
  * @property {Array.<EntryFacade>} entries - An array of entry facades
  * @property {String} _tag - The UUID tag for the generation of the facade
  */
 
 /**
- * Create a vault facade from an Archive instance
- * @param {Vault} archive A vault instance
+ * Create a vault facade from an Vault instance
+ * @param {Vault} vault A vault instance
  * @returns {VaultFacade} A vault facade
  */
 function createVaultFacade(vault) {

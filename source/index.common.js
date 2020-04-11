@@ -35,6 +35,10 @@ const MemoryStorageInterface = require("./storage/MemoryStorageInterface.js");
 const EntryFinder = require("./search/EntryFinder.js");
 const { getSharedAppEnv } = require("./env/appEnv.js");
 
+/**
+ * @module Buttercup
+ */
+
 module.exports = {
     DEFAULT_ENTRY_TYPE,
     DEFAULT_FIELD_TYPE,

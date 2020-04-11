@@ -1,7 +1,7 @@
 const VError = require("verror");
 const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
 const TextDatasource = require("./TextDatasource.js");
-const Credentials = require("@buttercup/credentials");
+const Credentials = require("../credentials/Credentials.js");
 const VaultComparator = require("../core/VaultComparator.js");
 const MyButtercupClient = require("../myButtercup/MyButtercupClient.js");
 const { generateNewUpdateID } = require("../myButtercup/update.js");

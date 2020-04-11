@@ -4,6 +4,7 @@ const { generateUUID } = require("../tools/uuid.js");
 const { moveGroupBetweenVaults } = require("../tools/sharing.js");
 const { findGroupByID, findGroupsByTitle } = require("../search/groups.js");
 const { findEntriesByProperty, findEntryByID } = require("../search/entries.js");
+const { findGroupContainingGroupID } = require("../tools/rawVaultSearch.js");
 
 class Group extends VaultItem {
     static Attribute = Object.freeze({
@@ -184,9 +185,9 @@ class Group extends VaultItem {
             // parent is vault
             return null;
         }
-        const parentInfo = findGroupContainingGroupID(archive._getWestley().dataset, this.id);
-        if (parentInfo) {
-            return new Group(archive, parentInfo.group);
+        const parentInfo = findGroupContainingGroupID(this.vault.format.source, this.id);
+        if (parentInfo && parentInfo.group) {
+            return new Group(this.vault, parentInfo.group);
         }
         throw new Error("No parent group: group is detacted");
     }

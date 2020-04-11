@@ -119,7 +119,7 @@ class Entry extends VaultItem {
      * @throws {Error} Throws if no parent group found
      */
     getGroup() {
-        const parentInfo = findGroupContainingEntryID(this.vault._dataset.groups || [], this.id);
+        const parentInfo = findGroupContainingEntryID(this.vault.format.source.groups || [], this.id);
         if (!parentInfo || !parentInfo.group) {
             throw new Error(`No parent group found for entry: ${this.id}`);
         }
