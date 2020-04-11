@@ -2,7 +2,7 @@
   "name": "buttercup",
   "version": "3.0.0",
   "description": "A NodeJS password vault.",
-  "main": "source/node/index.js",
+  "main": "source/index.node.js",
   "contributors": [
     {
       "name": "Perry Mitchell",
@@ -15,8 +15,8 @@
   ],
   "scripts": {
     "analyse": "ANALYSE=bundle npm run build",
-    "build": "webpack",
-    "dev": "webpack --watch --progress",
+    "build": "webpack --mode=production",
+    "dev": "webpack --mode=development --watch --progress",
     "docs": "npm run generate:docs",
     "format": "prettier --write '{source,test}/**/*.js'",
     "generate:archive": "node scripts/generate_test_archive.js",

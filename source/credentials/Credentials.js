@@ -110,9 +110,7 @@ class Credentials {
     static fromDatasource(datasourceConfig, masterPassword = null) {
         return new Credentials(
             {
-                datasource: datasourceConfig,
-                username,
-                password
+                datasource: datasourceConfig
             },
             masterPassword
         );

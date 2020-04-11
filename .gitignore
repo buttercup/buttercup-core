@@ -8,6 +8,7 @@
 coverage
 node_modules
 /dist
+/web
 /stats.json
 *.test.js
 source/test.js
