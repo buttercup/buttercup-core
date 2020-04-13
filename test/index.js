@@ -1,16 +1,10 @@
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
+const { expect } = require("chai");
 const sinon = require("sinon");
-require("@buttercup/app-env/native");
-const { getSharedAppEnv } = require("@buttercup/app-env");
+const { init } = require("../source/index.node.js");
 
-const { expect } = chai;
-
-chai.use(chaiAsPromised);
+init();
 
 Object.assign(global, {
     expect,
     sinon
 });
-
-getSharedAppEnv().getProperty("crypto/v1/setDerivationRounds")(10);

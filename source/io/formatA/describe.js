@@ -9,11 +9,11 @@ const { Command } = Inigo;
  * @returns {Array.<String>} An array of commands
  */
 function describeVaultDataset(dataset, parentGroupID) {
-    var currentGroupID = dataset.id || "0",
+    var currentGroupID = dataset.format ? "0" : dataset.id,
         entries = currentGroupID === "0" ? [] : dataset.entries || [];
     var commands = [];
     if (currentGroupID === "0") {
-        // Archive
+        // Vault
         if (dataset.format) {
             commands.push(
                 Inigo.create(Command.Format)
@@ -21,10 +21,10 @@ function describeVaultDataset(dataset, parentGroupID) {
                     .generateCommand()
             );
         }
-        if (dataset.archiveID) {
+        if (dataset.id) {
             commands.push(
                 Inigo.create(Command.ArchiveID)
-                    .addArgument(dataset.archiveID)
+                    .addArgument(dataset.id)
                     .generateCommand()
             );
         }
@@ -106,7 +106,7 @@ function describeVaultDataset(dataset, parentGroupID) {
         commands.push(Inigo.generatePaddingCommand());
     });
     (dataset.groups || []).forEach(function(group) {
-        commands = commands.concat(describeArchiveDataset(group, currentGroupID));
+        commands = commands.concat(describeVaultDataset(group, currentGroupID));
     });
     return commands;
 }

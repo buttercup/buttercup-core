@@ -1,6 +1,6 @@
-const { describeArchiveDataset } = require("../../../source/node/tools/describe.js");
-const Archive = require("../../../source/node/Archive.js");
-const { decodeStringValue, isEncoded } = require("../../../source/node/tools/encoding.js");
+const { describeVaultDataset } = require("../../../../source/io/formatA/describe.js");
+const Vault = require("../../../../source/core/Vault.js");
+const { decodeStringValue, isEncoded } = require("../../../../source/tools/encoding.js");
 
 function decodeHistory(lines) {
     return lines.map(line => {
@@ -11,60 +11,60 @@ function decodeHistory(lines) {
     });
 }
 
-describe("tools/describe", function() {
-    describe("describeArchiveDataset", function() {
+describe("io/formatA/describe", function() {
+    describe("describeVaultDataset", function() {
         beforeEach(function() {
-            this.archive = new Archive();
-            this.group = this.archive.createGroup("main");
+            this.vault = new Vault();
+            this.group = this.vault.createGroup("main");
             this.entry = this.group.createEntry("my entry");
             this.entry.setProperty("misc", "!@#$%^");
             this.entry.setAttribute("myAttr", "myValue");
-            this.dataset = this.archive.toObject();
+            this.dataset = this.vault._dataset;
         });
 
         it("outputs an array", function() {
-            const output = describeArchiveDataset(this.dataset);
+            const output = describeVaultDataset(this.dataset);
             expect(output).to.be.an("array");
         });
 
         it("outputs format", function() {
-            const output = decodeHistory(describeArchiveDataset(this.dataset));
+            const output = decodeHistory(describeVaultDataset(this.dataset));
             const formatLine = output.find(line => line.indexOf("fmt buttercup/a") >= 0);
             expect(formatLine).to.be.a("string");
         });
 
-        it("outputs archive id", function() {
-            const output = decodeHistory(describeArchiveDataset(this.dataset));
-            expect(output.find(line => line.indexOf(`aid ${this.archive.id}`) >= 0)).to.be.a("string");
+        it("outputs vault id", function() {
+            const output = decodeHistory(describeVaultDataset(this.dataset));
+            expect(output.find(line => line.indexOf(`aid ${this.vault.id}`) >= 0)).to.be.a("string");
         });
 
         it("outputs group creation", function() {
-            const output = decodeHistory(describeArchiveDataset(this.dataset));
+            const output = decodeHistory(describeVaultDataset(this.dataset));
             expect(output.find(line => line.indexOf(`cgr 0 ${this.group.id}`) >= 0)).to.be.a("string");
         });
 
         it("outputs group title", function() {
-            const output = decodeHistory(describeArchiveDataset(this.dataset));
+            const output = decodeHistory(describeVaultDataset(this.dataset));
             expect(output.find(line => line.indexOf(`tgr ${this.group.id} main`) >= 0)).to.be.a("string");
         });
 
         it("outputs entry creation", function() {
-            const output = decodeHistory(describeArchiveDataset(this.dataset));
+            const output = decodeHistory(describeVaultDataset(this.dataset));
             expect(output.find(line => line.indexOf(`cen ${this.group.id} ${this.entry.id}`) >= 0)).to.be.a("string");
         });
 
         it("outputs entry title", function() {
-            const output = decodeHistory(describeArchiveDataset(this.dataset));
+            const output = decodeHistory(describeVaultDataset(this.dataset));
             expect(output.find(line => line.indexOf(`sep ${this.entry.id} title my entry`) >= 0)).to.be.a("string");
         });
 
         it("outputs miscellaneous entry properties", function() {
-            const output = decodeHistory(describeArchiveDataset(this.dataset));
+            const output = decodeHistory(describeVaultDataset(this.dataset));
             expect(output.find(line => line.indexOf(`sep ${this.entry.id} misc !@#$%^`) >= 0)).to.be.a("string");
         });
 
         it("outputs entry attributes", function() {
-            const output = decodeHistory(describeArchiveDataset(this.dataset));
+            const output = decodeHistory(describeVaultDataset(this.dataset));
             expect(output.find(line => line.indexOf(`sea ${this.entry.id} myAttr myValue`) >= 0)).to.be.a("string");
         });
     });
