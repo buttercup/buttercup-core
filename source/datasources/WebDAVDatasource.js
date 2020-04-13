@@ -16,8 +16,8 @@ class WebDAVDatasource extends TextDatasource {
     constructor(credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig, username, password } = credentialData;
-        const { endpoint, path } = datasourceConfig;
+        const { datasource: datasourceConfig } = credentialData;
+        const { endpoint, password, path, username } = datasourceConfig;
         this._path = path;
         const createClient = getSharedAppEnv().getProperty("net/webdav/v1/newClient");
         if (typeof username === "string" && typeof password === "string") {
