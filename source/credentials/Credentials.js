@@ -148,7 +148,36 @@ class Credentials {
         const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
         return decrypt(unsignEncryptedContent(content), masterPassword)
             .then(decryptedContent => JSON.parse(decryptedContent))
-            .then(credentialsData => new Credentials(credentialsData, masterPassword));
+            .then(credentialsData => {
+                // Handle compatibility updates for legacy credentials
+                if (credentialsData.datasource) {
+                    if (typeof credentialsData.datasource === "string") {
+                        credentialsData.datasource = JSON.parse(credentialsData.datasource);
+                    }
+                    // Move username and password INTO the datasource config, as
+                    // they relate to the remote connection/source
+                    if (credentialsData.username) {
+                        credentialsData.datasource.username = credentialsData.username;
+                        delete credentialsData.username;
+                    }
+                    if (credentialsData.password) {
+                        credentialsData.datasource.password = credentialsData.password;
+                        delete credentialsData.password;
+                    }
+                }
+                return new Credentials(credentialsData, masterPassword);
+            });
+    }
+
+    /**
+     * Check if a value is an instance of Credentials
+     * @param {*} inst The value to check
+     * @returns {Boolean}
+     * @statuc
+     * @memberof Credentials
+     */
+    static isCredentials(inst) {
+        return !!inst && typeof inst === "object" && typeof inst.toSecureString === "function" && !!inst.id;
     }
 
     /**
