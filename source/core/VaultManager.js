@@ -1,8 +1,11 @@
 const EventEmitter = require("eventemitter3");
+const isPromise = require("is-promise");
 const ChannelQueue = require("@buttercup/channel-queue");
 const MemoryStorageInterface = require("../storage/MemoryStorageInterface.js");
+const VaultSource = require("./VaultSource.js");
 
 const DEFAULT_AUTO_UPDATE_DELAY = 1000 * 60 * 2.5; // 2.5 mins
+const NOOP = () => {};
 const STORAGE_KEY_PREFIX = "bcup_vaultmgr_";
 const STORAGE_KEY_PREFIX_TEST = /^bcup_vaultmgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
@@ -27,6 +30,10 @@ class VaultManager extends EventEmitter {
 
     get sources() {
         return [...this._sources];
+    }
+
+    get unlockedSources() {
+        return this._sources.filter(source => source.status === VaultSource.STATUS_UNLOCKED);
     }
 
     /**
@@ -57,10 +64,10 @@ class VaultManager extends EventEmitter {
             // Attach event listeners
             const handleDetailsChange = event => {
                 this.emit(`source:${event}`);
-                this.emit("updated");
+                this.emit("sourcesUpdated");
             };
-            source.on("locked", details => handleDetailsChange("locked"));
-            source.on("unlocked", details => handleDetailsChange("unlocked"));
+            source.on("locked", () => handleDetailsChange("locked"));
+            source.on("unlocked", () => handleDetailsChange("unlocked"));
             source.on("updated", () => this.dehydrate());
             const dehydratedString = await source.dehydrate();
             await this._storeDehydratedSource(source.id, dehydratedString);
@@ -141,6 +148,53 @@ class VaultManager extends EventEmitter {
     }
 
     /**
+     * Wait for and interrupt state changes when auto-update is running
+     * @param {Function} cb The callback to execute during the auto-update interruption
+     * @returns {Promise} A promise that resolves when ready
+     * @memberof ArchiveManager
+     * @example
+     *  archiveManager.interruptAutoUpdate(() => {
+     *      // Do something with auto-updating paused
+     *  });
+     */
+    interruptAutoUpdate(cb) {
+        return this.enqueueStateChange(NOOP).then(() =>
+            this._queue.channel("autoUpdateInterrupt").enqueue(() => {
+                const enabled = this._autoUpdateEnabled;
+                const delay = this._autoUpdateDelay;
+                this.toggleAutoUpdating(false);
+                const restoreAutoUpdating = () => {
+                    this.toggleAutoUpdating(enabled, delay);
+                };
+                let retVal;
+                try {
+                    retVal = cb();
+                } catch (err) {
+                    // Callback died, so restore and throw
+                    restoreAutoUpdating();
+                    throw err;
+                }
+                if (!isPromise(retVal)) {
+                    // No promise, so restore immediately:
+                    restoreAutoUpdating();
+                    return retVal;
+                }
+                return retVal
+                    .then(res => {
+                        // Wait until after the promise has completed
+                        // or failed:
+                        restoreAutoUpdating();
+                        return res;
+                    })
+                    .catch(err => {
+                        restoreAutoUpdating();
+                        throw err;
+                    });
+            })
+        );
+    }
+
+    /**
      * Rehydrate sources from storage
      * @returns {Promise} A promise that resolves once rehydration has completed
      * @memberof VaultManager
@@ -152,7 +206,7 @@ class VaultManager extends EventEmitter {
             storageKeys
                 .filter(key => STORAGE_KEY_PREFIX_TEST.test(key))
                 .map(async key => {
-                    const dehydratedSource = await this.storageInterface.getValue(key);
+                    const dehydratedSource = await this._sourceStorage.getValue(key);
                     const source = VaultSource.rehydrate(dehydratedSource);
                     await this.addSource(source, {
                         order: source.order
@@ -179,7 +233,7 @@ class VaultManager extends EventEmitter {
             source.removeAllListeners();
             this._sources.splice(sourceIndex, 1);
             this.emit("sourcesUpdated");
-            await this.storageInterface.removeKey(`${STORAGE_KEY_PREFIX}${sourceID}`);
+            await this._sourceStorage.removeKey(`${STORAGE_KEY_PREFIX}${sourceID}`);
         });
     }
 

@@ -2,7 +2,6 @@ const EventEmitter = require("eventemitter3");
 const ChannelQueue = require("@buttercup/channel-queue");
 const VError = require("verror");
 const Vault = require("./Vault.js");
-const MemoryStorageInterface = require("../storage/MemoryStorageInterface.js");
 const Credentials = require("../credentials/Credentials.js");
 const { getCredentials } = require("../credentials/channel.js");
 const { getUniqueID } = require("../tools/encoding.js");
@@ -18,12 +17,36 @@ const VaultComparator = require("./VaultComparator.js");
 const DEFAULT_COLOUR = "#000000";
 const DEFAULT_ORDER = 1000;
 
+function processDehydratedCredentials(credentialsString, masterPassword) {
+    if (/^v1\n/.test(credentialsString)) {
+        const [, sourceCredStr] = credentialsString.split("\n");
+        return Credentials.fromSecureString(sourceCredStr, masterPassword);
+    }
+    return Credentials.fromSecureString(credentialsString, masterPassword);
+}
+
 class VaultSource extends EventEmitter {
     static STATUS_LOCKED = "locked";
     static STATUS_PENDING = "pending";
     static STATUS_UNLOCKED = "unlocked";
 
-    static rehydrate(dehydratedString) {}
+    static rehydrate(dehydratedString) {
+        const target = JSON.parse(dehydratedString);
+        let credentials = target.credentials;
+        if (target.v !== 2) {
+            const { sourceCredentials, archiveCredentials } = target;
+            if (!sourceCredentials || !archiveCredentials) {
+                throw new Error("Invalid legacy vault state: missing credentials");
+            }
+            credentials = `v1\n${sourceCredentials}\n${archiveCredentials}`;
+        }
+        const { id, name, type, colour = DEFAULT_COLOUR, order = DEFAULT_ORDER } = target;
+        return new VaultSource(name, type, credentials, {
+            id,
+            colour,
+            order
+        });
+    }
 
     constructor(name, type, credentialsString, config = {}) {
         super();
@@ -295,12 +318,13 @@ class VaultSource extends EventEmitter {
         );
     }
 
-    unlock(vaultCredentials, config = {}) {
+    async unlock(vaultCredentials, config = {}) {
+        if (!Credentials.isCredentials(vaultCredentials)) {
+            throw new VError(`Failed unlocking source: Invalid credentials passed to source: ${this.id}`);
+        }
         const { initialiseRemote = false, loadOfflineCopy = true, storeOfflineCopy = true } = config;
         if (this.status !== VaultSource.STATUS_LOCKED) {
-            return Promise.reject(
-                new VError(`Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`)
-            );
+            throw new VError(`Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`);
         }
         const { masterPassword } = getCredentials(vaultCredentials.id);
         const originalCredentials = this._credentials;
@@ -312,7 +336,7 @@ class VaultSource extends EventEmitter {
                     if (availableOfflineContent && loadOfflineCopy) {
                         offlineContent = availableOfflineContent;
                     }
-                    return Credentials.fromSecureString(this._credentials, masterPassword);
+                    return processDehydratedCredentials(this._credentials, masterPassword);
                 })
                 .then(newCredentials => {
                     const credentials = (this._credentials = newCredentials);
@@ -334,7 +358,6 @@ class VaultSource extends EventEmitter {
                         : datasource.load(credentials).then(decryptedContent => {
                               this._vault = Vault.createFromHistory(decryptedContent);
                           });
-
                     return loadWork
                         .then(() => {
                             if (storeOfflineCopy) {
