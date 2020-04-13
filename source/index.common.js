@@ -3,6 +3,7 @@ const VaultSource = require("./core/VaultSource.js");
 const Vault = require("./core/Vault.js");
 const Group = require("./core/Group.js");
 const Entry = require("./core/Entry.js");
+
 const TextDatasource = require("./datasources/TextDatasource.js");
 const FileDatasource = require("./datasources/FileDatasource.js");
 const WebDAVDatasource = require("./datasources/WebDAVDatasource.js");
@@ -12,6 +13,7 @@ const MyButtercupDatasource = require("./datasources/MyButtercupDatasource.js");
 const MyButtercupClient = require("./myButtercup/MyButtercupClient.js");
 const DatasourceAuthManager = require("./datasources/DatasourceAuthManager.js");
 const { registerDatasource } = require("./datasources/register.js");
+
 const { consumeGroupFacade, consumeVaultFacade, createGroupFacade, createVaultFacade } = require("./facades/vault.js");
 const { isOTPURI, isVaultFacade } = require("./facades/detection.js");
 const { consumeEntryFacade, createEntryFacade } = require("./facades/entry.js");
@@ -31,11 +33,22 @@ const {
     FIELD_VALUE_TYPE_TEXT,
     FIELD_VALUE_TYPES
 } = require("./facades/symbols.js");
+
 const Credentials = require("./credentials/Credentials.js");
+
 const StorageInterface = require("./storage/StorageInterface.js");
 const MemoryStorageInterface = require("./storage/MemoryStorageInterface.js");
+
 const EntryFinder = require("./search/EntryFinder.js");
 const { getSharedAppEnv } = require("./env/appEnv.js");
+
+const {
+    ENTRY_URL_TYPE_ANY,
+    ENTRY_URL_TYPE_GENERAL,
+    ENTRY_URL_TYPE_ICON,
+    ENTRY_URL_TYPE_LOGIN,
+    getEntryURLs
+} = require("./tools/entry.js");
 
 /**
  * @module Buttercup
@@ -50,6 +63,10 @@ module.exports = {
     ENTRY_TYPE_SSHKEY,
     ENTRY_TYPE_WEBSITE,
     ENTRY_TYPES,
+    ENTRY_URL_TYPE_ANY,
+    ENTRY_URL_TYPE_GENERAL,
+    ENTRY_URL_TYPE_ICON,
+    ENTRY_URL_TYPE_LOGIN,
     FIELD_VALUE_TYPE_NOTE,
     FIELD_VALUE_TYPE_OTP,
     FIELD_VALUE_TYPE_PASSWORD,
@@ -90,5 +107,6 @@ module.exports = {
     isOTPURI,
     isVaultFacade,
 
-    getSharedAppEnv
+    getSharedAppEnv,
+    getEntryURLs
 };

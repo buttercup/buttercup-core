@@ -1,7 +1,15 @@
 const { getSharedAppEnv } = require("./env/core/singleton.js");
 const { applyWebConfiguration } = require("./env/web/index.js");
 
-const appEnv = getSharedAppEnv();
-// applyWebConfiguration(appEnv);
+/**
+ * Initialise the web environment
+ * @memberof module:Buttercup
+ */
+function init() {
+    const appEnv = getSharedAppEnv();
+    applyWebConfiguration(appEnv);
+}
 
-module.exports = require("./index.common.js");
+module.exports = Object.assign({}, require("./index.common.js"), {
+    init
+});
