@@ -37,7 +37,7 @@
   },
   "files": [
     "source/**/*.js",
-    "dist/**/*.js",
+    "web/**/*.js",
     "*.md"
   ],
   "lint-staged": {
