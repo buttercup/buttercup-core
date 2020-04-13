@@ -22,6 +22,10 @@ class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
+    static prepareHistoryForMerge() {
+        notImplemented();
+    }
+
     dirty = false;
     history = [];
     source = null;

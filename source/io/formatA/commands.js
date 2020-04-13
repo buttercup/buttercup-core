@@ -4,7 +4,6 @@ const {
     findGroupContainingEntryID,
     findGroupContainingGroupID
 } = require("../../tools/rawVaultSearch.js");
-const { encodeStringValue } = require("../../tools/encoding.js");
 const { generateEntryHistoryItem } = require("./tools.js");
 
 function executeArchiveID(vault, opts, id) {

@@ -284,15 +284,21 @@ class VaultSource extends EventEmitter {
         const stagedVault = Vault.createFromHistory(history);
         const comparator = new VaultComparator(this._vault, stagedVault);
         const differences = comparator.calculateDifferences();
+        // get format
+        const Format = this._vault.format.getFormat();
         // only strip if there are multiple updates
         const stripDestructive = differences.secondary.length > 0;
-        const newHistoryMain = stripDestructive ? stripDestructiveCommands(differences.original) : differences.original;
+        const newHistoryMain = stripDestructive
+            ? Format.prepareHistoryForMerge(differences.original)
+            : differences.original;
         const newHistoryStaged = stripDestructive
-            ? stripDestructiveCommands(differences.secondary)
+            ? Format.prepareHistoryForMerge(differences.secondary)
             : differences.secondary;
         const base = differences.common;
         const newVault = new Vault();
+        newVault.format.clear();
         // merge all history and execute on new vault
+        // @todo use format to do this
         base.concat(newHistoryStaged)
             .concat(newHistoryMain)
             .forEach(command => {
@@ -304,12 +310,31 @@ class VaultSource extends EventEmitter {
     }
 
     /**
-     * Save the vault to the remote
+     * Save the vault to the remote, ensuring that it's first merged and
+     * updated to prevent conflicts or overwrites.
+     * @returns {Promise}
+     * @memberof VaultSource
+     */
+    async save() {
+        await this._enqueueStateChange(async () => {
+            if (await this.localDiffersFromRemote()) {
+                await this.mergeFromRemote();
+            }
+            await this._datasource.save(this._vault.format.history, this._credentials);
+            this._vault.format.dirty = false;
+        }, /* stack */ "saving");
+    }
+
+    /**
+     * Write the vault to the remote
+     * - This does not perform any merging or sync checks, but simply
+     * writes the vault contents to the remote, overwriting whatever
+     * was there before.
      * @returns {Promise} A promise that resolves when saving has completed
      * @memberof VaultSource
      */
-    save() {
-        return this._enqueueStateChange(
+    async write() {
+        await this._enqueueStateChange(
             () =>
                 this._datasource.save(this._vault.format.history, this._credentials).then(() => {
                     this._vault.format.dirty = false;

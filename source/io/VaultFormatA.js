@@ -1,3 +1,4 @@
+const VError = require("verror");
 const VaultFormat = require("./VaultFormat.js");
 const {
     executeArchiveID,
@@ -20,7 +21,12 @@ const {
     executeSetGroupAttribute,
     executeTitleGroup
 } = require("./formatA/commands.js");
-const { COMMAND_MANIFEST, InigoCommand: Inigo, extractCommandComponents } = require("./formatA/tools.js");
+const {
+    COMMAND_MANIFEST,
+    InigoCommand: Inigo,
+    extractCommandComponents,
+    stripDestructiveCommands
+} = require("./formatA/tools.js");
 const Flattener = require("./formatA/Flattener.js");
 const { getFormat, hasValidSignature, sign, stripSignature, vaultContentsEncrypted } = require("./formatA/signing.js");
 const { describeVaultDataset } = require("./formatA/describe.js");
@@ -138,6 +144,10 @@ class VaultFormatA extends VaultFormat {
                 }
                 throw new Error("Failed reconstructing history: Decryption failed");
             });
+    }
+
+    static prepareHistoryForMerge(history) {
+        return stripDestructiveCommands(history);
     }
 
     cloneEntry(entry, targetGroupID) {}
