@@ -164,37 +164,35 @@ class VaultSource extends EventEmitter {
         return sourceHasOfflineCopy(this._vaultManager._cacheStorage, this.id);
     }
 
-    dehydrate() {
+    async dehydrate() {
         if (this.status === VaultSource.STATUS_PENDING) {
-            return Promise.reject(new VError(`Failed dehydrating source: Source in pending state: ${this.id}`));
+            throw new VError(`Failed dehydrating source: Source in pending state: ${this.id}`);
         }
-        return this._enqueueStateChange(() => {
-            const payload = {
-                v: 2,
-                id: this.id,
-                name: this.name,
-                type: this.type,
-                status: VaultSource.STATUS_LOCKED,
-                colour: this.colour,
-                order: this.order,
-                meta: {} // deprecated
-            };
-            return Promise.resolve()
-                .then(() => {
-                    if (this.status === VaultSource.STATUS_LOCKED) {
-                        payload.credentials = this._credentials;
-                        return payload;
-                    }
-                    return this._credentials.toSecureString().then(credentialsStr => {
-                        payload.credentials = credentialsStr;
-                        return payload;
-                    });
-                })
-                .then(payload => JSON.stringify(payload))
-                .catch(err => {
-                    throw new VError(err, `Failed dehydrating source: ${this.id}`);
+        const payload = {
+            v: 2,
+            id: this.id,
+            name: this.name,
+            type: this.type,
+            status: VaultSource.STATUS_LOCKED,
+            colour: this.colour,
+            order: this.order,
+            meta: {} // deprecated
+        };
+        return Promise.resolve()
+            .then(() => {
+                if (this.status === VaultSource.STATUS_LOCKED) {
+                    payload.credentials = this._credentials;
+                    return payload;
+                }
+                return this._credentials.toSecureString().then(credentialsStr => {
+                    payload.credentials = credentialsStr;
+                    return payload;
                 });
-        });
+            })
+            .then(payload => JSON.stringify(payload))
+            .catch(err => {
+                throw new VError(err, `Failed dehydrating source: ${this.id}`);
+            });
     }
 
     /**
@@ -347,7 +345,7 @@ class VaultSource extends EventEmitter {
         if (!Credentials.isCredentials(vaultCredentials)) {
             throw new VError(`Failed unlocking source: Invalid credentials passed to source: ${this.id}`);
         }
-        const { initialiseRemote = false, loadOfflineCopy = true, storeOfflineCopy = true } = config;
+        const { initialiseRemote = false, loadOfflineCopy = false, storeOfflineCopy = true } = config;
         if (this.status !== VaultSource.STATUS_LOCKED) {
             throw new VError(`Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`);
         }
