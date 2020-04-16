@@ -86,7 +86,6 @@ function consumeEntryFacade(entry, facade) {
         const properties = entry.getProperty();
         const attributes = entry.getAttribute();
         if (facade.type !== facadeType) {
-            console.log("CONSUME", facade.type, facadeType, entry, facade);
             throw new Error(`Failed consuming entry data: Expected type "${facadeType}" but received "${facade.type}"`);
         }
         // update data

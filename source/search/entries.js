@@ -23,7 +23,7 @@ function findEntriesByCheck(groups, compareFn) {
 
 function findEntriesByProperty(parentGroups, property, value) {
     return findEntriesByCheck(parentGroups, entry => {
-        const props = entry.getProperties(key);
+        const props = entry.getProperties(property);
         const propKeys = Object.keys(props);
         return propKeys.length > 0
             ? propKeys.some(propKey => {

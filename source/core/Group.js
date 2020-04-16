@@ -80,7 +80,7 @@ class Group extends VaultItem {
         }
         // No trash or already in trash, so just delete
         this.vault.format.deleteGroup(this.id);
-        this.__cleanUp();
+        this._cleanUp();
         return true;
     }
 
@@ -239,7 +239,7 @@ class Group extends VaultItem {
             // moving to a group
             targetVault = target.vault;
             targetGroupID = target.id;
-        } else if (target.type === "Archive") {
+        } else if (target.type === "Vault") {
             // moving to an archive
             targetVault = target;
             targetGroupID = "0";

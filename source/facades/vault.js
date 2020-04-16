@@ -12,7 +12,6 @@ const { FacadeType } = Entry.Attributes;
  */
 function consumeGroupFacade(group, facade) {
     const { id, title, type, attributes } = facade;
-    const existingEntries = group.getEntries();
     const existingAttributes = group.getAttribute();
     if (type !== "group") {
         throw new Error(`Failed consuming group facade: Invalid facade type: ${type}`);

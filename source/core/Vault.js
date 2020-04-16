@@ -145,16 +145,13 @@ class Vault extends EventEmitter {
 
     /**
      * Get the trash group
-     * @returns {Group} The trash group
+     * @returns {Group|null} The trash group or null if it doesn't
+     *  exist
      * @memberof Vault
      */
     getTrashGroup() {
-        let trashGroup = this.getGroups().find(group => group.isTrash());
-        if (!trashGroup) {
-            trashGroup = this.createGroup("Trash");
-            trashGroup.setAttribute(Group.Attribute.Role, "trash");
-        }
-        return trashGroup;
+        const trashGroup = this.getGroups().find(group => group.isTrash());
+        return trashGroup || null;
     }
 
     /**
