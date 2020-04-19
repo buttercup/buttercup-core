@@ -10,6 +10,6 @@ function init() {
     applyWebConfiguration(appEnv);
 }
 
-module.exports = Object.assign({}, require("./index.common.js"), {
+module.exports = Object.assign({}, require("./index.common.js"), require("./web/index.js"), {
     init
 });

@@ -1,17 +1,17 @@
 matrix:
   include:
     - language: node_js
-      script: npm run test:ci:node
+      script: npm run test:node
       node_js: "stable"
       env:
         - NAME="Node stable"
     - language: node_js
-      script: npm run test:ci:node
+      script: npm run test:node
       node_js: 12
       env:
         - NAME="Node 12"
     - language: node_js
-      script: npm run test:ci:node
+      script: npm run test:node
       node_js: 10
       env:
         - NAME="Node 10"
@@ -28,4 +28,4 @@ matrix:
         - export DISPLAY=:99.0
         - sh -e /etc/init.d/xvfb start
         - sleep 3 # give xvfb some time to start
-      script: npm run test:ci:web
+      script: npm run test:web

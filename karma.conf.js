@@ -1,7 +1,8 @@
-const [devConfig, prodConfig] = require("./webpack.config.js");
+const webpackConfig = require("./webpack.config.js");
 
-const webpackConfig = process.env.BUNDLE === "production" ? prodConfig : devConfig;
 delete webpackConfig.entry;
+delete webpackConfig.output;
+webpackConfig.mode = process.env.BUNDLE === "production" ? "production" : "development";
 
 module.exports = config => config.set({
 

@@ -56,6 +56,4 @@ const baseConfig = {
     plugins
 };
 
-module.exports = [
-    baseConfig
-];
+module.exports = baseConfig;
