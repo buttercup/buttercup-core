@@ -1,4 +1,4 @@
-const { isVaultFacade } = require("../../../source/facades/detection.js");
+const { isVaultFacade } = require("../../../dist/facades/detection.js");
 
 describe("facades/detection", function() {
     describe("isVaultFacade", function() {

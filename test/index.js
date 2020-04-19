@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 const sinon = require("sinon");
-const { init } = require("../source/index.node.js");
+const { init } = require("../dist/index.node.js");
 
 init();
 

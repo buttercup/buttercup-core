@@ -1,6 +1,6 @@
-const Vault = require("../../../source/core/Vault.js");
-const Group = require("../../../source/core/Group.js");
-const { PERM_MANAGE, PERM_READ, PERM_WRITE } = require("../../../source/tools/permissions.js");
+const Vault = require("../../../dist/core/Vault.js");
+const Group = require("../../../dist/core/Group.js");
+const { PERM_MANAGE, PERM_READ, PERM_WRITE } = require("../../../dist/tools/permissions.js");
 
 describe("core/Entry", function() {
     beforeEach(function() {

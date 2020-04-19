@@ -1,5 +1,5 @@
-const Vault = require("../../../source/core/Vault.js");
-const Group = require("../../../source/core/Group.js");
+const Vault = require("../../../dist/core/Vault.js");
+const Group = require("../../../dist/core/Group.js");
 
 describe("core/Vault", function() {
     it("can be instantiated", function() {

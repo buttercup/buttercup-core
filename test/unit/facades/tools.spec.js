@@ -1,7 +1,7 @@
-const Vault = require("../../../source/core/Vault.js");
-const Entry = require("../../../source/core/Entry.js");
-const { createFieldDescriptor, getEntryValue } = require("../../../source/facades/tools.js");
-const { FIELD_VALUE_TYPE_NOTE, FIELD_VALUE_TYPE_TEXT } = require("../../../source/facades/symbols.js");
+const Vault = require("../../../dist/core/Vault.js");
+const Entry = require("../../../dist/core/Entry.js");
+const { createFieldDescriptor, getEntryValue } = require("../../../dist/facades/tools.js");
+const { FIELD_VALUE_TYPE_NOTE, FIELD_VALUE_TYPE_TEXT } = require("../../../dist/facades/symbols.js");
 
 describe("facades/tools", function() {
     beforeEach(function() {
