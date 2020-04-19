@@ -74,6 +74,35 @@ class Vault extends EventEmitter {
     }
 
     /**
+     * Delete an attribute
+     * @param {String} attribute The name of the attribute to delete
+     * @returns {Vault} Self
+     * @memberof Vault
+     */
+    deleteAttribute(attribute) {
+        this.format.deleteVaultAttribute(attribute);
+        return this;
+    }
+
+    /**
+     * Remove all entries and groups from the trash (permanent)
+     * - does nothing if no trash group
+     * @returns {Vault} Self
+     * @memberof Vault
+     */
+    emptyTrash() {
+        const trash = this.getTrashGroup();
+        if (!trash) return;
+        trash.getGroups().forEach(group => {
+            group.delete(/* skip trash */ true);
+        });
+        trash.getEntries().forEach(entry => {
+            entry.delete(/* skip trash */ true);
+        });
+        return this;
+    }
+
+    /**
      * Find an entry by its ID
      * @param {String} id The ID to search for
      * @returns {null|Entry} Null if not found, or the Entry instance
@@ -155,7 +184,7 @@ class Vault extends EventEmitter {
     }
 
     /**
-     * Set an attribute on the archive
+     * Set an attribute on the vault
      * @param {String} attribute The attribute to set
      * @param {String} value The value to set for the attribute
      * @returns {Vault} Self
