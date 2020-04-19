@@ -218,9 +218,21 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
+    deleteVaultAttribute(attribute) {
+        this.execute(
+            Inigo.create(Inigo.Command.DeleteArchiveAttribute)
+                .addArgument(attribute)
+                .generateCommand()
+        );
+    }
+
     execute(commandOrCommands) {
         const commands = Array.isArray(commandOrCommands) ? commandOrCommands : [commandOrCommands];
         commands.forEach(command => this._executeCommand(command));
+        const lastCommand = commands[commands.length - 1];
+        if (/^pad\s/i.test(lastCommand) === false) {
+            this._pad();
+        }
         this.dirty = true;
         this.emit("commandsExecuted");
     }
@@ -352,7 +364,7 @@ class VaultFormatA extends VaultFormat {
     }
 
     _pad() {
-        this.executeCommand(Inigo.generatePaddingCommand());
+        this._executeCommand(Inigo.generatePaddingCommand());
     }
 
     _processCommandParameters(commandKey, parameters) {

@@ -80,6 +80,10 @@ class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
+    deleteVaultAttribute() {
+        notImplemented();
+    }
+
     erase() {
         Object.keys(this.source).forEach(sourceKey => {
             this.source[sourceKey] = undefined;
