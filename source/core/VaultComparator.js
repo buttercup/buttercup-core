@@ -38,14 +38,16 @@ function calculateCommonRecentCommand(historyA, historyB) {
  *        is found, or the command differences as two arrays
  */
 function calculateHistoryDifferences(historyA, historyB) {
-    const commonIndexes = calculateCommonRecentCommand(historyA, historyB);
+    const workingA = [...historyA];
+    const workingB = [...historyB];
+    const commonIndexes = calculateCommonRecentCommand(workingA, workingB);
     if (commonIndexes === null) {
         return null;
     }
     return {
-        original: historyA.splice(commonIndexes.a + 1, historyA.length),
-        secondary: historyB.splice(commonIndexes.b + 1, historyB.length),
-        common: historyA
+        original: workingA.splice(commonIndexes.a + 1, workingA.length),
+        secondary: workingB.splice(commonIndexes.b + 1, workingB.length),
+        common: workingA
     };
 }
 
@@ -87,7 +89,7 @@ function different(object1, object2) {
         if (object1 === null && object2 === null) {
             return false;
         }
-        let allKeys = dedupe(Object.keys(object1).concat(Object.keys(object2))),
+        let allKeys = dedupe([...Object.keys(object1), ...Object.keys(object2)]),
             isMissingAKey = allKeys.some(function(key) {
                 return !(object1.hasOwnProperty(key) && object2.hasOwnProperty(key));
             });
@@ -141,6 +143,9 @@ class VaultComparator {
         // ignore the IDs
         delete objA.id;
         delete objB.id;
+        // ignore facade tags
+        delete objA._tag;
+        delete objB._tag;
         return different(objA, objB);
     }
 }
