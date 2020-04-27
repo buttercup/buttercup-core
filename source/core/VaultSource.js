@@ -40,17 +40,18 @@ class VaultSource extends EventEmitter {
             }
             credentials = `v1\n${sourceCredentials}\n${archiveCredentials}`;
         }
-        const { id, name, type, colour = DEFAULT_COLOUR, order = DEFAULT_ORDER } = target;
+        const { id, name, type, colour = DEFAULT_COLOUR, order = DEFAULT_ORDER, meta = {} } = target;
         return new VaultSource(name, type, credentials, {
             id,
             colour,
-            order
+            order,
+            meta
         });
     }
 
     constructor(name, type, credentialsString, config = {}) {
         super();
-        const { colour = DEFAULT_COLOUR, id = getUniqueID(), order = DEFAULT_ORDER } = config;
+        const { colour = DEFAULT_COLOUR, id = getUniqueID(), order = DEFAULT_ORDER, meta = {} } = config;
         // Queue for managing state transitions
         this._queue = new ChannelQueue();
         // Credentials state and status go hand-in-hand:
@@ -68,6 +69,7 @@ class VaultSource extends EventEmitter {
         this._type = type;
         this._colour = colour;
         this._order = order;
+        this._meta = meta;
         // Parent reference
         this._vaultManager = null;
     }
@@ -89,6 +91,16 @@ class VaultSource extends EventEmitter {
      */
     get id() {
         return this._id;
+    }
+
+    /**
+     * Meta data
+     * @type {Object}
+     * @memberof VaultSource
+     * @readonly
+     */
+    get meta() {
+        return { ...this._meta };
     }
 
     /**
@@ -176,7 +188,7 @@ class VaultSource extends EventEmitter {
             status: VaultSource.STATUS_LOCKED,
             colour: this.colour,
             order: this.order,
-            meta: {} // deprecated
+            meta: this.meta
         };
         return Promise.resolve()
             .then(() => {
