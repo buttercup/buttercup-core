@@ -28,7 +28,7 @@ class MyButtercupDatasource extends TextDatasource {
         this._clientID = clientID;
         this._clientSecret = clientSecret;
         this._client = null;
-        this._vaultID = vaultID;
+        this._vaultID = vaultID; // The MyButtercup vault identifier
         this._updateID = null;
         this._createNewClient();
         fireInstantiationHandlers("mybuttercup", this);
@@ -51,7 +51,7 @@ class MyButtercupDatasource extends TextDatasource {
      */
     load(credentials) {
         return this._client
-            .fetchUserArchive()
+            .fetchUserVault()
             .then(({ archive, updateID }) => {
                 this._updateID = updateID;
                 this.setContent(archive);
@@ -72,7 +72,7 @@ class MyButtercupDatasource extends TextDatasource {
      */
     localDiffersFromRemote(masterCredentials, archiveHistory) {
         return this.client
-            .fetchUserArchiveDetails()
+            .fetchUserVaultDetails()
             .then(({ updateID }) => {
                 if (updateID !== this._updateID) {
                     return true;

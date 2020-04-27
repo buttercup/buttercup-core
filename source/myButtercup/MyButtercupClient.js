@@ -233,7 +233,7 @@ class MyButtercupClient extends EventEmitter {
      *  vault contents
      * @memberof MyButtercupClient
      */
-    fetchUserArchive() {
+    fetchUserVault() {
         const requestOptions = {
             url: API_OWN_ARCHIVE,
             method: "GET",
@@ -256,7 +256,7 @@ class MyButtercupClient extends EventEmitter {
                     updateID
                 };
             })
-            .catch(err => this._handleRequestFailure(err).then(() => this.fetchUserArchive()))
+            .catch(err => this._handleRequestFailure(err).then(() => this.fetchUserVault()))
             .catch(err => {
                 throw new VError(err, "Failed retrieving vault");
             });
@@ -267,7 +267,7 @@ class MyButtercupClient extends EventEmitter {
      * @returns {Promise.<MyButtercupArchiveDetails>} The details of the vault
      * @memberof MyButtercupClient
      */
-    fetchUserArchiveDetails() {
+    fetchUserVaultDetails() {
         const requestOptions = {
             url: API_OWN_ARCHIVE_DETAILS,
             method: "GET",
@@ -289,7 +289,7 @@ class MyButtercupClient extends EventEmitter {
                     lastUpdate
                 };
             })
-            .catch(err => this._handleRequestFailure(err).then(() => this.fetchUserArchiveDetails()))
+            .catch(err => this._handleRequestFailure(err).then(() => this.fetchUserVaultDetails()))
             .catch(err => {
                 throw new VError(err, "Failed retrieving vault");
             });
