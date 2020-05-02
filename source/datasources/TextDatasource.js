@@ -45,15 +45,6 @@ class TextDatasource extends EventEmitter {
     }
 
     /**
-     * Dehydrate the datasource to encrypted text form
-     * @returns {Promise.<String>}
-     * @memberof TextDataSource
-     */
-    dehydrate() {
-        return this._credentials.toSecureString();
-    }
-
-    /**
      * Get the ID of the datasource
      * ID to uniquely identify the datasource and its parameters
      * @returns {String} A hasn of the datasource (unique ID)
@@ -115,6 +106,7 @@ class TextDatasource extends EventEmitter {
 
     /**
      * Whether or not the datasource supports bypassing remote fetch operations
+     *  (offline support)
      * @returns {Boolean} True if content can be set to bypass fetch operations,
      *  false otherwise
      * @memberof TextDatasource

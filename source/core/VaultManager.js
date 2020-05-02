@@ -313,7 +313,7 @@ class VaultManager extends EventEmitter {
             }
             await Promise.all(
                 updateableSources.map(source =>
-                    source.workspace.update().catch(err => {
+                    source.update().catch(err => {
                         // we ignore auto-update errors
                         console.error(`Failed auto-updating source: ${source.id}`);
                         this.emit("autoUpdateFailed", { source });

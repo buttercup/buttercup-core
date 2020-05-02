@@ -258,7 +258,7 @@ class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.fetchUserVault()))
             .catch(err => {
-                throw new VError(err, "Failed retrieving vault");
+                throw new VError(err, "Could not retrieve vault");
             });
     }
 
@@ -291,7 +291,7 @@ class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.fetchUserVaultDetails()))
             .catch(err => {
-                throw new VError(err, "Failed retrieving vault");
+                throw new VError(err, "Could not retrieve vault details");
             });
     }
 

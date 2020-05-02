@@ -382,8 +382,16 @@ class VaultSource extends EventEmitter {
                         datasource.setContent(offlineContent);
                     }
                     datasource.on("updated", () => {
-                        this.updateCredentialsFromDatasource();
-                        this.emit("updated");
+                        this._waitNonPending()
+                            .then(async () => {
+                                if (this.status === VaultSource.STATUS_UNLOCKED) {
+                                    await this._updateCredentialsFromDatasource();
+                                }
+                                this.emit("updated");
+                            })
+                            .catch(err => {
+                                console.error(`Error updating datasource credentials for vault: ${this.id}`, err);
+                            });
                     });
                     const defaultVault = Vault.createWithDefaults();
                     const loadWork = initialiseRemote
@@ -439,19 +447,6 @@ class VaultSource extends EventEmitter {
         );
     }
 
-    /**
-     * Update the source credentials datasource records from the datasource on
-     * the workspace
-     * @memberof VaultSource
-     */
-    updateCredentialsFromDatasource() {
-        if (this.status !== VaultSource.STATUS_UNLOCKED) {
-            throw new VError(`Failed updating source credentials: Source is not unlocked: ${this.id}`);
-        }
-        const { masterPassword } = getCredentials(this._credentials.id);
-        this._credentials = Credentials.fromCredentials(this._datasource.credentials, masterPassword);
-    }
-
     _applyShares() {
         // @todo
         // this._shares.forEach(share => {
@@ -481,6 +476,27 @@ class VaultSource extends EventEmitter {
                 throw new Error(`Failed updating extracted share: No share found in workspace for ID: ${shareID}`);
             }
             share.updateHistory(extractedShares[shareID]);
+        });
+    }
+
+    async _updateCredentialsFromDatasource() {
+        if (this.status !== VaultSource.STATUS_UNLOCKED) {
+            throw new VError(`Failed updating source credentials: Source is not unlocked: ${this.id}`);
+        }
+        const { masterPassword } = getCredentials(this._credentials.id);
+        this._credentials = Credentials.fromCredentials(this._datasource.credentials, masterPassword);
+    }
+
+    _waitNonPending() {
+        return new Promise(resolve => {
+            if (this.status !== VaultSource.STATUS_PENDING) return resolve();
+            const handleChange = () => {
+                this.removeListener("unlocked", handleChange);
+                this.removeListener("locked", handleChange);
+                resolve();
+            };
+            this.on("unlocked", handleChange);
+            this.on("locked", handleChange);
         });
     }
 }

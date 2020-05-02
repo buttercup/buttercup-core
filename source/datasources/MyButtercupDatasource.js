@@ -21,7 +21,7 @@ class MyButtercupDatasource extends TextDatasource {
     constructor(credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig, password } = credentialData;
+        const { datasource: datasourceConfig } = credentialData;
         const { accessToken, clientID, clientSecret, refreshToken, vaultID } = datasourceConfig;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
@@ -120,6 +120,9 @@ class MyButtercupDatasource extends TextDatasource {
      * @memberof MyButtercupDatasource
      */
     updateTokens(accessToken, refreshToken, updateClientTokens = true) {
+        const { data: credentialData } = getCredentials(this.credentials.id);
+        credentialData.datasource.accessToken = accessToken;
+        credentialData.datasource.refreshToken = refreshToken;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         if (updateClientTokens) {
