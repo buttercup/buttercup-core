@@ -114,6 +114,17 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     /**
+     * Update vault/account insights
+     * @param {Insights} insights Insights to update
+     * @returns {Promise}
+     * @memberof MyButtercupDatasource
+     */
+    async updateInsights(insights) {
+        if (Object.keys(insights).length <= 0) return;
+        await this._client.writeInsights(insights);
+    }
+
+    /**
      * Update the OAuth2 tokens
      * @param {String} accessToken The access token
      * @param {String} refreshToken The refresh token

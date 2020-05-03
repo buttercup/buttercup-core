@@ -3,6 +3,7 @@ const { request } = require("cowl");
 const EventEmitter = require("eventemitter3");
 const { Base64 } = require("js-base64");
 const {
+    API_INSIGHTS,
     API_ORG_USERS,
     API_OWN_ARCHIVE,
     API_OWN_ARCHIVE_DETAILS,
@@ -369,6 +370,58 @@ class MyButtercupClient extends EventEmitter {
             .catch(err => this._handleRequestFailure(err).then(() => this.retrieveUsersListForOrganisation(orgID)))
             .catch(err => {
                 throw new VError(err, "Failed retrieving organisation users");
+            });
+    }
+
+    /**
+     * Write insights to the remote account
+     * @param {Insights} insights The insights data
+     * @returns {Promise}
+     * @memberof MyButtercupClient
+     */
+    async writeInsights(insights) {
+        if (!this.digest) {
+            await this.retrieveDigest();
+        }
+        const {
+            avgPassLen = null,
+            entries = null,
+            groups = null,
+            longPassLen = null,
+            shortPassLen = null,
+            trashEntries = null,
+            trashGroups = null
+        } = insights;
+        const requestOptions = {
+            url: API_INSIGHTS,
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                insights: {
+                    avgPassLen,
+                    entries,
+                    groups,
+                    longPassLen,
+                    shortPassLen,
+                    trashEntries,
+                    trashGroups
+                },
+                vaultID: this.digest.archive_id
+            })
+        };
+        return this.request(requestOptions)
+            .then(resp => {
+                const { data: payload } = resp;
+                if (payload.status !== "ok") {
+                    throw new Error("Invalid insights update response");
+                }
+            })
+            .catch(err => this._handleRequestFailure(err).then(() => this.writeInsights(insights)))
+            .catch(err => {
+                throw new VError(err, "Failed updating vault/account insights");
             });
     }
 

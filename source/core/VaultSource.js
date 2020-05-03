@@ -13,6 +13,7 @@ const {
 const { credentialsToDatasource } = require("../datasources/register.js");
 const { initialiseShares } = require("../myButtercup/sharing.js");
 const VaultComparator = require("./VaultComparator.js");
+const { generateVaultInsights } = require("../insight/vault.js");
 
 const DEFAULT_COLOUR = "#000000";
 const DEFAULT_ORDER = 1000;
@@ -332,6 +333,7 @@ class VaultSource extends EventEmitter {
             }
             await this._datasource.save(this._vault.format.history, this._credentials);
             this._vault.format.dirty = false;
+            await this._updateInsights();
         }, /* stack */ "saving");
     }
 
@@ -344,13 +346,11 @@ class VaultSource extends EventEmitter {
      * @memberof VaultSource
      */
     async write() {
-        await this._enqueueStateChange(
-            () =>
-                this._datasource.save(this._vault.format.history, this._credentials).then(() => {
-                    this._vault.format.dirty = false;
-                }),
-            /* stack */ "saving"
-        );
+        await this._enqueueStateChange(async () => {
+            await this._datasource.save(this._vault.format.history, this._credentials);
+            this._vault.format.dirty = false;
+            await this._updateInsights();
+        }, /* stack */ "saving");
     }
 
     async unlock(vaultCredentials, config = {}) {
@@ -485,6 +485,15 @@ class VaultSource extends EventEmitter {
         }
         const { masterPassword } = getCredentials(this._credentials.id);
         this._credentials = Credentials.fromCredentials(this._datasource.credentials, masterPassword);
+    }
+
+    async _updateInsights() {
+        if (this.status !== VaultSource.STATUS_UNLOCKED) {
+            throw new VError(`Failed updating vault insights: Source is not unlocked: ${this.id}`);
+        }
+        if (!this._datasource.updateInsights) return;
+        const insights = generateVaultInsights(this.vault);
+        await this._datasource.updateInsights(insights);
     }
 
     _waitNonPending() {

@@ -18,7 +18,6 @@ class WebDAVDatasource extends TextDatasource {
         const { data: credentialData } = getCredentials(credentials.id);
         const { datasource: datasourceConfig } = credentialData;
         const { endpoint, password, path, username } = datasourceConfig;
-        console.log("UNLOCK", { credentialData, datasourceConfig, endpoint, password, path, username });
         this._path = path;
         const createClient = getSharedAppEnv().getProperty("net/webdav/v1/newClient");
         if (typeof username === "string" && typeof password === "string") {
