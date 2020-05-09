@@ -1,0 +1,11 @@
+{
+    "include": ["./source/node/**/*"],
+
+    "compilerOptions": {
+        "allowJs": true,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "outDir": "dist",
+        "outFile": "dist/index.d.ts"
+    }
+}
