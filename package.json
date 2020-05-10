@@ -3,6 +3,7 @@
   "version": "4.0.0-r02",
   "description": "A NodeJS password vault.",
   "main": "dist/index.node.js",
+  "types": "dist/index.d.ts",
   "contributors": [
     {
       "name": "Perry Mitchell",
@@ -18,6 +19,7 @@
     "build": "run-p build:node build:web",
     "build:node": "babel source --out-dir dist --minified --delete-dir-on-start --verbose",
     "build:node:test": "babel source --out-dir dist --delete-dir-on-start --verbose",
+    "build:types": "./scripts/generate_dts.sh",
     "build:web": "webpack --mode=production",
     "dev": "concurrently -k 'npm run dev:node' 'npm run dev:web'",
     "dev:node": "babel source --out-dir dist --verbose --watch",
@@ -29,7 +31,8 @@
     "generate:docs:node": "jsdoc2md 'source/node/**/*.js' > API.md",
     "generate:docs:web": "jsdoc2md 'source/{web,node}/**/*.js' > API_WEB.md",
     "prepublishOnly": "npm run build",
-    "test": "run-s test:node test:web",
+    "test": "run-s test:node test:web test:format",
+    "test:format": "prettier-check '{source,test}/**/*.js'",
     "test:integration": "npm run build:node:test && mocha -r test/index.js 'test/integration/**/*.spec.js'",
     "test:integration:watch": "nodemon --exec 'npm run test:integration'",
     "test:node": "npm run build:node:test && nyc mocha -r test/index.js 'test/{unit,integration}/**/*.spec.js'",
@@ -121,6 +124,7 @@
     "rimraf": "^3.0.2",
     "sinon": "^9.0.2",
     "sleep-promise": "^8.0.1",
+    "typescript": "^3.8.3",
     "webpack": "^4.42.1",
     "webpack-bundle-analyzer": "^3.5.2",
     "webpack-cli": "^3.3.11"
