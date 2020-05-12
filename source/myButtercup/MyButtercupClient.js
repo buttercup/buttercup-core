@@ -8,6 +8,8 @@ const {
     API_OWN_ARCHIVE,
     API_OWN_ARCHIVE_DETAILS,
     API_OWN_DIGEST,
+    API_OWN_PASS_CHANGE,
+    API_OWN_PASS_CHANGE_VERIFY,
     API_SHARES,
     OAUTH_AUTHORISE_URI,
     OAUTH_REDIRECT_URI,
@@ -202,6 +204,32 @@ class MyButtercupClient extends EventEmitter {
         return this._refreshToken;
     }
 
+    async changePassword(password, passwordToken) {
+        const requestOptions = {
+            url: API_OWN_PASS_CHANGE,
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                password,
+                passwordToken
+            })
+        };
+        return this.request(requestOptions)
+            .then(resp => {
+                const { data } = resp;
+                if (data.status !== "ok") {
+                    throw new Error("Invalid password change status");
+                }
+            })
+            .catch(err => this._handleRequestFailure(err).then(() => this.changePassword(password, passwordToken)))
+            .catch(err => {
+                throw new VError(err, "Failed changing password");
+            });
+    }
+
     /**
      * Fetch user shares
      * @param {String[]} ids Share IDs
@@ -370,6 +398,37 @@ class MyButtercupClient extends EventEmitter {
             .catch(err => this._handleRequestFailure(err).then(() => this.retrieveUsersListForOrganisation(orgID)))
             .catch(err => {
                 throw new VError(err, "Failed retrieving organisation users");
+            });
+    }
+
+    /**
+     * Test if a password token is valid
+     * @param {String} passwordToken The password change token
+     * @returns {Promise}
+     * @memberof MyButtercupClient
+     */
+    async testPasswordChange(passwordToken) {
+        const requestOptions = {
+            url: API_OWN_PASS_CHANGE_VERIFY,
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                passwordToken
+            })
+        };
+        return this.request(requestOptions)
+            .then(resp => {
+                const { data } = resp;
+                if (data.status !== "ok") {
+                    throw new Error("Password change not possible: Potentially invalid account state or token");
+                }
+            })
+            .catch(err => this._handleRequestFailure(err).then(() => this.testPasswordChange(passwordToken)))
+            .catch(err => {
+                throw new VError(err, "Failed checking password-change availability");
             });
     }
 

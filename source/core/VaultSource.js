@@ -156,11 +156,55 @@ class VaultSource extends EventEmitter {
      * Change the master vault password
      * @param {String} oldPassword The original/current password
      * @param {String} newPassword The new password to change to
+     * @param {Object=} meta Optional metadata
      * @returns {Promise}
      * @memberof VaultSource
      */
-    async changeMasterPassword(oldPassword, newPassword) {
-        // @todo
+    async changeMasterPassword(oldPassword, newPassword, meta = {}) {
+        if (oldPassword === newPassword) {
+            throw new Error("New password cannot be the same as the previous one");
+        } else if (!newPassword) {
+            throw new Error("New password must be specified");
+        }
+        const datasourceSupportsChange = this._datasource.supportsChangePassword();
+        const newMasterCreds = new Credentials(meta, newPassword);
+        let wasLocked = false;
+        if (this.status !== VaultSource.STATUS_UNLOCKED) {
+            wasLocked = true;
+            // Locked, so unlock
+            await this.unlock(Credentials.fromPassword(oldPassword));
+        } else {
+            // Unlocked, so check password..
+            const credentials = getCredentials(this._credentials.id);
+            if (credentials.masterPassword !== oldPassword) {
+                throw new Error("Old password does not match current unlocked instance value");
+            }
+            // ..and then update
+            // await this.workspace.mergeFromRemote();
+            await this.update();
+        }
+        // Check datasource is ready
+        if (datasourceSupportsChange) {
+            const isReady = await this._datasource.changePassword(newMasterCreds, /* preflight: */ true);
+            if (!isReady) {
+                throw new Error("Datasource not capable of changing password at this time");
+            }
+        }
+        // Clear offline cache
+        await storeSourceOfflineCopy(this._vaultManager._cacheStorage, this.id, null);
+        // Change password
+        const newCredentials = Credentials.fromCredentials(this._credentials, oldPassword);
+        const newCreds = getCredentials(newCredentials.id);
+        newCreds.masterPassword = newPassword;
+        await this._updateVaultCredentials(newCredentials);
+        // Re-lock if it was locked earlier
+        if (wasLocked) {
+            await this.lock();
+        }
+        // Change remote if supported
+        if (datasourceSupportsChange) {
+            await this._datasource.changePassword(newMasterCreds, /* preflight: */ false);
+        }
     }
 
     canBeUpdated() {
@@ -337,22 +381,6 @@ class VaultSource extends EventEmitter {
         }, /* stack */ "saving");
     }
 
-    /**
-     * Write the vault to the remote
-     * - This does not perform any merging or sync checks, but simply
-     * writes the vault contents to the remote, overwriting whatever
-     * was there before.
-     * @returns {Promise} A promise that resolves when saving has completed
-     * @memberof VaultSource
-     */
-    async write() {
-        await this._enqueueStateChange(async () => {
-            await this._datasource.save(this._vault.format.history, this._credentials);
-            this._vault.format.dirty = false;
-            await this._updateInsights();
-        }, /* stack */ "saving");
-    }
-
     async unlock(vaultCredentials, config = {}) {
         if (!Credentials.isCredentials(vaultCredentials)) {
             throw new VError(`Failed unlocking source: Invalid credentials passed to source: ${this.id}`);
@@ -447,6 +475,22 @@ class VaultSource extends EventEmitter {
         );
     }
 
+    /**
+     * Write the vault to the remote
+     * - This does not perform any merging or sync checks, but simply
+     * writes the vault contents to the remote, overwriting whatever
+     * was there before.
+     * @returns {Promise} A promise that resolves when saving has completed
+     * @memberof VaultSource
+     */
+    async write() {
+        await this._enqueueStateChange(async () => {
+            await this._datasource.save(this._vault.format.history, this._credentials);
+            this._vault.format.dirty = false;
+            await this._updateInsights();
+        }, /* stack */ "saving");
+    }
+
     _applyShares() {
         // @todo
         // this._shares.forEach(share => {
@@ -496,6 +540,20 @@ class VaultSource extends EventEmitter {
         await this._datasource.updateInsights(insights);
     }
 
+    async _updateVaultCredentials(newCredentials) {
+        if (this.status !== VaultSource.STATUS_UNLOCKED) {
+            throw new VError(`Failed updating vault credentials: Source is not unlocked: ${this.id}`);
+        }
+        this._credentials = newCredentials;
+        await this.write();
+    }
+
+    /**
+     * Wait for the source to enter a non-pending state
+     * @protected
+     * @returns {Promise}
+     * @memberof VaultSource
+     */
     _waitNonPending() {
         return new Promise(resolve => {
             if (this.status !== VaultSource.STATUS_PENDING) return resolve();

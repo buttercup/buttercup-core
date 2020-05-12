@@ -44,6 +44,38 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     /**
+     * Change the master password for the vault
+     * (Called with a preflight check to ensure that the datasource is
+     * ready to change - if not ready, the method will return false)
+     * @param {*} newCredentials
+     * @param {*} preflight
+     * @returns {Promise.<Boolean|undefined>} A promise that resolves
+     *  with a boolean value during preflight, or with simply undefined
+     *  if performing the final change action.
+     * @example
+     *  const creds = Credentials.fromPassword("test");
+     *  const isReady = await tds.changePassword(
+     *      creds,
+     *      true // preflight
+     *  );
+     *  if (!isReady) {
+     *      throw new Error("Datasource unable to change password");
+     *  }
+     *  await tds.changePassword(creds, false);
+     */
+    async changePassword(newCredentials, preflight) {
+        const {
+            data: { passwordToken },
+            masterPassword
+        } = getCredentials(newCredentials.id);
+        if (preflight) {
+            await this._client.testPasswordChange(passwordToken);
+            return true;
+        }
+        await this._client.changePassword(masterPassword, passwordToken);
+    }
+
+    /**
      * Load vault history from remote
      * @param {Credentials} credentials The archive credentials
      * @returns {Promise.<String[]>} Array of history lines
@@ -111,6 +143,15 @@ class MyButtercupDatasource extends TextDatasource {
                 // @todo handle update ID clash/merge
                 throw new VError(err, "Failed uploading new vault contents");
             });
+    }
+
+    /**
+     * Whether or not the datasource supports the changing of the master password
+     * @returns {Boolean} True if it supports changing the master password
+     * @memberof WebDAVDatasource
+     */
+    supportsChangePassword() {
+        return true;
     }
 
     /**

@@ -105,6 +105,15 @@ class TextDatasource extends EventEmitter {
     }
 
     /**
+     * Whether or not the datasource supports the changing of the master password
+     * @returns {Boolean} True if the datasource supports password changing
+     * @memberof TextDataSource
+     */
+    supportsPasswordChange() {
+        return false;
+    }
+
+    /**
      * Whether or not the datasource supports bypassing remote fetch operations
      *  (offline support)
      * @returns {Boolean} True if content can be set to bypass fetch operations,

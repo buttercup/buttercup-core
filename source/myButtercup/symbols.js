@@ -10,6 +10,8 @@ const API_OWN_ARCHIVE = joinURL(ROOT_API, "/own/archive");
 const API_OWN_ARCHIVE_DETAILS = joinURL(ROOT_API, "/own/archive/details");
 const API_OWN_DIGEST = joinURL(ROOT_API, "/own/digest");
 const API_OWN_ORGS = joinURL(ROOT_API, "/own/orgs");
+const API_OWN_PASS_CHANGE = joinURL(ROOT_API, "/own/password");
+const API_OWN_PASS_CHANGE_VERIFY = joinURL(ROOT_API, "/own/password/preflight");
 const API_SHARES = joinURL(ROOT_API, "/shares");
 
 const OAUTH_AUTHORISE_URI = `${ROOT_URL}/oauth/authorize`;
@@ -23,6 +25,8 @@ module.exports = {
     API_OWN_ARCHIVE_DETAILS,
     API_OWN_DIGEST,
     API_OWN_ORGS,
+    API_OWN_PASS_CHANGE,
+    API_OWN_PASS_CHANGE_VERIFY,
     API_SHARES,
     OAUTH_AUTHORISE_URI,
     OAUTH_REDIRECT_URI,
