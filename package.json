@@ -16,12 +16,12 @@
   ],
   "scripts": {
     "analyse": "ANALYSE=bundle npm run build",
-    "build": "run-p build:node build:web",
-    "build:node": "run-s build:node:babel build:types",
-    "build:node:babel": "babel source --out-dir dist --minified --delete-dir-on-start --verbose",
+    "build": "run-s clean build:node build:web build:types",
+    "build:node": "babel source --out-dir dist --minified --delete-dir-on-start --verbose",
     "build:node:test": "babel source --out-dir dist --delete-dir-on-start --verbose",
     "build:types": "./scripts/generate_dts.sh",
     "build:web": "webpack --mode=production",
+    "clean": "rimraf ./dist && rimraf ./web",
     "dev": "concurrently -k 'npm run dev:node' 'npm run dev:web'",
     "dev:node": "babel source --out-dir dist --verbose --watch",
     "dev:web": "webpack --mode=development --watch",
@@ -46,7 +46,7 @@
     "dist/**/*.js",
     "dist/**/*.d.ts",
     "web/**/*.js",
-    "web/**/*.d.js",
+    "web/**/*.d.ts",
     "*.md"
   ],
   "lint-staged": {
