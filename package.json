@@ -44,6 +44,7 @@
   },
   "files": [
     "dist/**/*.js",
+    "dist/**/*.ts",
     "web/**/*.js",
     "*.md"
   ],
