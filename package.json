@@ -44,8 +44,9 @@
   },
   "files": [
     "dist/**/*.js",
-    "dist/**/*.ts",
+    "dist/**/*.d.ts",
     "web/**/*.js",
+    "web/**/*.d.js",
     "*.md"
   ],
   "lint-staged": {
