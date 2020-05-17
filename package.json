@@ -17,7 +17,8 @@
   "scripts": {
     "analyse": "ANALYSE=bundle npm run build",
     "build": "run-p build:node build:web",
-    "build:node": "babel source --out-dir dist --minified --delete-dir-on-start --verbose",
+    "build:node": "run-s build:node:babel build:types",
+    "build:node:babel": "babel source --out-dir dist --minified --delete-dir-on-start --verbose",
     "build:node:test": "babel source --out-dir dist --delete-dir-on-start --verbose",
     "build:types": "./scripts/generate_dts.sh",
     "build:web": "webpack --mode=production",
@@ -30,7 +31,7 @@
     "generate:docs": "run-p generate:docs:node generate:docs:web",
     "generate:docs:node": "jsdoc2md 'source/node/**/*.js' > API.md",
     "generate:docs:web": "jsdoc2md 'source/{web,node}/**/*.js' > API_WEB.md",
-    "prepublishOnly": "npm run build && npm run build:types",
+    "prepublishOnly": "run-s build",
     "test": "run-s test:node test:web test:format",
     "test:format": "prettier-check '{source,test}/**/*.js'",
     "test:integration": "npm run build:node:test && mocha -r test/index.js 'test/integration/**/*.spec.js'",
