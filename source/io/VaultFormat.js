@@ -30,7 +30,7 @@ class VaultFormat extends EventEmitter {
     history = [];
     source = null;
 
-    constructor(source) {
+    constructor(source = {}) {
         super();
         this.source = source;
     }

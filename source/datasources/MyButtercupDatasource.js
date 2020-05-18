@@ -78,7 +78,8 @@ class MyButtercupDatasource extends TextDatasource {
     /**
      * Load vault history from remote
      * @param {Credentials} credentials The archive credentials
-     * @returns {Promise.<String[]>} Array of history lines
+     * @returns {Promise.<LoadedVaultData>} Promise which resolves with
+     *  vault data
      * @memberof MyButtercupDatasource
      */
     load(credentials) {
@@ -110,7 +111,7 @@ class MyButtercupDatasource extends TextDatasource {
                     return true;
                 }
                 this.setContent("");
-                return this.load(masterCredentials).then(incomingHistory => {
+                return this.load(masterCredentials).then(({ Format, history: incomingHistory }) => {
                     const diffs = VaultComparator.calculateHistoryDifferences(archiveHistory, incomingHistory);
                     if (!diffs) {
                         return true;

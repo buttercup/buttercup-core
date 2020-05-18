@@ -287,7 +287,7 @@ class VaultSource extends EventEmitter {
         }
         return this._datasource
             .load(this._credentials)
-            .then(history => Vault.createFromHistory(history))
+            .then(({ Format, history }) => Vault.createFromHistory(history, Format))
             .then(loadedItem => {
                 const comparator = new VaultComparator(this._vault, loadedItem);
                 return comparator.vaultsDiffer();
@@ -335,12 +335,12 @@ class VaultSource extends EventEmitter {
             // Only clear if not a TextDatasource
             this._datasource.setContent("");
         }
-        const history = await this._datasource.load(this._credentials);
-        const stagedVault = Vault.createFromHistory(history);
+        const { Format, history } = await this._datasource.load(this._credentials);
+        const stagedVault = Vault.createFromHistory(history, Format);
         const comparator = new VaultComparator(this._vault, stagedVault);
         const differences = comparator.calculateDifferences();
         // get format
-        const Format = this._vault.format.getFormat();
+        // const Format = this._vault.format.getFormat();
         // only strip if there are multiple updates
         const stripDestructive = differences.secondary.length > 0;
         const newHistoryMain = stripDestructive
@@ -350,7 +350,7 @@ class VaultSource extends EventEmitter {
             ? Format.prepareHistoryForMerge(differences.secondary)
             : differences.secondary;
         const base = differences.common;
-        const newVault = new Vault();
+        const newVault = new Vault(Format);
         newVault.format.clear();
         // merge all history and execute on new vault
         // @todo use format to do this
@@ -426,8 +426,8 @@ class VaultSource extends EventEmitter {
                         ? datasource.save(defaultVault.format.history, credentials).then(() => {
                               this._vault = defaultVault;
                           })
-                        : datasource.load(credentials).then(decryptedContent => {
-                              this._vault = Vault.createFromHistory(decryptedContent);
+                        : datasource.load(credentials).then(({ Format, history }) => {
+                              this._vault = Vault.createFromHistory(history, Format);
                           });
                     return loadWork
                         .then(() => {

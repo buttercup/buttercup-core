@@ -6,6 +6,13 @@ const { detectFormat, getDefaultFormat } = require("../io/formatRouter.js");
 const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
 
 /**
+ * @typedef {Object} LoadedVaultData
+ * @property {VaultFormat} Format The vault format class that was detected
+ *  when reading encrypted vault contents
+ * @property {Array.<String>} history Decrypted vault data
+ */
+
+/**
  * Datasource for text input and output
  * @memberof module:Buttercup
  */
@@ -65,7 +72,7 @@ class TextDatasource extends EventEmitter {
     /**
      * Load from the stored content using a password to decrypt
      * @param {Credentials} credentials The password or Credentials instance to decrypt with
-     * @returns {Promise.<Array.<String>>} A promise that resolves with decrypted history
+     * @returns {Promise.<LoadedVaultData>} A promise that resolves with decrypted history
      * @throws {Error} Rejects if content is empty
      * @memberof TextDatasource
      */
@@ -76,7 +83,11 @@ class TextDatasource extends EventEmitter {
         if (credentialsAllowsPurpose(credentials.id, Credentials.PURPOSE_DECRYPT_VAULT) !== true) {
             return Promise.reject(new Error("Provided credentials don't allow vault decryption"));
         }
-        return detectFormat(this._content).parseEncrypted(this._content, credentials);
+        const Format = detectFormat(this._content);
+        return Format.parseEncrypted(this._content, credentials).then(history => ({
+            Format,
+            history
+        }));
     }
 
     /**

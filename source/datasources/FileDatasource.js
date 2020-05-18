@@ -39,7 +39,7 @@ class FileDatasource extends TextDatasource {
     /**
      * Load from the filename specified in the constructor using a password
      * @param {Credentials} credentials The credentials for decryption
-     * @returns {Promise<Array.<String>>} A promise resolving with archive history
+     * @returns {Promise.<LoadedVaultData>} A promise resolving with archive history
      * @memberof FileDatasource
      */
     load(credentials) {

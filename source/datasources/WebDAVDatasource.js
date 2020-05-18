@@ -53,7 +53,7 @@ class WebDAVDatasource extends TextDatasource {
     /**
      * Load archive history from the datasource
      * @param {Credentials} credentials The credentials for archive decryption
-     * @returns {Promise.<Array.<String>>} A promise resolving archive history
+     * @returns {Promise.<LoadedVaultData>} A promise resolving archive history
      * @memberof WebDAVDatasource
      */
     load(credentials) {

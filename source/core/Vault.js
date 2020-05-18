@@ -8,12 +8,13 @@ class Vault extends EventEmitter {
     /**
      * Create a new archive instance from a list of commands (history)
      * @param {Array.<String>} history The command list
+     * @param {VaultFormat=} format Optional vault format override
      * @returns {Vault} The vault instance
      * @static
      * @memberof Vault
      */
-    static createFromHistory(history) {
-        const vault = new Vault();
+    static createFromHistory(history, format = getDefaultFormat()) {
+        const vault = new Vault(format);
         vault.format.erase();
         vault.format.execute(history);
         vault.format.dirty = false;
@@ -50,6 +51,12 @@ class Vault extends EventEmitter {
         return "Vault";
     }
 
+    /**
+     * Create a new Vault instance
+     * @param {VaultFormat=} Format Optional vault format specification.
+     *  Will use the default system format (recommended) if not
+     *  specified.
+     */
     constructor(Format = getDefaultFormat()) {
         super();
         this.format = new Format(this._dataset);

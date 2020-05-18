@@ -17,7 +17,9 @@ describe("reading old vaults", function() {
                     PASSWORD
                 );
                 const fds = new FileDatasource(creds);
-                return fds.load(Credentials.fromPassword(PASSWORD)).then(Vault.createFromHistory);
+                return fds
+                    .load(Credentials.fromPassword(PASSWORD))
+                    .then(({ Format, history }) => Vault.createFromHistory(history, Format));
             };
 
             it("can be opened", function() {

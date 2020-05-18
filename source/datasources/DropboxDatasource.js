@@ -29,7 +29,7 @@ class DropboxDatasource extends TextDatasource {
     /**
      * Load an archive from the datasource
      * @param {Credentials} credentials The credentials for decryption
-     * @returns {Promise.<Array.<String>>} A promise that resolves archive history
+     * @returns {Promise.<LoadedVaultData>} A promise that resolves archive history
      * @memberof DropboxDatasource
      */
     load(credentials) {
