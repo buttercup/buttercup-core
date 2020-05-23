@@ -76,6 +76,8 @@ const ENTRY_TYPES = {
     }
 };
 
+const FACADE_VERSION = 2;
+
 /**
  * Note type entry field value
  * @type {String}
@@ -134,6 +136,7 @@ module.exports = {
     ENTRY_TYPE_SSHKEY,
     ENTRY_TYPE_WEBSITE,
     ENTRY_TYPES,
+    FACADE_VERSION,
     FIELD_VALUE_TYPE_NOTE,
     FIELD_VALUE_TYPE_OTP,
     FIELD_VALUE_TYPE_PASSWORD,

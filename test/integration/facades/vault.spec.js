@@ -1,8 +1,9 @@
 const Vault = require("../../../dist/core/Vault.js");
 const Entry = require("../../../dist/core/Entry.js");
 const Group = require("../../../dist/core/Group.js");
-const { consumeVaultFacade, createVaultFacade } = require("../../../dist/facades/vault.js");
+const { consumeVaultFacade, createGroupFacade, createVaultFacade } = require("../../../dist/facades/vault.js");
 const { createEntryFacade } = require("../../../dist/facades/entry.js");
+const { createFieldDescriptor } = require("../../../dist/facades/tools.js");
 
 describe("vault", function() {
     beforeEach(function() {
@@ -92,6 +93,37 @@ describe("vault", function() {
             facade.groups.find(groupFacade => groupFacade.id === bottomGroupID).parentID = "0";
             consumeVaultFacade(this.vault, facade);
             expect(this.vault.getGroups().find(g => g.id === bottomGroupID)).to.be.an.instanceOf(Group);
+        });
+
+        describe("using ID placeholders", function() {
+            beforeEach(function() {
+                const facade = createVaultFacade(this.vault);
+                const newGroup1 = createGroupFacade();
+                newGroup1.title = "New 1";
+                newGroup1.id = "1";
+                const newGroup2 = createGroupFacade(null, "1");
+                newGroup2.title = "New 2";
+                newGroup2.id = "2";
+                facade.groups.push(newGroup2, newGroup1);
+                const newEntry = createEntryFacade();
+                newEntry.id = "3";
+                newEntry.parentID = "2";
+                const field = createFieldDescriptor(null, "Title", "property", "title");
+                field.value = "Test entry 3";
+                newEntry.fields.push(field);
+                facade.entries.push(newEntry);
+                consumeVaultFacade(this.vault, facade);
+            });
+
+            it("can create new items with relationships", function() {
+                const [parentGroup] = this.vault.findGroupsByTitle("New 1");
+                expect(parentGroup).to.be.an.instanceOf(Group);
+                const [childGroup] = parentGroup.getGroups();
+                expect(childGroup).to.be.an.instanceOf(Group);
+                const [entry] = childGroup.getEntries();
+                expect(entry).to.be.an.instanceOf(Entry);
+                expect(entry.getProperty("title")).to.equal("Test entry 3");
+            });
         });
     });
 });

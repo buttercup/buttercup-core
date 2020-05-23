@@ -116,6 +116,18 @@ function getEntryValueType(entry, propertyName) {
 }
 
 /**
+ * Check if an ID signifies a new instance and not an
+ *  existing one
+ * @param {String|Number} id The ID to check
+ * @returns {Boolean}
+ */
+function idSignifiesNew(id) {
+    if (/^\d+$/.test(id) === false) return false;
+    const numerical = parseInt(id, 10);
+    return !isNaN(numerical) && numerical > 0 && numerical <= 999999;
+}
+
+/**
  * Set the value type attribute of an entry
  * @param {Entry} entry Entry instance
  * @param {String} propertyName The property name
@@ -130,5 +142,6 @@ module.exports = {
     createFieldDescriptor,
     getEntryValue,
     getEntryValueType,
+    idSignifiesNew,
     setEntryValueType
 };
