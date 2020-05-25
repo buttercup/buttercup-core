@@ -4,6 +4,11 @@ const { PERM_MANAGE, PERM_READ, PERM_WRITE } = require("../tools/permissions.js"
  * Base vault member class (for Entry, Group etc.)
  */
 class VaultItem {
+    /**
+     * Reference to the containing vault
+     * @protected
+     * @memberof VaultItem
+     */
     _vault = null;
 
     /**
@@ -84,6 +89,11 @@ class VaultItem {
         this._source.permissions = this._source.permissions.filter(current => current !== perm);
     }
 
+    /**
+     * Clean up all of the data in the vault item
+     * @protected
+     * @memberof VaultItem
+     */
     _cleanUp() {
         this._vault = null;
         this._source = null;

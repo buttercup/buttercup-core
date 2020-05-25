@@ -6,11 +6,25 @@ const { findGroupByID, findGroupsByTitle } = require("../search/groups.js");
 const { findEntriesByProperty, findEntryByID } = require("../search/entries.js");
 const { findGroupContainingGroupID } = require("../tools/rawVaultSearch.js");
 
+/**
+ * Group class - contains Entrys
+ * @augments VaultItem
+ */
 class Group extends VaultItem {
     static Attribute = Object.freeze({
         Role: "bc_group_role"
     });
 
+    /**
+     * Create a new Group instance within a vault and maybe a group
+     * @param {Vault} vault The vault to add the group to
+     * @param {String=} parentID Optional parent group ID. If no
+     *  value is specified the group is added to the root of the
+     *  vault.
+     * @returns {Group}
+     * @memberof Group
+     * @static
+     */
     static createNew(vault, parentID = "0") {
         if (parentID !== "0") {
             // check if group is trash/in-trash
@@ -26,6 +40,12 @@ class Group extends VaultItem {
         return vault.findGroupByID(id);
     }
 
+    /**
+     * The type of the instance
+     * @type {String}
+     * @readonly
+     * @memberof Group
+     */
     get type() {
         return "Group";
     }

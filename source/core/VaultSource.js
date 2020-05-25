@@ -31,6 +31,13 @@ class VaultSource extends EventEmitter {
     static STATUS_PENDING = "pending";
     static STATUS_UNLOCKED = "unlocked";
 
+    /**
+     * Rehydrate the vault source from a dehydrated state
+     * @param {String} dehydratedString The dehydrated form of the vault source
+     * @returns {VaultSource} A rehydrated instance
+     * @memberof VaultSource
+     * @static
+     */
     static rehydrate(dehydratedString) {
         const target = JSON.parse(dehydratedString);
         let credentials = target.credentials;
@@ -207,6 +214,11 @@ class VaultSource extends EventEmitter {
         }
     }
 
+    /**
+     * Check if the vault source can be updated
+     * @returns {Boolean}
+     * @memberof VaultSource
+     */
     canBeUpdated() {
         return this.status === VaultSource.STATUS_UNLOCKED && this._vault.format.dirty === false;
     }

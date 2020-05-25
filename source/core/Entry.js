@@ -3,12 +3,27 @@ const { generateUUID } = require("../tools/uuid.js");
 const { getEntryURLs } = require("../tools/entry.js");
 const { findEntryByID, findGroupContainingEntryID } = require("../tools/rawVaultSearch.js");
 
+/**
+ * Entry class - some secret item, login or perhaps
+ * even a credit card
+ * @augments VaultItem
+ */
 class Entry extends VaultItem {
     static Attributes = Object.freeze({
         FacadeType: "BC_ENTRY_FACADE_TYPE",
         FieldTypePrefix: "BC_ENTRY_FIELD_TYPE:"
     });
 
+    /**
+     * Create a new Entry instance within a vault
+     *  and group
+     * @param {Vault} vault The target vault instance
+     * @param {String} parentGroupID The target group to
+     *  create the entry in (cannot be vault-level)
+     * @returns {Entry}
+     * @memberof Entry
+     * @static
+     */
     static createNew(vault, parentGroupID) {
         // Check if group is trash/in-trash
         const group = vault.findGroupByID(parentGroupID);
