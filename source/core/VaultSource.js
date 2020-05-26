@@ -439,6 +439,10 @@ class VaultSource extends EventEmitter {
                                     datasource._content
                                 );
                             }
+                            if (loadOfflineCopy) {
+                                // Flag the format as read-only
+                                this.vault.format._readOnly = true;
+                            }
                         })
                         .then(() => {
                             this._status = VaultSource.STATUS_UNLOCKED;

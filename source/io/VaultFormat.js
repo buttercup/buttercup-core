@@ -28,7 +28,12 @@ class VaultFormat extends EventEmitter {
 
     dirty = false;
     history = [];
+    _readOnly = false;
     source = null;
+
+    get readOnly() {
+        return this._readOnly;
+    }
 
     constructor(source = {}) {
         super();

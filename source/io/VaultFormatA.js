@@ -227,6 +227,9 @@ class VaultFormatA extends VaultFormat {
     }
 
     execute(commandOrCommands) {
+        if (this.readOnly) {
+            throw new Error("Format is in read-only mode");
+        }
         const commands = Array.isArray(commandOrCommands) ? commandOrCommands : [commandOrCommands];
         commands.forEach(command => this._executeCommand(command));
         const lastCommand = commands[commands.length - 1];

@@ -44,7 +44,7 @@ class Vault extends EventEmitter {
     }
 
     get readOnly() {
-        return false;
+        return this.format.readOnly;
     }
 
     get type() {
