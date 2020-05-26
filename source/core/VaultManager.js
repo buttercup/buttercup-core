@@ -9,7 +9,26 @@ const NOOP = () => {};
 const STORAGE_KEY_PREFIX = "bcup_vaultmgr_";
 const STORAGE_KEY_PREFIX_TEST = /^bcup_vaultmgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
+/**
+ * @typedef {Object} VaultManagerOptions
+ * @property {Boolean=} autoUpdate Whether or not to auto update unlocked vaults
+ * @property {Number=} autoUpdateDelay Delay in milliseconds between auto-update
+ *  checks
+ * @property {StorageInterface=} cacheStorage Storage adapter for storing
+ *  cached vault contents for offline access
+ * @property {StorageInterface=} sourceStorage Storage adapter for storing
+ *  managed vault details so that they can be rehydrated upon startup
+ */
+
+/**
+ * Vault manager, to manage vault sources and their vaults
+ * @augments EventEmitter
+ */
 class VaultManager extends EventEmitter {
+    /**
+     * Construct a new VaultManager
+     * @param {VaultManagerOptions=} opts Configuration options
+     */
     constructor(opts = {}) {
         super();
         const {
@@ -28,10 +47,22 @@ class VaultManager extends EventEmitter {
         this._initialised = false;
     }
 
+    /**
+     * Array of vault sources
+     * @type {VaultSource[]}
+     * @readonly
+     * @memberof VaultManager
+     */
     get sources() {
         return [...this._sources];
     }
 
+    /**
+     * Array of unlocked vault sources
+     * @type {VaultSource[]}
+     * @readonly
+     * @memberof VaultManager
+     */
     get unlockedSources() {
         return this._sources.filter(source => source.status === VaultSource.STATUS_UNLOCKED);
     }

@@ -4,6 +4,10 @@ const { findGroupByID, findGroupsByTitle } = require("../search/groups.js");
 const { findEntriesByProperty, findEntryByID } = require("../search/entries.js");
 const Group = require("./Group.js");
 
+/**
+ * Vault class - Contains Groups and Entrys
+ * @augments EventEmitter
+ */
 class Vault extends EventEmitter {
     /**
      * Create a new archive instance from a list of commands (history)
@@ -37,16 +41,41 @@ class Vault extends EventEmitter {
         return vault;
     }
 
+    /**
+     * Object form of the vault - The "dataset"
+     *  (do not use directly)
+     * @protected
+     * @memberof Vault
+     */
     _dataset = {};
 
+    /**
+     * The ID of the Vault
+     * @type {String}
+     * @readonly
+     * @memberof Vault
+     */
     get id() {
         return this._dataset.id;
     }
 
+    /**
+     * Whether the Vault is in read-only mode
+     *  or not
+     * @type {Boolean}
+     * @readonly
+     * @memberof Vault
+     */
     get readOnly() {
         return this.format.readOnly;
     }
 
+    /**
+     * The type of the instance
+     * @type {String}
+     * @readonly
+     * @memberof Vault
+     */
     get type() {
         return "Vault";
     }
