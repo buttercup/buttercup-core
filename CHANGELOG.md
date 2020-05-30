@@ -1,5 +1,28 @@
 # Core library changelog
 
+## v4.0.0
+_2020-05-30_
+
+ * **Major release** (breaking changes)
+   * Secure credentials handling
+   * Stable **My Buttercup** client and datasource
+   * Renamed the following structures:
+     * `Archive` to `Vault`
+     * `ArchiveManager` to `VaultManager`
+     * `ArchiveSource` to `VaultSource`
+   * Removed `Workspace`, moving functionality into `VaultSource`
+   * Re-introduced the following libraries back into the core:
+     * `@buttercup/datasources`
+     * `@buttercup/facades`
+     * `@buttercup/credentials`
+     * `@buttercup/signing`
+     * `@buttercup/app-env`
+   * Require `init()` call to initialise the environment (app-env)
+   * Moved **web** export to `buttercup/web`
+   * Added _formats_ to support eventual vault format migrations
+   * Alternate datasource `load()` output, à la `TextDatasource#load`, to output `Format` _and_ `history`
+   * `VaultManager` support for dual storages for cache and vault config
+
 ## v3.0.0
 _2020-03-15_
 

@@ -1,76 +1,33 @@
+## Modules
+
+<dl>
+<dt><a href="#module_Buttercup">Buttercup</a></dt>
+<dd></dd>
+</dl>
+
 ## Classes
 
 <dl>
-<dt><a href="#Archive">Archive</a> ⇐ <code>EventEmitter</code></dt>
-<dd><p>Buttercup Archive</p>
+<dt><a href="#VaultComparator">VaultComparator</a></dt>
+<dd><p>Vault comparison class</p>
 </dd>
-<dt><a href="#ArchiveComparator">ArchiveComparator</a></dt>
-<dd><p>Archive comparison class</p>
-</dd>
-<dt><a href="#ArchiveManager">ArchiveManager</a> ⇐ <code>EventEmitter</code></dt>
-<dd><p>Archive manager class</p>
-</dd>
-<dt><a href="#ArchiveSource">ArchiveSource</a> ⇐ <code>EventEmitter</code></dt>
-<dd><p>Archive source class</p>
-</dd>
-<dt><a href="#ArchiveMember">ArchiveMember</a></dt>
-<dd><p>Base archive member class (for Entry, Group etc.)</p>
-</dd>
-<dt><a href="#Entry">Entry</a> ⇐ <code><a href="#ArchiveMember">ArchiveMember</a></code></dt>
-<dd><p>Entry class implementation
-Entries form the low-level data structures used in Buttercup, and
-are intended to represent logical collections of properties, like
-a login for a website.</p>
-</dd>
-<dt><a href="#EntryFinder">EntryFinder</a></dt>
-<dd><p>Entry searching class</p>
+<dt><a href="#VaultItem">VaultItem</a></dt>
+<dd><p>Base vault member class (for Entry, Group etc.)</p>
 </dd>
 <dt><a href="#Flattener">Flattener</a></dt>
 <dd><p>Flattener class for flattening archive history sets</p>
 </dd>
-<dt><a href="#Group">Group</a> ⇐ <code><a href="#ArchiveMember">ArchiveMember</a></code></dt>
-<dd><p>Group implementation</p>
+<dt><a href="#EntryFinder">EntryFinder</a></dt>
+<dd><p>Entry searching class</p>
 </dd>
-<dt><a href="#InigoCommand">InigoCommand</a></dt>
-<dd><p>Inigo command generator</p>
+<dt><a href="#LocalStorageInterface">LocalStorageInterface</a> ⇐ <code>StorageInterface</code></dt>
+<dd><p>Interface for localStorage</p>
 </dd>
-<dt><a href="#MyButtercupClient">MyButtercupClient</a> ⇐ <code>EventEmitter</code></dt>
-<dd><p>My Buttercup client</p>
-</dd>
-<dt><a href="#Workspace">Workspace</a></dt>
-<dd><p>Workspace class implementation
-Workspaces organise Archives and Datasources, and perform saves
-and merges with remote changes.</p>
-</dd>
-</dl>
-
-## Mixins
-
-<dl>
-<dt><a href="#EntryCollection">EntryCollection</a> : <code>Object</code></dt>
-<dd></dd>
-<dt><a href="#GroupCollection">GroupCollection</a> : <code>Object</code></dt>
-<dd></dd>
 </dl>
 
 ## Functions
 
 <dl>
-<dt><a href="#credentialsToDatasource">credentialsToDatasource(sourceCredentials)</a> ⇒ <code>Promise.&lt;{datasource, credentials}&gt;</code></dt>
-<dd><p>Convert credentials of a remote archive to a datasource</p>
-</dd>
-<dt><a href="#credentialsToSource">credentialsToSource(sourceCredentials, archiveCredentials, [initialise], [contentOverride])</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Convert credentials to a source for the ArchiveManager</p>
-</dd>
-<dt><a href="#flattenEntries">flattenEntries(archives)</a> ⇒ <code><a href="#EntrySearchInfo">Array.&lt;EntrySearchInfo&gt;</a></code></dt>
-<dd><p>Flatten entries into a searchable structure</p>
-</dd>
-<dt><a href="#generateNewUpdateID">generateNewUpdateID()</a> ⇒ <code>Number</code></dt>
-<dd><p>Generate a new update ID</p>
-</dd>
-<dt><a href="#extractCommandComponents">extractCommandComponents(command)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
-<dd><p>Extract command components from a string</p>
-</dd>
 <dt><a href="#calculateCommonRecentCommand">calculateCommonRecentCommand(historyA, historyB)</a> ⇒ <code>null</code> | <code>Object</code></dt>
 <dd><p>Calculate the common command indexes between 2 histories.
 The common index is where a padding ID matches that of the other history,
@@ -86,8 +43,88 @@ matching pad ID to create a common link between the 2 histories.</p>
 <dt><a href="#dedupe">dedupe(arr)</a> ⇒ <code>Array</code></dt>
 <dd><p>De-dupe an array</p>
 </dd>
-<dt><a href="#describeArchiveDataset">describeArchiveDataset(dataset, parentGroupID)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
-<dd><p>Describe an archive dataset - to history commands</p>
+<dt><a href="#createAppEnv">createAppEnv()</a> ⇒ <code><a href="#AppEnv">AppEnv</a></code></dt>
+<dd><p>Create a new application environment</p>
+</dd>
+<dt><a href="#compress">compress(text)</a> ⇒ <code>String</code></dt>
+<dd><p>Compress text using GZIP</p>
+</dd>
+<dt><a href="#decompress">decompress(text)</a> ⇒ <code>String</code></dt>
+<dd><p>Decompress a compressed string (GZIP)</p>
+</dd>
+<dt><a href="#compress">compress(text)</a> ⇒ <code>String</code></dt>
+<dd><p>Compress text using GZIP</p>
+</dd>
+<dt><a href="#decompress">decompress(text)</a> ⇒ <code>String</code></dt>
+<dd><p>Decompress a compressed string (GZIP)</p>
+</dd>
+<dt><del><a href="#hashVaultFacade">hashVaultFacade(vaultFacade)</a> ⇒ <code>String</code></del></dt>
+<dd><p>Generate a hash of a vault facade (useful for detecting
+ if the vault differs from another copy)</p>
+</dd>
+<dt><del><a href="#getEntryValue">getEntryValue(entry, propertyType, name)</a> ⇒ <code>String</code></del></dt>
+<dd><p>Get a value on an entry for a specific property type</p>
+</dd>
+<dt><a href="#getEntryValueType">getEntryValueType(entry, propertyName)</a> ⇒ <code>String</code></dt>
+<dd><p>Get the entry value type</p>
+</dd>
+<dt><a href="#idSignifiesNew">idSignifiesNew(id)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>Check if an ID signifies a new instance and not an
+ existing one</p>
+</dd>
+<dt><a href="#setEntryValueType">setEntryValueType(entry, propertyName, valueType)</a></dt>
+<dd><p>Set the value type attribute of an entry</p>
+</dd>
+<dt><a href="#getEntriesFacades">getEntriesFacades(vault)</a> ⇒ <code><a href="#EntryFacade">Array.&lt;EntryFacade&gt;</a></code></dt>
+<dd><p>Get all entry facades for a vault</p>
+</dd>
+<dt><a href="#getGroupEntriesFacades">getGroupEntriesFacades(entryCollection, groupID)</a> ⇒ <code><a href="#EntryFacade">Array.&lt;EntryFacade&gt;</a></code></dt>
+<dd><p>Convert an array of entries into an array of facades</p>
+</dd>
+<dt><a href="#getGroupsFacades">getGroupsFacades(groupCollection, [parentID])</a> ⇒ <code><a href="#GroupFacade">Array.&lt;GroupFacade&gt;</a></code></dt>
+<dd><p>Convert an array of groups into an array of facades</p>
+</dd>
+<dt><a href="#describeVaultDataset">describeVaultDataset(dataset, parentGroupID)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
+<dd><p>Describe a vault dataset - to history commands</p>
+</dd>
+<dt><a href="#getFormat">getFormat()</a> ⇒ <code>String</code></dt>
+<dd><p>Get the current format</p>
+</dd>
+<dt><a href="#getSignature">getSignature()</a> ⇒ <code>String</code></dt>
+<dd><p>Get the current signature</p>
+</dd>
+<dt><a href="#hasValidSignature">hasValidSignature(text)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>Detect if a string has a valid signature</p>
+</dd>
+<dt><a href="#sign">sign(text)</a> ⇒ <code>String</code></dt>
+<dd><p>Sign some text</p>
+</dd>
+<dt><a href="#stripSignature">stripSignature(text)</a> ⇒ <code>String</code></dt>
+<dd><p>Strip the signature from some text</p>
+</dd>
+<dt><a href="#vaultContentsEncrypted">vaultContentsEncrypted(contents)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>Check if vault contents are in encrypted form</p>
+</dd>
+<dt><a href="#extractCommandComponents">extractCommandComponents(command)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
+<dd><p>Extract command components from a string</p>
+</dd>
+<dt><a href="#generateEntryHistoryItem">generateEntryHistoryItem(property, propertyType, originalValue, newValue)</a> ⇒ <code><a href="#EntryHistoryItem">EntryHistoryItem</a></code></dt>
+<dd><p>Generate a new entry history item</p>
+</dd>
+<dt><a href="#stripDestructiveCommands">stripDestructiveCommands(history)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
+<dd><p>Strip destructive commands from a history collection</p>
+</dd>
+<dt><a href="#generateNewUpdateID">generateNewUpdateID()</a> ⇒ <code>Number</code></dt>
+<dd><p>Generate a new update ID</p>
+</dd>
+<dt><a href="#findEntriesByCheck">findEntriesByCheck(groups, compareFn)</a> ⇒ <code>Array.&lt;Entry&gt;</code></dt>
+<dd><p>Find entry instances by filtering with a compare function</p>
+</dd>
+<dt><a href="#flattenEntries">flattenEntries(archives)</a> ⇒ <code><a href="#EntrySearchInfo">Array.&lt;EntrySearchInfo&gt;</a></code></dt>
+<dd><p>Flatten entries into a searchable structure</p>
+</dd>
+<dt><a href="#findGroupsByCheck">findGroupsByCheck(groups, compareFn)</a> ⇒ <code>Array.&lt;Group&gt;</code></dt>
+<dd><p>Find group instances within groups that satisfy some check</p>
 </dd>
 <dt><a href="#decodeStringValue">decodeStringValue(value)</a> ⇒ <code>String</code></dt>
 <dd><p>Decode an encoded property value</p>
@@ -109,22 +146,13 @@ Allows for preferential sorting</p>
 <dt><a href="#isValidProperty">isValidProperty(name)</a> ⇒ <code>Boolean</code></dt>
 <dd><p>Check if a property name is valid</p>
 </dd>
-<dt><a href="#generateEntryHistoryItem">generateEntryHistoryItem(property, propertyType, originalValue, newValue)</a> ⇒ <code><a href="#EntryHistoryItem">EntryHistoryItem</a></code></dt>
-<dd><p>Generate a new entry history item</p>
-</dd>
-<dt><a href="#stripDestructiveCommands">stripDestructiveCommands(history)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
-<dd><p>Strip destructive commands from a history collection</p>
-</dd>
 <dt><a href="#findGroupContainingEntryID">findGroupContainingEntryID(groups, id)</a> ⇒ <code><a href="#FoundGroupResult">FoundGroupResult</a></code></dt>
 <dd><p>Find a raw group that contains an entry with an ID</p>
 </dd>
 <dt><a href="#findGroupContainingGroupID">findGroupContainingGroupID(group, id)</a> ⇒ <code><a href="#FoundGroupResult">FoundGroupResult</a></code></dt>
 <dd><p>Find a raw group that contains a group with an ID</p>
 </dd>
-<dt><a href="#extractSharesFromHistory">extractSharesFromHistory(history)</a> ⇒ <code>Object</code></dt>
-<dd><p>Extract shares from a history collection</p>
-</dd>
-<dt><a href="#moveGroupBetweenArchives">moveGroupBetweenArchives(movingGroup, target)</a></dt>
+<dt><a href="#moveGroupBetweenVaults">moveGroupBetweenVaults(movingGroup, targetGroup)</a></dt>
 <dd><p>Move a group between archives</p>
 </dd>
 <dt><a href="#prependSharePrefix">prependSharePrefix(history)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
@@ -136,13 +164,13 @@ Allows for preferential sorting</p>
 <dt><a href="#generateUUID">generateUUID()</a> ⇒ <code>String</code></dt>
 <dd><p>Generate a UUID (v4)</p>
 </dd>
-<dt><a href="#findEntriesByCheck">findEntriesByCheck(groups, compareFn)</a> ⇒ <code><a href="#Entry">Array.&lt;Entry&gt;</a></code></dt>
+<dt><a href="#findEntriesByCheck">findEntriesByCheck(groups, compareFn)</a> ⇒ <code>Array.&lt;Entry&gt;</code></dt>
 <dd><p>Find entry instances by filtering with a compare function</p>
 </dd>
-<dt><a href="#findGroupsByCheck">findGroupsByCheck(groups, compareFn)</a> ⇒ <code><a href="#Group">Array.&lt;Group&gt;</a></code></dt>
+<dt><a href="#findGroupsByCheck">findGroupsByCheck(groups, compareFn)</a> ⇒ <code>Array.&lt;Group&gt;</code></dt>
 <dd><p>Find group instances within groups that satisfy some check</p>
 </dd>
-<dt><a href="#getAllEntries">getAllEntries(groups)</a> ⇒ <code><a href="#Entry">Array.&lt;Entry&gt;</a></code></dt>
+<dt><a href="#getAllEntries">getAllEntries(groups)</a> ⇒ <code>Array.&lt;Entry&gt;</code></dt>
 <dd><p>Get all entries within a collection of groups</p>
 </dd>
 </dl>
@@ -150,14 +178,46 @@ Allows for preferential sorting</p>
 ## Typedefs
 
 <dl>
-<dt><a href="#ArchiveSourceOptions">ArchiveSourceOptions</a> : <code>Object</code></dt>
-<dd><p>New source options</p>
+<dt><a href="#VaultManagerOptions">VaultManagerOptions</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#AddSourceOptions">AddSourceOptions</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#RegisterDatasourcePostProcessorResult">RegisterDatasourcePostProcessorResult</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#LoadedVaultData">LoadedVaultData</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#AppEnv">AppEnv</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#AppEnvIntPrv">AppEnvIntPrv</a> : <code>Object</code></dt>
+<dd><p>Internal private API</p>
 </dd>
-<dt><a href="#ArchiveSourceDescription">ArchiveSourceDescription</a></dt>
+<dt><a href="#GetPropertyOptions">GetPropertyOptions</a> : <code>Object</code></dt>
 <dd></dd>
-<dt><a href="#ArchiveSourceUnlockOptions">ArchiveSourceUnlockOptions</a> : <code>Object</code></dt>
+<dt><a href="#EntryHistoryItem">EntryHistoryItem</a> : <code>Object</code></dt>
 <dd></dd>
-<dt><a href="#EntrySearchInfo">EntrySearchInfo</a> : <code>Object</code></dt>
+<dt><a href="#EntryFacade">EntryFacade</a> : <code>Object</code></dt>
+<dd><p>Entry facade for data input</p>
+</dd>
+<dt><a href="#CreateEntryFacadeOptions">CreateEntryFacadeOptions</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#FlagSpecification">FlagSpecification</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#EntryFacadeFieldFormattingSegment">EntryFacadeFieldFormattingSegment</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#EntryFacadeFieldFormatting">EntryFacadeFieldFormatting</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#EntryFacadeField">EntryFacadeField</a> : <code>Object</code></dt>
+<dd><p>Entry facade data field</p>
+</dd>
+<dt><a href="#VaultFacade">VaultFacade</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#GroupFacade">GroupFacade</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#VaultInsights">VaultInsights</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#Insights">Insights</a> : <code><a href="#VaultInsights">VaultInsights</a></code></dt>
+<dd></dd>
+<dt><a href="#EntryHistoryItem">EntryHistoryItem</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#MyButtercupShareBase">MyButtercupShareBase</a> : <code>Object</code></dt>
 <dd></dd>
@@ -175,1256 +235,1404 @@ Allows for preferential sorting</p>
 <dd></dd>
 <dt><a href="#MyButtercupArchiveDetails">MyButtercupArchiveDetails</a> : <code>Object</code></dt>
 <dd></dd>
-<dt><a href="#EntryHistoryItem">EntryHistoryItem</a> : <code>Object</code></dt>
+<dt><a href="#EntrySearchInfo">EntrySearchInfo</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#FoundGroupResult">FoundGroupResult</a> : <code>Object</code></dt>
 <dd></dd>
 </dl>
 
-<a name="Archive"></a>
+<a name="module_Buttercup"></a>
 
-## Archive ⇐ <code>EventEmitter</code>
-Buttercup Archive
+## Buttercup
 
-**Kind**: global class  
-**Extends**: <code>EventEmitter</code>  
-**Mixes**: [<code>GroupCollection</code>](#GroupCollection), [<code>EntryCollection</code>](#EntryCollection)  
-
-* [Archive](#Archive) ⇐ <code>EventEmitter</code>
-    * _instance_
-        * [.id](#Archive+id) : <code>String</code>
-        * [.readOnly](#Archive+readOnly)
-        * [.type](#Archive+type) : <code>String</code>
-        * [.findGroupByID](#Archive+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-        * [.findGroupsByTitle](#Archive+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-        * [.findEntriesByProperty](#Archive+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-        * [.findGroupByID](#Archive+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-        * [.findGroupsByTitle](#Archive+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-        * [.findEntriesByProperty](#Archive+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-        * [.createGroup([title])](#Archive+createGroup) ⇒ [<code>Group</code>](#Group)
-        * [.deleteAttribute(attributeName)](#Archive+deleteAttribute) ⇒ [<code>Archive</code>](#Archive)
-        * [.emptyTrash()](#Archive+emptyTrash)
-        * [.getAttribute([attributeName])](#Archive+getAttribute) ⇒ <code>undefined</code> \| <code>String</code> \| <code>Object</code>
-        * [.getFormat()](#Archive+getFormat) ⇒ <code>string</code>
-        * [.getGroups()](#Archive+getGroups) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-        * [.getHistory()](#Archive+getHistory) ⇒ <code>Array.&lt;String&gt;</code>
-        * [.getTrashGroup()](#Archive+getTrashGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-        * [.optimise()](#Archive+optimise) ⇒ [<code>Archive</code>](#Archive)
-        * [.setAttribute(attributeName, value)](#Archive+setAttribute) ⇒ [<code>Archive</code>](#Archive)
-        * [.toObject(groupOutputFlags)](#Archive+toObject) ⇒ <code>Object</code>
-        * [._generateID()](#Archive+_generateID)
-        * [._getWestley()](#Archive+_getWestley) ⇒ <code>Westley</code>
-        * [.inst.findEntryByID(id)](#Archive+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
-        * [.inst.findEntryByID(id)](#Archive+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
+* [Buttercup](#module_Buttercup)
     * _static_
-        * [.createFromHistory(history)](#Archive.createFromHistory) ⇒ [<code>Archive</code>](#Archive)
-        * [.createWithDefaults()](#Archive.createWithDefaults) ⇒ [<code>Archive</code>](#Archive)
+        * [.Entry](#module_Buttercup.Entry) ⇐ [<code>VaultItem</code>](#VaultItem)
+            * [.id](#VaultItem+id) : <code>String</code>
+            * [.permissions](#VaultItem+permissions) : <code>Array.&lt;String&gt;</code>
+            * [.vault](#VaultItem+vault) : <code>Vault</code>
+            * [.grantPermission(perm)](#VaultItem+grantPermission)
+            * [.hasPermission(perm)](#VaultItem+hasPermission) ⇒ <code>Boolean</code>
+            * [.revokeAllPermissions()](#VaultItem+revokeAllPermissions)
+            * [.revokePermission(perm)](#VaultItem+revokePermission)
+            * [._cleanUp()](#VaultItem+_cleanUp)
+        * [.Group](#module_Buttercup.Group) ⇐ [<code>VaultItem</code>](#VaultItem)
+            * [.id](#VaultItem+id) : <code>String</code>
+            * [.permissions](#VaultItem+permissions) : <code>Array.&lt;String&gt;</code>
+            * [.vault](#VaultItem+vault) : <code>Vault</code>
+            * [.setTitle(title)](#module_Buttercup.Group+setTitle) ⇒ <code>Group</code>
+            * [.grantPermission(perm)](#VaultItem+grantPermission)
+            * [.hasPermission(perm)](#VaultItem+hasPermission) ⇒ <code>Boolean</code>
+            * [.revokeAllPermissions()](#VaultItem+revokeAllPermissions)
+            * [.revokePermission(perm)](#VaultItem+revokePermission)
+            * [._cleanUp()](#VaultItem+_cleanUp)
+        * [.MyButtercupDatasource](#module_Buttercup.MyButtercupDatasource) ⇐ <code>TextDatasource</code>
+            * [new MyButtercupDatasource(credentials)](#new_module_Buttercup.MyButtercupDatasource_new)
+            * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+            * [.changePassword(newCredentials, preflight)](#module_Buttercup.MyButtercupDatasource+changePassword) ⇒ <code>Promise.&lt;(Boolean\|undefined)&gt;</code>
+            * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+            * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+            * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+            * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
+        * [.StorageInterface](#module_Buttercup.StorageInterface)
+        * [.DEFAULT_ENTRY_TYPE](#module_Buttercup.DEFAULT_ENTRY_TYPE) : <code>String</code>
+        * [.DEFAULT_FIELD_TYPE](#module_Buttercup.DEFAULT_FIELD_TYPE) : <code>String</code>
+        * [.ENTRY_TYPE_CREDITCARD](#module_Buttercup.ENTRY_TYPE_CREDITCARD) : <code>String</code>
+        * [.ENTRY_TYPE_LOGIN](#module_Buttercup.ENTRY_TYPE_LOGIN) : <code>String</code>
+        * [.ENTRY_TYPE_NOTE](#module_Buttercup.ENTRY_TYPE_NOTE) : <code>String</code>
+        * [.ENTRY_TYPE_SSHKEY](#module_Buttercup.ENTRY_TYPE_SSHKEY) : <code>String</code>
+        * [.ENTRY_TYPE_WEBSITE](#module_Buttercup.ENTRY_TYPE_WEBSITE) : <code>String</code>
+        * [.ENTRY_TYPES](#module_Buttercup.ENTRY_TYPES) : <code>Object.&lt;String, FlagSpecification&gt;</code>
+        * [.FIELD_VALUE_TYPE_NOTE](#module_Buttercup.FIELD_VALUE_TYPE_NOTE) : <code>String</code>
+        * [.FIELD_VALUE_TYPE_OTP](#module_Buttercup.FIELD_VALUE_TYPE_OTP) : <code>String</code>
+        * [.FIELD_VALUE_TYPE_PASSWORD](#module_Buttercup.FIELD_VALUE_TYPE_PASSWORD) : <code>String</code>
+        * [.FIELD_VALUE_TYPE_TEXT](#module_Buttercup.FIELD_VALUE_TYPE_TEXT) : <code>String</code>
+        * [.FIELD_VALUE_TYPES](#module_Buttercup.FIELD_VALUE_TYPES) : <code>Object.&lt;String, FlagSpecification&gt;</code>
+        * [.registerDatasource(datasourceType, DSClass)](#module_Buttercup.registerDatasource)
+        * [.getSharedAppEnv()](#module_Buttercup.getSharedAppEnv) ⇒ [<code>AppEnv</code>](#AppEnv)
+        * [.isOTPURI(str)](#module_Buttercup.isOTPURI) ⇒ <code>Boolean</code>
+        * [.isVaultFacade(obj)](#module_Buttercup.isVaultFacade) ⇒ <code>Boolean</code>
+        * [.consumeEntryFacade(entry, facade)](#module_Buttercup.consumeEntryFacade)
+        * [.createEntryFacade([entry], [ops])](#module_Buttercup.createEntryFacade) ⇒ [<code>EntryFacade</code>](#EntryFacade)
+        * [.createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options)](#module_Buttercup.createFieldDescriptor) ⇒ [<code>EntryFacadeField</code>](#EntryFacadeField)
+        * [.consumeGroupFacade(group, facade)](#module_Buttercup.consumeGroupFacade)
+        * [.consumeVaultFacade(vault, facade)](#module_Buttercup.consumeVaultFacade)
+        * [.createVaultFacade(vault)](#module_Buttercup.createVaultFacade) ⇒ [<code>VaultFacade</code>](#VaultFacade)
+        * [.createGroupFacade(group, [parentID])](#module_Buttercup.createGroupFacade)
+        * [.init()](#module_Buttercup.init)
+        * [.init()](#module_Buttercup.init)
+    * _inner_
+        * [~Vault](#module_Buttercup.Vault) ⇐ <code>EventEmitter</code>
+            * [new Vault([Format])](#new_module_Buttercup.Vault_new)
+        * [~VaultManager](#module_Buttercup.VaultManager) ⇐ <code>EventEmitter</code>
+            * [new VaultManager([opts])](#new_module_Buttercup.VaultManager_new)
+        * [~VaultSource](#module_Buttercup.VaultSource) ⇐ <code>EventEmitter</code>
+        * [~Credentials](#module_Buttercup.Credentials)
+            * [new Credentials([obj], masterPassword)](#new_module_Buttercup.Credentials_new)
+        * [~DatasourceAuthManager](#module_Buttercup.DatasourceAuthManager) ⇐ <code>EventEmitter</code>
+            * [new DatasourceAuthManager()](#new_module_Buttercup.DatasourceAuthManager_new)
+        * [~DropboxDatasource](#module_Buttercup.DropboxDatasource) ⇐ <code>TextDatasource</code>
+            * [new DropboxDatasource(credentials)](#new_module_Buttercup.DropboxDatasource_new)
+            * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+            * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+            * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+            * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+            * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
+        * [~FileDatasource](#module_Buttercup.FileDatasource) ⇐ <code>TextDatasource</code>
+            * [new FileDatasource(credentials)](#new_module_Buttercup.FileDatasource_new)
+            * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+            * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+            * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+            * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+            * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
+        * [~GoogleDriveDatasource](#module_Buttercup.GoogleDriveDatasource) ⇐ <code>TextDatasource</code>
+            * [new GoogleDriveDatasource(credentials)](#new_module_Buttercup.GoogleDriveDatasource_new)
+            * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+            * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+            * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+            * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+            * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
+        * [~TextDatasource](#module_Buttercup.TextDatasource)
+            * [new TextDatasource(credentials)](#new_module_Buttercup.TextDatasource_new)
+            * [.credentials](#module_Buttercup.TextDatasource+credentials) : <code>Credentials</code>
+        * [~WebDAVDatasource](#module_Buttercup.WebDAVDatasource) ⇐ <code>TextDatasource</code>
+            * [new WebDAVDatasource(credentials)](#new_module_Buttercup.WebDAVDatasource_new)
+            * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+            * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+            * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+            * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+            * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
+        * [~MyButtercupClient](#module_Buttercup.MyButtercupClient) ⇐ <code>EventEmitter</code>
+            * [new MyButtercupClient(clientID, clientSecret, accessToken, refreshToken)](#new_module_Buttercup.MyButtercupClient_new)
+            * [.accessToken](#module_Buttercup.MyButtercupClient+accessToken) : <code>String</code>
+            * [.digest](#module_Buttercup.MyButtercupClient+digest) : [<code>MyButtercupDigest</code>](#MyButtercupDigest) \| <code>null</code>
+            * [.refreshToken](#module_Buttercup.MyButtercupClient+refreshToken) : <code>String</code>
+        * [~MemoryStorageInterface](#module_Buttercup.MemoryStorageInterface) ⇐ <code>StorageInterface</code>
+            * [new MemoryStorageInterface()](#new_module_Buttercup.MemoryStorageInterface_new)
+            * [.getAllKeys()](#StorageInterface+getAllKeys)
+            * [.getValue()](#StorageInterface+getValue)
+            * [.removeKey()](#StorageInterface+removeKey)
+            * [.setValue()](#StorageInterface+setValue)
 
-<a name="Archive+id"></a>
+<a name="module_Buttercup.Entry"></a>
 
-### archive.id : <code>String</code>
-The archive ID
+### Buttercup.Entry ⇐ [<code>VaultItem</code>](#VaultItem)
+Entry class - some secret item, login or perhaps
+even a credit card
 
-**Kind**: instance property of [<code>Archive</code>](#Archive)  
-<a name="Archive+readOnly"></a>
+**Kind**: static class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: [<code>VaultItem</code>](#VaultItem)  
 
-### archive.readOnly
-Whether the archive is read only or not
+* [.Entry](#module_Buttercup.Entry) ⇐ [<code>VaultItem</code>](#VaultItem)
+    * [.id](#VaultItem+id) : <code>String</code>
+    * [.permissions](#VaultItem+permissions) : <code>Array.&lt;String&gt;</code>
+    * [.vault](#VaultItem+vault) : <code>Vault</code>
+    * [.grantPermission(perm)](#VaultItem+grantPermission)
+    * [.hasPermission(perm)](#VaultItem+hasPermission) ⇒ <code>Boolean</code>
+    * [.revokeAllPermissions()](#VaultItem+revokeAllPermissions)
+    * [.revokePermission(perm)](#VaultItem+revokePermission)
+    * [._cleanUp()](#VaultItem+_cleanUp)
 
-**Kind**: instance property of [<code>Archive</code>](#Archive)  
+<a name="VaultItem+id"></a>
+
+#### entry.id : <code>String</code>
+The ID of the entry or group
+
+**Kind**: instance property of [<code>Entry</code>](#module_Buttercup.Entry)  
 **Read only**: true  
-**Properties**
+<a name="VaultItem+permissions"></a>
 
-| Name | Type |
-| --- | --- |
-| readOnly | <code>Boolean</code> | 
-
-<a name="Archive+type"></a>
-
-### archive.type : <code>String</code>
-Get the instance type
-
-**Kind**: instance property of [<code>Archive</code>](#Archive)  
-**Read only**: true  
-<a name="Archive+findGroupByID"></a>
-
-### archive.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-Find a group by its ID
-
-**Kind**: instance property of [<code>Archive</code>](#Archive)  
-**Mixes**: [<code>findGroupByID</code>](#GroupCollection.findGroupByID)  
-**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The group or null if not found  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | The group ID to search for |
-
-<a name="Archive+findGroupsByTitle"></a>
-
-### archive.findGroupsByTitle ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-Find groups by their title
-
-**Kind**: instance property of [<code>Archive</code>](#Archive)  
-**Mixes**: [<code>findGroupsByTitle</code>](#GroupCollection.findGroupsByTitle)  
-**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of groups  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| title | <code>String</code> \| <code>RegExp</code> | The group title |
-
-<a name="Archive+findEntriesByProperty"></a>
-
-### archive.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-Find all entries that match a certain property
-
-**Kind**: instance property of [<code>Archive</code>](#Archive)  
-**Mixes**: [<code>findEntriesByProperty</code>](#EntryCollection.findEntriesByProperty)  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found extries  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| property | <code>RegExp</code> \| <code>String</code> | The property to search with |
-| value | <code>RegExp</code> \| <code>String</code> | The value to search for |
-
-<a name="Archive+findGroupByID"></a>
-
-### archive.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-Find a group by its ID
-
-**Kind**: instance property of [<code>Archive</code>](#Archive)  
-**Mixes**: [<code>findGroupByID</code>](#GroupCollection.findGroupByID)  
-**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The group or null if not found  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | The group ID to search for |
-
-<a name="Archive+findGroupsByTitle"></a>
-
-### archive.findGroupsByTitle ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-Find groups by their title
-
-**Kind**: instance property of [<code>Archive</code>](#Archive)  
-**Mixes**: [<code>findGroupsByTitle</code>](#GroupCollection.findGroupsByTitle)  
-**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of groups  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| title | <code>String</code> \| <code>RegExp</code> | The group title |
-
-<a name="Archive+findEntriesByProperty"></a>
-
-### archive.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-Find all entries that match a certain property
-
-**Kind**: instance property of [<code>Archive</code>](#Archive)  
-**Mixes**: [<code>findEntriesByProperty</code>](#EntryCollection.findEntriesByProperty)  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found extries  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| property | <code>RegExp</code> \| <code>String</code> | The property to search with |
-| value | <code>RegExp</code> \| <code>String</code> | The value to search for |
-
-<a name="Archive+createGroup"></a>
-
-### archive.createGroup([title]) ⇒ [<code>Group</code>](#Group)
-Create a new group
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: [<code>Group</code>](#Group) - The newly created group  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [title] | <code>string</code> | The title for the group |
-
-<a name="Archive+deleteAttribute"></a>
-
-### archive.deleteAttribute(attributeName) ⇒ [<code>Archive</code>](#Archive)
-Delete an attribute
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: [<code>Archive</code>](#Archive) - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| attributeName | <code>String</code> | The name of the attribute to delete |
-
-<a name="Archive+emptyTrash"></a>
-
-### archive.emptyTrash()
-Remove all entries and groups from the trash (permanent)
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Throws**:
-
-- <code>Error</code> Throws if there is no trash group
-
-<a name="Archive+getAttribute"></a>
-
-### archive.getAttribute([attributeName]) ⇒ <code>undefined</code> \| <code>String</code> \| <code>Object</code>
-Get the value of an attribute
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: <code>undefined</code> \| <code>String</code> \| <code>Object</code> - The value of the attribute or undefined if not
- set. Returns an object if no attribute name is given.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [attributeName] | <code>String</code> | The attribute to get |
-
-<a name="Archive+getFormat"></a>
-
-### archive.getFormat() ⇒ <code>string</code>
-Get the archive format
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: <code>string</code> - The format of the archive  
-<a name="Archive+getGroups"></a>
-
-### archive.getGroups() ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-Get all groups (root) in the archive
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of Groups  
-<a name="Archive+getHistory"></a>
-
-### archive.getHistory() ⇒ <code>Array.&lt;String&gt;</code>
-Get the command array (history)
-Returned object can be quite large.
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: <code>Array.&lt;String&gt;</code> - The command array  
-<a name="Archive+getTrashGroup"></a>
-
-### archive.getTrashGroup() ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-Get the trash group
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The trash group if found, null otherwise  
-<a name="Archive+optimise"></a>
-
-### archive.optimise() ⇒ [<code>Archive</code>](#Archive)
-Perform archive optimisations
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: [<code>Archive</code>](#Archive) - Self  
-<a name="Archive+setAttribute"></a>
-
-### archive.setAttribute(attributeName, value) ⇒ [<code>Archive</code>](#Archive)
-Set an attribute on the archive
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: [<code>Archive</code>](#Archive) - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| attributeName | <code>String</code> | The attribute to set |
-| value | <code>String</code> | The value to set for the attribute |
-
-<a name="Archive+toObject"></a>
-
-### archive.toObject(groupOutputFlags) ⇒ <code>Object</code>
-Convert the archive to an object
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: <code>Object</code> - The archive in object form  
-**See**: Group.toObject  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| groupOutputFlags | <code>Number</code> | Bitwise flags for `Group.toObject` |
-
-<a name="Archive+_generateID"></a>
-
-### archive.\_generateID()
-Generate an archive ID
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Access**: protected  
-<a name="Archive+_getWestley"></a>
-
-### archive.\_getWestley() ⇒ <code>Westley</code>
-Get the underlying Westley instance
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Returns**: <code>Westley</code> - The Westley instance  
-**Access**: protected  
-<a name="Archive+findEntryByID"></a>
-
-### archive.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
-Find an entry by its ID
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
-**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | The ID to search for |
-
-<a name="Archive+findEntryByID"></a>
-
-### archive.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
-Find an entry by its ID
-
-**Kind**: instance method of [<code>Archive</code>](#Archive)  
-**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
-**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | The ID to search for |
-
-<a name="Archive.createFromHistory"></a>
-
-### Archive.createFromHistory(history) ⇒ [<code>Archive</code>](#Archive)
-Create a new archive instance from a list of commands (history)
-
-**Kind**: static method of [<code>Archive</code>](#Archive)  
-**Returns**: [<code>Archive</code>](#Archive) - The archive instance  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| history | <code>Array.&lt;String&gt;</code> | The command list |
-
-<a name="Archive.createWithDefaults"></a>
-
-### Archive.createWithDefaults() ⇒ [<code>Archive</code>](#Archive)
-Create an Archive with the default template
-
-**Kind**: static method of [<code>Archive</code>](#Archive)  
-**Returns**: [<code>Archive</code>](#Archive) - The new archive  
-<a name="ArchiveComparator"></a>
-
-## ArchiveComparator
-Archive comparison class
-
-**Kind**: global class  
-
-* [ArchiveComparator](#ArchiveComparator)
-    * [new ArchiveComparator(originalArchive, secondaryArchive)](#new_ArchiveComparator_new)
-    * [.archivesDiffer()](#ArchiveComparator+archivesDiffer) ⇒ <code>Boolean</code>
-    * [.calculateDifferences()](#ArchiveComparator+calculateDifferences) ⇒ <code>Object</code> \| <code>null</code>
-
-<a name="new_ArchiveComparator_new"></a>
-
-### new ArchiveComparator(originalArchive, secondaryArchive)
-Constructor for the archive comparator
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| originalArchive | [<code>Archive</code>](#Archive) | The primary archive |
-| secondaryArchive | [<code>Archive</code>](#Archive) | The secondary archive |
-
-<a name="ArchiveComparator+archivesDiffer"></a>
-
-### archiveComparator.archivesDiffer() ⇒ <code>Boolean</code>
-Check if the current archives differ
-
-**Kind**: instance method of [<code>ArchiveComparator</code>](#ArchiveComparator)  
-**Returns**: <code>Boolean</code> - True if the archives are different  
-<a name="ArchiveComparator+calculateDifferences"></a>
-
-### archiveComparator.calculateDifferences() ⇒ <code>Object</code> \| <code>null</code>
-Calculate the differences, in commands, between the two archives
-
-**Kind**: instance method of [<code>ArchiveComparator</code>](#ArchiveComparator)  
-**Returns**: <code>Object</code> \| <code>null</code> - Returns null if no common base
-       is found, or the command differences as two arrays  
-<a name="ArchiveManager"></a>
-
-## ArchiveManager ⇐ <code>EventEmitter</code>
-Archive manager class
-
-**Kind**: global class  
-**Extends**: <code>EventEmitter</code>  
-
-* [ArchiveManager](#ArchiveManager) ⇐ <code>EventEmitter</code>
-    * [new ArchiveManager([storageInterface])](#new_ArchiveManager_new)
-    * [.autoUpdateEnabled](#ArchiveManager+autoUpdateEnabled) : <code>Boolean</code>
-    * [.nextSourceOrder](#ArchiveManager+nextSourceOrder) : <code>Number</code>
-    * [.sources](#ArchiveManager+sources) : [<code>Array.&lt;ArchiveSource&gt;</code>](#ArchiveSource)
-    * [.sourcesList](#ArchiveManager+sourcesList) : [<code>Array.&lt;ArchiveSourceDescription&gt;</code>](#ArchiveSourceDescription)
-    * [.storageInterface](#ArchiveManager+storageInterface) : <code>StorageInterface</code>
-    * [.unlockedSources](#ArchiveManager+unlockedSources) : [<code>Array.&lt;ArchiveSource&gt;</code>](#ArchiveSource)
-    * [.updateableSources](#ArchiveManager+updateableSources) : [<code>Array.&lt;ArchiveSource&gt;</code>](#ArchiveSource)
-    * [.addSource(archiveSource, [obj])](#ArchiveManager+addSource)
-    * [.dehydrate()](#ArchiveManager+dehydrate) ⇒ <code>Promise</code>
-    * [.dehydrateSource(sourceID)](#ArchiveManager+dehydrateSource) ⇒ <code>Promise</code>
-    * [.getSourceForID(sourceID)](#ArchiveManager+getSourceForID) ⇒ [<code>ArchiveSource</code>](#ArchiveSource) \| <code>null</code>
-    * [.interruptAutoUpdate(cb)](#ArchiveManager+interruptAutoUpdate) ⇒ <code>Promise</code>
-    * [.rehydrate()](#ArchiveManager+rehydrate) ⇒ <code>Promise</code>
-    * [.removeSource(sourceID)](#ArchiveManager+removeSource) ⇒ <code>Promise</code>
-    * [.reorderSource(sourceID, position)](#ArchiveManager+reorderSource)
-    * [.reorderSources()](#ArchiveManager+reorderSources)
-    * [.toggleAutoUpdating([enable], [delay])](#ArchiveManager+toggleAutoUpdating)
-
-<a name="new_ArchiveManager_new"></a>
-
-### new ArchiveManager([storageInterface])
-Constructor for the archive manager
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [storageInterface] | <code>StorageInterface</code> | The storage interface to use -  defaults to storing in memory |
-
-<a name="ArchiveManager+autoUpdateEnabled"></a>
-
-### archiveManager.autoUpdateEnabled : <code>Boolean</code>
-Detect if auto-updating is enabled
-
-**Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Read only**: true  
-<a name="ArchiveManager+nextSourceOrder"></a>
-
-### archiveManager.nextSourceOrder : <code>Number</code>
-The next available source order
-
-**Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Read only**: true  
-<a name="ArchiveManager+sources"></a>
-
-### archiveManager.sources : [<code>Array.&lt;ArchiveSource&gt;</code>](#ArchiveSource)
-The current sources
-
-**Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Read only**: true  
-<a name="ArchiveManager+sourcesList"></a>
-
-### archiveManager.sourcesList : [<code>Array.&lt;ArchiveSourceDescription&gt;</code>](#ArchiveSourceDescription)
-All sources, listed by their descriptions
-
-**Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Read only**: true  
-<a name="ArchiveManager+storageInterface"></a>
-
-### archiveManager.storageInterface : <code>StorageInterface</code>
-The current storage interface
-
-**Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Read only**: true  
-<a name="ArchiveManager+unlockedSources"></a>
-
-### archiveManager.unlockedSources : [<code>Array.&lt;ArchiveSource&gt;</code>](#ArchiveSource)
-All unlocked sources
-
-**Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Read only**: true  
-<a name="ArchiveManager+updateableSources"></a>
-
-### archiveManager.updateableSources : [<code>Array.&lt;ArchiveSource&gt;</code>](#ArchiveSource)
-All auto-updateable sources
-
-**Kind**: instance property of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Read only**: true  
-<a name="ArchiveManager+addSource"></a>
-
-### archiveManager.addSource(archiveSource, [obj])
-Add a source to the manager
-
-**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archiveSource | [<code>ArchiveSource</code>](#ArchiveSource) | The source to add |
-| [obj] | <code>Object</code> | Optional configuration |
-| [obj.emitUpdated] | <code>Boolean</code> | Whether or not to emit an updated event (default: true) |
-| [obj.order] | <code>Number</code> | Override the order of the new source |
-
-<a name="ArchiveManager+dehydrate"></a>
-
-### archiveManager.dehydrate() ⇒ <code>Promise</code>
-Dehydrate all sources and write them to storage
-
-**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Returns**: <code>Promise</code> - A promise that resolves once all sources have been dehydrated  
-<a name="ArchiveManager+dehydrateSource"></a>
-
-### archiveManager.dehydrateSource(sourceID) ⇒ <code>Promise</code>
-Dehydrate a single archive source
-
-**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Returns**: <code>Promise</code> - A promise that resolves once the source has been dehydrated  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| sourceID | <code>String</code> | The ID of the source |
-
-<a name="ArchiveManager+getSourceForID"></a>
-
-### archiveManager.getSourceForID(sourceID) ⇒ [<code>ArchiveSource</code>](#ArchiveSource) \| <code>null</code>
-Get a source for an ID
-
-**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Returns**: [<code>ArchiveSource</code>](#ArchiveSource) \| <code>null</code> - The source with the matching ID or null if not found  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| sourceID | <code>String</code> | The source ID |
-
-<a name="ArchiveManager+interruptAutoUpdate"></a>
-
-### archiveManager.interruptAutoUpdate(cb) ⇒ <code>Promise</code>
-Wait for and interrupt state changes when auto-update is running
-
-**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Returns**: <code>Promise</code> - A promise that resolves when ready  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| cb | <code>function</code> | The callback to execute during the auto-update interruption |
-
-**Example**  
-```js
-archiveManager.interruptAutoUpdate(() => {
-     // Do something with auto-updating paused
- });
-```
-<a name="ArchiveManager+rehydrate"></a>
-
-### archiveManager.rehydrate() ⇒ <code>Promise</code>
-Rehydrate sources from storage
-
-**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Returns**: <code>Promise</code> - A promise that resolves once rehydration has completed  
-**Throws**:
-
-- <code>VError</code> Rejects if rehydrating from storage fails
-
-<a name="ArchiveManager+removeSource"></a>
-
-### archiveManager.removeSource(sourceID) ⇒ <code>Promise</code>
-Remove a source from the storage
-
-**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Returns**: <code>Promise</code> - A promise that resolves once the source has been removed  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| sourceID | <code>String</code> | The ID of the source to remove |
-
-<a name="ArchiveManager+reorderSource"></a>
-
-### archiveManager.reorderSource(sourceID, position)
-Reorder a source
-
-**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
-**Throws**:
-
-- <code>VError</code> Throws if no source is found
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| sourceID | <code>String</code> | The ID of the source to reorder |
-| position | <code>Number</code> | The 0-based position to move the source to |
-
-<a name="ArchiveManager+reorderSources"></a>
-
-### archiveManager.reorderSources()
-Reorder all sources
-
-**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
-<a name="ArchiveManager+toggleAutoUpdating"></a>
-
-### archiveManager.toggleAutoUpdating([enable], [delay])
-Toggle auto updating of sources
-
-**Kind**: instance method of [<code>ArchiveManager</code>](#ArchiveManager)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [enable] | <code>Boolean</code> | Enable or disable auto updating. Leave empty  to invert the setting |
-| [delay] | <code>Number</code> | Milliseconds between updates |
-
-<a name="ArchiveSource"></a>
-
-## ArchiveSource ⇐ <code>EventEmitter</code>
-Archive source class
-
-**Kind**: global class  
-**Extends**: <code>EventEmitter</code>  
-
-* [ArchiveSource](#ArchiveSource) ⇐ <code>EventEmitter</code>
-    * [new ArchiveSource(name, sourceCredentials, archiveCredentials, [newSourceOptions])](#new_ArchiveSource_new)
-    * _instance_
-        * [.canBeUpdated](#ArchiveSource+canBeUpdated) : <code>Boolean</code>
-        * [.colour](#ArchiveSource+colour) : <code>String</code>
-        * [.description](#ArchiveSource+description) : [<code>ArchiveSourceDescription</code>](#ArchiveSourceDescription)
-        * [.id](#ArchiveSource+id) : <code>String</code>
-        * [.meta](#ArchiveSource+meta) : <code>Object</code>
-        * [.name](#ArchiveSource+name) : <code>String</code>
-        * [.status](#ArchiveSource+status) : <code>ArchiveSourceStatus</code>
-        * [.storageInterface](#ArchiveSource+storageInterface) : <code>StorageInterface</code>
-        * [.workspace](#ArchiveSource+workspace) : [<code>Workspace</code>](#Workspace) \| <code>null</code>
-        * [.changeMasterPassword(oldPassword, newPassword)](#ArchiveSource+changeMasterPassword) ⇒ <code>Promise</code>
-        * [.checkOfflineCopy()](#ArchiveSource+checkOfflineCopy) ⇒ <code>Promise.&lt;Boolean&gt;</code>
-        * [.dehydrate()](#ArchiveSource+dehydrate) ⇒ <code>Promise.&lt;String&gt;</code>
-        * [.getOfflineContent()](#ArchiveSource+getOfflineContent) ⇒ <code>Promise.&lt;(String\|null)&gt;</code>
-        * [.lock()](#ArchiveSource+lock) ⇒ <code>Promise.&lt;String&gt;</code>
-        * [.unlock(masterPassword, [options])](#ArchiveSource+unlock)
-        * [.updateArchiveCredentials(masterPassword)](#ArchiveSource+updateArchiveCredentials) ⇒ <code>Promise.&lt;String&gt;</code>
-        * [.updateCredentialsFromDatasource()](#ArchiveSource+updateCredentialsFromDatasource)
-    * _static_
-        * [.Status](#ArchiveSource.Status)
-        * [.rehydrate(dehydratedString)](#ArchiveSource.rehydrate) ⇒ [<code>ArchiveSource</code>](#ArchiveSource)
-
-<a name="new_ArchiveSource_new"></a>
-
-### new ArchiveSource(name, sourceCredentials, archiveCredentials, [newSourceOptions])
-Constructor for an archive source
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| name | <code>String</code> | The name of the source |
-| sourceCredentials | <code>String</code> | Encrypted archive source credentials |
-| archiveCredentials | <code>String</code> | Encrypted archive credentials |
-| [newSourceOptions] | [<code>ArchiveSourceOptions</code>](#ArchiveSourceOptions) | Specify source creation options |
-
-<a name="ArchiveSource+canBeUpdated"></a>
-
-### archiveSource.canBeUpdated : <code>Boolean</code>
-Whether this source can be auto updated or not
-
-**Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
-<a name="ArchiveSource+colour"></a>
-
-### archiveSource.colour : <code>String</code>
-Source colour
-
-**Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
-<a name="ArchiveSource+description"></a>
-
-### archiveSource.description : [<code>ArchiveSourceDescription</code>](#ArchiveSourceDescription)
-Get the source description
-
-**Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Read only**: true  
-<a name="ArchiveSource+id"></a>
-
-### archiveSource.id : <code>String</code>
-Source ID
-
-**Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Read only**: true  
-<a name="ArchiveSource+meta"></a>
-
-### archiveSource.meta : <code>Object</code>
-Meta data included with the source (not encrypted)
-
-**Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Read only**: true  
-<a name="ArchiveSource+name"></a>
-
-### archiveSource.name : <code>String</code>
-Source name
-
-**Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Read only**: true  
-<a name="ArchiveSource+status"></a>
-
-### archiveSource.status : <code>ArchiveSourceStatus</code>
-Source status
-
-**Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Read only**: true  
-<a name="ArchiveSource+storageInterface"></a>
-
-### archiveSource.storageInterface : <code>StorageInterface</code>
-The attached manager's storage interface
-
-**Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Read only**: true  
-<a name="ArchiveSource+workspace"></a>
-
-### archiveSource.workspace : [<code>Workspace</code>](#Workspace) \| <code>null</code>
-Workspace instance for the source
-Is null when the source is locked
-
-**Kind**: instance property of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Read only**: true  
-<a name="ArchiveSource+changeMasterPassword"></a>
-
-### archiveSource.changeMasterPassword(oldPassword, newPassword) ⇒ <code>Promise</code>
-Change the master vault password
-
-**Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| oldPassword | <code>String</code> | The original/current password |
-| newPassword | <code>String</code> | The new password to change to |
-
-<a name="ArchiveSource+checkOfflineCopy"></a>
-
-### archiveSource.checkOfflineCopy() ⇒ <code>Promise.&lt;Boolean&gt;</code>
-Check if the source has an offline copy
-
-**Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Returns**: <code>Promise.&lt;Boolean&gt;</code> - A promise which resolves with whether an offline
- copy is available or not  
-<a name="ArchiveSource+dehydrate"></a>
-
-### archiveSource.dehydrate() ⇒ <code>Promise.&lt;String&gt;</code>
-Dehydrate the source for storage
-Returns a secure string with locked (encrypted) credentials, even when the
- source is in the UNLOCKED state. This method does NOT store the source -
- this must be done separately.
-
-**Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Returns**: <code>Promise.&lt;String&gt;</code> - A promise that resolves with the dehydrated
- source information  
-**Throws**:
-
-- <code>VError</code> Rejects is source in PENDING state
-
-<a name="ArchiveSource+getOfflineContent"></a>
-
-### archiveSource.getOfflineContent() ⇒ <code>Promise.&lt;(String\|null)&gt;</code>
-Get offline content, if it exists
-
-**Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Returns**: <code>Promise.&lt;(String\|null)&gt;</code> - A promise a resolves with the content, or null
- if it doesn't exist  
-<a name="ArchiveSource+lock"></a>
-
-### archiveSource.lock() ⇒ <code>Promise.&lt;String&gt;</code>
-Lock the source
-Encrypts the credentials and performs dehydration, placing the source into
- a LOCKED state. No saving is performed before locking.
-
-**Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Returns**: <code>Promise.&lt;String&gt;</code> - A promise that resolves with dehydrated content  
-**Throws**:
-
-- <code>VError</code> Rejects if not in unlocked state
-
-**Emits**: <code>ArchiveSource#event:sourceLocked</code>  
-<a name="ArchiveSource+unlock"></a>
-
-### archiveSource.unlock(masterPassword, [options])
-Unlock the source
-
-**Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Throws**:
-
-- <code>VError</code> Rejects if not in locked state
-- <code>VError</code> Rejects if not able to create the source from the encrypted
- credentials
-
-**Emits**: <code>ArchiveSource#event:sourceUnlocked</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| masterPassword | <code>String</code> | The master password |
-| [options] | [<code>ArchiveSourceUnlockOptions</code>](#ArchiveSourceUnlockOptions) | Unlocking options |
-
-<a name="ArchiveSource+updateArchiveCredentials"></a>
-
-### archiveSource.updateArchiveCredentials(masterPassword) ⇒ <code>Promise.&lt;String&gt;</code>
-Update the password/credentials for the archive
-The workspace is saved after changing. Responds with dehydrated details
-which should be SAVED.
-
-**Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Returns**: <code>Promise.&lt;String&gt;</code> - A promise that resolves with the dehydrated
- source details  
-**Throws**:
-
-- <code>VError</code> Rejects if source is not in unlocked state
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| masterPassword | <code>String</code> | New master password |
-
-<a name="ArchiveSource+updateCredentialsFromDatasource"></a>
-
-### archiveSource.updateCredentialsFromDatasource()
-Update the source credentials datasource records from the datasource on
-the workspace
-
-**Kind**: instance method of [<code>ArchiveSource</code>](#ArchiveSource)  
-<a name="ArchiveSource.Status"></a>
-
-### ArchiveSource.Status
-Archive source status
-
-**Kind**: static enum of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Properties**
-
-| Name | Default |
-| --- | --- |
-| LOCKED | <code>locked</code> | 
-| UNLOCKED | <code>unlocked</code> | 
-| PENDING | <code>pending</code> | 
-
-<a name="ArchiveSource.rehydrate"></a>
-
-### ArchiveSource.rehydrate(dehydratedString) ⇒ [<code>ArchiveSource</code>](#ArchiveSource)
-Rehydrate a dehydrated archive source
-
-**Kind**: static method of [<code>ArchiveSource</code>](#ArchiveSource)  
-**Returns**: [<code>ArchiveSource</code>](#ArchiveSource) - The rehydrated source  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| dehydratedString | <code>String</code> | A dehydrated archive source |
-
-<a name="ArchiveMember"></a>
-
-## ArchiveMember
-Base archive member class (for Entry, Group etc.)
-
-**Kind**: global class  
-
-* [ArchiveMember](#ArchiveMember)
-    * [new ArchiveMember(archive, remoteObj)](#new_ArchiveMember_new)
-    * [.id](#ArchiveMember+id) : <code>String</code>
-    * [.permissions](#ArchiveMember+permissions) : <code>Array.&lt;String&gt;</code>
-    * [.grantPermission(perm)](#ArchiveMember+grantPermission)
-    * [.hasPermission(perm)](#ArchiveMember+hasPermission) ⇒ <code>Boolean</code>
-    * [.revokeAllPermissions()](#ArchiveMember+revokeAllPermissions)
-    * [.revokePermission(perm)](#ArchiveMember+revokePermission)
-    * [._getArchive()](#ArchiveMember+_getArchive) ⇒ [<code>Archive</code>](#Archive)
-    * [._getRemoteObject()](#ArchiveMember+_getRemoteObject) ⇒ <code>Object</code>
-    * [._getWestley()](#ArchiveMember+_getWestley) ⇒ <code>Westley</code>
-
-<a name="new_ArchiveMember_new"></a>
-
-### new ArchiveMember(archive, remoteObj)
-Constructor for the archive member base class
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archive | [<code>Archive</code>](#Archive) | Archive reference |
-| remoteObj | <code>Object</code> | Remote datasource reference |
-
-<a name="ArchiveMember+id"></a>
-
-### archiveMember.id : <code>String</code>
-The ID of the entry
-
-**Kind**: instance property of [<code>ArchiveMember</code>](#ArchiveMember)  
-**Read only**: true  
-<a name="ArchiveMember+permissions"></a>
-
-### archiveMember.permissions : <code>Array.&lt;String&gt;</code>
+#### entry.permissions : <code>Array.&lt;String&gt;</code>
 The current granted permissions
 
-**Kind**: instance property of [<code>ArchiveMember</code>](#ArchiveMember)  
-<a name="ArchiveMember+grantPermission"></a>
+**Kind**: instance property of [<code>Entry</code>](#module_Buttercup.Entry)  
+<a name="VaultItem+vault"></a>
 
-### archiveMember.grantPermission(perm)
+#### entry.vault : <code>Vault</code>
+The vault this item belongs to
+
+**Kind**: instance property of [<code>Entry</code>](#module_Buttercup.Entry)  
+**Read only**: true  
+<a name="VaultItem+grantPermission"></a>
+
+#### entry.grantPermission(perm)
 Grant a new permission to the member
 
-**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
+**Kind**: instance method of [<code>Entry</code>](#module_Buttercup.Entry)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | perm | <code>String</code> | The permission to grant |
 
-<a name="ArchiveMember+hasPermission"></a>
+<a name="VaultItem+hasPermission"></a>
 
-### archiveMember.hasPermission(perm) ⇒ <code>Boolean</code>
+#### entry.hasPermission(perm) ⇒ <code>Boolean</code>
 Check if the member has a permission
 
-**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
+**Kind**: instance method of [<code>Entry</code>](#module_Buttercup.Entry)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | perm | <code>String</code> | The permission to check for |
 
-<a name="ArchiveMember+revokeAllPermissions"></a>
+<a name="VaultItem+revokeAllPermissions"></a>
 
-### archiveMember.revokeAllPermissions()
+#### entry.revokeAllPermissions()
 Revoke all permissions
 
-**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
-<a name="ArchiveMember+revokePermission"></a>
+**Kind**: instance method of [<code>Entry</code>](#module_Buttercup.Entry)  
+<a name="VaultItem+revokePermission"></a>
 
-### archiveMember.revokePermission(perm)
+#### entry.revokePermission(perm)
 Revoke a single permission
 
-**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
+**Kind**: instance method of [<code>Entry</code>](#module_Buttercup.Entry)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | perm | <code>String</code> | The permission to revoke |
 
-<a name="ArchiveMember+_getArchive"></a>
+<a name="VaultItem+_cleanUp"></a>
 
-### archiveMember.\_getArchive() ⇒ [<code>Archive</code>](#Archive)
-Get the archive reference
+#### entry.\_cleanUp()
+Clean up all of the data in the vault item
 
-**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
-**Returns**: [<code>Archive</code>](#Archive) - The Archive reference  
+**Kind**: instance method of [<code>Entry</code>](#module_Buttercup.Entry)  
 **Access**: protected  
-<a name="ArchiveMember+_getRemoteObject"></a>
+<a name="module_Buttercup.Group"></a>
 
-### archiveMember.\_getRemoteObject() ⇒ <code>Object</code>
-Get the remote object that mirrors the data represented here
+### Buttercup.Group ⇐ [<code>VaultItem</code>](#VaultItem)
+Group class - contains Entrys
 
-**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
-**Returns**: <code>Object</code> - The remote object (in-memory copy)  
-**Access**: protected  
-<a name="ArchiveMember+_getWestley"></a>
+**Kind**: static class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: [<code>VaultItem</code>](#VaultItem)  
 
-### archiveMember.\_getWestley() ⇒ <code>Westley</code>
-Get the Westley reference
+* [.Group](#module_Buttercup.Group) ⇐ [<code>VaultItem</code>](#VaultItem)
+    * [.id](#VaultItem+id) : <code>String</code>
+    * [.permissions](#VaultItem+permissions) : <code>Array.&lt;String&gt;</code>
+    * [.vault](#VaultItem+vault) : <code>Vault</code>
+    * [.setTitle(title)](#module_Buttercup.Group+setTitle) ⇒ <code>Group</code>
+    * [.grantPermission(perm)](#VaultItem+grantPermission)
+    * [.hasPermission(perm)](#VaultItem+hasPermission) ⇒ <code>Boolean</code>
+    * [.revokeAllPermissions()](#VaultItem+revokeAllPermissions)
+    * [.revokePermission(perm)](#VaultItem+revokePermission)
+    * [._cleanUp()](#VaultItem+_cleanUp)
 
-**Kind**: instance method of [<code>ArchiveMember</code>](#ArchiveMember)  
-**Returns**: <code>Westley</code> - The internal Westley reference  
-**Access**: protected  
-<a name="Entry"></a>
+<a name="VaultItem+id"></a>
 
-## Entry ⇐ [<code>ArchiveMember</code>](#ArchiveMember)
-Entry class implementation
-Entries form the low-level data structures used in Buttercup, and
-are intended to represent logical collections of properties, like
-a login for a website.
+#### group.id : <code>String</code>
+The ID of the entry or group
 
-**Kind**: global class  
-**Extends**: [<code>ArchiveMember</code>](#ArchiveMember)  
-
-* [Entry](#Entry) ⇐ [<code>ArchiveMember</code>](#ArchiveMember)
-    * _instance_
-        * [.type](#Entry+type) : <code>String</code>
-        * [.id](#ArchiveMember+id) : <code>String</code>
-        * [.permissions](#ArchiveMember+permissions) : <code>Array.&lt;String&gt;</code>
-        * [.delete([skipTrash])](#Entry+delete) ⇒ <code>Boolean</code>
-        * [.deleteAttribute(attr)](#Entry+deleteAttribute) ⇒ [<code>Entry</code>](#Entry)
-        * [.deleteProperty(property)](#Entry+deleteProperty) ⇒ [<code>Entry</code>](#Entry)
-        * [.getAttribute([attributeName])](#Entry+getAttribute) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
-        * [.getChanges()](#Entry+getChanges) ⇒ [<code>Array.&lt;EntryHistoryItem&gt;</code>](#EntryHistoryItem)
-        * [.getGroup()](#Entry+getGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-        * ~~[.getHistory()](#Entry+getHistory) ⇒ <code>Array</code>~~
-        * [.getProperty([property])](#Entry+getProperty) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
-        * [.getProperties(propertyExpression)](#Entry+getProperties) ⇒ <code>Object</code>
-        * [.getURLs([urlTypePreference])](#Entry+getURLs) ⇒ <code>Array.&lt;String&gt;</code>
-        * [.isInTrash()](#Entry+isInTrash) ⇒ <code>Boolean</code>
-        * [.moveToGroup(group)](#Entry+moveToGroup) ⇒ [<code>Entry</code>](#Entry)
-        * [.setAttribute(attributeName, value)](#Entry+setAttribute) ⇒ [<code>Entry</code>](#Entry)
-        * [.setProperty(prop, [val])](#Entry+setProperty) ⇒ [<code>Entry</code>](#Entry)
-        * [.toObject()](#Entry+toObject) ⇒ <code>Object</code>
-        * [.toString()](#Entry+toString) ⇒ <code>String</code>
-        * [.grantPermission(perm)](#ArchiveMember+grantPermission)
-        * [.hasPermission(perm)](#ArchiveMember+hasPermission) ⇒ <code>Boolean</code>
-        * [.revokeAllPermissions()](#ArchiveMember+revokeAllPermissions)
-        * [.revokePermission(perm)](#ArchiveMember+revokePermission)
-        * [._getArchive()](#ArchiveMember+_getArchive) ⇒ [<code>Archive</code>](#Archive)
-        * [._getRemoteObject()](#ArchiveMember+_getRemoteObject) ⇒ <code>Object</code>
-        * [._getWestley()](#ArchiveMember+_getWestley) ⇒ <code>Westley</code>
-    * _static_
-        * [.createNew(archive, groupID)](#Entry.createNew) ⇒ [<code>Entry</code>](#Entry)
-
-<a name="Entry+type"></a>
-
-### entry.type : <code>String</code>
-Get the instance type
-
-**Kind**: instance property of [<code>Entry</code>](#Entry)  
+**Kind**: instance property of [<code>Group</code>](#module_Buttercup.Group)  
 **Read only**: true  
-<a name="ArchiveMember+id"></a>
+<a name="VaultItem+permissions"></a>
 
-### entry.id : <code>String</code>
-The ID of the entry
-
-**Kind**: instance property of [<code>Entry</code>](#Entry)  
-**Read only**: true  
-<a name="ArchiveMember+permissions"></a>
-
-### entry.permissions : <code>Array.&lt;String&gt;</code>
+#### group.permissions : <code>Array.&lt;String&gt;</code>
 The current granted permissions
 
-**Kind**: instance property of [<code>Entry</code>](#Entry)  
-<a name="Entry+delete"></a>
+**Kind**: instance property of [<code>Group</code>](#module_Buttercup.Group)  
+<a name="VaultItem+vault"></a>
 
-### entry.delete([skipTrash]) ⇒ <code>Boolean</code>
-Delete the entry - either trashes the entry, or removes it completely.
-If the entry is in the trash already, it is removed (including if there is no
-   trash group). If the entry is in a normal group and a trash group exists, it
- is moved there instead of being deleted.
+#### group.vault : <code>Vault</code>
+The vault this item belongs to
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: <code>Boolean</code> - Whether or not the item was deleted  
-**See**
+**Kind**: instance property of [<code>Group</code>](#module_Buttercup.Group)  
+**Read only**: true  
+<a name="module_Buttercup.Group+setTitle"></a>
 
-- moveToGroup
-- Archive.getTrashGroup
+#### group.setTitle(title) ⇒ <code>Group</code>
+Set the group title
+
+**Kind**: instance method of [<code>Group</code>](#module_Buttercup.Group)  
+**Returns**: <code>Group</code> - Returns self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| title | <code>String</code> | The title of the group |
+
+<a name="VaultItem+grantPermission"></a>
+
+#### group.grantPermission(perm)
+Grant a new permission to the member
+
+**Kind**: instance method of [<code>Group</code>](#module_Buttercup.Group)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| perm | <code>String</code> | The permission to grant |
+
+<a name="VaultItem+hasPermission"></a>
+
+#### group.hasPermission(perm) ⇒ <code>Boolean</code>
+Check if the member has a permission
+
+**Kind**: instance method of [<code>Group</code>](#module_Buttercup.Group)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| perm | <code>String</code> | The permission to check for |
+
+<a name="VaultItem+revokeAllPermissions"></a>
+
+#### group.revokeAllPermissions()
+Revoke all permissions
+
+**Kind**: instance method of [<code>Group</code>](#module_Buttercup.Group)  
+<a name="VaultItem+revokePermission"></a>
+
+#### group.revokePermission(perm)
+Revoke a single permission
+
+**Kind**: instance method of [<code>Group</code>](#module_Buttercup.Group)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| perm | <code>String</code> | The permission to revoke |
+
+<a name="VaultItem+_cleanUp"></a>
+
+#### group.\_cleanUp()
+Clean up all of the data in the vault item
+
+**Kind**: instance method of [<code>Group</code>](#module_Buttercup.Group)  
+**Access**: protected  
+<a name="module_Buttercup.MyButtercupDatasource"></a>
+
+### Buttercup.MyButtercupDatasource ⇐ <code>TextDatasource</code>
+My Buttercup datasource
+
+**Kind**: static class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>TextDatasource</code>  
+
+* [.MyButtercupDatasource](#module_Buttercup.MyButtercupDatasource) ⇐ <code>TextDatasource</code>
+    * [new MyButtercupDatasource(credentials)](#new_module_Buttercup.MyButtercupDatasource_new)
+    * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+    * [.changePassword(newCredentials, preflight)](#module_Buttercup.MyButtercupDatasource+changePassword) ⇒ <code>Promise.&lt;(Boolean\|undefined)&gt;</code>
+    * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+    * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+    * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
+
+<a name="new_module_Buttercup.MyButtercupDatasource_new"></a>
+
+#### new MyButtercupDatasource(credentials)
+Constructor for the datasource
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| credentials | <code>Credentials</code> | Credentials for the datasource |
+
+<a name="TextDatasource+hasContent"></a>
+
+#### myButtercupDatasource.hasContent : <code>Boolean</code>
+Whether the datasource currently has content
+Used to check if the datasource has encrypted content that can be
+loaded. May be used when attempting to open a vault in offline mode.
+
+**Kind**: instance property of [<code>MyButtercupDatasource</code>](#module_Buttercup.MyButtercupDatasource)  
+**Overrides**: [<code>hasContent</code>](#TextDatasource+hasContent)  
+<a name="module_Buttercup.MyButtercupDatasource+changePassword"></a>
+
+#### myButtercupDatasource.changePassword(newCredentials, preflight) ⇒ <code>Promise.&lt;(Boolean\|undefined)&gt;</code>
+Change the master password for the vault
+(Called with a preflight check to ensure that the datasource is
+ready to change - if not ready, the method will return false)
+
+**Kind**: instance method of [<code>MyButtercupDatasource</code>](#module_Buttercup.MyButtercupDatasource)  
+**Returns**: <code>Promise.&lt;(Boolean\|undefined)&gt;</code> - A promise that resolves
+ with a boolean value during preflight, or with simply undefined
+ if performing the final change action.  
+
+| Param | Type |
+| --- | --- |
+| newCredentials | <code>\*</code> | 
+| preflight | <code>\*</code> | 
+
+**Example**  
+```js
+const creds = Credentials.fromPassword("test");
+ const isReady = await tds.changePassword(
+     creds,
+     true // preflight
+ );
+ if (!isReady) {
+     throw new Error("Datasource unable to change password");
+ }
+ await tds.changePassword(creds, false);
+```
+<a name="TextDatasource+load"></a>
+
+#### myButtercupDatasource.load(credentials) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+Load from the stored content using a password to decrypt
+
+**Kind**: instance method of [<code>MyButtercupDatasource</code>](#module_Buttercup.MyButtercupDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData) - A promise that resolves with decrypted history  
+**Throws**:
+
+- <code>Error</code> Rejects if content is empty
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| credentials | <code>Credentials</code> | The password or Credentials instance to decrypt with |
+
+<a name="TextDatasource+save"></a>
+
+#### myButtercupDatasource.save(history, credentials) ⇒ <code>Promise.&lt;string&gt;</code>
+Save archive contents with a password
+
+**Kind**: instance method of [<code>MyButtercupDatasource</code>](#module_Buttercup.MyButtercupDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise resolving with the encrypted content  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| history | <code>Array.&lt;String&gt;</code> | Archive history to save |
+| credentials | <code>Credentials</code> | The Credentials instance to encrypt with |
+
+<a name="TextDatasource+setContent"></a>
+
+#### myButtercupDatasource.setContent(content) ⇒ <code>TextDatasource</code>
+Set the text content
+
+**Kind**: instance method of [<code>MyButtercupDatasource</code>](#module_Buttercup.MyButtercupDatasource)  
+**Overrides**: [<code>setContent</code>](#TextDatasource+setContent)  
+**Returns**: <code>TextDatasource</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | The encrypted text content |
+
+<a name="TextDatasource+supportsRemoteBypass"></a>
+
+#### myButtercupDatasource.supportsRemoteBypass() ⇒ <code>Boolean</code>
+Whether or not the datasource supports bypassing remote fetch operations
+ (offline support)
+
+**Kind**: instance method of [<code>MyButtercupDatasource</code>](#module_Buttercup.MyButtercupDatasource)  
+**Overrides**: [<code>supportsRemoteBypass</code>](#TextDatasource+supportsRemoteBypass)  
+**Returns**: <code>Boolean</code> - True if content can be set to bypass fetch operations,
+ false otherwise  
+<a name="module_Buttercup.StorageInterface"></a>
+
+### Buttercup.StorageInterface
+Storage Interface (stub only)
+
+**Kind**: static class of [<code>Buttercup</code>](#module_Buttercup)  
+**See**: MemoryStorageInterface  
+<a name="module_Buttercup.DEFAULT_ENTRY_TYPE"></a>
+
+### Buttercup.DEFAULT\_ENTRY\_TYPE : <code>String</code>
+Default entry type
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.DEFAULT_FIELD_TYPE"></a>
+
+### Buttercup.DEFAULT\_FIELD\_TYPE : <code>String</code>
+Default entry field type
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.ENTRY_TYPE_CREDITCARD"></a>
+
+### Buttercup.ENTRY\_TYPE\_CREDITCARD : <code>String</code>
+Credit-card entry type
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.ENTRY_TYPE_LOGIN"></a>
+
+### Buttercup.ENTRY\_TYPE\_LOGIN : <code>String</code>
+Login (default) entry type
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.ENTRY_TYPE_NOTE"></a>
+
+### Buttercup.ENTRY\_TYPE\_NOTE : <code>String</code>
+Note entry type
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.ENTRY_TYPE_SSHKEY"></a>
+
+### Buttercup.ENTRY\_TYPE\_SSHKEY : <code>String</code>
+SSH public/private key-pair entry type
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.ENTRY_TYPE_WEBSITE"></a>
+
+### Buttercup.ENTRY\_TYPE\_WEBSITE : <code>String</code>
+Website entry type (includes URL)
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.ENTRY_TYPES"></a>
+
+### Buttercup.ENTRY\_TYPES : <code>Object.&lt;String, FlagSpecification&gt;</code>
+Entry types collection (all available)
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.FIELD_VALUE_TYPE_NOTE"></a>
+
+### Buttercup.FIELD\_VALUE\_TYPE\_NOTE : <code>String</code>
+Note type entry field value
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.FIELD_VALUE_TYPE_OTP"></a>
+
+### Buttercup.FIELD\_VALUE\_TYPE\_OTP : <code>String</code>
+OTP (One Time Password) type entry field value
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.FIELD_VALUE_TYPE_PASSWORD"></a>
+
+### Buttercup.FIELD\_VALUE\_TYPE\_PASSWORD : <code>String</code>
+Password type entry field value
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.FIELD_VALUE_TYPE_TEXT"></a>
+
+### Buttercup.FIELD\_VALUE\_TYPE\_TEXT : <code>String</code>
+Text (default) type entry field value
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.FIELD_VALUE_TYPES"></a>
+
+### Buttercup.FIELD\_VALUE\_TYPES : <code>Object.&lt;String, FlagSpecification&gt;</code>
+Entry field value types collection (all available)
+
+**Kind**: static constant of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.registerDatasource"></a>
+
+### Buttercup.registerDatasource(datasourceType, DSClass)
+Register a new datasource
+This is called internally by the built-in datasources, but should be called if a
+custom datasource is used.
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| datasourceType | <code>String</code> | The name (slug) of the datasource |
+| DSClass | <code>Object</code> | The class for the new datasource |
+
+<a name="module_Buttercup.getSharedAppEnv"></a>
+
+### Buttercup.getSharedAppEnv() ⇒ [<code>AppEnv</code>](#AppEnv)
+Get the shared app-environment configurator
+(provides a controller for handling the substitution of
+functions that need to work differently on different
+environments)
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.isOTPURI"></a>
+
+### Buttercup.isOTPURI(str) ⇒ <code>Boolean</code>
+Check if a string is an OTP URI
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| str | <code>String</code> | The string to check |
+
+<a name="module_Buttercup.isVaultFacade"></a>
+
+### Buttercup.isVaultFacade(obj) ⇒ <code>Boolean</code>
+Check if an object is a vault facade
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+**Returns**: <code>Boolean</code> - True if a vault facade  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| obj | <code>Object</code> \| <code>\*</code> | The item to check |
+
+<a name="module_Buttercup.consumeEntryFacade"></a>
+
+### Buttercup.consumeEntryFacade(entry, facade)
+Process a modified entry facade
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>Entry</code> | The entry to apply processed data on |
+| facade | [<code>EntryFacade</code>](#EntryFacade) | The facade object |
+
+<a name="module_Buttercup.createEntryFacade"></a>
+
+### Buttercup.createEntryFacade([entry], [ops]) ⇒ [<code>EntryFacade</code>](#EntryFacade)
+Create a data/input facade for an Entry instance
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+**Returns**: [<code>EntryFacade</code>](#EntryFacade) - A newly created facade  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [entry] | <code>Entry</code> | The Entry instance |
+| [ops] | [<code>CreateEntryFacadeOptions</code>](#CreateEntryFacadeOptions) | Options for the entry facade creation |
+
+<a name="module_Buttercup.createFieldDescriptor"></a>
+
+### Buttercup.createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options) ⇒ [<code>EntryFacadeField</code>](#EntryFacadeField)
+Create a descriptor for a field to be used within a facade
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+**Returns**: [<code>EntryFacadeField</code>](#EntryFacadeField) - The field descriptor  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>Entry</code> \| <code>null</code> | The entry instance to process or null if the initial value  should be empty |
+| title | <code>String</code> | The field title |
+| entryPropertyType | <code>String</code> | The type of entry property (property/attribute) |
+| entryPropertyName | <code>String</code> | The name of the property |
+| options | <code>Object</code> | The options for the field |
+
+<a name="module_Buttercup.consumeGroupFacade"></a>
+
+### Buttercup.consumeGroupFacade(group, facade)
+Consume a group facade and apply the differences to a group instance
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| group | <code>Group</code> | The group instance to apply to |
+| facade | [<code>GroupFacade</code>](#GroupFacade) | The facade to apply |
+
+<a name="module_Buttercup.consumeVaultFacade"></a>
+
+### Buttercup.consumeVaultFacade(vault, facade)
+Consume a vault facade and apply the differences to the vault
+instance
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| vault | <code>Vault</code> | The vault instance to apply to |
+| facade | [<code>VaultFacade</code>](#VaultFacade) | The facade to apply |
+
+<a name="module_Buttercup.createVaultFacade"></a>
+
+### Buttercup.createVaultFacade(vault) ⇒ [<code>VaultFacade</code>](#VaultFacade)
+Create a vault facade from an Vault instance
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+**Returns**: [<code>VaultFacade</code>](#VaultFacade) - A vault facade  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| vault | <code>Vault</code> | A vault instance |
+
+<a name="module_Buttercup.createGroupFacade"></a>
+
+### Buttercup.createGroupFacade(group, [parentID])
+Create a group facade from a Group instance
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| group | <code>Group</code> |  | The group instance |
+| [parentID] | <code>String</code> | <code>0</code> | The parent ID of the group |
+
+<a name="module_Buttercup.init"></a>
+
+### Buttercup.init()
+Initialise the node/native environment
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.init"></a>
+
+### Buttercup.init()
+Initialise the web environment
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="module_Buttercup.Vault"></a>
+
+### Buttercup~Vault ⇐ <code>EventEmitter</code>
+Vault class - Contains Groups and Entrys
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>EventEmitter</code>  
+<a name="new_module_Buttercup.Vault_new"></a>
+
+#### new Vault([Format])
+Create a new Vault instance
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [Format] | <code>VaultFormat</code> | Optional vault format specification.  Will use the default system format (recommended) if not  specified. |
+
+<a name="module_Buttercup.VaultManager"></a>
+
+### Buttercup~VaultManager ⇐ <code>EventEmitter</code>
+Vault manager, to manage vault sources and their vaults
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>EventEmitter</code>  
+<a name="new_module_Buttercup.VaultManager_new"></a>
+
+#### new VaultManager([opts])
+Construct a new VaultManager
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [opts] | [<code>VaultManagerOptions</code>](#VaultManagerOptions) | Configuration options |
+
+<a name="module_Buttercup.VaultSource"></a>
+
+### Buttercup~VaultSource ⇐ <code>EventEmitter</code>
+Vault source class for managing a single vault
+within a vault manager
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>EventEmitter</code>  
+<a name="module_Buttercup.Credentials"></a>
+
+### Buttercup~Credentials
+Secure credentials storage/transfer class
+- Allows for the safe transfer of credentials within the
+Buttercup application environment. Will not allow
+credentials to be shared or transferred outside of the
+environment. Credential properties are stored in memory
+and are inaccessible to public functions.
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+<a name="new_module_Buttercup.Credentials_new"></a>
+
+#### new Credentials([obj], masterPassword)
+Create a new Credentials instance
 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [skipTrash] | <code>Boolean</code> | <code>false</code> | Skip the trash and force-delete the entry |
+| [obj] | <code>Object</code> |  | Object data representing some credentials |
+| masterPassword | <code>String</code> \| <code>null</code> | <code></code> | Optional master password to store with  the credentials data, which is used for generating secure strings. |
 
-<a name="Entry+deleteAttribute"></a>
+<a name="module_Buttercup.DatasourceAuthManager"></a>
 
-### entry.deleteAttribute(attr) ⇒ [<code>Entry</code>](#Entry)
-Delete an attribute
+### Buttercup~DatasourceAuthManager ⇐ <code>EventEmitter</code>
+Authentication manager
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: [<code>Entry</code>](#Entry) - Self  
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>EventEmitter</code>  
+<a name="new_module_Buttercup.DatasourceAuthManager_new"></a>
+
+#### new DatasourceAuthManager()
+Constructor for the auth manager
+
+<a name="module_Buttercup.DropboxDatasource"></a>
+
+### Buttercup~DropboxDatasource ⇐ <code>TextDatasource</code>
+Datasource for Dropbox archives
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>TextDatasource</code>  
+
+* [~DropboxDatasource](#module_Buttercup.DropboxDatasource) ⇐ <code>TextDatasource</code>
+    * [new DropboxDatasource(credentials)](#new_module_Buttercup.DropboxDatasource_new)
+    * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+    * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+    * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+    * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
+
+<a name="new_module_Buttercup.DropboxDatasource_new"></a>
+
+#### new DropboxDatasource(credentials)
+Datasource for Dropbox accounts
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| credentials | <code>Credentials</code> | Credentials instance to configure the  datsource with |
+
+<a name="TextDatasource+hasContent"></a>
+
+#### dropboxDatasource.hasContent : <code>Boolean</code>
+Whether the datasource currently has content
+Used to check if the datasource has encrypted content that can be
+loaded. May be used when attempting to open a vault in offline mode.
+
+**Kind**: instance property of [<code>DropboxDatasource</code>](#module_Buttercup.DropboxDatasource)  
+**Overrides**: [<code>hasContent</code>](#TextDatasource+hasContent)  
+<a name="TextDatasource+load"></a>
+
+#### dropboxDatasource.load(credentials) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+Load from the stored content using a password to decrypt
+
+**Kind**: instance method of [<code>DropboxDatasource</code>](#module_Buttercup.DropboxDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData) - A promise that resolves with decrypted history  
 **Throws**:
 
-- <code>Error</code> Throws if the attribute doesn't exist, or cannot be deleted
+- <code>Error</code> Rejects if content is empty
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| attr | <code>String</code> | The attribute name |
+| credentials | <code>Credentials</code> | The password or Credentials instance to decrypt with |
 
-<a name="Entry+deleteProperty"></a>
+<a name="TextDatasource+save"></a>
 
-### entry.deleteProperty(property) ⇒ [<code>Entry</code>](#Entry)
-Delete a property
+#### dropboxDatasource.save(history, credentials) ⇒ <code>Promise.&lt;string&gt;</code>
+Save archive contents with a password
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: [<code>Entry</code>](#Entry) - Self  
+**Kind**: instance method of [<code>DropboxDatasource</code>](#module_Buttercup.DropboxDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise resolving with the encrypted content  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| history | <code>Array.&lt;String&gt;</code> | Archive history to save |
+| credentials | <code>Credentials</code> | The Credentials instance to encrypt with |
+
+<a name="TextDatasource+setContent"></a>
+
+#### dropboxDatasource.setContent(content) ⇒ <code>TextDatasource</code>
+Set the text content
+
+**Kind**: instance method of [<code>DropboxDatasource</code>](#module_Buttercup.DropboxDatasource)  
+**Overrides**: [<code>setContent</code>](#TextDatasource+setContent)  
+**Returns**: <code>TextDatasource</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | The encrypted text content |
+
+<a name="TextDatasource+supportsRemoteBypass"></a>
+
+#### dropboxDatasource.supportsRemoteBypass() ⇒ <code>Boolean</code>
+Whether or not the datasource supports bypassing remote fetch operations
+ (offline support)
+
+**Kind**: instance method of [<code>DropboxDatasource</code>](#module_Buttercup.DropboxDatasource)  
+**Overrides**: [<code>supportsRemoteBypass</code>](#TextDatasource+supportsRemoteBypass)  
+**Returns**: <code>Boolean</code> - True if content can be set to bypass fetch operations,
+ false otherwise  
+<a name="module_Buttercup.FileDatasource"></a>
+
+### Buttercup~FileDatasource ⇐ <code>TextDatasource</code>
+File datasource for loading and saving files
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>TextDatasource</code>  
+
+* [~FileDatasource](#module_Buttercup.FileDatasource) ⇐ <code>TextDatasource</code>
+    * [new FileDatasource(credentials)](#new_module_Buttercup.FileDatasource_new)
+    * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+    * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+    * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+    * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
+
+<a name="new_module_Buttercup.FileDatasource_new"></a>
+
+#### new FileDatasource(credentials)
+Constructor for the file datasource
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| credentials | <code>Credentials</code> | The credentials instance with which to  use to configure the datasource |
+
+<a name="TextDatasource+hasContent"></a>
+
+#### fileDatasource.hasContent : <code>Boolean</code>
+Whether the datasource currently has content
+Used to check if the datasource has encrypted content that can be
+loaded. May be used when attempting to open a vault in offline mode.
+
+**Kind**: instance property of [<code>FileDatasource</code>](#module_Buttercup.FileDatasource)  
+**Overrides**: [<code>hasContent</code>](#TextDatasource+hasContent)  
+<a name="TextDatasource+load"></a>
+
+#### fileDatasource.load(credentials) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+Load from the stored content using a password to decrypt
+
+**Kind**: instance method of [<code>FileDatasource</code>](#module_Buttercup.FileDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData) - A promise that resolves with decrypted history  
 **Throws**:
 
-- <code>Error</code> Throws if property doesn't exist, or cannot be deleted
+- <code>Error</code> Rejects if content is empty
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| property | <code>String</code> | The property to delete |
+| credentials | <code>Credentials</code> | The password or Credentials instance to decrypt with |
 
-<a name="Entry+getAttribute"></a>
+<a name="TextDatasource+save"></a>
 
-### entry.getAttribute([attributeName]) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
-Get an attribute
-If no attribute name is specified, an object with all attributes and their
-values is returned.
+#### fileDatasource.save(history, credentials) ⇒ <code>Promise.&lt;string&gt;</code>
+Save archive contents with a password
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: <code>String</code> \| <code>undefined</code> \| <code>Object</code> - The attribute value or an object
- containing all attribute keys and their values if no attribute name
- is provided  
+**Kind**: instance method of [<code>FileDatasource</code>](#module_Buttercup.FileDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise resolving with the encrypted content  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [attributeName] | <code>String</code> | The name of the attribute to fetch |
+| history | <code>Array.&lt;String&gt;</code> | Archive history to save |
+| credentials | <code>Credentials</code> | The Credentials instance to encrypt with |
 
-<a name="Entry+getChanges"></a>
+<a name="TextDatasource+setContent"></a>
 
-### entry.getChanges() ⇒ [<code>Array.&lt;EntryHistoryItem&gt;</code>](#EntryHistoryItem)
-Get an array of all history changes made to the entry
+#### fileDatasource.setContent(content) ⇒ <code>TextDatasource</code>
+Set the text content
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-<a name="Entry+getGroup"></a>
+**Kind**: instance method of [<code>FileDatasource</code>](#module_Buttercup.FileDatasource)  
+**Overrides**: [<code>setContent</code>](#TextDatasource+setContent)  
+**Returns**: <code>TextDatasource</code> - Self  
 
-### entry.getGroup() ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-Get the containing group for the entry
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | The encrypted text content |
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The parent group  
+<a name="TextDatasource+supportsRemoteBypass"></a>
+
+#### fileDatasource.supportsRemoteBypass() ⇒ <code>Boolean</code>
+Whether or not the datasource supports bypassing remote fetch operations
+ (offline support)
+
+**Kind**: instance method of [<code>FileDatasource</code>](#module_Buttercup.FileDatasource)  
+**Overrides**: [<code>supportsRemoteBypass</code>](#TextDatasource+supportsRemoteBypass)  
+**Returns**: <code>Boolean</code> - True if content can be set to bypass fetch operations,
+ false otherwise  
+<a name="module_Buttercup.GoogleDriveDatasource"></a>
+
+### Buttercup~GoogleDriveDatasource ⇐ <code>TextDatasource</code>
+Datasource for Google Drive archives
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>TextDatasource</code>  
+
+* [~GoogleDriveDatasource](#module_Buttercup.GoogleDriveDatasource) ⇐ <code>TextDatasource</code>
+    * [new GoogleDriveDatasource(credentials)](#new_module_Buttercup.GoogleDriveDatasource_new)
+    * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+    * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+    * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+    * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
+
+<a name="new_module_Buttercup.GoogleDriveDatasource_new"></a>
+
+#### new GoogleDriveDatasource(credentials)
+Datasource for Google Drive connections
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| credentials | <code>Credentials</code> | The credentials instance with which to  configure the datasource with |
+
+<a name="TextDatasource+hasContent"></a>
+
+#### googleDriveDatasource.hasContent : <code>Boolean</code>
+Whether the datasource currently has content
+Used to check if the datasource has encrypted content that can be
+loaded. May be used when attempting to open a vault in offline mode.
+
+**Kind**: instance property of [<code>GoogleDriveDatasource</code>](#module_Buttercup.GoogleDriveDatasource)  
+**Overrides**: [<code>hasContent</code>](#TextDatasource+hasContent)  
+<a name="TextDatasource+load"></a>
+
+#### googleDriveDatasource.load(credentials) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+Load from the stored content using a password to decrypt
+
+**Kind**: instance method of [<code>GoogleDriveDatasource</code>](#module_Buttercup.GoogleDriveDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData) - A promise that resolves with decrypted history  
 **Throws**:
 
-- <code>Error</code> Throws if no parent group found
+- <code>Error</code> Rejects if content is empty
 
-<a name="Entry+getHistory"></a>
-
-### ~~entry.getHistory() ⇒ <code>Array</code>~~
-***Deprecated***
-
-Get the history of the entry
-
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-<a name="Entry+getProperty"></a>
-
-### entry.getProperty([property]) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
-Get a property value
-If no property name is specified, an object with all properties and their
-values is returned.
-
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: <code>String</code> \| <code>undefined</code> \| <code>Object</code> - The property value or an object with all
- values if no property specified  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [property] | <code>String</code> | The name of the property to fetch |
+| credentials | <code>Credentials</code> | The password or Credentials instance to decrypt with |
 
-<a name="Entry+getProperties"></a>
+<a name="TextDatasource+save"></a>
 
-### entry.getProperties(propertyExpression) ⇒ <code>Object</code>
-Get property values via RegExp expressions.
-If no property expression is specified, it returns the empty behavior of
-{@see Entry.getProperty}.
+#### googleDriveDatasource.save(history, credentials) ⇒ <code>Promise.&lt;string&gt;</code>
+Save archive contents with a password
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: <code>Object</code> - A key-value object of the matching properties  
-
-| Param | Type |
-| --- | --- |
-| propertyExpression | <code>RegExp</code> \| <code>String</code> | 
-
-<a name="Entry+getURLs"></a>
-
-### entry.getURLs([urlTypePreference]) ⇒ <code>Array.&lt;String&gt;</code>
-Get an array of URLs from the Entry
-Returns an array of detected URL values in the Entry's properties. The
-types of URLs can be configured by providing a preference:
- - "general" - General URLs (of any type, preferring "URL" named props)
- - "login" - Prefer URLs whose key has "login" in it
- - "icon" - Return only icon-like URLs
- - "any" - Return all found URLs
-
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: <code>Array.&lt;String&gt;</code> - An array of URLs  
+**Kind**: instance method of [<code>GoogleDriveDatasource</code>](#module_Buttercup.GoogleDriveDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise resolving with the encrypted content  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [urlTypePreference] | <code>String</code> | The URL type preference |
+| history | <code>Array.&lt;String&gt;</code> | Archive history to save |
+| credentials | <code>Credentials</code> | The Credentials instance to encrypt with |
 
-<a name="Entry+isInTrash"></a>
+<a name="TextDatasource+setContent"></a>
 
-### entry.isInTrash() ⇒ <code>Boolean</code>
-Check if the entry is in the trash
+#### googleDriveDatasource.setContent(content) ⇒ <code>TextDatasource</code>
+Set the text content
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: <code>Boolean</code> - Whether or not the entry is in the trash  
-<a name="Entry+moveToGroup"></a>
-
-### entry.moveToGroup(group) ⇒ [<code>Entry</code>](#Entry)
-Move the entry to another group
-
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: [<code>Entry</code>](#Entry) - Returns self  
-**Params**: [<code>Group</code>](#Group) group The target group  
+**Kind**: instance method of [<code>GoogleDriveDatasource</code>](#module_Buttercup.GoogleDriveDatasource)  
+**Overrides**: [<code>setContent</code>](#TextDatasource+setContent)  
+**Returns**: <code>TextDatasource</code> - Self  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| group | [<code>Group</code>](#Group) | The target group |
+| content | <code>String</code> | The encrypted text content |
 
-<a name="Entry+setAttribute"></a>
+<a name="TextDatasource+supportsRemoteBypass"></a>
 
-### entry.setAttribute(attributeName, value) ⇒ [<code>Entry</code>](#Entry)
-Set an attribute on the entry
+#### googleDriveDatasource.supportsRemoteBypass() ⇒ <code>Boolean</code>
+Whether or not the datasource supports bypassing remote fetch operations
+ (offline support)
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: [<code>Entry</code>](#Entry) - Returns self  
+**Kind**: instance method of [<code>GoogleDriveDatasource</code>](#module_Buttercup.GoogleDriveDatasource)  
+**Overrides**: [<code>supportsRemoteBypass</code>](#TextDatasource+supportsRemoteBypass)  
+**Returns**: <code>Boolean</code> - True if content can be set to bypass fetch operations,
+ false otherwise  
+<a name="module_Buttercup.TextDatasource"></a>
+
+### Buttercup~TextDatasource
+Datasource for text input and output
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+
+* [~TextDatasource](#module_Buttercup.TextDatasource)
+    * [new TextDatasource(credentials)](#new_module_Buttercup.TextDatasource_new)
+    * [.credentials](#module_Buttercup.TextDatasource+credentials) : <code>Credentials</code>
+
+<a name="new_module_Buttercup.TextDatasource_new"></a>
+
+#### new TextDatasource(credentials)
+Constructor for the text datasource
+
 
 | Param | Type | Description |
 | --- | --- | --- |
-| attributeName | <code>String</code> | The name of the attribute |
-| value | <code>String</code> | The value to set |
+| credentials | <code>Credentials</code> | The credentials and configuration for  the datasource |
 
-<a name="Entry+setProperty"></a>
+<a name="module_Buttercup.TextDatasource+credentials"></a>
 
-### entry.setProperty(prop, [val]) ⇒ [<code>Entry</code>](#Entry)
-Set a property on the entry
+#### textDatasource.credentials : <code>Credentials</code>
+Datasource credentials
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: [<code>Entry</code>](#Entry) - Returns self  
+**Kind**: instance property of [<code>TextDatasource</code>](#module_Buttercup.TextDatasource)  
+**Read only**: true  
+<a name="module_Buttercup.WebDAVDatasource"></a>
+
+### Buttercup~WebDAVDatasource ⇐ <code>TextDatasource</code>
+WebDAV datasource for reading and writing remote archives
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>TextDatasource</code>  
+
+* [~WebDAVDatasource](#module_Buttercup.WebDAVDatasource) ⇐ <code>TextDatasource</code>
+    * [new WebDAVDatasource(credentials)](#new_module_Buttercup.WebDAVDatasource_new)
+    * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+    * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+    * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+    * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
+
+<a name="new_module_Buttercup.WebDAVDatasource_new"></a>
+
+#### new WebDAVDatasource(credentials)
+Constructor for the datasource
+
 
 | Param | Type | Description |
 | --- | --- | --- |
-| prop | <code>String</code> | The property name |
-| [val] | <code>String</code> | The property value |
+| credentials | <code>Credentials</code> | Credentials for the datasource |
 
-<a name="Entry+toObject"></a>
+<a name="TextDatasource+hasContent"></a>
 
-### entry.toObject() ⇒ <code>Object</code>
-Export entry to object
+#### webDAVDatasource.hasContent : <code>Boolean</code>
+Whether the datasource currently has content
+Used to check if the datasource has encrypted content that can be
+loaded. May be used when attempting to open a vault in offline mode.
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: <code>Object</code> - The entry in object-form  
-<a name="Entry+toString"></a>
+**Kind**: instance property of [<code>WebDAVDatasource</code>](#module_Buttercup.WebDAVDatasource)  
+**Overrides**: [<code>hasContent</code>](#TextDatasource+hasContent)  
+<a name="TextDatasource+load"></a>
 
-### entry.toString() ⇒ <code>String</code>
-toString override
+#### webDAVDatasource.load(credentials) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+Load from the stored content using a password to decrypt
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: <code>String</code> - The string representation of the Entry  
-<a name="ArchiveMember+grantPermission"></a>
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#module_Buttercup.WebDAVDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData) - A promise that resolves with decrypted history  
+**Throws**:
 
-### entry.grantPermission(perm)
+- <code>Error</code> Rejects if content is empty
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| credentials | <code>Credentials</code> | The password or Credentials instance to decrypt with |
+
+<a name="TextDatasource+save"></a>
+
+#### webDAVDatasource.save(history, credentials) ⇒ <code>Promise.&lt;string&gt;</code>
+Save archive contents with a password
+
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#module_Buttercup.WebDAVDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise resolving with the encrypted content  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| history | <code>Array.&lt;String&gt;</code> | Archive history to save |
+| credentials | <code>Credentials</code> | The Credentials instance to encrypt with |
+
+<a name="TextDatasource+setContent"></a>
+
+#### webDAVDatasource.setContent(content) ⇒ <code>TextDatasource</code>
+Set the text content
+
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#module_Buttercup.WebDAVDatasource)  
+**Overrides**: [<code>setContent</code>](#TextDatasource+setContent)  
+**Returns**: <code>TextDatasource</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | The encrypted text content |
+
+<a name="TextDatasource+supportsRemoteBypass"></a>
+
+#### webDAVDatasource.supportsRemoteBypass() ⇒ <code>Boolean</code>
+Whether or not the datasource supports bypassing remote fetch operations
+ (offline support)
+
+**Kind**: instance method of [<code>WebDAVDatasource</code>](#module_Buttercup.WebDAVDatasource)  
+**Overrides**: [<code>supportsRemoteBypass</code>](#TextDatasource+supportsRemoteBypass)  
+**Returns**: <code>Boolean</code> - True if content can be set to bypass fetch operations,
+ false otherwise  
+<a name="module_Buttercup.MyButtercupClient"></a>
+
+### Buttercup~MyButtercupClient ⇐ <code>EventEmitter</code>
+My Buttercup client
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>EventEmitter</code>  
+
+* [~MyButtercupClient](#module_Buttercup.MyButtercupClient) ⇐ <code>EventEmitter</code>
+    * [new MyButtercupClient(clientID, clientSecret, accessToken, refreshToken)](#new_module_Buttercup.MyButtercupClient_new)
+    * [.accessToken](#module_Buttercup.MyButtercupClient+accessToken) : <code>String</code>
+    * [.digest](#module_Buttercup.MyButtercupClient+digest) : [<code>MyButtercupDigest</code>](#MyButtercupDigest) \| <code>null</code>
+    * [.refreshToken](#module_Buttercup.MyButtercupClient+refreshToken) : <code>String</code>
+
+<a name="new_module_Buttercup.MyButtercupClient_new"></a>
+
+#### new MyButtercupClient(clientID, clientSecret, accessToken, refreshToken)
+Create a new client instance
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| clientID | <code>String</code> | The client identifier |
+| clientSecret | <code>String</code> | The client secret |
+| accessToken | <code>String</code> | Access token |
+| refreshToken | <code>String</code> | Refresh token |
+
+<a name="module_Buttercup.MyButtercupClient+accessToken"></a>
+
+#### myButtercupClient.accessToken : <code>String</code>
+The current access token
+
+**Kind**: instance property of [<code>MyButtercupClient</code>](#module_Buttercup.MyButtercupClient)  
+**Read only**: true  
+<a name="module_Buttercup.MyButtercupClient+digest"></a>
+
+#### myButtercupClient.digest : [<code>MyButtercupDigest</code>](#MyButtercupDigest) \| <code>null</code>
+The last client digest response
+
+**Kind**: instance property of [<code>MyButtercupClient</code>](#module_Buttercup.MyButtercupClient)  
+**Read only**: true  
+<a name="module_Buttercup.MyButtercupClient+refreshToken"></a>
+
+#### myButtercupClient.refreshToken : <code>String</code>
+The refresh token
+
+**Kind**: instance property of [<code>MyButtercupClient</code>](#module_Buttercup.MyButtercupClient)  
+**Read only**: true  
+<a name="module_Buttercup.MemoryStorageInterface"></a>
+
+### Buttercup~MemoryStorageInterface ⇐ <code>StorageInterface</code>
+Storage interface for memory storage
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>StorageInterface</code>  
+
+* [~MemoryStorageInterface](#module_Buttercup.MemoryStorageInterface) ⇐ <code>StorageInterface</code>
+    * [new MemoryStorageInterface()](#new_module_Buttercup.MemoryStorageInterface_new)
+    * [.getAllKeys()](#StorageInterface+getAllKeys)
+    * [.getValue()](#StorageInterface+getValue)
+    * [.removeKey()](#StorageInterface+removeKey)
+    * [.setValue()](#StorageInterface+setValue)
+
+<a name="new_module_Buttercup.MemoryStorageInterface_new"></a>
+
+#### new MemoryStorageInterface()
+Constructor for the memory storage
+
+<a name="StorageInterface+getAllKeys"></a>
+
+#### memoryStorageInterface.getAllKeys()
+Get all keys as an array
+
+**Kind**: instance method of [<code>MemoryStorageInterface</code>](#module_Buttercup.MemoryStorageInterface)  
+**Overrides**: [<code>getAllKeys</code>](#StorageInterface+getAllKeys)  
+<a name="StorageInterface+getValue"></a>
+
+#### memoryStorageInterface.getValue()
+Get a value for a key
+
+**Kind**: instance method of [<code>MemoryStorageInterface</code>](#module_Buttercup.MemoryStorageInterface)  
+**Overrides**: [<code>getValue</code>](#StorageInterface+getValue)  
+<a name="StorageInterface+removeKey"></a>
+
+#### memoryStorageInterface.removeKey()
+Remove a value for a key
+
+**Kind**: instance method of [<code>MemoryStorageInterface</code>](#module_Buttercup.MemoryStorageInterface)  
+**Overrides**: [<code>removeKey</code>](#StorageInterface+removeKey)  
+<a name="StorageInterface+setValue"></a>
+
+#### memoryStorageInterface.setValue()
+Set a value for a key
+
+**Kind**: instance method of [<code>MemoryStorageInterface</code>](#module_Buttercup.MemoryStorageInterface)  
+**Overrides**: [<code>setValue</code>](#StorageInterface+setValue)  
+<a name="VaultComparator"></a>
+
+## VaultComparator
+Vault comparison class
+
+**Kind**: global class  
+
+* [VaultComparator](#VaultComparator)
+    * [new VaultComparator(originalVault, secondaryVault)](#new_VaultComparator_new)
+    * [.calculateDifferences()](#VaultComparator+calculateDifferences) ⇒ <code>Object</code> \| <code>null</code>
+    * [.vaultsDiffer()](#VaultComparator+vaultsDiffer) ⇒ <code>Boolean</code>
+
+<a name="new_VaultComparator_new"></a>
+
+### new VaultComparator(originalVault, secondaryVault)
+Constructor for the vault comparator
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| originalVault | <code>Vault</code> | The primary vault |
+| secondaryVault | <code>Vault</code> | The secondary vault |
+
+<a name="VaultComparator+calculateDifferences"></a>
+
+### vaultComparator.calculateDifferences() ⇒ <code>Object</code> \| <code>null</code>
+Calculate the differences, in commands, between the two vaults
+
+**Kind**: instance method of [<code>VaultComparator</code>](#VaultComparator)  
+**Returns**: <code>Object</code> \| <code>null</code> - Returns null if no common base
+ is found, or the command differences as two arrays  
+<a name="VaultComparator+vaultsDiffer"></a>
+
+### vaultComparator.vaultsDiffer() ⇒ <code>Boolean</code>
+Check if the current vaults differ
+
+**Kind**: instance method of [<code>VaultComparator</code>](#VaultComparator)  
+**Returns**: <code>Boolean</code> - True if the vaults are different  
+<a name="VaultItem"></a>
+
+## VaultItem
+Base vault member class (for Entry, Group etc.)
+
+**Kind**: global class  
+
+* [VaultItem](#VaultItem)
+    * [new VaultItem(vault, source)](#new_VaultItem_new)
+    * _instance_
+        * [.id](#VaultItem+id) : <code>String</code>
+        * [.permissions](#VaultItem+permissions) : <code>Array.&lt;String&gt;</code>
+        * [.vault](#VaultItem+vault) : <code>Vault</code>
+        * [.grantPermission(perm)](#VaultItem+grantPermission)
+        * [.hasPermission(perm)](#VaultItem+hasPermission) ⇒ <code>Boolean</code>
+        * [.revokeAllPermissions()](#VaultItem+revokeAllPermissions)
+        * [.revokePermission(perm)](#VaultItem+revokePermission)
+        * [._cleanUp()](#VaultItem+_cleanUp)
+    * _static_
+        * [._vault](#VaultItem._vault)
+
+<a name="new_VaultItem_new"></a>
+
+### new VaultItem(vault, source)
+Constructor for the vault member base class
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| vault | <code>Vault</code> | Vault reference |
+| source | <code>Object</code> | Remote source object reference |
+
+<a name="VaultItem+id"></a>
+
+### vaultItem.id : <code>String</code>
+The ID of the entry or group
+
+**Kind**: instance property of [<code>VaultItem</code>](#VaultItem)  
+**Read only**: true  
+<a name="VaultItem+permissions"></a>
+
+### vaultItem.permissions : <code>Array.&lt;String&gt;</code>
+The current granted permissions
+
+**Kind**: instance property of [<code>VaultItem</code>](#VaultItem)  
+<a name="VaultItem+vault"></a>
+
+### vaultItem.vault : <code>Vault</code>
+The vault this item belongs to
+
+**Kind**: instance property of [<code>VaultItem</code>](#VaultItem)  
+**Read only**: true  
+<a name="VaultItem+grantPermission"></a>
+
+### vaultItem.grantPermission(perm)
 Grant a new permission to the member
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Kind**: instance method of [<code>VaultItem</code>](#VaultItem)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | perm | <code>String</code> | The permission to grant |
 
-<a name="ArchiveMember+hasPermission"></a>
+<a name="VaultItem+hasPermission"></a>
 
-### entry.hasPermission(perm) ⇒ <code>Boolean</code>
+### vaultItem.hasPermission(perm) ⇒ <code>Boolean</code>
 Check if the member has a permission
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Kind**: instance method of [<code>VaultItem</code>](#VaultItem)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | perm | <code>String</code> | The permission to check for |
 
-<a name="ArchiveMember+revokeAllPermissions"></a>
+<a name="VaultItem+revokeAllPermissions"></a>
 
-### entry.revokeAllPermissions()
+### vaultItem.revokeAllPermissions()
 Revoke all permissions
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-<a name="ArchiveMember+revokePermission"></a>
+**Kind**: instance method of [<code>VaultItem</code>](#VaultItem)  
+<a name="VaultItem+revokePermission"></a>
 
-### entry.revokePermission(perm)
+### vaultItem.revokePermission(perm)
 Revoke a single permission
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
+**Kind**: instance method of [<code>VaultItem</code>](#VaultItem)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | perm | <code>String</code> | The permission to revoke |
 
-<a name="ArchiveMember+_getArchive"></a>
+<a name="VaultItem+_cleanUp"></a>
 
-### entry.\_getArchive() ⇒ [<code>Archive</code>](#Archive)
-Get the archive reference
+### vaultItem.\_cleanUp()
+Clean up all of the data in the vault item
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: [<code>Archive</code>](#Archive) - The Archive reference  
+**Kind**: instance method of [<code>VaultItem</code>](#VaultItem)  
 **Access**: protected  
-<a name="ArchiveMember+_getRemoteObject"></a>
+<a name="VaultItem._vault"></a>
 
-### entry.\_getRemoteObject() ⇒ <code>Object</code>
-Get the remote object that mirrors the data represented here
+### VaultItem.\_vault
+Reference to the containing vault
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: <code>Object</code> - The remote object (in-memory copy)  
+**Kind**: static property of [<code>VaultItem</code>](#VaultItem)  
 **Access**: protected  
-<a name="ArchiveMember+_getWestley"></a>
+<a name="Flattener"></a>
 
-### entry.\_getWestley() ⇒ <code>Westley</code>
-Get the Westley reference
+## Flattener
+Flattener class for flattening archive history sets
 
-**Kind**: instance method of [<code>Entry</code>](#Entry)  
-**Returns**: <code>Westley</code> - The internal Westley reference  
-**Access**: protected  
-<a name="Entry.createNew"></a>
+**Kind**: global class  
 
-### Entry.createNew(archive, groupID) ⇒ [<code>Entry</code>](#Entry)
-Create a new entry
+* [Flattener](#Flattener)
+    * _instance_
+        * [.canBeFlattened()](#Flattener+canBeFlattened) ⇒ <code>Boolean</code>
+        * [.flatten([force])](#Flattener+flatten) ⇒ <code>Boolean</code>
+    * _static_
+        * [.FLATTENING_MIN_LINES](#Flattener.FLATTENING_MIN_LINES) : <code>Number</code>
+        * [.PRESERVE_LINES](#Flattener.PRESERVE_LINES) : <code>Number</code>
 
-**Kind**: static method of [<code>Entry</code>](#Entry)  
-**Returns**: [<code>Entry</code>](#Entry) - The new entry  
-**Throws**:
+<a name="Flattener+canBeFlattened"></a>
 
-- <code>Error</code> Throws if the target group doesn't exist
-- <code>Error</code> Throws if the target group is the trash group,
-     or if the target group is in the trash
+### flattener.canBeFlattened() ⇒ <code>Boolean</code>
+Check if the dataset can be flattened
 
+**Kind**: instance method of [<code>Flattener</code>](#Flattener)  
+**Returns**: <code>Boolean</code> - True if it can be flattened  
+<a name="Flattener+flatten"></a>
 
-| Param | Type | Description |
-| --- | --- | --- |
-| archive | [<code>Archive</code>](#Archive) | The archive |
-| groupID | <code>string</code> | The ID of the target group |
+### flattener.flatten([force]) ⇒ <code>Boolean</code>
+Flatten a dataset
 
+**Kind**: instance method of [<code>Flattener</code>](#Flattener)  
+**Returns**: <code>Boolean</code> - True if flattening occurred, false otherwise  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [force] | <code>Boolean</code> | <code>false</code> | Force flattening even if it is detected to be unnecessary |
+
+<a name="Flattener.FLATTENING_MIN_LINES"></a>
+
+### Flattener.FLATTENING\_MIN\_LINES : <code>Number</code>
+Minimum history lines before flattening can occur
+
+**Kind**: static property of [<code>Flattener</code>](#Flattener)  
+<a name="Flattener.PRESERVE_LINES"></a>
+
+### Flattener.PRESERVE\_LINES : <code>Number</code>
+Number of lines to preserve (most recent)
+
+**Kind**: static property of [<code>Flattener</code>](#Flattener)  
 <a name="EntryFinder"></a>
 
 ## EntryFinder
@@ -1445,7 +1653,7 @@ Entry searching class
 
 | Param | Type | Description |
 | --- | --- | --- |
-| target | [<code>Array.&lt;Archive&gt;</code>](#Archive) \| [<code>Archive</code>](#Archive) | The archive or archives to search |
+| target | <code>Array.&lt;Archive&gt;</code> \| <code>Archive</code> | The archive or archives to search |
 
 <a name="EntryFinder+items"></a>
 
@@ -1477,981 +1685,67 @@ Search and get results
 | --- | --- | --- |
 | term | <code>String</code> | The search term |
 
-<a name="Flattener"></a>
+<a name="LocalStorageInterface"></a>
 
-## Flattener
-Flattener class for flattening archive history sets
-
-**Kind**: global class  
-
-* [Flattener](#Flattener)
-    * _instance_
-        * [.westley](#Flattener+westley) : <code>Westley</code>
-        * [.canBeFlattened()](#Flattener+canBeFlattened) ⇒ <code>Boolean</code>
-        * [.flatten([force])](#Flattener+flatten) ⇒ <code>Boolean</code>
-    * _static_
-        * [.FLATTENING_MIN_LINES](#Flattener.FLATTENING_MIN_LINES) : <code>Number</code>
-        * [.PRESERVE_LINES](#Flattener.PRESERVE_LINES) : <code>Number</code>
-
-<a name="Flattener+westley"></a>
-
-### flattener.westley : <code>Westley</code>
-The working Westley instance
-
-**Kind**: instance property of [<code>Flattener</code>](#Flattener)  
-**Read only**: true  
-<a name="Flattener+canBeFlattened"></a>
-
-### flattener.canBeFlattened() ⇒ <code>Boolean</code>
-Check if the dataset can be flattened
-
-**Kind**: instance method of [<code>Flattener</code>](#Flattener)  
-**Returns**: <code>Boolean</code> - True if it can be flattened  
-<a name="Flattener+flatten"></a>
-
-### flattener.flatten([force]) ⇒ <code>Boolean</code>
-Flatten a dataset
-
-**Kind**: instance method of [<code>Flattener</code>](#Flattener)  
-**Returns**: <code>Boolean</code> - True if flattening occurred, false otherwise  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| [force] | <code>Boolean</code> | <code>false</code> | Force flattening even if it is detected to be unnecessary |
-
-<a name="Flattener.FLATTENING_MIN_LINES"></a>
-
-### Flattener.FLATTENING\_MIN\_LINES : <code>Number</code>
-Minimum history lines before flattening can occur
-
-**Kind**: static constant of [<code>Flattener</code>](#Flattener)  
-<a name="Flattener.PRESERVE_LINES"></a>
-
-### Flattener.PRESERVE\_LINES : <code>Number</code>
-Number of lines to preserve (most recent)
-
-**Kind**: static constant of [<code>Flattener</code>](#Flattener)  
-<a name="Group"></a>
-
-## Group ⇐ [<code>ArchiveMember</code>](#ArchiveMember)
-Group implementation
+## LocalStorageInterface ⇐ <code>StorageInterface</code>
+Interface for localStorage
 
 **Kind**: global class  
-**Extends**: [<code>ArchiveMember</code>](#ArchiveMember)  
-**Mixes**: [<code>GroupCollection</code>](#GroupCollection), [<code>EntryCollection</code>](#EntryCollection)  
+**Extends**: <code>StorageInterface</code>  
 
-* [Group](#Group) ⇐ [<code>ArchiveMember</code>](#ArchiveMember)
-    * [new Group(archive, remoteObj)](#new_Group_new)
-    * _instance_
-        * [.type](#Group+type) : <code>String</code>
-        * [.findGroupByID](#Group+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-        * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-        * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-        * [.findGroupByID](#Group+findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-        * [.findGroupsByTitle](#Group+findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-        * [.findEntriesByProperty](#Group+findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-        * [.id](#ArchiveMember+id) : <code>String</code>
-        * [.permissions](#ArchiveMember+permissions) : <code>Array.&lt;String&gt;</code>
-        * [.createEntry([title])](#Group+createEntry) ⇒ [<code>Entry</code>](#Entry)
-        * [.createGroup([title])](#Group+createGroup) ⇒ [<code>Group</code>](#Group)
-        * [.delete([skipTrash])](#Group+delete) ⇒ <code>Boolean</code>
-        * [.deleteAttribute(attr)](#Group+deleteAttribute) ⇒ [<code>Group</code>](#Group)
-        * [.getAttribute([attributeName])](#Group+getAttribute) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
-        * [.getEntries()](#Group+getEntries) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-        * [.getGroup()](#Group+getGroup) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-        * [.getGroups()](#Group+getGroups) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-        * [.getTitle()](#Group+getTitle) ⇒ <code>string</code>
-        * [.isInTrash()](#Group+isInTrash) ⇒ <code>Boolean</code>
-        * [.isTrash()](#Group+isTrash) ⇒ <code>Boolean</code>
-        * [.moveTo(target)](#Group+moveTo) ⇒ [<code>Group</code>](#Group)
-        * [.setAttribute(attributeName, value)](#Group+setAttribute) ⇒ [<code>Group</code>](#Group)
-        * [.setTitle(title)](#Group+setTitle) ⇒ [<code>Group</code>](#Group)
-        * [.toObject(outputFlags)](#Group+toObject) ⇒ <code>Object</code>
-        * [.toString(outputFlags)](#Group+toString) ⇒ <code>string</code>
-        * [.inst.findEntryByID(id)](#Group+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
-        * [.inst.findEntryByID(id)](#Group+findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
-        * [.grantPermission(perm)](#ArchiveMember+grantPermission)
-        * [.hasPermission(perm)](#ArchiveMember+hasPermission) ⇒ <code>Boolean</code>
-        * [.revokeAllPermissions()](#ArchiveMember+revokeAllPermissions)
-        * [.revokePermission(perm)](#ArchiveMember+revokePermission)
-        * [._getArchive()](#ArchiveMember+_getArchive) ⇒ [<code>Archive</code>](#Archive)
-        * [._getRemoteObject()](#ArchiveMember+_getRemoteObject) ⇒ <code>Object</code>
-        * [._getWestley()](#ArchiveMember+_getWestley) ⇒ <code>Westley</code>
-    * _static_
-        * [.Attributes](#Group.Attributes) : <code>enum</code>
-        * [.OutputFlag](#Group.OutputFlag) : <code>enum</code>
-        * [.createNew(archive, [parentID])](#Group.createNew) ⇒ [<code>Group</code>](#Group)
+* [LocalStorageInterface](#LocalStorageInterface) ⇐ <code>StorageInterface</code>
+    * [.getAllKeys()](#LocalStorageInterface+getAllKeys) ⇒ <code>Promise.&lt;Array.&lt;String&gt;&gt;</code>
+    * [.getValue(name)](#LocalStorageInterface+getValue) ⇒ <code>Promise.&lt;String&gt;</code>
+    * [.removeKey(name)](#LocalStorageInterface+removeKey) ⇒ <code>Promise</code>
+    * [.setValue(name, value)](#LocalStorageInterface+setValue) ⇒ <code>Promise</code>
 
-<a name="new_Group_new"></a>
+<a name="LocalStorageInterface+getAllKeys"></a>
 
-### new Group(archive, remoteObj)
-Managed group class
+### localStorageInterface.getAllKeys() ⇒ <code>Promise.&lt;Array.&lt;String&gt;&gt;</code>
+Get all keys from storage
 
+**Kind**: instance method of [<code>LocalStorageInterface</code>](#LocalStorageInterface)  
+**Overrides**: [<code>getAllKeys</code>](#StorageInterface+getAllKeys)  
+**Returns**: <code>Promise.&lt;Array.&lt;String&gt;&gt;</code> - A promise that resolves with an array of keys  
+<a name="LocalStorageInterface+getValue"></a>
+
+### localStorageInterface.getValue(name) ⇒ <code>Promise.&lt;String&gt;</code>
+Get the value of a key
+
+**Kind**: instance method of [<code>LocalStorageInterface</code>](#LocalStorageInterface)  
+**Overrides**: [<code>getValue</code>](#StorageInterface+getValue)  
+**Returns**: <code>Promise.&lt;String&gt;</code> - A promise that resolves with the value  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| archive | [<code>Archive</code>](#Archive) | The archive instance |
-| remoteObj | <code>Object</code> | The remote object reference |
+| name | <code>String</code> | The key name |
 
-<a name="Group+type"></a>
+<a name="LocalStorageInterface+removeKey"></a>
 
-### group.type : <code>String</code>
-Get the instance type
+### localStorageInterface.removeKey(name) ⇒ <code>Promise</code>
+Remove a key
 
-**Kind**: instance property of [<code>Group</code>](#Group)  
-**Read only**: true  
-<a name="Group+findGroupByID"></a>
-
-### group.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-Find a group by its ID
-
-**Kind**: instance property of [<code>Group</code>](#Group)  
-**Mixes**: [<code>findGroupByID</code>](#GroupCollection.findGroupByID)  
-**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The group or null if not found  
+**Kind**: instance method of [<code>LocalStorageInterface</code>](#LocalStorageInterface)  
+**Overrides**: [<code>removeKey</code>](#StorageInterface+removeKey)  
+**Returns**: <code>Promise</code> - A promise that resolves when the removal has completed  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| id | <code>String</code> | The group ID to search for |
+| name | <code>String</code> | The key name |
 
-<a name="Group+findGroupsByTitle"></a>
+<a name="LocalStorageInterface+setValue"></a>
 
-### group.findGroupsByTitle ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-Find groups by their title
+### localStorageInterface.setValue(name, value) ⇒ <code>Promise</code>
+Set the value for a key
 
-**Kind**: instance property of [<code>Group</code>](#Group)  
-**Mixes**: [<code>findGroupsByTitle</code>](#GroupCollection.findGroupsByTitle)  
-**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of groups  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| title | <code>String</code> \| <code>RegExp</code> | The group title |
-
-<a name="Group+findEntriesByProperty"></a>
-
-### group.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-Find all entries that match a certain property
-
-**Kind**: instance property of [<code>Group</code>](#Group)  
-**Mixes**: [<code>findEntriesByProperty</code>](#EntryCollection.findEntriesByProperty)  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found extries  
+**Kind**: instance method of [<code>LocalStorageInterface</code>](#LocalStorageInterface)  
+**Overrides**: [<code>setValue</code>](#StorageInterface+setValue)  
+**Returns**: <code>Promise</code> - A promise that resolves when the value is set  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| property | <code>RegExp</code> \| <code>String</code> | The property to search with |
-| value | <code>RegExp</code> \| <code>String</code> | The value to search for |
-
-<a name="Group+findGroupByID"></a>
-
-### group.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-Find a group by its ID
-
-**Kind**: instance property of [<code>Group</code>](#Group)  
-**Mixes**: [<code>findGroupByID</code>](#GroupCollection.findGroupByID)  
-**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The group or null if not found  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | The group ID to search for |
-
-<a name="Group+findGroupsByTitle"></a>
-
-### group.findGroupsByTitle ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-Find groups by their title
-
-**Kind**: instance property of [<code>Group</code>](#Group)  
-**Mixes**: [<code>findGroupsByTitle</code>](#GroupCollection.findGroupsByTitle)  
-**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of groups  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| title | <code>String</code> \| <code>RegExp</code> | The group title |
-
-<a name="Group+findEntriesByProperty"></a>
-
-### group.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-Find all entries that match a certain property
-
-**Kind**: instance property of [<code>Group</code>](#Group)  
-**Mixes**: [<code>findEntriesByProperty</code>](#EntryCollection.findEntriesByProperty)  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found extries  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| property | <code>RegExp</code> \| <code>String</code> | The property to search with |
-| value | <code>RegExp</code> \| <code>String</code> | The value to search for |
-
-<a name="ArchiveMember+id"></a>
-
-### group.id : <code>String</code>
-The ID of the entry
-
-**Kind**: instance property of [<code>Group</code>](#Group)  
-**Overrides**: [<code>id</code>](#ArchiveMember+id)  
-**Read only**: true  
-<a name="ArchiveMember+permissions"></a>
-
-### group.permissions : <code>Array.&lt;String&gt;</code>
-The current granted permissions
-
-**Kind**: instance property of [<code>Group</code>](#Group)  
-**Overrides**: [<code>permissions</code>](#ArchiveMember+permissions)  
-<a name="Group+createEntry"></a>
-
-### group.createEntry([title]) ⇒ [<code>Entry</code>](#Entry)
-Create a new entry with a title
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: [<code>Entry</code>](#Entry) - The new entry  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [title] | <code>String</code> | The title of the new entry |
-
-<a name="Group+createGroup"></a>
-
-### group.createGroup([title]) ⇒ [<code>Group</code>](#Group)
-Create a child group
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: [<code>Group</code>](#Group) - The new child group  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [title] | <code>string</code> | Optionally set a title |
-
-<a name="Group+delete"></a>
-
-### group.delete([skipTrash]) ⇒ <code>Boolean</code>
-Delete the group
-If there is a trash group available, the group is moved there. If the group
-is already in the trash, it is deleted permanently.
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: <code>Boolean</code> - True when deleted, false when moved to trash  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| [skipTrash] | <code>Boolean</code> | <code>false</code> | Skip the trash |
-
-<a name="Group+deleteAttribute"></a>
-
-### group.deleteAttribute(attr) ⇒ [<code>Group</code>](#Group)
-Delete an attribute
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: [<code>Group</code>](#Group) - Returns self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| attr | <code>string</code> | The name of the attribute |
-
-<a name="Group+getAttribute"></a>
-
-### group.getAttribute([attributeName]) ⇒ <code>String</code> \| <code>undefined</code> \| <code>Object</code>
-Get an attribute
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: <code>String</code> \| <code>undefined</code> \| <code>Object</code> - Returns the attribute or undefined if not found.
- If no attribute name is provided an object containing all attributes is returned.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [attributeName] | <code>String</code> | The name of the attribute. If none provided  the entire attributes object is returned. |
-
-<a name="Group+getEntries"></a>
-
-### group.getEntries() ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-Get the entries within the group
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of entries  
-<a name="Group+getGroup"></a>
-
-### group.getGroup() ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-Get the parent group
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - Returns the parent group instance or null if the parent
- is the archive  
-**Throws**:
-
-- <code>Error</code> Throws if no parent could be found (detached)
-
-<a name="Group+getGroups"></a>
-
-### group.getGroups() ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-Get the groups within the group
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of child groups  
-<a name="Group+getTitle"></a>
-
-### group.getTitle() ⇒ <code>string</code>
-Get the group title
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: <code>string</code> - The title of the group  
-<a name="Group+isInTrash"></a>
-
-### group.isInTrash() ⇒ <code>Boolean</code>
-Check if the group is in the trash
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: <code>Boolean</code> - Whether or not the group is within the trash group  
-<a name="Group+isTrash"></a>
-
-### group.isTrash() ⇒ <code>Boolean</code>
-Check if the group is used for trash
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: <code>Boolean</code> - Whether or not the group is the trash group  
-<a name="Group+moveTo"></a>
-
-### group.moveTo(target) ⇒ [<code>Group</code>](#Group)
-Move the group to another group or archive
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: [<code>Group</code>](#Group) - Self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| target | [<code>Group</code>](#Group) \| [<code>Archive</code>](#Archive) | The destination Group or Archive instance |
-
-<a name="Group+setAttribute"></a>
-
-### group.setAttribute(attributeName, value) ⇒ [<code>Group</code>](#Group)
-Set an attribute
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: [<code>Group</code>](#Group) - Returns self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| attributeName | <code>string</code> | The name of the attribute |
-| value | <code>string</code> | The value to set |
-
-<a name="Group+setTitle"></a>
-
-### group.setTitle(title) ⇒ [<code>Group</code>](#Group)
-Set the group title
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: [<code>Group</code>](#Group) - Returns self  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| title | <code>string</code> | The title of the group |
-
-<a name="Group+toObject"></a>
-
-### group.toObject(outputFlags) ⇒ <code>Object</code>
-Export group to object
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: <code>Object</code> - The group, in raw object form  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| outputFlags | <code>Number</code> | Bitwise options for outputting entries and child groups |
-
-**Example**  
-```js
-// output defaults (entries and sub groups)
-     group.toObject()
-```
-**Example**  
-```js
-// output only entries
-     group.toObject(Group.OutputFlag.Entries)
-```
-**Example**  
-```js
-// output only the group info
-     group.toObject(Group.OutputFlag.OnlyGroup)
-```
-<a name="Group+toString"></a>
-
-### group.toString(outputFlags) ⇒ <code>string</code>
-Export the group to a JSON string
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Returns**: <code>string</code> - The group (and entries) in JSON string format  
-**See**: toObject  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| outputFlags | <code>Number</code> | Output configuration flags to pass to `toObject` |
-
-<a name="Group+findEntryByID"></a>
-
-### group.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
-Find an entry by its ID
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
-**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | The ID to search for |
-
-<a name="Group+findEntryByID"></a>
-
-### group.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
-Find an entry by its ID
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Mixes**: [<code>inst.findEntryByID</code>](#EntryCollection.inst.findEntryByID)  
-**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | The ID to search for |
-
-<a name="ArchiveMember+grantPermission"></a>
-
-### group.grantPermission(perm)
-Grant a new permission to the member
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Overrides**: [<code>grantPermission</code>](#ArchiveMember+grantPermission)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| perm | <code>String</code> | The permission to grant |
-
-<a name="ArchiveMember+hasPermission"></a>
-
-### group.hasPermission(perm) ⇒ <code>Boolean</code>
-Check if the member has a permission
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Overrides**: [<code>hasPermission</code>](#ArchiveMember+hasPermission)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| perm | <code>String</code> | The permission to check for |
-
-<a name="ArchiveMember+revokeAllPermissions"></a>
-
-### group.revokeAllPermissions()
-Revoke all permissions
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Overrides**: [<code>revokeAllPermissions</code>](#ArchiveMember+revokeAllPermissions)  
-<a name="ArchiveMember+revokePermission"></a>
-
-### group.revokePermission(perm)
-Revoke a single permission
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Overrides**: [<code>revokePermission</code>](#ArchiveMember+revokePermission)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| perm | <code>String</code> | The permission to revoke |
-
-<a name="ArchiveMember+_getArchive"></a>
-
-### group.\_getArchive() ⇒ [<code>Archive</code>](#Archive)
-Get the archive reference
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Overrides**: [<code>\_getArchive</code>](#ArchiveMember+_getArchive)  
-**Returns**: [<code>Archive</code>](#Archive) - The Archive reference  
-**Access**: protected  
-<a name="ArchiveMember+_getRemoteObject"></a>
-
-### group.\_getRemoteObject() ⇒ <code>Object</code>
-Get the remote object that mirrors the data represented here
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Overrides**: [<code>\_getRemoteObject</code>](#ArchiveMember+_getRemoteObject)  
-**Returns**: <code>Object</code> - The remote object (in-memory copy)  
-**Access**: protected  
-<a name="ArchiveMember+_getWestley"></a>
-
-### group.\_getWestley() ⇒ <code>Westley</code>
-Get the Westley reference
-
-**Kind**: instance method of [<code>Group</code>](#Group)  
-**Overrides**: [<code>\_getWestley</code>](#ArchiveMember+_getWestley)  
-**Returns**: <code>Westley</code> - The internal Westley reference  
-**Access**: protected  
-<a name="Group.Attributes"></a>
-
-### Group.Attributes : <code>enum</code>
-Group attribute names
-
-**Kind**: static enum of [<code>Group</code>](#Group)  
-<a name="Group.OutputFlag"></a>
-
-### Group.OutputFlag : <code>enum</code>
-Bitwise output flags for `toObject` and `toString`
-
-**Kind**: static enum of [<code>Group</code>](#Group)  
-**See**
-
-- toObject
-- toString
-
-<a name="Group.createNew"></a>
-
-### Group.createNew(archive, [parentID]) ⇒ [<code>Group</code>](#Group)
-Create a new Group with a delta-manager and parent group ID
-
-**Kind**: static method of [<code>Group</code>](#Group)  
-**Returns**: [<code>Group</code>](#Group) - A new group  
-**Throws**:
-
-- <code>Error</code> Throws if the target group doesn't exist
-- <code>Error</code> Throws if the target group is the trash group,
-     or if the target group is within the trash group
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archive | [<code>Archive</code>](#Archive) | The archive to create the group in |
-| [parentID] | <code>string</code> | The parent group ID (default is root) |
-
-<a name="InigoCommand"></a>
-
-## InigoCommand
-Inigo command generator
-
-**Kind**: global class  
-<a name="new_InigoCommand_new"></a>
-
-### new InigoCommand(cmdKey)
-
-| Param | Type | Description |
-| --- | --- | --- |
-| cmdKey | <code>String</code> | The key for the command |
-
-<a name="MyButtercupClient"></a>
-
-## MyButtercupClient ⇐ <code>EventEmitter</code>
-My Buttercup client
-
-**Kind**: global class  
-**Extends**: <code>EventEmitter</code>  
-
-* [MyButtercupClient](#MyButtercupClient) ⇐ <code>EventEmitter</code>
-    * [new MyButtercupClient(clientID, clientSecret, accessToken, refreshToken)](#new_MyButtercupClient_new)
-    * _instance_
-        * [.accessToken](#MyButtercupClient+accessToken) : <code>String</code>
-        * [.digest](#MyButtercupClient+digest) : [<code>MyButtercupDigest</code>](#MyButtercupDigest) \| <code>null</code>
-        * [.refreshToken](#MyButtercupClient+refreshToken) : <code>String</code>
-        * [.fetchShares(ids)](#MyButtercupClient+fetchShares) ⇒ <code>Promise.&lt;Object.&lt;String, MyButtercupEncryptedShare&gt;&gt;</code>
-        * [.fetchUserArchive()](#MyButtercupClient+fetchUserArchive) ⇒ <code>Promise.&lt;{archive: String, updateID: Number}&gt;</code>
-        * [.fetchUserArchiveDetails()](#MyButtercupClient+fetchUserArchiveDetails) ⇒ [<code>Promise.&lt;MyButtercupArchiveDetails&gt;</code>](#MyButtercupArchiveDetails)
-        * [.retrieveDigest()](#MyButtercupClient+retrieveDigest) ⇒ [<code>Promise.&lt;MyButtercupDigest&gt;</code>](#MyButtercupDigest)
-        * [.retrieveUsersList()](#MyButtercupClient+retrieveUsersList) ⇒ <code>Promise.&lt;Array.&lt;MyButtercupUsersListItem&gt;&gt;</code>
-        * [.retrieveUsersListForOrganisation(orgID)](#MyButtercupClient+retrieveUsersListForOrganisation) ⇒ <code>Promise.&lt;Array.&lt;MyButtercupUsersListItem&gt;&gt;</code>
-        * [.writeUserArchive(contents, previousUpdateID, newUpdateID)](#MyButtercupClient+writeUserArchive) ⇒ <code>Promise</code>
-        * [._handleRequestFailure(err)](#MyButtercupClient+_handleRequestFailure) ⇒ <code>Promise</code>
-        * [._performTokenRefresh()](#MyButtercupClient+_performTokenRefresh) ⇒ <code>Promise</code>
-        * ["tokensUpdated"](#MyButtercupClient+event_tokensUpdated)
-    * _static_
-        * [.exchangeAuthCodeForTokens(authCode, clientID, clientSecret, redirectURI)](#MyButtercupClient.exchangeAuthCodeForTokens) ⇒ [<code>MyButtercupTokenResult</code>](#MyButtercupTokenResult)
-        * [.generateAuthorisationURL(clientID)](#MyButtercupClient.generateAuthorisationURL) ⇒ <code>String</code>
-
-<a name="new_MyButtercupClient_new"></a>
-
-### new MyButtercupClient(clientID, clientSecret, accessToken, refreshToken)
-Create a new client instance
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| clientID | <code>String</code> | The client identifier |
-| clientSecret | <code>String</code> | The client secret |
-| accessToken | <code>String</code> | Access token |
-| refreshToken | <code>String</code> | Refresh token |
-
-<a name="MyButtercupClient+accessToken"></a>
-
-### myButtercupClient.accessToken : <code>String</code>
-The current access token
-
-**Kind**: instance property of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-**Read only**: true  
-<a name="MyButtercupClient+digest"></a>
-
-### myButtercupClient.digest : [<code>MyButtercupDigest</code>](#MyButtercupDigest) \| <code>null</code>
-The last client digest response
-
-**Kind**: instance property of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-**Read only**: true  
-<a name="MyButtercupClient+refreshToken"></a>
-
-### myButtercupClient.refreshToken : <code>String</code>
-The refresh token
-
-**Kind**: instance property of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-**Read only**: true  
-<a name="MyButtercupClient+fetchShares"></a>
-
-### myButtercupClient.fetchShares(ids) ⇒ <code>Promise.&lt;Object.&lt;String, MyButtercupEncryptedShare&gt;&gt;</code>
-Fetch user shares
-
-**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| ids | <code>Array.&lt;String&gt;</code> | Share IDs |
-
-<a name="MyButtercupClient+fetchUserArchive"></a>
-
-### myButtercupClient.fetchUserArchive() ⇒ <code>Promise.&lt;{archive: String, updateID: Number}&gt;</code>
-Fetch user vault contents
-
-**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-**Returns**: <code>Promise.&lt;{archive: String, updateID: Number}&gt;</code> - The user's
- vault contents  
-<a name="MyButtercupClient+fetchUserArchiveDetails"></a>
-
-### myButtercupClient.fetchUserArchiveDetails() ⇒ [<code>Promise.&lt;MyButtercupArchiveDetails&gt;</code>](#MyButtercupArchiveDetails)
-Fetch the user's vault details
-
-**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-**Returns**: [<code>Promise.&lt;MyButtercupArchiveDetails&gt;</code>](#MyButtercupArchiveDetails) - The details of the vault  
-<a name="MyButtercupClient+retrieveDigest"></a>
-
-### myButtercupClient.retrieveDigest() ⇒ [<code>Promise.&lt;MyButtercupDigest&gt;</code>](#MyButtercupDigest)
-Fetch and set account digest information
-
-**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-**Returns**: [<code>Promise.&lt;MyButtercupDigest&gt;</code>](#MyButtercupDigest) - Digest information  
-<a name="MyButtercupClient+retrieveUsersList"></a>
-
-### myButtercupClient.retrieveUsersList() ⇒ <code>Promise.&lt;Array.&lt;MyButtercupUsersListItem&gt;&gt;</code>
-Get the list of users available to address for the user
-
-**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-<a name="MyButtercupClient+retrieveUsersListForOrganisation"></a>
-
-### myButtercupClient.retrieveUsersListForOrganisation(orgID) ⇒ <code>Promise.&lt;Array.&lt;MyButtercupUsersListItem&gt;&gt;</code>
-Get the list of users for an organisation
-(User must be present in organisation, or this method will fail)
-
-**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| orgID | <code>Number</code> | The ID of the organisation |
-
-<a name="MyButtercupClient+writeUserArchive"></a>
-
-### myButtercupClient.writeUserArchive(contents, previousUpdateID, newUpdateID) ⇒ <code>Promise</code>
-Write the user vault contents back to the server
-
-**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-**Returns**: <code>Promise</code> - A promise that resolves once the write has
- been completed  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| contents | <code>String</code> | Encrypted vault contents |
-| previousUpdateID | <code>Number</code> | The previous update ID received  from the server |
-| newUpdateID | <code>Number</code> | The new update ID to set after a  successful write |
-
-<a name="MyButtercupClient+_handleRequestFailure"></a>
-
-### myButtercupClient.\_handleRequestFailure(err) ⇒ <code>Promise</code>
-Handle a request failure (processes token expiration etc.)
-
-**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-**Returns**: <code>Promise</code> - Returns a promise if an action can be taken
- to remedy the situation  
-**Throws**:
-
-- <code>Error</code> Throws if the error was not catchable
-
-**Access**: protected  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| err | <code>Error</code> | The received error from making a request |
-
-<a name="MyButtercupClient+_performTokenRefresh"></a>
-
-### myButtercupClient.\_performTokenRefresh() ⇒ <code>Promise</code>
-Refresh tokens
-
-**Kind**: instance method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-**Emits**: [<code>tokensUpdated</code>](#MyButtercupClient+event_tokensUpdated)  
-**Access**: protected  
-<a name="MyButtercupClient+event_tokensUpdated"></a>
-
-### "tokensUpdated"
-On tokens updated
-
-**Kind**: event emitted by [<code>MyButtercupClient</code>](#MyButtercupClient)  
-<a name="MyButtercupClient.exchangeAuthCodeForTokens"></a>
-
-### MyButtercupClient.exchangeAuthCodeForTokens(authCode, clientID, clientSecret, redirectURI) ⇒ [<code>MyButtercupTokenResult</code>](#MyButtercupTokenResult)
-Exchange an auth code for tokens
-
-**Kind**: static method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| authCode | <code>String</code> | OAuth2 auth code, retrieved from browser-  based OAuth2 flow using a user's username and password |
-| clientID | <code>String</code> | The OAuth2 client ID |
-| clientSecret | <code>String</code> | The OAuth2 client secret |
-| redirectURI | <code>String</code> | The OAuth2 client redirect URI |
-
-<a name="MyButtercupClient.generateAuthorisationURL"></a>
-
-### MyButtercupClient.generateAuthorisationURL(clientID) ⇒ <code>String</code>
-Generate an OAuth2 authorisation URL using the client ID of the current
-application platform (eg. Buttercup browser extension)
-
-**Kind**: static method of [<code>MyButtercupClient</code>](#MyButtercupClient)  
-**Returns**: <code>String</code> - The generated URL  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| clientID | <code>String</code> | The OAuth2 client ID registered on  my.buttercup.pw |
-
-<a name="Workspace"></a>
-
-## Workspace
-Workspace class implementation
-Workspaces organise Archives and Datasources, and perform saves
-and merges with remote changes.
-
-**Kind**: global class  
-
-* [Workspace](#Workspace)
-    * [.archive](#Workspace+archive) : [<code>Archive</code>](#Archive)
-    * [.datasource](#Workspace+datasource) : <code>TextDatasource</code>
-    * [.masterCredentials](#Workspace+masterCredentials) : <code>Credentials</code>
-    * [.channel](#Workspace+channel) : <code>Channel</code>
-    * [.shares](#Workspace+shares) : <code>Array.&lt;Share&gt;</code>
-    * [.localDiffersFromRemote()](#Workspace+localDiffersFromRemote) ⇒ <code>Promise.&lt;Boolean&gt;</code>
-    * [.mergeFromRemote()](#Workspace+mergeFromRemote) ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
-    * [.save()](#Workspace+save) ⇒ <code>Promise</code>
-    * [.setArchive(archive, datasource, masterCredentials)](#Workspace+setArchive)
-    * [.update()](#Workspace+update) ⇒ <code>Promise</code>
-    * [.updatePrimaryCredentials(masterCredentials)](#Workspace+updatePrimaryCredentials)
-
-<a name="Workspace+archive"></a>
-
-### workspace.archive : [<code>Archive</code>](#Archive)
-The archive instance
-
-**Kind**: instance property of [<code>Workspace</code>](#Workspace)  
-<a name="Workspace+datasource"></a>
-
-### workspace.datasource : <code>TextDatasource</code>
-The datasource instance for the archive
-
-**Kind**: instance property of [<code>Workspace</code>](#Workspace)  
-<a name="Workspace+masterCredentials"></a>
-
-### workspace.masterCredentials : <code>Credentials</code>
-The master credentials for the archive
-
-**Kind**: instance property of [<code>Workspace</code>](#Workspace)  
-<a name="Workspace+channel"></a>
-
-### workspace.channel : <code>Channel</code>
-The saving/updating channel for queuing workspace async actions
-
-**Kind**: instance property of [<code>Workspace</code>](#Workspace)  
-<a name="Workspace+shares"></a>
-
-### workspace.shares : <code>Array.&lt;Share&gt;</code>
-Current workspace share instances
-
-**Kind**: instance property of [<code>Workspace</code>](#Workspace)  
-<a name="Workspace+localDiffersFromRemote"></a>
-
-### workspace.localDiffersFromRemote() ⇒ <code>Promise.&lt;Boolean&gt;</code>
-Detect whether the local archives (in memory) differ from their remote copies
-Fetches the remote copies from their datasources and detects differences between
-them and their local counterparts. Does not change/update the local items.
-
-**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
-**Returns**: <code>Promise.&lt;Boolean&gt;</code> - A promise that resolves with a boolean - true if
-     there are differences, false if there is not  
-<a name="Workspace+mergeFromRemote"></a>
-
-### workspace.mergeFromRemote() ⇒ [<code>Promise.&lt;Archive&gt;</code>](#Archive)
-Merge remote contents
-Detects differences between a local and a remote item, and merges the
-two copies together.
-
-**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
-**Returns**: [<code>Promise.&lt;Archive&gt;</code>](#Archive) - A promise that resolves with the newly merged archive -
-     This archive is automatically saved over the original local copy.  
-<a name="Workspace+save"></a>
-
-### workspace.save() ⇒ <code>Promise</code>
-Save the archive to the remote
-
-**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
-**Returns**: <code>Promise</code> - A promise that resolves when saving has completed  
-<a name="Workspace+setArchive"></a>
-
-### workspace.setArchive(archive, datasource, masterCredentials)
-Set the archive and its accompanying data on the workspace
-
-**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archive | [<code>Archive</code>](#Archive) | The archive instance |
-| datasource | <code>TextDatasource</code> | The datasource for the archive |
-| masterCredentials | <code>\*</code> | The master credentials for the archive |
-
-<a name="Workspace+update"></a>
-
-### workspace.update() ⇒ <code>Promise</code>
-Update the archive
-
-**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
-**Returns**: <code>Promise</code> - A promise that resolves once the update has
- completed  
-<a name="Workspace+updatePrimaryCredentials"></a>
-
-### workspace.updatePrimaryCredentials(masterCredentials)
-Update the master password of the archive
-
-**Kind**: instance method of [<code>Workspace</code>](#Workspace)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| masterCredentials | <code>Credentials</code> | The new credentials |
-
-<a name="EntryCollection"></a>
-
-## EntryCollection : <code>Object</code>
-**Kind**: global mixin  
-
-* [EntryCollection](#EntryCollection) : <code>Object</code>
-    * [.findEntriesByProperty](#EntryCollection.findEntriesByProperty) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-    * [.inst.findEntryByID(id)](#EntryCollection.inst.findEntryByID) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
-
-<a name="EntryCollection.findEntriesByProperty"></a>
-
-### EntryCollection.findEntriesByProperty ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
-Find all entries that match a certain property
-
-**Kind**: static property of [<code>EntryCollection</code>](#EntryCollection)  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found extries  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| property | <code>RegExp</code> \| <code>String</code> | The property to search with |
-| value | <code>RegExp</code> \| <code>String</code> | The value to search for |
-
-<a name="EntryCollection.inst.findEntryByID"></a>
-
-### EntryCollection.inst.findEntryByID(id) ⇒ <code>null</code> \| [<code>Entry</code>](#Entry)
-Find an entry by its ID
-
-**Kind**: static method of [<code>EntryCollection</code>](#EntryCollection)  
-**Returns**: <code>null</code> \| [<code>Entry</code>](#Entry) - Null if not found, or the Entry instance  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | The ID to search for |
-
-<a name="GroupCollection"></a>
-
-## GroupCollection : <code>Object</code>
-**Kind**: global mixin  
-
-* [GroupCollection](#GroupCollection) : <code>Object</code>
-    * [.findGroupByID](#GroupCollection.findGroupByID) ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-    * [.findGroupsByTitle](#GroupCollection.findGroupsByTitle) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-
-<a name="GroupCollection.findGroupByID"></a>
-
-### GroupCollection.findGroupByID ⇒ [<code>Group</code>](#Group) \| <code>null</code>
-Find a group by its ID
-
-**Kind**: static property of [<code>GroupCollection</code>](#GroupCollection)  
-**Returns**: [<code>Group</code>](#Group) \| <code>null</code> - The group or null if not found  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | The group ID to search for |
-
-<a name="GroupCollection.findGroupsByTitle"></a>
-
-### GroupCollection.findGroupsByTitle ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
-Find groups by their title
-
-**Kind**: static property of [<code>GroupCollection</code>](#GroupCollection)  
-**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of groups  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| title | <code>String</code> \| <code>RegExp</code> | The group title |
-
-<a name="credentialsToDatasource"></a>
-
-## credentialsToDatasource(sourceCredentials) ⇒ <code>Promise.&lt;{datasource, credentials}&gt;</code>
-Convert credentials of a remote archive to a datasource
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;{datasource, credentials}&gt;</code> - A promise that resolves with the datasource and
- source credentials  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| sourceCredentials | <code>Credentials</code> | The remote credentials. The credentials must  have a type field and datasource information field |
-
-<a name="credentialsToSource"></a>
-
-## credentialsToSource(sourceCredentials, archiveCredentials, [initialise], [contentOverride]) ⇒ <code>Promise.&lt;Object&gt;</code>
-Convert credentials to a source for the ArchiveManager
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise that resolves with an object containing a workspace,
- the source credentials and archive credentials  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| sourceCredentials | <code>Credentials</code> |  | The remote archive credentials |
-| archiveCredentials | <code>Credentials</code> |  | Credentials for unlocking the archive |
-| [initialise] | <code>Boolean</code> | <code>false</code> | Whether or not to initialise a new archive (defaults to false) |
-| [contentOverride] | <code>String</code> | <code></code> | Content for overriding the fetch operation in the  datasource, for loading offline content |
-
-<a name="flattenEntries"></a>
-
-## flattenEntries(archives) ⇒ [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-Flatten entries into a searchable structure
-
-**Kind**: global function  
-**Returns**: [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo) - An array of searchable objects  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archives | [<code>Array.&lt;Archive&gt;</code>](#Archive) | An array of archives |
-
-<a name="generateNewUpdateID"></a>
-
-## generateNewUpdateID() ⇒ <code>Number</code>
-Generate a new update ID
-
-**Kind**: global function  
-**Returns**: <code>Number</code> - A randomly generated ID  
-<a name="extractCommandComponents"></a>
-
-## extractCommandComponents(command) ⇒ <code>Array.&lt;String&gt;</code>
-Extract command components from a string
-
-**Kind**: global function  
-**Returns**: <code>Array.&lt;String&gt;</code> - The separated parts  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| command | <code>String</code> | The command to extract from |
+| name | <code>String</code> | The key name |
+| value | <code>String</code> | The value to set |
 
 <a name="calculateCommonRecentCommand"></a>
 
@@ -2494,18 +1788,329 @@ De-dupe an array
 | --- | --- | --- |
 | arr | <code>Array</code> | The array |
 
-<a name="describeArchiveDataset"></a>
+<a name="createAppEnv"></a>
 
-## describeArchiveDataset(dataset, parentGroupID) ⇒ <code>Array.&lt;String&gt;</code>
-Describe an archive dataset - to history commands
+## createAppEnv() ⇒ [<code>AppEnv</code>](#AppEnv)
+Create a new application environment
+
+**Kind**: global function  
+<a name="compress"></a>
+
+## compress(text) ⇒ <code>String</code>
+Compress text using GZIP
+
+**Kind**: global function  
+**Returns**: <code>String</code> - Compressed text  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>String</code> | The text to compress |
+
+<a name="decompress"></a>
+
+## decompress(text) ⇒ <code>String</code>
+Decompress a compressed string (GZIP)
+
+**Kind**: global function  
+**Returns**: <code>String</code> - Decompressed text  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>String</code> | The compressed text |
+
+<a name="compress"></a>
+
+## compress(text) ⇒ <code>String</code>
+Compress text using GZIP
+
+**Kind**: global function  
+**Returns**: <code>String</code> - Compressed text  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>String</code> | The text to compress |
+
+<a name="decompress"></a>
+
+## decompress(text) ⇒ <code>String</code>
+Decompress a compressed string (GZIP)
+
+**Kind**: global function  
+**Returns**: <code>String</code> - Decompressed text  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>String</code> | The compressed text |
+
+<a name="hashVaultFacade"></a>
+
+## ~~hashVaultFacade(vaultFacade) ⇒ <code>String</code>~~
+***Deprecated***
+
+Generate a hash of a vault facade (useful for detecting
+ if the vault differs from another copy)
+
+**Kind**: global function  
+**Returns**: <code>String</code> - Hash string  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| vaultFacade | [<code>VaultFacade</code>](#VaultFacade) | A facade instance |
+
+<a name="getEntryValue"></a>
+
+## ~~getEntryValue(entry, propertyType, name) ⇒ <code>String</code>~~
+***Deprecated***
+
+Get a value on an entry for a specific property type
+
+**Kind**: global function  
+**Returns**: <code>String</code> - The property value  
+**Throws**:
+
+- <code>Error</code> Throws for unknown property types
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>Entry</code> | The entry instance |
+| propertyType | <code>String</code> | The type of entry property (property/attribute) |
+| name | <code>String</code> | The property name |
+
+<a name="getEntryValueType"></a>
+
+## getEntryValueType(entry, propertyName) ⇒ <code>String</code>
+Get the entry value type
+
+**Kind**: global function  
+**Returns**: <code>String</code> - The entry value type (returns default "text"
+ if entry not specified)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>Entry</code> \| <code>null</code> | Entry instance |
+| propertyName | <code>String</code> | The entry property name |
+
+<a name="idSignifiesNew"></a>
+
+## idSignifiesNew(id) ⇒ <code>Boolean</code>
+Check if an ID signifies a new instance and not an
+ existing one
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> \| <code>Number</code> | The ID to check |
+
+<a name="setEntryValueType"></a>
+
+## setEntryValueType(entry, propertyName, valueType)
+Set the value type attribute of an entry
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entry | <code>Entry</code> | Entry instance |
+| propertyName | <code>String</code> | The property name |
+| valueType | <code>String</code> | The value type |
+
+<a name="getEntriesFacades"></a>
+
+## getEntriesFacades(vault) ⇒ [<code>Array.&lt;EntryFacade&gt;</code>](#EntryFacade)
+Get all entry facades for a vault
+
+**Kind**: global function  
+**Returns**: [<code>Array.&lt;EntryFacade&gt;</code>](#EntryFacade) - An array of entry facades  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| vault | <code>Vault</code> | A vault instance |
+
+<a name="getGroupEntriesFacades"></a>
+
+## getGroupEntriesFacades(entryCollection, groupID) ⇒ [<code>Array.&lt;EntryFacade&gt;</code>](#EntryFacade)
+Convert an array of entries into an array of facades
+
+**Kind**: global function  
+**Returns**: [<code>Array.&lt;EntryFacade&gt;</code>](#EntryFacade) - An array of entry facades  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| entryCollection | <code>Array.&lt;Entry&gt;</code> | An array of entries |
+| groupID | <code>String</code> | The parent group ID |
+
+<a name="getGroupsFacades"></a>
+
+## getGroupsFacades(groupCollection, [parentID]) ⇒ [<code>Array.&lt;GroupFacade&gt;</code>](#GroupFacade)
+Convert an array of groups into an array of facades
+
+**Kind**: global function  
+**Returns**: [<code>Array.&lt;GroupFacade&gt;</code>](#GroupFacade) - An array of group facades  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| groupCollection | <code>Array.&lt;Group&gt;</code> |  | An array of groups |
+| [parentID] | <code>String</code> | <code>0</code> | The parent group ID (defaults to root) |
+
+<a name="describeVaultDataset"></a>
+
+## describeVaultDataset(dataset, parentGroupID) ⇒ <code>Array.&lt;String&gt;</code>
+Describe a vault dataset - to history commands
 
 **Kind**: global function  
 **Returns**: <code>Array.&lt;String&gt;</code> - An array of commands  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| dataset | <code>Object</code> | The archive dataset |
+| dataset | <code>Object</code> | The vault dataset |
 | parentGroupID | <code>String</code> | The ID of the parent group |
+
+<a name="getFormat"></a>
+
+## getFormat() ⇒ <code>String</code>
+Get the current format
+
+**Kind**: global function  
+**Returns**: <code>String</code> - The format  
+<a name="getSignature"></a>
+
+## getSignature() ⇒ <code>String</code>
+Get the current signature
+
+**Kind**: global function  
+**Returns**: <code>String</code> - The signature  
+<a name="hasValidSignature"></a>
+
+## hasValidSignature(text) ⇒ <code>Boolean</code>
+Detect if a string has a valid signature
+
+**Kind**: global function  
+**Returns**: <code>Boolean</code> - True if a valid signature is detected  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>String</code> | The text to check |
+
+<a name="sign"></a>
+
+## sign(text) ⇒ <code>String</code>
+Sign some text
+
+**Kind**: global function  
+**Returns**: <code>String</code> - The signed text  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>String</code> | The text to sign |
+
+<a name="stripSignature"></a>
+
+## stripSignature(text) ⇒ <code>String</code>
+Strip the signature from some text
+
+**Kind**: global function  
+**Returns**: <code>String</code> - The text with the signature removed  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>String</code> | The text to strip the signature from |
+
+<a name="vaultContentsEncrypted"></a>
+
+## vaultContentsEncrypted(contents) ⇒ <code>Boolean</code>
+Check if vault contents are in encrypted form
+
+**Kind**: global function  
+**Returns**: <code>Boolean</code> - True if encrypted, false otherwise  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contents | <code>String</code> | The vault contents |
+
+<a name="extractCommandComponents"></a>
+
+## extractCommandComponents(command) ⇒ <code>Array.&lt;String&gt;</code>
+Extract command components from a string
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;String&gt;</code> - The separated parts  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| command | <code>String</code> | The command to extract from |
+
+<a name="generateEntryHistoryItem"></a>
+
+## generateEntryHistoryItem(property, propertyType, originalValue, newValue) ⇒ [<code>EntryHistoryItem</code>](#EntryHistoryItem)
+Generate a new entry history item
+
+**Kind**: global function  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| property | <code>String</code> |  | The property/attribute name |
+| propertyType | <code>String</code> |  | Either "property" or "attribute" |
+| originalValue | <code>String</code> \| <code>null</code> | <code></code> | The original value or null if it did not exist  before this change |
+| newValue | <code>String</code> \| <code>null</code> | <code></code> | The new value or null if it was deleted |
+
+<a name="stripDestructiveCommands"></a>
+
+## stripDestructiveCommands(history) ⇒ <code>Array.&lt;String&gt;</code>
+Strip destructive commands from a history collection
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;String&gt;</code> - The history minus any destructive commands  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| history | <code>Array.&lt;String&gt;</code> | The history |
+
+<a name="generateNewUpdateID"></a>
+
+## generateNewUpdateID() ⇒ <code>Number</code>
+Generate a new update ID
+
+**Kind**: global function  
+**Returns**: <code>Number</code> - A randomly generated ID  
+<a name="findEntriesByCheck"></a>
+
+## findEntriesByCheck(groups, compareFn) ⇒ <code>Array.&lt;Entry&gt;</code>
+Find entry instances by filtering with a compare function
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;Entry&gt;</code> - An array of found entries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| groups | <code>Array.&lt;Group&gt;</code> | The groups to check in |
+| compareFn | <code>function</code> | The callback comparison function, return true to keep and false  to strip |
+
+<a name="flattenEntries"></a>
+
+## flattenEntries(archives) ⇒ [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
+Flatten entries into a searchable structure
+
+**Kind**: global function  
+**Returns**: [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo) - An array of searchable objects  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| archives | <code>Array.&lt;Archive&gt;</code> | An array of archives |
+
+<a name="findGroupsByCheck"></a>
+
+## findGroupsByCheck(groups, compareFn) ⇒ <code>Array.&lt;Group&gt;</code>
+Find group instances within groups that satisfy some check
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;Group&gt;</code> - An array of found groups  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| groups | <code>Array.&lt;Group&gt;</code> | The groups to check within |
+| compareFn | <code>function</code> | A comparision function - return true to keep, false to strip |
 
 <a name="decodeStringValue"></a>
 
@@ -2576,32 +2181,6 @@ Check if a property name is valid
 | --- | --- | --- |
 | name | <code>String</code> | The name to check |
 
-<a name="generateEntryHistoryItem"></a>
-
-## generateEntryHistoryItem(property, propertyType, originalValue, newValue) ⇒ [<code>EntryHistoryItem</code>](#EntryHistoryItem)
-Generate a new entry history item
-
-**Kind**: global function  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| property | <code>String</code> |  | The property/attribute name |
-| propertyType | <code>String</code> |  | Either "property" or "attribute" |
-| originalValue | <code>String</code> \| <code>null</code> | <code></code> | The original value or null if it did not exist  before this change |
-| newValue | <code>String</code> \| <code>null</code> | <code></code> | The new value or null if it was deleted |
-
-<a name="stripDestructiveCommands"></a>
-
-## stripDestructiveCommands(history) ⇒ <code>Array.&lt;String&gt;</code>
-Strip destructive commands from a history collection
-
-**Kind**: global function  
-**Returns**: <code>Array.&lt;String&gt;</code> - The history minus any destructive commands  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| history | <code>Array.&lt;String&gt;</code> | The history |
-
 <a name="findGroupContainingEntryID"></a>
 
 ## findGroupContainingEntryID(groups, id) ⇒ [<code>FoundGroupResult</code>](#FoundGroupResult)
@@ -2628,24 +2207,9 @@ Find a raw group that contains a group with an ID
 | group | <code>Object</code> | The group/archive to search in |
 | id | <code>String</code> | The group ID to search for |
 
-<a name="extractSharesFromHistory"></a>
+<a name="moveGroupBetweenVaults"></a>
 
-## extractSharesFromHistory(history) ⇒ <code>Object</code>
-Extract shares from a history collection
-
-**Kind**: global function  
-**Returns**: <code>Object</code> - The resulting separated histories. The object will
- always contain a `base` property containing the non-share history.
- Each share detected is set on the object under its share ID - being
- set to an array of history lines (non-prefixed) for that share.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| history | <code>Array.&lt;String&gt;</code> | A history collection, containing shares |
-
-<a name="moveGroupBetweenArchives"></a>
-
-## moveGroupBetweenArchives(movingGroup, target)
+## moveGroupBetweenVaults(movingGroup, targetGroup)
 Move a group between archives
 
 **Kind**: global function  
@@ -2656,8 +2220,8 @@ Move a group between archives
 
 | Param | Type | Description |
 | --- | --- | --- |
-| movingGroup | [<code>Group</code>](#Group) | The group to move |
-| target | [<code>Group</code>](#Group) \| [<code>Archive</code>](#Archive) | The group to move to |
+| movingGroup | <code>Group</code> | The group to move |
+| targetGroup | <code>Group</code> \| <code>Vault</code> | The group to move to |
 
 <a name="prependSharePrefix"></a>
 
@@ -2692,93 +2256,327 @@ Generate a UUID (v4)
 **Returns**: <code>String</code> - The new UUID  
 <a name="findEntriesByCheck"></a>
 
-## findEntriesByCheck(groups, compareFn) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+## findEntriesByCheck(groups, compareFn) ⇒ <code>Array.&lt;Entry&gt;</code>
 Find entry instances by filtering with a compare function
 
 **Kind**: global function  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of found entries  
+**Returns**: <code>Array.&lt;Entry&gt;</code> - An array of found entries  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| groups | [<code>Array.&lt;Group&gt;</code>](#Group) | The groups to check in |
+| groups | <code>Array.&lt;Group&gt;</code> | The groups to check in |
 | compareFn | <code>function</code> | The callback comparison function, return true to keep and false  to strip |
 
 <a name="findGroupsByCheck"></a>
 
-## findGroupsByCheck(groups, compareFn) ⇒ [<code>Array.&lt;Group&gt;</code>](#Group)
+## findGroupsByCheck(groups, compareFn) ⇒ <code>Array.&lt;Group&gt;</code>
 Find group instances within groups that satisfy some check
 
 **Kind**: global function  
-**Returns**: [<code>Array.&lt;Group&gt;</code>](#Group) - An array of found groups  
+**Returns**: <code>Array.&lt;Group&gt;</code> - An array of found groups  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| groups | [<code>Array.&lt;Group&gt;</code>](#Group) | The groups to check within |
+| groups | <code>Array.&lt;Group&gt;</code> | The groups to check within |
 | compareFn | <code>function</code> | A comparision function - return true to keep, false to strip |
 
 <a name="getAllEntries"></a>
 
-## getAllEntries(groups) ⇒ [<code>Array.&lt;Entry&gt;</code>](#Entry)
+## getAllEntries(groups) ⇒ <code>Array.&lt;Entry&gt;</code>
 Get all entries within a collection of groups
 
 **Kind**: global function  
-**Returns**: [<code>Array.&lt;Entry&gt;</code>](#Entry) - An array of entries  
+**Returns**: <code>Array.&lt;Entry&gt;</code> - An array of entries  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| groups | [<code>Array.&lt;Group&gt;</code>](#Group) | An array of groups |
+| groups | <code>Array.&lt;Group&gt;</code> | An array of groups |
 
-<a name="ArchiveSourceOptions"></a>
+<a name="VaultManagerOptions"></a>
 
-## ArchiveSourceOptions : <code>Object</code>
-New source options
+## VaultManagerOptions : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [autoUpdate] | <code>Boolean</code> | Whether or not to auto update unlocked vaults |
+| [autoUpdateDelay] | <code>Number</code> | Delay in milliseconds between auto-update  checks |
+| [cacheStorage] | <code>StorageInterface</code> | Storage adapter for storing  cached vault contents for offline access |
+| [sourceStorage] | <code>StorageInterface</code> | Storage adapter for storing  managed vault details so that they can be rehydrated upon startup |
+
+<a name="AddSourceOptions"></a>
+
+## AddSourceOptions : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [order] | <code>Number</code> | Optional order override |
+
+<a name="RegisterDatasourcePostProcessorResult"></a>
+
+## RegisterDatasourcePostProcessorResult : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| remove | <code>function</code> | Function to call to remove the handler |
+
+<a name="LoadedVaultData"></a>
+
+## LoadedVaultData : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| Format | <code>VaultFormat</code> | The vault format class that was detected  when reading encrypted vault contents |
+| history | <code>Array.&lt;String&gt;</code> | Decrypted vault data |
+
+<a name="AppEnv"></a>
+
+## AppEnv : <code>Object</code>
+**Kind**: global typedef  
+
+* [AppEnv](#AppEnv) : <code>Object</code>
+    * [.getProperty](#AppEnv.getProperty) ⇒ <code>\*</code>
+    * [.hasProperty](#AppEnv.hasProperty) ⇒ <code>Boolean</code>
+    * [.setProperties](#AppEnv.setProperties)
+    * [.setProperty](#AppEnv.setProperty)
+
+<a name="AppEnv.getProperty"></a>
+
+### AppEnv.getProperty ⇒ <code>\*</code>
+Get a property from the environment
+
+**Kind**: static property of [<code>AppEnv</code>](#AppEnv)  
+**this**: [<code>AppEnvIntPrv</code>](#AppEnvIntPrv)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| propertyName | <code>String</code> | The property to fetch |
+| [options] | [<code>GetPropertyOptions</code>](#GetPropertyOptions) |  |
+
+<a name="AppEnv.hasProperty"></a>
+
+### AppEnv.hasProperty ⇒ <code>Boolean</code>
+Detect if the environment has a property set
+
+**Kind**: static property of [<code>AppEnv</code>](#AppEnv)  
+**Returns**: <code>Boolean</code> - True if the property has been set  
+**this**: [<code>AppEnvIntPrv</code>](#AppEnvIntPrv)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| propertyName | <code>String</code> | The property to check |
+
+<a name="AppEnv.setProperties"></a>
+
+### AppEnv.setProperties
+Set several properties on the environment
+
+**Kind**: static property of [<code>AppEnv</code>](#AppEnv)  
+**this**: [<code>AppEnvIntPrv</code>](#AppEnvIntPrv)  
+**See**: setProperty  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| propertyList | <code>Object.&lt;String, (function()\|\*)&gt;</code> | The items to set |
+
+<a name="AppEnv.setProperty"></a>
+
+### AppEnv.setProperty
+Set a property on the environment
+
+**Kind**: static property of [<code>AppEnv</code>](#AppEnv)  
+**this**: [<code>AppEnvIntPrv</code>](#AppEnvIntPrv)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| propertyName | <code>String</code> | The property to set |
+| propertyValue | <code>function</code> \| <code>\*</code> | The value to set |
+
+<a name="AppEnvIntPrv"></a>
+
+## AppEnvIntPrv : <code>Object</code>
+Internal private API
 
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| [id] | <code>String</code> | Override source ID generation |
-| [type] | <code>String</code> | Specify the source type |
-| [meta] | <code>Object</code> | Optional additional meta data (stored unencrypted) |
+| properties | <code>Object</code> | Index of set environment properties |
 
-<a name="ArchiveSourceDescription"></a>
+<a name="GetPropertyOptions"></a>
 
-## ArchiveSourceDescription
+## GetPropertyOptions : <code>Object</code>
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| name | <code>String</code> | The name of the source |
-| id | <code>String</code> | The source ID |
-| status | <code>ArchiveSourceStatus</code> | Status of the source |
-| type | <code>String</code> | The source type |
-| colour | <code>String</code> | Colour for the source |
-| order | <code>Number</code> | The order of the source |
+| [defaultValue] | <code>\*</code> | The default value to return (default: null) |
+| [failIfNotExist] | <code>Boolean</code> | Fail if the property doesn't exist (default: true) |
 
-<a name="ArchiveSourceUnlockOptions"></a>
+<a name="EntryHistoryItem"></a>
 
-## ArchiveSourceUnlockOptions : <code>Object</code>
+## EntryHistoryItem : <code>Object</code>
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| [initialiseRemote] | <code>Boolean</code> | Optionally initialise the remote  (replaces remote archive) (defaults to false) |
-| contentOverride | <code>String</code> \| <code>Boolean</code> | Content for overriding the fetch operation in the  datasource, for loading offline content. Can be set to the content (string) or to 'true',  which will attempt to load the content from the ArchiveManager's storage. |
-| [storeOfflineCopy] | <code>Boolean</code> | Whether or not to store an offline copy. Defaults to  true. |
+| property | <code>String</code> | The property/attribute name |
+| propertyType | <code>String</code> | Either "property" or "attribute" |
+| originalValue | <code>String</code> \| <code>null</code> | The original value or null if it did not exist  before this change |
+| newValue | <code>String</code> \| <code>null</code> | The new value or null if it was deleted |
 
-<a name="EntrySearchInfo"></a>
+<a name="EntryFacade"></a>
 
-## EntrySearchInfo : <code>Object</code>
+## EntryFacade : <code>Object</code>
+Entry facade for data input
+
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| entry | [<code>Entry</code>](#Entry) | The entry |
-| archive | [<code>Archive</code>](#Archive) | The associated archive |
+| id | <code>String</code> | The entry ID |
+| type | <code>String</code> | The type of the facade |
+| fields | [<code>Array.&lt;EntryFacadeField&gt;</code>](#EntryFacadeField) | An array of fields |
+| parentID | <code>String</code> | The parent group ID |
+| _history | [<code>Array.&lt;EntryHistoryItem&gt;</code>](#EntryHistoryItem) | Array of changes for all properties of  the entry |
+
+<a name="CreateEntryFacadeOptions"></a>
+
+## CreateEntryFacadeOptions : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [type] | <code>String</code> | Optionally override the created facade type |
+
+<a name="FlagSpecification"></a>
+
+## FlagSpecification : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| title | <code>String</code> | The title of the entry type |
+| slug | <code>String</code> | The slug of the entry type |
+
+<a name="EntryFacadeFieldFormattingSegment"></a>
+
+## EntryFacadeFieldFormattingSegment : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [char] | <code>RegExp</code> | A character to match with a regular expression |
+| [repeat] | <code>Number</code> | Number of times to repeat the character match (required for `char`) |
+| [exactly] | <code>String</code> | The exact character match (operates in opposition to `char`) |
+
+<a name="EntryFacadeFieldFormatting"></a>
+
+## EntryFacadeFieldFormatting : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [format] | [<code>Array.&lt;EntryFacadeFieldFormattingSegment&gt;</code>](#EntryFacadeFieldFormattingSegment) | The segmented formatting of the value |
+| [placeholder] | <code>String</code> | Optional placeholder for the input (ties in to `format`) |
+| options | <code>Object</code> \| <code>Array</code> | Options for a dropdown: either an array of option values or an object  (key:value) of values and titles |
+| [defaultOption] | <code>String</code> | The default option value if none set |
+
+<a name="EntryFacadeField"></a>
+
+## EntryFacadeField : <code>Object</code>
+Entry facade data field
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | A randomly generated ID (UUID) for identifying this field during editing |
+| title | <code>String</code> | The user-friendly title of the field |
+| propertyType | <code>String</code> | The type of data to map back to on the Entry instance (property/attribute) |
+| property | <code>String</code> | The property name within the field type of the Entry instance |
+| value | <code>String</code> | The value of the property (read/write) |
+| [valueType] | <code>String</code> | The type of value (rendering) (null for attributes) |
+| formatting | [<code>EntryFacadeFieldFormatting</code>](#EntryFacadeFieldFormatting) \| <code>Boolean</code> | Vendor formatting options object, or false if no formatting necessary |
+| removeable | <code>Boolean</code> | Whether or not the field can be removed or have its key changed |
+
+<a name="VaultFacade"></a>
+
+## VaultFacade : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| type | <code>String</code> | The facade type: "vault" |
+| id | <code>String</code> | The vault ID |
+| attributes | <code>Object</code> | A key/value list of all the vault attributes |
+| groups | [<code>Array.&lt;GroupFacade&gt;</code>](#GroupFacade) | An array of group facades |
+| entries | [<code>Array.&lt;EntryFacade&gt;</code>](#EntryFacade) | An array of entry facades |
+| _tag | <code>String</code> | The UUID tag for the generation of the facade |
+
+<a name="GroupFacade"></a>
+
+## GroupFacade : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| type | <code>String</code> | The facade type: "group" |
+| id | <code>String</code> \| <code>null</code> | The group ID. Will be set to null if  the group is a new one |
+| title | <code>String</code> | The group title |
+| attributes | <code>Object</code> | A key/value list of group attributes |
+| parentID | <code>String</code> \| <code>null</code> | The parent group ID. Set to "0" if  it is to be created in the root. |
+
+<a name="VaultInsights"></a>
+
+## VaultInsights : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [avgPassLen] | <code>Number</code> | Average password length |
+| [entries] | <code>Number</code> | Number of entries in the vault |
+| [groups] | <code>Number</code> | Number of groups in the vault |
+| [longPassLen] | <code>Number</code> | Longest password length |
+| [shortPassLen] | <code>Number</code> | Shortest password length |
+| [trashEntries] | <code>Number</code> | Number of entries in trash |
+| [trashGroups] | <code>Number</code> | Number of groups in trash |
+
+<a name="Insights"></a>
+
+## Insights : [<code>VaultInsights</code>](#VaultInsights)
+**Kind**: global typedef  
+<a name="EntryHistoryItem"></a>
+
+## EntryHistoryItem : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| property | <code>String</code> | The property/attribute name |
+| propertyType | <code>String</code> | Either "property" or "attribute" |
+| originalValue | <code>String</code> \| <code>null</code> | The original value or null if it did not exist  before this change |
+| newValue | <code>String</code> \| <code>null</code> | The new value or null if it was deleted |
 
 <a name="MyButtercupShareBase"></a>
 
@@ -2879,18 +2677,16 @@ New source options
 | created | <code>String</code> | The creation date |
 | lastUpdate | <code>String</code> | The last update date |
 
-<a name="EntryHistoryItem"></a>
+<a name="EntrySearchInfo"></a>
 
-## EntryHistoryItem : <code>Object</code>
+## EntrySearchInfo : <code>Object</code>
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| property | <code>String</code> | The property/attribute name |
-| propertyType | <code>String</code> | Either "property" or "attribute" |
-| originalValue | <code>String</code> \| <code>null</code> | The original value or null if it did not exist  before this change |
-| newValue | <code>String</code> \| <code>null</code> | The new value or null if it was deleted |
+| entry | <code>Entry</code> | The entry |
+| archive | <code>Archive</code> | The associated archive |
 
 <a name="FoundGroupResult"></a>
 

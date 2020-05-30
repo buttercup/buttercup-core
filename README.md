@@ -44,7 +44,7 @@ This library also supports a variety of datasources for loading from and saving 
  * [Google Drive](https://www.google.com/drive/)
  * Local files
 
-You may want to read the [API documentation](https://github.com/buttercup/buttercup-core/blob/master/API.md) (or for the [web](https://github.com/buttercup/buttercup-core/blob/master/API_WEB.md)) and [changelog](https://github.com/buttercup/buttercup-core/blob/master/CHANGELOG.md). Please read our [guide to contributing](https://github.com/buttercup/buttercup-core/blob/master/CONTRIBUTING.md) before creating any issues or pull requests.
+You may want to read the [API documentation](https://github.com/buttercup/buttercup-core/blob/master/API.md) and [changelog](https://github.com/buttercup/buttercup-core/blob/master/CHANGELOG.md). Please read our [guide to contributing](https://github.com/buttercup/buttercup-core/blob/master/CONTRIBUTING.md) before creating any issues or pull requests.
 
 ## Installation
 
@@ -77,7 +77,10 @@ To manage vaults, their storage and their states in a higher-level manner more a
 To get started, we should create a new Vault:
 
 ```javascript
-import { Vault } from "buttercup";
+import { Vault, init } from "buttercup";
+
+// Initialise environment
+init();
 
 // Create an empty vault
 const vault1 = new Vault();
@@ -85,6 +88,8 @@ const vault1 = new Vault();
 // Create aa vault with "General" and "Trash" groups
 const vault2 = Vault.createWithDefaults();
 ```
+
+The `init()` function call is used to initialise the environment (performs the same function as `@buttercup/app-env` used to). It is required for Buttercup to work. It can be called more than once without affect.
 
 Entries can't be added directly to a Vault, but can be to Groups. Creating Groups and Entries is trivial:
 
@@ -97,7 +102,9 @@ const myEntry = myGroup.createEntry("My Entry");
 Every command on Vaults, Groups and Entries **modifies the Vault instance**, but does not save it to storage. There is no command or need to commit any data - each instance links back to the original Vault. Vaults are saved and loaded using Datasources:
 
 ```javascript
-import { Credentials, FileDatasource, Vault } from "buttercup";
+import { Credentials, FileDatasource, Vault, init } from "buttercup";
+
+init();
 
 const datasourceCredentials = Credentials.fromDatasource({
     path: "./user.bcup"
