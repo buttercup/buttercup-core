@@ -16,8 +16,26 @@ let __sharedManager;
 /**
  * Authentication manager
  * @augments EventEmitter
+ * @memberof module:Buttercup
  */
 class DatasourceAuthManager extends EventEmitter {
+    /**
+     * Get the shared DatasourceAuthManager instance
+     * @returns {DatasourceAuthManager} The shared auth manager instance
+     * @static
+     * @memberof DatasourceAuthManager
+     */
+    static getSharedManager() {
+        if (!__sharedManager) {
+            __sharedManager = new DatasourceAuthManager();
+            markGlobalPresence();
+        }
+        return __sharedManager;
+    }
+
+    /**
+     * Constructor for the auth manager
+     */
     constructor() {
         super();
         this._handlers = {};
@@ -75,19 +93,5 @@ class DatasourceAuthManager extends EventEmitter {
         this._handlers[datasourceType].push(handler);
     }
 }
-
-/**
- * Get the shared DatasourceAuthManager instance
- * @returns {DatasourceAuthManager} The shared auth manager instance
- * @static
- * @memberof DatasourceAuthManager
- */
-DatasourceAuthManager.getSharedManager = function getSharedManager() {
-    if (!__sharedManager) {
-        __sharedManager = new DatasourceAuthManager();
-        markGlobalPresence();
-    }
-    return __sharedManager;
-};
 
 module.exports = DatasourceAuthManager;

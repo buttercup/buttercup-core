@@ -13,6 +13,7 @@ const __postHandlers = [];
  * @throws {Error} Throws if no type specified in datasource
  *  configuration
  * @throws {Error} Throws if no datasource found for type
+ * @private
  */
 function credentialsToDatasource(credentials) {
     const { datasource } = getCredentials(credentials.id).data;
@@ -33,6 +34,7 @@ function credentialsToDatasource(credentials) {
 /**
  * Execute all datasource postprocessors
  * @param {TextDatasource} datasource The datasource instance
+ * @private
  */
 function fireInstantiationHandlers(type, datasource) {
     __postHandlers.forEach(handler => {
@@ -51,7 +53,7 @@ function fireInstantiationHandlers(type, datasource) {
  * custom datasource is used.
  * @param {String} datasourceType The name (slug) of the datasource
  * @param {Object} DSClass The class for the new datasource
- * @public
+ * @memberof module:Buttercup
  */
 function registerDatasource(datasourceType, DSClass) {
     __datasources[datasourceType] = DSClass;
@@ -66,6 +68,7 @@ function registerDatasource(datasourceType, DSClass) {
  * Register a post-processor for a datasource being instantiated
  * @param {Function} callback The callback to execute with the instantiated datasource
  * @returns {RegisterDatasourcePostProcessorResult} The result of the registration
+ * @private
  */
 function registerDatasourcePostProcessor(callback) {
     __postHandlers.push(callback);

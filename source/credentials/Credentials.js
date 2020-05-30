@@ -234,7 +234,7 @@ class Credentials {
 
     /**
      * Convert the credentials to an encrypted string, for storage
-     * @returns {Promise} A promise that resolves with the encrypted credentials
+     * @returns {Promise.<String>} A promise that resolves with the encrypted credentials
      * @throws {Error} Rejects when masterPassword is not a string
      * @throws {Error} Rejects if credentials don't permit secure export purposes
      * @memberof Credentials

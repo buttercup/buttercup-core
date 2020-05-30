@@ -13,6 +13,7 @@ const { FacadeType: FacadeTypeAttribute } = Entry.Attributes;
  * @param {Entry} entry An Entry instance
  * @param {Array.<EntryFacadeField>} fields An array of fields
  * @returns {Array.<EntryFacadeField>} A new array with all combined fields
+ * @private
  */
 function addExtraFieldsNonDestructive(entry, fields) {
     const exists = (propName, fieldType) =>
@@ -69,6 +70,7 @@ function addExtraFieldsNonDestructive(entry, fields) {
  * Takes data from the descriptor and writes it to the entry.
  * @param {Entry} entry The entry to apply to
  * @param {EntryFacadeField} descriptor The descriptor object
+ * @private
  */
 function applyFieldDescriptor(entry, descriptor) {
     setEntryValue(entry, descriptor.propertyType, descriptor.property, descriptor.value, descriptor.valueType);
@@ -158,6 +160,7 @@ function createEntryFacade(entry, { type } = {}) {
  * Get the facade type for an entry
  * @param {Entry} entry The entry instance
  * @returns {String} The facade type
+ * @private
  */
 function getEntryFacadeType(entry) {
     if (!entry) {
@@ -174,6 +177,7 @@ function getEntryFacadeType(entry) {
  * @param {String} value The value to set
  * @param {String=} valueType Value type to set
  * @throws {Error} Throws if the property type is not recognised
+ * @private
  */
 function setEntryValue(entry, property, name, value, valueType) {
     switch (property) {
