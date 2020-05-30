@@ -10,7 +10,7 @@
 
 A NodeJS secrets vault.
 
-[![Buttercup](https://cdn.rawgit.com/buttercup-pw/buttercup-assets/6582a033/badge/buttercup-slim.svg)](https://buttercup.pw) [![npm](https://img.shields.io/npm/dt/buttercup.svg)](https://www.npmjs.com/package/buttercup) [![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) ![node min version](https://img.shields.io/badge/node-%3E%3D%208.x-lightgrey.svg) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC%2FGCM-red.svg)](https://tools.ietf.org/html/rfc3602)
+[![Buttercup](https://cdn.rawgit.com/buttercup-pw/buttercup-assets/6582a033/badge/buttercup-slim.svg)](https://buttercup.pw) [![npm](https://img.shields.io/npm/dt/buttercup.svg)](https://www.npmjs.com/package/buttercup) [![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) ![node min version](https://img.shields.io/badge/node-%3E%3D%2010.x-lightgrey.svg) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC%2FGCM-red.svg)](https://tools.ietf.org/html/rfc3602)
 
 [![Build Status](https://travis-ci.org/buttercup/buttercup-core.svg?branch=master)](https://travis-ci.org/buttercup/buttercup-core)
 
@@ -18,28 +18,31 @@ A NodeJS secrets vault.
 
 ## About
 
-Buttercup is a password manager written in JavaScript for NodeJS and the browser. It's based around `Archive`s that contain `Group`s and `Entry`s. Together, in a nested structure, these items act as a secure store for a user's credentials (much like standard managers these days). Entries allow you to store a credential's username and password, along with other miscellaneous properties (meta) and invisible functional info (attributes).
+Buttercup is a JavaScript password manager for NodeJS and the browser (though you can also see it used on platforms like [React Native](https://github.com/buttercup/buttercup-mobile)). It's based around the concept of a **Vault** and its secret **Entry** items (a login, credit card etc.). Entries are then separated into **Group** containers that make organising vaults a little easier.
 
-Buttercup archives sit in memory as an Object instance that is built from deltas that modify the structure. As changes are made to the archive, new delta commands are added to the history and saved to the archive's `Datasource`. Archives are compressed and encrypted before being saved.
+Because Buttercup is designed first and foremost to be consumed by users in some application, **VaultManager** and **VaultSource** constructs are provided to allow for easy control over several vaults in a somewhat shared environment. A vault manager provides easy-to-use methods to perform dehydration and rehydration (storage in serialised form) of vaults to some secure storage (files, remote datasources etc.).
+
+Buttercup can save and load vaults that are stored locally, in cloud service providers like Dropbox or Google Drive, or in our own [**My Buttercup**](https://my.buttercup.pw) hosted service. It does this by providing a **Datasource** construct for each provider.
+
+Because Buttercup can be consumed in some interesting and varied environments, serialisation tools called **facades** are provided to allow for greater flexibility when working with vault data structures. Facades provide a way to move data around without _classes_, converting vaults to and from JSON objects. Facades are used when attaching vaults to user interfaces like with the [Buttercup UI library](https://github.com/buttercup/ui).
 
 ### Features
 
 The core of the system, this **Buttercup Core**, boasts a few awesome features:
 
- * Deltas for storing archive history
- * Conflict resolution and archive merging
- * AES CBC/GCM encryption w/ 256bit keys
- * SHA-256 keys using PBKDF2 derivation
- * SHA-256 HMAC authentication
- * GZip text compression
+ * Merge-able vault contents
+ * History for back-tracking to previous passwords etc.
+ * AES CBC encryption
+ * GZip compression
+ * NodeJS and Browser support
 
 This library also supports a variety of datasources for loading from and saving to:
 
+ * [My Buttercup](https://my.buttercup.pw)
  * WebDAV
  * [Dropbox](https://www.dropbox.com/)
  * [Google Drive](https://www.google.com/drive/)
- * Files
- * _Coming soon:_ my.buttercup service
+ * Local files
 
 You may want to read the [API documentation](https://github.com/buttercup/buttercup-core/blob/master/API.md) (or for the [web](https://github.com/buttercup/buttercup-core/blob/master/API_WEB.md)) and [changelog](https://github.com/buttercup/buttercup-core/blob/master/CHANGELOG.md). Please read our [guide to contributing](https://github.com/buttercup/buttercup-core/blob/master/CONTRIBUTING.md) before creating any issues or pull requests.
 
@@ -48,83 +51,101 @@ You may want to read the [API documentation](https://github.com/buttercup/butter
 To use Buttercup in a NodeJS environment, you can simply install and require it:
 
 ```shell
-npm install buttercup @buttercup/app-env --save
+npm install buttercup --save
 ```
 
-_`@buttercup/app-env` is the environment bootstrap utility which configures complex core utilities like encryption and compression. It needs to be installed and then initialised **before** `buttercup` core in order for Buttercup to work._
+_NB: `@buttercup/app-env` was previously required (on version 3.x), but is not required for version 4. Please uninstall this dependency, along with `@buttercup/facades`, `@buttercup/credentials`, `@buttercup/datasources` and `@buttercup/signing` if you have them installed. These dependencies are included within Buttercup core version 4._
 
 In a Node environment, for example:
 
 ```javascript
-require("@buttercup/app-env/native"); // Bootstrap using Native (node) functionality
-const { Archive } = require("buttercup");
+const { Vault } = require("buttercup");
 ```
 
-To use Buttercup in a browser, you probably want to include the `buttercup-web.js` or `buttercup-web.min.js` file in the `dist` directory. If you use Buttercup in a browser, ensure that you `import "@buttercup/app-env/web"` to correctly bootstrap for the web environment.
+In a _web_ environment, use the following:
+
+```javascript
+import { Vault } from "buttercup/web";
+```
 
 ## Usage
 
-Buttercup centers around **Archives** which are the structures that manage stored secrets. An archive is a single encrypted data store which can be read from and written to a variety of storages (mentioned earlier). Archives are made up of **Groups** and **Entries**. A Group can be seen as a folder that contains Entries in a tree structure, and Entries are like files in that they contain secret information about some _thing_ (website login, bank account etc.).
+Buttercup uses `Vault`s, `Group`s and `Entry`s to manipulate data in a _workspace_-like environment. These 3 constructs have no knowledge of encryption or storage, and simply provide interfaces for working with the data structures.
 
-To get started, we should create a new Archive:
+To manage vaults, their storage and their states in a higher-level manner more appropriate for building applications, check out the `VaultManager` and `VaultSource` constructs.
+
+To get started, we should create a new Vault:
 
 ```javascript
-import { Archive } from "buttercup";
+import { Vault } from "buttercup";
 
-// Create an empty archive
-const archive1 = new Archive();
+// Create an empty vault
+const vault1 = new Vault();
 
-// Create an archive with "General" and "Trash" groups
-const archive2 = Archive.createWithDefaults();
+// Create aa vault with "General" and "Trash" groups
+const vault2 = Vault.createWithDefaults();
 ```
 
-Entries can't be added directly to an archive, but can be to Groups. Creating Groups and Entries is trivial:
+Entries can't be added directly to a Vault, but can be to Groups. Creating Groups and Entries is trivial:
 
 ```javascript
-const archive = new Archive();
-const myGroup = archive.createGroup("My Group");
+const vault = Vault.createWithDefaults();
+const myGroup = vault.createGroup("My Group");
 const myEntry = myGroup.createEntry("My Entry");
 ```
 
-Every command on Archives, Groups and Entries **modifies the Archive instance**, but does not save it to storage. There is no command or need to commit any data - each instance links back to the original Archive. Archives are saved and loaded using Datasources:
+Every command on Vaults, Groups and Entries **modifies the Vault instance**, but does not save it to storage. There is no command or need to commit any data - each instance links back to the original Vault. Vaults are saved and loaded using Datasources:
 
 ```javascript
-import { Archive, Datasources, Credentials } from "buttercup";
+import { Credentials, FileDatasource, Vault } from "buttercup";
 
-const { FileDatasource } = Datasources;
-
-const fileDatasource = new FileDatasource("./user.bcup");
-const archive = Archive.createWithDefaults();
-archive
+const datasourceCredentials = Credentials.fromDatasource({
+    path: "./user.bcup"
+}, "masterPassword!");
+const fileDatasource = new FileDatasource(datasourceCredentials);
+const vault = Vault.createWithDefaults();
+vault
     .createGroup("Websites")
         .createEntry("My bank")
             .setProperty("username", "user-name")
             .setProperty("password", "s3cureP4$$");
 
-const credentials = Credentials.fromPassword("masterPassword!");
-fileDatasource.save(archive.getHistory(), credentials); // returns Promise
+const vaultCredentials = Credentials.fromPassword("masterPassword!");
+await fileDatasource.save(vault.format.history, vaultCredentials);
 ```
 
 Later:
 
 ```javascript
-const fileDatasource = new FileDatasource("./user.bcup");
-const credentials = Credentials.fromPassword("masterPassword!");
+const datasourceCredentials = Credentials.fromDatasource({
+    path: "./user.bcup"
+}, "masterPassword!");
+const fileDatasource = new FileDatasource(datasourceCredentials);
 
 fileDatasource
-    .load(credentials)
-    .then(Archive.createFromHistory)
-    .then(archive => {
+    .load(datasourceCredentials)
+    .then(Vault.createFromHistory)
+    .then(vault => {
         // ...
     });
 ```
 
-To see all available Datasources, checkout the [`@buttercup/datasources`](https://github.com/buttercup/datasources) project. Credentials can be found at [`@buttercup/credentials`](https://github.com/buttercup/credentials). Both are bundled with the core library.
+Using just a datasource is not recommended as saving and loading is quite low-level and cumbersome. Check the [browser extension](https://github.com/buttercup/buttercup-browser-extension) or [desktop application](https://github.com/buttercup/buttercup-desktop) for examples of how to use the `VaultManager` and other helpful classes.
 
-### Considerations
-Buttercup is an encryption library that is designed to work with very sensitive data. Using its APIs in a public space is **strongly not recommended** - any bad actor could simply hijack and misuse sensitive data passed through Buttercup. Use Buttercup in settings where security and privacy can be ensured:
+## Compatibility
 
- * Do use it in NodeJS by directly requiring items from its API, but ensure that your application is final
-   * Be cautious using it in applications that are intended to run in a shared environment
- * **Do not** use it in public spaces or websites such as via a global variable
- * Do use it in bundled applications and executables, such as within an Electron app
+Buttercup's compatibility is defined as the following:
+
+ * NodeJS version 10 and up
+ * Current versions of the following browsers:
+   * Google Chrome
+   * Mozilla Firefox
+   * Safari
+ * _React Native 0.60+_
+
+_NB: React Native support is not guaranteed under all circumstances as the platform's stability for low-level operations like cryptography is questionable. Use the [mobile app](https://github.com/buttercup/buttercup-mobile) as a guideline for implementation._
+
+Browser support is strictly dependent on:
+
+ * Popularity
+ * The availability of required crypto libaries such as `SubtleCrypto`

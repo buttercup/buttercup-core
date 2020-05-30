@@ -1,11 +1,8 @@
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
-require("@buttercup/app-env/web");
-const { getSharedAppEnv } = require("@buttercup/app-env");
+const { expect } = require("chai");
+const { init } = require("../../source/index.web.js");
+const { getSharedAppEnv } = require("../../source/env/appEnv.js");
 
-const { expect } = chai;
-
-chai.use(chaiAsPromised);
+init();
 
 Object.assign(window, {
     expect

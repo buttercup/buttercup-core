@@ -1,4 +1,4 @@
-const StorageInterface = require("../node/storage/StorageInterface.js");
+const StorageInterface = require("../storage/StorageInterface.js");
 
 function getStorage() {
     return window.localStorage;

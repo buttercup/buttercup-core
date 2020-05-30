@@ -3,8 +3,8 @@ const { DefinePlugin } = require("webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const SOURCE = path.resolve(__dirname, "./source");
-const WEB_ENTRY = path.join(SOURCE, "web/index.js");
-const DIST = path.resolve(__dirname, "./dist");
+const WEB_ENTRY = path.join(SOURCE, "index.web.js");
+const DIST = path.resolve(__dirname, "./web");
 
 const plugins = [
     new DefinePlugin({
@@ -19,8 +19,6 @@ const baseConfig = {
     devtool: false,
 
     entry: WEB_ENTRY,
-
-    mode: "development",
 
     module: {
         rules: [
@@ -40,13 +38,17 @@ const baseConfig = {
 
     node: {
         crypto: "empty",
+        dns: "empty",
         fs: "empty",
-        net: "empty"
+        http: "empty",
+        https: "empty",
+        net: "empty",
+        stream: "empty"
     },
 
     output: {
         path: DIST,
-        filename: "buttercup-web.js",
+        filename: "index.js",
         library: "Buttercup",
         libraryTarget: "umd"
     },
@@ -54,12 +56,4 @@ const baseConfig = {
     plugins
 };
 
-module.exports = [
-    baseConfig,
-    Object.assign({}, baseConfig, {
-        mode: "production",
-        output: Object.assign({}, baseConfig.output, {
-            filename: "buttercup-web.min.js"
-        })
-    })
-];
+module.exports = baseConfig;

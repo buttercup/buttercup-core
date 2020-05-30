@@ -1,12 +1,22 @@
+# General
 *.log
-*.test.bcup
 .DS_Store
 .history
 .idea
 .vscode
+
+# Testing
 .nyc_output
 coverage
 node_modules
-/dist
-/stats.json
+
+# Debugging files
+source/test.js
+/test.bcup
+*.test.bcup
 *.test.js
+/stats.json
+
+# Artifacts
+/dist
+/web

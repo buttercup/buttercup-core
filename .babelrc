@@ -3,7 +3,7 @@
     ["@babel/preset-env", {
       "useBuiltIns": false,
       "targets": {
-        "node": "8"
+        "node": "10"
       }
     }]
   ],

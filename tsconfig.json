@@ -1,5 +1,5 @@
 {
-    "include": ["./source/node/**/*"],
+    "include": ["./source/**/*"],
 
     "compilerOptions": {
         "allowJs": true,
