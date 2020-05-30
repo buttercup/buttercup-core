@@ -26,6 +26,12 @@ function processDehydratedCredentials(credentialsString, masterPassword) {
     return Credentials.fromSecureString(credentialsString, masterPassword);
 }
 
+/**
+ * Vault source class for managing a single vault
+ * within a vault manager
+ * @augments EventEmitter
+ * @memberof module:Buttercup
+ */
 class VaultSource extends EventEmitter {
     static STATUS_LOCKED = "locked";
     static STATUS_PENDING = "pending";

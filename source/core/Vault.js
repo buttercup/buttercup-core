@@ -7,6 +7,7 @@ const Group = require("./Group.js");
 /**
  * Vault class - Contains Groups and Entrys
  * @augments EventEmitter
+ * @memberof module:Buttercup
  */
 class Vault extends EventEmitter {
     /**

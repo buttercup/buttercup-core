@@ -23,6 +23,7 @@ const STORAGE_KEY_PREFIX_TEST = /^bcup_vaultmgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]
 /**
  * Vault manager, to manage vault sources and their vaults
  * @augments EventEmitter
+ * @memberof module:Buttercup
  */
 class VaultManager extends EventEmitter {
     /**

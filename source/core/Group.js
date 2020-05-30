@@ -9,6 +9,7 @@ const { findGroupContainingGroupID } = require("../tools/rawVaultSearch.js");
 /**
  * Group class - contains Entrys
  * @augments VaultItem
+ * @memberof module:Buttercup
  */
 class Group extends VaultItem {
     static Attribute = Object.freeze({

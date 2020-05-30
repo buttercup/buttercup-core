@@ -7,6 +7,7 @@ const { findEntryByID, findGroupContainingEntryID } = require("../tools/rawVault
  * Entry class - some secret item, login or perhaps
  * even a credit card
  * @augments VaultItem
+ * @memberof module:Buttercup
  */
 class Entry extends VaultItem {
     static Attributes = Object.freeze({

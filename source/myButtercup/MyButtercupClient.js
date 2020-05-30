@@ -104,6 +104,7 @@ function demultiplexShares(sharesTxt) {
 /**
  * My Buttercup client
  * @augments EventEmitter
+ * @memberof module:Buttercup
  */
 class MyButtercupClient extends EventEmitter {
     /**
