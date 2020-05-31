@@ -1,4 +1,4 @@
-const uuid = require("uuid/v4");
+const { v4: uuid } = require("uuid");
 const { isOTPURI } = require("./detection.js");
 const {
     FIELD_VALUE_TYPE_NOTE,

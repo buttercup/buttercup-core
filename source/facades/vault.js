@@ -1,4 +1,4 @@
-const uuid = require("uuid/v4");
+const { v4: uuid } = require("uuid");
 const { consumeEntryFacade, createEntryFacade } = require("./entry.js");
 const Entry = require("../core/Entry.js");
 const { idSignifiesNew } = require("./tools.js");
