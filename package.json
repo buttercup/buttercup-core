@@ -86,7 +86,7 @@
     "global": "^4.4.0",
     "gzip-js": "^0.3.2",
     "hash.js": "^1.1.7",
-    "iocane": "^4.0.0",
+    "iocane": "^4.1.0",
     "is-promise": "^2.1.0",
     "js-base64": "^2.5.2",
     "url-join": "^4.0.1",
