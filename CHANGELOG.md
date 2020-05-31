@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v4.1.0
+_2020-05-31_
+
+ * Upgrade iocane -> 4.1.0 for better PBKDF2 override support
+ * Audit and upgrade dependencies
+
 ## v4.0.0
 _2020-05-30_
 
