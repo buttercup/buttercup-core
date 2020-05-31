@@ -1,4 +1,4 @@
-const uuid = require("uuid/v4");
+const { v4: uuid } = require("uuid");
 
 /**
  * Generate a UUID (v4)
