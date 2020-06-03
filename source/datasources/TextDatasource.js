@@ -87,6 +87,26 @@ class TextDatasource extends EventEmitter {
     }
 
     /**
+     * Get the available storage space, in bytes
+     * @returns {Number|null} Bytes of free space, or null if not
+     *  available
+     * @memberof TextDatasource
+     */
+    getAvailableStorage() {
+        return Promise.resolve(null);
+    }
+
+    /**
+     * Get the total storage space, in bytes
+     * @returns {Number|null} Bytes of free space, or null if not
+     *  available
+     * @memberof TextDatasource
+     */
+    getTotalStorage() {
+        return Promise.resolve(null);
+    }
+
+    /**
      * Get the ID of the datasource
      * ID to uniquely identify the datasource and its parameters
      * @returns {String} A hasn of the datasource (unique ID)
