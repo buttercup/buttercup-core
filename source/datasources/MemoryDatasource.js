@@ -118,6 +118,20 @@ class MemoryDatasource extends TextDatasource {
     }
 
     /**
+     * Remove an attachment
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {Promise}
+     * @memberof MemoryDatasource
+     */
+    removeAttachment(vaultID, attachmentID) {
+        return this._ensureAttachmentsPaths(vaultID).then(() => {
+            this._store.attachments[vaultID][attachmentID] = null;
+            delete this._store.attachments[vaultID][attachmentID];
+        });
+    }
+
+    /**
      * Save vault history memory
      * @param {Array.<String>} history The vault history to save
      * @param {Credentials} credentials The credentials to save with

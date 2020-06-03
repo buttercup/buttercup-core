@@ -62,6 +62,31 @@ class TextDatasource extends EventEmitter {
     }
 
     /**
+     * Get attachment buffer
+     * - Downloads the attachment contents into a buffer
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @param {Credentials=} credentials Credentials to decrypt
+     *  the buffer, defaults to null (no decryption)
+     * @returns {Promise.<Buffer|ArrayBuffer>}
+     * @memberof TextDatasource
+     */
+    getAttachment(vaultID, attachmentID, credentials = null) {
+        return Promise.reject(new Error("Attachments not supported"));
+    }
+
+    /**
+     * Get attachment details
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {AttachmentDetails} The attactment details
+     * @memberof TextDatasource
+     */
+    getAttachmentDetails(vaultID, attachmentID) {
+        return Promise.reject(new Error("Attachments not supported"));
+    }
+
+    /**
      * Get the ID of the datasource
      * ID to uniquely identify the datasource and its parameters
      * @returns {String} A hasn of the datasource (unique ID)
@@ -98,6 +123,33 @@ class TextDatasource extends EventEmitter {
             Format,
             history
         }));
+    }
+
+    /**
+     * Put attachment data
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @param {Buffer|ArrayBuffer} buffer The attachment data
+     * @param {Credentials=} credentials Credentials for
+     *  encrypting the buffer. If not provided, the buffer
+     *  is presumed to be in encrypted-form and will be
+     *  written as-is.
+     * @returns {Promise}
+     * @memberof TextDatasource
+     */
+    putAttachment(vaultID, attachmentID, buffer, credentials = null) {
+        return Promise.reject(new Error("Attachments not supported"));
+    }
+
+    /**
+     * Remove an attachment
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {Promise}
+     * @memberof TextDatasource
+     */
+    removeAttachment(vaultID, attachmentID) {
+        return Promise.reject(new Error("Attachments not supported"));
     }
 
     /**
