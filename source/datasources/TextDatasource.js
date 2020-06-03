@@ -55,7 +55,7 @@ class TextDatasource extends EventEmitter {
      * Get the ID of the datasource
      * ID to uniquely identify the datasource and its parameters
      * @returns {String} A hasn of the datasource (unique ID)
-     * @memberof TextDataSource
+     * @memberof TextDatasource
      */
     getID() {
         const type = this.toObject().type;
@@ -116,9 +116,18 @@ class TextDatasource extends EventEmitter {
     }
 
     /**
+     * Whether or not the datasource supports attachments
+     * @returns {Boolean}
+     * @memberof TextDatasource
+     */
+    supportsAttachments() {
+        return false;
+    }
+
+    /**
      * Whether or not the datasource supports the changing of the master password
      * @returns {Boolean} True if the datasource supports password changing
-     * @memberof TextDataSource
+     * @memberof TextDatasource
      */
     supportsPasswordChange() {
         return false;

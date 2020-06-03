@@ -5,6 +5,7 @@ const Group = require("./core/Group.js");
 const Entry = require("./core/Entry.js");
 
 const TextDatasource = require("./datasources/TextDatasource.js");
+const MemoryDatasource = require("./datasources/MemoryDatasource.js");
 const FileDatasource = require("./datasources/FileDatasource.js");
 const WebDAVDatasource = require("./datasources/WebDAVDatasource.js");
 const DropboxDatasource = require("./datasources/DropboxDatasource.js");
@@ -82,6 +83,7 @@ module.exports = {
     Credentials,
 
     TextDatasource,
+    MemoryDatasource,
     FileDatasource,
     WebDAVDatasource,
     DropboxDatasource,
