@@ -6,6 +6,16 @@ const { detectFormat, getDefaultFormat } = require("../io/formatRouter.js");
 const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
 
 /**
+ * @typedef {Object} AttachmentDetails
+ * @property {String} id The attachment ID
+ * @property {String} vaultID The vault ID
+ * @property {String} name Base filename
+ * @property {String} filename Full filename and path
+ * @property {Number} size Size in bytes (0 if invalid)
+ * @property {String|null} mime MIME type if available
+ */
+
+/**
  * @typedef {Object} LoadedVaultData
  * @property {VaultFormat} Format The vault format class that was detected
  *  when reading encrypted vault contents

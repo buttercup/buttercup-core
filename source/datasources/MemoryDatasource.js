@@ -1,6 +1,7 @@
 const TextDatasource = require("./TextDatasource.js");
 const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
 const { getCredentials } = require("../credentials/channel.js");
+const { ATTACHMENT_EXT, decryptAttachment, encryptAttachment } = require("../tools/attachments.js");
 
 const TYPE = "memory";
 
@@ -20,9 +21,64 @@ class MemoryDatasource extends TextDatasource {
         const { data: credentialData } = getCredentials(credentials.id);
         const { datasource: datasourceConfig } = credentialData;
         const { property } = datasourceConfig;
+        this._property = property;
         this._store = global[property] = global[property] || {};
         this.type = TYPE;
         fireInstantiationHandlers(TYPE, this);
+    }
+
+    /**
+     * Ensure attachment paths exist
+     * @returns {Promise}
+     * @memberof MemoryDatasource
+     * @protected
+     */
+    _ensureAttachmentsPaths(vaultID) {
+        return Promise.resolve().then(() => {
+            this._store.attachments = this._store.attachments || {};
+            this._store.attachments[vaultID] = this._store.attachments[vaultID] || {};
+        });
+    }
+
+    /**
+     * Get attachment buffer
+     * - Loads the attachment contents into a buffer
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @param {Credentials=} credentials Credentials to decrypt
+     *  the buffer, defaults to null (no decryption)
+     * @returns {Promise.<Buffer|ArrayBuffer>}
+     * @memberof MemoryDatasource
+     */
+    getAttachment(vaultID, attachmentID, credentials = null) {
+        return this._ensureAttachmentsPaths(vaultID).then(() => {
+            if (!this._store.attachments[vaultID][attachmentID]) {
+                throw new Error(`No attachment found for ID: ${attachmentID}`);
+            }
+            const attachment = this._store.attachments[vaultID][attachmentID];
+            return credentials ? decryptAttachment(attachment, credentials) : attachment;
+        });
+    }
+
+    /**
+     * Get attachment details
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {AttachmentDetails} The attactment details
+     * @memberof MemoryDatasource
+     */
+    getAttachmentDetails(vaultID, attachmentID) {
+        const attachment = this._store.attachments[vaultID][attachmentID];
+        const filename = `${attachmentID}.${ATTACHMENT_EXT}`;
+        const filePath = `${this._property}/${filename}`;
+        return Promise.resolve({
+            id: attachmentID,
+            vaultID,
+            name: filename,
+            filename: filePath,
+            size: typeof attachment.byteLength === "number" ? attachment.byteLength : attachment.length,
+            mime: null
+        });
     }
 
     /**
@@ -39,6 +95,26 @@ class MemoryDatasource extends TextDatasource {
             this.setContent(this._store.vault);
             return super.load(credentials);
         });
+    }
+
+    /**
+     * Put attachment data
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @param {Buffer|ArrayBuffer} buffer The attachment data
+     * @param {Credentials=} credentials Credentials for
+     *  encrypting the buffer. If not provided, the buffer
+     *  is presumed to be in encrypted-form and will be
+     *  written as-is.
+     * @returns {Promise}
+     * @memberof MemoryDatasource
+     */
+    putAttachment(vaultID, attachmentID, buffer, credentials = null) {
+        return this._ensureAttachmentsPaths(vaultID)
+            .then(() => (credentials ? encryptAttachment(buffer, credentials) : buffer))
+            .then(data => {
+                this._store.attachments[vaultID][attachmentID] = data;
+            });
     }
 
     /**
