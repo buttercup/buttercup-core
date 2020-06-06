@@ -11,6 +11,7 @@ const { findEntryByID, findGroupContainingEntryID } = require("../tools/rawVault
  */
 class Entry extends VaultItem {
     static Attributes = Object.freeze({
+        AttachmentPrefix: "BC_ENTRY_ATTACHMENT:",
         FacadeType: "BC_ENTRY_FACADE_TYPE",
         FieldTypePrefix: "BC_ENTRY_FIELD_TYPE:"
     });

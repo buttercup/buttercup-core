@@ -14,6 +14,7 @@ const { credentialsToDatasource } = require("../datasources/register.js");
 const { initialiseShares } = require("../myButtercup/sharing.js");
 const VaultComparator = require("./VaultComparator.js");
 const { generateVaultInsights } = require("../insight/vault.js");
+const AttachmentManager = require("../attachments/AttachmentManager.js");
 
 const DEFAULT_COLOUR = "#000000";
 const DEFAULT_ORDER = 1000;
@@ -86,6 +87,18 @@ class VaultSource extends EventEmitter {
         this._meta = meta;
         // Parent reference
         this._vaultManager = null;
+        // Attachments
+        this._attachmentManager = null;
+    }
+
+    /**
+     * The attachment manager
+     * @type {AttachmentManager|null}
+     * @memberof VaultSource
+     * @readonly
+     */
+    get attachmentManager() {
+        return this._attachmentManager;
     }
 
     /**
@@ -320,12 +333,14 @@ class VaultSource extends EventEmitter {
         const currentCredentials = this._credentials;
         const currentVault = this._vault;
         const currentDatasource = this._datasource;
+        const currentAttachmentMgr = this._attachmentManager;
         await this._enqueueStateChange(async () => {
             try {
                 const credentialsStr = await this._credentials.toSecureString();
                 this._credentials = credentialsStr;
                 this._datasource = null;
                 this._vault = null;
+                this._attachmentManager = null;
                 this._status = VaultSource.STATUS_LOCKED;
                 const dehydratedStr = await this.dehydrate();
                 this.emit("locked");
@@ -335,6 +350,7 @@ class VaultSource extends EventEmitter {
                 this._datasource = currentDatasource;
                 this._vault = currentVault;
                 this._status = VaultSource.STATUS_UNLOCKED;
+                this._attachmentManager = currentAttachmentMgr;
                 throw new VError(err, "Failed locking source");
             }
         });
@@ -397,6 +413,11 @@ class VaultSource extends EventEmitter {
             this._vault.format.dirty = false;
             await this._updateInsights();
         }, /* stack */ "saving");
+    }
+
+    supportsAttachments() {
+        if (this.status !== VaultSource.STATUS_UNLOCKED) return false;
+        return this._datasource.supportsAttachments();
     }
 
     async unlock(vaultCredentials, config = {}) {
@@ -465,6 +486,10 @@ class VaultSource extends EventEmitter {
                         .then(() => {
                             this._status = VaultSource.STATUS_UNLOCKED;
                             this.emit("unlocked");
+                            this._attachmentManager = new AttachmentManager(
+                                this,
+                                Credentials.fromCredentials(credentials, masterPassword)
+                            );
                         });
                 })
                 .catch(err => {
@@ -472,6 +497,7 @@ class VaultSource extends EventEmitter {
                     this._vault = null;
                     this._datasource = null;
                     this._credentials = originalCredentials;
+                    this._attachmentManager = null;
                     throw new VError(err, "Failed unlocking source");
                 });
         });
