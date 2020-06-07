@@ -32,6 +32,7 @@ The core of the system, this **Buttercup Core**, boasts a few awesome features:
 
  * Merge-able vault contents
  * History for back-tracking to previous passwords etc.
+ * File attachments (encrypted)
  * AES CBC encryption
  * GZip compression
  * NodeJS and Browser support
@@ -43,6 +44,7 @@ This library also supports a variety of datasources for loading from and saving 
  * [Dropbox](https://www.dropbox.com/)
  * [Google Drive](https://www.google.com/drive/)
  * Local files
+ * In-memory (testing, prototyping)
 
 You may want to read the [API documentation](https://github.com/buttercup/buttercup-core/blob/master/API.md) and [changelog](https://github.com/buttercup/buttercup-core/blob/master/CHANGELOG.md). Please read our [guide to contributing](https://github.com/buttercup/buttercup-core/blob/master/CONTRIBUTING.md) before creating any issues or pull requests.
 
