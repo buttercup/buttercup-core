@@ -101,6 +101,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.10.1",
     "@babel/preset-env": "^7.10.2",
     "@types/node": "^14.0.6",
+    "arraybuffer-loader": "^1.0.8",
     "babel-loader": "^8.1.0",
     "chai": "^4.2.0",
     "concurrently": "^5.2.0",

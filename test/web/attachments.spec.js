@@ -1,18 +1,26 @@
-const path = require("path");
-const fs = require("fs");
-const pify = require("pify");
 const {
     AttachmentManager,
     Credentials,
     MemoryStorageInterface,
     VaultManager,
     VaultSource
-} = require("../../dist/index.node.js");
+} = require("../../source/index.web.js");
 
-const IMAGE_PATH = path.resolve(__dirname, "../resources/attachments/image.png");
+const IMAGE_DATA = require("../resources/attachments/image.png");
 
-const readFile = pify(fs.readFile);
-const stat = pify(fs.stat);
+// compare ArrayBuffers
+function arrayBuffersAreEqual(a, b) {
+    return dataViewsAreEqual(new DataView(a), new DataView(b));
+}
+
+// compare DataViews
+function dataViewsAreEqual(a, b) {
+    if (a.byteLength !== b.byteLength) return false;
+    for (let i = 0; i < a.byteLength; i++) {
+        if (a.getUint8(i) !== b.getUint8(i)) return false;
+    }
+    return true;
+}
 
 describe("AttachmentManager", function() {
     beforeEach(async function() {
@@ -40,19 +48,17 @@ describe("AttachmentManager", function() {
     });
 
     it("can add attachments", async function() {
-        const attachmentData = await readFile(IMAGE_PATH);
         const attachmentID = AttachmentManager.newAttachmentID();
-        const fileInfo = await stat(IMAGE_PATH);
         await this.source.attachmentManager.setAttachment(
             this.entry,
             attachmentID,
-            attachmentData,
-            path.basename(IMAGE_PATH),
+            IMAGE_DATA,
+            "image.png",
             "image/png",
-            fileInfo.size
+            IMAGE_DATA.byteLength
         );
         const attachmentDataRead = await this.source.attachmentManager.getAttachment(this.entry, attachmentID);
-        expect(attachmentData.equals(attachmentDataRead)).to.be.true;
+        expect(arrayBuffersAreEqual(IMAGE_DATA, attachmentDataRead)).to.be.true;
         const details = await this.source.attachmentManager.getAttachmentDetails(this.entry, attachmentID);
         expect(details).to.deep.equal({
             id: attachmentID,
@@ -64,17 +70,16 @@ describe("AttachmentManager", function() {
 
     describe("with an attachment added", function() {
         beforeEach(async function() {
-            this.attachmentData = await readFile(IMAGE_PATH);
+            this.attachmentData = IMAGE_DATA;
             this.attachmentID = AttachmentManager.newAttachmentID();
             this.attachmentID2 = AttachmentManager.newAttachmentID();
-            this.fileInfo = await stat(IMAGE_PATH);
             await this.source.attachmentManager.setAttachment(
                 this.entry,
                 this.attachmentID,
                 this.attachmentData,
-                path.basename(IMAGE_PATH),
+                "image.png",
                 "image/png",
-                this.fileInfo.size
+                IMAGE_DATA.byteLength
             );
             await this.source.attachmentManager.setAttachment(
                 this.entry,
@@ -82,7 +87,7 @@ describe("AttachmentManager", function() {
                 this.attachmentData,
                 "test.png",
                 "image/png",
-                this.fileInfo.size
+                IMAGE_DATA.byteLength
             );
         });
 
@@ -116,7 +121,7 @@ describe("AttachmentManager", function() {
                     this.attachmentData,
                     "third.png",
                     "image/png",
-                    this.fileInfo.size
+                    IMAGE_DATA.byteLength
                 );
             } catch (err) {
                 expect(err).to.match(/Not enough space/i);
@@ -137,9 +142,9 @@ describe("AttachmentManager", function() {
                     this.entry,
                     this.attachmentID,
                     this.attachmentData,
-                    path.basename(IMAGE_PATH),
+                    "image.png",
                     "image/png",
-                    this.fileInfo.size + 2500
+                    IMAGE_DATA.byteLength + 2500
                 );
             } catch (err) {
                 expect(err).to.match(/Not enough space/i);
