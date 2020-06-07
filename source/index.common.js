@@ -3,6 +3,7 @@ const VaultSource = require("./core/VaultSource.js");
 const Vault = require("./core/Vault.js");
 const Group = require("./core/Group.js");
 const Entry = require("./core/Entry.js");
+const AttachmentManager = require("./attachments/AttachmentManager.js");
 
 const TextDatasource = require("./datasources/TextDatasource.js");
 const MemoryDatasource = require("./datasources/MemoryDatasource.js");
@@ -79,6 +80,7 @@ module.exports = {
     Vault,
     Group,
     Entry,
+    AttachmentManager,
 
     Credentials,
 
