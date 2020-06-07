@@ -6,6 +6,16 @@ const { detectFormat, getDefaultFormat } = require("../io/formatRouter.js");
 const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
 
 /**
+ * @typedef {Object} AttachmentDetails
+ * @property {String} id The attachment ID
+ * @property {String} vaultID The vault ID
+ * @property {String} name Base filename
+ * @property {String} filename Full filename and path
+ * @property {Number} size Size in bytes (0 if invalid)
+ * @property {String|null} mime MIME type if available
+ */
+
+/**
  * @typedef {Object} LoadedVaultData
  * @property {VaultFormat} Format The vault format class that was detected
  *  when reading encrypted vault contents
@@ -52,10 +62,55 @@ class TextDatasource extends EventEmitter {
     }
 
     /**
+     * Get attachment buffer
+     * - Downloads the attachment contents into a buffer
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @param {Credentials=} credentials Credentials to decrypt
+     *  the buffer, defaults to null (no decryption)
+     * @returns {Promise.<Buffer|ArrayBuffer>}
+     * @memberof TextDatasource
+     */
+    getAttachment(vaultID, attachmentID, credentials = null) {
+        return Promise.reject(new Error("Attachments not supported"));
+    }
+
+    /**
+     * Get attachment details
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {AttachmentDetails} The attactment details
+     * @memberof TextDatasource
+     */
+    getAttachmentDetails(vaultID, attachmentID) {
+        return Promise.reject(new Error("Attachments not supported"));
+    }
+
+    /**
+     * Get the available storage space, in bytes
+     * @returns {Number|null} Bytes of free space, or null if not
+     *  available
+     * @memberof TextDatasource
+     */
+    getAvailableStorage() {
+        return Promise.resolve(null);
+    }
+
+    /**
+     * Get the total storage space, in bytes
+     * @returns {Number|null} Bytes of free space, or null if not
+     *  available
+     * @memberof TextDatasource
+     */
+    getTotalStorage() {
+        return Promise.resolve(null);
+    }
+
+    /**
      * Get the ID of the datasource
      * ID to uniquely identify the datasource and its parameters
      * @returns {String} A hasn of the datasource (unique ID)
-     * @memberof TextDataSource
+     * @memberof TextDatasource
      */
     getID() {
         const type = this.toObject().type;
@@ -91,6 +146,33 @@ class TextDatasource extends EventEmitter {
     }
 
     /**
+     * Put attachment data
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @param {Buffer|ArrayBuffer} buffer The attachment data
+     * @param {Credentials=} credentials Credentials for
+     *  encrypting the buffer. If not provided, the buffer
+     *  is presumed to be in encrypted-form and will be
+     *  written as-is.
+     * @returns {Promise}
+     * @memberof TextDatasource
+     */
+    putAttachment(vaultID, attachmentID, buffer, credentials = null) {
+        return Promise.reject(new Error("Attachments not supported"));
+    }
+
+    /**
+     * Remove an attachment
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {Promise}
+     * @memberof TextDatasource
+     */
+    removeAttachment(vaultID, attachmentID) {
+        return Promise.reject(new Error("Attachments not supported"));
+    }
+
+    /**
      * Save archive contents with a password
      * @param {Array.<String>} history Archive history to save
      * @param {Credentials} credentials The Credentials instance to encrypt with
@@ -116,9 +198,18 @@ class TextDatasource extends EventEmitter {
     }
 
     /**
+     * Whether or not the datasource supports attachments
+     * @returns {Boolean}
+     * @memberof TextDatasource
+     */
+    supportsAttachments() {
+        return false;
+    }
+
+    /**
      * Whether or not the datasource supports the changing of the master password
      * @returns {Boolean} True if the datasource supports password changing
-     * @memberof TextDataSource
+     * @memberof TextDatasource
      */
     supportsPasswordChange() {
         return false;

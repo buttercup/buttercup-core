@@ -54,6 +54,7 @@ function unsignEncryptedContent(content) {
  * @memberof module:Buttercup
  */
 class Credentials {
+    static PURPOSE_ATTACHMENTS = "attachments";
     static PURPOSE_DECRYPT_VAULT = "vault-decrypt";
     static PURPOSE_ENCRYPT_VAULT = "vault-encrypt";
     static PURPOSE_SECURE_EXPORT = "secure-export";
@@ -66,6 +67,7 @@ class Credentials {
      */
     static allPurposes() {
         return [
+            Credentials.PURPOSE_ATTACHMENTS,
             Credentials.PURPOSE_DECRYPT_VAULT,
             Credentials.PURPOSE_ENCRYPT_VAULT,
             Credentials.PURPOSE_SECURE_EXPORT

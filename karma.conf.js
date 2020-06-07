@@ -3,6 +3,10 @@ const webpackConfig = require("./webpack.config.js");
 delete webpackConfig.entry;
 delete webpackConfig.output;
 webpackConfig.mode = process.env.BUNDLE === "production" ? "production" : "development";
+webpackConfig.module.rules.push({
+    test: /\.(png|jpg)$/,
+    use: "arraybuffer-loader"
+});
 
 module.exports = config => config.set({
 
