@@ -54,6 +54,17 @@ class AttachmentManager {
         }
         const Entry = require("../core/Entry.js");
         const attributeKey = `${Entry.Attributes.AttachmentPrefix}${attachmentID}`;
+        // Check if it already exists
+        const existingDetails = await this.getAttachmentDetails(entry, attachmentID);
+        // Calculate if it can fit in storage
+        const sizeIncrease = existingDetails ? Math.max(0, size - existingDetails.size) : size;
+        const spaceAvailable = await this._source._datasource.getAvailableStorage();
+        if (spaceAvailable !== null && sizeIncrease > spaceAvailable) {
+            throw new Error(
+                `Not enough space to update attachment: needed = ${sizeIncrease} B, available = ${spaceAvailable} B`
+            );
+        }
+        // Create payload
         const payload = {
             id: attachmentID,
             name,

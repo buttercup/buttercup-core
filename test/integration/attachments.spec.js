@@ -14,7 +14,7 @@ const IMAGE_PATH = path.resolve(__dirname, "../resources/attachments/image.png")
 const readFile = pify(fs.readFile);
 const stat = pify(fs.stat);
 
-describe("AttachmentManager", function() {
+describe.only("AttachmentManager", function() {
     beforeEach(async function() {
         this.vaultManager = new VaultManager({
             cacheStorage: new MemoryStorageInterface(),
@@ -64,25 +64,25 @@ describe("AttachmentManager", function() {
 
     describe("with an attachment added", function() {
         beforeEach(async function() {
-            const attachmentData = await readFile(IMAGE_PATH);
+            this.attachmentData = await readFile(IMAGE_PATH);
             this.attachmentID = AttachmentManager.newAttachmentID();
             this.attachmentID2 = AttachmentManager.newAttachmentID();
-            const fileInfo = await stat(IMAGE_PATH);
+            this.fileInfo = await stat(IMAGE_PATH);
             await this.source.attachmentManager.setAttachment(
                 this.entry,
                 this.attachmentID,
-                attachmentData,
+                this.attachmentData,
                 path.basename(IMAGE_PATH),
                 "image/png",
-                fileInfo.size
+                this.fileInfo.size
             );
             await this.source.attachmentManager.setAttachment(
                 this.entry,
                 this.attachmentID2,
-                attachmentData,
+                this.attachmentData,
                 "test.png",
                 "image/png",
-                fileInfo.size
+                this.fileInfo.size
             );
         });
 
@@ -101,6 +101,53 @@ describe("AttachmentManager", function() {
             expect(files).to.have.a.lengthOf(2);
             expect(files).to.contain("image.png");
             expect(files).to.contain("test.png");
+        });
+
+        it("fails to add an attachment if there's not enough free space", async function() {
+            const getAvailableStorage = (this.source._datasource.getAvailableStorage = sinon
+                .stub()
+                .callsFake(() => Promise.resolve(1000)));
+            sinon.spy(this.source._datasource, "putAttachment");
+            const newID = AttachmentManager.newAttachmentID();
+            try {
+                await this.source.attachmentManager.setAttachment(
+                    this.entry,
+                    newID,
+                    this.attachmentData,
+                    "third.png",
+                    "image/png",
+                    this.fileInfo.size
+                );
+            } catch (err) {
+                expect(err).to.match(/Not enough space/i);
+                expect(err).to.match(/needed = 439968 B/i);
+                expect(err).to.match(/available = 1000 B/i);
+            }
+            expect(getAvailableStorage.callCount).to.equal(1);
+            expect(this.source._datasource.putAttachment.notCalled).to.be.true;
+        });
+
+        it("fails to update an attachment if there's not enough free space", async function() {
+            const getAvailableStorage = (this.source._datasource.getAvailableStorage = sinon
+                .stub()
+                .callsFake(() => Promise.resolve(1000)));
+            sinon.spy(this.source._datasource, "putAttachment");
+            try {
+                await this.source.attachmentManager.setAttachment(
+                    this.entry,
+                    this.attachmentID,
+                    this.attachmentData,
+                    path.basename(IMAGE_PATH),
+                    "image/png",
+                    this.fileInfo.size + 2500
+                );
+            } catch (err) {
+                expect(err).to.match(/Not enough space/i);
+                expect(err).to.match(/needed = 2500 B/i);
+                expect(err).to.match(/available = 1000 B/i);
+            }
+            expect(getAvailableStorage.callCount).to.equal(1);
+            expect(this.source._datasource.putAttachment.notCalled).to.be.true;
         });
     });
 });
