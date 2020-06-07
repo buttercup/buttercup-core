@@ -12,7 +12,11 @@ class AttachmentManager {
 
     async getAttachment(entry, attachmentID) {
         this._checkAttachmentSupport();
-        return this._source._datasource.getAttachment(entry, attachmentID);
+        const details = await this.getAttachmentDetails(entry, attachmentID);
+        if (!details) {
+            throw new Error(`Attachment not available: ${attachmentID}`);
+        }
+        return this._source._datasource.getAttachment(this._source.vault.id, attachmentID, this._credentials);
     }
 
     async getAttachmentDetails(entry, attachmentID) {
@@ -45,6 +49,9 @@ class AttachmentManager {
 
     async setAttachment(entry, attachmentID, attachmentData, name, type, size) {
         this._checkAttachmentSupport();
+        if (!name || !type || !size) {
+            throw new Error(`Attachment properties required: name/type/size => ${name}/${type}/${size}`);
+        }
         const Entry = require("../core/Entry.js");
         const attributeKey = `${Entry.Attributes.AttachmentPrefix}${attachmentID}`;
         const payload = {
