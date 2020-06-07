@@ -1,4 +1,6 @@
 const { v4: uuid } = require("uuid");
+const Credentials = require("../credentials/Credentials.js");
+const { credentialsAllowsPurpose } = require("../credentials/channel.js");
 
 /**
  * @typedef {Object} AttachmentDetails
@@ -33,6 +35,10 @@ class AttachmentManager {
     constructor(vaultSource, credentials) {
         this._source = vaultSource;
         this._credentials = credentials;
+        if (!credentialsAllowsPurpose(this._credentials.id, Credentials.PURPOSE_ATTACHMENTS)) {
+            throw new Error("Credentials do not allow for attachments handling");
+        }
+        this._credentials.restrictPurposes([Credentials.PURPOSE_ATTACHMENTS]);
     }
 
     /**
