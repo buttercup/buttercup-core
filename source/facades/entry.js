@@ -1,9 +1,6 @@
 const facadeFieldFactories = require("./entryFields.js");
 const { createFieldDescriptor, getEntryValueType, setEntryValueType } = require("./tools.js");
-const { ENTRY_TYPE_LOGIN } = require("./symbols.js");
 const Entry = require("../core/Entry.js");
-
-const { FacadeType: FacadeTypeAttribute } = Entry.Attributes;
 
 /**
  * Add extra fields to a fields array that are not mentioned in a preset
@@ -166,7 +163,7 @@ function getEntryFacadeType(entry) {
     if (!entry) {
         return "login";
     }
-    return entry.getAttribute(FacadeTypeAttribute) || "login";
+    return entry.getType();
 }
 
 /**

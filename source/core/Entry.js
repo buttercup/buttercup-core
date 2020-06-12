@@ -183,6 +183,15 @@ class Entry extends VaultItem {
     }
 
     /**
+     * Get the entry type
+     * @returns {String}
+     * @memberof Entry
+     */
+    getType() {
+        return this.getAttribute(Entry.Attributes.FacadeType) || "login";
+    }
+
+    /**
      * Get an array of URLs from the Entry
      * Returns an array of detected URL values in the Entry's properties. The
      * types of URLs can be configured by providing a preference:
