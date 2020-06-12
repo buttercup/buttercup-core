@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v4.2.0
+_2020-06-12_
+
+ * `Entry#getType` helper
+ * Additional vault insights
+
 ## v4.1.0
 _2020-05-31_
 
