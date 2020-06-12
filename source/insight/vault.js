@@ -1,3 +1,9 @@
+const DIGITS = /[0-9]+/;
+const LOWER_CASE = /[a-z]+/;
+const OTHER = /[^0-9a-zA-Z`~!@#$%^&*()=+\[\]{};:'",.<>\/?|\\_£€-]+/;
+const SYMBOLS = /[`~!@#$%^&*()=+\[\]{};:'",.<>\/?|\\_£€-]+/;
+const UPPER_CASE = /[A-Z]+/;
+
 /**
  * @typedef {Object} VaultInsights
  * @property {Number=} avgPassLen Average password length
@@ -25,7 +31,10 @@ function generateVaultInsights(vault) {
         trashEntryCount = 0,
         trashGroupCount = 0,
         longestPasswordLength = null,
-        shortestPasswordLength = null;
+        shortestPasswordLength = null,
+        weakPasswords = 0;
+    const passwordCounts = {};
+    const usernameSet = new Set();
     const entryPasswordLengths = [];
     const processGroup = group => {
         const entries = group.getEntries();
@@ -40,6 +49,18 @@ function generateVaultInsights(vault) {
                 }
                 if (shortestPasswordLength === null || password.length < shortestPasswordLength) {
                     shortestPasswordLength = password.length;
+                }
+            }
+            const username = entry.getProperty("username");
+            if (["login", "website"].includes(entry.getType())) {
+                if (username) {
+                    usernameSet.add(username);
+                }
+                if (password) {
+                    passwordCounts[password] = (passwordCounts[password] || 0) + 1;
+                    if (isWeak(password)) {
+                        weakPasswords += 1;
+                    }
                 }
             }
         });
@@ -57,6 +78,10 @@ function generateVaultInsights(vault) {
         };
         processTrashGroup(trashGroup);
     }
+    const duplicatePasswords = Object.keys(passwordCounts).reduce(
+        (total, nextPass) => total + (passwordCounts[nextPass] > 1 ? passwordCounts[nextPass] : 0),
+        0
+    );
     return {
         avgPassLen,
         entries: entryCount,
@@ -64,8 +89,19 @@ function generateVaultInsights(vault) {
         longPassLen: longestPasswordLength,
         shortPassLen: shortestPasswordLength,
         trashEntries: trashEntryCount,
-        trashGroups: trashGroupCount
+        trashGroups: trashGroupCount,
+        usernames: usernameSet.size,
+        duplicatePasswords,
+        weakPasswords
     };
+}
+
+function isWeak(password) {
+    if (!password) return true;
+    if (password.length < 10) return true;
+    const matchingSets = [DIGITS, LOWER_CASE, OTHER, SYMBOLS, UPPER_CASE].filter(set => set.test(password)).length;
+    if (matchingSets >= 3) return false;
+    return true;
 }
 
 module.exports = {

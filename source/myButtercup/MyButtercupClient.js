@@ -445,12 +445,15 @@ class MyButtercupClient extends EventEmitter {
         }
         const {
             avgPassLen = null,
+            duplicatePasswords = null,
             entries = null,
             groups = null,
             longPassLen = null,
             shortPassLen = null,
             trashEntries = null,
-            trashGroups = null
+            trashGroups = null,
+            usernames = null,
+            weakPasswords = null
         } = insights;
         const requestOptions = {
             url: API_INSIGHTS,
@@ -462,12 +465,15 @@ class MyButtercupClient extends EventEmitter {
             body: JSON.stringify({
                 insights: {
                     avgPassLen,
+                    duplicatePasswords,
                     entries,
                     groups,
                     longPassLen,
                     shortPassLen,
                     trashEntries,
-                    trashGroups
+                    trashGroups,
+                    usernames,
+                    weakPasswords
                 },
                 vaultID: this.digest.archive_id
             })
