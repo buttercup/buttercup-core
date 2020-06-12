@@ -2,6 +2,8 @@ const facadeFieldFactories = require("./entryFields.js");
 const { createFieldDescriptor, getEntryValueType, setEntryValueType } = require("./tools.js");
 const Entry = require("../core/Entry.js");
 
+const { FacadeType: FacadeTypeAttribute } = Entry.Attributes;
+
 /**
  * Add extra fields to a fields array that are not mentioned in a preset
  * Facades are creaded by presets which don't mention all property values (custom user
