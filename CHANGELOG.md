@@ -8,6 +8,8 @@ _2020-06-12_
 ## v4.2.0
 _2020-06-12_
 
+ * Attachments
+ * `MemoryDatasource` for in-memory vaults
  * `Entry#getType` helper
  * Additional vault insights
 
