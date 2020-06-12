@@ -28,10 +28,23 @@ const baseConfig = {
             },
             {
                 test: /\.js$/,
-                include: [
-                    SOURCE
-                ],
-                use: "babel-loader"
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        "presets": [
+                            ["@babel/preset-env", {
+                                "useBuiltIns": false,
+                                "targets": {
+                                    "chrome": "60"
+                                }
+                            }]
+                        ],
+                        "plugins": [
+                            "@babel/plugin-proposal-class-properties",
+                            "@babel/plugin-proposal-object-rest-spread"
+                        ]
+                    }
+                }
             }
         ]
     },
