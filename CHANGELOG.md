@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v4.2.1
+_2020-06-12_
+
+ * Fix web build for compatibility
+
 ## v4.2.0
 _2020-06-12_
 
