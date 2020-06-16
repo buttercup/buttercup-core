@@ -56,6 +56,7 @@ const baseConfig = {
         http: "empty",
         https: "empty",
         net: "empty",
+        path: "empty",
         stream: "empty"
     },
 
