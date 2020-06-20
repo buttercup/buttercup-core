@@ -1,9 +1,16 @@
 # Core library changelog
 
+## v4.2.2
+_2020-06-20_
+
+ * **Bugfix**:
+   * `GoogleDriveDatasource` couldn't be instantiated without an exception being thrown
+
 ## v4.2.1
 _2020-06-12_
 
- * Fix web build for compatibility
+ * **Bugfix**:
+   * Fix web build for compatibility
 
 ## v4.2.0
 _2020-06-12_
