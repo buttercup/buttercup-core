@@ -64,7 +64,7 @@ class MemoryDatasource extends TextDatasource {
      * Get attachment details
      * @param {String} vaultID The ID of the vault
      * @param {String} attachmentID The ID of the attachment
-     * @returns {AttachmentDetails} The attactment details
+     * @returns {AttachmentDetails} The attachment details
      * @memberof MemoryDatasource
      */
     getAttachmentDetails(vaultID, attachmentID) {
