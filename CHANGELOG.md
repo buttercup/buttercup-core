@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v4.3.0
+_2020-06-21_
+
+ * Attachments support for `FileDatasource`
+ * Use live domain for My Buttercup
+
 ## v4.2.3
 _2020-06-21_
 
