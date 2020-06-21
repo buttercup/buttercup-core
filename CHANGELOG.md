@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v4.4.0
+_2020-06-21_
+
+ * `VaultManager` auto migrate legacy vaults
+ * `TextDatasource` loads content from credentials if provided
+
 ## v4.3.0
 _2020-06-21_
 
