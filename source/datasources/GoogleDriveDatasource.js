@@ -3,7 +3,6 @@ const VError = require("verror");
 const DatasourceAuthManager = require("./DatasourceAuthManager.js");
 const TextDatasource = require("./TextDatasource.js");
 const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
-const Credentials = require("../credentials/Credentials.js");
 const { getCredentials, setCredentials } = require("../credentials/channel.js");
 
 const DATASOURCE_TYPE = "googledrive";
@@ -25,7 +24,9 @@ class GoogleDriveDatasource extends TextDatasource {
         const { datasource: datasourceConfig } = credentialData;
         const { token, refreshToken, fileID } = datasourceConfig;
         this.fileID = fileID;
-        this.updateTokens(token, refreshToken);
+        this.token = token;
+        this.refreshToken = refreshToken;
+        this.client = createClient(token);
         this.authManager = DatasourceAuthManager.getSharedManager();
         this.type = DATASOURCE_TYPE;
         fireInstantiationHandlers(DATASOURCE_TYPE, this);
@@ -115,13 +116,9 @@ class GoogleDriveDatasource extends TextDatasource {
         this.token = accessToken;
         this.refreshToken = refreshToken;
         this.client = createClient(accessToken);
-        const { masterPassword } = getCredentials(this.credentials.id);
-        this._credentials = Credentials.fromCredentials(this.credentials, masterPassword);
-        const rawCreds = getCredentials(this.credentials.id);
-        Object.assign(rawCreds.data.datasource, {
-            token: accessToken,
-            refreshToken: refreshToken
-        });
+        const { data: credentialData } = getCredentials(this.credentials.id);
+        credentialData.datasource.token = accessToken;
+        credentialData.datasource.refreshToken = refreshToken;
         this.emit("updated");
     }
 }
