@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v4.2.3
+_2020-06-21_
+
+ * **Bugfix**:
+   * `GoogleDriveDatasource` failing upon initialisation in React Native
+
 ## v4.2.2
 _2020-06-20_
 
