@@ -27,6 +27,14 @@ const STORAGE_KEY_PREFIX_TEST = /^bcup_vaultmgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]
  */
 class VaultManager extends EventEmitter {
     /**
+     * Key prefix for stored vaults
+     * @type {String}
+     * @static
+     * @memberof VaultManager
+     */
+    static STORAGE_KEY_PREFIX = STORAGE_KEY_PREFIX;
+
+    /**
      * Construct a new VaultManager
      * @param {VaultManagerOptions=} opts Configuration options
      */
@@ -233,6 +241,7 @@ class VaultManager extends EventEmitter {
      * @throws {VError} Rejects if rehydrating from storage fails
      */
     async rehydrate() {
+        await this._migrateLegacyVaults();
         const storageKeys = await this._sourceStorage.getAllKeys();
         await Promise.all(
             storageKeys
@@ -354,6 +363,21 @@ class VaultManager extends EventEmitter {
             );
             this.emit("autoUpdateStop");
         });
+    }
+
+    async _migrateLegacyVaults() {
+        const legacyPrefix = "bcup_archivemgr_";
+        const storageKeys = await this._sourceStorage.getAllKeys();
+        await Promise.all(
+            storageKeys
+                .filter(key => key.indexOf(legacyPrefix) === 0)
+                .map(async key => {
+                    const value = await this._sourceStorage.getValue(key);
+                    const newKey = key.replace(legacyPrefix, STORAGE_KEY_PREFIX);
+                    await this._sourceStorage.setValue(newKey, value);
+                    await this._sourceStorage.removeKey(key);
+                })
+        );
     }
 
     _startAutoUpdateTimer() {
