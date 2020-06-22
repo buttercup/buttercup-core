@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v4.4.1
+_2020-06-22_
+
+ * Improved safe-guards for `VaultManager#rehydrate` and `new TextDatasource()`
+
 ## v4.4.0
 _2020-06-21_
 
