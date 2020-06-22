@@ -370,9 +370,10 @@ class VaultManager extends EventEmitter {
         const storageKeys = await this._sourceStorage.getAllKeys();
         await Promise.all(
             storageKeys
-                .filter(key => key.indexOf(legacyPrefix) === 0)
+                .filter(key => key && key.indexOf(legacyPrefix) === 0)
                 .map(async key => {
                     const value = await this._sourceStorage.getValue(key);
+                    if (!value) return;
                     const newKey = key.replace(legacyPrefix, STORAGE_KEY_PREFIX);
                     await this._sourceStorage.setValue(newKey, value);
                     await this._sourceStorage.removeKey(key);

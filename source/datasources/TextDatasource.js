@@ -36,10 +36,13 @@ class TextDatasource extends EventEmitter {
         super();
         this._credentials = credentials;
         this._credentials.restrictPurposes([Credentials.PURPOSE_SECURE_EXPORT]);
-        const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig = {} } = credentialData || {};
-        const { content = "" } = datasourceConfig;
-        this._content = content;
+        this._content = "";
+        try {
+            const { data: credentialData } = getCredentials(credentials.id);
+            const { datasource: datasourceConfig = {} } = credentialData || {};
+            const { content = "" } = datasourceConfig;
+            this._content = content;
+        } catch (err) {}
         this.type = "text";
         fireInstantiationHandlers("text", this);
     }
