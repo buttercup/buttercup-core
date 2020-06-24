@@ -254,6 +254,18 @@ class Credentials {
         }
         return encrypt(JSON.stringify(data), masterPassword).then(signEncryptedContent);
     }
+
+    /**
+     * Get raw credentials data (only available in specialised environments)
+     * @protected
+     * @returns {null|Object}
+     * @memberof Credentials
+     */
+    _getData() {
+        const isClosedEnv = getSharedAppEnv().getProperty("env/v1/isClosedEnv")();
+        if (!isClosedEnv) return null;
+        return getCredentials(this.id);
+    }
 }
 
 module.exports = Credentials;
