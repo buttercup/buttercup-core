@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v4.5.0
+_2020-06-24_
+
+ * Environment override `env/v1/isClosedEnv` for handling primary passwords in credentials
+
 ## v4.4.1
 _2020-06-22_
 
