@@ -16,6 +16,7 @@ const VaultComparator = require("./VaultComparator.js");
 const { generateVaultInsights } = require("../insight/vault.js");
 const AttachmentManager = require("../attachments/AttachmentManager.js");
 
+const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;
 const DEFAULT_COLOUR = "#000000";
 const DEFAULT_ORDER = 1000;
 
