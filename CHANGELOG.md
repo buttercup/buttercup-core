@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v4.5.1
+_2020-06-28_
+
+ * **Bugfix**:
+   * Broken `COLOUR_TEST` in VaultSource
+
 ## v4.5.0
 _2020-06-24_
 
