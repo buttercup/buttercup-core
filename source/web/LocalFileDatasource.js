@@ -3,6 +3,12 @@ const TextDatasource = require("../datasources/TextDatasource.js");
 const { getCredentials } = require("../credentials/channel.js");
 const { buildClient } = require("./localFileClient.js");
 
+/**
+ * Local file datasource, connecting via the desktop
+ * application proxy from the browser
+ * @memberof module:Buttercup
+ * @augments TextDatasource
+ */
 class LocalFileDatasource extends TextDatasource {
     constructor(credentials) {
         super(credentials);

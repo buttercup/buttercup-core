@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v4.6.0
+_2020-06-30_
+
+ * `LocalFileDatasource` for web clients (from browser extension)
+
 ## v4.5.1
 _2020-06-28_
 

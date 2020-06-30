@@ -420,6 +420,21 @@ Allows for preferential sorting</p>
             * [.getValue()](#StorageInterface+getValue)
             * [.removeKey()](#StorageInterface+removeKey)
             * [.setValue()](#StorageInterface+setValue)
+        * [~LocalFileDatasource](#module_Buttercup.LocalFileDatasource) ⇐ <code>TextDatasource</code>
+            * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+            * [.getAttachment(vaultID, attachmentID, [credentials])](#TextDatasource+getAttachment) ⇒ <code>Promise.&lt;(Buffer\|ArrayBuffer)&gt;</code>
+            * [.getAttachmentDetails(vaultID, attachmentID)](#TextDatasource+getAttachmentDetails) ⇒ [<code>AttachmentDetails</code>](#AttachmentDetails)
+            * [.getAvailableStorage()](#TextDatasource+getAvailableStorage) ⇒ <code>Number</code> \| <code>null</code>
+            * [.getTotalStorage()](#TextDatasource+getTotalStorage) ⇒ <code>Number</code> \| <code>null</code>
+            * [.getID()](#TextDatasource+getID) ⇒ <code>String</code>
+            * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+            * [.putAttachment(vaultID, attachmentID, buffer, [credentials])](#TextDatasource+putAttachment) ⇒ <code>Promise</code>
+            * [.removeAttachment(vaultID, attachmentID)](#TextDatasource+removeAttachment) ⇒ <code>Promise</code>
+            * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+            * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+            * [.supportsAttachments()](#TextDatasource+supportsAttachments) ⇒ <code>Boolean</code>
+            * [.supportsPasswordChange()](#TextDatasource+supportsPasswordChange) ⇒ <code>Boolean</code>
+            * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
 
 <a name="module_Buttercup.Entry"></a>
 
@@ -2265,6 +2280,193 @@ Set a value for a key
 
 **Kind**: instance method of [<code>MemoryStorageInterface</code>](#module_Buttercup.MemoryStorageInterface)  
 **Overrides**: [<code>setValue</code>](#StorageInterface+setValue)  
+<a name="module_Buttercup.LocalFileDatasource"></a>
+
+### Buttercup~LocalFileDatasource ⇐ <code>TextDatasource</code>
+Local file datasource, connecting via the desktop
+application proxy from the browser
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>TextDatasource</code>  
+
+* [~LocalFileDatasource](#module_Buttercup.LocalFileDatasource) ⇐ <code>TextDatasource</code>
+    * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+    * [.getAttachment(vaultID, attachmentID, [credentials])](#TextDatasource+getAttachment) ⇒ <code>Promise.&lt;(Buffer\|ArrayBuffer)&gt;</code>
+    * [.getAttachmentDetails(vaultID, attachmentID)](#TextDatasource+getAttachmentDetails) ⇒ [<code>AttachmentDetails</code>](#AttachmentDetails)
+    * [.getAvailableStorage()](#TextDatasource+getAvailableStorage) ⇒ <code>Number</code> \| <code>null</code>
+    * [.getTotalStorage()](#TextDatasource+getTotalStorage) ⇒ <code>Number</code> \| <code>null</code>
+    * [.getID()](#TextDatasource+getID) ⇒ <code>String</code>
+    * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+    * [.putAttachment(vaultID, attachmentID, buffer, [credentials])](#TextDatasource+putAttachment) ⇒ <code>Promise</code>
+    * [.removeAttachment(vaultID, attachmentID)](#TextDatasource+removeAttachment) ⇒ <code>Promise</code>
+    * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+    * [.supportsAttachments()](#TextDatasource+supportsAttachments) ⇒ <code>Boolean</code>
+    * [.supportsPasswordChange()](#TextDatasource+supportsPasswordChange) ⇒ <code>Boolean</code>
+    * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
+
+<a name="TextDatasource+hasContent"></a>
+
+#### localFileDatasource.hasContent : <code>Boolean</code>
+Whether the datasource currently has content
+Used to check if the datasource has encrypted content that can be
+loaded. May be used when attempting to open a vault in offline mode.
+
+**Kind**: instance property of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>hasContent</code>](#TextDatasource+hasContent)  
+<a name="TextDatasource+getAttachment"></a>
+
+#### localFileDatasource.getAttachment(vaultID, attachmentID, [credentials]) ⇒ <code>Promise.&lt;(Buffer\|ArrayBuffer)&gt;</code>
+Get attachment buffer
+- Downloads the attachment contents into a buffer
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>getAttachment</code>](#TextDatasource+getAttachment)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| vaultID | <code>String</code> |  | The ID of the vault |
+| attachmentID | <code>String</code> |  | The ID of the attachment |
+| [credentials] | <code>Credentials</code> | <code></code> | Credentials to decrypt  the buffer, defaults to null (no decryption) |
+
+<a name="TextDatasource+getAttachmentDetails"></a>
+
+#### localFileDatasource.getAttachmentDetails(vaultID, attachmentID) ⇒ [<code>AttachmentDetails</code>](#AttachmentDetails)
+Get attachment details
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>getAttachmentDetails</code>](#TextDatasource+getAttachmentDetails)  
+**Returns**: [<code>AttachmentDetails</code>](#AttachmentDetails) - The attactment details  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| vaultID | <code>String</code> | The ID of the vault |
+| attachmentID | <code>String</code> | The ID of the attachment |
+
+<a name="TextDatasource+getAvailableStorage"></a>
+
+#### localFileDatasource.getAvailableStorage() ⇒ <code>Number</code> \| <code>null</code>
+Get the available storage space, in bytes
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>getAvailableStorage</code>](#TextDatasource+getAvailableStorage)  
+**Returns**: <code>Number</code> \| <code>null</code> - Bytes of free space, or null if not
+ available  
+<a name="TextDatasource+getTotalStorage"></a>
+
+#### localFileDatasource.getTotalStorage() ⇒ <code>Number</code> \| <code>null</code>
+Get the total storage space, in bytes
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>getTotalStorage</code>](#TextDatasource+getTotalStorage)  
+**Returns**: <code>Number</code> \| <code>null</code> - Bytes of free space, or null if not
+ available  
+<a name="TextDatasource+getID"></a>
+
+#### localFileDatasource.getID() ⇒ <code>String</code>
+Get the ID of the datasource
+ID to uniquely identify the datasource and its parameters
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>getID</code>](#TextDatasource+getID)  
+**Returns**: <code>String</code> - A hasn of the datasource (unique ID)  
+<a name="TextDatasource+load"></a>
+
+#### localFileDatasource.load(credentials) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+Load from the stored content using a password to decrypt
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData) - A promise that resolves with decrypted history  
+**Throws**:
+
+- <code>Error</code> Rejects if content is empty
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| credentials | <code>Credentials</code> | The password or Credentials instance to decrypt with |
+
+<a name="TextDatasource+putAttachment"></a>
+
+#### localFileDatasource.putAttachment(vaultID, attachmentID, buffer, [credentials]) ⇒ <code>Promise</code>
+Put attachment data
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>putAttachment</code>](#TextDatasource+putAttachment)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| vaultID | <code>String</code> |  | The ID of the vault |
+| attachmentID | <code>String</code> |  | The ID of the attachment |
+| buffer | <code>Buffer</code> \| <code>ArrayBuffer</code> |  | The attachment data |
+| [credentials] | <code>Credentials</code> | <code></code> | Credentials for  encrypting the buffer. If not provided, the buffer  is presumed to be in encrypted-form and will be  written as-is. |
+
+<a name="TextDatasource+removeAttachment"></a>
+
+#### localFileDatasource.removeAttachment(vaultID, attachmentID) ⇒ <code>Promise</code>
+Remove an attachment
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>removeAttachment</code>](#TextDatasource+removeAttachment)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| vaultID | <code>String</code> | The ID of the vault |
+| attachmentID | <code>String</code> | The ID of the attachment |
+
+<a name="TextDatasource+save"></a>
+
+#### localFileDatasource.save(history, credentials) ⇒ <code>Promise.&lt;string&gt;</code>
+Save archive contents with a password
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise resolving with the encrypted content  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| history | <code>Array.&lt;String&gt;</code> | Archive history to save |
+| credentials | <code>Credentials</code> | The Credentials instance to encrypt with |
+
+<a name="TextDatasource+setContent"></a>
+
+#### localFileDatasource.setContent(content) ⇒ <code>TextDatasource</code>
+Set the text content
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>setContent</code>](#TextDatasource+setContent)  
+**Returns**: <code>TextDatasource</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | The encrypted text content |
+
+<a name="TextDatasource+supportsAttachments"></a>
+
+#### localFileDatasource.supportsAttachments() ⇒ <code>Boolean</code>
+Whether or not the datasource supports attachments
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>supportsAttachments</code>](#TextDatasource+supportsAttachments)  
+<a name="TextDatasource+supportsPasswordChange"></a>
+
+#### localFileDatasource.supportsPasswordChange() ⇒ <code>Boolean</code>
+Whether or not the datasource supports the changing of the master password
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>supportsPasswordChange</code>](#TextDatasource+supportsPasswordChange)  
+**Returns**: <code>Boolean</code> - True if the datasource supports password changing  
+<a name="TextDatasource+supportsRemoteBypass"></a>
+
+#### localFileDatasource.supportsRemoteBypass() ⇒ <code>Boolean</code>
+Whether or not the datasource supports bypassing remote fetch operations
+ (offline support)
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>supportsRemoteBypass</code>](#TextDatasource+supportsRemoteBypass)  
+**Returns**: <code>Boolean</code> - True if content can be set to bypass fetch operations,
+ false otherwise  
 <a name="VaultComparator"></a>
 
 ## VaultComparator
