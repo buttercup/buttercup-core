@@ -11,7 +11,7 @@ coverage
 node_modules
 
 # Debugging files
-source/test.js
+/test.js
 /test.bcup
 *.test.bcup
 *.test.js
