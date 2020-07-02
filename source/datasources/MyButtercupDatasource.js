@@ -151,7 +151,7 @@ class MyButtercupDatasource extends TextDatasource {
      * @returns {Boolean} True if it supports changing the master password
      * @memberof WebDAVDatasource
      */
-    supportsChangePassword() {
+    supportsPasswordChange() {
         return true;
     }
 

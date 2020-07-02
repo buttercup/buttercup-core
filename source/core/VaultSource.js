@@ -193,7 +193,7 @@ class VaultSource extends EventEmitter {
         } else if (!newPassword) {
             throw new Error("New password must be specified");
         }
-        const datasourceSupportsChange = this._datasource.supportsChangePassword();
+        const datasourceSupportsChange = this._datasource.supportsPasswordChange();
         const newMasterCreds = new Credentials(meta, newPassword);
         let wasLocked = false;
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
