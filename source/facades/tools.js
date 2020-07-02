@@ -121,8 +121,8 @@ function getEntryValueType(entry, propertyName) {
  * @param {String|Number} id The ID to check
  * @returns {Boolean}
  */
-function idSignifiesNew(id) {
-    if (/^\d+$/.test(id) === false) return false;
+function idSignifiesNew(id, mergeMode = false) {
+    if (/^\d+$/.test(id) === false) return mergeMode;
     const numerical = parseInt(id, 10);
     return !isNaN(numerical) && numerical > 0 && numerical <= 999999;
 }
