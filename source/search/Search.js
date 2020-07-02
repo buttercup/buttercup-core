@@ -35,7 +35,20 @@ class Search {
         return this._results;
     }
 
-    async incrementScore(vaultID, entryID) {}
+    async incrementScore(vaultID, entryID, url) {
+        const scoresRaw = await this._memory.getValue(`bcup_search_${vaultID}`);
+        let vaultScore = {};
+        if (scoresRaw) {
+            try {
+                vaultScore = JSON.parse(scoresRaw);
+            } catch (err) {}
+        }
+        const domain = extractDomain(url);
+        if (!domain) return;
+        vaultScore[entryID] = vaultScore[entryID] || {};
+        vaultScore[entryID][domain] = vaultScore[entryID][domain] ? vaultScore[entryID][domain] + 1 : 1;
+        await this._memory.setValue(`bcup_search_${vaultID}`, JSON.stringify(vaultScore));
+    }
 
     async prepare() {
         this._entries = [];
@@ -65,7 +78,6 @@ class Search {
                     };
                 })
             );
-            // console.log(this._entries);
         }
     }
 
