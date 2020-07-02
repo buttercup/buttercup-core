@@ -1,5 +1,15 @@
 # Core library changelog
 
+## v4.7.0
+_2020-07-02_
+
+ * `Search` class for searching vaults
+ * `EntryFinder` deprecated and disabled
+ * `fieldsToProperties` for converting entry facade fields to a properties key-value object
+ * Merge mode for consuming vault facades
+ * **Bugfix**:
+   * `VaultSource#changeMasterPassword` threw when getting datasource support for changing passwords
+
 ## v4.6.0
 _2020-06-30_
 
