@@ -155,6 +155,14 @@ function createEntryFacade(entry, { type } = {}) {
     };
 }
 
+function fieldsToProperties(facadeFields) {
+    return facadeFields.reduce((output, field) => {
+        if (field.propertyType !== "property") return output;
+        output[field.property] = field.value;
+        return output;
+    }, {});
+}
+
 /**
  * Get the facade type for an entry
  * @param {Entry} entry The entry instance
@@ -202,5 +210,6 @@ function setEntryValue(entry, property, name, value, valueType) {
 
 module.exports = {
     consumeEntryFacade,
-    createEntryFacade
+    createEntryFacade,
+    fieldsToProperties
 };
