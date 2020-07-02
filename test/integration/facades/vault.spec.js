@@ -4,6 +4,7 @@ const Group = require("../../../dist/core/Group.js");
 const { consumeVaultFacade, createGroupFacade, createVaultFacade } = require("../../../dist/facades/vault.js");
 const { createEntryFacade } = require("../../../dist/facades/entry.js");
 const { createFieldDescriptor } = require("../../../dist/facades/tools.js");
+const { expect } = require("chai");
 
 describe("vault", function() {
     beforeEach(function() {
@@ -123,6 +124,35 @@ describe("vault", function() {
                 const [entry] = childGroup.getEntries();
                 expect(entry).to.be.an.instanceOf(Entry);
                 expect(entry.getProperty("title")).to.equal("Test entry 3");
+            });
+        });
+
+        describe("in merge mode", function() {
+            beforeEach(function() {
+                const newVault = new Vault();
+                newVault
+                    .createGroup("merged")
+                    .createEntry("merged")
+                    .setProperty("username", "merge")
+                    .setProperty("password", "merge");
+                const newFacade = createVaultFacade(newVault);
+                consumeVaultFacade(this.vault, newFacade, {
+                    mergeMode: true
+                });
+            });
+
+            it("can merge-in new items", function() {
+                const [mergeGroup] = this.vault.findGroupsByTitle("merged");
+                expect(mergeGroup).to.be.an.instanceOf(Group);
+                const [mergeEntry] = this.vault.findEntriesByProperty("title", "merged");
+                expect(mergeEntry).to.be.an.instanceOf(Entry);
+            });
+
+            it("retains existing items", function() {
+                const [existingGroup] = this.vault.findGroupsByTitle("three");
+                expect(existingGroup).to.be.an.instanceOf(Group);
+                const [existingEntry] = this.vault.findEntriesByProperty("title", "Entry A");
+                expect(existingEntry).to.be.an.instanceOf(Entry);
             });
         });
     });
