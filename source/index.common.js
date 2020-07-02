@@ -18,7 +18,7 @@ const { registerDatasource } = require("./datasources/register.js");
 
 const { consumeGroupFacade, consumeVaultFacade, createGroupFacade, createVaultFacade } = require("./facades/vault.js");
 const { isOTPURI, isVaultFacade } = require("./facades/detection.js");
-const { consumeEntryFacade, createEntryFacade } = require("./facades/entry.js");
+const { consumeEntryFacade, createEntryFacade, fieldsToProperties } = require("./facades/entry.js");
 const { createFieldDescriptor } = require("./facades/tools.js");
 const {
     DEFAULT_ENTRY_TYPE,
@@ -114,5 +114,6 @@ module.exports = {
     isVaultFacade,
 
     getSharedAppEnv,
-    getEntryURLs
+    getEntryURLs,
+    fieldsToProperties
 };

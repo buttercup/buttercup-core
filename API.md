@@ -17,7 +17,7 @@
 <dt><a href="#Flattener">Flattener</a></dt>
 <dd><p>Flattener class for flattening archive history sets</p>
 </dd>
-<dt><a href="#EntryFinder">EntryFinder</a></dt>
+<dt><del><a href="#EntryFinder">EntryFinder</a></del></dt>
 <dd><p>Entry searching class</p>
 </dd>
 <dt><a href="#LocalStorageInterface">LocalStorageInterface</a> ⇐ <code>StorageInterface</code></dt>
@@ -120,9 +120,6 @@ matching pad ID to create a common link between the 2 histories.</p>
 <dt><a href="#findEntriesByCheck">findEntriesByCheck(groups, compareFn)</a> ⇒ <code>Array.&lt;Entry&gt;</code></dt>
 <dd><p>Find entry instances by filtering with a compare function</p>
 </dd>
-<dt><a href="#flattenEntries">flattenEntries(archives)</a> ⇒ <code><a href="#EntrySearchInfo">Array.&lt;EntrySearchInfo&gt;</a></code></dt>
-<dd><p>Flatten entries into a searchable structure</p>
-</dd>
 <dt><a href="#findGroupsByCheck">findGroupsByCheck(groups, compareFn)</a> ⇒ <code>Array.&lt;Group&gt;</code></dt>
 <dd><p>Find group instances within groups that satisfy some check</p>
 </dd>
@@ -213,6 +210,8 @@ Allows for preferential sorting</p>
 <dt><a href="#EntryFacadeField">EntryFacadeField</a> : <code>Object</code></dt>
 <dd><p>Entry facade data field</p>
 </dd>
+<dt><a href="#ConsumeVaultFacadeOptions">ConsumeVaultFacadeOptions</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#VaultFacade">VaultFacade</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#GroupFacade">GroupFacade</a> : <code>Object</code></dt>
@@ -239,7 +238,7 @@ Allows for preferential sorting</p>
 <dd></dd>
 <dt><a href="#MyButtercupArchiveDetails">MyButtercupArchiveDetails</a> : <code>Object</code></dt>
 <dd></dd>
-<dt><a href="#EntrySearchInfo">EntrySearchInfo</a> : <code>Object</code></dt>
+<dt><a href="#SearchResult">SearchResult</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#FoundGroupResult">FoundGroupResult</a> : <code>Object</code></dt>
 <dd></dd>
@@ -307,9 +306,10 @@ Allows for preferential sorting</p>
         * [.isVaultFacade(obj)](#module_Buttercup.isVaultFacade) ⇒ <code>Boolean</code>
         * [.consumeEntryFacade(entry, facade)](#module_Buttercup.consumeEntryFacade)
         * [.createEntryFacade([entry], [ops])](#module_Buttercup.createEntryFacade) ⇒ [<code>EntryFacade</code>](#EntryFacade)
+        * [.fieldsToProperties(facadeFields)](#module_Buttercup.fieldsToProperties) ⇒ <code>Object.&lt;String, String&gt;</code>
         * [.createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options)](#module_Buttercup.createFieldDescriptor) ⇒ [<code>EntryFacadeField</code>](#EntryFacadeField)
         * [.consumeGroupFacade(group, facade)](#module_Buttercup.consumeGroupFacade)
-        * [.consumeVaultFacade(vault, facade)](#module_Buttercup.consumeVaultFacade)
+        * [.consumeVaultFacade(vault, facade, [options])](#module_Buttercup.consumeVaultFacade)
         * [.createVaultFacade(vault)](#module_Buttercup.createVaultFacade) ⇒ [<code>VaultFacade</code>](#VaultFacade)
         * [.createGroupFacade(group, [parentID])](#module_Buttercup.createGroupFacade)
         * [.init()](#module_Buttercup.init)
@@ -414,6 +414,12 @@ Allows for preferential sorting</p>
             * [.accessToken](#module_Buttercup.MyButtercupClient+accessToken) : <code>String</code>
             * [.digest](#module_Buttercup.MyButtercupClient+digest) : [<code>MyButtercupDigest</code>](#MyButtercupDigest) \| <code>null</code>
             * [.refreshToken](#module_Buttercup.MyButtercupClient+refreshToken) : <code>String</code>
+        * [~Search](#module_Buttercup.Search)
+            * [.results](#module_Buttercup.Search+results) : [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+            * [.incrementScore(vaultID, entryID, url)](#module_Buttercup.Search+incrementScore)
+            * [.prepare()](#module_Buttercup.Search+prepare)
+            * [.searchByTerm(term)](#module_Buttercup.Search+searchByTerm) ⇒ [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+            * [.searchByURL(url)](#module_Buttercup.Search+searchByURL) ⇒ [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
         * [~MemoryStorageInterface](#module_Buttercup.MemoryStorageInterface) ⇐ <code>StorageInterface</code>
             * [new MemoryStorageInterface()](#new_module_Buttercup.MemoryStorageInterface_new)
             * [.getAllKeys()](#StorageInterface+getAllKeys)
@@ -1001,6 +1007,18 @@ Create a data/input facade for an Entry instance
 | [entry] | <code>Entry</code> | The Entry instance |
 | [ops] | [<code>CreateEntryFacadeOptions</code>](#CreateEntryFacadeOptions) | Options for the entry facade creation |
 
+<a name="module_Buttercup.fieldsToProperties"></a>
+
+### Buttercup.fieldsToProperties(facadeFields) ⇒ <code>Object.&lt;String, String&gt;</code>
+Convert an array of entry facade fields to a
+key-value object with only properties
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| facadeFields | [<code>Array.&lt;EntryFacadeField&gt;</code>](#EntryFacadeField) | Array of fields |
+
 <a name="module_Buttercup.createFieldDescriptor"></a>
 
 ### Buttercup.createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options) ⇒ [<code>EntryFacadeField</code>](#EntryFacadeField)
@@ -1031,7 +1049,7 @@ Consume a group facade and apply the differences to a group instance
 
 <a name="module_Buttercup.consumeVaultFacade"></a>
 
-### Buttercup.consumeVaultFacade(vault, facade)
+### Buttercup.consumeVaultFacade(vault, facade, [options])
 Consume a vault facade and apply the differences to the vault
 instance
 
@@ -1041,6 +1059,7 @@ instance
 | --- | --- | --- |
 | vault | <code>Vault</code> | The vault instance to apply to |
 | facade | [<code>VaultFacade</code>](#VaultFacade) | The facade to apply |
+| [options] | [<code>ConsumeVaultFacadeOptions</code>](#ConsumeVaultFacadeOptions) | Options for the consumption |
 
 <a name="module_Buttercup.createVaultFacade"></a>
 
@@ -2232,6 +2251,68 @@ The refresh token
 
 **Kind**: instance property of [<code>MyButtercupClient</code>](#module_Buttercup.MyButtercupClient)  
 **Read only**: true  
+<a name="module_Buttercup.Search"></a>
+
+### Buttercup~Search
+Search class for searching entries
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+
+* [~Search](#module_Buttercup.Search)
+    * [.results](#module_Buttercup.Search+results) : [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+    * [.incrementScore(vaultID, entryID, url)](#module_Buttercup.Search+incrementScore)
+    * [.prepare()](#module_Buttercup.Search+prepare)
+    * [.searchByTerm(term)](#module_Buttercup.Search+searchByTerm) ⇒ [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+    * [.searchByURL(url)](#module_Buttercup.Search+searchByURL) ⇒ [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+
+<a name="module_Buttercup.Search+results"></a>
+
+#### search.results : [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+Last search results
+
+**Kind**: instance property of [<code>Search</code>](#module_Buttercup.Search)  
+<a name="module_Buttercup.Search+incrementScore"></a>
+
+#### search.incrementScore(vaultID, entryID, url)
+Increment the score of a URL in an entry
+
+**Kind**: instance method of [<code>Search</code>](#module_Buttercup.Search)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| vaultID | <code>String</code> | The vault ID |
+| entryID | <code>String</code> | The entry ID |
+| url | <code>String</code> | The URL to increment for |
+
+<a name="module_Buttercup.Search+prepare"></a>
+
+#### search.prepare()
+Prepare the search instance by processing
+entries
+
+**Kind**: instance method of [<code>Search</code>](#module_Buttercup.Search)  
+<a name="module_Buttercup.Search+searchByTerm"></a>
+
+#### search.searchByTerm(term) ⇒ [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+Search for entries by term
+
+**Kind**: instance method of [<code>Search</code>](#module_Buttercup.Search)  
+
+| Param | Type |
+| --- | --- |
+| term | <code>String</code> | 
+
+<a name="module_Buttercup.Search+searchByURL"></a>
+
+#### search.searchByURL(url) ⇒ [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+Search for entries by URL
+
+**Kind**: instance method of [<code>Search</code>](#module_Buttercup.Search)  
+
+| Param | Type |
+| --- | --- |
+| url | <code>String</code> | 
+
 <a name="module_Buttercup.MemoryStorageInterface"></a>
 
 ### Buttercup~MemoryStorageInterface ⇐ <code>StorageInterface</code>
@@ -2658,56 +2739,12 @@ Number of lines to preserve (most recent)
 **Kind**: static property of [<code>Flattener</code>](#Flattener)  
 <a name="EntryFinder"></a>
 
-## EntryFinder
+## ~~EntryFinder~~
+***Deprecated***
+
 Entry searching class
 
 **Kind**: global class  
-
-* [EntryFinder](#EntryFinder)
-    * [new EntryFinder(target)](#new_EntryFinder_new)
-    * [.items](#EntryFinder+items) : [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-    * [.lastResult](#EntryFinder+lastResult) : [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-    * [.initSearcher()](#EntryFinder+initSearcher)
-    * [.search(term)](#EntryFinder+search) ⇒ [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-
-<a name="new_EntryFinder_new"></a>
-
-### new EntryFinder(target)
-
-| Param | Type | Description |
-| --- | --- | --- |
-| target | <code>Array.&lt;Archive&gt;</code> \| <code>Archive</code> | The archive or archives to search |
-
-<a name="EntryFinder+items"></a>
-
-### entryFinder.items : [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-All items available for searching
-
-**Kind**: instance property of [<code>EntryFinder</code>](#EntryFinder)  
-<a name="EntryFinder+lastResult"></a>
-
-### entryFinder.lastResult : [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-The last result
-
-**Kind**: instance property of [<code>EntryFinder</code>](#EntryFinder)  
-<a name="EntryFinder+initSearcher"></a>
-
-### entryFinder.initSearcher()
-Initialise the searching mechanism
-
-**Kind**: instance method of [<code>EntryFinder</code>](#EntryFinder)  
-<a name="EntryFinder+search"></a>
-
-### entryFinder.search(term) ⇒ [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-Search and get results
-
-**Kind**: instance method of [<code>EntryFinder</code>](#EntryFinder)  
-**Returns**: [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo) - The results  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| term | <code>String</code> | The search term |
-
 <a name="LocalStorageInterface"></a>
 
 ## LocalStorageInterface ⇐ <code>StorageInterface</code>
@@ -3109,18 +3146,6 @@ Find entry instances by filtering with a compare function
 | --- | --- | --- |
 | groups | <code>Array.&lt;Group&gt;</code> | The groups to check in |
 | compareFn | <code>function</code> | The callback comparison function, return true to keep and false  to strip |
-
-<a name="flattenEntries"></a>
-
-## flattenEntries(archives) ⇒ [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-Flatten entries into a searchable structure
-
-**Kind**: global function  
-**Returns**: [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo) - An array of searchable objects  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archives | <code>Array.&lt;Archive&gt;</code> | An array of archives |
 
 <a name="findGroupsByCheck"></a>
 
@@ -3567,6 +3592,16 @@ Entry facade data field
 | formatting | [<code>EntryFacadeFieldFormatting</code>](#EntryFacadeFieldFormatting) \| <code>Boolean</code> | Vendor formatting options object, or false if no formatting necessary |
 | removeable | <code>Boolean</code> | Whether or not the field can be removed or have its key changed |
 
+<a name="ConsumeVaultFacadeOptions"></a>
+
+## ConsumeVaultFacadeOptions : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [mergeMode] | <code>Boolean</code> | Whether or not the facade should be merged  instead of applied (normal operation). Defaults to false. When merging,  all incoming items from the facade are *added*, not updated. |
+
 <a name="VaultFacade"></a>
 
 ## VaultFacade : <code>Object</code>
@@ -3728,16 +3763,18 @@ Entry facade data field
 | created | <code>String</code> | The creation date |
 | lastUpdate | <code>String</code> | The last update date |
 
-<a name="EntrySearchInfo"></a>
+<a name="SearchResult"></a>
 
-## EntrySearchInfo : <code>Object</code>
+## SearchResult : <code>Object</code>
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| entry | <code>Entry</code> | The entry |
-| archive | <code>Archive</code> | The associated archive |
+| id | <code>String</code> | The entry ID |
+| properties | <code>Object.&lt;String, String&gt;</code> | Entry properties |
+| urls | <code>Array.&lt;String&gt;</code> | Entry URLs |
+| vaultID | <code>String</code> | The ID of the containing vault |
 
 <a name="FoundGroupResult"></a>
 

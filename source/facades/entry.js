@@ -155,6 +155,13 @@ function createEntryFacade(entry, { type } = {}) {
     };
 }
 
+/**
+ * Convert an array of entry facade fields to a
+ * key-value object with only properties
+ * @param {Array.<EntryFacadeField>} facadeFields Array of fields
+ * @returns {Object.<String, String>}
+ * @memberof module:Buttercup
+ */
 function fieldsToProperties(facadeFields) {
     return facadeFields.reduce((output, field) => {
         if (field.propertyType !== "property") return output;
