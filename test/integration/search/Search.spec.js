@@ -3,7 +3,7 @@ const Vault = require("../../../dist/core/Vault.js");
 const MemoryStorageInterface = require("../../../dist/storage/MemoryStorageInterface.js");
 const { expect } = require("chai");
 
-describe.only("Search", function() {
+describe("Search", function() {
     beforeEach(function() {
         const vault = (this.vault = new Vault());
         const groupA = vault.createGroup("Email");
@@ -17,6 +17,11 @@ describe.only("Search", function() {
             .setProperty("username", "j.crowley@gmov.edu.au")
             .setProperty("password", "#f05c.*skU3")
             .setProperty("URL", "gmov.edu.au/portal/auth");
+        groupA
+            .createEntry("Work logs")
+            .setProperty("username", "j.crowley@gmov.edu.au")
+            .setProperty("password", "#f05c.*skU3")
+            .setProperty("URL", "https://logs.gmov.edu.au/sys30/atc.php");
         const groupB = vault.createGroup("Bank");
         groupB
             .createEntry("MyBank")
@@ -56,23 +61,34 @@ describe.only("Search", function() {
         describe("searchByURL", function() {
             it("finds results by URL", function() {
                 const results = this.search.searchByURL("https://wordpress.com/homepage/test/org");
-                console.log(JSON.stringify(results, undefined, 2));
                 expect(results).to.have.length.above(0);
                 expect(results[0]).to.have.nested.property("properties.title", "Wordpress");
             });
 
+            it("finds multiple similar results", function() {
+                const results = this.search.searchByURL("https://gmov.edu.au/portal/");
+                expect(results).to.have.lengthOf(2);
+                expect(results[0].properties.title).to.equal("Work");
+                expect(results[1].properties.title).to.equal("Work logs");
+            });
+
             it("supports ordering", function() {
-                const [entry] = this.vault.findEntriesByProperty("title", "Insurance");
+                const [entry] = this.vault.findEntriesByProperty("title", "Work logs");
                 return this.storage
                     .setValue(
                         `bcup_search_${this.vault.id}`,
                         JSON.stringify({
-                            [entry.id]: 3
+                            [entry.id]: {
+                                "gmov.edu.au": 1
+                            }
                         })
                     )
+                    .then(() => this.search.prepare())
                     .then(() => {
                         const results = this.search.searchByURL("https://gmov.edu.au/portal/");
-                        console.log(results);
+                        expect(results).to.have.lengthOf(2);
+                        expect(results[0].properties.title).to.equal("Work logs");
+                        expect(results[1].properties.title).to.equal("Work");
                     });
             });
         });

@@ -81,7 +81,7 @@
     "@buttercup/googledrive-client": "^0.8.0",
     "cowl": "^0.8.0",
     "eventemitter3": "^4.0.4",
-    "extract-domain": "^2.2.1",
+    "fast-levenshtein": "^2.0.6",
     "foreachasync": "^5.1.3",
     "fuse.js": "^6.4.0",
     "global": "^4.4.0",

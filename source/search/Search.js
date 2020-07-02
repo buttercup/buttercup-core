@@ -1,9 +1,25 @@
 const Fuse = require("fuse.js");
-const extractDomain = require("extract-domain");
+const levenshtein = require("fast-levenshtein");
 const { createVaultFacade } = require("../facades/vault.js");
 const { fieldsToProperties } = require("../facades/entry.js");
 const { ENTRY_URL_TYPE_GENERAL, getEntryURLs } = require("../tools/entry.js");
 const StorageInterface = require("../storage/StorageInterface.js");
+
+function domainsRelated(domain1, domain2) {
+    if (domain1 === domain2) return true;
+    if (domain1.length > domain2.length) {
+        const ind = domain1.indexOf(domain2);
+        return ind === domain1.length - domain2.length;
+    } else {
+        const ind = domain2.indexOf(domain1);
+        return ind === domain2.length - domain1.length;
+    }
+}
+
+function extractDomain(str) {
+    const match = /^((https?|ftp):\/\/)?([^\/]+)/i.exec(str);
+    return (match && match[3]) || "";
+}
 
 class Search {
     constructor(vaults, memory = new StorageInterface()) {
@@ -18,6 +34,8 @@ class Search {
     get results() {
         return this._results;
     }
+
+    async incrementScore(vaultID, entryID) {}
 
     async prepare() {
         this._entries = [];
@@ -43,7 +61,7 @@ class Search {
                         properties,
                         urls,
                         vaultID: vault.id,
-                        urlScore: vaultScore[entry.id] || 0
+                        domainScores: vaultScore[entry.id] || {}
                     };
                 })
             );
@@ -74,49 +92,54 @@ class Search {
     }
 
     searchByURL(url) {
-        // const preparedURL = url.replace(/^https?:\/\//i, "");
-        const domain = extractDomain(url);
-        const items = [...this._entries];
-        this._fuse = new Fuse(this._entries, {
-            includeScore: true,
-            keys: ["urls"],
-            shouldSort: true,
-            sortFn: (a, b) => {
-                const itemA = items[a.idx];
-                const itemB = items[b.idx];
-                const aScore = 1 - a.score;
-                const bScore = 1 - b.score;
-                const aURLScore = Math.max(1, itemA.urlScore);
-                const bURLScore = Math.max(1, itemB.urlScore);
-                const av = aURLScore * aScore;
-                const bv = bURLScore * bScore;
-                console.log("A", itemA.properties.title, av, aScore, aURLScore);
-                console.log("B", itemB.properties.title, bv, bScore, bURLScore);
-                if (av > bv) {
+        const incomingDomain = extractDomain(url);
+        if (!incomingDomain) {
+            this._results = [];
+            return this._results;
+        }
+        const results = this._entries.reduce((output, entryItem) => {
+            let bestScore = Infinity;
+            const bestURL = entryItem.urls.reduce((best, next) => {
+                const thisDomain = extractDomain(next);
+                if (!thisDomain) return best;
+                if (!domainsRelated(thisDomain, incomingDomain)) return best;
+                const score = levenshtein.get(next, url);
+                if (score < bestScore) {
+                    bestScore = score;
+                    return next;
+                }
+                return best;
+            }, null);
+            if (!bestURL) return output;
+            const resultDomain = extractDomain(bestURL);
+            return [
+                ...output,
+                {
+                    item: entryItem,
+                    score: bestScore,
+                    url: bestURL,
+                    domainScore: Math.max(
+                        entryItem.domainScores[incomingDomain] || 0,
+                        entryItem.domainScores[resultDomain] || 0
+                    )
+                }
+            ];
+        }, []);
+        this._results = results
+            .sort((a, b) => {
+                if (a.domainScore > b.domainScore) {
+                    return -1;
+                } else if (b.domainScore > b.domainScore) {
                     return 1;
-                } else if (bv > av) {
+                }
+                if (a.score > b.score) {
+                    return 1;
+                } else if (b.score > a.score) {
                     return -1;
                 }
                 return 0;
-                // const scoreDiff = Math.abs(a.score - b.score);
-                // // console.log('DIFF', scoreDiff);
-                // if (scoreDiff > 0.3) {
-                //     if (a.score > b.score) {
-                //         return 1;
-                //     } else if (b.score > a.score) {
-                //         return -1;
-                //     }
-                // }
-                // if (a.item.score > b.item.score) {
-                //     return -1;
-                // } else if (b.item.score > a.item.score) {
-                //     return 1;
-                // }
-                // return 0;
-            },
-            threshold: 0.75
-        });
-        this._results = this._fuse.search(domain).map(result => result.item);
+            })
+            .map(result => result.item);
         return this._results;
     }
 }
