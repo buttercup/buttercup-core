@@ -4,7 +4,6 @@ const Group = require("../../../dist/core/Group.js");
 const { consumeVaultFacade, createGroupFacade, createVaultFacade } = require("../../../dist/facades/vault.js");
 const { createEntryFacade } = require("../../../dist/facades/entry.js");
 const { createFieldDescriptor } = require("../../../dist/facades/tools.js");
-const { expect } = require("chai");
 
 describe("vault", function() {
     beforeEach(function() {

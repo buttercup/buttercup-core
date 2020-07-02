@@ -42,6 +42,7 @@ const StorageInterface = require("./storage/StorageInterface.js");
 const MemoryStorageInterface = require("./storage/MemoryStorageInterface.js");
 
 const EntryFinder = require("./search/EntryFinder.js");
+const Search = require("./search/Search.js");
 const { getSharedAppEnv } = require("./env/appEnv.js");
 
 const {
@@ -100,6 +101,7 @@ module.exports = {
     MemoryStorageInterface,
 
     EntryFinder,
+    Search,
 
     consumeEntryFacade,
     consumeGroupFacade,
