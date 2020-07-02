@@ -21,6 +21,18 @@ function extractDomain(str) {
     return (match && match[3]) || "";
 }
 
+/**
+ * @typedef {Object} SearchResult
+ * @property {String} id The entry ID
+ * @property {Object.<String, String>} properties Entry properties
+ * @property {Array.<String>} urls Entry URLs
+ * @property {String} vaultID The ID of the containing vault
+ */
+
+/**
+ * Search class for searching entries
+ * @memberof module:Buttercup
+ */
 class Search {
     constructor(vaults, memory = new StorageInterface()) {
         this._vaults = vaults;
@@ -31,10 +43,20 @@ class Search {
         this._results = [];
     }
 
+    /**
+     * Last search results
+     * @type {Array.<SearchResult>}
+     */
     get results() {
         return this._results;
     }
 
+    /**
+     * Increment the score of a URL in an entry
+     * @param {String} vaultID The vault ID
+     * @param {String} entryID The entry ID
+     * @param {String} url The URL to increment for
+     */
     async incrementScore(vaultID, entryID, url) {
         const scoresRaw = await this._memory.getValue(`bcup_search_${vaultID}`);
         let vaultScore = {};
@@ -50,6 +72,10 @@ class Search {
         await this._memory.setValue(`bcup_search_${vaultID}`, JSON.stringify(vaultScore));
     }
 
+    /**
+     * Prepare the search instance by processing
+     * entries
+     */
     async prepare() {
         this._entries = [];
         this._scores = {};
@@ -81,6 +107,11 @@ class Search {
         }
     }
 
+    /**
+     * Search for entries by term
+     * @param {String} term
+     * @returns {Array.<SearchResult>}
+     */
     searchByTerm(term) {
         this._fuse = new Fuse(this._entries, {
             includeScore: true,
@@ -105,6 +136,11 @@ class Search {
         return this._results;
     }
 
+    /**
+     * Search for entries by URL
+     * @param {String} url
+     * @returns {Array.<SearchResult>}
+     */
     searchByURL(url) {
         const incomingDomain = extractDomain(url);
         if (!incomingDomain) {
