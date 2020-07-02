@@ -87,6 +87,15 @@ describe("Search", function() {
             });
         });
 
+        describe("searchByTerm", function() {
+            it("finds results by term", function() {
+                const results = this.search.searchByTerm("work").map(res => res.properties.title);
+                expect(results[0]).to.equal("Work");
+                expect(results[1]).to.equal("Work logs");
+                expect(results[2]).to.equal("Wordpress");
+            });
+        });
+
         describe("searchByURL", function() {
             it("finds results by URL", function() {
                 const results = this.search.searchByURL("https://wordpress.com/homepage/test/org");

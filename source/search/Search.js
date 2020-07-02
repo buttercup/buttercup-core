@@ -83,11 +83,11 @@ class Search {
 
     searchByTerm(term) {
         this._fuse = new Fuse(this._entries, {
-            includeScore: false,
+            includeScore: true,
             keys: [
                 {
                     name: "properties.title",
-                    weight: 0.65
+                    weight: 0.6
                 },
                 {
                     name: "properties.username",
@@ -95,12 +95,14 @@ class Search {
                 },
                 {
                     name: "urls",
-                    weight: 0.1
+                    weight: 0.15
                 }
             ],
-            shouldSort: true
+            shouldSort: true,
+            threshold: 0.5
         });
-        const result = this._fuse.search(term);
+        this._results = this._fuse.search(term).map(result => result.item);
+        return this._results;
     }
 
     searchByURL(url) {
