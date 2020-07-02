@@ -1,7 +1,6 @@
 const Search = require("../../../dist/search/Search.js");
 const Vault = require("../../../dist/core/Vault.js");
 const MemoryStorageInterface = require("../../../dist/storage/MemoryStorageInterface.js");
-const { expect } = require("chai");
 
 describe("Search", function() {
     beforeEach(function() {
