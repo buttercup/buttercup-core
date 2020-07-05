@@ -1,5 +1,12 @@
 # Core library changelog
 
+## v4.7.1
+_2020-07-05_
+
+ * **Bugfix**:
+   * `VaultSource` wouldn't emit updates for all changes
+   * Fuse.js import in `Search` wouldn't work in web environment
+
 ## v4.7.0
 _2020-07-02_
 
