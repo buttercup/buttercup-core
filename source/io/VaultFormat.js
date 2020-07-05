@@ -105,8 +105,36 @@ class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
+    getAllEntries() {
+        notImplemented();
+    }
+
+    getAllGroups() {
+        notImplemented();
+    }
+
+    getEntryAttributes() {
+        notImplemented();
+    }
+
+    getEntryProperties() {
+        notImplemented();
+    }
+
     getFormat() {
         return VaultFormat;
+    }
+
+    getGroupAttributes() {
+        notImplemented();
+    }
+
+    getItemID() {
+        notImplemented();
+    }
+
+    getVaultID() {
+        notImplemented();
     }
 
     initialise() {

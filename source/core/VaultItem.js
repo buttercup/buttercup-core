@@ -29,7 +29,7 @@ class VaultItem {
      * @memberof VaultItem
      */
     get id() {
-        return this._source.id;
+        return this._vault.format.getItemID(this._source);
     }
 
     /**

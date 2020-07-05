@@ -168,7 +168,7 @@ class Group extends VaultItem {
      * @memberof Group
      */
     getAttribute(attribute) {
-        const attributes = this._source.attributes || {};
+        const attributes = this.vault.format.getGroupAttributes(this._source) || {};
         if (typeof attribute === "undefined") {
             return Object.assign({}, attributes);
         }
@@ -181,7 +181,7 @@ class Group extends VaultItem {
      * @memberof Group
      */
     getEntries() {
-        return (this._source.entries || []).map(rawEntry => new Entry(this.vault, rawEntry));
+        // return (this._source.entries || []).map(rawEntry => new Entry(this.vault, rawEntry));
     }
 
     /**

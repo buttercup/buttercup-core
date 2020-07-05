@@ -103,8 +103,32 @@ class VaultFormatB extends VaultFormat {
         this.source.id = generateUUID();
     }
 
+    getAllGroups() {
+        return this.source.g;
+    }
+
+    getEntryAttributes(entrySource) {
+        return entrySource.a;
+    }
+
+    getEntryProperties(entrySource) {
+        return entrySource.p;
+    }
+
     getFormat() {
         return VaultFormatB;
+    }
+
+    getGroupAttributes(groupSource) {
+        return groupSource.a;
+    }
+
+    getItemID(itemSource) {
+        return itemSource.id;
+    }
+
+    getVaultID() {
+        return this.source.id;
     }
 
     initialise() {

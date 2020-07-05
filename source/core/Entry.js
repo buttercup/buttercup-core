@@ -112,7 +112,7 @@ class Entry extends VaultItem {
      * @memberof Entry
      */
     getAttribute(attribute) {
-        const attributes = this._source.attributes || {};
+        const attributes = this.vault.format.getEntryAttributes(this._source) || {};
         if (typeof attribute === "undefined") {
             // No property, return entire object
             return Object.assign({}, attributes);
@@ -124,6 +124,7 @@ class Entry extends VaultItem {
      * Get an array of all history changes made to the entry
      * @returns {Array.<EntryHistoryItem>}
      * @memberof Entry
+     * @deprecated
      */
     getChanges() {
         return this._source.history || [];
@@ -136,7 +137,7 @@ class Entry extends VaultItem {
      * @throws {Error} Throws if no parent group found
      */
     getGroup() {
-        const parentInfo = findGroupContainingEntryID(this.vault.format.source.groups || [], this.id);
+        const parentInfo = findGroupContainingEntryID(this.vault.format.getAllGroups() || [], this.id);
         if (!parentInfo || !parentInfo.group) {
             throw new Error(`No parent group found for entry: ${this.id}`);
         }
@@ -155,7 +156,7 @@ class Entry extends VaultItem {
      * @memberof Entry
      */
     getProperty(property) {
-        const raw = this._source.properties;
+        const raw = this.vault.format.getEntryProperties(this._source);
         if (typeof property === "undefined") {
             return Object.assign({}, raw);
         }
@@ -171,10 +172,10 @@ class Entry extends VaultItem {
      * @memberof Entry
      */
     getProperties(propertyExpression) {
+        const raw = this.vault.format.getEntryProperties(this._source);
         if (typeof propertyExpression === "undefined") {
-            return this.getProperty();
+            return Object.assign({}, raw);
         }
-        const raw = this._source.properties;
         const isRexp = propertyExpression instanceof RegExp;
         return Object.keys(raw).reduce((aggr, key) => {
             const matches = isRexp ? propertyExpression.test(key) : propertyExpression === key;

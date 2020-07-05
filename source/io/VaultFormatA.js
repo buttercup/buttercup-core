@@ -248,8 +248,36 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
+    getAllEntries() {
+        return this.source.entries;
+    }
+
+    getAllGroups() {
+        return this.source.groups;
+    }
+
+    getEntryAttributes(entrySource) {
+        return entrySource.attributes;
+    }
+
+    getEntryProperties(entrySource) {
+        return entrySource.properties;
+    }
+
     getFormat() {
         return VaultFormatA;
+    }
+
+    getGroupAttributes(groupSource) {
+        return groupSource.attributes;
+    }
+
+    getItemID(itemSource) {
+        return itemSource.id;
+    }
+
+    getVaultID() {
+        return this.source.id;
     }
 
     initialise() {
