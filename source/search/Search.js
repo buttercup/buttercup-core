@@ -1,4 +1,4 @@
-const Fuse = require("fuse.js");
+const FuseImport = require("fuse.js");
 const levenshtein = require("fast-levenshtein");
 const { createVaultFacade } = require("../facades/vault.js");
 const { fieldsToProperties } = require("../facades/entry.js");
@@ -113,6 +113,10 @@ class Search {
      * @returns {Array.<SearchResult>}
      */
     searchByTerm(term) {
+        let Fuse = FuseImport;
+        if (typeof BUTTERCUP_WEB === "boolean" && BUTTERCUP_WEB === true) {
+            Fuse = FuseImport.default;
+        }
         this._fuse = new Fuse(this._entries, {
             includeScore: true,
             keys: [
