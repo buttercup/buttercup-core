@@ -232,6 +232,7 @@ class VaultSource extends EventEmitter {
         if (datasourceSupportsChange) {
             await this._datasource.changePassword(newMasterCreds, /* preflight: */ false);
         }
+        this.emit("updated");
     }
 
     /**
@@ -355,6 +356,7 @@ class VaultSource extends EventEmitter {
                 throw new VError(err, "Failed locking source");
             }
         });
+        this.emit("updated");
     }
 
     /**
@@ -414,6 +416,7 @@ class VaultSource extends EventEmitter {
             this._vault.format.dirty = false;
             await this._updateInsights();
         }, /* stack */ "saving");
+        this.emit("updated");
     }
 
     supportsAttachments() {
@@ -432,7 +435,7 @@ class VaultSource extends EventEmitter {
         const { masterPassword } = getCredentials(vaultCredentials.id);
         const originalCredentials = this._credentials;
         this._status = VaultSource.STATUS_PENDING;
-        return this._enqueueStateChange(() => {
+        await this._enqueueStateChange(() => {
             let offlineContent = null;
             return this.getOfflineContent()
                 .then(availableOfflineContent => {
@@ -502,6 +505,7 @@ class VaultSource extends EventEmitter {
                     throw new VError(err, "Failed unlocking source");
                 });
         });
+        this.emit("updated");
     }
 
     /**
@@ -522,6 +526,7 @@ class VaultSource extends EventEmitter {
             // .then(() => initialiseShares(this)),
             /* stack */ "updating"
         );
+        this.emit("updated");
     }
 
     /**
@@ -538,6 +543,7 @@ class VaultSource extends EventEmitter {
             this._vault.format.dirty = false;
             await this._updateInsights();
         }, /* stack */ "saving");
+        this.emit("updated");
     }
 
     _applyShares() {
