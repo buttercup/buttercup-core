@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v4.8.1
+_2020-07-06_
+
+ * Emit `sourcesUpdated` event on `VaultManager` when `locked`/`unlocked` events fired
+
 ## v4.8.0
 _2020-07-06_
 
