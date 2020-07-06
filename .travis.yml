@@ -11,11 +11,6 @@ matrix:
       env:
         - NAME="Node 12"
     - language: node_js
-      script: npm run test:node
-      node_js: 10
-      env:
-        - NAME="Node 10"
-    - language: node_js
       node_js: 12
       sudo: required
       dist: trusty

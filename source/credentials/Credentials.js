@@ -199,8 +199,23 @@ class Credentials {
         setCredentials(id, {
             data: obj,
             masterPassword,
-            purposes: Credentials.allPurposes()
+            purposes: Credentials.allPurposes(),
+            open: false
         });
+    }
+
+    /**
+     * Get raw credentials data (only available in specialised environments)
+     * @returns {null|Object}
+     * @memberof Credentials
+     */
+    getData() {
+        const isClosedEnv = getSharedAppEnv().getProperty("env/v1/isClosedEnv")();
+        const payload = getCredentials(this.id);
+        if (isClosedEnv || payload.open === true) {
+            return payload;
+        }
+        return null;
     }
 
     /**
@@ -260,11 +275,10 @@ class Credentials {
      * @protected
      * @returns {null|Object}
      * @memberof Credentials
+     * @deprecated
      */
     _getData() {
-        const isClosedEnv = getSharedAppEnv().getProperty("env/v1/isClosedEnv")();
-        if (!isClosedEnv) return null;
-        return getCredentials(this.id);
+        return this.getData();
     }
 }
 

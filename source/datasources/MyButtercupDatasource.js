@@ -31,6 +31,7 @@ class MyButtercupDatasource extends TextDatasource {
         this._vaultID = vaultID; // The MyButtercup vault identifier
         this._updateID = null;
         this._createNewClient();
+        this.type = "mybuttercup";
         fireInstantiationHandlers("mybuttercup", this);
     }
 

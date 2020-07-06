@@ -10,7 +10,7 @@ const {
     sourceHasOfflineCopy,
     storeSourceOfflineCopy
 } = require("../tools/vaultManagement.js");
-const { credentialsToDatasource } = require("../datasources/register.js");
+const { credentialsToDatasource, prepareDatasourceCredentials } = require("../datasources/register.js");
 const { initialiseShares } = require("../myButtercup/sharing.js");
 const VaultComparator = require("./VaultComparator.js");
 const { generateVaultInsights } = require("../insight/vault.js");
@@ -207,12 +207,14 @@ class VaultSource extends EventEmitter {
                 throw new Error("Old password does not match current unlocked instance value");
             }
             // ..and then update
-            // await this.workspace.mergeFromRemote();
             await this.update();
         }
         // Check datasource is ready
         if (datasourceSupportsChange) {
-            const isReady = await this._datasource.changePassword(newMasterCreds, /* preflight: */ true);
+            const isReady = await this._datasource.changePassword(
+                prepareDatasourceCredentials(newMasterCreds, this._datasource.type),
+                /* preflight: */ true
+            );
             if (!isReady) {
                 throw new Error("Datasource not capable of changing password at this time");
             }
@@ -230,7 +232,10 @@ class VaultSource extends EventEmitter {
         }
         // Change remote if supported
         if (datasourceSupportsChange) {
-            await this._datasource.changePassword(newMasterCreds, /* preflight: */ false);
+            await this._datasource.changePassword(
+                prepareDatasourceCredentials(newMasterCreds, this._datasource.type),
+                /* preflight: */ false
+            );
         }
         this.emit("updated");
     }
@@ -254,35 +259,32 @@ class VaultSource extends EventEmitter {
         return sourceHasOfflineCopy(this._vaultManager._cacheStorage, this.id);
     }
 
-    async dehydrate() {
-        if (this.status === VaultSource.STATUS_PENDING) {
-            throw new VError(`Failed dehydrating source: Source in pending state: ${this.id}`);
-        }
-        const payload = {
-            v: 2,
-            id: this.id,
-            name: this.name,
-            type: this.type,
-            status: VaultSource.STATUS_LOCKED,
-            colour: this.colour,
-            order: this.order,
-            meta: this.meta
-        };
-        return Promise.resolve()
-            .then(() => {
-                if (this.status === VaultSource.STATUS_LOCKED) {
-                    payload.credentials = this._credentials;
-                    return payload;
-                }
-                return this._credentials.toSecureString().then(credentialsStr => {
-                    payload.credentials = credentialsStr;
-                    return payload;
-                });
-            })
-            .then(payload => JSON.stringify(payload))
-            .catch(err => {
-                throw new VError(err, `Failed dehydrating source: ${this.id}`);
-            });
+    /**
+     * Dehydrate the source to a JSON string, ready for storage
+     * @returns {Promise.<String>}
+     * @memberof VaultSource
+     */
+    dehydrate() {
+        return this._enqueueStateChange(async () => {
+            const payload = {
+                v: 2,
+                id: this.id,
+                name: this.name,
+                type: this.type,
+                status: VaultSource.STATUS_LOCKED,
+                colour: this.colour,
+                order: this.order,
+                meta: this.meta
+            };
+            if (this.status === VaultSource.STATUS_PENDING) {
+                throw new VError(`Failed dehydrating source: Source in pending state: ${this.id}`);
+            } else if (this.status === VaultSource.STATUS_LOCKED) {
+                payload.credentials = this._credentials;
+            } else {
+                payload.credentials = await this._credentials.toSecureString();
+            }
+            return JSON.stringify(payload);
+        });
     }
 
     /**
@@ -312,14 +314,17 @@ class VaultSource extends EventEmitter {
             );
         }
         if (typeof this._datasource.localDiffersFromRemote === "function") {
-            return this._datasource.localDiffersFromRemote(this._credentials, this._vault.format.history);
+            return this._datasource.localDiffersFromRemote(
+                prepareDatasourceCredentials(this._credentials, this._datasource.type),
+                this._vault.format.history
+            );
         }
         if (this._datasource.type !== "text") {
             // Only clear if not a TextDatasource
             this._datasource.setContent("");
         }
         return this._datasource
-            .load(this._credentials)
+            .load(prepareDatasourceCredentials(this._credentials, this._datasource.type))
             .then(({ Format, history }) => Vault.createFromHistory(history, Format))
             .then(loadedItem => {
                 const comparator = new VaultComparator(this._vault, loadedItem);
@@ -327,16 +332,21 @@ class VaultSource extends EventEmitter {
             });
     }
 
+    /**
+     * Lock the source
+     * @returns {Promise}
+     * @memberof VaultSource
+     */
     async lock() {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
             throw new VError(`Failed locking source: Source in invalid state (${this.status}): ${this.id}`);
         }
-        this._status = VaultSource.STATUS_PENDING;
-        const currentCredentials = this._credentials;
-        const currentVault = this._vault;
-        const currentDatasource = this._datasource;
-        const currentAttachmentMgr = this._attachmentManager;
         await this._enqueueStateChange(async () => {
+            this._status = VaultSource.STATUS_PENDING;
+            const currentCredentials = this._credentials;
+            const currentVault = this._vault;
+            const currentDatasource = this._datasource;
+            const currentAttachmentMgr = this._attachmentManager;
             try {
                 const credentialsStr = await this._credentials.toSecureString();
                 this._credentials = credentialsStr;
@@ -344,9 +354,7 @@ class VaultSource extends EventEmitter {
                 this._vault = null;
                 this._attachmentManager = null;
                 this._status = VaultSource.STATUS_LOCKED;
-                const dehydratedStr = await this.dehydrate();
                 this.emit("locked");
-                return dehydratedStr;
             } catch (err) {
                 this._credentials = currentCredentials;
                 this._datasource = currentDatasource;
@@ -356,7 +364,6 @@ class VaultSource extends EventEmitter {
                 throw new VError(err, "Failed locking source");
             }
         });
-        this.emit("updated");
     }
 
     /**
@@ -372,7 +379,9 @@ class VaultSource extends EventEmitter {
             // Only clear if not a TextDatasource
             this._datasource.setContent("");
         }
-        const { Format, history } = await this._datasource.load(this._credentials);
+        const { Format, history } = await this._datasource.load(
+            prepareDatasourceCredentials(this._credentials, this._datasource.type)
+        );
         const stagedVault = Vault.createFromHistory(history, Format);
         const comparator = new VaultComparator(this._vault, stagedVault);
         const differences = comparator.calculateDifferences();
@@ -412,7 +421,10 @@ class VaultSource extends EventEmitter {
             if (await this.localDiffersFromRemote()) {
                 await this.mergeFromRemote();
             }
-            await this._datasource.save(this._vault.format.history, this._credentials);
+            await this._datasource.save(
+                this._vault.format.history,
+                prepareDatasourceCredentials(this._credentials, this._datasource.type)
+            );
             this._vault.format.dirty = false;
             await this._updateInsights();
         }, /* stack */ "saving");
@@ -505,7 +517,6 @@ class VaultSource extends EventEmitter {
                     throw new VError(err, "Failed unlocking source");
                 });
         });
-        this.emit("updated");
     }
 
     /**
@@ -539,7 +550,10 @@ class VaultSource extends EventEmitter {
      */
     async write() {
         await this._enqueueStateChange(async () => {
-            await this._datasource.save(this._vault.format.history, this._credentials);
+            await this._datasource.save(
+                this._vault.format.history,
+                prepareDatasourceCredentials(this._credentials, this._datasource.type)
+            );
             this._vault.format.dirty = false;
             await this._updateInsights();
         }, /* stack */ "saving");
