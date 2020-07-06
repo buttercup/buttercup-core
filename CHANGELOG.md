@@ -1,5 +1,12 @@
 # Core library changelog
 
+## v4.8.0
+_2020-07-06_
+
+ * _Open_ credentials support to allow for custom **external** datasources
+ * **Node 10 deprecated**
+ * Reduce `VaultManager` & `VaultSource` update events
+
 ## v4.7.1
 _2020-07-05_
 
