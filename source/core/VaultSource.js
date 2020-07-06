@@ -207,7 +207,6 @@ class VaultSource extends EventEmitter {
                 throw new Error("Old password does not match current unlocked instance value");
             }
             // ..and then update
-            // await this.workspace.mergeFromRemote();
             await this.update();
         }
         // Check datasource is ready
@@ -342,12 +341,12 @@ class VaultSource extends EventEmitter {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
             throw new VError(`Failed locking source: Source in invalid state (${this.status}): ${this.id}`);
         }
-        this._status = VaultSource.STATUS_PENDING;
-        const currentCredentials = this._credentials;
-        const currentVault = this._vault;
-        const currentDatasource = this._datasource;
-        const currentAttachmentMgr = this._attachmentManager;
         await this._enqueueStateChange(async () => {
+            this._status = VaultSource.STATUS_PENDING;
+            const currentCredentials = this._credentials;
+            const currentVault = this._vault;
+            const currentDatasource = this._datasource;
+            const currentAttachmentMgr = this._attachmentManager;
             try {
                 const credentialsStr = await this._credentials.toSecureString();
                 this._credentials = credentialsStr;
@@ -355,9 +354,7 @@ class VaultSource extends EventEmitter {
                 this._vault = null;
                 this._attachmentManager = null;
                 this._status = VaultSource.STATUS_LOCKED;
-                const dehydratedStr = await this.dehydrate();
                 this.emit("locked");
-                return dehydratedStr;
             } catch (err) {
                 this._credentials = currentCredentials;
                 this._datasource = currentDatasource;
@@ -367,7 +364,6 @@ class VaultSource extends EventEmitter {
                 throw new VError(err, "Failed locking source");
             }
         });
-        this.emit("updated");
     }
 
     /**
@@ -521,7 +517,6 @@ class VaultSource extends EventEmitter {
                     throw new VError(err, "Failed unlocking source");
                 });
         });
-        this.emit("updated");
     }
 
     /**

@@ -7,8 +7,16 @@ const Credentials = require("../../dist/credentials/Credentials.js");
 class FakeDatasource extends MemoryDatasource {
     constructor(creds) {
         super(creds);
-        this.type = "fake";
-        this.extractedData = creds.getData();
+        // this.type = "fake";
+        this.initData = creds.getData();
+        try {
+            this.type = this.initData.data.datasource.type;
+        } catch (err) {}
+    }
+
+    load(creds) {
+        this.loadData = creds.getData();
+        return super.load(creds);
     }
 }
 
@@ -51,12 +59,19 @@ describe("VaultSource with custom datasource", function() {
 
     it("provides open credentials on unlock", function() {
         const { _datasource: datasource } = this.vaultSourceOpen;
-        expect(datasource.extractedData).to.have.property("masterPassword", "test");
-        expect(datasource.extractedData).to.have.property("open", true);
+        expect(datasource.initData).to.have.property("masterPassword", "test");
+        expect(datasource.initData).to.have.property("open", true);
+    });
+
+    it("provides open credentials on load", async function() {
+        await this.vaultSourceOpen.localDiffersFromRemote();
+        const { _datasource: datasource } = this.vaultSourceOpen;
+        expect(datasource.loadData).to.have.property("masterPassword", "test");
+        expect(datasource.loadData).to.have.property("open", true);
     });
 
     it("provides closed credentials by default", function() {
         const { _datasource: datasource } = this.vaultSourceDefault;
-        expect(datasource.extractedData).to.be.null;
+        expect(datasource.initData).to.be.null;
     });
 });
