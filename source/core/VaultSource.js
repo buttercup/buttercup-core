@@ -237,6 +237,7 @@ class VaultSource extends EventEmitter {
                 /* preflight: */ false
             );
         }
+        this.emit("passwordChanged");
         this.emit("updated");
     }
 

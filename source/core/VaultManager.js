@@ -104,6 +104,8 @@ class VaultManager extends EventEmitter {
             // Attach event listeners
             source.on("updated", () => this.dehydrateSource(source));
             source.on("updated", () => this.emit("sourcesUpdated"));
+            source.on("locked", () => this.emit("sourcesUpdated"));
+            source.on("unlocked", () => this.emit("sourcesUpdated"));
             const dehydratedString = await source.dehydrate();
             await this._storeDehydratedSource(source.id, dehydratedString);
             this.emit("sourcesUpdated");
