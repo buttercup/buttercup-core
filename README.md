@@ -10,7 +10,7 @@
 
 A NodeJS secrets vault.
 
-[![Buttercup](https://cdn.rawgit.com/buttercup-pw/buttercup-assets/6582a033/badge/buttercup-slim.svg)](https://buttercup.pw) [![npm](https://img.shields.io/npm/dt/buttercup.svg)](https://www.npmjs.com/package/buttercup) [![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) ![node min version](https://img.shields.io/badge/node-%3E%3D%2010.x-lightgrey.svg) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC%2FGCM-red.svg)](https://tools.ietf.org/html/rfc3602)
+[![Buttercup](https://cdn.rawgit.com/buttercup-pw/buttercup-assets/6582a033/badge/buttercup-slim.svg)](https://buttercup.pw) [![npm](https://img.shields.io/npm/dt/buttercup.svg)](https://www.npmjs.com/package/buttercup) [![npm version](https://badge.fury.io/js/buttercup.svg)](https://badge.fury.io/js/buttercup) ![node min version](https://img.shields.io/badge/node-%3E%3D%2012.x-lightgrey.svg) [![security](https://img.shields.io/badge/Security-As%20you%20wish-green.svg)](https://www.npmjs.com/package/buttercup) [![encryption](https://img.shields.io/badge/Encryption-AES%20256%20CBC%2FGCM-red.svg)](https://tools.ietf.org/html/rfc3602)
 
 [![Build Status](https://travis-ci.org/buttercup/buttercup-core.svg?branch=master)](https://travis-ci.org/buttercup/buttercup-core)
 
@@ -56,7 +56,7 @@ To use Buttercup in a NodeJS environment, you can simply install and require it:
 npm install buttercup --save
 ```
 
-_NB: `@buttercup/app-env` was previously required (on version 3.x), but is not required for version 4. Please uninstall this dependency, along with `@buttercup/facades`, `@buttercup/credentials`, `@buttercup/datasources` and `@buttercup/signing` if you have them installed. These dependencies are included within Buttercup core version 4._
+_NB: `@buttercup/app-env` was previously required (on version 3.x), but is not required for core version 4. Please uninstall this dependency, along with `@buttercup/facades`, `@buttercup/credentials`, `@buttercup/datasources` and `@buttercup/signing` if you have them installed. These dependencies are included within Buttercup core version 4._
 
 In a Node environment, for example:
 
@@ -69,6 +69,8 @@ In a _web_ environment, use the following:
 ```javascript
 import { Vault } from "buttercup/web";
 ```
+
+_Buttercup core supports Node version 12 and up. Most features may work on Node 10, but it is not officially supported._
 
 ## Usage
 
