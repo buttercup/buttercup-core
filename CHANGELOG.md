@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v4.9.0
+_2020-07-07_
+
+ * No results from trash when using `Search`
+ * `createVaultFacade` option for preventing groups and entries from trash being returned
+
 ## v4.8.2
 _2020-07-07_
 
