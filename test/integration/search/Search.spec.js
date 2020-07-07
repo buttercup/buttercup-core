@@ -1,5 +1,6 @@
 const Search = require("../../../dist/search/Search.js");
 const Vault = require("../../../dist/core/Vault.js");
+const Group = require("../../../dist/core/Group.js");
 const MemoryStorageInterface = require("../../../dist/storage/MemoryStorageInterface.js");
 
 describe("Search", function() {
@@ -42,6 +43,13 @@ describe("Search", function() {
             .setProperty("password", "passw0rd")
             .setProperty("Url", "https://wordpress.com/")
             .setProperty("Login URL", "https://wordpress.com/account/login.php");
+        const trashGroup = vault.createGroup("Trash");
+        trashGroup
+            .createEntry("Ebay")
+            .setProperty("username", "gmk123@hotmail.com")
+            .setProperty("password", "passw0rd")
+            .setProperty("Url", "https://ebay.com/");
+        trashGroup.setAttribute(Group.Attribute.Role, "trash");
     });
 
     it("can be instantiated", function() {
@@ -93,6 +101,11 @@ describe("Search", function() {
                 expect(results[1]).to.equal("Work logs");
                 expect(results[2]).to.equal("Wordpress");
             });
+
+            it("excludes trash entries", function() {
+                const results = this.search.searchByTerm("ebay");
+                expect(results).to.have.lengthOf(0);
+            });
         });
 
         describe("searchByURL", function() {
@@ -100,6 +113,11 @@ describe("Search", function() {
                 const results = this.search.searchByURL("https://wordpress.com/homepage/test/org");
                 expect(results).to.have.length.above(0);
                 expect(results[0]).to.have.nested.property("properties.title", "Wordpress");
+            });
+
+            it("excludes trash entries", function() {
+                const results = this.search.searchByURL("ebay.com");
+                expect(results).to.have.lengthOf(0);
             });
 
             it("finds multiple similar results", function() {

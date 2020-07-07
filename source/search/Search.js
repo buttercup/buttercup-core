@@ -90,7 +90,9 @@ class Search {
                 } catch (err) {}
             }
             // Get entries
-            const { entries } = createVaultFacade(vault);
+            const { entries } = createVaultFacade(vault, {
+                includeTrash: false
+            });
             this._entries.push(
                 ...entries.map(entry => {
                     const properties = fieldsToProperties(entry.fields);
