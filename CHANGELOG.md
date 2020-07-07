@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v4.8.2
+_2020-07-07_
+
+ * `Group.createNew` group ID parameter
+
 ## v4.8.1
 _2020-07-06_
 
