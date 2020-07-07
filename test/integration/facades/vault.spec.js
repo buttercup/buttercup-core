@@ -155,4 +155,51 @@ describe("vault", function() {
             });
         });
     });
+
+    describe("createVaultFacade", function() {
+        beforeEach(function() {
+            const trash = this.vault.createGroup("Trash");
+            trash.createGroup("Trash sub");
+            this.trashEntry = trash.createEntry("Trash entry");
+            trash.setAttribute(Group.Attribute.Role, "trash");
+        });
+
+        it("outputs expected groups", function() {
+            const facade = createVaultFacade(this.vault);
+            const groupNames = facade.groups.map(group => group.title);
+            expect(groupNames).to.contain("top");
+            expect(groupNames).to.contain("two");
+            expect(groupNames).to.contain("Trash");
+            expect(groupNames).to.contain("Trash sub");
+        });
+
+        it("does not output trash group when configured", function() {
+            const facade = createVaultFacade(this.vault, {
+                includeTrash: false
+            });
+            const groupNames = facade.groups.map(group => group.title);
+            expect(groupNames).to.contain("top");
+            expect(groupNames).to.contain("two");
+            expect(groupNames).to.not.contain("Trash");
+            expect(groupNames).to.not.contain("Trash sub");
+        });
+
+        it("outputs expected entries", function() {
+            const facade = createVaultFacade(this.vault);
+            const entryIDs = facade.entries.map(entry => entry.id);
+            expect(entryIDs).to.include(this.entryA.id);
+            expect(entryIDs).to.include(this.entryB.id);
+            expect(entryIDs).to.include(this.trashEntry.id);
+        });
+
+        it("does not output entries in trash when configured", function() {
+            const facade = createVaultFacade(this.vault, {
+                includeTrash: false
+            });
+            const entryIDs = facade.entries.map(entry => entry.id);
+            expect(entryIDs).to.include(this.entryA.id);
+            expect(entryIDs).to.include(this.entryB.id);
+            expect(entryIDs).to.not.include(this.trashEntry.id);
+        });
+    });
 });

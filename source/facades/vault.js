@@ -241,15 +241,16 @@ function consumeVaultFacade(vault, facade, options = {}) {
  * @returns {VaultFacade} A vault facade
  * @memberof module:Buttercup
  */
-function createVaultFacade(vault) {
+function createVaultFacade(vault, options = {}) {
+    const { includeTrash = true } = options;
     return {
         _tag: uuid(),
         _ver: FACADE_VERSION,
         type: "vault",
         id: vault.id,
         attributes: vault.getAttribute(),
-        groups: getGroupsFacades(vault),
-        entries: getEntriesFacades(vault)
+        groups: getGroupsFacades(vault, undefined, { includeTrash }),
+        entries: getEntriesFacades(vault, { includeTrash })
     };
 }
 
@@ -281,40 +282,65 @@ function createGroupFacade(group, parentID = "0") {
 }
 
 /**
+ * @typedef {Object} GetGroupEntriesFacadesOptions
+ * @property {Boolean=} includeTrash Whether or not to include
+ *  the trash group in the output. Defaults to true.
+ */
+
+/**
  * Get all entry facades for a vault
  * @param {Vault} vault A vault instance
+ * @param {GetGroupEntriesFacadesOptions=} options Options for
+ *  getting entry facades
  * @returns {Array.<EntryFacade>} An array of entry facades
  */
-function getEntriesFacades(vault) {
-    return vault.getGroups().reduce((output, group) => [...output, ...getGroupEntriesFacades(group)], []);
+function getEntriesFacades(vault, options = {}) {
+    return vault.getGroups().reduce((output, group) => [...output, ...getGroupEntriesFacades(group, options)], []);
 }
 
 /**
  * Convert an array of entries into an array of facades
  * @param {Array.<Entry>} entryCollection An array of entries
- * @param {String} groupID The parent group ID
+ * @param {GetGroupEntriesFacadesOptions=} options Options for
+ *  getting entry facades
  * @returns {Array.<EntryFacade>} An array of entry facades
  */
-function getGroupEntriesFacades(entryCollection, groupID) {
-    const facades = entryCollection.getEntries().map(entry => Object.assign({}, createEntryFacade(entry)));
+function getGroupEntriesFacades(entryCollection, options = {}) {
+    const { includeTrash = true } = options;
+    const facades = entryCollection.getEntries().reduce((facades, entry) => {
+        if (includeTrash === false && entry.isInTrash()) {
+            return facades;
+        }
+        return [...facades, Object.assign({}, createEntryFacade(entry))];
+    }, []);
     entryCollection.getGroups().forEach(group => {
-        facades.push(...getGroupEntriesFacades(group, group.id));
+        facades.push(...getGroupEntriesFacades(group, options));
     });
     return facades;
 }
 
 /**
+ * @typedef {Object} GetGroupsFacadesOptions
+ * @property {Boolean=} includeTrash Whether or not to include
+ *  the trash group in the output. Defaults to true.
+ */
+
+/**
  * Convert an array of groups into an array of facades
  * @param {Array.<Group>} groupCollection An array of groups
  * @param {String=} parentID The parent group ID (defaults to root)
+ * @param {GetGroupsFacadesOptions=} options Options for getting
+ *  group facades
  * @returns {Array.<GroupFacade>} An array of group facades
  */
-function getGroupsFacades(groupCollection, parentID = "0") {
-    const facades = groupCollection.getGroups().map(group => createGroupFacade(group, parentID));
-    groupCollection.getGroups().forEach(group => {
-        facades.push(...getGroupsFacades(group, group.id));
-    });
-    return facades;
+function getGroupsFacades(groupCollection, parentID = "0", options = {}) {
+    const { includeTrash = true } = options;
+    return groupCollection.getGroups().reduce((facades, group) => {
+        if (includeTrash === false && (group.isTrash() || group.isInTrash())) {
+            return facades;
+        }
+        return [...facades, createGroupFacade(group, parentID), ...getGroupsFacades(group, group.id, options)];
+    }, []);
 }
 
 module.exports = {
