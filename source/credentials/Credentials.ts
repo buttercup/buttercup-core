@@ -1,18 +1,16 @@
-const { generateUUID } = require("../tools/uuid.js");
-const { credentialsAllowsPurpose, getCredentials, removeCredentials, setCredentials } = require("./channel.js");
-const { getSharedAppEnv } = require("../env/appEnv.js");
+import { generateUUID } from "../tools/uuid";
+import { credentialsAllowsPurpose, getCredentials, setCredentials } from "./channel";
+import { getSharedAppEnv } from "../env/appEnv";
 
 /**
  * The signature of legacy encrypted credentials
  * @private
- * @type {String}
  */
 const LEGACY_SIGNING_KEY = "b~>buttercup/acreds.v2.";
 
 /**
  * The signature of encrypted credentials
  * @private
- * @type {String}
  */
 const SIGNING_KEY = "bc~3>";
 
@@ -20,22 +18,22 @@ const SIGNING_KEY = "bc~3>";
  * Sign encrypted content
  * @see SIGNING_KEY
  * @private
- * @param {String} content The encrypted text
- * @returns {String} The signed key
+ * @param content The encrypted text
+ * @returns The signed key
  */
-function signEncryptedContent(content) {
+function signEncryptedContent(content: string): string {
     return `${SIGNING_KEY}${content}`;
 }
 
 /**
  * Remove the signature from encrypted content
  * @private
- * @param {String} content The encrypted text
- * @returns {String} The unsigned encrypted key
+ * @param content The encrypted text
+ * @returns The unsigned encrypted key
  * @throws {Error} Throws if no SIGNING_KEY is detected
  * @see SIGNING_KEY
  */
-function unsignEncryptedContent(content) {
+function unsignEncryptedContent(content: string): string {
     const newIndex = content.indexOf(SIGNING_KEY);
     const oldIndex = content.indexOf(LEGACY_SIGNING_KEY);
     if (newIndex === -1 && oldIndex === -1) {
@@ -53,7 +51,7 @@ function unsignEncryptedContent(content) {
  * and are inaccessible to public functions.
  * @memberof module:Buttercup
  */
-class Credentials {
+export default class Credentials {
     static PURPOSE_ATTACHMENTS = "attachments";
     static PURPOSE_DECRYPT_VAULT = "vault-decrypt";
     static PURPOSE_ENCRYPT_VAULT = "vault-encrypt";
@@ -61,7 +59,6 @@ class Credentials {
 
     /**
      * Get all available purposes
-     * @returns {Array.<String>}
      * @memberof Credentials
      * @static
      */
@@ -77,17 +74,16 @@ class Credentials {
     /**
      * Create a new Credentials instance using an existing Credentials
      * instance - This can be used to reset a credentials's purposes.
-     * @param {Credentials} credentials A credentials instance
-     * @param {String} masterPassword The master password used to
+     * @param credentials A credentials instance
+     * @param masterPassword The master password used to
      *  encrypt the instance being cloned
-     * @returns {Credentials}
      * @memberof Credentials
      * @static
      * @throws {Error} Throws if no master password provided
      * @throws {Error} Throws if master password does not match
      *  original
      */
-    static fromCredentials(credentials, masterPassword) {
+    static fromCredentials(credentials: Credentials, masterPassword: string): Credentials {
         if (!masterPassword) {
             throw new Error("Master password is required for credentials cloning");
         }
@@ -101,16 +97,15 @@ class Credentials {
 
     /**
      * Create a new Credentials instance from a Datasource configuration
-     * @param {Object} datasourceConfig The configuration for the
+     * @param datasourceConfig The configuration for the
      *  datasource - this usually includes the credential data used for
      *  authenticating against the datasource host platform.
-     * @param {String|null=} masterPassword Optional master password to
+     * @param masterPassword Optional master password to
      *  store alongside the credentials. Used to create secure strings.
-     * @returns {Credentials}
      * @memberof Credentials
      * @static
      */
-    static fromDatasource(datasourceConfig, masterPassword = null) {
+    static fromDatasource(datasourceConfig: Object, masterPassword: string = null): Credentials {
         return new Credentials(
             {
                 datasource: datasourceConfig
@@ -125,32 +120,31 @@ class Credentials {
      * alongside the original password if no master password is
      * provided. The master password is used when generating secure
      * strings.
-     * @param {String} password The password to store
-     * @param {String|null=} masterPassword Optional master password
+     * @param password The password to store
+     * @param masterPassword Optional master password
      *  to store alongside the credentials. Used to create secure
      *  strings.
-     * @returns {Credentials}
      * @memberof Credentials
      * @static
      */
-    static fromPassword(password, masterPassword = null) {
+    static fromPassword(password: string, masterPassword: string = null): Credentials {
         const masterPass = masterPassword || password;
         return new Credentials({ password }, masterPass);
     }
 
     /**
      * Create a new instance from a secure string
-     * @param {String} content Encrypted content
-     * @param {String} masterPassword The password for decryption
-     * @returns {Promise.<Credentials>} A promise that resolves with the new instance
+     * @param content Encrypted content
+     * @param masterPassword The password for decryption
+     * @returns A promise that resolves with the new instance
      * @static
      * @memberof Credentials
      */
-    static fromSecureString(content, masterPassword) {
+    static fromSecureString(content: string, masterPassword: string): Promise<Credentials> {
         const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
         return decrypt(unsignEncryptedContent(content), masterPassword)
-            .then(decryptedContent => JSON.parse(decryptedContent))
-            .then(credentialsData => {
+            .then((decryptedContent: string) => JSON.parse(decryptedContent))
+            .then((credentialsData: any) => {
                 // Handle compatibility updates for legacy credentials
                 if (credentialsData.datasource) {
                     if (typeof credentialsData.datasource === "string") {
@@ -173,22 +167,23 @@ class Credentials {
 
     /**
      * Check if a value is an instance of Credentials
-     * @param {*} inst The value to check
-     * @returns {Boolean}
+     * @param inst The value to check
      * @statuc
      * @memberof Credentials
      */
-    static isCredentials(inst) {
+    static isCredentials(inst: Credentials | any): boolean {
         return !!inst && typeof inst === "object" && typeof inst.toSecureString === "function" && !!inst.id;
     }
 
+    id: string;
+
     /**
      * Create a new Credentials instance
-     * @param {Object=} obj Object data representing some credentials
-     * @param {String|null=} masterPassword Optional master password to store with
+     * @param obj Object data representing some credentials
+     * @param masterPassword Optional master password to store with
      *  the credentials data, which is used for generating secure strings.
      */
-    constructor(obj = {}, masterPassword = null) {
+    constructor(obj: Object = {}, masterPassword: string = null) {
         const id = generateUUID();
         Object.defineProperty(this, "id", {
             writable: false,
@@ -206,10 +201,9 @@ class Credentials {
 
     /**
      * Get raw credentials data (only available in specialised environments)
-     * @returns {null|Object}
      * @memberof Credentials
      */
-    getData() {
+    getData(): Object | null {
         const isClosedEnv = getSharedAppEnv().getProperty("env/v1/isClosedEnv")();
         const payload = getCredentials(this.id);
         if (isClosedEnv || payload.open === true) {
@@ -222,10 +216,10 @@ class Credentials {
      * Restrict the purposes that this set of credentials
      * can be used for. Once a purpose is removed it can
      * no longer be added again to the same instance.
-     * @param {Array.<String>} allowedPurposes An array of
+     * @param allowedPurposes An array of
      *  new allowed purposes. If a purpose mentioned is
      *  not currently permitted, it will be ignored.
-     * @returns {Credentials} Returns self
+     * @returns Returns self
      * @memberof Credentials
      * @example
      *  credentials.restrictPurposes(
@@ -235,7 +229,7 @@ class Credentials {
      *  // encrypted string, and not used for things
      *  // like encrypting datasource changes.
      */
-    restrictPurposes(allowedPurposes) {
+    restrictPurposes(allowedPurposes: Array<string>): this {
         const creds = getCredentials(this.id);
         const { purposes } = creds;
         // Filter out purposes which have already been restricted
@@ -251,12 +245,12 @@ class Credentials {
 
     /**
      * Convert the credentials to an encrypted string, for storage
-     * @returns {Promise.<String>} A promise that resolves with the encrypted credentials
+     * @returns A promise that resolves with the encrypted credentials
      * @throws {Error} Rejects when masterPassword is not a string
      * @throws {Error} Rejects if credentials don't permit secure export purposes
      * @memberof Credentials
      */
-    toSecureString() {
+    toSecureString(): Promise<string> {
         if (credentialsAllowsPurpose(this.id, Credentials.PURPOSE_SECURE_EXPORT) !== true) {
             return Promise.reject(new Error("Credential purposes don't allow for secure exports"));
         }
@@ -273,7 +267,6 @@ class Credentials {
     /**
      * Get raw credentials data (only available in specialised environments)
      * @protected
-     * @returns {null|Object}
      * @memberof Credentials
      * @deprecated
      */
@@ -281,5 +274,3 @@ class Credentials {
         return this.getData();
     }
 }
-
-module.exports = Credentials;

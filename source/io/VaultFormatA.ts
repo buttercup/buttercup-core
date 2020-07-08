@@ -1,6 +1,9 @@
-const VError = require("verror");
-const VaultFormat = require("./VaultFormat.js");
-const {
+import VError from "verror";
+import VaultFormat from "./VaultFormat";
+import Credentials from "../credentials/Credentials";
+import Entry from "../core/Entry";
+import Group from "../core/Group";
+import {
     executeArchiveID,
     executeComment,
     executeCreateEntry,
@@ -20,20 +23,28 @@ const {
     executeSetEntryProperty,
     executeSetGroupAttribute,
     executeTitleGroup
-} = require("./formatA/commands.js");
-const {
+} from "./formatA/commands";
+import {
     COMMAND_MANIFEST,
-    InigoCommand: Inigo,
+    InigoCommand as Inigo,
     extractCommandComponents,
     stripDestructiveCommands
-} = require("./formatA/tools.js");
-const Flattener = require("./formatA/Flattener.js");
-const { getFormat, hasValidSignature, sign, stripSignature, vaultContentsEncrypted } = require("./formatA/signing.js");
-const { describeVaultDataset } = require("./formatA/describe.js");
-const { getSharedAppEnv } = require("../env/appEnv.js");
-const { decodeStringValue, isEncoded } = require("../tools/encoding.js");
-const { generateUUID } = require("../tools/uuid.js");
-const { getCredentials } = require("../credentials/channel.js");
+} from "./formatA/tools";
+import Flattener from "./formatA/Flattener";
+import { getFormat, hasValidSignature, sign, stripSignature, vaultContentsEncrypted } from "./formatA/signing";
+import { describeVaultDataset } from "./formatA/describe";
+import { getSharedAppEnv } from "../env/appEnv";
+import { decodeStringValue, isEncoded } from "../tools/encoding";
+import { generateUUID } from "../tools/uuid";
+import { getCredentials } from "../credentials/channel";
+import {
+    EntryID,
+    FormatAEntry,
+    FormatAGroup,
+    FormatAVault,
+    GroupID,
+    VaultID
+} from "../types";
 
 const COMMANDS = {
     aid: executeArchiveID,
@@ -64,26 +75,26 @@ const VALID_COMMAND_EXP = /^[a-z]{3}\s.+$/;
 
 /**
  * Convert array of history lines to a string
- * @param {Array.<String>} historyArray An array of history items
- * @returns {String} The string representation
+ * @param historyArray An array of history items
+ * @returns The string representation
  * @private
  */
-function historyArrayToString(historyArray) {
+function historyArrayToString(historyArray: Array<string>): string {
     return historyArray.join("\n");
 }
 
 /**
  * Convert a history string to an array
- * @param {String} historyString The history string
- * @returns {Array.<String>} An array of history items
+ * @param historyString The history string
+ * @returns An array of history items
  * @private
  */
-function historyStringToArray(historyString) {
+function historyStringToArray(historyString: string): Array<string> {
     return historyString.split("\n");
 }
 
-class VaultFormatA extends VaultFormat {
-    static encodeRaw(rawContent, credentials) {
+export default class VaultFormatA extends VaultFormat {
+    static encodeRaw(rawContent: Array<string>, credentials: Credentials): Promise<string> {
         const compress = getSharedAppEnv().getProperty("compression/v1/compressText");
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
         const { masterPassword } = getCredentials(credentials.id);
@@ -102,7 +113,7 @@ class VaultFormatA extends VaultFormat {
      *  Each share detected is set on the object under its share ID - being
      *  set to an array of history lines (non-prefixed) for that share.
      */
-    static extractSharesFromHistory(history) {
+    static extractSharesFromHistory(history: Array<string>): Object {
         return history.reduce(
             (output, line) => {
                 if (SHARE_COMMAND_EXP.test(line)) {
@@ -119,11 +130,11 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    static isEncrypted(contents) {
+    static isEncrypted(contents: string): boolean {
         return vaultContentsEncrypted(contents);
     }
 
-    static parseEncrypted(encryptedContent, credentials) {
+    static parseEncrypted(encryptedContent: string, credentials: Credentials): Promise<Array<string>> {
         const decompress = getSharedAppEnv().getProperty("compression/v1/decompressText");
         const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
         const { masterPassword } = getCredentials(credentials.id);
@@ -146,18 +157,18 @@ class VaultFormatA extends VaultFormat {
             });
     }
 
-    static prepareHistoryForMerge(history) {
+    static prepareHistoryForMerge(history: Array<string>): Array<string> {
         return stripDestructiveCommands(history);
     }
 
-    cloneEntry(entry, targetGroupID) {}
+    cloneEntry(entry: Entry, targetGroupID: GroupID) {}
 
-    cloneGroup(group, targetGroupID) {
+    cloneGroup(group: Group, targetGroupID: GroupID) {
         const groupDesc = describeVaultDataset(group._source, targetGroupID);
         this.execute(groupDesc);
     }
 
-    createEntry(groupID, entryID) {
+    createEntry(groupID: GroupID, entryID: EntryID) {
         this.execute(
             Inigo.create(Inigo.Command.CreateEntry)
                 .addArgument(groupID)
@@ -166,7 +177,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    createGroup(parentID, groupID) {
+    createGroup(parentID: GroupID, groupID: GroupID) {
         this.execute(
             Inigo.create(Inigo.Command.CreateGroup)
                 .addArgument(parentID)
@@ -175,7 +186,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    deleteEntry(entryID) {
+    deleteEntry(entryID: EntryID) {
         this.execute(
             Inigo.create(Inigo.Command.DeleteEntry)
                 .addArgument(entryID)
@@ -183,7 +194,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    deleteEntryAttribute(entryID, attribute) {
+    deleteEntryAttribute(entryID: EntryID, attribute: string) {
         this.execute(
             Inigo.create(Inigo.Command.DeleteEntryAttribute)
                 .addArgument(entryID)
@@ -192,7 +203,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    deleteEntryProperty(entryID, property) {
+    deleteEntryProperty(entryID: EntryID, property: string) {
         this.execute(
             Inigo.create(Inigo.Command.DeleteEntryProperty)
                 .addArgument(entryID)
@@ -201,7 +212,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    deleteGroup(groupID) {
+    deleteGroup(groupID: GroupID) {
         this.execute(
             Inigo.create(Inigo.Command.DeleteGroup)
                 .addArgument(groupID)
@@ -209,7 +220,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    deleteGroupAttribute(groupID, attribute) {
+    deleteGroupAttribute(groupID: GroupID, attribute: string) {
         this.execute(
             Inigo.create(Inigo.Command.DeleteGroupAttribute)
                 .addArgument(groupID)
@@ -218,7 +229,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    deleteVaultAttribute(attribute) {
+    deleteVaultAttribute(attribute: string) {
         this.execute(
             Inigo.create(Inigo.Command.DeleteArchiveAttribute)
                 .addArgument(attribute)
@@ -226,7 +237,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    execute(commandOrCommands) {
+    execute(commandOrCommands: string | Array<string>) {
         if (this.readOnly) {
             throw new Error("Format is in read-only mode");
         }
@@ -256,27 +267,27 @@ class VaultFormatA extends VaultFormat {
         return this.source.groups;
     }
 
-    getEntryAttributes(entrySource) {
+    getEntryAttributes(entrySource: FormatAEntry) {
         return entrySource.attributes;
     }
 
-    getEntryProperties(entrySource) {
+    getEntryProperties(entrySource: FormatAEntry) {
         return entrySource.properties;
     }
 
-    getFormat() {
+    getFormat(): any {
         return VaultFormatA;
     }
 
-    getGroupAttributes(groupSource) {
+    getGroupAttributes(groupSource: FormatAGroup): Object {
         return groupSource.attributes;
     }
 
-    getItemID(itemSource) {
+    getItemID(itemSource: FormatAGroup | FormatAEntry): GroupID | EntryID {
         return itemSource.id;
     }
 
-    getVaultID() {
+    getVaultID(): VaultID {
         return this.source.id;
     }
 
@@ -289,7 +300,7 @@ class VaultFormatA extends VaultFormat {
         this.generateID();
     }
 
-    moveEntry(entryID, groupID) {
+    moveEntry(entryID: EntryID, groupID: GroupID) {
         this.execute(
             Inigo.create(Inigo.Command.MoveEntry)
                 .addArgument(entryID)
@@ -298,7 +309,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    moveGroup(groupID, newParentID) {
+    moveGroup(groupID: GroupID, newParentID: GroupID) {
         this.execute(
             Inigo.create(Inigo.Command.MoveGroup)
                 .addArgument(groupID)
@@ -314,7 +325,7 @@ class VaultFormatA extends VaultFormat {
         }
     }
 
-    setEntryAttribute(entryID, attribute, value) {
+    setEntryAttribute(entryID: EntryID, attribute: string, value: string) {
         this.execute(
             Inigo.create(Inigo.Command.SetEntryAttribute)
                 .addArgument(entryID)
@@ -324,7 +335,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    setEntryProperty(entryID, property, value) {
+    setEntryProperty(entryID: EntryID, property: string, value: string) {
         this.execute(
             Inigo.create(Inigo.Command.SetEntryProperty)
                 .addArgument(entryID)
@@ -334,7 +345,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    setGroupAttribute(groupID, attribute, value) {
+    setGroupAttribute(groupID: GroupID, attribute: string, value: string) {
         this.execute(
             Inigo.create(Inigo.Command.SetGroupAttribute)
                 .addArgument(groupID)
@@ -344,7 +355,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    setGroupTitle(groupID, title) {
+    setGroupTitle(groupID: GroupID, title: string) {
         this.execute(
             Inigo.create(Inigo.Command.SetGroupTitle)
                 .addArgument(groupID)
@@ -353,7 +364,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    setVaultAttribute(key, value) {
+    setVaultAttribute(key: string, value: string) {
         this.execute(
             Inigo.create(Inigo.Command.SetArchiveAttribute)
                 .addArgument(key)
@@ -362,7 +373,7 @@ class VaultFormatA extends VaultFormat {
         );
     }
 
-    _executeCommand(command) {
+    _executeCommand(command: string) {
         let currentCommand = command,
             shareID = null;
         if (SHARE_COMMAND_EXP.test(currentCommand)) {
@@ -379,13 +390,10 @@ class VaultFormatA extends VaultFormat {
         try {
             executeCommand.apply(null, [
                 this.source,
-                Object.assign(
-                    {
-                        // opts
-                        shareID
-                    },
-                    this.executionOptions
-                ),
+                {
+                    // opts
+                    shareID
+                },
                 ...this._processCommandParameters(commandKey, commandComponents)
             ]);
             this.history.push(command);
@@ -398,7 +406,7 @@ class VaultFormatA extends VaultFormat {
         this._executeCommand(Inigo.generatePaddingCommand());
     }
 
-    _processCommandParameters(commandKey, parameters) {
+    _processCommandParameters(commandKey: string, parameters: Array<string>) {
         const friendlyCommand = Object.keys(COMMAND_MANIFEST).find(manifestKey => {
             return COMMAND_MANIFEST[manifestKey].s === commandKey;
         });
@@ -416,5 +424,3 @@ class VaultFormatA extends VaultFormat {
         });
     }
 }
-
-module.exports = VaultFormatA;

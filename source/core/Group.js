@@ -180,7 +180,7 @@ class Group extends VaultItem {
      * @memberof Group
      */
     getEntries() {
-        // return (this._source.entries || []).map(rawEntry => new Entry(this.vault, rawEntry));
+        return (this._source.entries || []).map(rawEntry => new Entry(this.vault, rawEntry));
     }
 
     /**

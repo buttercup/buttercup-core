@@ -1,15 +1,15 @@
-const { describeVaultDataset } = require("./describe.js");
-const VaultFormatA = require("../VaultFormatA.js");
+import { describeVaultDataset } from "./describe";
+import VaultFormatA from "../VaultFormatA";
 
 /**
  * Check if a command should be preserved (not flattened)
- * @param {String} command The command to check
- * @returns {Boolean} True if the command is to be kept
+ * @param command The command to check
+ * @returns True if the command is to be kept
  * @private
  * @static
  * @memberof Flattener
  */
-function mustBePreserved(command) {
+function mustBePreserved(command: string): boolean {
     const commandName = command.substr(0, 3);
     // Note: "fmt" and "aid" are generated automatically and do not need to be preserved
     return ["cmm"].indexOf(commandName) >= 0;
@@ -18,46 +18,46 @@ function mustBePreserved(command) {
 /**
  * Flattener class for flattening archive history sets
  */
-class Flattener {
+export default class Flattener {
     /**
      * Minimum history lines before flattening can occur
-     * @type {Number}
      * @static
      * @memberof Flattener
      */
     static FLATTENING_MIN_LINES = 6000;
     /**
      * Number of lines to preserve (most recent)
-     * @type {Number}
      * @static
      * @memberof Flattener
      */
     static PRESERVE_LINES = 5000;
 
-    constructor(format) {
+    format: VaultFormatA;
+
+    constructor(format: VaultFormatA) {
         this.format = format;
     }
 
     /**
      * Check if the dataset can be flattened
-     * @returns {Boolean} True if it can be flattened
+     * @returns True if it can be flattened
      * @memberof Flattener
      */
-    canBeFlattened() {
-        return this.format.history.length >= FLATTENING_MIN_LINES;
+    canBeFlattened(): boolean {
+        return this.format.history.length >= Flattener.FLATTENING_MIN_LINES;
     }
 
     /**
      * Flatten a dataset
-     * @param {Boolean=} force Force flattening even if it is detected to be unnecessary
-     * @returns {Boolean} True if flattening occurred, false otherwise
+     * @param force Force flattening even if it is detected to be unnecessary
+     * @returns True if flattening occurred, false otherwise
      * @memberof Flattener
      */
-    flatten(force = false) {
+    flatten(force: boolean = false): boolean {
         const history = this.format.history;
         const preservedLines = [];
         const tempFormat = new VaultFormatA();
-        let availableLines = history.length - PRESERVE_LINES;
+        let availableLines = history.length - Flattener.PRESERVE_LINES;
         // check if possible to flatten
         if (availableLines <= 0 || !this.canBeFlattened()) {
             if (!force) {
@@ -75,7 +75,7 @@ class Flattener {
             tempFormat.execute(currentCommand);
         }
         // describe the archive at its current state
-        const cleanHistory = describeVaultDataset(tempFormat.source);
+        const cleanHistory = describeVaultDataset(tempFormat.source, "0");
         // prepare to replay
         const newHistory = [
             ...preservedLines, // preserved commands that cannot be stripped
@@ -90,5 +90,3 @@ class Flattener {
         return true;
     }
 }
-
-module.exports = Flattener;
