@@ -1,6 +1,6 @@
 const EventEmitter = require("events");
 const hash = require("hash.js");
-const Credentials = require("../credentials/Credentials.js");
+const { default: Credentials } = require("../credentials/Credentials.js");
 const { credentialsAllowsPurpose, getCredentials } = require("../credentials/channel.js");
 const { detectFormat, getDefaultFormat } = require("../io/formatRouter.js");
 const { fireInstantiationHandlers, registerDatasource } = require("./register.js");

@@ -1,5 +1,5 @@
-const { getSharedAppEnv } = require("./env/core/singleton.js");
-const { applyNativeConfiguration } = require("./env/native/index.js");
+import { getSharedAppEnv } from "./env/core/singleton";
+import { applyNativeConfiguration } from "./env/native/index";
 
 let __hasInitialised = false;
 
@@ -7,13 +7,11 @@ let __hasInitialised = false;
  * Initialise the node/native environment
  * @memberof module:Buttercup
  */
-function init() {
+export function init() {
     if (__hasInitialised) return;
     __hasInitialised = true;
     const appEnv = getSharedAppEnv();
     applyNativeConfiguration(appEnv);
 }
 
-module.exports = Object.assign({}, require("./index.common.js"), {
-    init
-});
+export * from "./index.common";

@@ -1,9 +1,10 @@
-const { createClient } = require("@buttercup/googledrive-client");
-const VError = require("verror");
-const DatasourceAuthManager = require("./DatasourceAuthManager.js");
-const TextDatasource = require("./TextDatasource.js");
-const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
-const { getCredentials, setCredentials } = require("../credentials/channel.js");
+import { createClient } from "@buttercup/googledrive-client";
+import VError from "verror";
+import DatasourceAuthManager from "./DatasourceAuthManager";
+import TextDatasource from "./TextDatasource";
+import { fireInstantiationHandlers, registerDatasource } from "./register";
+import Credentials from "../credentials/Credentials";
+import { getCredentials } from "../credentials/channel";
 
 const DATASOURCE_TYPE = "googledrive";
 
@@ -12,13 +13,20 @@ const DATASOURCE_TYPE = "googledrive";
  * @augments TextDatasource
  * @memberof module:Buttercup
  */
-class GoogleDriveDatasource extends TextDatasource {
+export default class GoogleDriveDatasource extends TextDatasource {
+    [x: string]: any;
+    authManager: DatasourceAuthManager;
+    client: any;
+    fileID: string;
+    token: string;
+    refreshToken: string;
+
     /**
      * Datasource for Google Drive connections
      * @param {Credentials} credentials The credentials instance with which to
      *  configure the datasource with
      */
-    constructor(credentials) {
+    constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
         const { datasource: datasourceConfig } = credentialData;
@@ -124,5 +132,3 @@ class GoogleDriveDatasource extends TextDatasource {
 }
 
 registerDatasource(DATASOURCE_TYPE, GoogleDriveDatasource);
-
-module.exports = GoogleDriveDatasource;
