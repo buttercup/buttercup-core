@@ -156,6 +156,21 @@ function createEntryFacade(entry, { type } = {}) {
 }
 
 /**
+ * Convert an array of entry facade fields to a
+ * key-value object with only properties
+ * @param {Array.<EntryFacadeField>} facadeFields Array of fields
+ * @returns {Object.<String, String>}
+ * @memberof module:Buttercup
+ */
+function fieldsToProperties(facadeFields) {
+    return facadeFields.reduce((output, field) => {
+        if (field.propertyType !== "property") return output;
+        output[field.property] = field.value;
+        return output;
+    }, {});
+}
+
+/**
  * Get the facade type for an entry
  * @param {Entry} entry The entry instance
  * @returns {String} The facade type
@@ -202,5 +217,6 @@ function setEntryValue(entry, property, name, value, valueType) {
 
 module.exports = {
     consumeEntryFacade,
-    createEntryFacade
+    createEntryFacade,
+    fieldsToProperties
 };

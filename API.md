@@ -17,7 +17,7 @@
 <dt><a href="#Flattener">Flattener</a></dt>
 <dd><p>Flattener class for flattening archive history sets</p>
 </dd>
-<dt><a href="#EntryFinder">EntryFinder</a></dt>
+<dt><del><a href="#EntryFinder">EntryFinder</a></del></dt>
 <dd><p>Entry searching class</p>
 </dd>
 <dt><a href="#LocalStorageInterface">LocalStorageInterface</a> ⇐ <code>StorageInterface</code></dt>
@@ -120,9 +120,6 @@ matching pad ID to create a common link between the 2 histories.</p>
 <dt><a href="#findEntriesByCheck">findEntriesByCheck(groups, compareFn)</a> ⇒ <code>Array.&lt;Entry&gt;</code></dt>
 <dd><p>Find entry instances by filtering with a compare function</p>
 </dd>
-<dt><a href="#flattenEntries">flattenEntries(archives)</a> ⇒ <code><a href="#EntrySearchInfo">Array.&lt;EntrySearchInfo&gt;</a></code></dt>
-<dd><p>Flatten entries into a searchable structure</p>
-</dd>
 <dt><a href="#findGroupsByCheck">findGroupsByCheck(groups, compareFn)</a> ⇒ <code>Array.&lt;Group&gt;</code></dt>
 <dd><p>Find group instances within groups that satisfy some check</p>
 </dd>
@@ -213,6 +210,8 @@ Allows for preferential sorting</p>
 <dt><a href="#EntryFacadeField">EntryFacadeField</a> : <code>Object</code></dt>
 <dd><p>Entry facade data field</p>
 </dd>
+<dt><a href="#ConsumeVaultFacadeOptions">ConsumeVaultFacadeOptions</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#VaultFacade">VaultFacade</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#GroupFacade">GroupFacade</a> : <code>Object</code></dt>
@@ -239,7 +238,7 @@ Allows for preferential sorting</p>
 <dd></dd>
 <dt><a href="#MyButtercupArchiveDetails">MyButtercupArchiveDetails</a> : <code>Object</code></dt>
 <dd></dd>
-<dt><a href="#EntrySearchInfo">EntrySearchInfo</a> : <code>Object</code></dt>
+<dt><a href="#SearchResult">SearchResult</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#FoundGroupResult">FoundGroupResult</a> : <code>Object</code></dt>
 <dd></dd>
@@ -307,9 +306,10 @@ Allows for preferential sorting</p>
         * [.isVaultFacade(obj)](#module_Buttercup.isVaultFacade) ⇒ <code>Boolean</code>
         * [.consumeEntryFacade(entry, facade)](#module_Buttercup.consumeEntryFacade)
         * [.createEntryFacade([entry], [ops])](#module_Buttercup.createEntryFacade) ⇒ [<code>EntryFacade</code>](#EntryFacade)
+        * [.fieldsToProperties(facadeFields)](#module_Buttercup.fieldsToProperties) ⇒ <code>Object.&lt;String, String&gt;</code>
         * [.createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options)](#module_Buttercup.createFieldDescriptor) ⇒ [<code>EntryFacadeField</code>](#EntryFacadeField)
         * [.consumeGroupFacade(group, facade)](#module_Buttercup.consumeGroupFacade)
-        * [.consumeVaultFacade(vault, facade)](#module_Buttercup.consumeVaultFacade)
+        * [.consumeVaultFacade(vault, facade, [options])](#module_Buttercup.consumeVaultFacade)
         * [.createVaultFacade(vault)](#module_Buttercup.createVaultFacade) ⇒ [<code>VaultFacade</code>](#VaultFacade)
         * [.createGroupFacade(group, [parentID])](#module_Buttercup.createGroupFacade)
         * [.init()](#module_Buttercup.init)
@@ -414,12 +414,33 @@ Allows for preferential sorting</p>
             * [.accessToken](#module_Buttercup.MyButtercupClient+accessToken) : <code>String</code>
             * [.digest](#module_Buttercup.MyButtercupClient+digest) : [<code>MyButtercupDigest</code>](#MyButtercupDigest) \| <code>null</code>
             * [.refreshToken](#module_Buttercup.MyButtercupClient+refreshToken) : <code>String</code>
+        * [~Search](#module_Buttercup.Search)
+            * [.results](#module_Buttercup.Search+results) : [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+            * [.incrementScore(vaultID, entryID, url)](#module_Buttercup.Search+incrementScore)
+            * [.prepare()](#module_Buttercup.Search+prepare)
+            * [.searchByTerm(term)](#module_Buttercup.Search+searchByTerm) ⇒ [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+            * [.searchByURL(url)](#module_Buttercup.Search+searchByURL) ⇒ [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
         * [~MemoryStorageInterface](#module_Buttercup.MemoryStorageInterface) ⇐ <code>StorageInterface</code>
             * [new MemoryStorageInterface()](#new_module_Buttercup.MemoryStorageInterface_new)
             * [.getAllKeys()](#StorageInterface+getAllKeys)
             * [.getValue()](#StorageInterface+getValue)
             * [.removeKey()](#StorageInterface+removeKey)
             * [.setValue()](#StorageInterface+setValue)
+        * [~LocalFileDatasource](#module_Buttercup.LocalFileDatasource) ⇐ <code>TextDatasource</code>
+            * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+            * [.getAttachment(vaultID, attachmentID, [credentials])](#TextDatasource+getAttachment) ⇒ <code>Promise.&lt;(Buffer\|ArrayBuffer)&gt;</code>
+            * [.getAttachmentDetails(vaultID, attachmentID)](#TextDatasource+getAttachmentDetails) ⇒ [<code>AttachmentDetails</code>](#AttachmentDetails)
+            * [.getAvailableStorage()](#TextDatasource+getAvailableStorage) ⇒ <code>Number</code> \| <code>null</code>
+            * [.getTotalStorage()](#TextDatasource+getTotalStorage) ⇒ <code>Number</code> \| <code>null</code>
+            * [.getID()](#TextDatasource+getID) ⇒ <code>String</code>
+            * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+            * [.putAttachment(vaultID, attachmentID, buffer, [credentials])](#TextDatasource+putAttachment) ⇒ <code>Promise</code>
+            * [.removeAttachment(vaultID, attachmentID)](#TextDatasource+removeAttachment) ⇒ <code>Promise</code>
+            * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+            * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+            * [.supportsAttachments()](#TextDatasource+supportsAttachments) ⇒ <code>Boolean</code>
+            * [.supportsPasswordChange()](#TextDatasource+supportsPasswordChange) ⇒ <code>Boolean</code>
+            * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
 
 <a name="module_Buttercup.Entry"></a>
 
@@ -986,6 +1007,18 @@ Create a data/input facade for an Entry instance
 | [entry] | <code>Entry</code> | The Entry instance |
 | [ops] | [<code>CreateEntryFacadeOptions</code>](#CreateEntryFacadeOptions) | Options for the entry facade creation |
 
+<a name="module_Buttercup.fieldsToProperties"></a>
+
+### Buttercup.fieldsToProperties(facadeFields) ⇒ <code>Object.&lt;String, String&gt;</code>
+Convert an array of entry facade fields to a
+key-value object with only properties
+
+**Kind**: static method of [<code>Buttercup</code>](#module_Buttercup)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| facadeFields | [<code>Array.&lt;EntryFacadeField&gt;</code>](#EntryFacadeField) | Array of fields |
+
 <a name="module_Buttercup.createFieldDescriptor"></a>
 
 ### Buttercup.createFieldDescriptor(entry, title, entryPropertyType, entryPropertyName, options) ⇒ [<code>EntryFacadeField</code>](#EntryFacadeField)
@@ -1016,7 +1049,7 @@ Consume a group facade and apply the differences to a group instance
 
 <a name="module_Buttercup.consumeVaultFacade"></a>
 
-### Buttercup.consumeVaultFacade(vault, facade)
+### Buttercup.consumeVaultFacade(vault, facade, [options])
 Consume a vault facade and apply the differences to the vault
 instance
 
@@ -1026,6 +1059,7 @@ instance
 | --- | --- | --- |
 | vault | <code>Vault</code> | The vault instance to apply to |
 | facade | [<code>VaultFacade</code>](#VaultFacade) | The facade to apply |
+| [options] | [<code>ConsumeVaultFacadeOptions</code>](#ConsumeVaultFacadeOptions) | Options for the consumption |
 
 <a name="module_Buttercup.createVaultFacade"></a>
 
@@ -2217,6 +2251,68 @@ The refresh token
 
 **Kind**: instance property of [<code>MyButtercupClient</code>](#module_Buttercup.MyButtercupClient)  
 **Read only**: true  
+<a name="module_Buttercup.Search"></a>
+
+### Buttercup~Search
+Search class for searching entries
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+
+* [~Search](#module_Buttercup.Search)
+    * [.results](#module_Buttercup.Search+results) : [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+    * [.incrementScore(vaultID, entryID, url)](#module_Buttercup.Search+incrementScore)
+    * [.prepare()](#module_Buttercup.Search+prepare)
+    * [.searchByTerm(term)](#module_Buttercup.Search+searchByTerm) ⇒ [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+    * [.searchByURL(url)](#module_Buttercup.Search+searchByURL) ⇒ [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+
+<a name="module_Buttercup.Search+results"></a>
+
+#### search.results : [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+Last search results
+
+**Kind**: instance property of [<code>Search</code>](#module_Buttercup.Search)  
+<a name="module_Buttercup.Search+incrementScore"></a>
+
+#### search.incrementScore(vaultID, entryID, url)
+Increment the score of a URL in an entry
+
+**Kind**: instance method of [<code>Search</code>](#module_Buttercup.Search)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| vaultID | <code>String</code> | The vault ID |
+| entryID | <code>String</code> | The entry ID |
+| url | <code>String</code> | The URL to increment for |
+
+<a name="module_Buttercup.Search+prepare"></a>
+
+#### search.prepare()
+Prepare the search instance by processing
+entries
+
+**Kind**: instance method of [<code>Search</code>](#module_Buttercup.Search)  
+<a name="module_Buttercup.Search+searchByTerm"></a>
+
+#### search.searchByTerm(term) ⇒ [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+Search for entries by term
+
+**Kind**: instance method of [<code>Search</code>](#module_Buttercup.Search)  
+
+| Param | Type |
+| --- | --- |
+| term | <code>String</code> | 
+
+<a name="module_Buttercup.Search+searchByURL"></a>
+
+#### search.searchByURL(url) ⇒ [<code>Array.&lt;SearchResult&gt;</code>](#SearchResult)
+Search for entries by URL
+
+**Kind**: instance method of [<code>Search</code>](#module_Buttercup.Search)  
+
+| Param | Type |
+| --- | --- |
+| url | <code>String</code> | 
+
 <a name="module_Buttercup.MemoryStorageInterface"></a>
 
 ### Buttercup~MemoryStorageInterface ⇐ <code>StorageInterface</code>
@@ -2265,6 +2361,193 @@ Set a value for a key
 
 **Kind**: instance method of [<code>MemoryStorageInterface</code>](#module_Buttercup.MemoryStorageInterface)  
 **Overrides**: [<code>setValue</code>](#StorageInterface+setValue)  
+<a name="module_Buttercup.LocalFileDatasource"></a>
+
+### Buttercup~LocalFileDatasource ⇐ <code>TextDatasource</code>
+Local file datasource, connecting via the desktop
+application proxy from the browser
+
+**Kind**: inner class of [<code>Buttercup</code>](#module_Buttercup)  
+**Extends**: <code>TextDatasource</code>  
+
+* [~LocalFileDatasource](#module_Buttercup.LocalFileDatasource) ⇐ <code>TextDatasource</code>
+    * [.hasContent](#TextDatasource+hasContent) : <code>Boolean</code>
+    * [.getAttachment(vaultID, attachmentID, [credentials])](#TextDatasource+getAttachment) ⇒ <code>Promise.&lt;(Buffer\|ArrayBuffer)&gt;</code>
+    * [.getAttachmentDetails(vaultID, attachmentID)](#TextDatasource+getAttachmentDetails) ⇒ [<code>AttachmentDetails</code>](#AttachmentDetails)
+    * [.getAvailableStorage()](#TextDatasource+getAvailableStorage) ⇒ <code>Number</code> \| <code>null</code>
+    * [.getTotalStorage()](#TextDatasource+getTotalStorage) ⇒ <code>Number</code> \| <code>null</code>
+    * [.getID()](#TextDatasource+getID) ⇒ <code>String</code>
+    * [.load(credentials)](#TextDatasource+load) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+    * [.putAttachment(vaultID, attachmentID, buffer, [credentials])](#TextDatasource+putAttachment) ⇒ <code>Promise</code>
+    * [.removeAttachment(vaultID, attachmentID)](#TextDatasource+removeAttachment) ⇒ <code>Promise</code>
+    * [.save(history, credentials)](#TextDatasource+save) ⇒ <code>Promise.&lt;string&gt;</code>
+    * [.setContent(content)](#TextDatasource+setContent) ⇒ <code>TextDatasource</code>
+    * [.supportsAttachments()](#TextDatasource+supportsAttachments) ⇒ <code>Boolean</code>
+    * [.supportsPasswordChange()](#TextDatasource+supportsPasswordChange) ⇒ <code>Boolean</code>
+    * [.supportsRemoteBypass()](#TextDatasource+supportsRemoteBypass) ⇒ <code>Boolean</code>
+
+<a name="TextDatasource+hasContent"></a>
+
+#### localFileDatasource.hasContent : <code>Boolean</code>
+Whether the datasource currently has content
+Used to check if the datasource has encrypted content that can be
+loaded. May be used when attempting to open a vault in offline mode.
+
+**Kind**: instance property of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>hasContent</code>](#TextDatasource+hasContent)  
+<a name="TextDatasource+getAttachment"></a>
+
+#### localFileDatasource.getAttachment(vaultID, attachmentID, [credentials]) ⇒ <code>Promise.&lt;(Buffer\|ArrayBuffer)&gt;</code>
+Get attachment buffer
+- Downloads the attachment contents into a buffer
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>getAttachment</code>](#TextDatasource+getAttachment)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| vaultID | <code>String</code> |  | The ID of the vault |
+| attachmentID | <code>String</code> |  | The ID of the attachment |
+| [credentials] | <code>Credentials</code> | <code></code> | Credentials to decrypt  the buffer, defaults to null (no decryption) |
+
+<a name="TextDatasource+getAttachmentDetails"></a>
+
+#### localFileDatasource.getAttachmentDetails(vaultID, attachmentID) ⇒ [<code>AttachmentDetails</code>](#AttachmentDetails)
+Get attachment details
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>getAttachmentDetails</code>](#TextDatasource+getAttachmentDetails)  
+**Returns**: [<code>AttachmentDetails</code>](#AttachmentDetails) - The attactment details  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| vaultID | <code>String</code> | The ID of the vault |
+| attachmentID | <code>String</code> | The ID of the attachment |
+
+<a name="TextDatasource+getAvailableStorage"></a>
+
+#### localFileDatasource.getAvailableStorage() ⇒ <code>Number</code> \| <code>null</code>
+Get the available storage space, in bytes
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>getAvailableStorage</code>](#TextDatasource+getAvailableStorage)  
+**Returns**: <code>Number</code> \| <code>null</code> - Bytes of free space, or null if not
+ available  
+<a name="TextDatasource+getTotalStorage"></a>
+
+#### localFileDatasource.getTotalStorage() ⇒ <code>Number</code> \| <code>null</code>
+Get the total storage space, in bytes
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>getTotalStorage</code>](#TextDatasource+getTotalStorage)  
+**Returns**: <code>Number</code> \| <code>null</code> - Bytes of free space, or null if not
+ available  
+<a name="TextDatasource+getID"></a>
+
+#### localFileDatasource.getID() ⇒ <code>String</code>
+Get the ID of the datasource
+ID to uniquely identify the datasource and its parameters
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>getID</code>](#TextDatasource+getID)  
+**Returns**: <code>String</code> - A hasn of the datasource (unique ID)  
+<a name="TextDatasource+load"></a>
+
+#### localFileDatasource.load(credentials) ⇒ [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData)
+Load from the stored content using a password to decrypt
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>load</code>](#TextDatasource+load)  
+**Returns**: [<code>Promise.&lt;LoadedVaultData&gt;</code>](#LoadedVaultData) - A promise that resolves with decrypted history  
+**Throws**:
+
+- <code>Error</code> Rejects if content is empty
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| credentials | <code>Credentials</code> | The password or Credentials instance to decrypt with |
+
+<a name="TextDatasource+putAttachment"></a>
+
+#### localFileDatasource.putAttachment(vaultID, attachmentID, buffer, [credentials]) ⇒ <code>Promise</code>
+Put attachment data
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>putAttachment</code>](#TextDatasource+putAttachment)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| vaultID | <code>String</code> |  | The ID of the vault |
+| attachmentID | <code>String</code> |  | The ID of the attachment |
+| buffer | <code>Buffer</code> \| <code>ArrayBuffer</code> |  | The attachment data |
+| [credentials] | <code>Credentials</code> | <code></code> | Credentials for  encrypting the buffer. If not provided, the buffer  is presumed to be in encrypted-form and will be  written as-is. |
+
+<a name="TextDatasource+removeAttachment"></a>
+
+#### localFileDatasource.removeAttachment(vaultID, attachmentID) ⇒ <code>Promise</code>
+Remove an attachment
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>removeAttachment</code>](#TextDatasource+removeAttachment)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| vaultID | <code>String</code> | The ID of the vault |
+| attachmentID | <code>String</code> | The ID of the attachment |
+
+<a name="TextDatasource+save"></a>
+
+#### localFileDatasource.save(history, credentials) ⇒ <code>Promise.&lt;string&gt;</code>
+Save archive contents with a password
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>save</code>](#TextDatasource+save)  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise resolving with the encrypted content  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| history | <code>Array.&lt;String&gt;</code> | Archive history to save |
+| credentials | <code>Credentials</code> | The Credentials instance to encrypt with |
+
+<a name="TextDatasource+setContent"></a>
+
+#### localFileDatasource.setContent(content) ⇒ <code>TextDatasource</code>
+Set the text content
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>setContent</code>](#TextDatasource+setContent)  
+**Returns**: <code>TextDatasource</code> - Self  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| content | <code>String</code> | The encrypted text content |
+
+<a name="TextDatasource+supportsAttachments"></a>
+
+#### localFileDatasource.supportsAttachments() ⇒ <code>Boolean</code>
+Whether or not the datasource supports attachments
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>supportsAttachments</code>](#TextDatasource+supportsAttachments)  
+<a name="TextDatasource+supportsPasswordChange"></a>
+
+#### localFileDatasource.supportsPasswordChange() ⇒ <code>Boolean</code>
+Whether or not the datasource supports the changing of the master password
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>supportsPasswordChange</code>](#TextDatasource+supportsPasswordChange)  
+**Returns**: <code>Boolean</code> - True if the datasource supports password changing  
+<a name="TextDatasource+supportsRemoteBypass"></a>
+
+#### localFileDatasource.supportsRemoteBypass() ⇒ <code>Boolean</code>
+Whether or not the datasource supports bypassing remote fetch operations
+ (offline support)
+
+**Kind**: instance method of [<code>LocalFileDatasource</code>](#module_Buttercup.LocalFileDatasource)  
+**Overrides**: [<code>supportsRemoteBypass</code>](#TextDatasource+supportsRemoteBypass)  
+**Returns**: <code>Boolean</code> - True if content can be set to bypass fetch operations,
+ false otherwise  
 <a name="VaultComparator"></a>
 
 ## VaultComparator
@@ -2456,56 +2739,12 @@ Number of lines to preserve (most recent)
 **Kind**: static property of [<code>Flattener</code>](#Flattener)  
 <a name="EntryFinder"></a>
 
-## EntryFinder
+## ~~EntryFinder~~
+***Deprecated***
+
 Entry searching class
 
 **Kind**: global class  
-
-* [EntryFinder](#EntryFinder)
-    * [new EntryFinder(target)](#new_EntryFinder_new)
-    * [.items](#EntryFinder+items) : [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-    * [.lastResult](#EntryFinder+lastResult) : [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-    * [.initSearcher()](#EntryFinder+initSearcher)
-    * [.search(term)](#EntryFinder+search) ⇒ [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-
-<a name="new_EntryFinder_new"></a>
-
-### new EntryFinder(target)
-
-| Param | Type | Description |
-| --- | --- | --- |
-| target | <code>Array.&lt;Archive&gt;</code> \| <code>Archive</code> | The archive or archives to search |
-
-<a name="EntryFinder+items"></a>
-
-### entryFinder.items : [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-All items available for searching
-
-**Kind**: instance property of [<code>EntryFinder</code>](#EntryFinder)  
-<a name="EntryFinder+lastResult"></a>
-
-### entryFinder.lastResult : [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-The last result
-
-**Kind**: instance property of [<code>EntryFinder</code>](#EntryFinder)  
-<a name="EntryFinder+initSearcher"></a>
-
-### entryFinder.initSearcher()
-Initialise the searching mechanism
-
-**Kind**: instance method of [<code>EntryFinder</code>](#EntryFinder)  
-<a name="EntryFinder+search"></a>
-
-### entryFinder.search(term) ⇒ [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-Search and get results
-
-**Kind**: instance method of [<code>EntryFinder</code>](#EntryFinder)  
-**Returns**: [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo) - The results  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| term | <code>String</code> | The search term |
-
 <a name="LocalStorageInterface"></a>
 
 ## LocalStorageInterface ⇐ <code>StorageInterface</code>
@@ -2907,18 +3146,6 @@ Find entry instances by filtering with a compare function
 | --- | --- | --- |
 | groups | <code>Array.&lt;Group&gt;</code> | The groups to check in |
 | compareFn | <code>function</code> | The callback comparison function, return true to keep and false  to strip |
-
-<a name="flattenEntries"></a>
-
-## flattenEntries(archives) ⇒ [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo)
-Flatten entries into a searchable structure
-
-**Kind**: global function  
-**Returns**: [<code>Array.&lt;EntrySearchInfo&gt;</code>](#EntrySearchInfo) - An array of searchable objects  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| archives | <code>Array.&lt;Archive&gt;</code> | An array of archives |
 
 <a name="findGroupsByCheck"></a>
 
@@ -3365,6 +3592,16 @@ Entry facade data field
 | formatting | [<code>EntryFacadeFieldFormatting</code>](#EntryFacadeFieldFormatting) \| <code>Boolean</code> | Vendor formatting options object, or false if no formatting necessary |
 | removeable | <code>Boolean</code> | Whether or not the field can be removed or have its key changed |
 
+<a name="ConsumeVaultFacadeOptions"></a>
+
+## ConsumeVaultFacadeOptions : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [mergeMode] | <code>Boolean</code> | Whether or not the facade should be merged  instead of applied (normal operation). Defaults to false. When merging,  all incoming items from the facade are *added*, not updated. |
+
 <a name="VaultFacade"></a>
 
 ## VaultFacade : <code>Object</code>
@@ -3526,16 +3763,18 @@ Entry facade data field
 | created | <code>String</code> | The creation date |
 | lastUpdate | <code>String</code> | The last update date |
 
-<a name="EntrySearchInfo"></a>
+<a name="SearchResult"></a>
 
-## EntrySearchInfo : <code>Object</code>
+## SearchResult : <code>Object</code>
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| entry | <code>Entry</code> | The entry |
-| archive | <code>Archive</code> | The associated archive |
+| id | <code>String</code> | The entry ID |
+| properties | <code>Object.&lt;String, String&gt;</code> | Entry properties |
+| urls | <code>Array.&lt;String&gt;</code> | Entry URLs |
+| vaultID | <code>String</code> | The ID of the containing vault |
 
 <a name="FoundGroupResult"></a>
 

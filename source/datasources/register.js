@@ -1,6 +1,8 @@
 const { getCredentials } = require("../credentials/channel.js");
+const Credentials = require("../credentials/Credentials.js");
 
 const __datasources = {};
+const __datasourceFlags = {};
 const __postHandlers = [];
 
 /**
@@ -28,7 +30,7 @@ function credentialsToDatasource(credentials) {
     if (!DSClass) {
         throw new Error(`No datasource found for type: ${type}`);
     }
-    return new DSClass(credentials);
+    return new DSClass(prepareDatasourceCredentials(credentials));
 }
 
 /**
@@ -48,6 +50,29 @@ function fireInstantiationHandlers(type, datasource) {
 }
 
 /**
+ * Prepare credentials for passing to a datasource
+ * (from VaultSource)
+ * @param {Credentials} credentials
+ * @returns {Credentials|UnwrappedCredentials}
+ * @private
+ */
+function prepareDatasourceCredentials(credentials, typeOverride = null) {
+    const {
+        data: { datasource },
+        masterPassword
+    } = getCredentials(credentials.id);
+    const datasourceType = typeOverride || datasource.type || "";
+    const { open = false } = __datasourceFlags[datasourceType] || {};
+    if (!open) {
+        return credentials;
+    }
+    const newCreds = Credentials.fromCredentials(credentials, masterPassword);
+    const newCredPayload = getCredentials(newCreds.id);
+    newCredPayload.open = true;
+    return newCreds;
+}
+
+/**
  * Register a new datasource
  * This is called internally by the built-in datasources, but should be called if a
  * custom datasource is used.
@@ -55,8 +80,12 @@ function fireInstantiationHandlers(type, datasource) {
  * @param {Object} DSClass The class for the new datasource
  * @memberof module:Buttercup
  */
-function registerDatasource(datasourceType, DSClass) {
+function registerDatasource(datasourceType, DSClass, flags = {}) {
+    if (__datasources[datasourceType]) {
+        throw new Error(`Datasource already registered for type: ${datasourceType}`);
+    }
     __datasources[datasourceType] = DSClass;
+    __datasourceFlags[datasourceType] = flags;
 }
 
 /**
@@ -85,6 +114,7 @@ function registerDatasourcePostProcessor(callback) {
 module.exports = {
     credentialsToDatasource,
     fireInstantiationHandlers,
+    prepareDatasourceCredentials,
     registerDatasource,
     registerDatasourcePostProcessor
 };

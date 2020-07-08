@@ -45,13 +45,21 @@ function consumeGroupFacade(group, facade) {
 }
 
 /**
+ * @typedef {Object} ConsumeVaultFacadeOptions
+ * @property {Boolean=} mergeMode Whether or not the facade should be merged
+ *  instead of applied (normal operation). Defaults to false. When merging,
+ *  all incoming items from the facade are *added*, not updated.
+ */
+
+/**
  * Consume a vault facade and apply the differences to the vault
  * instance
  * @param {Vault} vault The vault instance to apply to
  * @param {VaultFacade} facade The facade to apply
+ * @param {ConsumeVaultFacadeOptions=} options Options for the consumption
  * @memberof module:Buttercup
  */
-function consumeVaultFacade(vault, facade) {
+function consumeVaultFacade(vault, facade, options = {}) {
     if (facade._ver !== FACADE_VERSION) {
         throw new Error("Invalid vault facade version");
     }
@@ -63,11 +71,12 @@ function consumeVaultFacade(vault, facade) {
             `Failed consuming vault facade: Second parameter expected to be a vault facade, got: ${facade.type}`
         );
     }
+    const { mergeMode = false } = options;
     const { id, type, attributes, groups, entries } = facade;
     if (type !== "vault") {
         throw new Error(`Failed consuming vault facade: Invalid facade type: ${type}`);
     }
-    if (id !== vault.id) {
+    if (!mergeMode && id !== vault.id) {
         throw new Error(
             `Failed consuming vault facade: Provided facade ID (${id}) does not match target vault ID: ${vault.id}`
         );
@@ -76,19 +85,21 @@ function consumeVaultFacade(vault, facade) {
     // Create comparison facade
     let { groups: currentGroups, entries: currentEntries, attributes: currentAttributes } = createVaultFacade(vault);
     // Handle group removal
-    currentGroups.forEach(currentGroupFacade => {
-        const existing = groups.find(group => group.id === currentGroupFacade.id);
-        if (!existing) {
-            // Removed, so delete
-            const targetItem = vault.findGroupByID(currentGroupFacade.id);
-            if (targetItem) {
-                // Only attempt deleting if it comes back as a result. It's possible
-                // that if a parent was deleted, the children were also removed and
-                // this call to `findGroupByID` might return nothing..
-                targetItem.delete();
+    if (!mergeMode) {
+        currentGroups.forEach(currentGroupFacade => {
+            const existing = groups.find(group => group.id === currentGroupFacade.id);
+            if (!existing) {
+                // Removed, so delete
+                const targetItem = vault.findGroupByID(currentGroupFacade.id);
+                if (targetItem) {
+                    // Only attempt deleting if it comes back as a result. It's possible
+                    // that if a parent was deleted, the children were also removed and
+                    // this call to `findGroupByID` might return nothing..
+                    targetItem.delete();
+                }
             }
-        }
-    });
+        });
+    }
     // Update facade properties after groups deletion
     currentGroups = getGroupsFacades(vault);
     // Manage other group operations
@@ -97,10 +108,10 @@ function consumeVaultFacade(vault, facade) {
         let originalLength = groupsLeft.length;
         groupsLeft = groupsLeft.filter(groupRaw => {
             const groupFacade = Object.assign({}, groupRaw);
-            const groupIDTargetedNew = idSignifiesNew(groupFacade.id);
+            const groupIDTargetedNew = idSignifiesNew(groupFacade.id, mergeMode);
             if (!groupFacade.id || groupIDTargetedNew) {
                 let targetParentID = groupFacade.parentID;
-                if (idSignifiesNew(targetParentID)) {
+                if (idSignifiesNew(targetParentID, mergeMode)) {
                     if (newIDLookup[targetParentID]) {
                         targetParentID = newIDLookup[targetParentID];
                     } else {
@@ -141,26 +152,28 @@ function consumeVaultFacade(vault, facade) {
         }
     }
     // Handle entry removal
-    currentEntries.forEach(currentEntryFacade => {
-        const existing = entries.find(entry => entry.id === currentEntryFacade.id);
-        if (!existing) {
-            // Removed, so delete
-            const entry = vault.findEntryByID(currentEntryFacade.id);
-            if (entry) {
-                entry.delete();
+    if (!mergeMode) {
+        currentEntries.forEach(currentEntryFacade => {
+            const existing = entries.find(entry => entry.id === currentEntryFacade.id);
+            if (!existing) {
+                // Removed, so delete
+                const entry = vault.findEntryByID(currentEntryFacade.id);
+                if (entry) {
+                    entry.delete();
+                }
             }
-        }
-    });
+        });
+    }
     // Update facade properties after entries deletion
     currentEntries = getEntriesFacades(vault);
     // Manage other entry operations
     let entriesLeft = [...entries];
     entriesLeft = entriesLeft.filter(entryRaw => {
         const entryFacade = Object.assign({}, entryRaw);
-        const entryIDTargetedNew = idSignifiesNew(entryFacade.id);
+        const entryIDTargetedNew = idSignifiesNew(entryFacade.id, mergeMode);
         if (!entryFacade.id || entryIDTargetedNew) {
             let targetGroupID = entryFacade.parentID;
-            if (idSignifiesNew(targetGroupID)) {
+            if (idSignifiesNew(targetGroupID, mergeMode)) {
                 if (newIDLookup[targetGroupID]) {
                     targetGroupID = newIDLookup[targetGroupID];
                 } else {
@@ -228,15 +241,16 @@ function consumeVaultFacade(vault, facade) {
  * @returns {VaultFacade} A vault facade
  * @memberof module:Buttercup
  */
-function createVaultFacade(vault) {
+function createVaultFacade(vault, options = {}) {
+    const { includeTrash = true } = options;
     return {
         _tag: uuid(),
         _ver: FACADE_VERSION,
         type: "vault",
         id: vault.id,
         attributes: vault.getAttribute(),
-        groups: getGroupsFacades(vault),
-        entries: getEntriesFacades(vault)
+        groups: getGroupsFacades(vault, undefined, { includeTrash }),
+        entries: getEntriesFacades(vault, { includeTrash })
     };
 }
 
@@ -268,40 +282,65 @@ function createGroupFacade(group, parentID = "0") {
 }
 
 /**
+ * @typedef {Object} GetGroupEntriesFacadesOptions
+ * @property {Boolean=} includeTrash Whether or not to include
+ *  the trash group in the output. Defaults to true.
+ */
+
+/**
  * Get all entry facades for a vault
  * @param {Vault} vault A vault instance
+ * @param {GetGroupEntriesFacadesOptions=} options Options for
+ *  getting entry facades
  * @returns {Array.<EntryFacade>} An array of entry facades
  */
-function getEntriesFacades(vault) {
-    return vault.getGroups().reduce((output, group) => [...output, ...getGroupEntriesFacades(group)], []);
+function getEntriesFacades(vault, options = {}) {
+    return vault.getGroups().reduce((output, group) => [...output, ...getGroupEntriesFacades(group, options)], []);
 }
 
 /**
  * Convert an array of entries into an array of facades
  * @param {Array.<Entry>} entryCollection An array of entries
- * @param {String} groupID The parent group ID
+ * @param {GetGroupEntriesFacadesOptions=} options Options for
+ *  getting entry facades
  * @returns {Array.<EntryFacade>} An array of entry facades
  */
-function getGroupEntriesFacades(entryCollection, groupID) {
-    const facades = entryCollection.getEntries().map(entry => Object.assign({}, createEntryFacade(entry)));
+function getGroupEntriesFacades(entryCollection, options = {}) {
+    const { includeTrash = true } = options;
+    const facades = entryCollection.getEntries().reduce((facades, entry) => {
+        if (includeTrash === false && entry.isInTrash()) {
+            return facades;
+        }
+        return [...facades, Object.assign({}, createEntryFacade(entry))];
+    }, []);
     entryCollection.getGroups().forEach(group => {
-        facades.push(...getGroupEntriesFacades(group, group.id));
+        facades.push(...getGroupEntriesFacades(group, options));
     });
     return facades;
 }
 
 /**
+ * @typedef {Object} GetGroupsFacadesOptions
+ * @property {Boolean=} includeTrash Whether or not to include
+ *  the trash group in the output. Defaults to true.
+ */
+
+/**
  * Convert an array of groups into an array of facades
  * @param {Array.<Group>} groupCollection An array of groups
  * @param {String=} parentID The parent group ID (defaults to root)
+ * @param {GetGroupsFacadesOptions=} options Options for getting
+ *  group facades
  * @returns {Array.<GroupFacade>} An array of group facades
  */
-function getGroupsFacades(groupCollection, parentID = "0") {
-    const facades = groupCollection.getGroups().map(group => createGroupFacade(group, parentID));
-    groupCollection.getGroups().forEach(group => {
-        facades.push(...getGroupsFacades(group, group.id));
-    });
-    return facades;
+function getGroupsFacades(groupCollection, parentID = "0", options = {}) {
+    const { includeTrash = true } = options;
+    return groupCollection.getGroups().reduce((facades, group) => {
+        if (includeTrash === false && (group.isTrash() || group.isInTrash())) {
+            return facades;
+        }
+        return [...facades, createGroupFacade(group, parentID), ...getGroupsFacades(group, group.id, options)];
+    }, []);
 }
 
 module.exports = {

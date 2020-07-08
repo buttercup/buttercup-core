@@ -102,14 +102,10 @@ class VaultManager extends EventEmitter {
             // Configure the order
             source._order = typeof orderOverride === "number" ? orderOverride : this.getNextOrder();
             // Attach event listeners
-            const handleDetailsChange = event => {
-                this.emit(`source:${event}`);
-                this.emit("sourcesUpdated");
-            };
-            source.on("locked", () => handleDetailsChange("locked"));
-            source.on("unlocked", () => handleDetailsChange("unlocked"));
-            source.on("updated", () => this.dehydrate());
+            source.on("updated", () => this.dehydrateSource(source));
             source.on("updated", () => this.emit("sourcesUpdated"));
+            source.on("locked", () => this.emit("sourcesUpdated"));
+            source.on("unlocked", () => this.emit("sourcesUpdated"));
             const dehydratedString = await source.dehydrate();
             await this._storeDehydratedSource(source.id, dehydratedString);
             this.emit("sourcesUpdated");

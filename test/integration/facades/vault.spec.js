@@ -125,5 +125,81 @@ describe("vault", function() {
                 expect(entry.getProperty("title")).to.equal("Test entry 3");
             });
         });
+
+        describe("in merge mode", function() {
+            beforeEach(function() {
+                const newVault = new Vault();
+                newVault
+                    .createGroup("merged")
+                    .createEntry("merged")
+                    .setProperty("username", "merge")
+                    .setProperty("password", "merge");
+                const newFacade = createVaultFacade(newVault);
+                consumeVaultFacade(this.vault, newFacade, {
+                    mergeMode: true
+                });
+            });
+
+            it("can merge-in new items", function() {
+                const [mergeGroup] = this.vault.findGroupsByTitle("merged");
+                expect(mergeGroup).to.be.an.instanceOf(Group);
+                const [mergeEntry] = this.vault.findEntriesByProperty("title", "merged");
+                expect(mergeEntry).to.be.an.instanceOf(Entry);
+            });
+
+            it("retains existing items", function() {
+                const [existingGroup] = this.vault.findGroupsByTitle("three");
+                expect(existingGroup).to.be.an.instanceOf(Group);
+                const [existingEntry] = this.vault.findEntriesByProperty("title", "Entry A");
+                expect(existingEntry).to.be.an.instanceOf(Entry);
+            });
+        });
+    });
+
+    describe("createVaultFacade", function() {
+        beforeEach(function() {
+            const trash = this.vault.createGroup("Trash");
+            trash.createGroup("Trash sub");
+            this.trashEntry = trash.createEntry("Trash entry");
+            trash.setAttribute(Group.Attribute.Role, "trash");
+        });
+
+        it("outputs expected groups", function() {
+            const facade = createVaultFacade(this.vault);
+            const groupNames = facade.groups.map(group => group.title);
+            expect(groupNames).to.contain("top");
+            expect(groupNames).to.contain("two");
+            expect(groupNames).to.contain("Trash");
+            expect(groupNames).to.contain("Trash sub");
+        });
+
+        it("does not output trash group when configured", function() {
+            const facade = createVaultFacade(this.vault, {
+                includeTrash: false
+            });
+            const groupNames = facade.groups.map(group => group.title);
+            expect(groupNames).to.contain("top");
+            expect(groupNames).to.contain("two");
+            expect(groupNames).to.not.contain("Trash");
+            expect(groupNames).to.not.contain("Trash sub");
+        });
+
+        it("outputs expected entries", function() {
+            const facade = createVaultFacade(this.vault);
+            const entryIDs = facade.entries.map(entry => entry.id);
+            expect(entryIDs).to.include(this.entryA.id);
+            expect(entryIDs).to.include(this.entryB.id);
+            expect(entryIDs).to.include(this.trashEntry.id);
+        });
+
+        it("does not output entries in trash when configured", function() {
+            const facade = createVaultFacade(this.vault, {
+                includeTrash: false
+            });
+            const entryIDs = facade.entries.map(entry => entry.id);
+            expect(entryIDs).to.include(this.entryA.id);
+            expect(entryIDs).to.include(this.entryB.id);
+            expect(entryIDs).to.not.include(this.trashEntry.id);
+        });
     });
 });

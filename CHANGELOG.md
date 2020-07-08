@@ -1,5 +1,50 @@
 # Core library changelog
 
+## v4.9.0
+_2020-07-07_
+
+ * No results from trash when using `Search`
+ * `createVaultFacade` option for preventing groups and entries from trash being returned
+
+## v4.8.2
+_2020-07-07_
+
+ * `Group.createNew` group ID parameter
+
+## v4.8.1
+_2020-07-06_
+
+ * Emit `sourcesUpdated` event on `VaultManager` when `locked`/`unlocked` events fired
+
+## v4.8.0
+_2020-07-06_
+
+ * _Open_ credentials support to allow for custom **external** datasources
+ * **Node 10 deprecated**
+ * Reduce `VaultManager` & `VaultSource` update events
+
+## v4.7.1
+_2020-07-05_
+
+ * **Bugfix**:
+   * `VaultSource` wouldn't emit updates for all changes
+   * Fuse.js import in `Search` wouldn't work in web environment
+
+## v4.7.0
+_2020-07-02_
+
+ * `Search` class for searching vaults
+ * `EntryFinder` deprecated and disabled
+ * `fieldsToProperties` for converting entry facade fields to a properties key-value object
+ * Merge mode for consuming vault facades
+ * **Bugfix**:
+   * `VaultSource#changeMasterPassword` threw when getting datasource support for changing passwords
+
+## v4.6.0
+_2020-06-30_
+
+ * `LocalFileDatasource` for web clients (from browser extension)
+
 ## v4.5.1
 _2020-06-28_
 

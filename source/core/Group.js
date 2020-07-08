@@ -26,7 +26,7 @@ class Group extends VaultItem {
      * @memberof Group
      * @static
      */
-    static createNew(vault, parentID = "0") {
+    static createNew(vault, parentID = "0", id = generateUUID()) {
         if (parentID !== "0") {
             // check if group is trash/in-trash
             const group = vault.findGroupByID(parentID);
@@ -36,7 +36,6 @@ class Group extends VaultItem {
                 throw new Error("Failed creating group: cannot create within Trash group");
             }
         }
-        const id = generateUUID();
         vault.format.createGroup(parentID, id);
         return vault.findGroupByID(id);
     }
