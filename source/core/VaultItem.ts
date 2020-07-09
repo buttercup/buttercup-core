@@ -1,22 +1,24 @@
-const { PERM_MANAGE, PERM_READ, PERM_WRITE } = require("../tools/permissions.js");
+import Vault from "./Vault";
+import { PERM_MANAGE, PERM_READ, PERM_WRITE } from "../tools/permissions";
 
 /**
  * Base vault member class (for Entry, Group etc.)
  */
-class VaultItem {
+export default class VaultItem {
+    _source: any;
     /**
      * Reference to the containing vault
      * @protected
      * @memberof VaultItem
      */
-    _vault = null;
+    _vault: Vault = null;
 
     /**
      * Constructor for the vault member base class
      * @param {Vault} vault Vault reference
      * @param {Object} source Remote source object reference
      */
-    constructor(vault, source) {
+    constructor(vault: Vault, source: any) {
         this._vault = vault;
         this._source = source;
         this._source.permissions = this._source.permissions || [PERM_MANAGE, PERM_READ, PERM_WRITE];
@@ -25,38 +27,35 @@ class VaultItem {
     /**
      * The ID of the entry or group
      * @readonly
-     * @type {String}
      * @memberof VaultItem
      */
-    get id() {
+    get id(): string {
         return this._vault.format.getItemID(this._source);
     }
 
     /**
      * The current granted permissions
-     * @type {Array.<String>}
      * @memberof VaultItem
      */
-    get permissions() {
+    get permissions(): Array<string> {
         return [...this._source.permissions];
     }
 
     /**
      * The vault this item belongs to
      * @readonly
-     * @type {Vault}
      * @memberof VaultItem
      */
-    get vault() {
+    get vault(): Vault {
         return this._vault;
     }
 
     /**
      * Grant a new permission to the member
-     * @param {String} perm The permission to grant
+     * @param perm The permission to grant
      * @memberof VaultItem
      */
-    grantPermission(perm) {
+    grantPermission(perm: string) {
         if (!this.hasPermission(perm)) {
             this._source.permissions.push(perm);
         }
@@ -64,11 +63,10 @@ class VaultItem {
 
     /**
      * Check if the member has a permission
-     * @param {String} perm The permission to check for
-     * @returns {Boolean}
+     * @param perm The permission to check for
      * @memberof VaultItem
      */
-    hasPermission(perm) {
+    hasPermission(perm: string): boolean {
         return this._source.permissions.includes(perm);
     }
 
@@ -82,10 +80,10 @@ class VaultItem {
 
     /**
      * Revoke a single permission
-     * @param {String} perm The permission to revoke
+     * @param perm The permission to revoke
      * @memberof VaultItem
      */
-    revokePermission(perm) {
+    revokePermission(perm: string) {
         this._source.permissions = this._source.permissions.filter(current => current !== perm);
     }
 
@@ -99,5 +97,3 @@ class VaultItem {
         this._source = null;
     }
 }
-
-module.exports = VaultItem;

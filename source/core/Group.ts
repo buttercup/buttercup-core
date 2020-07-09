@@ -1,17 +1,19 @@
-const VaultItem = require("./VaultItem.js");
-const Entry = require("./Entry.js");
-const { generateUUID } = require("../tools/uuid.js");
-const { moveGroupBetweenVaults } = require("../tools/sharing.js");
-const { findGroupByID, findGroupsByTitle } = require("../search/groups.js");
-const { findEntriesByProperty, findEntryByID } = require("../search/entries.js");
-const { findGroupContainingGroupID } = require("../tools/rawVaultSearch.js");
+import VaultItem from "./VaultItem";
+import Entry from "./Entry";
+import Vault from "./Vault";
+import { generateUUID } from "../tools/uuid";
+import { moveGroupBetweenVaults } from "../tools/sharing";
+import { findGroupByID, findGroupsByTitle } from "../search/groups";
+import { findEntriesByProperty, findEntryByID } from "../search/entries";
+import { findGroupContainingGroupID } from "../tools/rawVaultSearch";
+import { EntryID, GroupID } from "../types";
 
 /**
  * Group class - contains Entrys
  * @augments VaultItem
  * @memberof module:Buttercup
  */
-class Group extends VaultItem {
+export default class Group extends VaultItem {
     static Attribute = Object.freeze({
         Role: "bc_group_role"
     });
@@ -19,14 +21,14 @@ class Group extends VaultItem {
     /**
      * Create a new Group instance within a vault and maybe a group
      * @param {Vault} vault The vault to add the group to
-     * @param {String=} parentID Optional parent group ID. If no
+     * @param parentID Optional parent group ID. If no
      *  value is specified the group is added to the root of the
      *  vault.
-     * @returns {Group}
+     * @returns
      * @memberof Group
      * @static
      */
-    static createNew(vault, parentID = "0", id = generateUUID()) {
+    static createNew(vault: Vault, parentID: GroupID = "0", id: GroupID = generateUUID()): Group {
         if (parentID !== "0") {
             // check if group is trash/in-trash
             const group = vault.findGroupByID(parentID);
@@ -41,22 +43,12 @@ class Group extends VaultItem {
     }
 
     /**
-     * The type of the instance
-     * @type {String}
-     * @readonly
-     * @memberof Group
-     */
-    get type() {
-        return "Group";
-    }
-
-    /**
      * Create a new entry with a title
-     * @param {String=} title The title of the new entry
-     * @returns {Entry} The new entry
+     * @param title The title of the new entry
+     * @returns The new entry
      * @memberof Group
      */
-    createEntry(title) {
+    createEntry(title: string): Entry {
         const entry = Entry.createNew(this.vault, this.id);
         if (title) {
             entry.setProperty("title", title);
@@ -66,11 +58,11 @@ class Group extends VaultItem {
 
     /**
      * Create a child group
-     * @param {string=} title Optionally set a title
-     * @returns {Group} The new child group
+     * @param title Optionally set a title
+     * @returns The new child group
      * @memberof Group
      */
-    createGroup(title) {
+    createGroup(title?: string): Group {
         const group = Group.createNew(this.vault, this.id);
         if (title) {
             group.setTitle(title);
@@ -82,11 +74,11 @@ class Group extends VaultItem {
      * Delete the group
      * If there is a trash group available, the group is moved there. If the group
      * is already in the trash, it is deleted permanently.
-     * @param {Boolean=} skipTrash Skip the trash
-     * @returns {Boolean} True when deleted, false when moved to trash
+     * @param skipTrash Skip the trash
+     * @returns True when deleted, false when moved to trash
      * @memberof Group
      */
-    delete(skipTrash = false) {
+    delete(skipTrash: boolean = false): boolean {
         if (this.isTrash()) {
             throw new Error("Trash group cannot be deleted");
         }
@@ -106,67 +98,67 @@ class Group extends VaultItem {
 
     /**
      * Delete an attribute
-     * @param {String} attr The name of the attribute
-     * @returns {Group} Returns self
+     * @param attr The name of the attribute
+     * @returns Returns self
      * @memberof Group
      */
-    deleteAttribute(attr) {
+    deleteAttribute(attr: string): this {
         this.vault.format.deleteGroupAttribute(this.id, attr);
         return this;
     }
 
     /**
      * Find an entry by its ID
-     * @param {String} id The ID to search for
-     * @returns {null|Entry} Null if not found, or the Entry instance
+     * @param id The ID to search for
+     * @returns Null if not found, or the Entry instance
      * @memberof Group
      */
-    findEntryByID(id) {
+    findEntryByID(id: EntryID): Entry | null {
         return findEntryByID([this], id);
     }
 
     /**
      * Find all entries that match a certain property
      * @name findEntriesByProperty
-     * @param {RegExp|String} property The property to search with
-     * @param {RegExp|String} value The value to search for
-     * @returns {Array.<Entry>} An array of found extries
+     * @param property The property to search with
+     * @param value The value to search for
+     * @returns An array of found extries
      * @memberof Group
      */
-    findEntriesByProperty(property, value) {
+    findEntriesByProperty(property: RegExp | string, value: RegExp | string): Array<Entry> {
         return findEntriesByProperty([this], property, value);
     }
 
     /**
      * Find a group by its ID
-     * @param {String} id The group ID to search for
-     * @returns {Group|null} The group or null if not found
+     * @param id The group ID to search for
+     * @returns The group or null if not found
      * @memberof Group
      */
-    findGroupByID(id) {
+    findGroupByID(id: GroupID): Group | null {
         return findGroupByID([this], id);
     }
 
     /**
      * Find groups by their title
      * @name findGroupsByTitle
-     * @param {String|RegExp} title The group title
-     * @returns {Array.<Group>} An array of groups
+     * @param title The group title
+     * @returns An array of groups
      * @memberof Group
      */
-    findGroupsByTitle(title) {
+    findGroupsByTitle(title: RegExp | string): Array<Group> {
         return findGroupsByTitle([this], title);
     }
 
     /**
      * Get an attribute
-     * @param {String=} attribute The name of the attribute. If none provided
+     * @param attribute The name of the attribute. If none provided
      *  the entire attributes object is returned.
-     * @returns {String|undefined|Object} Returns the attribute or undefined if not found.
+     * @returns Returns the attribute or undefined if not found.
      *  If no attribute name is provided an object containing all attributes is returned.
      * @memberof Group
      */
-    getAttribute(attribute) {
+    getAttribute(attribute?: string): Object | string | undefined {
         const attributes = this.vault.format.getGroupAttributes(this._source) || {};
         if (typeof attribute === "undefined") {
             return Object.assign({}, attributes);
@@ -176,30 +168,30 @@ class Group extends VaultItem {
 
     /**
      * Get the entries within the group
-     * @returns {Array.<Entry>} An array of entries
+     * @returns An array of entries
      * @memberof Group
      */
-    getEntries() {
+    getEntries(): Array<Entry> {
         return (this._source.entries || []).map(rawEntry => new Entry(this.vault, rawEntry));
     }
 
     /**
      * Get the groups within the group
-     * @returns {Array.<Group>} An array of child groups
+     * @returns An array of child groups
      * @memberof Group
      */
-    getGroups() {
+    getGroups(): Array<Group> {
         return (this._source.groups || []).map(raw => new Group(this.vault, raw));
     }
 
     /**
      * Get the parent group
-     * @returns {Group|null} Returns the parent group instance or null if the parent
+     * @returns Returns the parent group instance or null if the parent
      *  is the archive
      * @throws {Error} Throws if no parent could be found (detached)
      * @memberof Group
      */
-    getParentGroup() {
+    getParentGroup(): Group | null {
         const topmostGroupIDs = this.vault.getGroups().map(group => group.id);
         if (topmostGroupIDs.indexOf(this.id) >= 0) {
             // parent is vault
@@ -214,19 +206,19 @@ class Group extends VaultItem {
 
     /**
      * Get the group title
-     * @returns {String} The title of the group
+     * @returns The title of the group
      * @memberof Group
      */
-    getTitle() {
+    getTitle(): string {
         return this._source.title || "";
     }
 
     /**
      * Check if the group is in the trash
-     * @returns {Boolean} Whether or not the group is within the trash group
+     * @returns Whether or not the group is within the trash group
      * @memberof Group
      */
-    isInTrash() {
+    isInTrash(): boolean {
         const trash = this.vault.getTrashGroup();
         if (trash) {
             const thisGroup = trash.findGroupByID(this.id);
@@ -237,20 +229,20 @@ class Group extends VaultItem {
 
     /**
      * Check if the group is used for trash
-     * @returns {Boolean} Whether or not the group is the trash group
+     * @returns Whether or not the group is the trash group
      * @memberof Group
      */
-    isTrash() {
+    isTrash(): boolean {
         return this.getAttribute(Group.Attribute.Role) === "trash";
     }
 
     /**
      * Move the group to another group or archive
-     * @param {Group|Vault} target The destination Group or Vault instance
-     * @returns {Group} Self
+     * @param target The destination Group or Vault instance
+     * @returns Self
      * @memberof Group
      */
-    moveTo(target) {
+    moveTo(target: Group | Vault) {
         if (this.isTrash()) {
             throw new Error("Trash group cannot be moved");
         }
@@ -286,7 +278,7 @@ class Group extends VaultItem {
      * Set an attribute
      * @param {string} attribute The name of the attribute
      * @param {string} value The value to set
-     * @returns {Group} Returns self
+     * @returns Returns self
      * @memberof Group
      */
     setAttribute(attribute, value) {
@@ -296,13 +288,11 @@ class Group extends VaultItem {
 
     /**
      * Set the group title
-     * @param {String} title The title of the group
-     * @returns {Group} Returns self
+     * @param title The title of the group
+     * @returns Returns self
      */
     setTitle(title) {
         this.vault.format.setGroupTitle(this.id, title);
         return this;
     }
 }
-
-module.exports = Group;

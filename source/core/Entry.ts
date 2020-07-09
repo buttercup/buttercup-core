@@ -1,7 +1,10 @@
-const VaultItem = require("./VaultItem.js");
-const { generateUUID } = require("../tools/uuid.js");
-const { getEntryURLs } = require("../tools/entry.js");
-const { findEntryByID, findGroupContainingEntryID } = require("../tools/rawVaultSearch.js");
+import VaultItem from "./VaultItem";
+import { generateUUID } from "../tools/uuid";
+import { getEntryURLs } from "../tools/entry";
+import { findGroupContainingEntryID } from "../tools/rawVaultSearch";
+import Group from "./Group";
+import Vault from "./Vault";
+import { EntryType, GroupID, History } from "../types";
 
 /**
  * Entry class - some secret item, login or perhaps
@@ -9,7 +12,7 @@ const { findEntryByID, findGroupContainingEntryID } = require("../tools/rawVault
  * @augments VaultItem
  * @memberof module:Buttercup
  */
-class Entry extends VaultItem {
+export default class Entry extends VaultItem {
     static Attributes = Object.freeze({
         AttachmentPrefix: "BC_ENTRY_ATTACHMENT:",
         FacadeType: "BC_ENTRY_FACADE_TYPE",
@@ -19,14 +22,13 @@ class Entry extends VaultItem {
     /**
      * Create a new Entry instance within a vault
      *  and group
-     * @param {Vault} vault The target vault instance
-     * @param {String} parentGroupID The target group to
+     * @param vault The target vault instance
+     * @param parentGroupID The target group to
      *  create the entry in (cannot be vault-level)
-     * @returns {Entry}
      * @memberof Entry
      * @static
      */
-    static createNew(vault, parentGroupID) {
+    static createNew(vault: Vault, parentGroupID: GroupID): Entry {
         // Check if group is trash/in-trash
         const group = vault.findGroupByID(parentGroupID);
         if (!group) {
@@ -42,27 +44,17 @@ class Entry extends VaultItem {
     }
 
     /**
-     * Get the instance type
-     * @type {String}
-     * @readonly
-     * @memberof Entry
-     */
-    get type() {
-        return "Entry";
-    }
-
-    /**
      * Delete the entry - either trashes the entry, or removes it completely.
      * If the entry is in the trash already, it is removed (including if there is no
      *    trash group). If the entry is in a normal group and a trash group exists, it
      *  is moved there instead of being deleted.
-     * @param {Boolean=} skipTrash Skip the trash and force-delete the entry
+     * @param skipTrash Skip the trash and force-delete the entry
      * @see moveToGroup
      * @see Vault.getTrashGroup
-     * @returns {Boolean} Whether or not the item was deleted
+     * @returns Whether or not the item was deleted
      * @memberof Entry
      */
-    delete(skipTrash = false) {
+    delete(skipTrash: boolean = false): boolean {
         const trashGroup = this.vault.getTrashGroup();
         const parentGroup = this.getGroup();
         const canTrash = trashGroup && parentGroup && !parentGroup.isTrash() && !parentGroup.isInTrash();
@@ -79,12 +71,12 @@ class Entry extends VaultItem {
 
     /**
      * Delete an attribute
-     * @param {String} attribute The attribute name
+     * @param attribute The attribute name
      * @throws {Error} Throws if the attribute doesn't exist, or cannot be deleted
      * @memberof Entry
-     * @returns {Entry} Self
+     * @returns Self
      */
-    deleteAttribute(attribute) {
+    deleteAttribute(attribute: string): this {
         this.vault.format.deleteEntryAttribute(this.id, attribute);
         return this;
     }
@@ -92,11 +84,11 @@ class Entry extends VaultItem {
     /**
      * Delete a property
      * @throws {Error} Throws if property doesn't exist, or cannot be deleted
-     * @param {String} property The property to delete
+     * @param property The property to delete
      * @memberof Entry
-     * @returns {Entry} Self
+     * @returns Self
      */
-    deleteProperty(property) {
+    deleteProperty(property: string): this {
         this.vault.format.deleteEntryProperty(this.id, property);
         return this;
     }
@@ -105,13 +97,13 @@ class Entry extends VaultItem {
      * Get an attribute
      * If no attribute name is specified, an object with all attributes and their
      * values is returned.
-     * @param {String=} attribute The name of the attribute to fetch
-     * @returns {String|undefined|Object} The attribute value or an object
+     * @param attribute The name of the attribute to fetch
+     * @returns The attribute value or an object
      *  containing all attribute keys and their values if no attribute name
      *  is provided
      * @memberof Entry
      */
-    getAttribute(attribute) {
+    getAttribute(attribute?: string): Object | string | undefined {
         const attributes = this.vault.format.getEntryAttributes(this._source) || {};
         if (typeof attribute === "undefined") {
             // No property, return entire object
@@ -122,27 +114,25 @@ class Entry extends VaultItem {
 
     /**
      * Get an array of all history changes made to the entry
-     * @returns {Array.<EntryHistoryItem>}
      * @memberof Entry
      * @deprecated
      */
-    getChanges() {
+    getChanges(): History {
         return this._source.history || [];
     }
 
     /**
      * Get the containing group for the entry
-     * @returns {Group|null} The parent group
+     * @returns The parent group
      * @memberof Entry
      * @throws {Error} Throws if no parent group found
      */
-    getGroup() {
+    getGroup(): Group {
         const parentInfo = findGroupContainingEntryID(this.vault.format.getAllGroups() || [], this.id);
         if (!parentInfo || !parentInfo.group) {
             throw new Error(`No parent group found for entry: ${this.id}`);
         }
         // require Group here due to circular references:
-        const Group = require("./Group.js");
         return new Group(this.vault, parentInfo.group);
     }
 
@@ -150,12 +140,12 @@ class Entry extends VaultItem {
      * Get a property value
      * If no property name is specified, an object with all properties and their
      * values is returned.
-     * @param {String=} property The name of the property to fetch
-     * @returns {String|undefined|Object} The property value or an object with all
+     * @param property The name of the property to fetch
+     * @returns The property value or an object with all
      *  values if no property specified
      * @memberof Entry
      */
-    getProperty(property) {
+    getProperty(property?: string): Object | string | undefined {
         const raw = this.vault.format.getEntryProperties(this._source);
         if (typeof property === "undefined") {
             return Object.assign({}, raw);
@@ -167,29 +157,31 @@ class Entry extends VaultItem {
      * Get property values via RegExp expressions.
      * If no property expression is specified, it returns the empty behavior of
      * {@see Entry.getProperty}.
-     * @param {RegExp|String} propertyExpression
-     * @returns {Object} A key-value object of the matching properties
+     * @param propertyExpression The expression to use to fetch properties. If
+     *  a regular expression, it is then tested against all property keys. If a
+     *  string, it's compared exactly.
+     * @returns A key-value object of the matching properties
      * @memberof Entry
      */
-    getProperties(propertyExpression) {
+    getProperties(propertyExpression?: RegExp | string) {
         const raw = this.vault.format.getEntryProperties(this._source);
         if (typeof propertyExpression === "undefined") {
             return Object.assign({}, raw);
         }
         const isRexp = propertyExpression instanceof RegExp;
         return Object.keys(raw).reduce((aggr, key) => {
-            const matches = isRexp ? propertyExpression.test(key) : propertyExpression === key;
+            const matches = isRexp ? (<RegExp>propertyExpression).test(key) : propertyExpression === key;
             return matches ? Object.assign(aggr, { [key]: raw[key] }) : aggr;
         }, {});
     }
 
     /**
      * Get the entry type
-     * @returns {String}
+     * @returns
      * @memberof Entry
      */
-    getType() {
-        return this.getAttribute(Entry.Attributes.FacadeType) || "login";
+    getType(): EntryType {
+        return (<EntryType | undefined>this.getAttribute(Entry.Attributes.FacadeType)) || EntryType.Login;
     }
 
     /**
@@ -200,58 +192,55 @@ class Entry extends VaultItem {
      *  - "login" - Prefer URLs whose key has "login" in it
      *  - "icon" - Return only icon-like URLs
      *  - "any" - Return all found URLs
-     * @param {String=} urlTypePreference The URL type preference
-     * @returns {Array.<String>} An array of URLs
+     * @param urlTypePreference The URL type preference
+     * @returns An array of URLs
      * @memberof Entry
      */
-    getURLs(urlTypePreference) {
+    getURLs(urlTypePreference: string): Array<string> {
         return getEntryURLs(this.getProperty(), urlTypePreference);
     }
 
     /**
      * Check if the entry is in the trash
-     * @returns {Boolean} Whether or not the entry is in the trash
+     * @returns Whether or not the entry is in the trash
      * @memberof Entry
      */
-    isInTrash() {
+    isInTrash(): boolean {
         return this.getGroup().isInTrash() || this.getGroup().isTrash();
     }
 
     /**
      * Move the entry to another group
-     * @params {Group} group The target group
-     * @returns {Entry} Returns self
-     * @param {Group} group The target group
+     * @returns Returns self
+     * @param group The target group
      * @memberof Entry
      */
-    moveToGroup(group) {
+    moveToGroup(group: Group): this {
         this.vault.format.moveEntry(this.id, group.id);
         return this;
     }
 
     /**
      * Set an attribute on the entry
-     * @param {String} attribute The name of the attribute
-     * @param {String} value The value to set
-     * @returns {Entry} Returns self
+     * @param attribute The name of the attribute
+     * @param value The value to set
+     * @returns Returns self
      * @memberof Entry
      */
-    setAttribute(attribute, value) {
+    setAttribute(attribute: string, value: string): this {
         this.vault.format.setEntryAttribute(this.id, attribute, value);
         return this;
     }
 
     /**
      * Set a property on the entry
-     * @param {String} property The property name
-     * @param {String=} value The property value
-     * @returns {Entry} Returns self
+     * @param property The property name
+     * @param value The property value
+     * @returns Returns self
      * @memberof Entry
      */
-    setProperty(property, value) {
+    setProperty(property: string, value: string): this {
         this.vault.format.setEntryProperty(this.id, property, value);
         return this;
     }
 }
-
-module.exports = Entry;

@@ -40,6 +40,14 @@ export type EncryptedContent = string;
 
 export type EntryID = string;
 
+export enum EntryType {
+    CreditCard = "credit_card",
+    Login = "login",
+    Note = "note",
+    SSHKey = "ssh_key",
+    Website = "website"
+}
+
 export interface FormatAEntry {
     id: EntryID;
     attributes?: Object;
