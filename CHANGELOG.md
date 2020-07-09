@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v4.9.1
+_2020-07-09_
+
+ * **Bugfix**:
+   * `pify` not installed (required for `FileDatasource`)
+
 ## v4.9.0
 _2020-07-07_
 
