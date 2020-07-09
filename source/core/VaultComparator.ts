@@ -1,6 +1,13 @@
-const { createVaultFacade } = require("../facades/vault.js");
+import Vault from "./Vault";
+import { createVaultFacade } from "../facades/vault";
+import { History } from "../types";
 
 const PRIMATIVES = ["string", "number", "boolean", "undefined"];
+
+export interface CommonRecentCommandResult {
+    a: number;
+    b: number;
+}
 
 /**
  * Calculate the common command indexes between 2 histories.
@@ -10,13 +17,12 @@ const PRIMATIVES = ["string", "number", "boolean", "undefined"];
  * we can assume that at that point, the histories produce the same structure.
  * Because the histories may be different in the future, we use the newest
  * matching pad ID to create a common link between the 2 histories.
- * @param {String[]} historyA The original history
- * @param {String[]} historyB The secondary history
- * @returns {null|{ a: Number, b: Number }} Returns
- *        null if no common point, or an object with the common information. `a` and `b`
- *        are the indexes where the common padding occurs.
+ * @param historyA The original history
+ * @param historyB The secondary history
+ * @returns Returns null if no common point, or an object with the common
+ *  information. `a` and `b` are the indexes where the common padding occurs.
  */
-function calculateCommonRecentCommand(historyA, historyB) {
+function calculateCommonRecentCommand(historyA: History, historyB: History): CommonRecentCommandResult | null {
     const getCommandType = fullCommand => (fullCommand && fullCommand.length >= 3 ? fullCommand.substr(0, 3) : "");
     const getPaddingID = command => command.split(" ")[1];
     for (let a = historyA.length - 1; a >= 9; a -= 1) {
@@ -32,12 +38,18 @@ function calculateCommonRecentCommand(historyA, historyB) {
     return null;
 }
 
+export interface HistoryDifferences {
+    original: History;
+    secondary: History;
+    common: History;
+}
+
 /**
  * Calculate the differences, in commands, between two histories
- * @returns {{ original:String[], secondary:String[] }|Boolean} Returns false if no common base
- *        is found, or the command differences as two arrays
+ * @returns Returns false if no common base is found, or the command
+ *  differences as two arrays
  */
-function calculateHistoryDifferences(historyA, historyB) {
+function calculateHistoryDifferences(historyA: History, historyB: History): HistoryDifferences {
     const workingA = [...historyA];
     const workingB = [...historyB];
     const commonIndexes = calculateCommonRecentCommand(workingA, workingB);
@@ -53,10 +65,10 @@ function calculateHistoryDifferences(historyA, historyB) {
 
 /**
  * De-dupe an array
- * @param {Array} arr The array
- * @returns {Array} The de-duped array
+ * @param arr The array
+ * @returns The de-duped array
  */
-function dedupe(arr) {
+function dedupe<T>(arr: Array<T>): Array<T> {
     return arr.filter(function(item, pos) {
         return arr.indexOf(item) === pos;
     });
@@ -66,12 +78,12 @@ function dedupe(arr) {
  * Naïve difference calculator for objects and variables
  * Does not care about array order or instance pointers - only checks for
  * deep *equality*.
- * @param {*} object1 The first item
- * @param {*} object2 The second item
- * @returns {Boolean} True if different, false if equal
+ * @param object1 The first item
+ * @param object2 The second item
+ * @returns True if different, false if equal
  * @private
  */
-function different(object1, object2) {
+function different(object1: Object, object2: Object): boolean {
     if (Array.isArray(object1) && Array.isArray(object2)) {
         let differs = object1.some(function(item1) {
             return !object2.some(function(item2) {
@@ -107,37 +119,40 @@ function different(object1, object2) {
 /**
  * Vault comparison class
  */
-class VaultComparator {
-    static calculateHistoryDifferences(historyA, historyB) {
+export default class VaultComparator {
+    static calculateHistoryDifferences(historyA: History, historyB: History): HistoryDifferences {
         return calculateHistoryDifferences(historyA, historyB);
     }
 
+    _vaultA: Vault;
+    _vaultB: Vault;
+
     /**
      * Constructor for the vault comparator
-     * @param {Vault} originalVault The primary vault
-     * @param {Vault} secondaryVault The secondary vault
+     * @param originalVault The primary vault
+     * @param secondaryVault The secondary vault
      */
-    constructor(originalVault, secondaryVault) {
+    constructor(originalVault: Vault, secondaryVault: Vault) {
         this._vaultA = originalVault;
         this._vaultB = secondaryVault;
     }
 
     /**
      * Calculate the differences, in commands, between the two vaults
-     * @returns {{ original:Array, secondary:Array }|null} Returns null if no common base
-     *  is found, or the command differences as two arrays
+     * @returns Returns null if no common base is found, or the command
+     *  differences as two arrays
      * @memberof VaultComparator
      */
-    calculateDifferences() {
+    calculateDifferences(): HistoryDifferences {
         return VaultComparator.calculateHistoryDifferences(this._vaultA.format.history, this._vaultB.format.history);
     }
 
     /**
      * Check if the current vaults differ
-     * @returns {Boolean} True if the vaults are different
+     * @returns True if the vaults are different
      * @memberof VaultComparator
      */
-    vaultsDiffer() {
+    vaultsDiffer(): boolean {
         const objA = createVaultFacade(this._vaultA);
         const objB = createVaultFacade(this._vaultB);
         // ignore the IDs
@@ -149,5 +164,3 @@ class VaultComparator {
         return different(objA, objB);
     }
 }
-
-module.exports = VaultComparator;

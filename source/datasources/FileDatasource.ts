@@ -1,23 +1,32 @@
-const fs = require("fs");
-const path = require("path");
-const pify = require("pify");
-const TextDatasource = require("./TextDatasource.js");
-const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
-const { getCredentials } = require("../credentials/channel.js");
-const { ATTACHMENT_EXT, decryptAttachment, encryptAttachment } = require("../tools/attachments.js");
+import fs from "fs";
+import path from "path";
+import pify from "pify";
+import TextDatasource from "./TextDatasource";
+import { fireInstantiationHandlers, registerDatasource } from "./register";
+import Credentials from "../credentials/Credentials";
+import { getCredentials } from "../credentials/channel";
+import { ATTACHMENT_EXT, decryptAttachment, encryptAttachment } from "../tools/attachments";
+import { AttachmentDetails, BufferLike, DatasourceLoadedData, EncryptedContent, History, VaultID } from "../types";
 
 /**
  * File datasource for loading and saving files
  * @augments TextDatasource
  * @memberof module:Buttercup
  */
-class FileDatasource extends TextDatasource {
+export default class FileDatasource extends TextDatasource {
+    _filename: string;
+    mkdir: Function;
+    readFile: Function;
+    stat: Function;
+    unlink: Function;
+    writeFile: Function;
+
     /**
      * Constructor for the file datasource
-     * @param {Credentials} credentials The credentials instance with which to
+     * @param credentials The credentials instance with which to
      *  use to configure the datasource
      */
-    constructor(credentials) {
+    constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
         const { datasource: datasourceConfig } = credentialData;
@@ -32,13 +41,12 @@ class FileDatasource extends TextDatasource {
         fireInstantiationHandlers("file", this);
     }
 
-    get baseDir() {
+    get baseDir(): string {
         return path.dirname(this.path);
     }
 
     /**
      * The file path
-     * @type {String}
      * @memberof FileDatasource
      */
     get path() {
@@ -47,11 +55,10 @@ class FileDatasource extends TextDatasource {
 
     /**
      * Ensure attachment paths exist
-     * @returns {Promise}
      * @memberof FileDatasource
      * @protected
      */
-    async _ensureAttachmentsPaths(vaultID) {
+    async _ensureAttachmentsPaths(vaultID: VaultID): Promise<void> {
         const attachmentsDir = path.join(this.baseDir, ".buttercup", vaultID);
         await this.mkdir(attachmentsDir, { recursive: true });
     }
@@ -59,14 +66,13 @@ class FileDatasource extends TextDatasource {
     /**
      * Get attachment buffer
      * - Loads the attachment contents from a file into a buffer
-     * @param {String} vaultID The ID of the vault
-     * @param {String} attachmentID The ID of the attachment
-     * @param {Credentials=} credentials Credentials to decrypt
+     * @param vaultID The ID of the vault
+     * @param attachmentID The ID of the attachment
+     * @param credentials Credentials to decrypt
      *  the buffer, defaults to null (no decryption)
-     * @returns {Promise.<Buffer|ArrayBuffer>}
      * @memberof FileDatasource
      */
-    async getAttachment(vaultID, attachmentID, credentials = null) {
+    async getAttachment(vaultID: VaultID, attachmentID: string, credentials: Credentials = null): Promise<BufferLike> {
         await this._ensureAttachmentsPaths(vaultID);
         const attachmentPath = path.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
         const data = await this.readFile(attachmentPath);
@@ -75,12 +81,12 @@ class FileDatasource extends TextDatasource {
 
     /**
      * Get attachment details
-     * @param {String} vaultID The ID of the vault
-     * @param {String} attachmentID The ID of the attachment
-     * @returns {AttachmentDetails} The attachment details
+     * @param vaultID The ID of the vault
+     * @param attachmentID The ID of the attachment
+     * @returns The attachment details
      * @memberof FileDatasource
      */
-    async getAttachmentDetails(vaultID, attachmentID) {
+    async getAttachmentDetails(vaultID: VaultID, attachmentID: string): Promise<AttachmentDetails> {
         await this._ensureAttachmentsPaths(vaultID);
         const filename = `${attachmentID}.${ATTACHMENT_EXT}`;
         const filePath = path.join(this.baseDir, ".buttercup", vaultID, filename);
@@ -97,11 +103,11 @@ class FileDatasource extends TextDatasource {
 
     /**
      * Load from the filename specified in the constructor using a password
-     * @param {Credentials} credentials The credentials for decryption
-     * @returns {Promise.<LoadedVaultData>} A promise resolving with archive history
+     * @param credentials The credentials for decryption
+     * @returns A promise resolving with archive history
      * @memberof FileDatasource
      */
-    load(credentials) {
+    load(credentials: Credentials): Promise<DatasourceLoadedData> {
         return this.hasContent
             ? super.load(credentials)
             : this.readFile(this.path, "utf8").then(contents => {
@@ -112,17 +118,16 @@ class FileDatasource extends TextDatasource {
 
     /**
      * Put attachment data
-     * @param {String} vaultID The ID of the vault
-     * @param {String} attachmentID The ID of the attachment
-     * @param {Buffer|ArrayBuffer} buffer The attachment data
-     * @param {Credentials=} credentials Credentials for
+     * @param vaultID The ID of the vault
+     * @param attachmentID The ID of the attachment
+     * @param buffer The attachment data
+     * @param credentials Credentials for
      *  encrypting the buffer. If not provided, the buffer
      *  is presumed to be in encrypted-form and will be
      *  written as-is.
-     * @returns {Promise}
      * @memberof FileDatasource
      */
-    async putAttachment(vaultID, attachmentID, buffer, credentials = null) {
+    async putAttachment(vaultID: VaultID, attachmentID: string, buffer: BufferLike, credentials: Credentials = null): Promise<void> {
         await this._ensureAttachmentsPaths(vaultID);
         const attachmentPath = path.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
         let data = buffer;
@@ -134,12 +139,11 @@ class FileDatasource extends TextDatasource {
 
     /**
      * Remove an attachment
-     * @param {String} vaultID The ID of the vault
-     * @param {String} attachmentID The ID of the attachment
-     * @returns {Promise}
+     * @param vaultID The ID of the vault
+     * @param attachmentID The ID of the attachment
      * @memberof FileDatasource
      */
-    async removeAttachment(vaultID, attachmentID) {
+    async removeAttachment(vaultID: VaultID, attachmentID: string): Promise<void> {
         await this._ensureAttachmentsPaths(vaultID);
         const attachmentPath = path.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
         await this.unlink(attachmentPath);
@@ -147,35 +151,32 @@ class FileDatasource extends TextDatasource {
 
     /**
      * Save archive history to a file
-     * @param {Array.<String>} history The archive history to save
-     * @param {Credentials} credentials The credentials to save with
-     * @returns {Promise} A promise that resolves when saving is complete
+     * @param history The archive history to save
+     * @param credentials The credentials to save with
+     * @returns A promise that resolves when saving is complete
      * @memberof FileDatasource
      */
-    save(history, credentials) {
+    save(history: History, credentials: Credentials): Promise<EncryptedContent> {
         return super.save(history, credentials).then(encrypted => this.writeFile(this.path, encrypted));
     }
 
     /**
      * Whether or not the datasource supports attachments
-     * @returns {Boolean}
      * @memberof FileDatasource
      */
-    supportsAttachments() {
+    supportsAttachments(): boolean {
         return true;
     }
 
     /**
      * Whether or not the datasource supports bypassing remote fetch operations
-     * @returns {Boolean} True if content can be set to bypass fetch operations,
+     * @returns True if content can be set to bypass fetch operations,
      *  false otherwise
      * @memberof FileDatasource
      */
-    supportsRemoteBypass() {
+    supportsRemoteBypass(): boolean {
         return true;
     }
 }
 
 registerDatasource("file", FileDatasource);
-
-module.exports = FileDatasource;

@@ -1,7 +1,9 @@
-const TextDatasource = require("./TextDatasource.js");
-const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
-const { getCredentials } = require("../credentials/channel.js");
-const { ATTACHMENT_EXT, decryptAttachment, encryptAttachment } = require("../tools/attachments.js");
+import TextDatasource from "./TextDatasource";
+import { fireInstantiationHandlers, registerDatasource } from "./register";
+import Credentials from "../credentials/Credentials";
+import { getCredentials } from "../credentials/channel";
+import { ATTACHMENT_EXT, decryptAttachment, encryptAttachment } from "../tools/attachments";
+import { AttachmentDetails, BufferLike, DatasourceLoadedData, EncryptedContent, History, MemoryStore, VaultID } from "../types";
 
 const TYPE = "memory";
 
@@ -10,13 +12,16 @@ const TYPE = "memory";
  * @augments TextDatasource
  * @memberof module:Buttercup
  */
-class MemoryDatasource extends TextDatasource {
+export default class MemoryDatasource extends TextDatasource {
+    _property: string;
+    _store: MemoryStore;
+
     /**
      * Constructor for the datasource
-     * @param {Credentials} credentials The credentials instance with which to
+     * @param credentials The credentials instance with which to
      *  use to configure the datasource
      */
-    constructor(credentials) {
+    constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
         const { datasource: datasourceConfig } = credentialData;
@@ -29,28 +34,24 @@ class MemoryDatasource extends TextDatasource {
 
     /**
      * Ensure attachment paths exist
-     * @returns {Promise}
      * @memberof MemoryDatasource
      * @protected
      */
-    _ensureAttachmentsPaths(vaultID) {
-        return Promise.resolve().then(() => {
-            this._store.attachments = this._store.attachments || {};
-            this._store.attachments[vaultID] = this._store.attachments[vaultID] || {};
-        });
+    async _ensureAttachmentsPaths(vaultID: VaultID): Promise<void> {
+        this._store.attachments = this._store.attachments || {};
+        this._store.attachments[vaultID] = this._store.attachments[vaultID] || {};
     }
 
     /**
      * Get attachment buffer
      * - Loads the attachment contents into a buffer
-     * @param {String} vaultID The ID of the vault
-     * @param {String} attachmentID The ID of the attachment
-     * @param {Credentials=} credentials Credentials to decrypt
+     * @param vaultID The ID of the vault
+     * @param attachmentID The ID of the attachment
+     * @param credentials Credentials to decrypt
      *  the buffer, defaults to null (no decryption)
-     * @returns {Promise.<Buffer|ArrayBuffer>}
      * @memberof MemoryDatasource
      */
-    getAttachment(vaultID, attachmentID, credentials = null) {
+    getAttachment(vaultID: VaultID, attachmentID: string, credentials: Credentials = null): Promise<BufferLike> {
         return this._ensureAttachmentsPaths(vaultID).then(() => {
             if (!this._store.attachments[vaultID][attachmentID]) {
                 throw new Error(`No attachment found for ID: ${attachmentID}`);
@@ -62,12 +63,12 @@ class MemoryDatasource extends TextDatasource {
 
     /**
      * Get attachment details
-     * @param {String} vaultID The ID of the vault
-     * @param {String} attachmentID The ID of the attachment
-     * @returns {AttachmentDetails} The attachment details
+     * @param vaultID The ID of the vault
+     * @param attachmentID The ID of the attachment
+     * @returns The attachment details
      * @memberof MemoryDatasource
      */
-    getAttachmentDetails(vaultID, attachmentID) {
+    getAttachmentDetails(vaultID: VaultID, attachmentID: string): Promise<AttachmentDetails> {
         const attachment = this._store.attachments[vaultID][attachmentID];
         const filename = `${attachmentID}.${ATTACHMENT_EXT}`;
         const filePath = `${this._property}/${filename}`;
@@ -83,33 +84,30 @@ class MemoryDatasource extends TextDatasource {
 
     /**
      * Load from a global property
-     * @param {Credentials} credentials The credentials for decryption
-     * @returns {Promise.<LoadedVaultData>} A promise resolving with vault history
+     * @param credentials The credentials for decryption
+     * @returns A promise resolving with vault history
      * @memberof MemoryDatasource
      */
-    load(credentials) {
-        return Promise.resolve().then(() => {
-            if (!this._store.vault) {
-                throw new Error("No vault in memory");
-            }
-            this.setContent(this._store.vault);
-            return super.load(credentials);
-        });
+    async load(credentials: Credentials): Promise<DatasourceLoadedData> {
+        if (!this._store.vault) {
+            throw new Error("No vault in memory");
+        }
+        this.setContent(this._store.vault);
+        return super.load(credentials);
     }
 
     /**
      * Put attachment data
-     * @param {String} vaultID The ID of the vault
-     * @param {String} attachmentID The ID of the attachment
-     * @param {Buffer|ArrayBuffer} buffer The attachment data
-     * @param {Credentials=} credentials Credentials for
+     * @param vaultID The ID of the vault
+     * @param attachmentID The ID of the attachment
+     * @param buffer The attachment data
+     * @param credentials Credentials for
      *  encrypting the buffer. If not provided, the buffer
      *  is presumed to be in encrypted-form and will be
      *  written as-is.
-     * @returns {Promise}
      * @memberof MemoryDatasource
      */
-    putAttachment(vaultID, attachmentID, buffer, credentials = null) {
+    putAttachment(vaultID: VaultID, attachmentID: string, buffer: BufferLike, credentials: Credentials = null): Promise<void> {
         return this._ensureAttachmentsPaths(vaultID)
             .then(() => (credentials ? encryptAttachment(buffer, credentials) : buffer))
             .then(data => {
@@ -119,12 +117,11 @@ class MemoryDatasource extends TextDatasource {
 
     /**
      * Remove an attachment
-     * @param {String} vaultID The ID of the vault
-     * @param {String} attachmentID The ID of the attachment
-     * @returns {Promise}
+     * @param vaultID The ID of the vault
+     * @param attachmentID The ID of the attachment
      * @memberof MemoryDatasource
      */
-    removeAttachment(vaultID, attachmentID) {
+    removeAttachment(vaultID: VaultID, attachmentID: string): Promise<void> {
         return this._ensureAttachmentsPaths(vaultID).then(() => {
             this._store.attachments[vaultID][attachmentID] = null;
             delete this._store.attachments[vaultID][attachmentID];
@@ -133,27 +130,25 @@ class MemoryDatasource extends TextDatasource {
 
     /**
      * Save vault history memory
-     * @param {Array.<String>} history The vault history to save
-     * @param {Credentials} credentials The credentials to save with
-     * @returns {Promise} A promise that resolves when saving is complete
+     * @param history The vault history to save
+     * @param credentials The credentials to save with
+     * @returns A promise that resolves when saving is complete
      * @memberof MemoryDatasource
      */
-    save(history, credentials) {
+    save(history: History, credentials: Credentials): Promise<EncryptedContent> {
         return super.save(history, credentials).then(encrypted => {
             this._store.vault = encrypted;
+            return encrypted;
         });
     }
 
     /**
      * Whether or not the datasource supports attachments
-     * @returns {Boolean}
      * @memberof MemoryDatasource
      */
-    supportsAttachments() {
+    supportsAttachments(): boolean {
         return true;
     }
 }
 
 registerDatasource(TYPE, MemoryDatasource);
-
-module.exports = MemoryDatasource;

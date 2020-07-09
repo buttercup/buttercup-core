@@ -1,21 +1,35 @@
-const VError = require("verror");
-const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
-const TextDatasource = require("./TextDatasource.js");
-const Credentials = require("../credentials/Credentials.js");
-const VaultComparator = require("../core/VaultComparator.js");
-const MyButtercupClient = require("../myButtercup/MyButtercupClient.js");
-const { generateNewUpdateID } = require("../myButtercup/update.js");
-const { getCredentials } = require("../credentials/channel.js");
+import VError from "verror";
+import { fireInstantiationHandlers, registerDatasource } from "./register";
+import TextDatasource from "./TextDatasource";
+import Credentials from "../credentials/Credentials";
+import VaultComparator from "../core/VaultComparator";
+import MyButtercupClient from "../myButtercup/MyButtercupClient";
+import { generateNewUpdateID } from "../myButtercup/update";
+import { getCredentials } from "../credentials/channel";
+import { DatasourceLoadedData, EncryptedContent, History, VaultInsights } from "../types";
+
+interface OnTokensUpdatedCallback {
+    (): void
+}
 
 /**
  * My Buttercup datasource
  * @augments TextDatasource
  * @memberof module:Buttercup
  */
-class MyButtercupDatasource extends TextDatasource {
+export default class MyButtercupDatasource extends TextDatasource {
+    _client: MyButtercupClient;
+    _clientID: string;
+    _clientSecret: string;
+    _onTokensUpdated: OnTokensUpdatedCallback;
+    _updateID: number;
+    _vaultID: number;
+    accessToken: string;
+    refreshToken: string;
+
     /**
      * Constructor for the datasource
-     * @param {Credentials} credentials Credentials for the datasource
+     * @param credentials Credentials for the datasource
      * @memberof MyButtercupDatasource
      */
     constructor(credentials) {
@@ -36,7 +50,7 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     /**
-     * @type {MyButtercupClient}
+     * My Buttercup client
      * @readonly
      * @memberof MyButtercupDatasource
      */
@@ -48,9 +62,9 @@ class MyButtercupDatasource extends TextDatasource {
      * Change the master password for the vault
      * (Called with a preflight check to ensure that the datasource is
      * ready to change - if not ready, the method will return false)
-     * @param {*} newCredentials
-     * @param {*} preflight
-     * @returns {Promise.<Boolean|undefined>} A promise that resolves
+     * @param newCredentials
+     * @param preflight
+     * @returns A promise that resolves
      *  with a boolean value during preflight, or with simply undefined
      *  if performing the final change action.
      * @example
@@ -64,7 +78,7 @@ class MyButtercupDatasource extends TextDatasource {
      *  }
      *  await tds.changePassword(creds, false);
      */
-    async changePassword(newCredentials, preflight) {
+    async changePassword(newCredentials: Credentials, preflight: boolean): Promise<boolean | undefined> {
         const {
             data: { passwordToken },
             masterPassword
@@ -78,12 +92,11 @@ class MyButtercupDatasource extends TextDatasource {
 
     /**
      * Load vault history from remote
-     * @param {Credentials} credentials The archive credentials
-     * @returns {Promise.<LoadedVaultData>} Promise which resolves with
-     *  vault data
+     * @param credentials The archive credentials
+     * @returns Promise which resolves with vault data
      * @memberof MyButtercupDatasource
      */
-    load(credentials) {
+    load(credentials: Credentials): Promise<DatasourceLoadedData> {
         return this._client
             .fetchUserVault()
             .then(({ archive, updateID }) => {
@@ -99,12 +112,12 @@ class MyButtercupDatasource extends TextDatasource {
     /**
      * Override for history difference checking
      * @see Workspace#localDiffersFromRemote
-     * @param {Credentials} masterCredentials Master service credentials
-     * @param {String[]} archiveHistory Archive history lines
-     * @returns {Promise.<Boolean>} True if differing, false otherwise
+     * @param masterCredentials Master service credentials
+     * @param archiveHistory Archive history lines
+     * @returns True if differing, false otherwise
      * @memberof MyButtercupDatasource
      */
-    localDiffersFromRemote(masterCredentials, archiveHistory) {
+    localDiffersFromRemote(masterCredentials: Credentials, archiveHistory: History): Promise<boolean> {
         return this.client
             .fetchUserVaultDetails()
             .then(({ updateID }) => {
@@ -112,7 +125,7 @@ class MyButtercupDatasource extends TextDatasource {
                     return true;
                 }
                 this.setContent("");
-                return this.load(masterCredentials).then(({ Format, history: incomingHistory }) => {
+                return this.load(masterCredentials).then(({ history: incomingHistory }) => {
                     const diffs = VaultComparator.calculateHistoryDifferences(archiveHistory, incomingHistory);
                     if (!diffs) {
                         return true;
@@ -127,53 +140,49 @@ class MyButtercupDatasource extends TextDatasource {
 
     /**
      * Save vault contents to remote
-     * @param {String[]} history The vault history lines
-     * @param {Credentials} credentials Vault credentials
-     * @returns {Promise}
+     * @param history The vault history lines
+     * @param credentials Vault credentials
      * @memberof MyButtercupDatasource
      */
-    save(history, credentials) {
+    async save(history: History, credentials: Credentials): Promise<EncryptedContent> {
         const newUpdateID = generateNewUpdateID();
-        return super
-            .save(history, credentials)
-            .then(encryptedContents => this.client.writeUserArchive(encryptedContents, this._updateID, newUpdateID))
-            .then(() => {
-                // Successful, set the new updateID
-                this._updateID = newUpdateID;
-            })
-            .catch(err => {
-                // @todo handle update ID clash/merge
-                throw new VError(err, "Failed uploading new vault contents");
-            });
+        const encryptedContents = await super.save(history, credentials);
+        try {
+            await this.client.writeUserArchive(encryptedContents, this._updateID, newUpdateID);
+        } catch (err) {
+            throw new VError(err, "Failed uploading new vault contents");
+        }
+        // Successful, set the new updateID
+        this._updateID = newUpdateID;
+        return encryptedContents;
     }
 
     /**
      * Whether or not the datasource supports the changing of the master password
-     * @returns {Boolean} True if it supports changing the master password
+     * @returns True if it supports changing the master password
      * @memberof WebDAVDatasource
      */
-    supportsPasswordChange() {
+    supportsPasswordChange(): boolean {
         return true;
     }
 
     /**
      * Update vault/account insights
-     * @param {Insights} insights Insights to update
-     * @returns {Promise}
+     * @param insights Insights to update
      * @memberof MyButtercupDatasource
      */
-    async updateInsights(insights) {
+    async updateInsights(insights: VaultInsights) {
         if (Object.keys(insights).length <= 0) return;
         await this._client.writeInsights(insights);
     }
 
     /**
      * Update the OAuth2 tokens
-     * @param {String} accessToken The access token
-     * @param {String} refreshToken The refresh token
+     * @param accessToken The access token
+     * @param refreshToken The refresh token
      * @memberof MyButtercupDatasource
      */
-    updateTokens(accessToken, refreshToken, updateClientTokens = true) {
+    updateTokens(accessToken: string, refreshToken: string, updateClientTokens: boolean = true) {
         const { data: credentialData } = getCredentials(this.credentials.id);
         credentialData.datasource.accessToken = accessToken;
         credentialData.datasource.refreshToken = refreshToken;
@@ -212,5 +221,3 @@ class MyButtercupDatasource extends TextDatasource {
 }
 
 registerDatasource("mybuttercup", MyButtercupDatasource);
-
-module.exports = MyButtercupDatasource;

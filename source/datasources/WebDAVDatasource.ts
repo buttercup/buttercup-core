@@ -1,19 +1,24 @@
-const TextDatasource = require("./TextDatasource.js");
-const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
-const { getSharedAppEnv } = require("../env/appEnv");
-const { getCredentials } = require("../credentials/channel.js");
+import TextDatasource from "./TextDatasource";
+import { fireInstantiationHandlers, registerDatasource } from "./register";
+import { getSharedAppEnv } from "../env/appEnv";
+import Credentials from "../credentials/Credentials";
+import { getCredentials } from "../credentials/channel";
+import { DatasourceLoadedData, EncryptedContent, History } from "../types";
 
 /**
  * WebDAV datasource for reading and writing remote archives
  * @augments TextDatasource
  * @memberof module:Buttercup
  */
-class WebDAVDatasource extends TextDatasource {
+export default class WebDAVDatasource extends TextDatasource {
+    _client: any;
+    _path: string;
+
     /**
      * Constructor for the datasource
-     * @param {Credentials} credentials Credentials for the datasource
+     * @param credentials Credentials for the datasource
      */
-    constructor(credentials) {
+    constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
         const { datasource: datasourceConfig } = credentialData;
@@ -34,7 +39,6 @@ class WebDAVDatasource extends TextDatasource {
 
     /**
      * The WebDAV client instance
-     * @type {Object}
      * @memberof WebDAVDatasource
      */
     get client() {
@@ -43,7 +47,6 @@ class WebDAVDatasource extends TextDatasource {
 
     /**
      * The remote archive path
-     * @type {String}
      * @memberof WebDAVDatasource
      */
     get path() {
@@ -52,11 +55,11 @@ class WebDAVDatasource extends TextDatasource {
 
     /**
      * Load archive history from the datasource
-     * @param {Credentials} credentials The credentials for archive decryption
-     * @returns {Promise.<LoadedVaultData>} A promise resolving archive history
+     * @param credentials The credentials for archive decryption
+     * @returns A promise resolving archive history
      * @memberof WebDAVDatasource
      */
-    load(credentials) {
+    load(credentials: Credentials): Promise<DatasourceLoadedData> {
         return this.hasContent
             ? super.load(credentials)
             : this.client.getFileContents(this.path, { format: "text" }).then(content => {
@@ -67,26 +70,26 @@ class WebDAVDatasource extends TextDatasource {
 
     /**
      * Save archive contents to the WebDAV service
-     * @param {Array.<String>} history Archive history
-     * @param {Credentials} credentials The credentials for encryption
-     * @returns {Promise} A promise resolving when the save is complete
+     * @param history Archive history
+     * @param credentials The credentials for encryption
+     * @returns A promise resolving when the save is complete
      * @memberof WebDAVDatasource
      */
-    save(history, credentials) {
-        return super.save(history, credentials).then(encrypted => this.client.putFileContents(this.path, encrypted));
+    save(history: History, credentials: Credentials): Promise<EncryptedContent> {
+        return super
+            .save(history, credentials)
+            .then(encrypted => this.client.putFileContents(this.path, encrypted));
     }
 
     /**
      * Whether or not the datasource supports bypassing remote fetch operations
-     * @returns {Boolean} True if content can be set to bypass fetch operations,
+     * @returns True if content can be set to bypass fetch operations,
      *  false otherwise
      * @memberof WebDAVDatasource
      */
-    supportsRemoteBypass() {
+    supportsRemoteBypass(): boolean {
         return true;
     }
 }
 
 registerDatasource("webdav", WebDAVDatasource);
-
-module.exports = WebDAVDatasource;

@@ -14,7 +14,6 @@ const DATASOURCE_TYPE = "googledrive";
  * @memberof module:Buttercup
  */
 export default class GoogleDriveDatasource extends TextDatasource {
-    [x: string]: any;
     authManager: DatasourceAuthManager;
     client: any;
     fileID: string;

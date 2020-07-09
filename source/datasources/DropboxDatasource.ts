@@ -1,20 +1,26 @@
-const { createClient } = require("@buttercup/dropbox-client");
-const TextDatasource = require("./TextDatasource.js");
-const { fireInstantiationHandlers, registerDatasource } = require("./register.js");
-const { getCredentials } = require("../credentials/channel.js");
+import { createClient } from "@buttercup/dropbox-client";
+import TextDatasource from "./TextDatasource";
+import { fireInstantiationHandlers, registerDatasource } from "./register";
+import Credentials from "../credentials/Credentials";
+import { getCredentials } from "../credentials/channel";
+import { DatasourceLoadedData, EncryptedContent, History } from "../types";
 
 /**
  * Datasource for Dropbox archives
  * @augments TextDatasource
  * @memberof module:Buttercup
  */
-class DropboxDatasource extends TextDatasource {
+export default class DropboxDatasource extends TextDatasource {
+    client: any;
+    path: string;
+    token: string;
+
     /**
      * Datasource for Dropbox accounts
-     * @param {Credentials} credentials Credentials instance to configure the
+     * @param credentials Credentials instance to configure the
      *  datsource with
      */
-    constructor(credentials) {
+    constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
         const { datasource: datasourceConfig } = credentialData;
@@ -28,11 +34,11 @@ class DropboxDatasource extends TextDatasource {
 
     /**
      * Load an archive from the datasource
-     * @param {Credentials} credentials The credentials for decryption
-     * @returns {Promise.<LoadedVaultData>} A promise that resolves archive history
+     * @param credentials The credentials for decryption
+     * @returns A promise that resolves archive history
      * @memberof DropboxDatasource
      */
-    load(credentials) {
+    load(credentials: Credentials): Promise<DatasourceLoadedData> {
         if (this.hasContent) {
             return super.load(credentials);
         }
@@ -44,28 +50,26 @@ class DropboxDatasource extends TextDatasource {
 
     /**
      * Save an archive using the datasource
-     * @param {Array.<String>} history The archive history to save
-     * @param {Credentials} credentials The credentials to save with
-     * @returns {Promise} A promise that resolves when saving has completed
+     * @param history The archive history to save
+     * @param credentials The credentials to save with
+     * @returns A promise that resolves when saving has completed
      * @memberof DropboxDatasource
      */
-    save(history, credentials) {
+    save(history: History, credentials: Credentials): Promise<EncryptedContent> {
         return super
             .save(history, credentials)
-            .then(encryptedContent => this.client.putFileContents(this.path, encryptedContent));
+            .then((encryptedContent: EncryptedContent) => this.client.putFileContents(this.path, encryptedContent));
     }
 
     /**
      * Whether or not the datasource supports bypassing remote fetch operations
-     * @returns {Boolean} True if content can be set to bypass fetch operations,
+     * @returns True if content can be set to bypass fetch operations,
      *  false otherwise
      * @memberof DropboxDatasource
      */
-    supportsRemoteBypass() {
+    supportsRemoteBypass(): boolean {
         return true;
     }
 }
 
 registerDatasource("dropbox", DropboxDatasource);
-
-module.exports = DropboxDatasource;

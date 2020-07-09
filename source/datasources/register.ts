@@ -1,5 +1,6 @@
-const { getCredentials } = require("../credentials/channel.js");
-const Credentials = require("../credentials/Credentials.js");
+import { getCredentials } from "../credentials/channel";
+import Credentials from "../credentials/Credentials";
+import TextDatasource from "./TextDatasource";
 
 const __datasources = {};
 const __datasourceFlags = {};
@@ -7,9 +8,8 @@ const __postHandlers = [];
 
 /**
  * Convert a Credentials instance to a Datasource
- * @param {Credentials} credentials A Credentials instance that
+ * @param credentials A Credentials instance that
  *  contains a datasource configuration
- * @returns {TextDatasource}
  * @throws {Error} Throws if no datasource configuration in
  *  credentials
  * @throws {Error} Throws if no type specified in datasource
@@ -17,7 +17,7 @@ const __postHandlers = [];
  * @throws {Error} Throws if no datasource found for type
  * @private
  */
-function credentialsToDatasource(credentials) {
+export function credentialsToDatasource(credentials: Credentials): TextDatasource {
     const { datasource } = getCredentials(credentials.id).data;
     if (!datasource) {
         throw new Error("No datasource configuration in credentials");
@@ -35,10 +35,11 @@ function credentialsToDatasource(credentials) {
 
 /**
  * Execute all datasource postprocessors
- * @param {TextDatasource} datasource The datasource instance
+ * @param type The type of datasource
+ * @param datasource The datasource instance
  * @private
  */
-function fireInstantiationHandlers(type, datasource) {
+export function fireInstantiationHandlers(type: string, datasource: TextDatasource) {
     __postHandlers.forEach(handler => {
         try {
             handler(type, datasource);
@@ -52,11 +53,10 @@ function fireInstantiationHandlers(type, datasource) {
 /**
  * Prepare credentials for passing to a datasource
  * (from VaultSource)
- * @param {Credentials} credentials
- * @returns {Credentials|UnwrappedCredentials}
+ * @param credentials
  * @private
  */
-function prepareDatasourceCredentials(credentials, typeOverride = null) {
+export function prepareDatasourceCredentials(credentials: Credentials, typeOverride: string = null): Credentials {
     const {
         data: { datasource },
         masterPassword
@@ -76,11 +76,11 @@ function prepareDatasourceCredentials(credentials, typeOverride = null) {
  * Register a new datasource
  * This is called internally by the built-in datasources, but should be called if a
  * custom datasource is used.
- * @param {String} datasourceType The name (slug) of the datasource
- * @param {Object} DSClass The class for the new datasource
+ * @param datasourceType The name (slug) of the datasource
+ * @param DSClass The class for the new datasource
  * @memberof module:Buttercup
  */
-function registerDatasource(datasourceType, DSClass, flags = {}) {
+export function registerDatasource(datasourceType: string, DSClass: any, flags = {}) {
     if (__datasources[datasourceType]) {
         throw new Error(`Datasource already registered for type: ${datasourceType}`);
     }
@@ -88,18 +88,17 @@ function registerDatasource(datasourceType, DSClass, flags = {}) {
     __datasourceFlags[datasourceType] = flags;
 }
 
-/**
- * @typedef {Object} RegisterDatasourcePostProcessorResult
- * @property {Function} remove - Function to call to remove the handler
- */
+interface DatasourcePostProcessorHandler {
+    remove: () => void
+}
 
 /**
  * Register a post-processor for a datasource being instantiated
  * @param {Function} callback The callback to execute with the instantiated datasource
- * @returns {RegisterDatasourcePostProcessorResult} The result of the registration
+ * @returns The result of the registration
  * @private
  */
-function registerDatasourcePostProcessor(callback) {
+export function registerDatasourcePostProcessor(callback: Function): DatasourcePostProcessorHandler {
     __postHandlers.push(callback);
     return {
         remove: () => {
@@ -110,11 +109,3 @@ function registerDatasourcePostProcessor(callback) {
         }
     };
 }
-
-module.exports = {
-    credentialsToDatasource,
-    fireInstantiationHandlers,
-    prepareDatasourceCredentials,
-    registerDatasource,
-    registerDatasourcePostProcessor
-};

@@ -1,6 +1,7 @@
-const EventEmitter = require("events");
-const { forEachAsync } = require("foreachasync");
-const globals = require("global");
+import EventEmitter from "eventemitter3";
+import { forEachAsync } from "foreachasync";
+import globals from "global";
+import TextDatasource from "./TextDatasource";
 
 function markGlobalPresence() {
     if (typeof globals._bcupAuthMgr !== "undefined") {
@@ -11,27 +12,37 @@ function markGlobalPresence() {
     globals._bcupAuthMgr = true;
 }
 
-let __sharedManager;
+let __sharedManager: DatasourceAuthManager;
+
+export interface AuthHandler {
+    (datasource: TextDatasource): void;
+}
+
+interface AuthHandlers {
+    [type: string]: Array<AuthHandler>;
+}
 
 /**
  * Authentication manager
  * @augments EventEmitter
  * @memberof module:Buttercup
  */
-class DatasourceAuthManager extends EventEmitter {
+export default class DatasourceAuthManager extends EventEmitter {
     /**
      * Get the shared DatasourceAuthManager instance
-     * @returns {DatasourceAuthManager} The shared auth manager instance
+     * @returns The shared auth manager instance
      * @static
      * @memberof DatasourceAuthManager
      */
-    static getSharedManager() {
+    static getSharedManager(): DatasourceAuthManager {
         if (!__sharedManager) {
             __sharedManager = new DatasourceAuthManager();
             markGlobalPresence();
         }
         return __sharedManager;
     }
+
+    _handlers: AuthHandlers;
 
     /**
      * Constructor for the auth manager
@@ -43,13 +54,13 @@ class DatasourceAuthManager extends EventEmitter {
 
     /**
      * Execute auth handlers for a datasource
-     * @param {String} datasourceType The type of datasource (slug)
-     * @param {TextDatasource} datasourceInst The datasource instance
-     * @returns {Promise} A promise that resolves once execution has completed
+     * @param datasourceType The type of datasource (slug)
+     * @param datasourceInst The datasource instance
+     * @returns A promise that resolves once execution has completed
      * @throws {Error} Throws if no handlers have been specified
      * @memberof DatasourceAuthManager
      */
-    executeAuthHandlers(datasourceType, datasourceInst) {
+    executeAuthHandlers(datasourceType: string, datasourceInst: TextDatasource): Promise<void> {
         const handlers = this._handlers[datasourceType];
         if (!Array.isArray(handlers)) {
             return Promise.reject(
@@ -73,8 +84,8 @@ class DatasourceAuthManager extends EventEmitter {
 
     /**
      * Register an auth handler
-     * @param {String} datasourceType The datasource type
-     * @param {Function} handler The handler function
+     * @param datasourceType The datasource type
+     * @param handler The handler function
      * @example
      *  authManager.registerHandler("googledrive", datasource => {
      *      return renewTokens().then(({ accessToken, refreshToken }) => {
@@ -85,7 +96,7 @@ class DatasourceAuthManager extends EventEmitter {
      * @memberof DatasourceAuthManager
      * @throws {Error} Throws if the handler argument is not a function
      */
-    registerHandler(datasourceType, handler) {
+    registerHandler(datasourceType: string, handler: AuthHandler) {
         if (typeof handler !== "function") {
             throw new Error("Failed registering handler: Argument was not a function");
         }
@@ -93,5 +104,3 @@ class DatasourceAuthManager extends EventEmitter {
         this._handlers[datasourceType].push(handler);
     }
 }
-
-module.exports = DatasourceAuthManager;
