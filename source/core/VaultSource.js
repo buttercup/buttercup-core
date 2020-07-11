@@ -142,6 +142,15 @@ class VaultSource extends EventEmitter {
     }
 
     /**
+     * The source order
+     * @type {Number}
+     * @memberof VaultSource
+     */
+    get order() {
+        return this._order;
+    }
+
+    /**
      * Source status
      * @type {String}
      * @memberof VaultSource
@@ -177,6 +186,13 @@ class VaultSource extends EventEmitter {
         }
         this._colour = newColour;
         this.emit("updated");
+    }
+
+    set order(newOrder) {
+        if (isNaN(newOrder) || typeof newOrder !== "number") {
+            throw new Error(`Order must be a number`);
+        }
+        this._order = newOrder;
     }
 
     /**
