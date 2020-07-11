@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v4.9.2
+_2020-07-11_
+
+ * **Bugfix**:
+   * `reorderSource` on `VaultManager` wouldn't change source order
+
 ## v4.9.1
 _2020-07-09_
 
