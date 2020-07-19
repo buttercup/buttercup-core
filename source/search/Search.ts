@@ -1,11 +1,40 @@
-const FuseImport = require("fuse.js");
-const levenshtein = require("fast-levenshtein");
-const { createVaultFacade } = require("../facades/vault.js");
-const { fieldsToProperties } = require("../facades/entry.js");
-const { ENTRY_URL_TYPE_GENERAL, getEntryURLs } = require("../tools/entry.js");
-const StorageInterface = require("../storage/StorageInterface.js");
+import FuseImport from "fuse.js";
+import levenshtein from "fast-levenshtein";
+import { createVaultFacade } from "../facades/vault";
+import { fieldsToProperties } from "../facades/entry";
+import { ENTRY_URL_TYPE_GENERAL, getEntryURLs } from "../tools/entry";
+import StorageInterface from "../storage/StorageInterface";
+import Vault from "../core/Vault";
+import { EntryID, VaultID } from "../types";
 
-function domainsRelated(domain1, domain2) {
+declare const BUTTERCUP_WEB: boolean;
+
+interface DomainScores {
+    [domain: string]: number;
+}
+
+interface ProcessedSearchEntry {
+    id: EntryID;
+    properties: { [property: string]: string };
+    urls: Array<string>;
+    vaultID: VaultID;
+    domainScores: DomainScores;
+}
+
+export interface SearchResult {
+    id: EntryID;
+    properties: { [property: string]: string };
+    urls: Array<string>;
+    vaultID: VaultID;
+}
+
+interface SearchScores {
+    [vaultID: string]: {
+        [entryID: string]: DomainScores;
+    };
+}
+
+function domainsRelated(domain1: string, domain2: string): boolean {
     if (domain1 === domain2) return true;
     if (domain1.length > domain2.length) {
         const ind = domain1.indexOf(domain2);
@@ -16,48 +45,42 @@ function domainsRelated(domain1, domain2) {
     }
 }
 
-function extractDomain(str) {
+function extractDomain(str: string): string {
     const match = /^((https?|ftp):\/\/)?([^\/]+)/i.exec(str);
     return (match && match[3]) || "";
 }
 
 /**
- * @typedef {Object} SearchResult
- * @property {String} id The entry ID
- * @property {Object.<String, String>} properties Entry properties
- * @property {Array.<String>} urls Entry URLs
- * @property {String} vaultID The ID of the containing vault
- */
-
-/**
  * Search class for searching entries
  * @memberof module:Buttercup
  */
-class Search {
-    constructor(vaults, memory = new StorageInterface()) {
+export default class Search {
+    _entries: Array<ProcessedSearchEntry> = [];
+    _fuse: any = null;
+    _memory: StorageInterface;
+    _results: Array<SearchResult> = [];
+    _scores: SearchScores = {};
+    _vaults: Array<Vault>;
+
+    constructor(vaults: Array<Vault>, memory = new StorageInterface()) {
         this._vaults = vaults;
-        this._entries = [];
-        this._fuse = null;
         this._memory = memory;
-        this._scores = {};
-        this._results = [];
     }
 
     /**
      * Last search results
-     * @type {Array.<SearchResult>}
      */
-    get results() {
+    get results(): Array<SearchResult> {
         return this._results;
     }
 
     /**
      * Increment the score of a URL in an entry
-     * @param {String} vaultID The vault ID
-     * @param {String} entryID The entry ID
-     * @param {String} url The URL to increment for
+     * @param vaultID The vault ID
+     * @param entryID The entry ID
+     * @param url The URL to increment for
      */
-    async incrementScore(vaultID, entryID, url) {
+    async incrementScore(vaultID: VaultID, entryID: EntryID, url: string) {
         const scoresRaw = await this._memory.getValue(`bcup_search_${vaultID}`);
         let vaultScore = {};
         if (scoresRaw) {
@@ -111,13 +134,13 @@ class Search {
 
     /**
      * Search for entries by term
-     * @param {String} term
-     * @returns {Array.<SearchResult>}
+     * @param term The term to search for
+     * @returns An array of search results
      */
-    searchByTerm(term) {
+    searchByTerm(term: string): Array<SearchResult> {
         let Fuse = FuseImport;
         if (typeof BUTTERCUP_WEB === "boolean" && BUTTERCUP_WEB === true) {
-            Fuse = FuseImport.default;
+            Fuse = (<any>FuseImport).default;
         }
         this._fuse = new Fuse(this._entries, {
             includeScore: true,
@@ -144,10 +167,10 @@ class Search {
 
     /**
      * Search for entries by URL
-     * @param {String} url
-     * @returns {Array.<SearchResult>}
+     * @param url The URL to search with
+     * @returns An array of search results
      */
-    searchByURL(url) {
+    searchByURL(url: string): Array<SearchResult> {
         const incomingDomain = extractDomain(url);
         if (!incomingDomain) {
             this._results = [];
@@ -199,5 +222,3 @@ class Search {
         return this._results;
     }
 }
-
-module.exports = Search;

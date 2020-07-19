@@ -1,14 +1,22 @@
+import Group from "../core/Group";
+import Entry from "../core/Entry";
+import { EntryID } from "../types";
+
+interface EntrySearchCompareFunction {
+    (entry: Entry): boolean;
+}
+
 /**
  * Find entry instances by filtering with a compare function
- * @param {Array.<Group>} groups The groups to check in
- * @param {Function} compareFn The callback comparison function, return true to keep and false
+ * @param groups The groups to check in
+ * @param compareFn The callback comparison function, return true to keep and false
  *  to strip
- * @returns {Array.<Entry>} An array of found entries
+ * @returns An array of found entries
  */
-function findEntriesByCheck(groups, compareFn) {
-    var foundEntries = [],
-        newEntries;
-    groups.forEach(function(group) {
+function findEntriesByCheck(groups: Array<Group>, compareFn: EntrySearchCompareFunction) {
+    let foundEntries: Array<Entry> = [],
+        newEntries: Array<Entry>;
+    groups.forEach(group => {
         newEntries = group.getEntries().filter(compareFn);
         if (newEntries.length > 0) {
             foundEntries = foundEntries.concat(newEntries);
@@ -21,7 +29,7 @@ function findEntriesByCheck(groups, compareFn) {
     return foundEntries;
 }
 
-function findEntriesByProperty(parentGroups, property, value) {
+export function findEntriesByProperty(parentGroups: Array<Group>, property: string | RegExp, value: string | RegExp): Array<Entry> {
     return findEntriesByCheck(parentGroups, entry => {
         const props = entry.getProperties(property);
         const propKeys = Object.keys(props);
@@ -38,12 +46,13 @@ function findEntriesByProperty(parentGroups, property, value) {
     });
 }
 
-function findEntryByID(parentGroups, id) {
+/**
+ * Find an entry by its ID
+ * @param parentGroups An array of parent groups to search through
+ * @param id The entry ID
+ * @returns The entry, if found, or null
+ */
+export function findEntryByID(parentGroups: Array<Group>, id: EntryID): null | Entry {
     const entries = findEntriesByCheck(parentGroups, entry => entry.id === id);
     return entries && entries.length >= 1 ? entries[0] : null;
 }
-
-module.exports = {
-    findEntriesByProperty,
-    findEntryByID
-};

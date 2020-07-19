@@ -3,12 +3,12 @@
  * @see MemoryStorageInterface
  * @memberof module:Buttercup
  */
-class StorageInterface {
+export default class StorageInterface {
     /**
      * Get all keys as an array
      * @memberof StorageInterface
      */
-    getAllKeys() {
+    getAllKeys(): Promise<Array<string>> {
         return Promise.resolve([]);
     }
 
@@ -16,7 +16,7 @@ class StorageInterface {
      * Get a value for a key
      * @memberof StorageInterface
      */
-    getValue(/* name */) {
+    getValue(name: string): Promise<string | null> {
         return Promise.resolve(null);
     }
 
@@ -24,7 +24,7 @@ class StorageInterface {
      * Remove a value for a key
      * @memberof StorageInterface
      */
-    removeKey(/* name */) {
+    removeKey(name: string): Promise<void> {
         return Promise.resolve();
     }
 
@@ -32,9 +32,7 @@ class StorageInterface {
      * Set a value for a key
      * @memberof StorageInterface
      */
-    setValue(/* name, value */) {
+    setValue(name: string, value: string): Promise<void> {
         return Promise.resolve();
     }
 }
-
-module.exports = StorageInterface;

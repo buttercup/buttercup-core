@@ -41,7 +41,6 @@ export { default as Credentials } from "./credentials/Credentials";
 export { default as StorageInterface } from "./storage/StorageInterface";
 export { default as MemoryStorageInterface } from "./storage/MemoryStorageInterface";
 
-export { default as EntryFinder } from "./search/EntryFinder";
 export { default as Search } from "./search/Search";
 export { getSharedAppEnv } from "./env/appEnv";
 
