@@ -117,10 +117,12 @@ class AttachmentManager {
      * @param {String} name The file name
      * @param {String} type The MIME type
      * @param {Number} size The byte size of the attachment, before encryption
+     * @param {Date=} timestamp Optional timestamp override for the creation of
+     *  the attachment
      * @returns {Promise}
      * @memberof AttachmentManager
      */
-    async setAttachment(entry, attachmentID, attachmentData, name, type, size) {
+    async setAttachment(entry, attachmentID, attachmentData, name, type, size, timestamp = new Date()) {
         this._checkAttachmentSupport();
         if (!name || !type || !size) {
             throw new Error(`Attachment properties required: name/type/size => ${name}/${type}/${size}`);
@@ -138,11 +140,14 @@ class AttachmentManager {
             );
         }
         // Create payload
+        const now = timestamp.toUTCString();
         const payload = {
             id: attachmentID,
             name,
             type,
-            size
+            size,
+            created: now,
+            updated: now
         };
         // Write attachment
         await this._source._datasource.putAttachment(
