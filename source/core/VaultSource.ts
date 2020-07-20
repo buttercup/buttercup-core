@@ -1,26 +1,50 @@
-const EventEmitter = require("eventemitter3");
-const ChannelQueue = require("@buttercup/channel-queue");
-const VError = require("verror");
-const Vault = require("./Vault.js");
-const Credentials = require("../credentials/Credentials.js");
-const { getCredentials } = require("../credentials/channel.js");
-const { getUniqueID } = require("../tools/encoding.js");
-const {
+import EventEmitter from "eventemitter3";
+import ChannelQueue from "@buttercup/channel-queue";
+import VError from "verror";
+import Vault from "./Vault";
+import Credentials from "../credentials/Credentials";
+import { getCredentials } from "../credentials/channel";
+import { getUniqueID } from "../tools/encoding";
+import {
     getSourceOfflineArchive,
     sourceHasOfflineCopy,
     storeSourceOfflineCopy
-} = require("../tools/vaultManagement.js");
-const { credentialsToDatasource, prepareDatasourceCredentials } = require("../datasources/register.js");
-const { initialiseShares } = require("../myButtercup/sharing.js");
-const VaultComparator = require("./VaultComparator.js");
-const { generateVaultInsights } = require("../insight/vault.js");
-const AttachmentManager = require("../attachments/AttachmentManager.js");
+} from "../tools/vaultManagement";
+import { credentialsToDatasource, prepareDatasourceCredentials } from "../datasources/register";
+import { initialiseShares } from "../myButtercup/sharing";
+import VaultComparator from "./VaultComparator";
+import { generateVaultInsights } from "../insight/vault";
+import AttachmentManager from "../attachments/AttachmentManager";
+import TextDatasource from "../datasources/TextDatasource";
+import VaultManager from "./VaultManager";
+import { VaultSourceID, VaultSourceStatus } from "../types";
+
+export interface VaultSourceMetadata {
+    [property: string]: any
+};
+
+interface StateChangeEnqueuedFunction {
+    (): void | Promise<any>
+}
+
+export interface UnlockSourceOptions {
+    initialiseRemote?: boolean;
+    loadOfflineCopy?: boolean;
+    storeOfflineCopy?: boolean; 
+}
+
+export interface VaultSourceConfig {
+    colour?: string;
+    id?: VaultSourceID;
+    order?: number;
+    meta?: VaultSourceMetadata
+}
 
 const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;
 const DEFAULT_COLOUR = "#000000";
 const DEFAULT_ORDER = 1000;
 
-function processDehydratedCredentials(credentialsString, masterPassword) {
+function processDehydratedCredentials(credentialsString: string, masterPassword: string): Promise<Credentials> {
     if (/^v1\n/.test(credentialsString)) {
         const [, sourceCredStr] = credentialsString.split("\n");
         return Credentials.fromSecureString(sourceCredStr, masterPassword);
@@ -34,19 +58,19 @@ function processDehydratedCredentials(credentialsString, masterPassword) {
  * @augments EventEmitter
  * @memberof module:Buttercup
  */
-class VaultSource extends EventEmitter {
-    static STATUS_LOCKED = "locked";
-    static STATUS_PENDING = "pending";
-    static STATUS_UNLOCKED = "unlocked";
+export default class VaultSource extends EventEmitter {
+    static STATUS_LOCKED = VaultSourceStatus.Locked;
+    static STATUS_PENDING = VaultSourceStatus.Pending;
+    static STATUS_UNLOCKED = VaultSourceStatus.Unlocked;
 
     /**
      * Rehydrate the vault source from a dehydrated state
-     * @param {String} dehydratedString The dehydrated form of the vault source
-     * @returns {VaultSource} A rehydrated instance
+     * @param dehydratedString The dehydrated form of the vault source
+     * @returns A rehydrated instance
      * @memberof VaultSource
      * @static
      */
-    static rehydrate(dehydratedString) {
+    static rehydrate(dehydratedString: string): VaultSource {
         const target = JSON.parse(dehydratedString);
         let credentials = target.credentials;
         if (target.v !== 2) {
@@ -65,7 +89,22 @@ class VaultSource extends EventEmitter {
         });
     }
 
-    constructor(name, type, credentialsString, config = {}) {
+    _attachmentManager: AttachmentManager = null;
+    _colour: string;
+    _credentials: string | Credentials;
+    _datasource: TextDatasource = null;
+    _id: VaultSourceID;
+    _meta: VaultSourceMetadata;
+    _name: string;
+    _order: number;
+    _queue: ChannelQueue;
+    _shares: Array<any> = [];
+    _status: VaultSourceStatus;
+    _type: string;
+    _vault: Vault = null;
+    _vaultManager: VaultManager = null;
+
+    constructor(name: string, type: string, credentialsString: string, config: VaultSourceConfig = {}) {
         super();
         const { colour = DEFAULT_COLOUR, id = getUniqueID(), order = DEFAULT_ORDER, meta = {} } = config;
         // Queue for managing state transitions
@@ -75,10 +114,6 @@ class VaultSource extends EventEmitter {
         //  - Unlocked = credentials instance
         this._credentials = credentialsString;
         this._status = VaultSource.STATUS_LOCKED;
-        // Set standard state
-        this._datasource = null;
-        this._vault = null;
-        this._shares = [];
         // Set other configuration items to properties
         this._id = id;
         this._name = name;
@@ -86,54 +121,45 @@ class VaultSource extends EventEmitter {
         this._colour = colour;
         this._order = order;
         this._meta = meta;
-        // Parent reference
-        this._vaultManager = null;
-        // Attachments
-        this._attachmentManager = null;
     }
 
     /**
      * The attachment manager
-     * @type {AttachmentManager|null}
      * @memberof VaultSource
      * @readonly
      */
-    get attachmentManager() {
+    get attachmentManager(): AttachmentManager {
         return this._attachmentManager;
     }
 
     /**
      * Source colour
-     * @type {String}
      * @memberof VaultSource
      */
-    get colour() {
+    get colour(): string {
         return this._colour;
     }
 
     /**
      * Source ID
-     * @type {String}
      * @memberof VaultSource
      * @readonly
      */
-    get id() {
+    get id(): VaultSourceID {
         return this._id;
     }
 
     /**
      * Meta data
-     * @type {Object}
      * @memberof VaultSource
      * @readonly
      */
-    get meta() {
+    get meta(): VaultSourceMetadata {
         return { ...this._meta };
     }
 
     /**
      * Source name
-     * @type {String}
      * @memberof VaultSource
      * @readonly
      */
@@ -142,36 +168,42 @@ class VaultSource extends EventEmitter {
     }
 
     /**
-     * Source status
-     * @type {String}
+     * The vault order on a vault management instance
      * @memberof VaultSource
      * @readonly
      */
-    get status() {
+    get order(): number {
+        return this._order;
+    }
+
+    /**
+     * Source status
+     * @memberof VaultSource
+     * @readonly
+     */
+    get status(): VaultSourceStatus {
         return this._status;
     }
 
     /**
      * The datasource type
-     * @type {String}
      * @memberof VaultSource
      * @readonly
      */
-    get type() {
+    get type(): string {
         return this._type;
     }
 
     /**
      * Vault reference
-     * @type {Vault|null}
      * @memberof VaultSource
      * @readonly
      */
-    get vault() {
+    get vault(): Vault {
         return this._vault;
     }
 
-    set colour(newColour) {
+    set colour(newColour: string) {
         if (COLOUR_TEST.test(newColour) !== true) {
             throw new VError(`Failed setting colour: Invalid format (expected hex): ${newColour}`);
         }
@@ -181,13 +213,12 @@ class VaultSource extends EventEmitter {
 
     /**
      * Change the master vault password
-     * @param {String} oldPassword The original/current password
-     * @param {String} newPassword The new password to change to
-     * @param {Object=} meta Optional metadata
-     * @returns {Promise}
+     * @param oldPassword The original/current password
+     * @param newPassword The new password to change to
+     * @param meta Optional metadata
      * @memberof VaultSource
      */
-    async changeMasterPassword(oldPassword, newPassword, meta = {}) {
+    async changeMasterPassword(oldPassword: string, newPassword: string, meta: { [key: string]: any } = {}) {
         if (oldPassword === newPassword) {
             throw new Error("New password cannot be the same as the previous one");
         } else if (!newPassword) {
@@ -202,7 +233,7 @@ class VaultSource extends EventEmitter {
             await this.unlock(Credentials.fromPassword(oldPassword));
         } else {
             // Unlocked, so check password..
-            const credentials = getCredentials(this._credentials.id);
+            const credentials = getCredentials((<Credentials>this._credentials).id);
             if (credentials.masterPassword !== oldPassword) {
                 throw new Error("Old password does not match current unlocked instance value");
             }
@@ -222,7 +253,7 @@ class VaultSource extends EventEmitter {
         // Clear offline cache
         await storeSourceOfflineCopy(this._vaultManager._cacheStorage, this.id, null);
         // Change password
-        const newCredentials = Credentials.fromCredentials(this._credentials, oldPassword);
+        const newCredentials = Credentials.fromCredentials(this._credentials as Credentials, oldPassword);
         const newCreds = getCredentials(newCredentials.id);
         newCreds.masterPassword = newPassword;
         await this._updateVaultCredentials(newCredentials);
@@ -243,10 +274,9 @@ class VaultSource extends EventEmitter {
 
     /**
      * Check if the vault source can be updated
-     * @returns {Boolean}
      * @memberof VaultSource
      */
-    canBeUpdated() {
+    canBeUpdated(): boolean {
         return this.status === VaultSource.STATUS_UNLOCKED && this._vault.format.dirty === false;
     }
 
@@ -262,11 +292,10 @@ class VaultSource extends EventEmitter {
 
     /**
      * Dehydrate the source to a JSON string, ready for storage
-     * @returns {Promise.<String>}
      * @memberof VaultSource
      */
-    dehydrate() {
-        return this._enqueueStateChange(async () => {
+    async dehydrate() {
+        await this._enqueueStateChange(async () => {
             const payload = {
                 v: 2,
                 id: this.id,
@@ -275,14 +304,15 @@ class VaultSource extends EventEmitter {
                 status: VaultSource.STATUS_LOCKED,
                 colour: this.colour,
                 order: this.order,
-                meta: this.meta
+                meta: this.meta,
+                credentials: null
             };
             if (this.status === VaultSource.STATUS_PENDING) {
                 throw new VError(`Failed dehydrating source: Source in pending state: ${this.id}`);
             } else if (this.status === VaultSource.STATUS_LOCKED) {
                 payload.credentials = this._credentials;
             } else {
-                payload.credentials = await this._credentials.toSecureString();
+                payload.credentials = await (<Credentials>this._credentials).toSecureString();
             }
             return JSON.stringify(payload);
         });
@@ -290,11 +320,11 @@ class VaultSource extends EventEmitter {
 
     /**
      * Get offline content, if it exists
-     * @returns {Promise.<String|null>} A promise a resolves with the content, or null
+     * @returns A promise a resolves with the content, or null
      *  if it doesn't exist
      * @memberof VaultSource
      */
-    getOfflineContent() {
+    getOfflineContent(): Promise<string | null> {
         return this.checkOfflineCopy().then(hasContent =>
             hasContent ? getSourceOfflineArchive(this._vaultManager._cacheStorage, this.id) : null
         );
@@ -304,19 +334,19 @@ class VaultSource extends EventEmitter {
      * Detect whether the local archives (in memory) differ from their remote copies
      * Fetches the remote copies from their datasources and detects differences between
      * them and their local counterparts. Does not change/update the local items.
-     * @returns {Promise.<Boolean>} A promise that resolves with a boolean - true if
+     * @returns A promise that resolves with a boolean - true if
      *      there are differences, false if there is not
      * @memberof VaultSource
      */
-    localDiffersFromRemote() {
+    localDiffersFromRemote(): Promise<boolean> {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
             return Promise.reject(
                 new VError(`Failed diffing source: Source not unlocked (${this.status}): ${this.id}`)
             );
         }
-        if (typeof this._datasource.localDiffersFromRemote === "function") {
-            return this._datasource.localDiffersFromRemote(
-                prepareDatasourceCredentials(this._credentials, this._datasource.type),
+        if (typeof (<any>this._datasource).localDiffersFromRemote === "function") {
+            return (<any>this._datasource).localDiffersFromRemote(
+                prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type),
                 this._vault.format.history
             );
         }
@@ -325,7 +355,7 @@ class VaultSource extends EventEmitter {
             this._datasource.setContent("");
         }
         return this._datasource
-            .load(prepareDatasourceCredentials(this._credentials, this._datasource.type))
+            .load(prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type))
             .then(({ Format, history }) => Vault.createFromHistory(history, Format))
             .then(loadedItem => {
                 const comparator = new VaultComparator(this._vault, loadedItem);
@@ -335,7 +365,6 @@ class VaultSource extends EventEmitter {
 
     /**
      * Lock the source
-     * @returns {Promise}
      * @memberof VaultSource
      */
     async lock() {
@@ -349,7 +378,7 @@ class VaultSource extends EventEmitter {
             const currentDatasource = this._datasource;
             const currentAttachmentMgr = this._attachmentManager;
             try {
-                const credentialsStr = await this._credentials.toSecureString();
+                const credentialsStr = await (<Credentials>this._credentials).toSecureString();
                 this._credentials = credentialsStr;
                 this._datasource = null;
                 this._vault = null;
@@ -371,17 +400,17 @@ class VaultSource extends EventEmitter {
      * Merge remote contents
      * Detects differences between a local and a remote item, and merges the
      * two copies together.
-     * @returns {Promise.<Vault>} A promise that resolves with the newly merged archive -
+     * @returns A promise that resolves with the newly merged archive -
      *      This archive is automatically saved over the original local copy.
      * @memberof VaultSource
      */
-    async mergeFromRemote() {
+    async mergeFromRemote(): Promise<Vault> {
         if (this._datasource.type !== "text") {
             // Only clear if not a TextDatasource
             this._datasource.setContent("");
         }
         const { Format, history } = await this._datasource.load(
-            prepareDatasourceCredentials(this._credentials, this._datasource.type)
+            prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type)
         );
         const stagedVault = Vault.createFromHistory(history, Format);
         const comparator = new VaultComparator(this._vault, stagedVault);
@@ -414,7 +443,6 @@ class VaultSource extends EventEmitter {
     /**
      * Save the vault to the remote, ensuring that it's first merged and
      * updated to prevent conflicts or overwrites.
-     * @returns {Promise}
      * @memberof VaultSource
      */
     async save() {
@@ -424,7 +452,7 @@ class VaultSource extends EventEmitter {
             }
             await this._datasource.save(
                 this._vault.format.history,
-                prepareDatasourceCredentials(this._credentials, this._datasource.type)
+                prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type)
             );
             this._vault.format.dirty = false;
             await this._updateInsights();
@@ -432,12 +460,12 @@ class VaultSource extends EventEmitter {
         this.emit("updated");
     }
 
-    supportsAttachments() {
+    supportsAttachments(): boolean {
         if (this.status !== VaultSource.STATUS_UNLOCKED) return false;
         return this._datasource.supportsAttachments();
     }
 
-    async unlock(vaultCredentials, config = {}) {
+    async unlock(vaultCredentials: Credentials, config: UnlockSourceOptions = {}) {
         if (!Credentials.isCredentials(vaultCredentials)) {
             throw new VError(`Failed unlocking source: Invalid credentials passed to source: ${this.id}`);
         }
@@ -455,9 +483,9 @@ class VaultSource extends EventEmitter {
                     if (availableOfflineContent && loadOfflineCopy) {
                         offlineContent = availableOfflineContent;
                     }
-                    return processDehydratedCredentials(this._credentials, masterPassword);
+                    return processDehydratedCredentials(this._credentials as string, masterPassword);
                 })
-                .then(newCredentials => {
+                .then((newCredentials: Credentials) => {
                     const credentials = (this._credentials = newCredentials);
                     const datasource = (this._datasource = credentialsToDatasource(
                         Credentials.fromCredentials(credentials, masterPassword)
@@ -522,14 +550,14 @@ class VaultSource extends EventEmitter {
 
     /**
      * Update the vault
-     * @returns {Promise} A promise that resolves once the update has
+     * @returns A promise that resolves once the update has
      *  completed
      * @memberof VaultSource
      */
-    update({ skipDiff = false } = {}) {
-        return this._enqueueStateChange(
+    async update({ skipDiff = false } = {}) {
+        await this._enqueueStateChange(
             () =>
-                (skipDiff ? Promise.resolve() : this.localDiffersFromRemote()).then(differs => {
+                (skipDiff ? Promise.resolve(false) : this.localDiffersFromRemote()).then(differs => {
                     if (differs) {
                         return this.mergeFromRemote();
                     }
@@ -546,14 +574,14 @@ class VaultSource extends EventEmitter {
      * - This does not perform any merging or sync checks, but simply
      * writes the vault contents to the remote, overwriting whatever
      * was there before.
-     * @returns {Promise} A promise that resolves when saving has completed
+     * @returns A promise that resolves when saving has completed
      * @memberof VaultSource
      */
     async write() {
         await this._enqueueStateChange(async () => {
             await this._datasource.save(
                 this._vault.format.history,
-                prepareDatasourceCredentials(this._credentials, this._datasource.type)
+                prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type)
             );
             this._vault.format.dirty = false;
             await this._updateInsights();
@@ -570,7 +598,7 @@ class VaultSource extends EventEmitter {
         // });
     }
 
-    _enqueueStateChange(cb, stack) {
+    _enqueueStateChange(cb: StateChangeEnqueuedFunction, stack?: string): Promise<any> {
         const args = stack ? [cb, undefined, stack] : [cb];
         return this._queue.channel("state").enqueue(...args);
     }
@@ -597,7 +625,7 @@ class VaultSource extends EventEmitter {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
             throw new VError(`Failed updating source credentials: Source is not unlocked: ${this.id}`);
         }
-        const { masterPassword } = getCredentials(this._credentials.id);
+        const { masterPassword } = getCredentials((<Credentials>this._credentials).id);
         this._credentials = Credentials.fromCredentials(this._datasource.credentials, masterPassword);
     }
 
@@ -605,7 +633,6 @@ class VaultSource extends EventEmitter {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
             throw new VError(`Failed updating vault insights: Source is not unlocked: ${this.id}`);
         }
-        if (!this._datasource.updateInsights) return;
         const insights = generateVaultInsights(this.vault);
         await this._datasource.updateInsights(insights);
     }
@@ -637,5 +664,3 @@ class VaultSource extends EventEmitter {
         });
     }
 }
-
-module.exports = VaultSource;

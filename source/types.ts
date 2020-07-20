@@ -99,12 +99,23 @@ export interface MemoryStore {
 
 export type VaultID = string;
 
+export type VaultSourceID = string;
+
+export enum VaultSourceStatus {
+    Locked = "locked",
+    Pending = "pending",
+    Unlocked = "unlocked"
+};
+
  export interface VaultInsights {
-    avgPassLen: number;     // Average password length
-    entries: number;        // Number of entries in the vault
-    groups: number;         // Number of groups in the vault
-    longPassLen: number;    // Longest password length
-    shortPassLen: number;   // Shortest password length
-    trashEntries: number;   // Number of entries in trash
-    trashGroups: number;    // Number of groups in trash
+    avgPassLen: number;         // Average password length
+    duplicatePasswords: number; // Number of duplicate passwords
+    entries: number;            // Number of entries in the vault
+    groups: number;             // Number of groups in the vault
+    longPassLen: number;        // Longest password length
+    shortPassLen: number;       // Shortest password length
+    trashEntries: number;       // Number of entries in trash
+    trashGroups: number;        // Number of groups in trash
+    usernames: number;          // Number of usernames in the vault
+    weakPasswords: number;      // Number of detected weak passwords
  }

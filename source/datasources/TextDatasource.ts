@@ -4,7 +4,7 @@ import Credentials from "../credentials/Credentials";
 import { credentialsAllowsPurpose, getCredentials } from "../credentials/channel";
 import { detectFormat, getDefaultFormat } from "../io/formatRouter";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
-import { AttachmentDetails, BufferLike, CredentialsDatasourceConfiguration, DatasourceLoadedData, EncryptedContent, History, VaultID } from "../types";
+import { AttachmentDetails, BufferLike, CredentialsDatasourceConfiguration, DatasourceLoadedData, EncryptedContent, History, VaultID, VaultInsights } from "../types";
 
 /**
  * Datasource for text input and output
@@ -54,13 +54,24 @@ export default class TextDatasource extends EventEmitter {
     }
 
     /**
+     * Change the password of the vault
+     * @param newCredentials The new credentials to take the new password from
+     * @param preflight Whether or not the password change attempt is a preflight
+     *  check or not
+     * @returns True/False if in preflight, as to whether or not the password change
+     *  can be performed at this time, or undefined when not in preflight mode.
+     */
+    async changePassword(newCredentials: Credentials, preflight: boolean): Promise<boolean | undefined> {
+        throw new Error("Changing password not supported");
+    }
+
+    /**
      * Get attachment buffer
      * - Downloads the attachment contents into a buffer
      * @param vaultID The ID of the vault
      * @param attachmentID The ID of the attachment
      * @param credentials Credentials to decrypt
      *  the buffer, defaults to null (no decryption)
-     * @returns {Promise.<Buffer|ArrayBuffer>}
      * @memberof TextDatasource
      */
     getAttachment(vaultID: VaultID, attachmentID: string, credentials: Credentials = null): Promise<BufferLike> {
@@ -212,6 +223,15 @@ export default class TextDatasource extends EventEmitter {
      */
     supportsRemoteBypass(): boolean {
         return false;
+    }
+
+    /**
+     * Record vault insights, if supported, to some destination
+     * @param insights Vault insights data
+     * @memberof TextDatasource
+     */
+    updateInsights(insights: VaultInsights): Promise<void> {
+        return Promise.resolve();
     }
 }
 

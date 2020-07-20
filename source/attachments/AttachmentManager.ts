@@ -1,38 +1,41 @@
-const { v4: uuid } = require("uuid");
-const Credentials = require("../credentials/Credentials.js");
-const { credentialsAllowsPurpose } = require("../credentials/channel.js");
+import { v4 as uuid } from "uuid";
+import Credentials from "../credentials/Credentials";
+import { credentialsAllowsPurpose } from "../credentials/channel";
+import VaultSource from "../core/VaultSource";
+import Entry from "../core/Entry";
 
-/**
- * @typedef {Object} AttachmentDetails
- * @property {String} id The attachment ID
- * @property {String} name The name of the file
- * @property {String} type The MIME type
- * @property {Number} size The size of the file, before encryption
- */
+export interface AttachmentDetails {
+    id: string;
+    name: string;
+    type: string;
+    size: number;
+}
 
 /**
  * Attachment manager
  * @memberof module:Buttercup
  */
-class AttachmentManager {
+export default class AttachmentManager {
     /**
      * Get a new attachment ID
-     * @returns {String}
      * @static
      * @memberof AttachmentManager
      */
-    static newAttachmentID() {
+    static newAttachmentID(): string {
         return uuid();
     }
 
+    _credentials: Credentials;
+    _source: VaultSource;
+
     /**
      * Constructor for new attachment managers
-     * @param {VaultSource} vaultSource The vault source to attach to. This is
+     * @param vaultSource The vault source to attach to. This is
      *  normally set by the VaultSource automatically when unlocking a source.
-     * @param {Credentials} credentials The credentials to use for encrypting
+     * @param credentials The credentials to use for encrypting
      *  and decrypting attachments.
      */
-    constructor(vaultSource, credentials) {
+    constructor(vaultSource: VaultSource, credentials: Credentials) {
         this._source = vaultSource;
         this._credentials = credentials;
         if (!credentialsAllowsPurpose(this._credentials.id, Credentials.PURPOSE_ATTACHMENTS)) {
@@ -43,13 +46,12 @@ class AttachmentManager {
 
     /**
      * Get an attachment's data
-     * @param {Entry} entry Entry instance the attachment can be found on
-     * @param {String} attachmentID The attachment ID
-     * @returns {Promise.<Buffer|ArrayBuffer>}
+     * @param entry Entry instance the attachment can be found on
+     * @param attachmentID The attachment ID
      * @throws {Error} Throws if the attachment isn't found
      * @memberof AttachmentManager
      */
-    async getAttachment(entry, attachmentID) {
+    async getAttachment(entry: Entry, attachmentID: string): Promise<Buffer | ArrayBuffer> {
         this._checkAttachmentSupport();
         const details = await this.getAttachmentDetails(entry, attachmentID);
         if (!details) {
@@ -60,29 +62,25 @@ class AttachmentManager {
 
     /**
      * Get an attachment's details
-     * @param {Entry} entry Entry instance the attachment can be found on
-     * @param {String} attachmentID The attachment ID
-     * @returns {Promise.<AttachmentDetails|null>} The details or null if
-     *  the attachment isn't found
+     * @param entry Entry instance the attachment can be found on
+     * @param attachmentID The attachment ID
+     * @returns The details or null if the attachment isn't found
      * @memberof AttachmentManager
      */
-    async getAttachmentDetails(entry, attachmentID) {
+    async getAttachmentDetails(entry: Entry, attachmentID: string): Promise<AttachmentDetails> {
         this._checkAttachmentSupport();
-        const Entry = require("../core/Entry.js");
         const attributeKey = `${Entry.Attributes.AttachmentPrefix}${attachmentID}`;
-        const payloadRaw = entry.getAttribute(attributeKey);
+        const payloadRaw = entry.getAttribute(attributeKey) as string;
         return payloadRaw ? JSON.parse(payloadRaw) : null;
     }
 
     /**
      * List all attachments
-     * @param {Entry} entry Entry instance the attachment can be found on
-     * @returns {Promise.<AttachmentDetails[]>}
+     * @param entry Entry instance the attachment can be found on
      * @memberof AttachmentManager
      */
-    async listAttachments(entry) {
+    async listAttachments(entry: Entry): Promise<Array<AttachmentDetails>> {
         this._checkAttachmentSupport();
-        const Entry = require("../core/Entry.js");
         const attributes = entry.getAttribute();
         const attachmentKeys = Object.keys(attributes).filter(
             key => key.indexOf(Entry.Attributes.AttachmentPrefix) === 0
@@ -93,14 +91,12 @@ class AttachmentManager {
     /**
      * Remove an attachment, deleting the file and removing it from
      *  the entry
-     * @param {Entry} entry Entry instance the attachment can be found on
-     * @param {String} attachmentID The attachment ID
-     * @returns {Promise}
+     * @param entry Entry instance the attachment can be found on
+     * @param attachmentID The attachment ID
      * @memberof AttachmentManager
      */
-    async removeAttachment(entry, attachmentID) {
+    async removeAttachment(entry: Entry, attachmentID: string) {
         this._checkAttachmentSupport();
-        const Entry = require("../core/Entry.js");
         const attributeKey = `${Entry.Attributes.AttachmentPrefix}${attachmentID}`;
         // Remove data
         await this._source._datasource.removeAttachment(this._source.vault.id, attachmentID);
@@ -111,16 +107,15 @@ class AttachmentManager {
     /**
      * Write an attachment to an entry.
      * Creates a new attachment or updates an existing one, by attachment ID
-     * @param {Entry} entry Entry instance the attachment can be found on
-     * @param {String} attachmentID The attachment ID
-     * @param {Buffer|ArrayBuffer} attachmentData The attachment's data
-     * @param {String} name The file name
-     * @param {String} type The MIME type
-     * @param {Number} size The byte size of the attachment, before encryption
-     * @returns {Promise}
+     * @param entry Entry instance the attachment can be found on
+     * @param attachmentID The attachment ID
+     * @param attachmentData The attachment's data
+     * @param name The file name
+     * @param type The MIME type
+     * @param size The byte size of the attachment, before encryption
      * @memberof AttachmentManager
      */
-    async setAttachment(entry, attachmentID, attachmentData, name, type, size) {
+    async setAttachment(entry: Entry, attachmentID: string, attachmentData: Buffer | ArrayBuffer, name: string, type: string, size: number) {
         this._checkAttachmentSupport();
         if (!name || !type || !size) {
             throw new Error(`Attachment properties required: name/type/size => ${name}/${type}/${size}`);
@@ -161,5 +156,3 @@ class AttachmentManager {
         }
     }
 }
-
-module.exports = AttachmentManager;

@@ -1,3 +1,6 @@
+import Vault from "../core/Vault";
+import { VaultInsights } from "../types";
+
 const DIGITS = /[0-9]+/;
 const LOWER_CASE = /[a-z]+/;
 const OTHER = /[^0-9a-zA-Z`~!@#$%^&*()=+\[\]{};:'",.<>\/?|\\_£€-]+/;
@@ -5,27 +8,11 @@ const SYMBOLS = /[`~!@#$%^&*()=+\[\]{};:'",.<>\/?|\\_£€-]+/;
 const UPPER_CASE = /[A-Z]+/;
 
 /**
- * @typedef {Object} VaultInsights
- * @property {Number=} avgPassLen Average password length
- * @property {Number=} entries Number of entries in the vault
- * @property {Number=} groups Number of groups in the vault
- * @property {Number=} longPassLen Longest password length
- * @property {Number=} shortPassLen Shortest password length
- * @property {Number=} trashEntries Number of entries in trash
- * @property {Number=} trashGroups Number of groups in trash
- */
-
-/**
- * @typedef {VaultInsights} Insights
- */
-
-/**
  * Generate insights for a vault instance
- * @param {Vault} vault The vault instance
- * @returns {VaultInsights}
+ * @param vault The vault instance
  * @private
  */
-function generateVaultInsights(vault) {
+export function generateVaultInsights(vault: Vault): VaultInsights {
     let groupCount = 0,
         entryCount = 0,
         trashEntryCount = 0,
@@ -96,14 +83,10 @@ function generateVaultInsights(vault) {
     };
 }
 
-function isWeak(password) {
+function isWeak(password: string): boolean {
     if (!password) return true;
     if (password.length < 10) return true;
     const matchingSets = [DIGITS, LOWER_CASE, OTHER, SYMBOLS, UPPER_CASE].filter(set => set.test(password)).length;
     if (matchingSets >= 3) return false;
     return true;
 }
-
-module.exports = {
-    generateVaultInsights
-};
