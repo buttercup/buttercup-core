@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v4.10.0
+_2020-07-21_
+
+ * Attachment `created` and `updated` timestamps
+
 ## v4.9.2
 _2020-07-11_
 
