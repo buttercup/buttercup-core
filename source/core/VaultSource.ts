@@ -19,10 +19,6 @@ import TextDatasource from "../datasources/TextDatasource";
 import VaultManager from "./VaultManager";
 import { VaultSourceID, VaultSourceStatus } from "../types";
 
-export interface VaultSourceMetadata {
-    [property: string]: any
-};
-
 interface StateChangeEnqueuedFunction {
     (): void | Promise<any>
 }
@@ -39,6 +35,10 @@ export interface VaultSourceConfig {
     order?: number;
     meta?: VaultSourceMetadata
 }
+
+export interface VaultSourceMetadata {
+    [property: string]: any
+};
 
 const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;
 const DEFAULT_COLOUR = "#000000";
@@ -211,6 +211,14 @@ export default class VaultSource extends EventEmitter {
         this.emit("updated");
     }
 
+    set order(newOrder: number) {
+        if (newOrder < 0) {
+            throw new VError(`Failed setting order: Order must be greater than or equal to 0: ${newOrder}`);
+        }
+        this._order = newOrder;
+        this.emit("updated");
+    }
+
     /**
      * Change the master vault password
      * @param oldPassword The original/current password
@@ -294,8 +302,8 @@ export default class VaultSource extends EventEmitter {
      * Dehydrate the source to a JSON string, ready for storage
      * @memberof VaultSource
      */
-    async dehydrate() {
-        await this._enqueueStateChange(async () => {
+    dehydrate(): Promise<string> {
+        return this._enqueueStateChange(async () => {
             const payload = {
                 v: 2,
                 id: this.id,

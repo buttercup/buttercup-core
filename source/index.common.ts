@@ -1,5 +1,5 @@
-export { default as VaultManager } from "./core/VaultManager";
-export { default as VaultSource } from "./core/VaultSource";
+export { default as VaultManager, AddSourceOptions, InterruptedAutoUpdateFunction, VaultManagerOptions } from "./core/VaultManager";
+export { default as VaultSource, UnlockSourceOptions, VaultSourceConfig, VaultSourceMetadata } from "./core/VaultSource";
 export { default as Vault } from "./core/Vault";
 export { default as Group } from "./core/Group";
 export { default as Entry } from "./core/Entry";
@@ -51,6 +51,8 @@ export {
     ENTRY_URL_TYPE_LOGIN,
     getEntryURLs
 } from "./tools/entry";
+
+export * from "./types";
 
 /**
  * @module Buttercup

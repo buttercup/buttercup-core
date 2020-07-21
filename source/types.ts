@@ -97,6 +97,8 @@ export interface MemoryStore {
     vault?: EncryptedContent;
 }
 
+export type SetTimeout = ReturnType<typeof setTimeout>;
+
 export type VaultID = string;
 
 export type VaultSourceID = string;

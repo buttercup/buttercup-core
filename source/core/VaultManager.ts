@@ -1,8 +1,30 @@
-const EventEmitter = require("eventemitter3");
-const isPromise = require("is-promise");
-const ChannelQueue = require("@buttercup/channel-queue");
-const MemoryStorageInterface = require("../storage/MemoryStorageInterface.js");
-const VaultSource = require("./VaultSource.js");
+import EventEmitter from "eventemitter3";
+import VError from "verror";
+import isPromise from "is-promise";
+import ChannelQueue from "@buttercup/channel-queue";
+import MemoryStorageInterface from "../storage/MemoryStorageInterface";
+import VaultSource from "./VaultSource";
+import StorageInterface from "../storage/StorageInterface";
+import { SetTimeout, VaultSourceID } from "../types";
+
+export interface AddSourceOptions {
+    order?: number;
+}
+
+export interface InterruptedAutoUpdateFunction {
+    (): void | Promise<any>
+}
+
+interface StateChangeEnqueuedFunction {
+    (): void | Promise<any>
+}
+
+export interface VaultManagerOptions {
+    autoUpdate?: boolean;
+    autoUpdateDelay?: number;
+    cacheStorage?: StorageInterface;
+    sourceStorage?: StorageInterface;
+}
 
 const DEFAULT_AUTO_UPDATE_DELAY = 1000 * 60 * 2.5; // 2.5 mins
 const NOOP = () => {};
@@ -10,35 +32,32 @@ const STORAGE_KEY_PREFIX = "bcup_vaultmgr_";
 const STORAGE_KEY_PREFIX_TEST = /^bcup_vaultmgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
 /**
- * @typedef {Object} VaultManagerOptions
- * @property {Boolean=} autoUpdate Whether or not to auto update unlocked vaults
- * @property {Number=} autoUpdateDelay Delay in milliseconds between auto-update
- *  checks
- * @property {StorageInterface=} cacheStorage Storage adapter for storing
- *  cached vault contents for offline access
- * @property {StorageInterface=} sourceStorage Storage adapter for storing
- *  managed vault details so that they can be rehydrated upon startup
- */
-
-/**
  * Vault manager, to manage vault sources and their vaults
  * @augments EventEmitter
  * @memberof module:Buttercup
  */
-class VaultManager extends EventEmitter {
+export default class VaultManager extends EventEmitter {
     /**
      * Key prefix for stored vaults
-     * @type {String}
      * @static
      * @memberof VaultManager
      */
     static STORAGE_KEY_PREFIX = STORAGE_KEY_PREFIX;
 
+    _autoUpdateDelay: number;
+    _autoUpdateEnabled: boolean;
+    _autoUpdateTimer: SetTimeout = null;
+    _cacheStorage: StorageInterface;
+    _initialised: boolean = false;
+    _queue = new ChannelQueue();
+    _sources: Array<VaultSource> = [];
+    _sourceStorage: StorageInterface;
+
     /**
      * Construct a new VaultManager
-     * @param {VaultManagerOptions=} opts Configuration options
+     * @param opts Configuration options
      */
-    constructor(opts = {}) {
+    constructor(opts: VaultManagerOptions = {}) {
         super();
         const {
             autoUpdate = true,
@@ -46,33 +65,27 @@ class VaultManager extends EventEmitter {
             cacheStorage = new MemoryStorageInterface(),
             sourceStorage = new MemoryStorageInterface()
         } = opts;
-        this._sources = [];
         this._cacheStorage = cacheStorage;
         this._sourceStorage = sourceStorage;
-        this._queue = new ChannelQueue();
         this._autoUpdateEnabled = autoUpdate;
         this._autoUpdateDelay = autoUpdateDelay;
-        this._autoUpdateTimer = null;
-        this._initialised = false;
     }
 
     /**
      * Array of vault sources
-     * @type {VaultSource[]}
      * @readonly
      * @memberof VaultManager
      */
-    get sources() {
+    get sources(): Array<VaultSource> {
         return [...this._sources];
     }
 
     /**
      * Array of unlocked vault sources
-     * @type {VaultSource[]}
      * @readonly
      * @memberof VaultManager
      */
-    get unlockedSources() {
+    get unlockedSources(): Array<VaultSource> {
         return this._sources.filter(source => source.status === VaultSource.STATUS_UNLOCKED);
     }
 
@@ -86,13 +99,12 @@ class VaultManager extends EventEmitter {
      * - The vault manager will then provide a management
      * platform for the source, including storage access and
      * event aggregation.
-     * @param {VaultSource} source The source to add
-     * @param {AddSourceOptions=} opts Options for adding the
+     * @param source The source to add
+     * @param opts Options for adding the
      *  source
-     * @returns {Promise}
      * @memberof VaultManager
      */
-    async addSource(source, opts = {}) {
+    async addSource(source: VaultSource, opts: AddSourceOptions = {}) {
         const { order: orderOverride } = opts;
         const existing = this._sources.find(src => src.id === source.id);
         if (existing) return;
@@ -114,22 +126,22 @@ class VaultManager extends EventEmitter {
 
     /**
      * Dehydrate all sources and write them to storage
-     * @returns {Promise} A promise that resolves once all sources have been dehydrated
+     * @returns A promise that resolves once all sources have been dehydrated
      * @memberof VaultManager
      */
-    dehydrate() {
-        return this.enqueueStateChange(() => {
-            return Promise.all(this._sources.map(source => this.dehydrateSource(source)));
-        });
+    async dehydrate() {
+        await this.enqueueStateChange(() =>
+            Promise.all(this._sources.map(source => this.dehydrateSource(source)))
+        );
     }
 
     /**
      * Dehydrate a single archive source
-     * @param {String} sourceID The ID of the source
-     * @returns {Promise} A promise that resolves once the source has been dehydrated
+     * @param sourceID The ID of the source
+     * @returns A promise that resolves once the source has been dehydrated
      * @memberof VaultManager
      */
-    async dehydrateSource(sourceOrSourceID) {
+    async dehydrateSource(sourceOrSourceID: VaultSource | VaultSourceID) {
         const source = typeof sourceOrSourceID === "string" ? this.getSourceForID(sourceOrSourceID) : sourceOrSourceID;
         const dehydratedString = await source.dehydrate();
         await this._storeDehydratedSource(source.id, dehydratedString);
@@ -137,40 +149,38 @@ class VaultManager extends EventEmitter {
 
     /**
      * Enqueue an asychronous change of state
-     * @param {Function} cb Callback to enqueue
-     * @returns {Promise}
+     * @param cb Callback to enqueue
      * @memberof VaultManager
      */
-    enqueueStateChange(cb) {
+    enqueueStateChange(cb: StateChangeEnqueuedFunction) {
         return this._queue.channel("state").enqueue(cb);
     }
 
     /**
      * Get the next viable order number for a new source
-     * @returns {Number} The new order
+     * @returns The new order
      * @memberof VaultManager
      */
-    getNextOrder() {
+    getNextOrder(): number {
         return Math.max(...this._sources.map(source => source._order)) + 1;
     }
 
     /**
      * Get a source for an ID
-     * @param {String} sourceID The source ID
-     * @returns {Vaultsource|null} The source with the matching ID or null if not found
+     * @param sourceID The source ID
+     * @returns The source with the matching ID or null if not found
      * @memberof VaultManager
      */
-    getSourceForID(sourceID) {
+    getSourceForID(sourceID: VaultSourceID): VaultSource | null {
         const source = this._sources.find(target => target.id && target.id === sourceID);
         return source || null;
     }
 
     /**
      * Get an array of sources that can be updated
-     * @returns {Array.<VaultSource>}
      * @memberof VaultManager
      */
-    getUpdateableSources() {
+    getUpdateableSources(): Array<VaultSource> {
         return this._sources.filter(source => source.canBeUpdated());
     }
 
@@ -186,15 +196,15 @@ class VaultManager extends EventEmitter {
 
     /**
      * Wait for and interrupt state changes when auto-update is running
-     * @param {Function} cb The callback to execute during the auto-update interruption
-     * @returns {Promise} A promise that resolves when ready
-     * @memberof ArchiveManager
+     * @param cb The callback to execute during the auto-update interruption
+     * @returns A promise that resolves when ready
+     * @memberof VaultManager
      * @example
-     *  archiveManager.interruptAutoUpdate(() => {
+     *  vaultManager.interruptAutoUpdate(() => {
      *      // Do something with auto-updating paused
      *  });
      */
-    interruptAutoUpdate(cb) {
+    interruptAutoUpdate(cb: InterruptedAutoUpdateFunction) {
         return this.enqueueStateChange(NOOP).then(() =>
             this._queue.channel("autoUpdateInterrupt").enqueue(() => {
                 const enabled = this._autoUpdateEnabled;
@@ -203,7 +213,7 @@ class VaultManager extends EventEmitter {
                 const restoreAutoUpdating = () => {
                     this.toggleAutoUpdating(enabled, delay);
                 };
-                let retVal;
+                let retVal: any;
                 try {
                     retVal = cb();
                 } catch (err) {
@@ -216,7 +226,7 @@ class VaultManager extends EventEmitter {
                     restoreAutoUpdating();
                     return retVal;
                 }
-                return retVal
+                return (<Promise<any>>retVal)
                     .then(res => {
                         // Wait until after the promise has completed
                         // or failed:
@@ -233,7 +243,7 @@ class VaultManager extends EventEmitter {
 
     /**
      * Rehydrate sources from storage
-     * @returns {Promise} A promise that resolves once rehydration has completed
+     * @returns A promise that resolves once rehydration has completed
      * @memberof VaultManager
      * @throws {VError} Rejects if rehydrating from storage fails
      */
@@ -257,12 +267,12 @@ class VaultManager extends EventEmitter {
 
     /**
      * Remove a source from the storage
-     * @param {String} sourceID The ID of the source to remove
-     * @returns {Promise} A promise that resolves once the source has been removed
+     * @param sourceID The ID of the source to remove
+     * @returns A promise that resolves once the source has been removed
      * @memberof VaultManager
      */
-    removeSource(sourceID) {
-        return this.enqueueStateChange(async () => {
+    async removeSource(sourceID: VaultSourceID) {
+        await this.enqueueStateChange(async () => {
             const sourceIndex = this._sources.findIndex(source => source.id === sourceID);
             if (sourceIndex === -1) {
                 throw new VError(`Failed removing source: No source found for ID: ${sourceID}`);
@@ -277,12 +287,12 @@ class VaultManager extends EventEmitter {
 
     /**
      * Reorder a source
-     * @param {String} sourceID The ID of the source to reorder
-     * @param {Number} position The 0-based position to move the source to
+     * @param sourceID The ID of the source to reorder
+     * @param position The 0-based position to move the source to
      * @memberof VaultManager
      * @throws {VError} Throws if no source is found
      */
-    reorderSource(sourceID, position) {
+    reorderSource(sourceID: VaultSourceID, position: number) {
         const source = this.getSourceForID(sourceID);
         if (!source) {
             throw new VError(`Failed reordering source: No source found for ID: ${sourceID}`);
@@ -326,12 +336,12 @@ class VaultManager extends EventEmitter {
 
     /**
      * Toggle auto updating of sources
-     * @param {Boolean=} enable Enable or disable auto updating. Leave empty
+     * @param enable Enable or disable auto updating. Leave empty
      *  to invert the setting
-     * @param {Number=} delay Milliseconds between updates
+     * @param delay Milliseconds between updates
      * @memberof VaultManager
      */
-    toggleAutoUpdating(enable = !this._autoUpdateEnabled, delay = DEFAULT_AUTO_UPDATE_DELAY) {
+    toggleAutoUpdating(enable: boolean = !this._autoUpdateEnabled, delay: number = DEFAULT_AUTO_UPDATE_DELAY) {
         if (enable) {
             this._autoUpdateDelay = delay;
             this._startAutoUpdateTimer();
@@ -389,9 +399,7 @@ class VaultManager extends EventEmitter {
         }, this._autoUpdateDelay);
     }
 
-    _storeDehydratedSource(id, dehydratedSource) {
+    _storeDehydratedSource(id: VaultSourceID, dehydratedSource: string) {
         return this._sourceStorage.setValue(`${STORAGE_KEY_PREFIX}${id}`, dehydratedSource);
     }
 }
-
-module.exports = VaultManager;
