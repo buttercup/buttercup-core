@@ -1,14 +1,14 @@
-const gzip = require("gzip-js");
+import gzip from "gzip-js";
 
 /**
  * Compress text using GZIP
- * @param {String} text The text to compress
- * @returns {String} Compressed text
+ * @param text The text to compress
+ * @returns Compressed text
  */
-function compress(text) {
+function compress(text: string): string {
     const compressed = gzip.zip(text, {
         level: 9,
-        timestamp: parseInt(Date.now() / 1000, 10)
+        timestamp: Math.round(Date.now() / 1000)
     });
     const compressedLength = compressed.length;
     let outputText = "";
@@ -20,10 +20,10 @@ function compress(text) {
 
 /**
  * Decompress a compressed string (GZIP)
- * @param {String} text The compressed text
- * @returns {String} Decompressed text
+ * @param text The compressed text
+ * @returns Decompressed text
  */
-function decompress(text) {
+function decompress(text: string): string {
     var compressedData = [],
         textLen = text.length;
     for (var i = 0; i < textLen; i += 1) {
@@ -38,13 +38,9 @@ function decompress(text) {
     return outputText;
 }
 
-function getCompressionResources() {
+export function getCompressionResources() {
     return {
         "compression/v1/compressText": compress,
         "compression/v1/decompressText": decompress
     };
 }
-
-module.exports = {
-    getCompressionResources
-};

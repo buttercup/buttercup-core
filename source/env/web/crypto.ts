@@ -1,12 +1,12 @@
-const { createSession } = require("iocane");
+import { createSession } from "iocane/web";
 
 let __derivationRoundsOverride = null;
 
-function decryptData(data, password) {
+function decryptData(data: string | ArrayBuffer, password): Promise<string | ArrayBuffer> {
     return createSession().decrypt(data, password);
 }
 
-function encryptData(data, password) {
+function encryptData(data: string | ArrayBuffer, password): Promise<string | ArrayBuffer> {
     const session = createSession();
     if (__derivationRoundsOverride > 0) {
         session.setDerivationRounds(__derivationRoundsOverride);
@@ -14,7 +14,7 @@ function encryptData(data, password) {
     return session.encrypt(data, password);
 }
 
-function getCryptoResources() {
+export function getCryptoResources() {
     return {
         "crypto/v1/decryptBuffer": decryptData,
         "crypto/v1/encryptBuffer": encryptData,
@@ -24,10 +24,6 @@ function getCryptoResources() {
     };
 }
 
-function setDerivationRounds(rounds = null) {
+function setDerivationRounds(rounds: number = null) {
     __derivationRoundsOverride = rounds;
 }
-
-module.exports = {
-    getCryptoResources
-};
