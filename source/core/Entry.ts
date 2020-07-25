@@ -129,12 +129,11 @@ export default class Entry extends VaultItem {
      * @throws {Error} Throws if no parent group found
      */
     getGroup(): Group {
-        const parentInfo = findGroupContainingEntryID(this.vault.format.getAllGroups() || [], this.id);
-        if (!parentInfo || !parentInfo.group) {
+        const parentGroup = this.vault.format.findGroupContainingEntryID(this.id);
+        if (!parentGroup) {
             throw new Error(`No parent group found for entry: ${this.id}`);
         }
-        // require Group here due to circular references:
-        return new Group(this.vault, parentInfo.group);
+        return new Group(this.vault, parentGroup);
     }
 
     /**

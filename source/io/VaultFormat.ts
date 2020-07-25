@@ -113,6 +113,11 @@ export default class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
+    findGroupContainingEntryID(id: EntryID): FormatAGroup | FormatBGroup {
+        notImplemented();
+        return null;
+    }
+
     generateID() {
         notImplemented();
     }

@@ -17,3 +17,11 @@ export function convertFormatAGroup(group: FormatAGroup): FormatBGroup {
         g: group.parentID
     };
 }
+
+export function isFormatBEntry(entry: FormatAEntry | FormatBEntry): entry is FormatBEntry {
+    return (<FormatBEntry>entry).g !== undefined;
+}
+
+export function isFormatBGroup(group: FormatAGroup | FormatBGroup): group is FormatBGroup {
+    return (<FormatBGroup>group).g !== undefined;
+}

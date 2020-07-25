@@ -132,7 +132,7 @@ export interface FormatBGroup {
     id: GroupID;
     a: PropertyKeyValueObject;
     t: string;
-    g: GroupID
+    g: GroupID;
 }
 
 export interface FormatBVault {
