@@ -4,7 +4,7 @@ import { getEntryURLs } from "../tools/entry";
 import { findGroupContainingEntryID } from "../tools/rawVaultSearch";
 import Group from "./Group";
 import Vault from "./Vault";
-import { EntryType, GroupID, History } from "../types";
+import { EntryHistoryItem, EntryType, GroupID } from "../types";
 
 /**
  * Entry class - some secret item, login or perhaps
@@ -117,8 +117,9 @@ export default class Entry extends VaultItem {
      * @memberof Entry
      * @deprecated
      */
-    getChanges(): History {
-        return this._source.history || [];
+    getChanges(): Array<EntryHistoryItem> {
+        // @todo re-implement
+        return [];
     }
 
     /**

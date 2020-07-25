@@ -9,6 +9,7 @@ import {
     FormatBEntry,
     FormatBGroup,
     GroupID,
+    PropertyKeyValueObject,
     VaultID
 } from "../types";
 
@@ -116,32 +117,38 @@ export default class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
-    getAllEntries() {
+    getAllEntries(): Array<FormatAEntry | FormatBEntry> {
         notImplemented();
+        return [];
     }
 
-    getAllGroups() {
+    getAllGroups(): Array<FormatAGroup | FormatBGroup> {
         notImplemented();
+        return [];
     }
 
-    getEntryAttributes(entrySource: FormatAEntry | FormatBEntry) {
+    getEntryAttributes(entrySource: FormatAEntry | FormatBEntry): PropertyKeyValueObject {
         notImplemented();
+        return {};
     }
 
-    getEntryProperties(entrySource: FormatAEntry | FormatBEntry) {
+    getEntryProperties(entrySource: FormatAEntry | FormatBEntry): PropertyKeyValueObject {
         notImplemented();
+        return {};
     }
 
     getFormat(): any {
         return VaultFormat;
     }
 
-    getGroupAttributes(groupSource: FormatAGroup) {
+    getGroupAttributes(groupSource: FormatAGroup): PropertyKeyValueObject {
         notImplemented();
+        return {};
     }
 
-    getItemID(itemSource: FormatAGroup | FormatAEntry) {
+    getItemID(itemSource: FormatAGroup | FormatAEntry): GroupID | EntryID {
         notImplemented();
+        return "";
     }
 
     getVaultID() {

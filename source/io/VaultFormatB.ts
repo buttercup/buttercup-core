@@ -113,7 +113,11 @@ export default class VaultFormatB extends VaultFormat {
         this.source.id = generateUUID();
     }
 
-    getAllGroups() {
+    getAllEntries(): Array<FormatBEntry> {
+        return this.source.e;
+    }
+
+    getAllGroups(): Array<FormatBGroup> {
         return this.source.g;
     }
 

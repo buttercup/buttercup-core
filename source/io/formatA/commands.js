@@ -29,7 +29,8 @@ function executeCreateEntry(archive, opts, groupID, entryID) {
         properties: {
             title: ""
         },
-        shareID: opts.shareID
+        shareID: opts.shareID,
+        parentID: groupID
     };
     if (opts.permissions) {
         entry.permissions = opts.permissions;
@@ -47,7 +48,8 @@ function executeCreateGroup(archive, opts, parentID, newID) {
     const group = {
         id: newID,
         title: "New group",
-        shareID: opts.shareID
+        shareID: opts.shareID,
+        parentID
     };
     if (opts.permissions) {
         group.permissions = opts.permissions;

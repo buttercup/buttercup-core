@@ -43,8 +43,10 @@ import {
     FormatAGroup,
     FormatAVault,
     GroupID,
+    PropertyKeyValueObject,
     VaultID
 } from "../types";
+import Vault from "../core/Vault";
 
 const COMMANDS = {
     aid: executeArchiveID,
@@ -259,27 +261,27 @@ export default class VaultFormatA extends VaultFormat {
         );
     }
 
-    getAllEntries() {
+    getAllEntries(): Array<FormatAEntry> {
         return this.source.entries;
     }
 
-    getAllGroups() {
+    getAllGroups(): Array<FormatAGroup> {
         return this.source.groups;
     }
 
-    getEntryAttributes(entrySource: FormatAEntry) {
+    getEntryAttributes(entrySource: FormatAEntry): PropertyKeyValueObject {
         return entrySource.attributes;
     }
 
-    getEntryProperties(entrySource: FormatAEntry) {
+    getEntryProperties(entrySource: FormatAEntry): PropertyKeyValueObject {
         return entrySource.properties;
     }
 
-    getFormat(): any {
+    getFormat(): typeof VaultFormat {
         return VaultFormatA;
     }
 
-    getGroupAttributes(groupSource: FormatAGroup): Object {
+    getGroupAttributes(groupSource: FormatAGroup): PropertyKeyValueObject {
         return groupSource.attributes;
     }
 

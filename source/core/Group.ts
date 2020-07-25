@@ -48,7 +48,7 @@ export default class Group extends VaultItem {
      * @returns The new entry
      * @memberof Group
      */
-    createEntry(title: string): Entry {
+    createEntry(title?: string): Entry {
         const entry = Entry.createNew(this.vault, this.id);
         if (title) {
             entry.setProperty("title", title);
@@ -247,16 +247,16 @@ export default class Group extends VaultItem {
             throw new Error("Trash group cannot be moved");
         }
         let targetVault, targetGroupID;
-        if (target.type === "Group") {
+        if (target instanceof Group) {
             // moving to a group
             targetVault = target.vault;
             targetGroupID = target.id;
-        } else if (target.type === "Vault") {
+        } else if (target instanceof Vault) {
             // moving to an archive
             targetVault = target;
             targetGroupID = "0";
         } else {
-            throw new Error(`Unknown remote type: ${target.type}`);
+            throw new Error("Failed moving group: Unknown target type");
         }
         if (this.vault.readOnly) {
             throw new Error("Cannot move group: origin archive is read-only");
