@@ -75,13 +75,13 @@ matching pad ID to create a common link between the 2 histories.</p>
 <dt><a href="#setEntryValueType">setEntryValueType(entry, propertyName, valueType)</a></dt>
 <dd><p>Set the value type attribute of an entry</p>
 </dd>
-<dt><a href="#getEntriesFacades">getEntriesFacades(vault)</a> ⇒ <code><a href="#EntryFacade">Array.&lt;EntryFacade&gt;</a></code></dt>
+<dt><a href="#getEntriesFacades">getEntriesFacades(vault, [options])</a> ⇒ <code><a href="#EntryFacade">Array.&lt;EntryFacade&gt;</a></code></dt>
 <dd><p>Get all entry facades for a vault</p>
 </dd>
-<dt><a href="#getGroupEntriesFacades">getGroupEntriesFacades(entryCollection, groupID)</a> ⇒ <code><a href="#EntryFacade">Array.&lt;EntryFacade&gt;</a></code></dt>
+<dt><a href="#getGroupEntriesFacades">getGroupEntriesFacades(entryCollection, [options])</a> ⇒ <code><a href="#EntryFacade">Array.&lt;EntryFacade&gt;</a></code></dt>
 <dd><p>Convert an array of entries into an array of facades</p>
 </dd>
-<dt><a href="#getGroupsFacades">getGroupsFacades(groupCollection, [parentID])</a> ⇒ <code><a href="#GroupFacade">Array.&lt;GroupFacade&gt;</a></code></dt>
+<dt><a href="#getGroupsFacades">getGroupsFacades(groupCollection, [parentID], [options])</a> ⇒ <code><a href="#GroupFacade">Array.&lt;GroupFacade&gt;</a></code></dt>
 <dd><p>Convert an array of groups into an array of facades</p>
 </dd>
 <dt><a href="#describeVaultDataset">describeVaultDataset(dataset, parentGroupID)</a> ⇒ <code>Array.&lt;String&gt;</code></dt>
@@ -215,6 +215,10 @@ Allows for preferential sorting</p>
 <dt><a href="#VaultFacade">VaultFacade</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#GroupFacade">GroupFacade</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#GetGroupEntriesFacadesOptions">GetGroupEntriesFacadesOptions</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#GetGroupsFacadesOptions">GetGroupsFacadesOptions</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#VaultInsights">VaultInsights</a> : <code>Object</code></dt>
 <dd></dd>
@@ -2978,7 +2982,7 @@ Set the value type attribute of an entry
 
 <a name="getEntriesFacades"></a>
 
-## getEntriesFacades(vault) ⇒ [<code>Array.&lt;EntryFacade&gt;</code>](#EntryFacade)
+## getEntriesFacades(vault, [options]) ⇒ [<code>Array.&lt;EntryFacade&gt;</code>](#EntryFacade)
 Get all entry facades for a vault
 
 **Kind**: global function  
@@ -2987,10 +2991,11 @@ Get all entry facades for a vault
 | Param | Type | Description |
 | --- | --- | --- |
 | vault | <code>Vault</code> | A vault instance |
+| [options] | [<code>GetGroupEntriesFacadesOptions</code>](#GetGroupEntriesFacadesOptions) | Options for  getting entry facades |
 
 <a name="getGroupEntriesFacades"></a>
 
-## getGroupEntriesFacades(entryCollection, groupID) ⇒ [<code>Array.&lt;EntryFacade&gt;</code>](#EntryFacade)
+## getGroupEntriesFacades(entryCollection, [options]) ⇒ [<code>Array.&lt;EntryFacade&gt;</code>](#EntryFacade)
 Convert an array of entries into an array of facades
 
 **Kind**: global function  
@@ -2999,11 +3004,11 @@ Convert an array of entries into an array of facades
 | Param | Type | Description |
 | --- | --- | --- |
 | entryCollection | <code>Array.&lt;Entry&gt;</code> | An array of entries |
-| groupID | <code>String</code> | The parent group ID |
+| [options] | [<code>GetGroupEntriesFacadesOptions</code>](#GetGroupEntriesFacadesOptions) | Options for  getting entry facades |
 
 <a name="getGroupsFacades"></a>
 
-## getGroupsFacades(groupCollection, [parentID]) ⇒ [<code>Array.&lt;GroupFacade&gt;</code>](#GroupFacade)
+## getGroupsFacades(groupCollection, [parentID], [options]) ⇒ [<code>Array.&lt;GroupFacade&gt;</code>](#GroupFacade)
 Convert an array of groups into an array of facades
 
 **Kind**: global function  
@@ -3013,6 +3018,7 @@ Convert an array of groups into an array of facades
 | --- | --- | --- | --- |
 | groupCollection | <code>Array.&lt;Group&gt;</code> |  | An array of groups |
 | [parentID] | <code>String</code> | <code>0</code> | The parent group ID (defaults to root) |
+| [options] | [<code>GetGroupsFacadesOptions</code>](#GetGroupsFacadesOptions) |  | Options for getting  group facades |
 
 <a name="describeVaultDataset"></a>
 
@@ -3630,6 +3636,26 @@ Entry facade data field
 | title | <code>String</code> | The group title |
 | attributes | <code>Object</code> | A key/value list of group attributes |
 | parentID | <code>String</code> \| <code>null</code> | The parent group ID. Set to "0" if  it is to be created in the root. |
+
+<a name="GetGroupEntriesFacadesOptions"></a>
+
+## GetGroupEntriesFacadesOptions : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [includeTrash] | <code>Boolean</code> | Whether or not to include  the trash group in the output. Defaults to true. |
+
+<a name="GetGroupsFacadesOptions"></a>
+
+## GetGroupsFacadesOptions : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [includeTrash] | <code>Boolean</code> | Whether or not to include  the trash group in the output. Defaults to true. |
 
 <a name="VaultInsights"></a>
 

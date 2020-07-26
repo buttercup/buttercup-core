@@ -49,13 +49,15 @@ describe("AttachmentManager", function() {
                 const attachmentData = await readFile(IMAGE_PATH);
                 const attachmentID = AttachmentManager.newAttachmentID();
                 const fileInfo = await stat(IMAGE_PATH);
+                const nowDate = new Date();
                 await this.source.attachmentManager.setAttachment(
                     this.entry,
                     attachmentID,
                     attachmentData,
                     path.basename(IMAGE_PATH),
                     "image/png",
-                    fileInfo.size
+                    fileInfo.size,
+                    nowDate
                 );
                 const attachmentDataRead = await this.source.attachmentManager.getAttachment(this.entry, attachmentID);
                 expect(attachmentData.equals(attachmentDataRead)).to.be.true;
@@ -64,7 +66,9 @@ describe("AttachmentManager", function() {
                     id: attachmentID,
                     name: "image.png",
                     type: "image/png",
-                    size: 439968
+                    size: 439968,
+                    created: nowDate.toUTCString(),
+                    updated: nowDate.toUTCString()
                 });
             });
 

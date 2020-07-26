@@ -1,5 +1,22 @@
 # Core library changelog
 
+## v4.10.0
+_2020-07-21_
+
+ * Attachment `created` and `updated` timestamps
+
+## v4.9.2
+_2020-07-11_
+
+ * **Bugfix**:
+   * `reorderSource` on `VaultManager` wouldn't change source order
+
+## v4.9.1
+_2020-07-09_
+
+ * **Bugfix**:
+   * `pify` not installed (required for `FileDatasource`)
+
 ## v4.9.0
 _2020-07-07_
 

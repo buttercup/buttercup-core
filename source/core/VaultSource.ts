@@ -212,7 +212,7 @@ export default class VaultSource extends EventEmitter {
     }
 
     set order(newOrder: number) {
-        if (newOrder < 0) {
+        if (isNaN(newOrder) || typeof newOrder !== "number" || newOrder < 0) {
             throw new VError(`Failed setting order: Order must be greater than or equal to 0: ${newOrder}`);
         }
         this._order = newOrder;

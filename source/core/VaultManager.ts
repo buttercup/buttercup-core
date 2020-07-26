@@ -110,9 +110,10 @@ export default class VaultManager extends EventEmitter {
         if (existing) return;
         await this.enqueueStateChange(async () => {
             source._vaultManager = this;
+            const newOrder = typeof orderOverride === "number" ? orderOverride : this.getNextOrder();
             this._sources.push(source);
             // Configure the order
-            source._order = typeof orderOverride === "number" ? orderOverride : this.getNextOrder();
+            source.order = newOrder;
             // Attach event listeners
             source.on("updated", () => this.dehydrateSource(source));
             source.on("updated", () => this.emit("sourcesUpdated"));
@@ -162,7 +163,7 @@ export default class VaultManager extends EventEmitter {
      * @memberof VaultManager
      */
     getNextOrder(): number {
-        return Math.max(...this._sources.map(source => source._order)) + 1;
+        return Math.max(...this._sources.map(source => source._order), -1) + 1;
     }
 
     /**
@@ -320,7 +321,7 @@ export default class VaultManager extends EventEmitter {
      * @memberof VaultManager
      */
     reorderSources() {
-        this.sources.sort((sourceA, sourceB) => {
+        this._sources.sort((sourceA, sourceB) => {
             if (sourceA.order > sourceB.order) {
                 return 1;
             } else if (sourceB.order > sourceA.order) {
@@ -328,7 +329,7 @@ export default class VaultManager extends EventEmitter {
             }
             return 0;
         });
-        this.sources.forEach((source, index) => {
+        this._sources.forEach((source, index) => {
             source.order = index;
         });
         this.emit("sourcesUpdated");
