@@ -293,27 +293,29 @@ export default class VaultManager extends EventEmitter {
      * @memberof VaultManager
      * @throws {VError} Throws if no source is found
      */
-    reorderSource(sourceID: VaultSourceID, position: number) {
+    async reorderSource(sourceID: VaultSourceID, position: number): Promise<void> {
         const source = this.getSourceForID(sourceID);
         if (!source) {
             throw new VError(`Failed reordering source: No source found for ID: ${sourceID}`);
         }
-        if (position === source.order) {
+        if (position === source._order) {
             return;
         }
-        const originalOrder = source.order;
-        source.order = position;
+        const originalOrder = source._order;
+        source._order = position;
         const movingUp = position < originalOrder;
         this.sources.forEach(otherSource => {
             if (otherSource.id !== sourceID) {
-                if (movingUp && otherSource.order >= position) {
-                    otherSource.order += 1;
-                } else if (!movingUp && otherSource.order <= position) {
-                    otherSource.order -= 1;
+                if (movingUp && otherSource._order >= position) {
+                    otherSource._order += 1;
+                } else if (!movingUp && otherSource._order <= position) {
+                    otherSource._order -= 1;
                 }
             }
         });
         this.reorderSources();
+        // Sync orders to storage
+        await this.dehydrateSource(source);
     }
 
     /**
@@ -322,15 +324,15 @@ export default class VaultManager extends EventEmitter {
      */
     reorderSources() {
         this._sources.sort((sourceA, sourceB) => {
-            if (sourceA.order > sourceB.order) {
+            if (sourceA._order > sourceB._order) {
                 return 1;
-            } else if (sourceB.order > sourceA.order) {
+            } else if (sourceB._order > sourceA._order) {
                 return -1;
             }
             return 0;
         });
         this._sources.forEach((source, index) => {
-            source.order = index;
+            source._order = index;
         });
         this.emit("sourcesUpdated");
     }

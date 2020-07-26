@@ -59,8 +59,8 @@ describe("VaultManager", function() {
         });
 
         describe("reorderSource", function() {
-            it("changes the order of sources", function() {
-                this.vaultManager.reorderSource(this.vaultSource2.id, 0);
+            it("changes the order of sources", async function() {
+                await this.vaultManager.reorderSource(this.vaultSource2.id, 0);
                 const [source1, source2] = this.vaultManager.sources;
                 expect(source1.id).to.equal(this.vaultSource2.id);
                 expect(source2.id).to.equal(this.vaultSource1.id);
