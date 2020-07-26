@@ -15,7 +15,7 @@ const {
     OAUTH_REDIRECT_URI,
     OAUTH_TOKEN_URI
 } = require("./symbols.js");
-const { detectFormat } = require("../io/formatRouter.js");
+const { detectFormat } = require("../io/formatRouter");
 
 /**
  * @typedef {Object} MyButtercupShareBase

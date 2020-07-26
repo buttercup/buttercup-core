@@ -4,7 +4,7 @@ const {
     findGroupContainingEntryID,
     findGroupContainingGroupID,
     generateEntryHistoryItem
-} = require("./tools.js");
+} = require("./tools");
 
 function executeArchiveID(vault, opts, id) {
     if (opts.shareID) {

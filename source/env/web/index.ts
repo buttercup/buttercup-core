@@ -1,15 +1,12 @@
-const { getCryptoResources } = require("./crypto.js");
-const { getCompressionResources } = require("./compression.js");
-const { getEnvironmentResources } = require("./environment.js");
-const { getNetResources } = require("./net.js");
+import { getCryptoResources } from "./crypto";
+import { getCompressionResources } from "./compression";
+import { getEnvironmentResources } from "./environment";
+import { getNetResources } from "./net";
+import { AppEnv } from "../core/appEnv";
 
-function applyWebConfiguration(appEnv) {
+export function applyWebConfiguration(appEnv: AppEnv) {
     appEnv.setProperties(getCryptoResources());
     appEnv.setProperties(getCompressionResources());
     appEnv.setProperties(getEnvironmentResources());
     appEnv.setProperties(getNetResources());
 }
-
-module.exports = {
-    applyWebConfiguration
-};

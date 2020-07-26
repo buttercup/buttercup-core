@@ -120,7 +120,6 @@ export default class AttachmentManager {
         if (!name || !type || !size) {
             throw new Error(`Attachment properties required: name/type/size => ${name}/${type}/${size}`);
         }
-        const Entry = require("../core/Entry.js");
         const attributeKey = `${Entry.Attributes.AttachmentPrefix}${attachmentID}`;
         // Check if it already exists
         const existingDetails = await this.getAttachmentDetails(entry, attachmentID);

@@ -1,9 +1,9 @@
-const joinURL = require("url-join");
-const { getSharedAppEnv } = require("../env/appEnv.js");
+import joinURL from "url-join";
+import { getSharedAppEnv } from "../env/appEnv";
 
 const BASE_URL = "http://localhost:12821";
 
-function buildClient(token) {
+export function buildClient(token: string) {
     const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
     const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
     return {
@@ -100,7 +100,7 @@ function buildClient(token) {
     };
 }
 
-function completeConnection(code) {
+export function completeConnection(code: string): Promise<string> {
     if (!code) {
         return Promise.reject(new Error("Code is required"));
     }
@@ -117,7 +117,7 @@ function completeConnection(code) {
         });
 }
 
-function initiateConnection() {
+export function initiateConnection(): Promise<void> {
     const pingURL = BASE_URL;
     const connectURL = joinURL(BASE_URL, "/connect");
     return fetch(pingURL)
@@ -137,9 +137,3 @@ function initiateConnection() {
                 });
         });
 }
-
-module.exports = {
-    buildClient,
-    completeConnection,
-    initiateConnection
-};

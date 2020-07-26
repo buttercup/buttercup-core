@@ -1,7 +1,9 @@
-const { fireInstantiationHandlers, registerDatasource } = require("../datasources/register.js");
-const TextDatasource = require("../datasources/TextDatasource.js");
-const { getCredentials } = require("../credentials/channel.js");
-const { buildClient } = require("./localFileClient.js");
+import { fireInstantiationHandlers, registerDatasource } from "../datasources/register";
+import TextDatasource from "../datasources/TextDatasource";
+import { getCredentials } from "../credentials/channel";
+import { buildClient } from "./localFileClient";
+import { DatasourceLoadedData, EncryptedContent, History } from "../types";
+import Credentials from "../credentials/Credentials";
 
 /**
  * Local file datasource, connecting via the desktop
@@ -9,8 +11,12 @@ const { buildClient } = require("./localFileClient.js");
  * @memberof module:Buttercup
  * @augments TextDatasource
  */
-class LocalFileDatasource extends TextDatasource {
-    constructor(credentials) {
+export default class LocalFileDatasource extends TextDatasource {
+    _path: string;
+    _token: string;
+    client: any;
+
+    constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
         const { datasource: datasourceConfig } = credentialData;
@@ -32,20 +38,20 @@ class LocalFileDatasource extends TextDatasource {
 
     /**
      * Load archive history from the datasource
-     * @param {Credentials} credentials The credentials for archive decryption
-     * @returns {Promise.<Array.<String>>} A promise resolving archive history
+     * @param credentials The credentials for archive decryption
+     * @returns A promise resolving archive history
      * @memberof LocalFileDatasource
      */
-    load(credentials) {
+    load(credentials: Credentials): Promise<DatasourceLoadedData> {
         const readProc = new Promise((resolve, reject) => {
-            this.client.readFile(this.path, (err, content) => {
+            this.client.readFile(this.path, (err: Error | null, content: string) => {
                 if (err) {
                     return reject(err);
                 }
                 resolve(content);
             });
         });
-        return readProc.then(content => {
+        return readProc.then((content: string) => {
             this.setContent(content);
             return super.load(credentials);
         });
@@ -53,12 +59,12 @@ class LocalFileDatasource extends TextDatasource {
 
     /**
      * Save archive contents to the WebDAV service
-     * @param {Array.<String>} history Archive history
-     * @param {Credentials} credentials The credentials for encryption
-     * @returns {Promise} A promise resolving when the save is complete
+     * @param history Archive history
+     * @param credentials The credentials for encryption
+     * @returns A promise resolving when the save is complete
      * @memberof LocalFileDatasource
      */
-    save(history, credentials) {
+    save(history: History, credentials: Credentials): Promise<EncryptedContent> {
         return super.save(history, credentials).then(
             encrypted =>
                 new Promise((resolve, reject) => {
@@ -66,7 +72,7 @@ class LocalFileDatasource extends TextDatasource {
                         if (err) {
                             return reject(err);
                         }
-                        resolve();
+                        resolve(encrypted);
                     });
                 })
         );
@@ -74,15 +80,13 @@ class LocalFileDatasource extends TextDatasource {
 
     /**
      * Whether or not the datasource supports bypassing remote fetch operations
-     * @returns {Boolean} True if content can be set to bypass fetch operations,
+     * @returns True if content can be set to bypass fetch operations,
      *  false otherwise
      * @memberof LocalFileDatasource
      */
-    supportsRemoteBypass() {
+    supportsRemoteBypass(): boolean {
         return false;
     }
 }
 
 registerDatasource("localfile", LocalFileDatasource);
-
-module.exports = LocalFileDatasource;

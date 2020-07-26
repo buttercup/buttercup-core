@@ -1,4 +1,4 @@
-const { InigoCommand: Inigo } = require("./tools.js");
+const { InigoCommand: Inigo } = require("./tools");
 
 const { Command } = Inigo;
 

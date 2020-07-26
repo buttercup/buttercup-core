@@ -1,5 +1,5 @@
-const { getSharedAppEnv } = require("../env/appEnv.js");
-const { getCredentials } = require("../credentials/channel.js");
+const { getSharedAppEnv } = require("../env/appEnv");
+const { getCredentials } = require("../credentials/channel");
 
 const ATTACHMENT_EXT = "bcatt";
 

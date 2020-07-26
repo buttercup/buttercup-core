@@ -1,5 +1,5 @@
 const { Base64 } = require("js-base64");
-const { generateUUID } = require("./uuid.js");
+const { generateUUID } = require("./uuid");
 
 const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
 const ENCODED_STRING_PREFIX = "utf8+base64:";
