@@ -21,7 +21,7 @@
     "build:web": "webpack --mode=production",
     "clean": "rimraf ./dist && rimraf ./web",
     "dev": "concurrently -k 'npm run dev:node' 'npm run dev:web'",
-    "dev:node": "babel source --out-dir dist --verbose --watch",
+    "dev:node": "tsc --watch",
     "dev:web": "webpack --mode=development --watch",
     "docs": "npm run generate:docs",
     "format": "prettier --write '{source,test}/**/*.js'",

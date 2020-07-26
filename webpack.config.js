@@ -1,4 +1,5 @@
 const path = require("path");
+const exec = require("child_process").exec;
 const { DefinePlugin } = require("webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
@@ -9,7 +10,17 @@ const DIST = path.resolve(__dirname, "./web");
 const plugins = [
     new DefinePlugin({
         BUTTERCUP_WEB: true
-    })
+    }),
+    {
+        apply: compiler => {
+            compiler.hooks.afterEmit.tap("AfterEmitPlugin", compilation => {
+                exec("./scripts/fix_web_typings.sh", (err, stdout, stderr) => {
+                    if (stdout) process.stdout.write(stdout);
+                    if (stderr) process.stderr.write(stderr);
+                });
+            });
+        }
+    }
 ];
 if (process.env.ANALYSE === "bundle") {
     plugins.push(new BundleAnalyzerPlugin());
