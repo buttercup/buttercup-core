@@ -23,16 +23,7 @@ export { createFieldDescriptor } from "./facades/tools";
 export {
     DEFAULT_ENTRY_TYPE,
     DEFAULT_FIELD_TYPE,
-    ENTRY_TYPE_CREDITCARD,
-    ENTRY_TYPE_LOGIN,
-    ENTRY_TYPE_NOTE,
-    ENTRY_TYPE_SSHKEY,
-    ENTRY_TYPE_WEBSITE,
     ENTRY_TYPES,
-    FIELD_VALUE_TYPE_NOTE,
-    FIELD_VALUE_TYPE_OTP,
-    FIELD_VALUE_TYPE_PASSWORD,
-    FIELD_VALUE_TYPE_TEXT,
     FIELD_VALUE_TYPES
 } from "./facades/symbols";
 

@@ -1,7 +1,6 @@
 import VaultItem from "./VaultItem";
 import { generateUUID } from "../tools/uuid";
 import { getEntryURLs } from "../tools/entry";
-import { findGroupContainingEntryID } from "../tools/rawVaultSearch";
 import Group from "./Group";
 import Vault from "./Vault";
 import { EntryHistoryItem, EntryType, GroupID } from "../types";
