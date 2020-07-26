@@ -276,6 +276,21 @@ export default class VaultFormatA extends VaultFormat {
         return searchGroups(this.getAllGroups());
     }
 
+    findGroupContainingGroupID(id: GroupID): FormatAGroup {
+        const searchGroups = (groups: Array<FormatAGroup>): FormatAGroup => {
+            for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
+                if (groups[i].id === id) {
+                    return groups[i];
+                }
+                const deepGroup = searchGroups(groups[i].groups || []);
+                if (deepGroup) {
+                    return deepGroup;
+                }
+            }
+        };
+        return searchGroups(this.getAllGroups());
+    }
+
     generateID() {
         this.execute(
             Inigo.create(Inigo.Command.ArchiveID)

@@ -118,6 +118,11 @@ export default class VaultFormat extends EventEmitter {
         return null;
     }
 
+    findGroupContainingGroupID(id: GroupID): FormatAGroup | FormatBGroup {
+        notImplemented();
+        return null;
+    }
+
     generateID() {
         notImplemented();
     }
@@ -146,12 +151,12 @@ export default class VaultFormat extends EventEmitter {
         return VaultFormat;
     }
 
-    getGroupAttributes(groupSource: FormatAGroup): PropertyKeyValueObject {
+    getGroupAttributes(groupSource: FormatAGroup | FormatBGroup): PropertyKeyValueObject {
         notImplemented();
         return {};
     }
 
-    getItemID(itemSource: FormatAGroup | FormatAEntry): GroupID | EntryID {
+    getItemID(itemSource: FormatAGroup | FormatAEntry | FormatBGroup | FormatBEntry): GroupID | EntryID {
         notImplemented();
         return "";
     }

@@ -117,6 +117,13 @@ export default class VaultFormatB extends VaultFormat {
         return null;
     }
 
+    findGroupContainingGroupID(id: GroupID): FormatBGroup {
+        const groups = this.getAllGroups();
+        const matchingGroup = groups.find(group => group.id === id);
+        if (!matchingGroup) return null;
+        return groups.find(group => group.id === matchingGroup.g) || null;
+    }
+
     generateID() {
         this.source.id = generateUUID();
     }

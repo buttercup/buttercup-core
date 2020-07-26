@@ -1,6 +1,6 @@
 import { FormatAEntry, FormatAGroup, FormatBEntry, FormatBGroup } from "../../types";
 
-export function convertFormatBEntry(entry: FormatAEntry): FormatBEntry {
+export function convertFormatAEntry(entry: FormatAEntry): FormatBEntry {
     return {
         id: entry.id,
         a: entry.attributes || {},

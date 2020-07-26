@@ -5,7 +5,6 @@ import { generateUUID } from "../tools/uuid";
 import { moveGroupBetweenVaults } from "../tools/sharing";
 import { findGroupByID, findGroupsByTitle } from "../search/groups";
 import { findEntriesByProperty, findEntryByID } from "../search/entries";
-import { findGroupContainingGroupID } from "../tools/rawVaultSearch";
 import { EntryID, GroupID } from "../types";
 
 /**
@@ -197,9 +196,9 @@ export default class Group extends VaultItem {
             // parent is vault
             return null;
         }
-        const parentInfo = findGroupContainingGroupID(this.vault.format.source, this.id);
-        if (parentInfo && parentInfo.group) {
-            return new Group(this.vault, parentInfo.group);
+        const parentGroup = this.vault.format.findGroupContainingGroupID(this.id);
+        if (parentGroup) {
+            return new Group(this.vault, parentGroup);
         }
         throw new Error("No parent group: group is detacted");
     }

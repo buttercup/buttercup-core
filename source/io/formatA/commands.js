@@ -2,9 +2,9 @@ const {
     findEntryByID,
     findGroupByID,
     findGroupContainingEntryID,
-    findGroupContainingGroupID
-} = require("../../tools/rawVaultSearch.js");
-const { generateEntryHistoryItem } = require("./tools.js");
+    findGroupContainingGroupID,
+    generateEntryHistoryItem
+} = require("./tools.js");
 
 function executeArchiveID(vault, opts, id) {
     if (opts.shareID) {
