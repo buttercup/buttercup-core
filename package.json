@@ -128,6 +128,7 @@
     "sinon": "^9.0.2",
     "sleep-promise": "^8.0.1",
     "tmp": "^0.2.1",
+    "ts-loader": "^8.0.1",
     "typescript": "^3.9.3",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^3.8.0",
