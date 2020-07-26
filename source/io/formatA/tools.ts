@@ -146,7 +146,7 @@ export function extractCommandComponents(cmd: string): Array<string> {
     });
 }
 
-function findEntryByID(groups: Array<FormatAGroup>, id: EntryID) {
+export function findEntryByID(groups: Array<FormatAGroup>, id: EntryID) {
     for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
         const group = groups[i];
         if (group.entries) {
@@ -181,7 +181,7 @@ function findGroupByCheck(groups, checkFn) {
     return null;
 }
 
-function findGroupByID(groups, id) {
+export function findGroupByID(groups, id) {
     return findGroupByCheck(groups, function(group) {
         return group.id === id;
     });
