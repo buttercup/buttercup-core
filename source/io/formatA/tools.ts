@@ -1,38 +1,58 @@
-const { encodeStringValue } = require("../../tools/encoding.js");
-const { generateUUID } = require("../../tools/uuid.js");
+import { encodeStringValue } from "../../tools/encoding";
+import { generateUUID } from "../../tools/uuid";
+import {
+    EntryHistoryItem,
+    EntryID,
+    EntryPropertyType,
+    FormatAEntry,
+    FormatAGroup,
+    GroupID
+} from "../../types";
 
-const COMMAND_ARGUMENT = {
+interface FormatACommandArgument {
+    test: RegExp;
+    wrap: (text: string) => string;
+    encode: boolean;
+}
+
+interface FormatACommandArguments {
+    [key: string]: FormatACommandArgument;
+}
+
+interface FormatACommandManifestCommand {
+    s: string;                              // The command
+    d: boolean;                             // Destructive flag
+    args: Array<FormatACommandArgument>;    // Command argument definitions
+}
+
+interface FormatACommandManifestCommands {
+    [key: string]: FormatACommandManifestCommand;
+}
+
+export const COMMAND_ARGUMENT: FormatACommandArguments = {
     ItemID: {
         test: /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i,
-        wrap: function(txt) {
-            return txt;
-        },
+        wrap: (text: string) => text,
         encode: false
     },
     ItemIDOrRoot: {
         test: /^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|0)$/i,
-        wrap: function(txt) {
-            return txt;
-        },
+        wrap: (text: string) => text,
         encode: false
     },
     StringKey: {
         test: /\S+/,
-        wrap: function(txt) {
-            return encodeStringValue(txt);
-        },
+        wrap: (txt: string) => encodeStringValue(txt),
         encode: true
     },
     StringValue: {
         test: /(^[\s\S]+$|^$)/,
-        wrap: function(txt) {
-            return encodeStringValue(txt);
-        },
+        wrap: (txt: string) => encodeStringValue(txt),
         encode: true
     }
 };
 const ARG = COMMAND_ARGUMENT;
-const COMMAND_MANIFEST = {
+export const COMMAND_MANIFEST: FormatACommandManifestCommands = {
     ArchiveID: { s: "aid", d: false, args: [ARG.ItemID] },
     Comment: { s: "cmm", d: false, args: [ARG.StringValue] },
     CreateEntry: { s: "cen", d: false, args: [ARG.ItemID, ARG.ItemID] },
@@ -58,24 +78,27 @@ const COMMAND_MANIFEST = {
 const PLACEHOLDER_ESCAPED = "__ESCAPED_QUOTE__";
 const PLACEHOLDER_QUOTED = "__QUOTEDSTR__";
 
-class InigoCommand {
+export class InigoCommand {
     static Command = COMMAND_MANIFEST;
 
-    static create(cmd) {
+    static create(cmd: FormatACommandManifestCommand) {
         return new InigoCommand(cmd);
     }
 
-    static generatePaddingCommand() {
+    static generatePaddingCommand(): string {
         const inigo = InigoCommand.create(COMMAND_MANIFEST.Pad);
         return inigo.addArgument(generateUUID()).generateCommand();
     }
 
-    constructor(cmdKey) {
+    _commandKey: FormatACommandManifestCommand;
+    _commandArgs: Array<string>;
+
+    constructor(cmdKey: FormatACommandManifestCommand) {
         this._commandKey = cmdKey;
         this._commandArgs = [];
     }
 
-    addArgument(arg) {
+    addArgument(arg: string): this {
         const newArgIndex = this._commandArgs.length;
         const argRules = this._commandKey.args;
         const newArgRule = argRules.length <= newArgIndex ? false : argRules[newArgIndex];
@@ -91,20 +114,20 @@ class InigoCommand {
         return this;
     }
 
-    generateCommand() {
+    generateCommand(): string {
         return [this._commandKey.s].concat(this._commandArgs).join(" ");
     }
 }
 
 /**
  * Extract command components from a string
- * @param {String} command The command to extract from
- * @returns {String[]} The separated parts
+ * @param command The command to extract from
+ * @returns The separated parts
  */
-function extractCommandComponents(cmd) {
+export function extractCommandComponents(cmd: string): Array<string> {
     const patt = /("[^"]*")/;
-    const matches = [];
-    let match;
+    const matches: Array<string> = [];
+    let match: RegExpExecArray;
     let command = cmd.replace(/\\\"/g, PLACEHOLDER_ESCAPED);
     // Replace complex command segments
     while ((match = patt.exec(command))) {
@@ -123,7 +146,7 @@ function extractCommandComponents(cmd) {
     });
 }
 
-function findEntryByID(groups, id) {
+function findEntryByID(groups: Array<FormatAGroup>, id: EntryID) {
     for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
         const group = groups[i];
         if (group.entries) {
@@ -166,11 +189,11 @@ function findGroupByID(groups, id) {
 
 /**
  * Find a raw group that contains an entry with an ID
- * @param {Array.<Object>} groups An array of raw groups
- * @param {String} id The entry ID to search for
- * @returns {FoundGroupResult} The parent group of the found entry
+ * @param groups An array of raw groups
+ * @param id The entry ID to search for
+ * @returns The parent group of the found entry
  */
-function findGroupContainingEntryID(groups, id) {
+export function findGroupContainingEntryID(groups: Array<FormatAGroup>, id: EntryID) {
     for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
         const group = groups[i];
         if (group.entries) {
@@ -198,11 +221,11 @@ function findGroupContainingEntryID(groups, id) {
 
 /**
  * Find a raw group that contains a group with an ID
- * @param {Object} group The group/archive to search in
- * @param {String} id The group ID to search for
- * @returns {FoundGroupResult} The parent of the located group ID
+ * @param group The group/archive to search in
+ * @param id The group ID to search for
+ * @returns The parent of the located group ID
  */
-function findGroupContainingGroupID(group, id) {
+export function findGroupContainingGroupID(group: FormatAGroup, id: GroupID) {
     const groups = group.groups || [];
     for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
         if (groups[i].id === id) {
@@ -233,14 +256,13 @@ function findGroupContainingGroupID(group, id) {
 
 /**
  * Generate a new entry history item
- * @param {String} property The property/attribute name
- * @param {String} propertyType Either "property" or "attribute"
- * @param {String|null} originalValue The original value or null if it did not exist
+ * @param property The property/attribute name
+ * @param propertyType Either "property" or "attribute"
+ * @param originalValue The original value or null if it did not exist
  *  before this change
- * @param {String|null} newValue The new value or null if it was deleted
- * @returns {EntryHistoryItem}
+ * @param newValue The new value or null if it was deleted
  */
-function generateEntryHistoryItem(property, propertyType, originalValue = null, newValue = null) {
+export function generateEntryHistoryItem(property: string, propertyType: EntryPropertyType, originalValue: string = null, newValue: string = null): EntryHistoryItem {
     return Object.freeze({
         property,
         propertyType,
@@ -249,20 +271,20 @@ function generateEntryHistoryItem(property, propertyType, originalValue = null, 
     });
 }
 
-function historyArrayToString(historyArray) {
+export function historyArrayToString(historyArray: Array<string>): string {
     return historyArray.join("\n");
 }
 
-function historyStringToArray(historyString) {
+export function historyStringToArray(historyString: string): Array<string> {
     return historyString.split("\n");
 }
 
 /**
  * Strip destructive commands from a history collection
- * @param {Array.<String>} history The history
- * @returns {Array.<String>} The history minus any destructive commands
+ * @param history The history
+ * @returns The history minus any destructive commands
  */
-function stripDestructiveCommands(history) {
+export function stripDestructiveCommands(history: Array<string>): Array<string> {
     const getCommandType = fullCommand => (fullCommand && fullCommand.length >= 3 ? fullCommand.substr(0, 3) : "");
     const destructiveSlugs = Object.keys(COMMAND_MANIFEST)
         .map(key => COMMAND_MANIFEST[key])
@@ -272,16 +294,3 @@ function stripDestructiveCommands(history) {
         return destructiveSlugs.indexOf(getCommandType(command)) < 0;
     });
 }
-
-module.exports = {
-    COMMAND_ARGUMENT,
-    COMMAND_MANIFEST,
-    InigoCommand,
-    extractCommandComponents,
-    findGroupContainingEntryID,
-    findGroupContainingGroupID,
-    generateEntryHistoryItem,
-    historyArrayToString,
-    historyStringToArray,
-    stripDestructiveCommands
-};
