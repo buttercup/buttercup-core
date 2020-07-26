@@ -53,6 +53,9 @@ const { detectFormat } = require("../io/formatRouter.js");
  * @property {Array.<Object>} messages System messages for the user (internal processing)
  * @property {Array.<MyButtercupIncomingShare>} new_shares An array of new shares to process
  * @property {Array.<MyButtercupOrganisation>} organisations An array of user organisations
+ * @property {String} account_name The name set for the account
+ * @property {Number} storage_total Total storage, in bytes
+ * @property {Number} storage_used Used storage, in bytes
  */
 
 /**
@@ -76,6 +79,8 @@ const { detectFormat } = require("../io/formatRouter.js");
  * @property {String} created The creation date
  * @property {String} lastUpdate The last update date
  */
+
+const DIGEST_MAX_AGE = 10000;
 
 function demultiplexShares(sharesTxt) {
     const shares = {};
@@ -173,6 +178,7 @@ class MyButtercupClient extends EventEmitter {
         this._accessToken = accessToken;
         this._refreshToken = refreshToken;
         this._lastDigest = null;
+        this._lastDigestTime = null;
         this._clientID = clientID;
         this._clientSecret = clientSecret;
         this.request = request;
@@ -345,6 +351,7 @@ class MyButtercupClient extends EventEmitter {
                     throw new Error("Invalid digest response");
                 }
                 this._lastDigest = digest;
+                this._lastDigestTime = Date.now();
                 return digest;
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.retrieveDigest()))
@@ -359,9 +366,7 @@ class MyButtercupClient extends EventEmitter {
      * @memberof MyButtercupClient
      */
     async retrieveUsersList() {
-        if (!this.digest) {
-            await this.retrieveDigest();
-        }
+        await this.updateDigestIfRequired();
         const orgIDs = this.digest.organisations.map(org => org.id);
         if (orgIDs.length <= 0) {
             return [];
@@ -434,15 +439,23 @@ class MyButtercupClient extends EventEmitter {
     }
 
     /**
+     * Update the digest if required
+     * @memberof MyButtercupClient
+     */
+    async updateDigestIfRequired() {
+        if (!this._lastDigest || Date.now() - this._lastDigestTime >= DIGEST_MAX_AGE) {
+            await this.retrieveDigest();
+        }
+    }
+
+    /**
      * Write insights to the remote account
      * @param {Insights} insights The insights data
      * @returns {Promise}
      * @memberof MyButtercupClient
      */
     async writeInsights(insights) {
-        if (!this.digest) {
-            await this.retrieveDigest();
-        }
+        await this.updateDigestIfRequired();
         const {
             avgPassLen = null,
             duplicatePasswords = null,
