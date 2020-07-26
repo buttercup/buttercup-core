@@ -1,6 +1,4 @@
-const Vault = require("../../../dist/core/Vault.js");
-const Entry = require("../../../dist/core/Entry.js");
-const { createEntryFacade } = require("../../../dist/facades/entry.js");
+const { Entry, Vault, createEntryFacade } = require("../../../dist/index.node.js");
 
 describe("facades/entry", function() {
     describe("createEntryFacade", function() {

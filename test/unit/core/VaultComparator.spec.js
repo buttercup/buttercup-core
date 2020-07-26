@@ -1,5 +1,5 @@
-const VaultComparator = require("../../../dist/core/VaultComparator.js");
-const Vault = require("../../../dist/core/Vault.js");
+const VaultComparator = require("../../../dist/core/VaultComparator.js").default;
+const { Vault } = require("../../../dist/index.node.js");
 
 describe("core/VaultComparator", function() {
     beforeEach(function() {

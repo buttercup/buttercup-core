@@ -1,9 +1,14 @@
-const Vault = require("../../../dist/core/Vault.js");
-const Entry = require("../../../dist/core/Entry.js");
-const Group = require("../../../dist/core/Group.js");
-const { consumeVaultFacade, createGroupFacade, createVaultFacade } = require("../../../dist/facades/vault.js");
-const { createEntryFacade } = require("../../../dist/facades/entry.js");
-const { createFieldDescriptor } = require("../../../dist/facades/tools.js");
+const {
+    Entry,
+    Group,
+    Vault,
+    consumeGroupFacade,
+    consumeVaultFacade,
+    createEntryFacade,
+    createFieldDescriptor,
+    createGroupFacade,
+    createVaultFacade
+} = require("../../../dist/index.node.js");
 
 describe("vault", function() {
     beforeEach(function() {

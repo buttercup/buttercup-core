@@ -1,6 +1,6 @@
-const { describeVaultDataset } = require("../../../../dist/io/formatA/describe.js");
-const Vault = require("../../../../dist/core/Vault.js");
-const { decodeStringValue, isEncoded } = require("../../../../dist/tools/encoding.js");
+const { describeVaultDataset } = require("../../../../dist/io/formatA/describe");
+const { decodeStringValue, isEncoded } = require("../../../../dist/tools/encoding");
+const { Vault } = require("../../../../dist/index.node.js");
 
 function decodeHistory(lines) {
     return lines.map(line => {

@@ -1,4 +1,4 @@
-const { Group, Vault } = require("../../source/index.web.js");
+import { Group, Vault } from "../../source/index.web";
 
 describe("Vault", function() {
     it("can be instantiated", function() {

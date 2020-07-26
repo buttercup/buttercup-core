@@ -37,6 +37,7 @@ export { default as Search, SearchResult } from "./search/Search";
 export { AppEnv, AppEnvGetPropertyOptions } from "./env/core/appEnv";
 export { getSharedAppEnv } from "./env/appEnv";
 
+export { generateUUID } from "./tools/uuid";
 export {
     ENTRY_URL_TYPE_ANY,
     ENTRY_URL_TYPE_GENERAL,

@@ -107,6 +107,9 @@ export function consumeEntryFacade(entry: Entry, facade: EntryFacade) {
  * @memberof module:Buttercup
  */
 export function createEntryFacade(entry?: Entry, options: CreateEntryFacadeOptions = {}): EntryFacade {
+    if (entry && entry instanceof Entry !== true) {
+        throw new Error("Failed creating entry facade: Provided item is not an Entry");
+    }
     const { type } = options;
     const facadeType = type || getEntryFacadeType(entry);
     const createFields = facadeFieldFactories[facadeType];
@@ -153,7 +156,7 @@ export function fieldsToProperties(facadeFields: Array<EntryFacadeField>): { [ke
  * @returns The facade type
  * @private
  */
-function getEntryFacadeType(entry: Entry): EntryType {
+function getEntryFacadeType(entry?: Entry): EntryType {
     if (!entry) {
         return EntryType.Login;
     }

@@ -3,14 +3,14 @@ import Credentials from "../credentials/Credentials";
 import Entry from "../core/Entry";
 import Group from "../core/Group";
 import {
+    EntryHistoryItem,
     EntryID,
     FormatAEntry,
     FormatAGroup,
     FormatBEntry,
     FormatBGroup,
     GroupID,
-    PropertyKeyValueObject,
-    VaultID
+    PropertyKeyValueObject
 } from "../types";
 
 function notImplemented() {
@@ -140,6 +140,11 @@ export default class VaultFormat extends EventEmitter {
     getEntryAttributes(entrySource: FormatAEntry | FormatBEntry): PropertyKeyValueObject {
         notImplemented();
         return {};
+    }
+
+    getEntryChanges(entrySource: FormatAEntry | FormatBEntry): Array<EntryHistoryItem> {
+        notImplemented();
+        return [];
     }
 
     getEntryProperties(entrySource: FormatAEntry | FormatBEntry): PropertyKeyValueObject {

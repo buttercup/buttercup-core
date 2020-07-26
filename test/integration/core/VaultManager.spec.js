@@ -1,7 +1,4 @@
-const VaultManager = require("../../../dist/core/VaultManager.js");
-const VaultSource = require("../../../dist/core/VaultSource.js");
-const MemoryStorageInterface = require("../../../dist/storage/MemoryStorageInterface.js");
-const Credentials = require("../../../dist/credentials/Credentials.js");
+const { Credentials, MemoryStorageInterface, VaultManager, VaultSource } = require("../../../dist/index.node.js");
 
 describe("VaultManager", function() {
     beforeEach(function() {

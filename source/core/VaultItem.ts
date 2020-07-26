@@ -1,5 +1,5 @@
 import Vault from "./Vault";
-import { PERM_MANAGE, PERM_READ, PERM_WRITE } from "../tools/permissions";
+import { VaultPermission } from "../types";
 
 /**
  * Base vault member class (for Entry, Group etc.)
@@ -21,7 +21,11 @@ export default class VaultItem {
     constructor(vault: Vault, source: any) {
         this._vault = vault;
         this._source = source;
-        this._source.permissions = this._source.permissions || [PERM_MANAGE, PERM_READ, PERM_WRITE];
+        this._source.permissions = this._source.permissions || [
+            VaultPermission.Manage,
+            VaultPermission.Read,
+            VaultPermission.Write
+        ];
     }
 
     /**

@@ -38,15 +38,14 @@ import { decodeStringValue, isEncoded } from "../tools/encoding";
 import { generateUUID } from "../tools/uuid";
 import { getCredentials } from "../credentials/channel";
 import {
+    EntryHistoryItem,
     EntryID,
     FormatAEntry,
     FormatAGroup,
-    FormatAVault,
     GroupID,
     PropertyKeyValueObject,
     VaultID
 } from "../types";
-import Vault from "../core/Vault";
 
 const COMMANDS = {
     aid: executeArchiveID,
@@ -278,15 +277,24 @@ export default class VaultFormatA extends VaultFormat {
 
     findGroupContainingGroupID(id: GroupID): FormatAGroup {
         const searchGroups = (groups: Array<FormatAGroup>): FormatAGroup => {
-            for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
-                if (groups[i].id === id) {
-                    return groups[i];
-                }
-                const deepGroup = searchGroups(groups[i].groups || []);
-                if (deepGroup) {
-                    return deepGroup;
-                }
+            for (const group of groups) {
+                if (group.id === id) return null;
+                const children = group.groups || [];
+                const childMatch = !!children.find(child => child.id === id);
+                if (childMatch) return group;
+                const deepGroup = searchGroups(children);
+                if (deepGroup) return deepGroup;
             }
+            return null;
+            // for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
+            //     if (groups[i].id === id) {
+            //         return groups[i];
+            //     }
+            //     const deepGroup = searchGroups(groups[i].groups || []);
+            //     if (deepGroup) {
+            //         return deepGroup;
+            //     }
+            // }
         };
         return searchGroups(this.getAllGroups());
     }
@@ -309,6 +317,10 @@ export default class VaultFormatA extends VaultFormat {
 
     getEntryAttributes(entrySource: FormatAEntry): PropertyKeyValueObject {
         return entrySource.attributes;
+    }
+
+    getEntryChanges(entrySource: FormatAEntry): Array<EntryHistoryItem> {
+        return entrySource.history || [];
     }
 
     getEntryProperties(entrySource: FormatAEntry): PropertyKeyValueObject {

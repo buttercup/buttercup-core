@@ -3,10 +3,10 @@ import { generateUUID } from "../tools/uuid";
 import Entry from "../core/Entry";
 import Group from "../core/Group";
 import {
+    EntryHistoryItem,
     EntryID,
     FormatBEntry,
     FormatBGroup,
-    FormatBVault,
     GroupID,
     VaultID
 } from "../types";
@@ -138,6 +138,10 @@ export default class VaultFormatB extends VaultFormat {
 
     getEntryAttributes(entrySource: FormatBEntry) {
         return entrySource.a;
+    }
+
+    getEntryChanges(entrySource: FormatBEntry): Array<EntryHistoryItem> {
+        return [];
     }
 
     getEntryProperties(entrySource: FormatBEntry) {

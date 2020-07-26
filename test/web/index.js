@@ -1,6 +1,6 @@
-const { expect } = require("chai");
-const { init } = require("../../source/index.web.js");
-const { getSharedAppEnv } = require("../../source/env/appEnv.js");
+import { expect } from "chai";
+import { init } from "../../source/index.web";
+import { getSharedAppEnv } from "../../source/env/appEnv";
 
 init();
 

@@ -114,11 +114,9 @@ export default class Entry extends VaultItem {
     /**
      * Get an array of all history changes made to the entry
      * @memberof Entry
-     * @deprecated
      */
     getChanges(): Array<EntryHistoryItem> {
-        // @todo re-implement
-        return [];
+        return this.vault.format.getEntryChanges(this._source);
     }
 
     /**

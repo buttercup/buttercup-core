@@ -1,6 +1,4 @@
-const Vault = require("../../../dist/core/Vault.js");
-const Group = require("../../../dist/core/Group.js");
-const { PERM_MANAGE, PERM_READ, PERM_WRITE } = require("../../../dist/tools/permissions.js");
+const { Group, Vault, VaultPermission } = require("../../../dist/index.node.js");
 
 describe("core/Entry", function() {
     beforeEach(function() {
@@ -27,9 +25,9 @@ describe("core/Entry", function() {
 
     describe("get:permissions", function() {
         it("returns all permissions by default", function() {
-            expect(this.entry.permissions).to.contain(PERM_MANAGE);
-            expect(this.entry.permissions).to.contain(PERM_READ);
-            expect(this.entry.permissions).to.contain(PERM_WRITE);
+            expect(this.entry.permissions).to.contain(VaultPermission.Manage);
+            expect(this.entry.permissions).to.contain(VaultPermission.Read);
+            expect(this.entry.permissions).to.contain(VaultPermission.Write);
         });
     });
 

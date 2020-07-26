@@ -1,9 +1,7 @@
 const path = require("path");
 const { v4: uuid } = require("uuid");
 const tmp = require("tmp");
-const FileDatasource = require("../../../dist/datasources/FileDatasource.js");
-const Vault = require("../../../dist/core/Vault.js");
-const Credentials = require("../../../dist/credentials/Credentials.js");
+const { Credentials, FileDatasource, Vault } = require("../../../dist/index.node.js");
 
 describe("FileDatasource", function() {
     beforeEach(function(done) {

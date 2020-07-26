@@ -19,7 +19,7 @@ export default class Group extends VaultItem {
 
     /**
      * Create a new Group instance within a vault and maybe a group
-     * @param {Vault} vault The vault to add the group to
+     * @param vault The vault to add the group to
      * @param parentID Optional parent group ID. If no
      *  value is specified the group is added to the root of the
      *  vault.
@@ -200,7 +200,7 @@ export default class Group extends VaultItem {
         if (parentGroup) {
             return new Group(this.vault, parentGroup);
         }
-        throw new Error("No parent group: group is detacted");
+        throw new Error(`Failed getting parent Group: No group containing child ID found: ${this.id}`);
     }
 
     /**

@@ -1,6 +1,7 @@
 const { detectFormat } = require("../io/formatRouter.js");
 const Credentials = require("../credentials/Credentials.js");
 const Share = require("./Share.js");
+const { VaultPermission } = require("../types");
 
 const ARCHIVE_SHARE_ATTRIBUTE_PREFIX = "BC_SHARE:";
 
@@ -46,9 +47,11 @@ function initialiseShares(workspace) {
                         )
                         .then(share => {
                             delete share.contents;
-                            const sharePerms = ["perm_read", "perm_write", "perm_manage"].filter(
-                                perm => share[perm] === true
-                            );
+                            const sharePerms = [
+                                VaultPermission.Manage,
+                                VaultPermission.Read,
+                                VaultPermission.Write
+                            ].filter(perm => share[perm] === true);
                             return new Share(share.id, share.history, sharePerms);
                         });
                 })

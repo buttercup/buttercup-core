@@ -104,6 +104,7 @@ export interface FormatAEntry {
     attributes?: PropertyKeyValueObject;
     properties?: PropertyKeyValueObject;
     parentID: GroupID;
+    history?: Array<EntryHistoryItem>;
 }
 
 export interface FormatAGroup {
@@ -165,16 +166,6 @@ export interface PropertyKeyValueObject {
 
 export type SetTimeout = ReturnType<typeof setTimeout>;
 
-/**
- * @typedef {Object} VaultFacade
- * @property {String} type - The facade type: "vault"
- * @property {String} id - The vault ID
- * @property {Object} attributes - A key/value list of all the vault attributes
- * @property {Array.<GroupFacade>} groups - An array of group facades
- * @property {Array.<EntryFacade>} entries - An array of entry facades
- * @property {String} _tag - The UUID tag for the generation of the facade
- */
-
 export interface VaultFacade {
     id: VaultID;
     type: "vault";
@@ -186,6 +177,12 @@ export interface VaultFacade {
 }
 
 export type VaultID = string;
+
+export enum VaultPermission {
+    Manage = "archive/member/manage",
+    Read = "archive/member/read",
+    Write = "archive/member/write"
+}
 
 export type VaultSourceID = string;
 

@@ -1,7 +1,5 @@
 const tmp = require("tmp");
-const VaultManager = require("../../dist/core/VaultManager.js");
-const VaultSource = require("../../dist/core/VaultSource.js");
-const Credentials = require("../../dist/credentials/Credentials.js");
+const { Credentials, VaultManager, VaultSource } = require("../../dist/index.node.js");
 
 describe("VaultManager", function() {
     describe("with file datasource", function() {

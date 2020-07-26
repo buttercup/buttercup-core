@@ -1,10 +1,10 @@
-const {
+import {
     AttachmentManager,
     Credentials,
     MemoryStorageInterface,
     VaultManager,
     VaultSource
-} = require("../../source/index.web.js");
+} from "../../source/index.web";
 
 const IMAGE_DATA = require("../resources/attachments/image.png");
 
