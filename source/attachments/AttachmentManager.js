@@ -1,6 +1,10 @@
 const { v4: uuid } = require("uuid");
 const Credentials = require("../credentials/Credentials.js");
 const { credentialsAllowsPurpose } = require("../credentials/channel.js");
+const Vault = require("../core/Vault");
+const { getSharedAppEnv } = require("../env/appEnv.js");
+
+const ATTACHMENTS_KEY_LENGTH = 48;
 
 /**
  * @typedef {Object} AttachmentDetails
@@ -29,16 +33,9 @@ class AttachmentManager {
      * Constructor for new attachment managers
      * @param {VaultSource} vaultSource The vault source to attach to. This is
      *  normally set by the VaultSource automatically when unlocking a source.
-     * @param {Credentials} credentials The credentials to use for encrypting
-     *  and decrypting attachments.
      */
-    constructor(vaultSource, credentials) {
+    constructor(vaultSource) {
         this._source = vaultSource;
-        this._credentials = credentials;
-        if (!credentialsAllowsPurpose(this._credentials.id, Credentials.PURPOSE_ATTACHMENTS)) {
-            throw new Error("Credentials do not allow for attachments handling");
-        }
-        this._credentials.restrictPurposes([Credentials.PURPOSE_ATTACHMENTS]);
     }
 
     /**
@@ -55,7 +52,8 @@ class AttachmentManager {
         if (!details) {
             throw new Error(`Attachment not available: ${attachmentID}`);
         }
-        return this._source._datasource.getAttachment(this._source.vault.id, attachmentID, this._credentials);
+        const credentials = await this._getAttachmentsCredentials();
+        return this._source._datasource.getAttachment(this._source.vault.id, attachmentID, credentials);
     }
 
     /**
@@ -149,13 +147,10 @@ class AttachmentManager {
             created: now,
             updated: now
         };
+        // Get credentials
+        const credentials = await this._getAttachmentsCredentials();
         // Write attachment
-        await this._source._datasource.putAttachment(
-            this._source.vault.id,
-            attachmentID,
-            attachmentData,
-            this._credentials
-        );
+        await this._source._datasource.putAttachment(this._source.vault.id, attachmentID, attachmentData, credentials);
         // Set in entry
         entry.setAttribute(attributeKey, JSON.stringify(payload));
     }
@@ -164,6 +159,20 @@ class AttachmentManager {
         if (!this._source.supportsAttachments()) {
             throw new Error(`Attachments not supported on source: ${this._source.id}`);
         }
+    }
+
+    async _getAttachmentsCredentials() {
+        const { vault } = this._source;
+        let key = vault.getAttribute(Vault.Attribute.AttachmentsKey);
+        if (!key) {
+            // Create key for first-time use
+            const generateRandomString = getSharedAppEnv().getProperty("crypto/v1/randomString");
+            key = await generateRandomString(ATTACHMENTS_KEY_LENGTH);
+            vault.setAttribute(Vault.Attribute.AttachmentsKey, key);
+            // Save the key
+            await this._source.save();
+        }
+        return Credentials.fromPassword(key);
     }
 }
 

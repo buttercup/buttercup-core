@@ -6,6 +6,7 @@ const {
     AttachmentManager,
     Credentials,
     MemoryStorageInterface,
+    Vault,
     VaultManager,
     VaultSource
 } = require("../../dist/index.node.js");
@@ -69,6 +70,40 @@ describe("AttachmentManager", function() {
                     size: 439968,
                     created: nowDate.toUTCString(),
                     updated: nowDate.toUTCString()
+                });
+            });
+
+            describe("attachments key", function() {
+                async function generateAttachment() {
+                    const attachmentData = await readFile(IMAGE_PATH);
+                    const attachmentID = AttachmentManager.newAttachmentID();
+                    const fileInfo = await stat(IMAGE_PATH);
+                    const nowDate = new Date();
+                    await this.source.attachmentManager.setAttachment(
+                        this.entry,
+                        attachmentID,
+                        attachmentData,
+                        path.basename(IMAGE_PATH),
+                        "image/png",
+                        fileInfo.size,
+                        nowDate
+                    );
+                }
+
+                it("sets a new attachment key", async function() {
+                    let key = this.source.vault.getAttribute(Vault.Attribute.AttachmentsKey);
+                    expect(key).to.be.undefined;
+                    await generateAttachment.call(this);
+                    key = this.source.vault.getAttribute(Vault.Attribute.AttachmentsKey);
+                    expect(key).to.have.length.above(0);
+                });
+
+                it("uses the same key each time", async function() {
+                    await generateAttachment.call(this);
+                    const key1 = this.source.vault.getAttribute(Vault.Attribute.AttachmentsKey);
+                    await generateAttachment.call(this);
+                    const key2 = this.source.vault.getAttribute(Vault.Attribute.AttachmentsKey);
+                    expect(key1).to.equal(key2);
                 });
             });
 

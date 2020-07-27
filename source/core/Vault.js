@@ -10,6 +10,10 @@ const Group = require("./Group.js");
  * @memberof module:Buttercup
  */
 class Vault extends EventEmitter {
+    static Attribute = Object.freeze({
+        AttachmentsKey: "BC_ATTACHMENTS_KEY"
+    });
+
     /**
      * Create a new archive instance from a list of commands (history)
      * @param {Array.<String>} history The command list
