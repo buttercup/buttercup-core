@@ -60,6 +60,7 @@ function consumeGroupFacade(group, facade) {
  * @memberof module:Buttercup
  */
 function consumeVaultFacade(vault, facade, options = {}) {
+    const Vault = require("../core/Vault.js");
     if (facade._ver !== FACADE_VERSION) {
         throw new Error("Invalid vault facade version");
     }
@@ -218,6 +219,8 @@ function consumeVaultFacade(vault, facade, options = {}) {
             vault.deleteAttribute(attr);
         });
     Object.keys(attributes).forEach(attr => {
+        // Skip this attribute if it's the attachments key
+        if (attr === Vault.Attribute.AttachmentsKey && mergeMode) return;
         if (!currentAttributes[attr] || currentAttributes[attr] !== attributes[attr]) {
             // Different value
             vault.setAttribute(attr, attributes[attr]);
