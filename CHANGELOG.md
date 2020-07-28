@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v4.11.1
+_2020-07-28_
+
+ * Prevent attachments crypto key override during import
+
 ## v4.11.0
 _2020-07-28_
 
