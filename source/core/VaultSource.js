@@ -519,10 +519,7 @@ class VaultSource extends EventEmitter {
                         .then(() => {
                             this._status = VaultSource.STATUS_UNLOCKED;
                             this.emit("unlocked");
-                            this._attachmentManager = new AttachmentManager(
-                                this,
-                                Credentials.fromCredentials(credentials, masterPassword)
-                            );
+                            this._attachmentManager = new AttachmentManager(this);
                         });
                 })
                 .catch(err => {

@@ -1,4 +1,6 @@
 const { createSession } = require("iocane");
+const cryptoRandomString = require("crypto-random-string");
+const { CRYPTO_RANDOM_STRING_CHARS } = require("../core/constants.js");
 
 let __derivationRoundsOverride = null;
 
@@ -20,8 +22,16 @@ function getCryptoResources() {
         "crypto/v1/encryptBuffer": encryptData,
         "crypto/v1/decryptText": decryptData,
         "crypto/v1/encryptText": encryptData,
+        "crypto/v1/randomString": randomString,
         "crypto/v1/setDerivationRounds": setDerivationRounds
     };
+}
+
+async function randomString(length) {
+    return cryptoRandomString({
+        length,
+        characters: CRYPTO_RANDOM_STRING_CHARS
+    });
 }
 
 function setDerivationRounds(rounds = null) {
