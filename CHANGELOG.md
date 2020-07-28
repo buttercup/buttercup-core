@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v4.11.0
+_2020-07-28_
+
+ * **Important attachments update**: Use new auto-generated attachments crypto key instead of master password. Avoid using earlier versions for attachments.
+
 ## v4.10.0
 _2020-07-21_
 
