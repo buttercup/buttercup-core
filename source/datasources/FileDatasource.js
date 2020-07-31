@@ -57,20 +57,17 @@ class FileDatasource extends TextDatasource {
     }
 
     /**
-     * Get attachment buffer
+     * Get encrypted attachment
      * - Loads the attachment contents from a file into a buffer
      * @param {String} vaultID The ID of the vault
      * @param {String} attachmentID The ID of the attachment
-     * @param {Credentials=} credentials Credentials to decrypt
-     *  the buffer, defaults to null (no decryption)
      * @returns {Promise.<Buffer|ArrayBuffer>}
      * @memberof FileDatasource
      */
-    async getAttachment(vaultID, attachmentID, credentials = null) {
+    async getAttachment(vaultID, attachmentID) {
         await this._ensureAttachmentsPaths(vaultID);
         const attachmentPath = path.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
-        const data = await this.readFile(attachmentPath);
-        return credentials ? decryptAttachment(data, credentials) : data;
+        return this.readFile(attachmentPath);
     }
 
     /**
@@ -111,25 +108,18 @@ class FileDatasource extends TextDatasource {
     }
 
     /**
-     * Put attachment data
+     * Put encrypted attachment data
      * @param {String} vaultID The ID of the vault
      * @param {String} attachmentID The ID of the attachment
      * @param {Buffer|ArrayBuffer} buffer The attachment data
-     * @param {Credentials=} credentials Credentials for
-     *  encrypting the buffer. If not provided, the buffer
-     *  is presumed to be in encrypted-form and will be
-     *  written as-is.
+     * @param {Object} details
      * @returns {Promise}
      * @memberof FileDatasource
      */
-    async putAttachment(vaultID, attachmentID, buffer, credentials = null) {
+    async putAttachment(vaultID, attachmentID, buffer, details) {
         await this._ensureAttachmentsPaths(vaultID);
         const attachmentPath = path.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
-        let data = buffer;
-        if (credentials) {
-            data = await encryptAttachment(data, credentials);
-        }
-        await this.writeFile(attachmentPath, data);
+        await this.writeFile(attachmentPath, buffer);
     }
 
     /**

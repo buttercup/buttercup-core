@@ -3,6 +3,7 @@ const Credentials = require("../credentials/Credentials.js");
 const { credentialsAllowsPurpose } = require("../credentials/channel.js");
 const Vault = require("../core/Vault");
 const { getSharedAppEnv } = require("../env/appEnv.js");
+const { decryptAttachment, encryptAttachment, getBufferSize } = require("../tools/attachments.js");
 
 const ATTACHMENTS_KEY_LENGTH = 48;
 
@@ -11,7 +12,8 @@ const ATTACHMENTS_KEY_LENGTH = 48;
  * @property {String} id The attachment ID
  * @property {String} name The name of the file
  * @property {String} type The MIME type
- * @property {Number} size The size of the file, before encryption
+ * @property {Number} sizeOriginal The size of the file, before encryption
+ * @property {Number} sizeEncrypted THe size of the file, after encryption
  */
 
 /**
@@ -53,7 +55,8 @@ class AttachmentManager {
             throw new Error(`Attachment not available: ${attachmentID}`);
         }
         const credentials = await this._getAttachmentsCredentials();
-        return this._source._datasource.getAttachment(this._source.vault.id, attachmentID, credentials);
+        const data = await this._source._datasource.getAttachment(this._source.vault.id, attachmentID);
+        return decryptAttachment(data, credentials);
     }
 
     /**
@@ -120,17 +123,25 @@ class AttachmentManager {
      * @returns {Promise}
      * @memberof AttachmentManager
      */
-    async setAttachment(entry, attachmentID, attachmentData, name, type, size, timestamp = new Date()) {
+    async setAttachment(entry, attachmentID, attachmentData, name, type, timestamp = new Date()) {
         this._checkAttachmentSupport();
-        if (!name || !type || !size) {
-            throw new Error(`Attachment properties required: name/type/size => ${name}/${type}/${size}`);
+        if (!name || !type) {
+            throw new Error(`Attachment properties required: name/type => ${name}/${type}`);
         }
         const Entry = require("../core/Entry.js");
         const attributeKey = `${Entry.Attributes.AttachmentPrefix}${attachmentID}`;
         // Check if it already exists
         const existingDetails = await this.getAttachmentDetails(entry, attachmentID);
+        // Get credentials
+        const credentials = await this._getAttachmentsCredentials();
+        // Encrypt it
+        const encryptedAttachmentData = await encryptAttachment(attachmentData, credentials);
+        const encryptedSize = getBufferSize(encryptedAttachmentData);
+        const originalSize = getBufferSize(attachmentData);
         // Calculate if it can fit in storage
-        const sizeIncrease = existingDetails ? Math.max(0, size - existingDetails.size) : size;
+        const sizeIncrease = existingDetails
+            ? Math.max(0, encryptedSize - existingDetails.sizeEncrypted)
+            : encryptedSize;
         const spaceAvailable = await this._source._datasource.getAvailableStorage();
         if (spaceAvailable !== null && sizeIncrease > spaceAvailable) {
             throw new Error(
@@ -143,14 +154,18 @@ class AttachmentManager {
             id: attachmentID,
             name,
             type,
-            size,
+            sizeOriginal: originalSize,
+            sizeEncrypted: encryptedSize,
             created: now,
             updated: now
         };
-        // Get credentials
-        const credentials = await this._getAttachmentsCredentials();
         // Write attachment
-        await this._source._datasource.putAttachment(this._source.vault.id, attachmentID, attachmentData, credentials);
+        await this._source._datasource.putAttachment(
+            this._source.vault.id,
+            attachmentID,
+            encryptedAttachmentData,
+            payload
+        );
         // Set in entry
         entry.setAttribute(attributeKey, JSON.stringify(payload));
     }
