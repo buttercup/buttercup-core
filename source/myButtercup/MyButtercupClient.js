@@ -2,7 +2,9 @@ const VError = require("verror");
 const { request } = require("cowl");
 const EventEmitter = require("eventemitter3");
 const { Base64 } = require("js-base64");
+const FormData = require("form-data");
 const {
+    API_ATTACHMENT,
     API_INSIGHTS,
     API_ORG_USERS,
     API_OWN_ARCHIVE,
@@ -446,6 +448,43 @@ class MyButtercupClient extends EventEmitter {
         if (!this._lastDigest || Date.now() - this._lastDigestTime >= DIGEST_MAX_AGE) {
             await this.retrieveDigest();
         }
+    }
+
+    /**
+     * Upload an attachment
+     * @param {String} id The attachment ID
+     * @param {String} name The attachment name
+     * @param {String} type The attachment MIME type
+     * @param {Buffer|ArrayBuffer} data Encrypted attachment data
+     */
+    async uploadAttachment(id, name, type, data) {
+        const form = new FormData();
+        form.append("attachment", data, {
+            filename: name
+        });
+        form.append("name", name);
+        form.append("type", type);
+        const requestOptions = {
+            url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", id),
+            method: "POST",
+            headers: {
+                "Content-Disposition": `form-data; name="attachment"; filename=${JSON.stringify(name)}`,
+                ...form.getHeaders(),
+                Authorization: `Bearer ${this.accessToken}`
+            },
+            body: form.getBuffer()
+        };
+        return this.request(requestOptions)
+            .then(resp => {
+                const { data } = resp;
+                if (data.status !== "ok") {
+                    throw new Error("Server rejected attachment upload");
+                }
+            })
+            .catch(err => this._handleRequestFailure(err).then(() => this.uploadAttachment(id, name, type, data)))
+            .catch(err => {
+                throw new VError(err, "Failed uploading attachment");
+            });
     }
 
     /**

@@ -150,6 +150,20 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     /**
+     * Put attachment data
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @param {Buffer|ArrayBuffer} buffer The attachment data
+     * @param {Object} details
+     * @returns {Promise}
+     * @memberof MyButtercupDatasource
+     */
+    async putAttachment(vaultID, attachmentID, buffer, details) {
+        const { name, type } = details;
+        await this.client.uploadAttachment(attachmentID, name, type, buffer);
+    }
+
+    /**
      * Save vault contents to remote
      * @param {String[]} history The vault history lines
      * @param {Credentials} credentials Vault credentials
