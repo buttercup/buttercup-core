@@ -239,6 +239,80 @@ class MyButtercupClient extends EventEmitter {
             });
     }
 
+    deleteAttachment(attachmentID) {
+        const requestOptions = {
+            url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", attachmentID),
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            }
+        };
+        return this.request(requestOptions)
+            .then(resp => {
+                const { data } = resp;
+                if (data.status !== "ok") {
+                    throw new Error("Invalid delete-attachment response");
+                }
+            })
+            .catch(err => this._handleRequestFailure(err).then(() => this.deleteAttachment(attachmentID)))
+            .catch(err => {
+                throw new VError(err, "Failed deleting attachment");
+            });
+    }
+
+    fetchAttachment(attachmentID) {
+        const requestOptions = {
+            url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", attachmentID),
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            },
+            responseType: "buffer"
+        };
+        return this.request(requestOptions)
+            .then(resp => {
+                const { headers, data } = resp;
+                const { "x-mb-att-name": name, "x-mb-att-size": sizeRaw, "x-mb-att-type": type } = headers;
+                const size = parseInt(sizeRaw, 10);
+                return {
+                    name,
+                    size,
+                    type,
+                    data
+                };
+            })
+            .catch(err => this._handleRequestFailure(err).then(() => this.fetchAttachment(attachmentID)))
+            .catch(err => {
+                throw new VError(err, "Failed fetching attachment");
+            });
+    }
+
+    fetchAttachmentDetails(attachmentID) {
+        const requestOptions = {
+            url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", attachmentID),
+            method: "HEAD",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            }
+        };
+        return this.request(requestOptions)
+            .then(resp => {
+                const {
+                    headers: { "x-mb-att-name": name, "x-mb-att-size": sizeRaw, "x-mb-att-type": type }
+                } = resp;
+                const size = parseInt(sizeRaw, 10);
+                return {
+                    name,
+                    size,
+                    type
+                };
+            })
+            .catch(err => this._handleRequestFailure(err).then(() => this.fetchAttachmentDetails(attachmentID)))
+            .catch(err => {
+                throw new VError(err, "Failed fetching attachment details");
+            });
+    }
+
     /**
      * Fetch user shares
      * @param {String[]} ids Share IDs

@@ -78,14 +78,46 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     /**
+     * Get attachment buffer
+     * - Loads the attachment contents into a buffer
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {Promise.<Buffer|ArrayBuffer>}
+     * @memberof MyButtercupDatasource
+     */
+    async getAttachment(vaultID, attachmentID) {
+        const { data } = await this.client.fetchAttachment(attachmentID);
+        return data;
+    }
+
+    /**
+     * Get attachment details
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {AttachmentDetails} The attachment details
+     * @memberof MyButtercupDatasource
+     */
+    async getAttachmentDetails(vaultID, attachmentID) {
+        const { name, size, type } = await this.client.fetchAttachmentDetails(attachmentID);
+        return {
+            id: attachmentID,
+            vaultID,
+            name,
+            filename: name,
+            size,
+            mime: type
+        };
+    }
+
+    /**
      * Get the available storage space, in bytes
      * @returns {Number|null} Bytes of free space, or null if not
      *  available
      * @memberof MyButtercupDatasource
      */
     async getAvailableStorage() {
-        await this._client.updateDigestIfRequired();
-        const { storage_total: total, storage_used: used } = this._client.digest;
+        await this.client.updateDigestIfRequired();
+        const { storage_total: total, storage_used: used } = this.client.digest;
         return total - used;
     }
 
@@ -96,8 +128,8 @@ class MyButtercupDatasource extends TextDatasource {
      * @memberof MyButtercupDatasource
      */
     async getTotalStorage() {
-        await this._client.updateDigestIfRequired();
-        return this._client.digest.storage_total;
+        await this.client.updateDigestIfRequired();
+        return this.client.digest.storage_total;
     }
 
     /**
@@ -108,7 +140,7 @@ class MyButtercupDatasource extends TextDatasource {
      * @memberof MyButtercupDatasource
      */
     load(credentials) {
-        return this._client
+        return this.client
             .fetchUserVault()
             .then(({ archive, updateID }) => {
                 this._updateID = updateID;
@@ -161,6 +193,17 @@ class MyButtercupDatasource extends TextDatasource {
     async putAttachment(vaultID, attachmentID, buffer, details) {
         const { name, type } = details;
         await this.client.uploadAttachment(attachmentID, name, type, buffer);
+    }
+
+    /**
+     * Remove an attachment
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {Promise}
+     * @memberof MyButtercupDatasource
+     */
+    async removeAttachment(vaultID, attachmentID) {
+        await this.client.deleteAttachment(attachmentID);
     }
 
     /**
@@ -227,8 +270,8 @@ class MyButtercupDatasource extends TextDatasource {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         if (updateClientTokens) {
-            this._client._accessToken = accessToken;
-            this._client._refreshToken = refreshToken;
+            this.client._accessToken = accessToken;
+            this.client._refreshToken = refreshToken;
         }
         this.emit("updated");
     }
