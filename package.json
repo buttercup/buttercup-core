@@ -37,7 +37,7 @@
     "test:node": "npm run build:node:test && nyc mocha -r test/index.js --timeout 5000 'test/{unit,integration}/**/*.spec.js'",
     "test:unit": "npm run build:node:test && mocha -r test/index.js 'test/unit/**/*.spec.js'",
     "test:unit:watch": "nodemon --exec 'npm run test:unit' --watch source --watch test",
-    "test:web": "karma start --single-run=false",
+    "test:web": "karma start",
     "test:web:production": "BUNDLE=production karma start"
   },
   "files": [
