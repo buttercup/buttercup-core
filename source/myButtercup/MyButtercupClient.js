@@ -2,7 +2,7 @@ const VError = require("verror");
 const { request } = require("cowl");
 const EventEmitter = require("eventemitter3");
 const { Base64 } = require("js-base64");
-const FormData = require("form-data");
+const NodeFormData = require("form-data");
 const {
     API_ATTACHMENT,
     API_INSIGHTS,
@@ -18,6 +18,7 @@ const {
     OAUTH_TOKEN_URI
 } = require("./symbols.js");
 const { detectFormat } = require("../io/formatRouter.js");
+const { isTypedArray } = require("../tools/buffer.js");
 
 /**
  * @typedef {Object} MyButtercupShareBase
@@ -278,7 +279,7 @@ class MyButtercupClient extends EventEmitter {
                     name,
                     size,
                     type,
-                    data
+                    data: isTypedArray(data) ? data.buffer : data
                 };
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.fetchAttachment(attachmentID)))
@@ -532,21 +533,34 @@ class MyButtercupClient extends EventEmitter {
      * @param {Buffer|ArrayBuffer} data Encrypted attachment data
      */
     async uploadAttachment(id, name, type, data) {
-        const form = new FormData();
-        form.append("attachment", data, {
-            filename: name
-        });
+        const headers = {
+            "Content-Disposition": `form-data; name="attachment"; filename=${JSON.stringify(name)}`,
+            Authorization: `Bearer ${this.accessToken}`
+        };
+        const isWeb = typeof BUTTERCUP_WEB === "boolean" && BUTTERCUP_WEB === true;
+        let form;
+        if (isWeb) {
+            // Use the native FormData
+            form = new FormData();
+            form.append("attachment", new Blob([data]), name);
+            // No Content-Type is set on web as the browser will automatically assign
+            // a value of "multipart/form-data; boundary=----WebKitFormBoundary..."
+            // when a FormData instance is seen.
+        } else {
+            // Use the Node-based FormData package
+            form = new NodeFormData();
+            form.append("attachment", data, {
+                filename: name
+            });
+            Object.assign(headers, form.getHeaders());
+        }
         form.append("name", name);
         form.append("type", type);
         const requestOptions = {
             url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", id),
             method: "POST",
-            headers: {
-                "Content-Disposition": `form-data; name="attachment"; filename=${JSON.stringify(name)}`,
-                ...form.getHeaders(),
-                Authorization: `Bearer ${this.accessToken}`
-            },
-            body: form.getBuffer()
+            headers,
+            body: isWeb ? form : form.getBuffer()
         };
         return this.request(requestOptions)
             .then(resp => {
@@ -658,7 +672,7 @@ class MyButtercupClient extends EventEmitter {
                 )
             )
             .catch(err => {
-                throw new VError(err, "Failed uploading updated vault contents");
+                throw new VError(err, "Failed uploading vault contents");
             });
     }
 

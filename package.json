@@ -37,7 +37,7 @@
     "test:node": "npm run build:node:test && nyc mocha -r test/index.js --timeout 5000 'test/{unit,integration}/**/*.spec.js'",
     "test:unit": "npm run build:node:test && mocha -r test/index.js 'test/unit/**/*.spec.js'",
     "test:unit:watch": "nodemon --exec 'npm run test:unit' --watch source --watch test",
-    "test:web": "karma start",
+    "test:web": "karma start --single-run=false",
     "test:web:production": "BUNDLE=production karma start"
   },
   "files": [
@@ -79,7 +79,7 @@
     "@buttercup/channel-queue": "^0.5.0",
     "@buttercup/dropbox-client": "^0.4.0",
     "@buttercup/googledrive-client": "^0.8.0",
-    "cowl": "^0.8.0",
+    "cowl": "^0.9.0",
     "crypto-random-string": "^3.2.0",
     "eventemitter3": "^4.0.4",
     "fast-levenshtein": "^2.0.6",
