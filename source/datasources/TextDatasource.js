@@ -11,7 +11,7 @@ const { fireInstantiationHandlers, registerDatasource } = require("./register.js
  * @property {String} vaultID The vault ID
  * @property {String} name Base filename
  * @property {String} filename Full filename and path
- * @property {Number} size Size in bytes (0 if invalid)
+ * @property {Number} size Encrypted size in bytes (0 if invalid)
  * @property {String|null} mime MIME type if available
  */
 
@@ -68,16 +68,14 @@ class TextDatasource extends EventEmitter {
     }
 
     /**
-     * Get attachment buffer
+     * Get encrypted attachment
      * - Downloads the attachment contents into a buffer
      * @param {String} vaultID The ID of the vault
      * @param {String} attachmentID The ID of the attachment
-     * @param {Credentials=} credentials Credentials to decrypt
-     *  the buffer, defaults to null (no decryption)
      * @returns {Promise.<Buffer|ArrayBuffer>}
      * @memberof TextDatasource
      */
-    getAttachment(vaultID, attachmentID, credentials = null) {
+    getAttachment(vaultID, attachmentID) {
         return Promise.reject(new Error("Attachments not supported"));
     }
 
@@ -152,18 +150,15 @@ class TextDatasource extends EventEmitter {
     }
 
     /**
-     * Put attachment data
+     * Put encrypted attachment data
      * @param {String} vaultID The ID of the vault
      * @param {String} attachmentID The ID of the attachment
      * @param {Buffer|ArrayBuffer} buffer The attachment data
-     * @param {Credentials=} credentials Credentials for
-     *  encrypting the buffer. If not provided, the buffer
-     *  is presumed to be in encrypted-form and will be
-     *  written as-is.
+     * @param {Object} details The attachment details
      * @returns {Promise}
      * @memberof TextDatasource
      */
-    putAttachment(vaultID, attachmentID, buffer, credentials = null) {
+    putAttachment(vaultID, attachmentID, buffer, details) {
         return Promise.reject(new Error("Attachments not supported"));
     }
 

@@ -2,7 +2,9 @@ const VError = require("verror");
 const { request } = require("cowl");
 const EventEmitter = require("eventemitter3");
 const { Base64 } = require("js-base64");
+const NodeFormData = require("form-data");
 const {
+    API_ATTACHMENT,
     API_INSIGHTS,
     API_ORG_USERS,
     API_OWN_ARCHIVE,
@@ -16,6 +18,7 @@ const {
     OAUTH_TOKEN_URI
 } = require("./symbols.js");
 const { detectFormat } = require("../io/formatRouter.js");
+const { isTypedArray } = require("../tools/buffer.js");
 
 /**
  * @typedef {Object} MyButtercupShareBase
@@ -53,6 +56,9 @@ const { detectFormat } = require("../io/formatRouter.js");
  * @property {Array.<Object>} messages System messages for the user (internal processing)
  * @property {Array.<MyButtercupIncomingShare>} new_shares An array of new shares to process
  * @property {Array.<MyButtercupOrganisation>} organisations An array of user organisations
+ * @property {String} account_name The name set for the account
+ * @property {Number} storage_total Total storage, in bytes
+ * @property {Number} storage_used Used storage, in bytes
  */
 
 /**
@@ -76,6 +82,8 @@ const { detectFormat } = require("../io/formatRouter.js");
  * @property {String} created The creation date
  * @property {String} lastUpdate The last update date
  */
+
+const DIGEST_MAX_AGE = 10000;
 
 function demultiplexShares(sharesTxt) {
     const shares = {};
@@ -173,6 +181,7 @@ class MyButtercupClient extends EventEmitter {
         this._accessToken = accessToken;
         this._refreshToken = refreshToken;
         this._lastDigest = null;
+        this._lastDigestTime = null;
         this._clientID = clientID;
         this._clientSecret = clientSecret;
         this.request = request;
@@ -228,6 +237,80 @@ class MyButtercupClient extends EventEmitter {
             .catch(err => this._handleRequestFailure(err).then(() => this.changePassword(password, passwordToken)))
             .catch(err => {
                 throw new VError(err, "Failed changing password");
+            });
+    }
+
+    deleteAttachment(attachmentID) {
+        const requestOptions = {
+            url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", attachmentID),
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            }
+        };
+        return this.request(requestOptions)
+            .then(resp => {
+                const { data } = resp;
+                if (data.status !== "ok") {
+                    throw new Error("Invalid delete-attachment response");
+                }
+            })
+            .catch(err => this._handleRequestFailure(err).then(() => this.deleteAttachment(attachmentID)))
+            .catch(err => {
+                throw new VError(err, "Failed deleting attachment");
+            });
+    }
+
+    fetchAttachment(attachmentID) {
+        const requestOptions = {
+            url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", attachmentID),
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            },
+            responseType: "buffer"
+        };
+        return this.request(requestOptions)
+            .then(resp => {
+                const { headers, data } = resp;
+                const { "x-mb-att-name": name, "x-mb-att-size": sizeRaw, "x-mb-att-type": type } = headers;
+                const size = parseInt(sizeRaw, 10);
+                return {
+                    name,
+                    size,
+                    type,
+                    data: isTypedArray(data) ? data.buffer : data
+                };
+            })
+            .catch(err => this._handleRequestFailure(err).then(() => this.fetchAttachment(attachmentID)))
+            .catch(err => {
+                throw new VError(err, "Failed fetching attachment");
+            });
+    }
+
+    fetchAttachmentDetails(attachmentID) {
+        const requestOptions = {
+            url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", attachmentID),
+            method: "HEAD",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            }
+        };
+        return this.request(requestOptions)
+            .then(resp => {
+                const {
+                    headers: { "x-mb-att-name": name, "x-mb-att-size": sizeRaw, "x-mb-att-type": type }
+                } = resp;
+                const size = parseInt(sizeRaw, 10);
+                return {
+                    name,
+                    size,
+                    type
+                };
+            })
+            .catch(err => this._handleRequestFailure(err).then(() => this.fetchAttachmentDetails(attachmentID)))
+            .catch(err => {
+                throw new VError(err, "Failed fetching attachment details");
             });
     }
 
@@ -345,6 +428,7 @@ class MyButtercupClient extends EventEmitter {
                     throw new Error("Invalid digest response");
                 }
                 this._lastDigest = digest;
+                this._lastDigestTime = Date.now();
                 return digest;
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.retrieveDigest()))
@@ -359,9 +443,7 @@ class MyButtercupClient extends EventEmitter {
      * @memberof MyButtercupClient
      */
     async retrieveUsersList() {
-        if (!this.digest) {
-            await this.retrieveDigest();
-        }
+        await this.updateDigestIfRequired();
         const orgIDs = this.digest.organisations.map(org => org.id);
         if (orgIDs.length <= 0) {
             return [];
@@ -434,15 +516,73 @@ class MyButtercupClient extends EventEmitter {
     }
 
     /**
+     * Update the digest if required
+     * @memberof MyButtercupClient
+     */
+    async updateDigestIfRequired() {
+        if (!this._lastDigest || Date.now() - this._lastDigestTime >= DIGEST_MAX_AGE) {
+            await this.retrieveDigest();
+        }
+    }
+
+    /**
+     * Upload an attachment
+     * @param {String} id The attachment ID
+     * @param {String} name The attachment name
+     * @param {String} type The attachment MIME type
+     * @param {Buffer|ArrayBuffer} data Encrypted attachment data
+     */
+    async uploadAttachment(id, name, type, data) {
+        const headers = {
+            "Content-Disposition": `form-data; name="attachment"; filename=${JSON.stringify(name)}`,
+            Authorization: `Bearer ${this.accessToken}`
+        };
+        const isWeb = typeof BUTTERCUP_WEB === "boolean" && BUTTERCUP_WEB === true;
+        let form;
+        if (isWeb) {
+            // Use the native FormData
+            form = new FormData();
+            form.append("attachment", new Blob([data]), name);
+            // No Content-Type is set on web as the browser will automatically assign
+            // a value of "multipart/form-data; boundary=----WebKitFormBoundary..."
+            // when a FormData instance is seen.
+        } else {
+            // Use the Node-based FormData package
+            form = new NodeFormData();
+            form.append("attachment", data, {
+                filename: name
+            });
+            Object.assign(headers, form.getHeaders());
+        }
+        form.append("name", name);
+        form.append("type", type);
+        const requestOptions = {
+            url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", id),
+            method: "POST",
+            headers,
+            body: isWeb ? form : form.getBuffer()
+        };
+        return this.request(requestOptions)
+            .then(resp => {
+                const { data } = resp;
+                if (data.status !== "ok") {
+                    throw new Error("Server rejected attachment upload");
+                }
+            })
+            .catch(err => this._handleRequestFailure(err).then(() => this.uploadAttachment(id, name, type, data)))
+            .catch(err => {
+                throw new VError(err, "Failed uploading attachment");
+            });
+    }
+
+    /**
      * Write insights to the remote account
      * @param {Insights} insights The insights data
      * @returns {Promise}
      * @memberof MyButtercupClient
      */
     async writeInsights(insights) {
-        if (!this.digest) {
-            await this.retrieveDigest();
-        }
+        await this.updateDigestIfRequired();
         const {
             avgPassLen = null,
             duplicatePasswords = null,
@@ -532,7 +672,7 @@ class MyButtercupClient extends EventEmitter {
                 )
             )
             .catch(err => {
-                throw new VError(err, "Failed uploading updated vault contents");
+                throw new VError(err, "Failed uploading vault contents");
             });
     }
 

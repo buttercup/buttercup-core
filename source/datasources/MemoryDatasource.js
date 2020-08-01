@@ -45,18 +45,15 @@ class MemoryDatasource extends TextDatasource {
      * - Loads the attachment contents into a buffer
      * @param {String} vaultID The ID of the vault
      * @param {String} attachmentID The ID of the attachment
-     * @param {Credentials=} credentials Credentials to decrypt
-     *  the buffer, defaults to null (no decryption)
      * @returns {Promise.<Buffer|ArrayBuffer>}
      * @memberof MemoryDatasource
      */
-    getAttachment(vaultID, attachmentID, credentials = null) {
+    getAttachment(vaultID, attachmentID) {
         return this._ensureAttachmentsPaths(vaultID).then(() => {
             if (!this._store.attachments[vaultID][attachmentID]) {
                 throw new Error(`No attachment found for ID: ${attachmentID}`);
             }
-            const attachment = this._store.attachments[vaultID][attachmentID];
-            return credentials ? decryptAttachment(attachment, credentials) : attachment;
+            return this._store.attachments[vaultID][attachmentID];
         });
     }
 
@@ -98,23 +95,18 @@ class MemoryDatasource extends TextDatasource {
     }
 
     /**
-     * Put attachment data
+     * Put encrypted attachment data
      * @param {String} vaultID The ID of the vault
      * @param {String} attachmentID The ID of the attachment
      * @param {Buffer|ArrayBuffer} buffer The attachment data
-     * @param {Credentials=} credentials Credentials for
-     *  encrypting the buffer. If not provided, the buffer
-     *  is presumed to be in encrypted-form and will be
-     *  written as-is.
+     * @param {Object} details
      * @returns {Promise}
      * @memberof MemoryDatasource
      */
-    putAttachment(vaultID, attachmentID, buffer, credentials = null) {
-        return this._ensureAttachmentsPaths(vaultID)
-            .then(() => (credentials ? encryptAttachment(buffer, credentials) : buffer))
-            .then(data => {
-                this._store.attachments[vaultID][attachmentID] = data;
-            });
+    putAttachment(vaultID, attachmentID, buffer, details) {
+        return this._ensureAttachmentsPaths(vaultID).then(() => {
+            this._store.attachments[vaultID][attachmentID] = buffer;
+        });
     }
 
     /**

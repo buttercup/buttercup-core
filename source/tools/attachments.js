@@ -15,8 +15,16 @@ function encryptAttachment(buff, credentials) {
     return encrypt(buff, masterPassword);
 }
 
+function getBufferSize(buff) {
+    if (typeof buff.byteLength !== "undefined") {
+        return buff.byteLength;
+    }
+    return buff.length;
+}
+
 module.exports = {
     ATTACHMENT_EXT,
     decryptAttachment,
-    encryptAttachment
+    encryptAttachment,
+    getBufferSize
 };

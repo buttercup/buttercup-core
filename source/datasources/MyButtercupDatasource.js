@@ -63,6 +63,7 @@ class MyButtercupDatasource extends TextDatasource {
      *      throw new Error("Datasource unable to change password");
      *  }
      *  await tds.changePassword(creds, false);
+     * @memberof MyButtercupDatasource
      */
     async changePassword(newCredentials, preflight) {
         const {
@@ -77,6 +78,61 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     /**
+     * Get attachment buffer
+     * - Loads the attachment contents into a buffer
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {Promise.<Buffer|ArrayBuffer>}
+     * @memberof MyButtercupDatasource
+     */
+    async getAttachment(vaultID, attachmentID) {
+        const { data } = await this.client.fetchAttachment(attachmentID);
+        return data;
+    }
+
+    /**
+     * Get attachment details
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {AttachmentDetails} The attachment details
+     * @memberof MyButtercupDatasource
+     */
+    async getAttachmentDetails(vaultID, attachmentID) {
+        const { name, size, type } = await this.client.fetchAttachmentDetails(attachmentID);
+        return {
+            id: attachmentID,
+            vaultID,
+            name,
+            filename: name,
+            size,
+            mime: type
+        };
+    }
+
+    /**
+     * Get the available storage space, in bytes
+     * @returns {Number|null} Bytes of free space, or null if not
+     *  available
+     * @memberof MyButtercupDatasource
+     */
+    async getAvailableStorage() {
+        await this.client.updateDigestIfRequired();
+        const { storage_total: total, storage_used: used } = this.client.digest;
+        return total - used;
+    }
+
+    /**
+     * Get the total storage space, in bytes
+     * @returns {Number|null} Bytes of free space, or null if not
+     *  available
+     * @memberof MyButtercupDatasource
+     */
+    async getTotalStorage() {
+        await this.client.updateDigestIfRequired();
+        return this.client.digest.storage_total;
+    }
+
+    /**
      * Load vault history from remote
      * @param {Credentials} credentials The archive credentials
      * @returns {Promise.<LoadedVaultData>} Promise which resolves with
@@ -84,7 +140,7 @@ class MyButtercupDatasource extends TextDatasource {
      * @memberof MyButtercupDatasource
      */
     load(credentials) {
-        return this._client
+        return this.client
             .fetchUserVault()
             .then(({ archive, updateID }) => {
                 this._updateID = updateID;
@@ -126,6 +182,31 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     /**
+     * Put attachment data
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @param {Buffer|ArrayBuffer} buffer The attachment data
+     * @param {Object} details
+     * @returns {Promise}
+     * @memberof MyButtercupDatasource
+     */
+    async putAttachment(vaultID, attachmentID, buffer, details) {
+        const { name, type } = details;
+        await this.client.uploadAttachment(attachmentID, name, type, buffer);
+    }
+
+    /**
+     * Remove an attachment
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {Promise}
+     * @memberof MyButtercupDatasource
+     */
+    async removeAttachment(vaultID, attachmentID) {
+        await this.client.deleteAttachment(attachmentID);
+    }
+
+    /**
      * Save vault contents to remote
      * @param {String[]} history The vault history lines
      * @param {Credentials} credentials Vault credentials
@@ -148,9 +229,18 @@ class MyButtercupDatasource extends TextDatasource {
     }
 
     /**
+     * Whether or not the datasource supports attachments
+     * @returns {Boolean}
+     * @memberof MyButtercupDatasource
+     */
+    supportsAttachments() {
+        return true;
+    }
+
+    /**
      * Whether or not the datasource supports the changing of the master password
      * @returns {Boolean} True if it supports changing the master password
-     * @memberof WebDAVDatasource
+     * @memberof MyButtercupDatasource
      */
     supportsPasswordChange() {
         return true;
@@ -180,8 +270,8 @@ class MyButtercupDatasource extends TextDatasource {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         if (updateClientTokens) {
-            this._client._accessToken = accessToken;
-            this._client._refreshToken = refreshToken;
+            this.client._accessToken = accessToken;
+            this.client._refreshToken = refreshToken;
         }
         this.emit("updated");
     }
