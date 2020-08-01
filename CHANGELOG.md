@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v4.12.0
+_2020-08-01_
+
+ * Attachments for My Buttercup
+
 ## v4.11.1
 _2020-07-28_
 
