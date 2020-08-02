@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v4.13.0
+_2020-08-02_
+
+ * Improved vault merging behaviour when using `VaultSource#save`
+
 ## v4.12.0
 _2020-08-01_
 
