@@ -1,13 +1,28 @@
+const path = require("path");
+const tmp = require("tmp");
 const VaultManager = require("../../../dist/core/VaultManager.js");
 const VaultSource = require("../../../dist/core/VaultSource.js");
+const Vault = require("../../../dist/core/Vault.js");
 const MemoryStorageInterface = require("../../../dist/storage/MemoryStorageInterface.js");
 const Credentials = require("../../../dist/credentials/Credentials.js");
+const FileDatasource = require("../../../dist/datasources/FileDatasource.js");
+const Group = require("../../../dist/core/Group.js");
 
 describe("VaultManager", function() {
-    beforeEach(function() {
+    beforeEach(function(done) {
         this.vaultManager = new VaultManager({
             autoUpdate: false
         });
+        tmp.dir((err, dirPath, cleanup) => {
+            if (err) return document(err);
+            this.tmpDir = dirPath;
+            this.cleanup = cleanup;
+            done();
+        });
+    });
+
+    afterEach(function() {
+        this.cleanup();
     });
 
     it("can migrate & unlock legacy vaults", async function() {
@@ -30,5 +45,36 @@ describe("VaultManager", function() {
         await this.vaultManager.rehydrate();
         await this.vaultManager.sources[0].unlock(Credentials.fromPassword("test"));
         expect(this.vaultManager.sources[0].status).to.equal(VaultSource.STATUS_UNLOCKED);
+    });
+
+    it("can merge differences between local and remote vaults", async function() {
+        const vaultPath = path.join(this.tmpDir, "vault.bcup");
+        // Init first
+        const creds = Credentials.fromDatasource(
+            {
+                type: "file",
+                path: vaultPath
+            },
+            "test"
+        );
+        const credsStr = await creds.toSecureString();
+        const source = new VaultSource("Test", "file", credsStr);
+        await this.vaultManager.addSource(source);
+        await source.unlock(Credentials.fromPassword("test"), { initialiseRemote: true });
+        // Make changes to remote
+        const fds = new FileDatasource(creds);
+        const loadedTemp = await fds.load(Credentials.fromPassword("test"));
+        const tempVault = Vault.createFromHistory(loadedTemp.history, loadedTemp.Format);
+        tempVault.createGroup("Remote");
+        await fds.save(tempVault.format.history, Credentials.fromPassword("test"));
+        // Make changes to local
+        source.vault.createGroup("Local");
+        // Save (+ merge)
+        await source.save();
+        // Expect the changes are present
+        const remoteGroup = source.vault.findGroupsByTitle("Remote")[0];
+        const localGroup = source.vault.findGroupsByTitle("Local")[0];
+        expect(remoteGroup).to.be.an.instanceOf(Group);
+        expect(localGroup).to.be.an.instanceOf(Group);
     });
 });

@@ -402,16 +402,16 @@ class VaultSource extends EventEmitter {
         const stagedVault = Vault.createFromHistory(history, Format);
         const comparator = new VaultComparator(this._vault, stagedVault);
         const differences = comparator.calculateDifferences();
-        // get format
-        // const Format = this._vault.format.getFormat();
-        // only strip if there are multiple updates
-        const stripDestructive = differences.secondary.length > 0;
-        const newHistoryMain = stripDestructive
-            ? Format.prepareHistoryForMerge(differences.original)
-            : differences.original;
-        const newHistoryStaged = stripDestructive
-            ? Format.prepareHistoryForMerge(differences.secondary)
-            : differences.secondary;
+        if (differences.secondary.length === 0) {
+            // Remote doesn't have unseen changes, so we can simply
+            // continue using the same vault..
+            this._vault.format.dirty = false;
+            return this._vault;
+        }
+        // Remote has unseen changes, so we need to do a full merge
+        // to manage the differences
+        const newHistoryMain = Format.prepareHistoryForMerge(differences.original);
+        const newHistoryStaged = Format.prepareHistoryForMerge(differences.secondary);
         const base = differences.common;
         const newVault = new Vault(Format);
         newVault.format.clear();
@@ -423,6 +423,7 @@ class VaultSource extends EventEmitter {
                 newVault.format.execute(command);
             });
         newVault.format.dirty = false;
+        // @todo Update all Group/Entry references
         this._vault = newVault;
         return newVault;
     }

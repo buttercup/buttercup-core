@@ -13,7 +13,7 @@ describe("FileDatasource", function() {
             .createEntry("Test")
             .setProperty("username", "test");
         tmp.dir((err, dirPath, cleanup) => {
-            if (err) return document(err);
+            if (err) return done(err);
             this.fds = new FileDatasource(
                 Credentials.fromDatasource({
                     path: path.join(dirPath, "vault.bcup")
