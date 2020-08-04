@@ -58,27 +58,6 @@ export default class MemoryDatasource extends TextDatasource {
         });
     }
 
-    // /**
-    //  * Get attachment details
-    //  * @param vaultID The ID of the vault
-    //  * @param attachmentID The ID of the attachment
-    //  * @returns The attachment details
-    //  * @memberof MemoryDatasource
-    //  */
-    // getAttachmentDetails(vaultID: VaultID, attachmentID: string): Promise<AttachmentDetails> {
-    //     const attachment = this._store.attachments[vaultID][attachmentID];
-    //     const filename = `${attachmentID}.${ATTACHMENT_EXT}`;
-    //     const filePath = `${this._property}/${filename}`;
-    //     return Promise.resolve({
-    //         id: attachmentID,
-    //         vaultID,
-    //         name: filename,
-    //         filename: filePath,
-    //         size: typeof attachment.byteLength === "number" ? attachment.byteLength : attachment.length,
-    //         mime: null
-    //     });
-    // }
-
     /**
      * Load from a global property
      * @param credentials The credentials for decryption

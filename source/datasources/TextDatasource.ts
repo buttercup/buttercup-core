@@ -76,17 +76,6 @@ export default class TextDatasource extends EventEmitter {
         return Promise.reject(new Error("Attachments not supported"));
     }
 
-    // /**
-    //  * Get attachment details
-    //  * @param vaultID The ID of the vault
-    //  * @param attachmentID The ID of the attachment
-    //  * @returns The attactment details
-    //  * @memberof TextDatasource
-    //  */
-    // getAttachmentDetails(vaultID: VaultID, attachmentID: string): Promise<AttachmentDetails> {
-    //     return Promise.reject(new Error("Attachments not supported"));
-    // }
-
     /**
      * Get the available storage space, in bytes
      * @returns Bytes of free space, or null if not

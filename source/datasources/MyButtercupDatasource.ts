@@ -104,25 +104,6 @@ export default class MyButtercupDatasource extends TextDatasource {
         return data;
     }
 
-    // /**
-    //  * Get attachment details
-    //  * @param vaultID The ID of the vault
-    //  * @param attachmentID The ID of the attachment
-    //  * @returns The attachment details
-    //  * @memberof MyButtercupDatasource
-    //  */
-    // async getAttachmentDetails(vaultID: VaultID, attachmentID: string) {
-    //     const { name, size, type } = await this.client.fetchAttachmentDetails(attachmentID);
-    //     return {
-    //         id: attachmentID,
-    //         vaultID,
-    //         name,
-    //         filename: name,
-    //         size,
-    //         mime: type
-    //     };
-    // }
-
     /**
      * Get the available storage space, in bytes
      * @returns {Number|null} Bytes of free space, or null if not

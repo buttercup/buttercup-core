@@ -76,28 +76,6 @@ export default class FileDatasource extends TextDatasource {
         return this.readFile(attachmentPath);
     }
 
-    // /**
-    //  * Get attachment details
-    //  * @param vaultID The ID of the vault
-    //  * @param attachmentID The ID of the attachment
-    //  * @returns The attachment details
-    //  * @memberof FileDatasource
-    //  */
-    // async getAttachmentDetails(vaultID: VaultID, attachmentID: string): Promise<AttachmentDetails> {
-    //     await this._ensureAttachmentsPaths(vaultID);
-    //     const filename = `${attachmentID}.${ATTACHMENT_EXT}`;
-    //     const filePath = path.join(this.baseDir, ".buttercup", vaultID, filename);
-    //     const fileStat = await this.stat(filePath);
-    //     return {
-    //         id: attachmentID,
-    //         vaultID,
-    //         name: filename,
-    //         filename: filePath,
-    //         size: fileStat.size,
-    //         mime: null
-    //     };
-    // }
-
     /**
      * Load from the filename specified in the constructor using a password
      * @param credentials The credentials for decryption
