@@ -70,24 +70,22 @@ export default class TextDatasource extends EventEmitter {
      * - Downloads the attachment contents into a buffer
      * @param vaultID The ID of the vault
      * @param attachmentID The ID of the attachment
-     * @param credentials Credentials to decrypt
-     *  the buffer, defaults to null (no decryption)
      * @memberof TextDatasource
      */
-    getAttachment(vaultID: VaultID, attachmentID: string, credentials: Credentials = null): Promise<BufferLike> {
+    getAttachment(vaultID: VaultID, attachmentID: string): Promise<BufferLike> {
         return Promise.reject(new Error("Attachments not supported"));
     }
 
-    /**
-     * Get attachment details
-     * @param vaultID The ID of the vault
-     * @param attachmentID The ID of the attachment
-     * @returns The attactment details
-     * @memberof TextDatasource
-     */
-    getAttachmentDetails(vaultID: VaultID, attachmentID: string): Promise<AttachmentDetails> {
-        return Promise.reject(new Error("Attachments not supported"));
-    }
+    // /**
+    //  * Get attachment details
+    //  * @param vaultID The ID of the vault
+    //  * @param attachmentID The ID of the attachment
+    //  * @returns The attactment details
+    //  * @memberof TextDatasource
+    //  */
+    // getAttachmentDetails(vaultID: VaultID, attachmentID: string): Promise<AttachmentDetails> {
+    //     return Promise.reject(new Error("Attachments not supported"));
+    // }
 
     /**
      * Get the available storage space, in bytes
@@ -152,13 +150,10 @@ export default class TextDatasource extends EventEmitter {
      * @param vaultID The ID of the vault
      * @param attachmentID The ID of the attachment
      * @param buffer The attachment data
-     * @param credentials Credentials for
-     *  encrypting the buffer. If not provided, the buffer
-     *  is presumed to be in encrypted-form and will be
-     *  written as-is.
+     * @param details Attachment details object
      * @memberof TextDatasource
      */
-    putAttachment(vaultID: VaultID, attachmentID: string, buffer: BufferLike, credentials: Credentials = null): Promise<void> {
+    putAttachment(vaultID: VaultID, attachmentID: string, buffer: BufferLike, details: AttachmentDetails): Promise<void> {
         return Promise.reject(new Error("Attachments not supported"));
     }
 

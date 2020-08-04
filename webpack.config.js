@@ -34,7 +34,7 @@ const baseConfig = {
     module: {
         rules: [
             {
-                test: /(iconv-loader|bluebird)/,
+                test: /(iconv-loader|bluebird|form-data)/,
                 use: "null-loader"
             },
             {

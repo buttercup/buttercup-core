@@ -49,6 +49,13 @@ describe("core/VaultComparator", function() {
             const { secondary } = comparator.calculateDifferences();
             expect(secondary).to.have.lengthOf(0);
         });
+
+        it("shorter history diff contains differences when vaults diverge", function() {
+            this.vault2.createGroup("diff group 2");
+            const comparator = new VaultComparator(this.vault1, this.vault2);
+            const { secondary } = comparator.calculateDifferences();
+            expect(secondary).to.have.length.above(0);
+        });
     });
 
     describe("vaultsDiffer", function() {

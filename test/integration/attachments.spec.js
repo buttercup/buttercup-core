@@ -6,6 +6,7 @@ const {
     AttachmentManager,
     Credentials,
     MemoryStorageInterface,
+    Vault,
     VaultManager,
     VaultSource
 } = require("../../dist/index.node.js");
@@ -56,7 +57,6 @@ describe("AttachmentManager", function() {
                     attachmentData,
                     path.basename(IMAGE_PATH),
                     "image/png",
-                    fileInfo.size,
                     nowDate
                 );
                 const attachmentDataRead = await this.source.attachmentManager.getAttachment(this.entry, attachmentID);
@@ -66,9 +66,43 @@ describe("AttachmentManager", function() {
                     id: attachmentID,
                     name: "image.png",
                     type: "image/png",
-                    size: 439968,
+                    sizeOriginal: 439968,
+                    sizeEncrypted: 440133,
                     created: nowDate.toUTCString(),
                     updated: nowDate.toUTCString()
+                });
+            });
+
+            describe("attachments key", function() {
+                async function generateAttachment() {
+                    const attachmentData = await readFile(IMAGE_PATH);
+                    const attachmentID = AttachmentManager.newAttachmentID();
+                    const fileInfo = await stat(IMAGE_PATH);
+                    const nowDate = new Date();
+                    await this.source.attachmentManager.setAttachment(
+                        this.entry,
+                        attachmentID,
+                        attachmentData,
+                        path.basename(IMAGE_PATH),
+                        "image/png",
+                        nowDate
+                    );
+                }
+
+                it("sets a new attachment key", async function() {
+                    let key = this.source.vault.getAttribute(Vault.Attribute.AttachmentsKey);
+                    expect(key).to.be.undefined;
+                    await generateAttachment.call(this);
+                    key = this.source.vault.getAttribute(Vault.Attribute.AttachmentsKey);
+                    expect(key).to.have.length.above(0);
+                });
+
+                it("uses the same key each time", async function() {
+                    await generateAttachment.call(this);
+                    const key1 = this.source.vault.getAttribute(Vault.Attribute.AttachmentsKey);
+                    await generateAttachment.call(this);
+                    const key2 = this.source.vault.getAttribute(Vault.Attribute.AttachmentsKey);
+                    expect(key1).to.equal(key2);
                 });
             });
 
@@ -83,16 +117,14 @@ describe("AttachmentManager", function() {
                         this.attachmentID,
                         this.attachmentData,
                         path.basename(IMAGE_PATH),
-                        "image/png",
-                        this.fileInfo.size
+                        "image/png"
                     );
                     await this.source.attachmentManager.setAttachment(
                         this.entry,
                         this.attachmentID2,
                         this.attachmentData,
                         "test.png",
-                        "image/png",
-                        this.fileInfo.size
+                        "image/png"
                     );
                 });
 
@@ -130,7 +162,7 @@ describe("AttachmentManager", function() {
                         );
                     } catch (err) {
                         expect(err).to.match(/Not enough space/i);
-                        expect(err).to.match(/needed = 439968 B/i);
+                        expect(err).to.match(/needed = 440133 B/i);
                         expect(err).to.match(/available = 1000 B/i);
                     }
                     expect(getAvailableStorage.callCount).to.equal(1);
@@ -142,18 +174,18 @@ describe("AttachmentManager", function() {
                         .stub()
                         .callsFake(() => Promise.resolve(1000)));
                     sinon.spy(this.source._datasource, "putAttachment");
+                    const newData = Buffer.concat([this.attachmentData, Buffer.alloc(2500)]);
                     try {
                         await this.source.attachmentManager.setAttachment(
                             this.entry,
                             this.attachmentID,
-                            this.attachmentData,
+                            newData,
                             path.basename(IMAGE_PATH),
-                            "image/png",
-                            this.fileInfo.size + 2500
+                            "image/png"
                         );
                     } catch (err) {
                         expect(err).to.match(/Not enough space/i);
-                        expect(err).to.match(/needed = 2500 B/i);
+                        expect(err).to.match(/needed = 2\d{3} B/i);
                         expect(err).to.match(/available = 1000 B/i);
                     }
                     expect(getAvailableStorage.callCount).to.equal(1);

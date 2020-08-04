@@ -13,6 +13,10 @@ import { EntryID, GroupID, History } from "../types";
  * @memberof module:Buttercup
  */
 export default class Vault extends EventEmitter {
+    static Attribute = Object.freeze({
+        AttachmentsKey: "BC_ATTACHMENTS_KEY"
+    });
+
     /**
      * Create a new archive instance from a list of commands (history)
      * @param history The command list

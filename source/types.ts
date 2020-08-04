@@ -1,10 +1,20 @@
+// export interface AttachmentDetails {
+//     id: string;
+//     vaultID: VaultID;
+//     name: string;
+//     filename: string;
+//     size: number;
+//     mime: string | null;
+// }
+
 export interface AttachmentDetails {
     id: string;
-    vaultID: VaultID;
     name: string;
-    filename: string;
-    size: number;
-    mime: string | null;
+    type: string;
+    sizeOriginal: number;
+    sizeEncrypted: number;
+    created: string;
+    updated: string;
 }
 
 export type BufferLike = Buffer | ArrayBuffer;

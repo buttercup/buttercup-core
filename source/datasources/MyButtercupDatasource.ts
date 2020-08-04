@@ -6,7 +6,7 @@ import VaultComparator from "../core/VaultComparator";
 import MyButtercupClient from "../myButtercup/MyButtercupClient";
 import { generateNewUpdateID } from "../myButtercup/update";
 import { getCredentials } from "../credentials/channel";
-import { DatasourceLoadedData, EncryptedContent, History, VaultInsights } from "../types";
+import { BufferLike, DatasourceLoadedData, EncryptedContent, History, VaultID, VaultInsights } from "../types";
 
 interface OnTokensUpdatedCallback {
     (): void
@@ -32,7 +32,7 @@ export default class MyButtercupDatasource extends TextDatasource {
      * @param credentials Credentials for the datasource
      * @memberof MyButtercupDatasource
      */
-    constructor(credentials) {
+    constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
         const { datasource: datasourceConfig } = credentialData;
@@ -77,6 +77,7 @@ export default class MyButtercupDatasource extends TextDatasource {
      *      throw new Error("Datasource unable to change password");
      *  }
      *  await tds.changePassword(creds, false);
+     * @memberof MyButtercupDatasource
      */
     async changePassword(newCredentials: Credentials, preflight: boolean): Promise<boolean | undefined> {
         const {
@@ -91,13 +92,68 @@ export default class MyButtercupDatasource extends TextDatasource {
     }
 
     /**
+     * Get attachment buffer
+     * - Loads the attachment contents into a buffer
+     * @param vaultID The ID of the vault
+     * @param attachmentID The ID of the attachment
+     * @returns The attachment data
+     * @memberof MyButtercupDatasource
+     */
+    async getAttachment(vaultID: VaultID, attachmentID: string): Promise<BufferLike> {
+        const { data } = await this.client.fetchAttachment(attachmentID);
+        return data;
+    }
+
+    // /**
+    //  * Get attachment details
+    //  * @param vaultID The ID of the vault
+    //  * @param attachmentID The ID of the attachment
+    //  * @returns The attachment details
+    //  * @memberof MyButtercupDatasource
+    //  */
+    // async getAttachmentDetails(vaultID: VaultID, attachmentID: string) {
+    //     const { name, size, type } = await this.client.fetchAttachmentDetails(attachmentID);
+    //     return {
+    //         id: attachmentID,
+    //         vaultID,
+    //         name,
+    //         filename: name,
+    //         size,
+    //         mime: type
+    //     };
+    // }
+
+    /**
+     * Get the available storage space, in bytes
+     * @returns {Number|null} Bytes of free space, or null if not
+     *  available
+     * @memberof MyButtercupDatasource
+     */
+    async getAvailableStorage() {
+        await this.client.updateDigestIfRequired();
+        const { storage_total: total, storage_used: used } = this.client.digest;
+        return total - used;
+    }
+
+    /**
+     * Get the total storage space, in bytes
+     * @returns {Number|null} Bytes of free space, or null if not
+     *  available
+     * @memberof MyButtercupDatasource
+     */
+    async getTotalStorage() {
+        await this.client.updateDigestIfRequired();
+        return this.client.digest.storage_total;
+    }
+
+    /**
      * Load vault history from remote
      * @param credentials The archive credentials
      * @returns Promise which resolves with vault data
      * @memberof MyButtercupDatasource
      */
     load(credentials: Credentials): Promise<DatasourceLoadedData> {
-        return this._client
+        return this.client
             .fetchUserVault()
             .then(({ archive, updateID }) => {
                 this._updateID = updateID;
@@ -111,7 +167,7 @@ export default class MyButtercupDatasource extends TextDatasource {
 
     /**
      * Override for history difference checking
-     * @see Workspace#localDiffersFromRemote
+     * @see VaultSource#localDiffersFromRemote
      * @param masterCredentials Master service credentials
      * @param archiveHistory Archive history lines
      * @returns True if differing, false otherwise
@@ -139,6 +195,31 @@ export default class MyButtercupDatasource extends TextDatasource {
     }
 
     /**
+     * Put attachment data
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @param {Buffer|ArrayBuffer} buffer The attachment data
+     * @param {Object} details
+     * @returns {Promise}
+     * @memberof MyButtercupDatasource
+     */
+    async putAttachment(vaultID, attachmentID, buffer, details) {
+        const { name, type } = details;
+        await this.client.uploadAttachment(attachmentID, name, type, buffer);
+    }
+
+    /**
+     * Remove an attachment
+     * @param {String} vaultID The ID of the vault
+     * @param {String} attachmentID The ID of the attachment
+     * @returns {Promise}
+     * @memberof MyButtercupDatasource
+     */
+    async removeAttachment(vaultID, attachmentID) {
+        await this.client.deleteAttachment(attachmentID);
+    }
+
+    /**
      * Save vault contents to remote
      * @param history The vault history lines
      * @param credentials Vault credentials
@@ -158,9 +239,18 @@ export default class MyButtercupDatasource extends TextDatasource {
     }
 
     /**
+     * Whether or not the datasource supports attachments
+     * @returns {Boolean}
+     * @memberof MyButtercupDatasource
+     */
+    supportsAttachments() {
+        return true;
+    }
+
+    /**
      * Whether or not the datasource supports the changing of the master password
      * @returns True if it supports changing the master password
-     * @memberof WebDAVDatasource
+     * @memberof MyButtercupDatasource
      */
     supportsPasswordChange(): boolean {
         return true;
@@ -189,8 +279,8 @@ export default class MyButtercupDatasource extends TextDatasource {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         if (updateClientTokens) {
-            this._client._accessToken = accessToken;
-            this._client._refreshToken = refreshToken;
+            this.client._accessToken = accessToken;
+            this.client._refreshToken = refreshToken;
         }
         this.emit("updated");
     }

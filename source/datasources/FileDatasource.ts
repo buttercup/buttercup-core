@@ -5,7 +5,7 @@ import TextDatasource from "./TextDatasource";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
 import Credentials from "../credentials/Credentials";
 import { getCredentials } from "../credentials/channel";
-import { ATTACHMENT_EXT, decryptAttachment, encryptAttachment } from "../tools/attachments";
+import { ATTACHMENT_EXT } from "../tools/attachments";
 import { AttachmentDetails, BufferLike, DatasourceLoadedData, EncryptedContent, History, VaultID } from "../types";
 
 /**
@@ -64,42 +64,39 @@ export default class FileDatasource extends TextDatasource {
     }
 
     /**
-     * Get attachment buffer
+     * Get encrypted attachment
      * - Loads the attachment contents from a file into a buffer
      * @param vaultID The ID of the vault
      * @param attachmentID The ID of the attachment
-     * @param credentials Credentials to decrypt
-     *  the buffer, defaults to null (no decryption)
      * @memberof FileDatasource
      */
-    async getAttachment(vaultID: VaultID, attachmentID: string, credentials: Credentials = null): Promise<BufferLike> {
+    async getAttachment(vaultID: VaultID, attachmentID: string): Promise<BufferLike> {
         await this._ensureAttachmentsPaths(vaultID);
         const attachmentPath = path.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
-        const data = await this.readFile(attachmentPath);
-        return credentials ? decryptAttachment(data, credentials) : data;
+        return this.readFile(attachmentPath);
     }
 
-    /**
-     * Get attachment details
-     * @param vaultID The ID of the vault
-     * @param attachmentID The ID of the attachment
-     * @returns The attachment details
-     * @memberof FileDatasource
-     */
-    async getAttachmentDetails(vaultID: VaultID, attachmentID: string): Promise<AttachmentDetails> {
-        await this._ensureAttachmentsPaths(vaultID);
-        const filename = `${attachmentID}.${ATTACHMENT_EXT}`;
-        const filePath = path.join(this.baseDir, ".buttercup", vaultID, filename);
-        const fileStat = await this.stat(filePath);
-        return {
-            id: attachmentID,
-            vaultID,
-            name: filename,
-            filename: filePath,
-            size: fileStat.size,
-            mime: null
-        };
-    }
+    // /**
+    //  * Get attachment details
+    //  * @param vaultID The ID of the vault
+    //  * @param attachmentID The ID of the attachment
+    //  * @returns The attachment details
+    //  * @memberof FileDatasource
+    //  */
+    // async getAttachmentDetails(vaultID: VaultID, attachmentID: string): Promise<AttachmentDetails> {
+    //     await this._ensureAttachmentsPaths(vaultID);
+    //     const filename = `${attachmentID}.${ATTACHMENT_EXT}`;
+    //     const filePath = path.join(this.baseDir, ".buttercup", vaultID, filename);
+    //     const fileStat = await this.stat(filePath);
+    //     return {
+    //         id: attachmentID,
+    //         vaultID,
+    //         name: filename,
+    //         filename: filePath,
+    //         size: fileStat.size,
+    //         mime: null
+    //     };
+    // }
 
     /**
      * Load from the filename specified in the constructor using a password
@@ -121,20 +118,13 @@ export default class FileDatasource extends TextDatasource {
      * @param vaultID The ID of the vault
      * @param attachmentID The ID of the attachment
      * @param buffer The attachment data
-     * @param credentials Credentials for
-     *  encrypting the buffer. If not provided, the buffer
-     *  is presumed to be in encrypted-form and will be
-     *  written as-is.
+     * @param details The attachment details
      * @memberof FileDatasource
      */
-    async putAttachment(vaultID: VaultID, attachmentID: string, buffer: BufferLike, credentials: Credentials = null): Promise<void> {
+    async putAttachment(vaultID: VaultID, attachmentID: string, buffer: BufferLike, details: AttachmentDetails): Promise<void> {
         await this._ensureAttachmentsPaths(vaultID);
         const attachmentPath = path.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
-        let data = buffer;
-        if (credentials) {
-            data = await encryptAttachment(data, credentials);
-        }
-        await this.writeFile(attachmentPath, data);
+        await this.writeFile(attachmentPath, buffer);
     }
 
     /**

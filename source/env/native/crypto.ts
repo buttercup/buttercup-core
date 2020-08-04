@@ -1,4 +1,6 @@
 import { createSession } from "iocane";
+import cryptoRandomString from "crypto-random-string";
+import { CRYPTO_RANDOM_STRING_CHARS } from "../core/constants";
 
 let __derivationRoundsOverride = null;
 
@@ -20,8 +22,16 @@ export function getCryptoResources() {
         "crypto/v1/encryptBuffer": encryptData,
         "crypto/v1/decryptText": decryptData,
         "crypto/v1/encryptText": encryptData,
+        "crypto/v1/randomString": randomString,
         "crypto/v1/setDerivationRounds": setDerivationRounds
     };
+}
+
+async function randomString(length: number): Promise<string> {
+    return cryptoRandomString({
+        length,
+        characters: CRYPTO_RANDOM_STRING_CHARS
+    });
 }
 
 function setDerivationRounds(rounds: number = null) {

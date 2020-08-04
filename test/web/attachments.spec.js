@@ -13,6 +13,13 @@ function arrayBuffersAreEqual(a, b) {
     return dataViewsAreEqual(new DataView(a), new DataView(b));
 }
 
+function concatArrayBuffers(buffer1, buffer2) {
+    var tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
+    tmp.set(new Uint8Array(buffer1), 0);
+    tmp.set(new Uint8Array(buffer2), buffer1.byteLength);
+    return tmp.buffer;
+}
+
 // compare DataViews
 function dataViewsAreEqual(a, b) {
     if (a.byteLength !== b.byteLength) return false;
@@ -56,7 +63,6 @@ describe("AttachmentManager", function() {
             IMAGE_DATA,
             "image.png",
             "image/png",
-            IMAGE_DATA.byteLength,
             nowDate
         );
         const attachmentDataRead = await this.source.attachmentManager.getAttachment(this.entry, attachmentID);
@@ -66,7 +72,8 @@ describe("AttachmentManager", function() {
             id: attachmentID,
             name: "image.png",
             type: "image/png",
-            size: 439968,
+            sizeOriginal: 439968,
+            sizeEncrypted: 440129,
             created: nowDate.toUTCString(),
             updated: nowDate.toUTCString()
         });
@@ -82,16 +89,14 @@ describe("AttachmentManager", function() {
                 this.attachmentID,
                 this.attachmentData,
                 "image.png",
-                "image/png",
-                IMAGE_DATA.byteLength
+                "image/png"
             );
             await this.source.attachmentManager.setAttachment(
                 this.entry,
                 this.attachmentID2,
                 this.attachmentData,
                 "test.png",
-                "image/png",
-                IMAGE_DATA.byteLength
+                "image/png"
             );
         });
 
@@ -124,12 +129,11 @@ describe("AttachmentManager", function() {
                     newID,
                     this.attachmentData,
                     "third.png",
-                    "image/png",
-                    IMAGE_DATA.byteLength
+                    "image/png"
                 );
             } catch (err) {
                 expect(err).to.match(/Not enough space/i);
-                expect(err).to.match(/needed = 439968 B/i);
+                expect(err).to.match(/needed = 440129 B/i);
                 expect(err).to.match(/available = 1000 B/i);
             }
             expect(getAvailableStorage.callCount).to.equal(1);
@@ -141,18 +145,18 @@ describe("AttachmentManager", function() {
                 .stub()
                 .callsFake(() => Promise.resolve(1000)));
             sinon.spy(this.source._datasource, "putAttachment");
+            const newBuffer = concatArrayBuffers(this.attachmentData, new ArrayBuffer(2500));
             try {
                 await this.source.attachmentManager.setAttachment(
                     this.entry,
                     this.attachmentID,
-                    this.attachmentData,
+                    newBuffer,
                     "image.png",
-                    "image/png",
-                    IMAGE_DATA.byteLength + 2500
+                    "image/png"
                 );
             } catch (err) {
                 expect(err).to.match(/Not enough space/i);
-                expect(err).to.match(/needed = 2500 B/i);
+                expect(err).to.match(/needed = 2\d{3} B/i);
                 expect(err).to.match(/available = 1000 B/i);
             }
             expect(getAvailableStorage.callCount).to.equal(1);

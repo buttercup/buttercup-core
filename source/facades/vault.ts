@@ -227,6 +227,8 @@ export function consumeVaultFacade(vault: Vault, facade: VaultFacade, options: C
             vault.deleteAttribute(attr);
         });
     Object.keys(attributes).forEach(attr => {
+        // Skip this attribute if it's the attachments key
+        if (attr === Vault.Attribute.AttachmentsKey && mergeMode) return;
         if (!currentAttributes[attr] || currentAttributes[attr] !== attributes[attr]) {
             // Different value
             vault.setAttribute(attr, attributes[attr]);

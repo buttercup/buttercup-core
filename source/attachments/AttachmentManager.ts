@@ -1,15 +1,13 @@
 import { v4 as uuid } from "uuid";
 import Credentials from "../credentials/Credentials";
-import { credentialsAllowsPurpose } from "../credentials/channel";
-import VaultSource from "../core/VaultSource";
 import Entry from "../core/Entry";
+import Vault from "../core/Vault";
+import VaultSource from "../core/VaultSource";
+import { getSharedAppEnv } from "../env/appEnv";
+import { decryptAttachment, encryptAttachment, getBufferSize } from "../tools/attachments";
+import { AttachmentDetails } from "../types";
 
-export interface AttachmentDetails {
-    id: string;
-    name: string;
-    type: string;
-    size: number;
-}
+const ATTACHMENTS_KEY_LENGTH = 48;
 
 /**
  * Attachment manager
@@ -32,16 +30,9 @@ export default class AttachmentManager {
      * Constructor for new attachment managers
      * @param vaultSource The vault source to attach to. This is
      *  normally set by the VaultSource automatically when unlocking a source.
-     * @param credentials The credentials to use for encrypting
-     *  and decrypting attachments.
      */
-    constructor(vaultSource: VaultSource, credentials: Credentials) {
+    constructor(vaultSource: VaultSource) {
         this._source = vaultSource;
-        this._credentials = credentials;
-        if (!credentialsAllowsPurpose(this._credentials.id, Credentials.PURPOSE_ATTACHMENTS)) {
-            throw new Error("Credentials do not allow for attachments handling");
-        }
-        this._credentials.restrictPurposes([Credentials.PURPOSE_ATTACHMENTS]);
     }
 
     /**
@@ -57,7 +48,9 @@ export default class AttachmentManager {
         if (!details) {
             throw new Error(`Attachment not available: ${attachmentID}`);
         }
-        return this._source._datasource.getAttachment(this._source.vault.id, attachmentID, this._credentials);
+        const credentials = await this._getAttachmentsCredentials();
+        const data = await this._source._datasource.getAttachment(this._source.vault.id, attachmentID);
+        return decryptAttachment(data, credentials);
     }
 
     /**
@@ -112,21 +105,28 @@ export default class AttachmentManager {
      * @param attachmentData The attachment's data
      * @param name The file name
      * @param type The MIME type
-     * @param size The byte size of the attachment, before encryption
      * @param timestamp Optional timestamp override for the creation of the
      *  attachment
      * @memberof AttachmentManager
      */
-    async setAttachment(entry: Entry, attachmentID: string, attachmentData: Buffer | ArrayBuffer, name: string, type: string, size: number, timestamp = new Date()) {
+    async setAttachment(entry: Entry, attachmentID: string, attachmentData: Buffer | ArrayBuffer, name: string, type: string, timestamp = new Date()) {
         this._checkAttachmentSupport();
-        if (!name || !type || !size) {
-            throw new Error(`Attachment properties required: name/type/size => ${name}/${type}/${size}`);
+        if (!name || !type) {
+            throw new Error(`Attachment properties required: name/type => ${name}/${type}`);
         }
         const attributeKey = `${Entry.Attributes.AttachmentPrefix}${attachmentID}`;
         // Check if it already exists
         const existingDetails = await this.getAttachmentDetails(entry, attachmentID);
+        // Get credentials
+        const credentials = await this._getAttachmentsCredentials();
+        // Encrypt it
+        const encryptedAttachmentData = await encryptAttachment(attachmentData, credentials);
+        const encryptedSize = getBufferSize(encryptedAttachmentData);
+        const originalSize = getBufferSize(attachmentData);
         // Calculate if it can fit in storage
-        const sizeIncrease = existingDetails ? Math.max(0, size - existingDetails.size) : size;
+        const sizeIncrease = existingDetails
+            ? Math.max(0, encryptedSize - existingDetails.sizeEncrypted)
+            : encryptedSize;
         const spaceAvailable = await this._source._datasource.getAvailableStorage();
         if (spaceAvailable !== null && sizeIncrease > spaceAvailable) {
             throw new Error(
@@ -139,7 +139,8 @@ export default class AttachmentManager {
             id: attachmentID,
             name,
             type,
-            size,
+            sizeOriginal: originalSize,
+            sizeEncrypted: encryptedSize,
             created: now,
             updated: now
         };
@@ -147,8 +148,8 @@ export default class AttachmentManager {
         await this._source._datasource.putAttachment(
             this._source.vault.id,
             attachmentID,
-            attachmentData,
-            this._credentials
+            encryptedAttachmentData,
+            payload
         );
         // Set in entry
         entry.setAttribute(attributeKey, JSON.stringify(payload));
@@ -158,5 +159,19 @@ export default class AttachmentManager {
         if (!this._source.supportsAttachments()) {
             throw new Error(`Attachments not supported on source: ${this._source.id}`);
         }
+    }
+
+    async _getAttachmentsCredentials() {
+        const { vault } = this._source;
+        let key = vault.getAttribute(Vault.Attribute.AttachmentsKey) as string;
+        if (!key) {
+            // Create key for first-time use
+            const generateRandomString = getSharedAppEnv().getProperty("crypto/v1/randomString");
+            key = await generateRandomString(ATTACHMENTS_KEY_LENGTH);
+            vault.setAttribute(Vault.Attribute.AttachmentsKey, key);
+            // Save the key
+            await this._source.save();
+        }
+        return Credentials.fromPassword(key);
     }
 }
