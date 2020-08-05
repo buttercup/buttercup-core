@@ -37,7 +37,7 @@ export default class Share {
         westley.executionOptions = {};
     }
 
-    archiveHasAppliedShare(archive) {
+    archiveHasAppliedShare(archive: any) {
         return !!archive._getWestley().history.find(line => line.indexOf(`$${this.id}`) === 0);
     }
 
