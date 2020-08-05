@@ -1,8 +1,15 @@
-const { mergeHistories, prependSharePrefix, removeSharePrefix } = require("../tools/sharing.js");
-const { hashHistory } = require("../tools/hash.js");
+import { mergeHistories, prependSharePrefix, removeSharePrefix } from "../tools/sharing";
+import { hashHistory } from "../tools/hash";
+import { History } from "../types";
 
-class Share {
-    constructor(shareID, history, permissions = []) {
+export default class Share {
+    _dirty: boolean;
+    _history: History;
+    _id: string;
+    _lastHash: string;
+    _permissions: Array<string>;
+
+    constructor(shareID: string, history: History, permissions: Array<string> = []) {
         this._id = shareID;
         this._history = removeSharePrefix(history);
         this._lastHash = hashHistory(this._history);
@@ -18,7 +25,7 @@ class Share {
         return [...this._permissions];
     }
 
-    applyToArchive(archive) {
+    applyToArchive(archive: any) {
         if (this.archiveHasAppliedShare(archive)) {
             throw new Error("Target archive has already had share applied");
         }
@@ -50,5 +57,3 @@ class Share {
         return true;
     }
 }
-
-module.exports = Share;

@@ -1,9 +1,9 @@
-const VError = require("verror");
-const { request } = require("cowl");
-const EventEmitter = require("eventemitter3");
-const { Base64 } = require("js-base64");
-const NodeFormData = require("form-data");
-const {
+import VError from "verror";
+import { request } from "cowl";
+import EventEmitter from "eventemitter3";
+import { Base64 } from "js-base64";
+import NodeFormData from "form-data";
+import {
     API_ATTACHMENT,
     API_INSIGHTS,
     API_ORG_USERS,
@@ -16,76 +16,29 @@ const {
     OAUTH_AUTHORISE_URI,
     OAUTH_REDIRECT_URI,
     OAUTH_TOKEN_URI
-} = require("./symbols.js");
-const { detectFormat } = require("../io/formatRouter");
-const { isTypedArray } = require("../tools/buffer");
+} from "./symbols";
+import { detectFormat } from "../io/formatRouter";
+import { isTypedArray } from "../tools/buffer";
+import {
+    CowlError,
+    MyButtercupAttachment,
+    MyButtercupAttachmentDetails,
+    MyButtercupDigest,
+    MyButtercupEncryptedShare,
+    MyButtercupUsersListItem,
+    MyButtercupVaultDetails,
+    VaultInsights
+} from "../types";
 
-/**
- * @typedef {Object} MyButtercupShareBase
- * @property {String} id The share ID
- * @property {String} title The share title
- * @property {Boolean} perm_read Permission to read
- * @property {Boolean} perm_write Permission to write changes
- * @property {Boolean} perm_manage Permission to share with others, remove share access etc.
- */
+declare const BUTTERCUP_WEB: boolean;
 
-/**
- * @typedef {MyButtercupShareBase} MyButtercupIncomingShare
- * @property {String} share_password_enc Encrypted password for the share
- * @property {Number} sharing_user_id The user that shared the item
- * @property {String} sharing_user_key The public key of the user for the share (used
- *  for decrypting the share password)
- */
-
-/**
- * @typedef {MyButtercupShareBase} MyButtercupEncryptedShare
- * @property {String} content Encrypted share content
- */
-
-/**
- * @typedef {Object} MyButtercupOrganisation
- * @property {Number} id The organisation's ID
- * @property {String} name The organisation name
- * @property {String} created The creation date
- */
-
-/**
- * @typedef {Object} MyButtercupDigest
- * @property {Number} archive_id The ID of the user's archive
- * @property {String} public_key The RSA public key for the user
- * @property {Array.<Object>} messages System messages for the user (internal processing)
- * @property {Array.<MyButtercupIncomingShare>} new_shares An array of new shares to process
- * @property {Array.<MyButtercupOrganisation>} organisations An array of user organisations
- * @property {String} account_name The name set for the account
- * @property {Number} storage_total Total storage, in bytes
- * @property {Number} storage_used Used storage, in bytes
- */
-
-/**
- * @typedef {Object} MyButtercupUsersListItem
- * @property {Number} user_id The ID of the user
- * @property {Number} organisation_id The organisation ID the user was found in
- * @property {String} name The name of the user
- * @property {String} public_key The public key for the user
- */
-
-/**
- * @typedef {Object} MyButtercupTokenResult
- * @property {String} accessToken An OAuth2 access token for API requests
- * @property {String} refreshToken An OAuth2 refresh token
- */
-
-/**
- * @typedef {Object} MyButtercupArchiveDetails
- * @property {Number} id The remote vault ID
- * @property {Number} updateID The current update ID for the vault
- * @property {String} created The creation date
- * @property {String} lastUpdate The last update date
- */
+export interface MyButtercupFetchedShares {
+    [shareID: string]: MyButtercupEncryptedShare;
+}
 
 const DIGEST_MAX_AGE = 10000;
 
-function demultiplexShares(sharesTxt) {
+function demultiplexShares(sharesTxt: string): any {
     const shares = {};
     const lines = sharesTxt.split("\n");
     while (lines.length > 0) {
@@ -114,19 +67,18 @@ function demultiplexShares(sharesTxt) {
  * @augments EventEmitter
  * @memberof module:Buttercup
  */
-class MyButtercupClient extends EventEmitter {
+export default class MyButtercupClient extends EventEmitter {
     /**
      * Exchange an auth code for tokens
-     * @param {String} authCode OAuth2 auth code, retrieved from browser-
+     * @param authCode OAuth2 auth code, retrieved from browser-
      *  based OAuth2 flow using a user's username and password
-     * @param {String} clientID The OAuth2 client ID
-     * @param {String} clientSecret The OAuth2 client secret
-     * @param {String} redirectURI The OAuth2 client redirect URI
-     * @returns {MyButtercupTokenResult}
+     * @param clientID The OAuth2 client ID
+     * @param clientSecret The OAuth2 client secret
+     * @param redirectURI The OAuth2 client redirect URI
      * @memberof MyButtercupClient
      * @static
      */
-    static exchangeAuthCodeForTokens(authCode, clientID, clientSecret, redirectURI) {
+    static exchangeAuthCodeForTokens(authCode: string, clientID: string, clientSecret: string, redirectURI: string): Promise<{ accessToken: string, refreshToken: string }> {
         const baseAuth = Base64.encode(`${clientID}:${clientSecret}`);
         const encodedRedir = encodeURIComponent(redirectURI);
         const requestOptions = {
@@ -158,25 +110,33 @@ class MyButtercupClient extends EventEmitter {
     /**
      * Generate an OAuth2 authorisation URL using the client ID of the current
      * application platform (eg. Buttercup browser extension)
-     * @param {String} clientID The OAuth2 client ID registered on
+     * @param clientID The OAuth2 client ID registered on
      *  my.buttercup.pw
-     * @returns {String} The generated URL
+     * @returns The generated URL
      * @memberof MyButtercupClient
      * @static
      */
-    static generateAuthorisationURL(clientID) {
+    static generateAuthorisationURL(clientID: string): string {
         const redir = encodeURIComponent(OAUTH_REDIRECT_URI);
         return `${OAUTH_AUTHORISE_URI}?response_type=code&client_id=${clientID}&redirect_uri=${redir}`;
     }
 
+    _accessToken: string;
+    _clientID: string;
+    _clientSecret: string;
+    _lastDigest: MyButtercupDigest;
+    _lastDigestTime: number;
+    _refreshToken: string;
+    request: any;
+
     /**
      * Create a new client instance
-     * @param {String} clientID The client identifier
-     * @param {String} clientSecret The client secret
-     * @param {String} accessToken Access token
-     * @param {String} refreshToken Refresh token
+     * @param clientID The client identifier
+     * @param clientSecret The client secret
+     * @param accessToken Access token
+     * @param refreshToken Refresh token
      */
-    constructor(clientID, clientSecret, accessToken, refreshToken) {
+    constructor(clientID: string, clientSecret: string, accessToken: string, refreshToken: string) {
         super();
         this._accessToken = accessToken;
         this._refreshToken = refreshToken;
@@ -189,32 +149,29 @@ class MyButtercupClient extends EventEmitter {
 
     /**
      * The current access token
-     * @type {String}
      * @readonly
      */
-    get accessToken() {
+    get accessToken(): string {
         return this._accessToken;
     }
 
     /**
      * The last client digest response
-     * @type {MyButtercupDigest|null}
      * @readonly
      */
-    get digest() {
+    get digest(): MyButtercupDigest {
         return this._lastDigest;
     }
 
     /**
      * The refresh token
-     * @type {String}
      * @readonly
      */
-    get refreshToken() {
+    get refreshToken(): string {
         return this._refreshToken;
     }
 
-    async changePassword(password, passwordToken) {
+    async changePassword(password: string, passwordToken: string): Promise<void> {
         const requestOptions = {
             url: API_OWN_PASS_CHANGE,
             method: "PUT",
@@ -240,7 +197,7 @@ class MyButtercupClient extends EventEmitter {
             });
     }
 
-    deleteAttachment(attachmentID) {
+    deleteAttachment(attachmentID: string): Promise<void> {
         const requestOptions = {
             url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", attachmentID),
             method: "DELETE",
@@ -261,7 +218,7 @@ class MyButtercupClient extends EventEmitter {
             });
     }
 
-    fetchAttachment(attachmentID) {
+    fetchAttachment(attachmentID: string): Promise<MyButtercupAttachment> {
         const requestOptions = {
             url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", attachmentID),
             method: "GET",
@@ -288,7 +245,7 @@ class MyButtercupClient extends EventEmitter {
             });
     }
 
-    fetchAttachmentDetails(attachmentID) {
+    fetchAttachmentDetails(attachmentID: string): Promise<MyButtercupAttachmentDetails> {
         const requestOptions = {
             url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", attachmentID),
             method: "HEAD",
@@ -316,11 +273,10 @@ class MyButtercupClient extends EventEmitter {
 
     /**
      * Fetch user shares
-     * @param {String[]} ids Share IDs
-     * @returns {Promise.<Object.<String, MyButtercupEncryptedShare>>}
+     * @param ids Share IDs
      * @memberof MyButtercupClient
      */
-    fetchShares(ids) {
+    fetchShares(ids: Array<string>): Promise<MyButtercupFetchedShares> {
         if (ids.length <= 0) {
             return Promise.resolve({});
         }
@@ -342,11 +298,10 @@ class MyButtercupClient extends EventEmitter {
 
     /**
      * Fetch user vault contents
-     * @returns {Promise.<{ archive: String, updateID: Number}>} The user's
-     *  vault contents
+     * @returns The user's vault contents
      * @memberof MyButtercupClient
      */
-    fetchUserVault() {
+    fetchUserVault(): Promise<{ archive: string, updateID: number }> {
         const requestOptions = {
             url: API_OWN_ARCHIVE,
             method: "GET",
@@ -377,10 +332,10 @@ class MyButtercupClient extends EventEmitter {
 
     /**
      * Fetch the user's vault details
-     * @returns {Promise.<MyButtercupArchiveDetails>} The details of the vault
+     * @returns The details of the vault
      * @memberof MyButtercupClient
      */
-    fetchUserVaultDetails() {
+    fetchUserVaultDetails(): Promise<MyButtercupVaultDetails> {
         const requestOptions = {
             url: API_OWN_ARCHIVE_DETAILS,
             method: "GET",
@@ -410,10 +365,10 @@ class MyButtercupClient extends EventEmitter {
 
     /**
      * Fetch and set account digest information
-     * @returns {Promise.<MyButtercupDigest>} Digest information
+     * @returns Digest information
      * @memberof MyButtercupClient
      */
-    retrieveDigest() {
+    retrieveDigest(): Promise<MyButtercupDigest> {
         const requestOptions = {
             url: API_OWN_DIGEST,
             method: "GET",
@@ -439,10 +394,9 @@ class MyButtercupClient extends EventEmitter {
 
     /**
      * Get the list of users available to address for the user
-     * @returns {Promise.<MyButtercupUsersListItem[]>}
      * @memberof MyButtercupClient
      */
-    async retrieveUsersList() {
+    async retrieveUsersList(): Promise<Array<MyButtercupUsersListItem>> {
         await this.updateDigestIfRequired();
         const orgIDs = this.digest.organisations.map(org => org.id);
         if (orgIDs.length <= 0) {
@@ -458,11 +412,10 @@ class MyButtercupClient extends EventEmitter {
     /**
      * Get the list of users for an organisation
      * (User must be present in organisation, or this method will fail)
-     * @param {Number} orgID The ID of the organisation
-     * @returns {Promise.<MyButtercupUsersListItem[]>}
+     * @param orgID The ID of the organisation
      * @memberof MyButtercupClient
      */
-    retrieveUsersListForOrganisation(orgID) {
+    retrieveUsersListForOrganisation(orgID: number): Promise<Array<MyButtercupUsersListItem>> {
         const requestOptions = {
             url: API_ORG_USERS.replace("[ORG_ID]", orgID),
             method: "GET",
@@ -486,11 +439,10 @@ class MyButtercupClient extends EventEmitter {
 
     /**
      * Test if a password token is valid
-     * @param {String} passwordToken The password change token
-     * @returns {Promise}
+     * @param passwordToken The password change token
      * @memberof MyButtercupClient
      */
-    async testPasswordChange(passwordToken) {
+    async testPasswordChange(passwordToken: string): Promise<void> {
         const requestOptions = {
             url: API_OWN_PASS_CHANGE_VERIFY,
             method: "POST",
@@ -527,18 +479,18 @@ class MyButtercupClient extends EventEmitter {
 
     /**
      * Upload an attachment
-     * @param {String} id The attachment ID
-     * @param {String} name The attachment name
-     * @param {String} type The attachment MIME type
-     * @param {Buffer|ArrayBuffer} data Encrypted attachment data
+     * @param id The attachment ID
+     * @param name The attachment name
+     * @param type The attachment MIME type
+     * @param data Encrypted attachment data
      */
-    async uploadAttachment(id, name, type, data) {
+    async uploadAttachment(id: string, name: string, type: string, data: Buffer | ArrayBuffer) {
         const headers = {
             "Content-Disposition": `form-data; name="attachment"; filename=${JSON.stringify(name)}`,
             Authorization: `Bearer ${this.accessToken}`
         };
         const isWeb = typeof BUTTERCUP_WEB === "boolean" && BUTTERCUP_WEB === true;
-        let form;
+        let form: FormData | NodeFormData;
         if (isWeb) {
             // Use the native FormData
             form = new FormData();
@@ -560,7 +512,7 @@ class MyButtercupClient extends EventEmitter {
             url: API_ATTACHMENT.replace("[ATTACHMENT_ID]", id),
             method: "POST",
             headers,
-            body: isWeb ? form : form.getBuffer()
+            body: isWeb ? form : (<NodeFormData>form).getBuffer()
         };
         return this.request(requestOptions)
             .then(resp => {
@@ -577,11 +529,10 @@ class MyButtercupClient extends EventEmitter {
 
     /**
      * Write insights to the remote account
-     * @param {Insights} insights The insights data
-     * @returns {Promise}
+     * @param insights The insights data
      * @memberof MyButtercupClient
      */
-    async writeInsights(insights) {
+    async writeInsights(insights: VaultInsights): Promise<void> {
         await this.updateDigestIfRequired();
         const {
             avgPassLen = null,
@@ -633,16 +584,13 @@ class MyButtercupClient extends EventEmitter {
 
     /**
      * Write the user vault contents back to the server
-     * @param {String} contents Encrypted vault contents
-     * @param {Number} previousUpdateID The previous update ID received
-     *  from the server
-     * @param {Number} newUpdateID The new update ID to set after a
-     *  successful write
-     * @returns {Promise} A promise that resolves once the write has
-     *  been completed
+     * @param contents Encrypted vault contents
+     * @param previousUpdateID The previous update ID received from the server
+     * @param newUpdateID The new update ID to set after a successful write
+     * @returns A promise that resolves once the write has been completed
      * @memberof MyButtercupClient
      */
-    async writeUserArchive(contents, previousUpdateID, newUpdateID) {
+    async writeUserArchive(contents: string, previousUpdateID: number, newUpdateID: number): Promise<void> {
         const requestOptions = {
             url: API_OWN_ARCHIVE,
             method: "PUT",
@@ -678,14 +626,14 @@ class MyButtercupClient extends EventEmitter {
 
     /**
      * Handle a request failure (processes token expiration etc.)
-     * @param {Error} err The received error from making a request
+     * @param err The received error from making a request
      * @throws {Error} Throws if the error was not catchable
-     * @returns {Promise} Returns a promise if an action can be taken
+     * @returns Returns a promise if an action can be taken
      *  to remedy the situation
      * @memberof MyButtercupClient
      * @protected
      */
-    async _handleRequestFailure(err) {
+    async _handleRequestFailure(err: CowlError) {
         if (err.responseHeaders && typeof err.responseHeaders === "object") {
             if (err.responseHeaders["x-mb-oauth"]) {
                 switch (err.responseHeaders["x-mb-oauth"]) {
@@ -711,10 +659,9 @@ class MyButtercupClient extends EventEmitter {
      * Refresh tokens
      * @memberof MyButtercupClient
      * @protected
-     * @returns {Promise}
      * @fires MyButtercupClient#tokensUpdated
      */
-    _performTokenRefresh() {
+    _performTokenRefresh(): Promise<void> {
         const baseAuth = Base64.encode(`${this._clientID}:${this._clientSecret}`);
         const requestOptions = {
             url: OAUTH_TOKEN_URI,
@@ -747,5 +694,3 @@ class MyButtercupClient extends EventEmitter {
             });
     }
 }
-
-module.exports = MyButtercupClient;
