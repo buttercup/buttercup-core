@@ -42,9 +42,11 @@ import {
     EntryID,
     FormatAEntry,
     FormatAGroup,
+    FormatAVault,
     GroupID,
     PropertyKeyValueObject,
-    VaultID
+    VaultID,
+    FormatBGroup
 } from "../types";
 
 const COMMANDS = {
@@ -73,6 +75,13 @@ const COMMANDS = {
 const SHARE_COMMAND_EXP = /^\$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\s/;
 const UUID_LEN = 36;
 const VALID_COMMAND_EXP = /^[a-z]{3}\s.+$/;
+
+function emptyVault(): FormatAVault {
+    return {
+        id: null,
+        groups: []
+    };
+}
 
 /**
  * Convert array of history lines to a string
@@ -160,6 +169,10 @@ export default class VaultFormatA extends VaultFormat {
 
     static prepareHistoryForMerge(history: Array<string>): Array<string> {
         return stripDestructiveCommands(history);
+    }
+
+    constructor(source: FormatAVault = emptyVault()) {
+        super(source);
     }
 
     cloneEntry(entry: Entry, targetGroupID: GroupID) {}
@@ -286,15 +299,6 @@ export default class VaultFormatA extends VaultFormat {
                 if (deepGroup) return deepGroup;
             }
             return null;
-            // for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
-            //     if (groups[i].id === id) {
-            //         return groups[i];
-            //     }
-            //     const deepGroup = searchGroups(groups[i].groups || []);
-            //     if (deepGroup) {
-            //         return deepGroup;
-            //     }
-            // }
         };
         return searchGroups(this.getAllGroups());
     }
@@ -308,11 +312,25 @@ export default class VaultFormatA extends VaultFormat {
     }
 
     getAllEntries(): Array<FormatAEntry> {
-        return this.source.entries;
+        const entries = [];
+        const getEntries = (group: FormatAGroup) => {
+            entries.push(...(group.entries || []));
+            (group.groups || []).forEach(group => group);
+        };
+        (<FormatAVault>this.source).groups.forEach(group => getEntries(group));
+        return entries;
     }
 
     getAllGroups(): Array<FormatAGroup> {
-        return this.source.groups;
+        const groups = [];
+        const getGroups = (parent: FormatAVault | FormatAGroup) => {
+            (parent.groups || []).forEach(subGroup => {
+                groups.push(subGroup);
+                getGroups(subGroup);
+            });
+        };
+        getGroups(this.source as FormatAVault);
+        return groups;
     }
 
     getEntryAttributes(entrySource: FormatAEntry): PropertyKeyValueObject {

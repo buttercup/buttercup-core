@@ -3,66 +3,57 @@ const BUTTERCUP_SIGNATURE = "b~>" + BUTTERCUP_FORMAT;
 
 /**
  * Get the current format
- * @returns {String} The format
+ * @returns The format
  */
-function getFormat() {
+export function getFormat(): string {
     return BUTTERCUP_FORMAT;
 }
 
 /**
  * Get the current signature
- * @returns {String} The signature
+ * @returns The signature
  */
-function getSignature() {
+export function getSignature(): string {
     return BUTTERCUP_SIGNATURE;
 }
 
 /**
  * Detect if a string has a valid signature
- * @param {String} text The text to check
- * @returns {Boolean} True if a valid signature is detected
+ * @param text The text to check
+ * @returns True if a valid signature is detected
  */
-function hasValidSignature(text) {
+export function hasValidSignature(text: string): boolean {
     return text.indexOf(BUTTERCUP_SIGNATURE) === 0;
 }
 
 /**
  * Sign some text
- * @param {String} text The text to sign
- * @returns {String} The signed text
+ * @param text The text to sign
+ * @returns The signed text
  */
-function sign(text) {
+export function sign(text: string): string {
     return hasValidSignature(text) ? text : BUTTERCUP_SIGNATURE + text;
 }
 
 /**
  * Strip the signature from some text
- * @param {String} text The text to strip the signature from
- * @returns {String} The text with the signature removed
+ * @param text The text to strip the signature from
+ * @returns The text with the signature removed
  */
-function stripSignature(text) {
+export function stripSignature(text: string): string {
     const sigLen = BUTTERCUP_SIGNATURE.length;
     return text.substr(sigLen, text.length - sigLen);
 }
 
 /**
  * Check if vault contents are in encrypted form
- * @param {String} contents The vault contents
- * @returns {Boolean} True if encrypted, false otherwise
+ * @param contents The vault contents
+ * @returns True if encrypted, false otherwise
  */
-function vaultContentsEncrypted(contents) {
+export function vaultContentsEncrypted(contents: string): boolean {
     if (typeof contents === "string" && hasValidSignature(contents)) {
         const exSig = stripSignature(contents);
         return /["\s\t\n~]/.test(exSig) === false;
     }
     return false;
 }
-
-module.exports = {
-    getFormat,
-    getSignature,
-    hasValidSignature,
-    sign,
-    stripSignature,
-    vaultContentsEncrypted
-};

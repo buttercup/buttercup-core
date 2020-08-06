@@ -1,15 +1,15 @@
-const { Base64 } = require("js-base64");
-const { generateUUID } = require("./uuid");
+import { Base64 } from "js-base64";
+import { generateUUID } from "./uuid";
 
 const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
-const ENCODED_STRING_PREFIX = "utf8+base64:";
+export const ENCODED_STRING_PREFIX = "utf8+base64:";
 
 /**
  * Decode an encoded property value
  * @param {String} value The encoded value
  * @returns {String} The decoded value
  */
-function decodeStringValue(value) {
+export function decodeStringValue(value: string): string {
     if (isEncoded(value) !== true) {
         throw new Error("Cannot decode: provided value is not encoded");
     }
@@ -20,34 +20,26 @@ function decodeStringValue(value) {
 /**
  * Encode a raw value into safe storage form
  * Uses base64 for encoding
- * @param {String} value The raw value to encode
- * @returns {String} The encoded result
+ * @param value The raw value to encode
+ * @returns The encoded result
  */
-function encodeStringValue(value) {
+export function encodeStringValue(value: string): string {
     return `${ENCODED_STRING_PREFIX}${Base64.encode(value)}`;
 }
 
 /**
  * Get a unique identifier (UUID v4)
- * @returns {String} A unique identifier
+ * @returns A unique identifier
  */
-function getUniqueID() {
+export function getUniqueID(): string {
     return generateUUID();
 }
 
 /**
  * Check if a string value is encoded
- * @param {String} text The value to check
- * @returns {Boolean} True if the text is encoded
+ * @param text The value to check
+ * @returns True if the text is encoded
  */
-function isEncoded(text) {
+export function isEncoded(text: string): boolean {
     return ENCODED_STRING_PATTERN.test(text);
 }
-
-module.exports = {
-    ENCODED_STRING_PREFIX,
-    decodeStringValue,
-    encodeStringValue,
-    getUniqueID,
-    isEncoded
-};

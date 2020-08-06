@@ -7,9 +7,12 @@ import {
     EntryID,
     FormatAEntry,
     FormatAGroup,
+    FormatAVault,
     FormatBEntry,
     FormatBGroup,
+    FormatBVault,
     GroupID,
+    History,
     PropertyKeyValueObject
 } from "../types";
 
@@ -38,16 +41,16 @@ export default class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
-    dirty = false;
-    history = [];
     _readOnly = false;
-    source = null;
+    dirty = false;
+    history: History = [];
+    source: FormatAVault | FormatBVault = null;
 
     get readOnly() {
         return this._readOnly;
     }
 
-    constructor(source = {}) {
+    constructor(source: FormatAVault | FormatBVault) {
         super();
         this.source = source;
     }

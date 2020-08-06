@@ -111,7 +111,9 @@ export interface FormatAEntry {
     attributes?: PropertyKeyValueObject;
     properties?: PropertyKeyValueObject;
     parentID: GroupID;
+    permissions?: Array<VaultPermission>;
     history?: Array<EntryHistoryItem>;
+    shareID?: string;
 }
 
 export interface FormatAGroup {
@@ -121,12 +123,15 @@ export interface FormatAGroup {
     entries?: Array<FormatAEntry>;
     title: string;
     parentID: GroupID;
+    permissions?: Array<VaultPermission>;
+    shareID?: string;
 }
 
 export interface FormatAVault {
     id: VaultID;
     attributes?: PropertyKeyValueObject;
     groups: Array<FormatAGroup>;
+    format?: string;
 }
 
 export interface FormatBEntry {
@@ -169,7 +174,6 @@ export interface MemoryStore {
 
 export interface MyButtercupAttachment extends MyButtercupAttachmentDetails {
     data: Buffer | ArrayBuffer;
-    
 }
 
 export interface MyButtercupAttachmentDetails {

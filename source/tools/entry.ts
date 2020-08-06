@@ -1,9 +1,11 @@
-const { objectValues } = require("./polyfill.js");
+import { objectValues } from "./polyfill";
 
-const ENTRY_URL_TYPE_ANY = "any";
-const ENTRY_URL_TYPE_GENERAL = "general";
-const ENTRY_URL_TYPE_ICON = "icon";
-const ENTRY_URL_TYPE_LOGIN = "login";
+export enum EntryURLType {
+    Any = "any",
+    General = "general",
+    Icon = "icon",
+    Login = "login"
+}
 
 const URL_PROP = /(^|[a-zA-Z0-9_-]|\b)(ur[li]|UR[LI]|Ur[li])(\b|$|[_-])/;
 const URL_PROP_ICON = /icon[\s_-]*ur[li]/i;
@@ -11,10 +13,10 @@ const URL_PROP_ICON = /icon[\s_-]*ur[li]/i;
 /**
  * Get URLs from an entry's properties
  * Allows for preferential sorting
- * @param {Object} properties The entry properties
- * @param {*} preference
+ * @param properties The entry properties
+ * @param preference Optional URL type preference
  */
-function getEntryURLs(properties, preference = ENTRY_URL_TYPE_ANY) {
+export function getEntryURLs(properties: { [key: string]: string }, preference: EntryURLType = EntryURLType.Any): Array<string> {
     const urlRef = Object.keys(properties)
         .filter(key => URL_PROP.test(key))
         .reduce(
@@ -24,15 +26,15 @@ function getEntryURLs(properties, preference = ENTRY_URL_TYPE_ANY) {
                 }),
             {}
         );
-    if (preference === ENTRY_URL_TYPE_GENERAL || preference === ENTRY_URL_TYPE_LOGIN) {
+    if (preference === EntryURLType.General || preference === EntryURLType.Login) {
         return Object.keys(urlRef)
             .sort((a, b) => {
-                if (preference === ENTRY_URL_TYPE_GENERAL) {
+                if (preference === EntryURLType.General) {
                     const general = /^ur[li]$/i;
                     const aVal = general.test(a) ? 1 : 0;
                     const bVal = general.test(b) ? 1 : 0;
                     return bVal - aVal;
-                } else if (preference === ENTRY_URL_TYPE_LOGIN) {
+                } else if (preference === EntryURLType.Login) {
                     const login = /login/i;
                     const aVal = login.test(a) ? 1 : 0;
                     const bVal = login.test(b) ? 1 : 0;
@@ -41,35 +43,10 @@ function getEntryURLs(properties, preference = ENTRY_URL_TYPE_ANY) {
                 return 0;
             })
             .map(key => urlRef[key]);
-    } else if (preference === ENTRY_URL_TYPE_ICON) {
+    } else if (preference === EntryURLType.Icon) {
         const iconProp = Object.keys(urlRef).find(key => URL_PROP_ICON.test(key));
         return iconProp ? [urlRef[iconProp]] : [];
     }
     // Default is "any" URLs
     return objectValues(urlRef);
 }
-
-/**
- * Check if a property name is valid
- * @param {String} name The name to check
- * @returns {Boolean} True if the name is valid
- */
-function isValidProperty(name) {
-    for (var keyName in EntryProperty) {
-        if (EntryProperty.hasOwnProperty(keyName)) {
-            if (EntryProperty[keyName] === name) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-module.exports = {
-    ENTRY_URL_TYPE_ANY,
-    ENTRY_URL_TYPE_GENERAL,
-    ENTRY_URL_TYPE_ICON,
-    ENTRY_URL_TYPE_LOGIN,
-    getEntryURLs,
-    isValidProperty
-};

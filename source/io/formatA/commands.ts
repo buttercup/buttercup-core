@@ -1,12 +1,21 @@
-const {
+import {
     findEntryByID,
     findGroupByID,
     findGroupContainingEntryID,
     findGroupContainingGroupID,
     generateEntryHistoryItem
-} = require("./tools");
+} from "./tools";
+import {
+    EntryID,
+    EntryPropertyType,
+    FormatAEntry,
+    FormatAGroup,
+    FormatAVault,
+    GroupID,
+    VaultID
+} from "../../types";
 
-function executeArchiveID(vault, opts, id) {
+export function executeArchiveID(vault: FormatAVault, opts: any, id: VaultID) {
     if (opts.shareID) {
         // Don't set vault ID from a share
         return;
@@ -18,13 +27,13 @@ function executeArchiveID(vault, opts, id) {
     vault.id = id;
 }
 
-function executeComment() {
+export function executeComment() {
     // Comment has no action
 }
 
-function executeCreateEntry(archive, opts, groupID, entryID) {
+export function executeCreateEntry(archive: FormatAVault, opts: any, groupID: GroupID, entryID: EntryID) {
     archive.groups = archive.groups || [];
-    const entry = {
+    const entry: FormatAEntry = {
         id: entryID,
         properties: {
             title: ""
@@ -43,9 +52,9 @@ function executeCreateEntry(archive, opts, groupID, entryID) {
     group.entries.push(entry);
 }
 
-function executeCreateGroup(archive, opts, parentID, newID) {
+export function executeCreateGroup(archive: FormatAVault, opts: any, parentID: GroupID | VaultID, newID: GroupID) {
     archive.groups = archive.groups || [];
-    const group = {
+    const group: FormatAGroup = {
         id: newID,
         title: "New group",
         shareID: opts.shareID,
@@ -66,7 +75,7 @@ function executeCreateGroup(archive, opts, parentID, newID) {
     }
 }
 
-function executeDeleteArchiveAttribute(archive, opts, attribute) {
+export function executeDeleteArchiveAttribute(archive: FormatAVault, opts: any, attribute: string) {
     const attributes = archive.attributes || {};
     if (attributes.hasOwnProperty(attribute) !== true) {
         throw new Error(`Vault contains no such attribute: ${attribute}`);
@@ -77,7 +86,7 @@ function executeDeleteArchiveAttribute(archive, opts, attribute) {
     }
 }
 
-function executeDeleteEntry(archive, opts, entryID) {
+export function executeDeleteEntry(archive: FormatAVault, opts: any, entryID: EntryID) {
     archive.groups = archive.groups || [];
     const { group, index } = findGroupContainingEntryID(archive.groups, entryID);
     if (!group) {
@@ -86,7 +95,7 @@ function executeDeleteEntry(archive, opts, entryID) {
     group.entries.splice(index, 1);
 }
 
-function executeDeleteEntryAttribute(archive, opts, entryID, attribute) {
+export function executeDeleteEntryAttribute(archive: FormatAVault, opts: any, entryID: EntryID, attribute: string) {
     archive.groups = archive.groups || [];
     const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
@@ -99,10 +108,10 @@ function executeDeleteEntryAttribute(archive, opts, entryID, attribute) {
         throw new Error("Failed deleting attribute");
     }
     entry.history = entry.history || [];
-    entry.history.push(generateEntryHistoryItem(attribute, "attribute", value, null));
+    entry.history.push(generateEntryHistoryItem(attribute, EntryPropertyType.Attribute, value, null));
 }
 
-function executeDeleteEntryProperty(archive, opts, entryID, property) {
+export function executeDeleteEntryProperty(archive: FormatAVault, opts: any, entryID: EntryID, property: string) {
     archive.groups = archive.groups || [];
     const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
@@ -115,10 +124,10 @@ function executeDeleteEntryProperty(archive, opts, entryID, property) {
         throw new Error(`Failed deleting property: ${property}`);
     }
     entry.history = entry.history || [];
-    entry.history.push(generateEntryHistoryItem(property, "property", value, null));
+    entry.history.push(generateEntryHistoryItem(property, EntryPropertyType.Property, value, null));
 }
 
-function executeDeleteGroup(archive, opts, groupID) {
+export function executeDeleteGroup(archive: FormatAVault, opts: any, groupID: GroupID) {
     archive.groups = archive.groups || [];
     const { group, index } = findGroupContainingGroupID(archive, groupID);
     if (!group) {
@@ -127,7 +136,7 @@ function executeDeleteGroup(archive, opts, groupID) {
     group.groups.splice(index, 1);
 }
 
-function executeDeleteGroupAttribute(archive, opts, groupID, attribute) {
+export function executeDeleteGroupAttribute(archive: FormatAVault, opts: any, groupID: GroupID, attribute: string) {
     archive.groups = archive.groups || [];
     const group = findGroupByID(archive.groups, groupID);
     if (!group) {
@@ -140,7 +149,7 @@ function executeDeleteGroupAttribute(archive, opts, groupID, attribute) {
     }
 }
 
-function executeFormat(archive, opts, format) {
+export function executeFormat(archive: FormatAVault, opts: any, format: string) {
     if (opts.shareID) {
         // Don't set archive format from a share
         return;
@@ -151,7 +160,7 @@ function executeFormat(archive, opts, format) {
     archive.format = format;
 }
 
-function executeMoveEntry(archive, opts, entryID, groupID) {
+export function executeMoveEntry(archive: FormatAVault, opts: any, entryID: EntryID, groupID: GroupID) {
     archive.groups = archive.groups || [];
     const { group: originGroup, index: originIndex } = findGroupContainingEntryID(archive.groups, entryID);
     if (!originGroup) {
@@ -166,7 +175,7 @@ function executeMoveEntry(archive, opts, entryID, groupID) {
     targetGroup.entries.push(movedEntry);
 }
 
-function executeMoveGroup(archive, opts, groupID, targetGroupID) {
+export function executeMoveGroup(archive: FormatAVault, opts: any, groupID: GroupID, targetGroupID: GroupID) {
     archive.groups = archive.groups || [];
     const { group: originGroup, index: originIndex } = findGroupContainingGroupID(archive, groupID);
     if (!originGroup) {
@@ -184,16 +193,16 @@ function executeMoveGroup(archive, opts, groupID, targetGroupID) {
     targetGroup.groups.push(movedGroup);
 }
 
-function executePad() {
+export function executePad() {
     // Comment has no action
 }
 
-function executeSetArchiveAttribute(archive, opts, attribute, value) {
+export function executeSetArchiveAttribute(archive: FormatAVault, opts: any, attribute: string, value: string) {
     archive.attributes = archive.attributes || {};
     archive.attributes[attribute] = value;
 }
 
-function executeSetEntryAttribute(archive, opts, entryID, attribute, value) {
+export function executeSetEntryAttribute(archive: FormatAVault, opts: any, entryID: EntryID, attribute: string, value: string) {
     archive.groups = archive.groups || [];
     const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
@@ -203,10 +212,10 @@ function executeSetEntryAttribute(archive, opts, entryID, attribute, value) {
     const previousValue = typeof entry.attributes[attribute] === "string" ? entry.attributes[attribute] : null;
     entry.attributes[attribute] = value;
     entry.history = entry.history || [];
-    entry.history.push(generateEntryHistoryItem(attribute, "attribute", previousValue, value));
+    entry.history.push(generateEntryHistoryItem(attribute, EntryPropertyType.Attribute, previousValue, value));
 }
 
-function executeSetEntryProperty(archive, opts, entryID, property, value) {
+export function executeSetEntryProperty(archive: FormatAVault, opts: any, entryID: EntryID, property: string, value: string) {
     archive.groups = archive.groups || [];
     const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
@@ -216,10 +225,10 @@ function executeSetEntryProperty(archive, opts, entryID, property, value) {
     const previousValue = typeof entry.properties[property] === "string" ? entry.properties[property] : null;
     entry.properties[property] = value;
     entry.history = entry.history || [];
-    entry.history.push(generateEntryHistoryItem(property, "property", previousValue, value));
+    entry.history.push(generateEntryHistoryItem(property, EntryPropertyType.Property, previousValue, value));
 }
 
-function executeSetGroupAttribute(archive, opts, groupID, attribute, value) {
+export function executeSetGroupAttribute(archive: FormatAVault, opts: any, groupID: GroupID, attribute: string, value: string) {
     archive.groups = archive.groups || [];
     const group = findGroupByID(archive.groups, groupID);
     if (!group) {
@@ -229,7 +238,7 @@ function executeSetGroupAttribute(archive, opts, groupID, attribute, value) {
     group.attributes[attribute] = value;
 }
 
-function executeTitleGroup(archive, opts, groupID, title) {
+export function executeTitleGroup(archive: FormatAVault, opts: any, groupID: GroupID, title: string) {
     archive.groups = archive.groups || [];
     const group = findGroupByID(archive.groups, groupID);
     if (!group) {
@@ -237,25 +246,3 @@ function executeTitleGroup(archive, opts, groupID, title) {
     }
     group.title = title;
 }
-
-module.exports = {
-    executeArchiveID,
-    executeComment,
-    executeCreateEntry,
-    executeCreateGroup,
-    executeDeleteArchiveAttribute,
-    executeDeleteEntry,
-    executeDeleteEntryAttribute,
-    executeDeleteEntryProperty,
-    executeDeleteGroup,
-    executeDeleteGroupAttribute,
-    executeFormat,
-    executeMoveEntry,
-    executeMoveGroup,
-    executePad,
-    executeSetArchiveAttribute,
-    executeSetEntryAttribute,
-    executeSetEntryProperty,
-    executeSetGroupAttribute,
-    executeTitleGroup
-};

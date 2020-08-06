@@ -1,23 +1,25 @@
-const { InigoCommand: Inigo } = require("./tools");
+import { InigoCommand as Inigo } from "./tools";
+import { FormatAGroup, FormatAVault, GroupID, History } from "../../types";
 
 const { Command } = Inigo;
 
 /**
  * Describe a vault dataset - to history commands
- * @param {Object} dataset The vault dataset
- * @param {String} parentGroupID The ID of the parent group
- * @returns {Array.<String>} An array of commands
+ * @param dataset The vault dataset
+ * @param parentGroupID The ID of the parent group
+ * @returns An array of commands
  */
-function describeVaultDataset(dataset, parentGroupID) {
-    var currentGroupID = dataset.format ? "0" : dataset.id,
-        entries = currentGroupID === "0" ? [] : dataset.entries || [];
+export function describeVaultDataset(dataset: FormatAVault | FormatAGroup, parentGroupID: GroupID): History {
+    const isVault = typeof (<FormatAVault>dataset).format === "string";
+    const currentGroupID = isVault ? "0" : dataset.id;
+    const entries = currentGroupID === "0" ? [] : (<FormatAGroup>dataset).entries || [];
     var commands = [];
     if (currentGroupID === "0") {
         // Vault
-        if (dataset.format) {
+        if (typeof (<FormatAVault>dataset).format === "string") {
             commands.push(
                 Inigo.create(Command.Format)
-                    .addArgument(dataset.format)
+                    .addArgument((<FormatAVault>dataset).format)
                     .generateCommand()
             );
         }
@@ -49,11 +51,11 @@ function describeVaultDataset(dataset, parentGroupID) {
                 .addArgument(currentGroupID)
                 .generateCommand()
         );
-        if (dataset.title) {
+        if ((<FormatAGroup>dataset).title) {
             commands.push(
                 Inigo.create(Command.SetGroupTitle)
                     .addArgument(currentGroupID)
-                    .addArgument(dataset.title)
+                    .addArgument((<FormatAGroup>dataset).title)
                     .generateCommand()
             );
         }
@@ -110,7 +112,3 @@ function describeVaultDataset(dataset, parentGroupID) {
     });
     return commands;
 }
-
-module.exports = {
-    describeVaultDataset
-};

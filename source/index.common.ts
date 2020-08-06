@@ -39,10 +39,7 @@ export { getSharedAppEnv } from "./env/appEnv";
 
 export { generateUUID } from "./tools/uuid";
 export {
-    ENTRY_URL_TYPE_ANY,
-    ENTRY_URL_TYPE_GENERAL,
-    ENTRY_URL_TYPE_ICON,
-    ENTRY_URL_TYPE_LOGIN,
+    EntryURLType,
     getEntryURLs
 } from "./tools/entry";
 

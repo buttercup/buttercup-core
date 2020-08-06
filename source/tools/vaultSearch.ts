@@ -1,14 +1,17 @@
+import Group from "../core/Group";
+import Entry from "../core/Entry";
+
 /**
  * Find entry instances by filtering with a compare function
- * @param {Array.<Group>} groups The groups to check in
- * @param {Function} compareFn The callback comparison function, return true to keep and false
+ * @param groups The groups to check in
+ * @param compareFn The callback comparison function, return true to keep and false
  *  to strip
- * @returns {Array.<Entry>} An array of found entries
+ * @returns An array of found entries
  */
-function findEntriesByCheck(groups, compareFn) {
-    var foundEntries = [],
+export function findEntriesByCheck(groups: Array<Group>, compareFn: (entry: Entry) => boolean): Array<Entry> {
+    let foundEntries = [],
         newEntries;
-    groups.forEach(function(group) {
+    groups.forEach((group: Group) => {
         newEntries = group.getEntries().filter(compareFn);
         if (newEntries.length > 0) {
             foundEntries = foundEntries.concat(newEntries);
@@ -23,14 +26,14 @@ function findEntriesByCheck(groups, compareFn) {
 
 /**
  * Find group instances within groups that satisfy some check
- * @param {Array.<Group>} groups The groups to check within
- * @param {Function} compareFn A comparision function - return true to keep, false to strip
- * @returns {Array.<Group>} An array of found groups
+ * @param groups The groups to check within
+ * @param compareFn A comparision function - return true to keep, false to strip
+ * @returns An array of found groups
  */
-function findGroupsByCheck(groups, compareFn) {
-    var foundGroups = groups.filter(compareFn);
-    groups.forEach(function(group) {
-        var subFound = findGroupsByCheck(group.getGroups(), compareFn);
+export function findGroupsByCheck(groups: Array<Group>, compareFn: (group: Group) => boolean): Array<Group> {
+    let foundGroups = groups.filter(compareFn);
+    groups.forEach((group: Group) => {
+        const subFound = findGroupsByCheck(group.getGroups(), compareFn);
         if (subFound.length > 0) {
             foundGroups = foundGroups.concat(subFound);
         }
@@ -40,11 +43,11 @@ function findGroupsByCheck(groups, compareFn) {
 
 /**
  * Get all entries within a collection of groups
- * @param {Array.<Group>} groups An array of groups
- * @returns {Array.<Entry>} An array of entries
+ * @param groups An array of groups
+ * @returns An array of entries
  */
-function getAllEntries(groups) {
-    return groups.reduce(function(current, group) {
+export function getAllEntries(groups: Array<Group>): Array<Entry> {
+    return groups.reduce((current: Array<Entry>, group: Group) => {
         const theseEntries = group.getEntries();
         const subEntries = getAllEntries(group.getGroups());
         if (theseEntries.length > 0) {
@@ -56,9 +59,3 @@ function getAllEntries(groups) {
         return current;
     }, []);
 }
-
-module.exports = {
-    findEntriesByCheck,
-    findGroupsByCheck,
-    getAllEntries
-};

@@ -6,6 +6,7 @@ import {
     EntryPropertyType,
     FormatAEntry,
     FormatAGroup,
+    FormatAVault,
     GroupID
 } from "../../types";
 
@@ -225,7 +226,7 @@ export function findGroupContainingEntryID(groups: Array<FormatAGroup>, id: Entr
  * @param id The group ID to search for
  * @returns The parent of the located group ID
  */
-export function findGroupContainingGroupID(group: FormatAGroup, id: GroupID) {
+export function findGroupContainingGroupID(group: FormatAGroup | FormatAVault, id: GroupID) {
     const groups = group.groups || [];
     for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
         if (groups[i].id === id) {

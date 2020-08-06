@@ -7,11 +7,25 @@ import {
     EntryID,
     FormatBEntry,
     FormatBGroup,
+    FormatBVault,
     GroupID,
     VaultID
 } from "../types";
 
+function emptyVault(): FormatBVault {
+    return {
+        id: null,
+        a: {},
+        g: [],
+        e: []
+    };
+}
+
 export default class VaultFormatB extends VaultFormat {
+    constructor(source: FormatBVault = emptyVault()) {
+        super(source);
+    }
+
     cloneEntry(entry: Entry, targetGroupID: GroupID) {}
 
     cloneGroup(group: Group, targetGroupID: GroupID) {
@@ -129,11 +143,11 @@ export default class VaultFormatB extends VaultFormat {
     }
 
     getAllEntries(): Array<FormatBEntry> {
-        return this.source.e;
+        return (<FormatBVault>this.source).e;
     }
 
     getAllGroups(): Array<FormatBGroup> {
-        return this.source.g;
+        return (<FormatBVault>this.source).g;
     }
 
     getEntryAttributes(entrySource: FormatBEntry) {

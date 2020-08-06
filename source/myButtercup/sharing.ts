@@ -1,16 +1,16 @@
-const { detectFormat } = require("../io/formatRouter.js");
-const Credentials = require("../credentials/Credentials.js");
-const Share = require("./Share.js");
-const { VaultPermission } = require("../types");
+import { detectFormat } from "../io/formatRouter";
+import Credentials from "../credentials/Credentials";
+import Share from "./Share";
+import { VaultPermission } from "../types";
 
 const ARCHIVE_SHARE_ATTRIBUTE_PREFIX = "BC_SHARE:";
 
-function decryptShareHistory(encryptedContents, password) {
+function decryptShareHistory(encryptedContents: string, password: string) {
     const Format = detectFormat(encryptedContents);
     return Format.parseEncrypted(encryptedContents, Credentials.fromPassword(password));
 }
 
-function initialiseShares(workspace) {
+export function initialiseShares(workspace) {
     const { archive, datasource } = workspace;
     if (datasource.toObject().type !== "mybuttercup") {
         return Promise.resolve();
@@ -58,7 +58,3 @@ function initialiseShares(workspace) {
             )
         );
 }
-
-module.exports = {
-    initialiseShares
-};
