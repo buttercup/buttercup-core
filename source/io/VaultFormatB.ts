@@ -22,29 +22,35 @@ function emptyVault(): FormatBVault {
 }
 
 export default class VaultFormatB extends VaultFormat {
+    source: FormatBVault;
+
     constructor(source: FormatBVault = emptyVault()) {
         super(source);
     }
 
-    cloneEntry(entry: Entry, targetGroupID: GroupID) {}
+    cloneEntry(entry: FormatBEntry, targetGroupID: GroupID) {}
 
-    cloneGroup(group: Group, targetGroupID: GroupID) {
-        const newGroup = JSON.parse(JSON.stringify(group._source));
+    cloneGroup(group: FormatBGroup, targetGroupID: GroupID) {
+        const newGroup = JSON.parse(JSON.stringify(group)) as FormatBGroup;
         newGroup.id = generateUUID();
         newGroup.g = targetGroupID;
-        this.source.groups.push(newGroup);
+        this.source.g.push(newGroup);
         // clone entries
-        const childEntries = this.source.entries
-            .filter(entry => entry.g === group._source.id)
+        const childEntries = this.source.e
+            .filter(entry => entry.g === group.id)
             .map(entry => {
                 const newEntry = JSON.parse(JSON.stringify(entry));
                 newEntry.g = newGroup.id;
+                return newEntry;
             });
-        this.source.entries.push(...childEntries);
+        this.source.e.push(...childEntries);
         // clone groups
-        this.source.groups.forEach(childGroup => {
-            if (childGroup.g === group._source.id) {
-                this.cloneGroup(childGroup, newGroup.id);
+        this.source.g.forEach(childGroup => {
+            if (childGroup.g === group.id) {
+                this.cloneGroup(
+                    childGroup,
+                    newGroup.id
+                );
             }
         });
     }

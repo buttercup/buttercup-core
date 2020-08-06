@@ -7,16 +7,16 @@ import VaultSource from "./VaultSource";
 import StorageInterface from "../storage/StorageInterface";
 import { SetTimeout, VaultSourceID } from "../types";
 
-export interface AddSourceOptions {
-    order?: number;
-}
-
 export interface InterruptedAutoUpdateFunction {
     (): void | Promise<any>
 }
 
 interface StateChangeEnqueuedFunction {
     (): void | Promise<any>
+}
+
+export interface VaultManagerAddSourceOptions {
+    order?: number;
 }
 
 export interface VaultManagerOptions {
@@ -90,7 +90,7 @@ export default class VaultManager extends EventEmitter {
     }
 
     /**
-     * @typedef {Object} AddSourceOptions
+     * @typedef {Object} VaultManagerAddSourceOptions
      * @property {Number=} order Optional order override
      */
 
@@ -104,7 +104,7 @@ export default class VaultManager extends EventEmitter {
      *  source
      * @memberof VaultManager
      */
-    async addSource(source: VaultSource, opts: AddSourceOptions = {}) {
+    async addSource(source: VaultSource, opts: VaultManagerAddSourceOptions = {}) {
         const { order: orderOverride } = opts;
         const existing = this._sources.find(src => src.id === source.id);
         if (existing) return;

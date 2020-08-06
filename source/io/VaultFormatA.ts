@@ -171,14 +171,16 @@ export default class VaultFormatA extends VaultFormat {
         return stripDestructiveCommands(history);
     }
 
+    source: FormatAVault;
+
     constructor(source: FormatAVault = emptyVault()) {
         super(source);
     }
 
-    cloneEntry(entry: Entry, targetGroupID: GroupID) {}
+    cloneEntry(entry: FormatAEntry, targetGroupID: GroupID) {}
 
-    cloneGroup(group: Group, targetGroupID: GroupID) {
-        const groupDesc = describeVaultDataset(group._source, targetGroupID);
+    cloneGroup(group: FormatAGroup, targetGroupID: GroupID) {
+        const groupDesc = describeVaultDataset(group, targetGroupID);
         this.execute(groupDesc);
     }
 

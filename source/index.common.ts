@@ -1,5 +1,5 @@
-export { default as VaultManager, AddSourceOptions, InterruptedAutoUpdateFunction, VaultManagerOptions } from "./core/VaultManager";
-export { default as VaultSource, UnlockSourceOptions, VaultSourceConfig, VaultSourceMetadata } from "./core/VaultSource";
+export { default as VaultManager, InterruptedAutoUpdateFunction, VaultManagerAddSourceOptions, VaultManagerOptions } from "./core/VaultManager";
+export { default as VaultSource, VaultSourceConfig, VaultSourceMetadata, VaultSourceUnlockOptions } from "./core/VaultSource";
 export { default as Vault } from "./core/Vault";
 export { default as Group } from "./core/Group";
 export { default as Entry } from "./core/Entry";
@@ -16,15 +16,27 @@ export { default as MyButtercupClient } from "./myButtercup/MyButtercupClient";
 export { default as DatasourceAuthManager } from "./datasources/DatasourceAuthManager";
 export { registerDatasource } from "./datasources/register";
 
-export { consumeGroupFacade, consumeVaultFacade, createGroupFacade, createVaultFacade } from "./facades/vault";
+export {
+    ConsumeVaultFacadeOptions,
+    CreateVaultFacadeOptions,
+    GetGroupEntriesFacadesOptions,
+    GetGroupsFacadesOptions,
+    consumeGroupFacade,
+    consumeVaultFacade,
+    createGroupFacade,
+    createVaultFacade
+}
+from "./facades/vault";
 export { isOTPURI, isVaultFacade } from "./facades/detection";
-export { consumeEntryFacade, createEntryFacade, fieldsToProperties } from "./facades/entry";
-export { createFieldDescriptor } from "./facades/tools";
+export { CreateEntryFacadeOptions, consumeEntryFacade, createEntryFacade, fieldsToProperties } from "./facades/entry";
+export { CreateFieldDescriptorOptions, createFieldDescriptor } from "./facades/tools";
 export {
     DEFAULT_ENTRY_TYPE,
     DEFAULT_FIELD_TYPE,
     ENTRY_TYPES,
-    FIELD_VALUE_TYPES
+    FIELD_VALUE_TYPES,
+    EntryPropertyTypeIndex,
+    EntryTypeIndex
 } from "./facades/symbols";
 
 export { default as Credentials } from "./credentials/Credentials";

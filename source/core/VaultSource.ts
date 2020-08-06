@@ -23,17 +23,17 @@ interface StateChangeEnqueuedFunction {
     (): void | Promise<any>
 }
 
-export interface UnlockSourceOptions {
-    initialiseRemote?: boolean;
-    loadOfflineCopy?: boolean;
-    storeOfflineCopy?: boolean; 
-}
-
 export interface VaultSourceConfig {
     colour?: string;
     id?: VaultSourceID;
     order?: number;
     meta?: VaultSourceMetadata
+}
+
+export interface VaultSourceUnlockOptions {
+    initialiseRemote?: boolean;
+    loadOfflineCopy?: boolean;
+    storeOfflineCopy?: boolean; 
 }
 
 export interface VaultSourceMetadata {
@@ -474,7 +474,7 @@ export default class VaultSource extends EventEmitter {
         return this._datasource.supportsAttachments();
     }
 
-    async unlock(vaultCredentials: Credentials, config: UnlockSourceOptions = {}) {
+    async unlock(vaultCredentials: Credentials, config: VaultSourceUnlockOptions = {}) {
         if (!Credentials.isCredentials(vaultCredentials)) {
             throw new VError(`Failed unlocking source: Invalid credentials passed to source: ${this.id}`);
         }

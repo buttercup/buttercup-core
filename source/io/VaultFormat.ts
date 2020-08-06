@@ -15,6 +15,7 @@ import {
     History,
     PropertyKeyValueObject
 } from "../types";
+import { isFormatBEntry } from "./formatB/conversion";
 
 function notImplemented() {
     throw new Error("Not implemented");
@@ -64,11 +65,11 @@ export default class VaultFormat extends EventEmitter {
         }
     }
 
-    cloneEntry(entry: Entry, targetGroupID: GroupID) {
+    cloneEntry(entry: FormatAEntry | FormatBEntry, targetGroupID: GroupID) {
         notImplemented();
     }
 
-    cloneGroup(group: Group, targetGroupID: GroupID) {
+    cloneGroup(group: FormatAGroup | FormatBGroup, targetGroupID: GroupID) {
         notImplemented();
     }
 

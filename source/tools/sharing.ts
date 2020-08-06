@@ -18,7 +18,7 @@ export function mergeHistories(initial, incoming) {
 export function moveGroupBetweenVaults(movingGroup: Group, targetGroup: Group | Vault) {
     // Clone
     const targetVault = targetGroup instanceof Vault ? targetGroup as Vault : targetGroup.vault;
-    targetVault.format.cloneGroup(movingGroup, targetGroup instanceof Vault ? "0" : targetGroup.id);
+    targetVault.format.cloneGroup(movingGroup._source, targetGroup instanceof Vault ? "0" : targetGroup.id);
     // Delete original
     movingGroup.delete(/* skip trash */ true);
 }

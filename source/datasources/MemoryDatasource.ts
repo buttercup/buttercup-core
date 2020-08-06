@@ -2,7 +2,6 @@ import TextDatasource from "./TextDatasource";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
 import Credentials from "../credentials/Credentials";
 import { getCredentials } from "../credentials/channel";
-import { ATTACHMENT_EXT, decryptAttachment, encryptAttachment } from "../tools/attachments";
 import { AttachmentDetails, BufferLike, DatasourceLoadedData, EncryptedContent, History, MemoryStore, VaultID } from "../types";
 
 const TYPE = "memory";

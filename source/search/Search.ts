@@ -2,7 +2,7 @@ import FuseImport from "fuse.js";
 import levenshtein from "fast-levenshtein";
 import { createVaultFacade } from "../facades/vault";
 import { fieldsToProperties } from "../facades/entry";
-import { ENTRY_URL_TYPE_GENERAL, getEntryURLs } from "../tools/entry";
+import { EntryURLType, getEntryURLs } from "../tools/entry";
 import StorageInterface from "../storage/StorageInterface";
 import Vault from "../core/Vault";
 import { EntryID, VaultID } from "../types";
@@ -119,7 +119,7 @@ export default class Search {
             this._entries.push(
                 ...entries.map(entry => {
                     const properties = fieldsToProperties(entry.fields);
-                    const urls = getEntryURLs(properties, ENTRY_URL_TYPE_GENERAL);
+                    const urls = getEntryURLs(properties, EntryURLType.General);
                     return {
                         id: entry.id,
                         properties,

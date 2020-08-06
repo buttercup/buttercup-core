@@ -1,5 +1,6 @@
 import { describeVaultDataset } from "./describe";
 import VaultFormatA from "../VaultFormatA";
+import { FormatAVault } from "../../types";
 
 /**
  * Check if a command should be preserved (not flattened)
@@ -75,7 +76,7 @@ export default class Flattener {
             tempFormat.execute(currentCommand);
         }
         // describe the archive at its current state
-        const cleanHistory = describeVaultDataset(tempFormat.source, "0");
+        const cleanHistory = describeVaultDataset(tempFormat.source as FormatAVault, "0");
         // prepare to replay
         const newHistory = [
             ...preservedLines, // preserved commands that cannot be stripped

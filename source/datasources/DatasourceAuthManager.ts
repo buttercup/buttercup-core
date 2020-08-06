@@ -14,12 +14,12 @@ function markGlobalPresence() {
 
 let __sharedManager: DatasourceAuthManager;
 
-export interface AuthHandler {
+interface AuthHandlerFunction {
     (datasource: TextDatasource): void;
 }
 
 interface AuthHandlers {
-    [type: string]: Array<AuthHandler>;
+    [type: string]: Array<AuthHandlerFunction>;
 }
 
 /**
@@ -96,7 +96,7 @@ export default class DatasourceAuthManager extends EventEmitter {
      * @memberof DatasourceAuthManager
      * @throws {Error} Throws if the handler argument is not a function
      */
-    registerHandler(datasourceType: string, handler: AuthHandler) {
+    registerHandler(datasourceType: string, handler: AuthHandlerFunction) {
         if (typeof handler !== "function") {
             throw new Error("Failed registering handler: Argument was not a function");
         }

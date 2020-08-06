@@ -1,6 +1,6 @@
 import VaultItem from "./VaultItem";
 import { generateUUID } from "../tools/uuid";
-import { getEntryURLs } from "../tools/entry";
+import { getEntryURLs, EntryURLType } from "../tools/entry";
 import Group from "./Group";
 import Vault from "./Vault";
 import { EntryHistoryItem, EntryType, GroupID } from "../types";
@@ -193,8 +193,8 @@ export default class Entry extends VaultItem {
      * @returns An array of URLs
      * @memberof Entry
      */
-    getURLs(urlTypePreference: string): Array<string> {
-        return getEntryURLs(this.getProperty(), urlTypePreference);
+    getURLs(urlTypePreference: EntryURLType): Array<string> {
+        return getEntryURLs(this.getProperty() as { [key: string]: string }, urlTypePreference);
     }
 
     /**
