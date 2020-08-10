@@ -1,6 +1,6 @@
 const { Group, Vault, VaultFormatB } = require("../../dist/index.node.js");
 
-describe.only("Format B", function() {
+describe("Format B", function() {
     beforeEach(function() {
         this.vault = new Vault(VaultFormatB);
     });
@@ -48,6 +48,38 @@ describe.only("Format B", function() {
             const entries = this.parent.findEntriesByProperty("title", /mail/i);
             expect(entries).to.have.lengthOf(1);
             expect(entries[0].getProperty("title")).to.equal("Email");
+        });
+    });
+
+    describe("Entry", function() {
+        beforeEach(function() {
+            this.group = this.vault.createGroup("Root");
+            this.group2 = this.vault.createGroup("Other");
+            this.entry1 = this.group
+                .createEntry("My Bank")
+                .setProperty("username", "u93840293")
+                .setProperty("password", "ipnt2np4g-0")
+                .setProperty("Url", "https://my.bank.org/abc-123/login.php");
+            this.entry2 = this.group
+                .createEntry("Work email")
+                .setProperty("username", "j.ericsson@test.org")
+                .setProperty("password", "mo3m;,23903j9")
+                .setProperty("URL", "email.work.org");
+        });
+
+        it("gets correct properties", function() {
+            expect(this.entry1.getProperty()).to.deep.equal({
+                title: "My Bank",
+                username: "u93840293",
+                password: "ipnt2np4g-0",
+                Url: "https://my.bank.org/abc-123/login.php"
+            });
+        });
+
+        it("can be moved", function() {
+            this.entry1.moveToGroup(this.group2);
+            expect(this.group.getEntries()).to.have.lengthOf(1);
+            expect(this.group2.getEntries()).to.have.lengthOf(1);
         });
     });
 });
