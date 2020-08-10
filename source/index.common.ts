@@ -5,6 +5,10 @@ export { default as Group } from "./core/Group";
 export { default as Entry } from "./core/Entry";
 export { default as AttachmentManager } from "./attachments/AttachmentManager";
 
+export { detectFormat, getDefaultFormat } from "./io/formatRouter";
+export { default as VaultFormatA } from "./io/VaultFormatA";
+export { default as VaultFormatB } from "./io/VaultFormatB";
+
 export { default as TextDatasource } from "./datasources/TextDatasource";
 export { default as MemoryDatasource } from "./datasources/MemoryDatasource";
 export { default as FileDatasource } from "./datasources/FileDatasource";
