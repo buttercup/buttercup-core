@@ -148,12 +148,18 @@ export default class VaultFormatB extends VaultFormat {
         this.source.id = generateUUID();
     }
 
-    getAllEntries(): Array<FormatBEntry> {
-        return (<FormatBVault>this.source).e;
+    getAllEntries(parentID: GroupID = null): Array<FormatBEntry> {
+        const source = this.source as FormatBVault;
+        return parentID === null ? source.e : source.e.filter(entry =>
+            entry.g === parentID
+        );
     }
 
-    getAllGroups(): Array<FormatBGroup> {
-        return (<FormatBVault>this.source).g;
+    getAllGroups(parentID: GroupID = null): Array<FormatBGroup> {
+        const source = this.source as FormatBVault;
+        return parentID === null ? source.g : source.g.filter(group =>
+            group.g === parentID
+        );
     }
 
     getEntryAttributes(entrySource: FormatBEntry) {
@@ -176,8 +182,16 @@ export default class VaultFormatB extends VaultFormat {
         return groupSource.a;
     }
 
+    getGroupTitle(groupSource: FormatBGroup): string {
+        return groupSource.t;
+    }
+
     getItemID(itemSource: FormatBGroup | FormatBEntry): GroupID | EntryID {
         return itemSource.id;
+    }
+
+    getVaultAttributes() {
+        return (<FormatBVault>this.source).a;
     }
 
     getVaultID(): VaultID {

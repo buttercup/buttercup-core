@@ -171,7 +171,7 @@ export default class Group extends VaultItem {
      * @memberof Group
      */
     getEntries(): Array<Entry> {
-        return (this._source.entries || []).map(rawEntry => new Entry(this.vault, rawEntry));
+        return this.vault.format.getAllEntries(this.id).map(rawEntry => new Entry(this.vault, rawEntry));
     }
 
     /**
@@ -180,7 +180,7 @@ export default class Group extends VaultItem {
      * @memberof Group
      */
     getGroups(): Array<Group> {
-        return (this._source.groups || []).map(raw => new Group(this.vault, raw));
+        return this.vault.format.getAllGroups(this.id).map(rawGroup => new Group(this.vault, rawGroup));
     }
 
     /**
@@ -209,7 +209,7 @@ export default class Group extends VaultItem {
      * @memberof Group
      */
     getTitle(): string {
-        return this._source.title || "";
+        return this.vault.format.getGroupTitle(this._source);
     }
 
     /**
@@ -241,7 +241,7 @@ export default class Group extends VaultItem {
      * @returns Self
      * @memberof Group
      */
-    moveTo(target: Group | Vault) {
+    moveTo(target: Group | Vault): this {
         if (this.isTrash()) {
             throw new Error("Trash group cannot be moved");
         }
@@ -275,12 +275,12 @@ export default class Group extends VaultItem {
 
     /**
      * Set an attribute
-     * @param {string} attribute The name of the attribute
-     * @param {string} value The value to set
+     * @param attribute The name of the attribute
+     * @param value The value to set
      * @returns Returns self
      * @memberof Group
      */
-    setAttribute(attribute, value) {
+    setAttribute(attribute: string, value: string): this {
         this.vault.format.setGroupAttribute(this.id, attribute, value);
         return this;
     }
@@ -290,7 +290,7 @@ export default class Group extends VaultItem {
      * @param title The title of the group
      * @returns Returns self
      */
-    setTitle(title) {
+    setTitle(title: string): this {
         this.vault.format.setGroupTitle(this.id, title);
         return this;
     }

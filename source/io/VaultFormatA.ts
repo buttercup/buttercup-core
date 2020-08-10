@@ -313,21 +313,29 @@ export default class VaultFormatA extends VaultFormat {
         );
     }
 
-    getAllEntries(): Array<FormatAEntry> {
+    getAllEntries(parentID: GroupID = null): Array<FormatAEntry> {
         const entries = [];
         const getEntries = (group: FormatAGroup) => {
-            entries.push(...(group.entries || []));
+            if (parentID === null || group.id === parentID) {
+                entries.push(...(group.entries || []));
+            }
             (group.groups || []).forEach(group => group);
         };
         (<FormatAVault>this.source).groups.forEach(group => getEntries(group));
         return entries;
     }
 
-    getAllGroups(): Array<FormatAGroup> {
+    getAllGroups(parentID: GroupID = null): Array<FormatAGroup> {
         const groups = [];
         const getGroups = (parent: FormatAVault | FormatAGroup) => {
             (parent.groups || []).forEach(subGroup => {
-                groups.push(subGroup);
+                if (
+                    parentID === null ||
+                    (parentID === "0" && typeof (<any>parent).parentID === "undefined") ||
+                    (parentID === (<FormatAGroup>parent).parentID)
+                ) {
+                    groups.push(subGroup);
+                }
                 getGroups(subGroup);
             });
         };
@@ -355,8 +363,16 @@ export default class VaultFormatA extends VaultFormat {
         return groupSource.attributes;
     }
 
+    getGroupTitle(groupSource: FormatAGroup): string {
+        return groupSource.title;
+    }
+
     getItemID(itemSource: FormatAGroup | FormatAEntry): GroupID | EntryID {
         return itemSource.id;
+    }
+
+    getVaultAttributes() {
+        return (<FormatAVault>this.source).attributes || {};
     }
 
     getVaultID(): VaultID {

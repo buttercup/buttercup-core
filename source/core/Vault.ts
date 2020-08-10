@@ -185,12 +185,12 @@ export default class Vault extends EventEmitter {
      * @memberof Vault
      */
     getAttribute(attributeName?: string): undefined | string | Object {
-        const dataset = this._dataset;
+        const attributes = this.format.getVaultAttributes();
         if (!attributeName) {
-            return Object.assign({}, dataset.attributes || {});
+            return Object.assign({}, attributes);
         }
-        if (dataset.attributes && dataset.attributes.hasOwnProperty(attributeName)) {
-            return dataset.attributes[attributeName];
+        if (attributes.hasOwnProperty(attributeName)) {
+            return attributes[attributeName];
         }
         return undefined;
     }
@@ -200,7 +200,7 @@ export default class Vault extends EventEmitter {
      * @memberof Vault
      */
     getGroups(): Array<Group> {
-        return (this._dataset.groups || []).map(rawGroup => new Group(this, rawGroup));
+        return this.format.getAllGroups("0").map(rawGroup => new Group(this, rawGroup));
     }
 
     /**

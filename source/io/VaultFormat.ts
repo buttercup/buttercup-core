@@ -131,12 +131,12 @@ export default class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
-    getAllEntries(): Array<FormatAEntry | FormatBEntry> {
+    getAllEntries(parentID: GroupID = null): Array<FormatAEntry | FormatBEntry> {
         notImplemented();
         return [];
     }
 
-    getAllGroups(): Array<FormatAGroup | FormatBGroup> {
+    getAllGroups(parentID: GroupID = null): Array<FormatAGroup | FormatBGroup> {
         notImplemented();
         return [];
     }
@@ -165,9 +165,19 @@ export default class VaultFormat extends EventEmitter {
         return {};
     }
 
+    getGroupTitle(groupSource: FormatAGroup | FormatBGroup): string {
+        notImplemented();
+        return "";
+    }
+
     getItemID(itemSource: FormatAGroup | FormatAEntry | FormatBGroup | FormatBEntry): GroupID | EntryID {
         notImplemented();
         return "";
+    }
+
+    getVaultAttributes() {
+        notImplemented();
+        return {};
     }
 
     getVaultID() {
