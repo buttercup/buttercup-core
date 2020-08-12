@@ -1,7 +1,10 @@
 import VaultFormat from "./VaultFormat";
 import { generateUUID } from "../tools/uuid";
-import Entry from "../core/Entry";
-import Group from "../core/Group";
+import { getSharedAppEnv } from "../env/appEnv";
+import { getCredentials } from "../credentials/channel";
+import Credentials from "../credentials/Credentials";
+import { historyArrayToString, historyStringToArray } from "./common";
+import { hasValidSignature, sign, stripSignature, vaultContentsEncrypted } from "./formatB/signing";
 import {
     EntryHistoryItem,
     EntryID,
@@ -9,6 +12,8 @@ import {
     FormatBGroup,
     FormatBVault,
     GroupID,
+    History,
+    VaultFormatID,
     VaultID
 } from "../types";
 
@@ -22,6 +27,52 @@ function emptyVault(): FormatBVault {
 }
 
 export default class VaultFormatB extends VaultFormat {
+    static encodeRaw(rawContent: History, credentials: Credentials): Promise<string> {
+        const compress = getSharedAppEnv().getProperty("compression/v1/compressText");
+        const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
+        const { masterPassword } = getCredentials(credentials.id);
+        return Promise.resolve()
+            .then(() => historyArrayToString(rawContent))
+            .then(history => compress(history))
+            .then(compressed => encrypt(compressed, masterPassword))
+            .then(sign);
+    }
+
+    static extractSharesFromHistory(history: History): Object {
+        return {};
+    }
+
+    static isEncrypted(contents: string): boolean {
+        return vaultContentsEncrypted(contents);
+    }
+
+    static parseEncrypted(encryptedContent: string, credentials: Credentials): Promise<History> {
+        const decompress = getSharedAppEnv().getProperty("compression/v1/decompressText");
+        const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
+        const { masterPassword } = getCredentials(credentials.id);
+        return Promise.resolve()
+            .then(() => {
+                if (!hasValidSignature(encryptedContent)) {
+                    throw new Error("No valid signature in vault");
+                }
+                return stripSignature(encryptedContent);
+            })
+            .then(encryptedData => decrypt(encryptedData, masterPassword))
+            .then(decrypted => {
+                if (decrypted && decrypted.length > 0) {
+                    const decompressed = decompress(decrypted);
+                    if (decompressed) {
+                        return historyStringToArray(decompressed, VaultFormatID.A);
+                    }
+                }
+                throw new Error("Failed reconstructing history: Decryption failed");
+            });
+    }
+
+    static prepareHistoryForMerge(history: History): History {
+        return history;
+    }
+
     source: FormatBVault;
 
     constructor(source: FormatBVault = emptyVault()) {
@@ -184,6 +235,14 @@ export default class VaultFormatB extends VaultFormat {
 
     getGroupTitle(groupSource: FormatBGroup): string {
         return groupSource.t;
+    }
+
+    getHistory(): History {
+        const hist = (<History> [
+            JSON.stringify(this.source)
+        ]);
+        hist.format = VaultFormatID.B;
+        return hist;
     }
 
     getItemID(itemSource: FormatBGroup | FormatBEntry): GroupID | EntryID {

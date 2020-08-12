@@ -1,8 +1,6 @@
 import VError from "verror";
 import VaultFormat from "./VaultFormat";
 import Credentials from "../credentials/Credentials";
-import Entry from "../core/Entry";
-import Group from "../core/Group";
 import {
     executeArchiveID,
     executeComment,
@@ -37,6 +35,7 @@ import { getSharedAppEnv } from "../env/appEnv";
 import { decodeStringValue, isEncoded } from "../tools/encoding";
 import { generateUUID } from "../tools/uuid";
 import { getCredentials } from "../credentials/channel";
+import { historyArrayToString, historyStringToArray } from "./common";
 import {
     EntryHistoryItem,
     EntryID,
@@ -44,9 +43,10 @@ import {
     FormatAGroup,
     FormatAVault,
     GroupID,
+    History,
     PropertyKeyValueObject,
-    VaultID,
-    FormatBGroup
+    VaultFormatID,
+    VaultID
 } from "../types";
 
 const COMMANDS = {
@@ -83,28 +83,8 @@ function emptyVault(): FormatAVault {
     };
 }
 
-/**
- * Convert array of history lines to a string
- * @param historyArray An array of history items
- * @returns The string representation
- * @private
- */
-function historyArrayToString(historyArray: Array<string>): string {
-    return historyArray.join("\n");
-}
-
-/**
- * Convert a history string to an array
- * @param historyString The history string
- * @returns An array of history items
- * @private
- */
-function historyStringToArray(historyString: string): Array<string> {
-    return historyString.split("\n");
-}
-
 export default class VaultFormatA extends VaultFormat {
-    static encodeRaw(rawContent: Array<string>, credentials: Credentials): Promise<string> {
+    static encodeRaw(rawContent: History, credentials: Credentials): Promise<string> {
         const compress = getSharedAppEnv().getProperty("compression/v1/compressText");
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
         const { masterPassword } = getCredentials(credentials.id);
@@ -123,7 +103,7 @@ export default class VaultFormatA extends VaultFormat {
      *  Each share detected is set on the object under its share ID - being
      *  set to an array of history lines (non-prefixed) for that share.
      */
-    static extractSharesFromHistory(history: Array<string>): Object {
+    static extractSharesFromHistory(history: History): Object {
         return history.reduce(
             (output, line) => {
                 if (SHARE_COMMAND_EXP.test(line)) {
@@ -144,7 +124,7 @@ export default class VaultFormatA extends VaultFormat {
         return vaultContentsEncrypted(contents);
     }
 
-    static parseEncrypted(encryptedContent: string, credentials: Credentials): Promise<Array<string>> {
+    static parseEncrypted(encryptedContent: string, credentials: Credentials): Promise<History> {
         const decompress = getSharedAppEnv().getProperty("compression/v1/decompressText");
         const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
         const { masterPassword } = getCredentials(credentials.id);
@@ -160,21 +140,33 @@ export default class VaultFormatA extends VaultFormat {
                 if (decrypted && decrypted.length > 0) {
                     const decompressed = decompress(decrypted);
                     if (decompressed) {
-                        return historyStringToArray(decompressed);
+                        return historyStringToArray(decompressed, VaultFormatID.A);
                     }
                 }
                 throw new Error("Failed reconstructing history: Decryption failed");
             });
     }
 
-    static prepareHistoryForMerge(history: Array<string>): Array<string> {
+    static prepareHistoryForMerge(history: History): History {
         return stripDestructiveCommands(history);
     }
 
+    _history: History;
     source: FormatAVault;
 
     constructor(source: FormatAVault = emptyVault()) {
         super(source);
+        this._history = [];
+        this._history.format = VaultFormatID.A;
+    }
+
+    clear() {
+        this._history = [];
+        if (this.source) {
+            for (const key in this.source) {
+                delete this.source[key];
+            }
+        }
     }
 
     cloneEntry(entry: FormatAEntry, targetGroupID: GroupID) {}
@@ -365,6 +357,13 @@ export default class VaultFormatA extends VaultFormat {
 
     getGroupTitle(groupSource: FormatAGroup): string {
         return groupSource.title;
+    }
+
+    getHistory(): History {
+        if (!this._history.format) {
+            this._history.format = VaultFormatID.A;
+        }
+        return this._history;
     }
 
     getItemID(itemSource: FormatAGroup | FormatAEntry): GroupID | EntryID {

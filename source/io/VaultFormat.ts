@@ -44,8 +44,11 @@ export default class VaultFormat extends EventEmitter {
 
     _readOnly = false;
     dirty = false;
-    history: History = [];
     source: FormatAVault | FormatBVault = null;
+
+    get history() {
+        return this.getHistory();
+    }
 
     get readOnly() {
         return this._readOnly;
@@ -57,12 +60,7 @@ export default class VaultFormat extends EventEmitter {
     }
 
     clear() {
-        this.history = [];
-        if (this.source) {
-            for (const key in this.source) {
-                delete this.source[key];
-            }
-        }
+        notImplemented();
     }
 
     cloneEntry(entry: FormatAEntry | FormatBEntry, targetGroupID: GroupID) {
@@ -168,6 +166,11 @@ export default class VaultFormat extends EventEmitter {
     getGroupTitle(groupSource: FormatAGroup | FormatBGroup): string {
         notImplemented();
         return "";
+    }
+
+    getHistory(): History {
+        notImplemented();
+        return [];
     }
 
     getItemID(itemSource: FormatAGroup | FormatAEntry | FormatBGroup | FormatBEntry): GroupID | EntryID {

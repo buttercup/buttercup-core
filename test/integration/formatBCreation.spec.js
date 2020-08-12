@@ -1,4 +1,5 @@
-const { Group, Vault, VaultFormatB } = require("../../dist/index.node.js");
+const tmp = require("tmp");
+const { Credentials, FileDatasource, Group, Vault, VaultFormatB } = require("../../dist/index.node.js");
 
 describe("Format B", function() {
     beforeEach(function() {
@@ -29,6 +30,23 @@ describe("Format B", function() {
         expect(groups).to.have.lengthOf(2);
         expect(groups.find(g => g.id === groupA.id)).to.be.an.instanceOf(Group);
         expect(groups.find(g => g.id === groupB.id)).to.be.an.instanceOf(Group);
+    });
+
+    it("can save and load to a file", async function() {
+        const tempFile = tmp.fileSync().name;
+        const creds = Credentials.fromDatasource(
+            {
+                type: "file",
+                path: tempFile
+            },
+            "test"
+        );
+        const fds = new FileDatasource(creds);
+        await fds.save(this.vault.format.history, Credentials.fromPassword("test"));
+        console.log(require("fs").readFileSync(tempFile, "utf8"));
+        const { Format, history } = await fds.load(Credentials.fromPassword("test"));
+        const vault = Vault.createFromHistory(history, Format);
+        expect(Format).to.equal(VaultFormatB);
     });
 
     describe("Group", function() {

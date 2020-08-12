@@ -165,7 +165,10 @@ export interface GroupFacade {
 
 export type GroupID = string;
 
-export type History = Array<string>;
+// export type History = Array<string>;
+export interface History extends Array<string> {
+    format?: VaultFormatID;
+}
 
 export interface MemoryStore {
     attachments?: Object;
@@ -245,6 +248,11 @@ export interface VaultFacade {
     entries: Array<EntryFacade>;
     _tag: string;
     _ver: number;
+}
+
+export enum VaultFormatID {
+    A = "a",
+    B = "b"
 }
 
 export type VaultID = string;

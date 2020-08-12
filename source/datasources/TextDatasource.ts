@@ -2,7 +2,7 @@ import EventEmitter from "eventemitter3";
 import hash from "hash.js";
 import Credentials from "../credentials/Credentials";
 import { credentialsAllowsPurpose, getCredentials } from "../credentials/channel";
-import { detectFormat, getDefaultFormat } from "../io/formatRouter";
+import { detectFormat, getFormatForID } from "../io/formatRouter";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
 import { AttachmentDetails, BufferLike, CredentialsDatasourceConfiguration, DatasourceLoadedData, EncryptedContent, History, VaultID, VaultInsights } from "../types";
 
@@ -163,11 +163,14 @@ export default class TextDatasource extends EventEmitter {
      * @returns A promise resolving with the encrypted content
      * @memberof TextDatasource
      */
-    save(vaultCommands: History, credentials: Credentials): Promise<EncryptedContent> {
+    async save(history: History, credentials: Credentials): Promise<EncryptedContent> {
         if (credentialsAllowsPurpose(credentials.id, Credentials.PURPOSE_ENCRYPT_VAULT) !== true) {
-            return Promise.reject(new Error("Provided credentials don't allow vault encryption"));
+            throw new Error("Unable to save: Provided credentials don't allow vault encryption");
         }
-        return getDefaultFormat().encodeRaw(vaultCommands, credentials);
+        if (!history.format) {
+            throw new Error("Unable to save: Provided history does not contain a format");
+        }
+        return getFormatForID(history.format).encodeRaw(history, credentials);
     }
 
     /**
