@@ -19,11 +19,11 @@ function findEntriesByCheck(groups: Array<Group>, compareFn: EntrySearchCompareF
     groups.forEach(group => {
         newEntries = group.getEntries().filter(compareFn);
         if (newEntries.length > 0) {
-            foundEntries = foundEntries.concat(newEntries);
+            foundEntries = [...foundEntries, ...newEntries];
         }
         newEntries = findEntriesByCheck(group.getGroups(), compareFn);
         if (newEntries.length > 0) {
-            foundEntries = foundEntries.concat(newEntries);
+            foundEntries = [...foundEntries, ...newEntries];
         }
     });
     return foundEntries;

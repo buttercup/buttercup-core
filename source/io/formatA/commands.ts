@@ -191,6 +191,7 @@ export function executeMoveGroup(archive: FormatAVault, opts: any, groupID: Grou
     const [movedGroup] = originGroup.groups.splice(originIndex, 1);
     targetGroup.groups = targetGroup.groups || [];
     targetGroup.groups.push(movedGroup);
+    movedGroup.parentID = targetGroupID;
 }
 
 export function executePad() {

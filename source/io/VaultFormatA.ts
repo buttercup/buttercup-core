@@ -319,28 +319,28 @@ export default class VaultFormatA extends VaultFormat {
             if (parentID === null || group.id === parentID) {
                 entries.push(...(group.entries || []));
             }
-            (group.groups || []).forEach(group => group);
+            (group.groups || []).forEach(group => getEntries(group));
         };
         (<FormatAVault>this.source).groups.forEach(group => getEntries(group));
         return entries;
     }
 
     getAllGroups(parentID: GroupID = null): Array<FormatAGroup> {
-        const groups = [];
+        const foundGroups = [];
         const getGroups = (parent: FormatAVault | FormatAGroup) => {
             (parent.groups || []).forEach(subGroup => {
                 if (
                     parentID === null ||
-                    (parentID === "0" && typeof (<any>parent).parentID === "undefined") ||
-                    (parentID === (<FormatAGroup>parent).parentID)
+                    (parentID === "0" && typeof (<any>subGroup).parentID === "undefined") ||
+                    (parentID === (<FormatAGroup>subGroup).parentID)
                 ) {
-                    groups.push(subGroup);
+                    foundGroups.push(subGroup);
                 }
                 getGroups(subGroup);
             });
         };
         getGroups(this.source as FormatAVault);
-        return groups;
+        return foundGroups;
     }
 
     getEntryAttributes(entrySource: FormatAEntry): PropertyKeyValueObject {
