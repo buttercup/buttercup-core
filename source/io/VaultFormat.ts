@@ -1,7 +1,6 @@
 import EventEmitter from "eventemitter3";
 import Credentials from "../credentials/Credentials";
-import Entry from "../core/Entry";
-import Group from "../core/Group";
+import Vault from "../core/Vault";
 import {
     EntryHistoryItem,
     EntryID,
@@ -15,19 +14,23 @@ import {
     History,
     PropertyKeyValueObject
 } from "../types";
-import { isFormatBEntry } from "./formatB/conversion";
 
 function notImplemented() {
     throw new Error("Not implemented");
 }
 
 export default class VaultFormat extends EventEmitter {
-    static encodeRaw(rawContent: Array<string>, credentials: Credentials) {
+    static encodeRaw(rawContent: History, credentials: Credentials) {
         notImplemented();
     }
 
-    static extractSharesFromHistory(history: Array<string>) {
+    static extractSharesFromHistory(history: History) {
         notImplemented();
+    }
+
+    static historiesDiffer(historyA: History, historyB: History): boolean {
+        notImplemented();
+        return false;
     }
 
     static isEncrypted(contents: string) {
@@ -38,8 +41,13 @@ export default class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
-    static prepareHistoryForMerge(history: Array<string>) {
+    static prepareHistoryForMerge(history: History) {
         notImplemented();
+    }
+
+    static vaultFromMergedHistories(historyA: History, historyB: History): Vault {
+        notImplemented();
+        return null;
     }
 
     _readOnly = false;
