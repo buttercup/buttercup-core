@@ -1,5 +1,6 @@
 import VError from "verror";
 import VaultFormat from "./VaultFormat";
+import Vault from "../core/Vault";
 import Credentials from "../credentials/Credentials";
 import {
     executeArchiveID,
@@ -31,6 +32,7 @@ import {
 import Flattener from "./formatA/Flattener";
 import { getFormat, hasValidSignature, sign, stripSignature, vaultContentsEncrypted } from "./formatA/signing";
 import { describeVaultDataset } from "./formatA/describe";
+import VaultComparator from "./formatA/VaultComparator";
 import { getSharedAppEnv } from "../env/appEnv";
 import { decodeStringValue, isEncoded } from "../tools/encoding";
 import { generateUUID } from "../tools/uuid";
@@ -120,6 +122,11 @@ export default class VaultFormatA extends VaultFormat {
         );
     }
 
+    static historiesDiffer(historyA: History, historyB: History): boolean {
+        const differences = VaultComparator.calculateHistoryDifferences(historyA, historyB);
+        return differences === null || (differences.original.length > 0 || differences.secondary.length > 0);
+    }
+
     static isEncrypted(contents: string): boolean {
         return vaultContentsEncrypted(contents);
     }
@@ -149,6 +156,30 @@ export default class VaultFormatA extends VaultFormat {
 
     static prepareHistoryForMerge(history: History): History {
         return stripDestructiveCommands(history);
+    }
+
+    static vaultFromMergedHistories(local: History, incoming: History): Vault {
+        const differences = VaultComparator.calculateHistoryDifferences(local, incoming);
+        if (differences.secondary.length === 0) {
+            // Remote doesn't have unseen changes, so we can simply
+            // use the existing history
+            return Vault.createFromHistory(local, VaultFormatA);
+        }
+        // Remote has unseen changes, so we need to do a full merge
+        // to manage the differences
+        const newHistoryMain = VaultFormatA.prepareHistoryForMerge(differences.original);
+        const newHistoryStaged = VaultFormatA.prepareHistoryForMerge(differences.secondary);
+        const base = differences.common;
+        const newVault = new Vault(VaultFormatA);
+        newVault.format.clear();
+        // merge all history and execute on new vault
+        base.concat(newHistoryStaged)
+            .concat(newHistoryMain)
+            .forEach(command => {
+                newVault.format.execute(command);
+            });
+        newVault.format.dirty = false;
+        return newVault;
     }
 
     _history: History;

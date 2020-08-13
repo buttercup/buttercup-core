@@ -2,7 +2,7 @@ import VError from "verror";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
 import TextDatasource from "./TextDatasource";
 import Credentials from "../credentials/Credentials";
-import VaultComparator from "../core/VaultComparator";
+import VaultComparator from "../io/formatA/VaultComparator";
 import MyButtercupClient from "../myButtercup/MyButtercupClient";
 import { generateNewUpdateID } from "../myButtercup/update";
 import { getCredentials } from "../credentials/channel";

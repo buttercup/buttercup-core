@@ -12,7 +12,7 @@ import {
 } from "../tools/vaultManagement";
 import { credentialsToDatasource, prepareDatasourceCredentials } from "../datasources/register";
 import { initialiseShares } from "../myButtercup/sharing";
-import VaultComparator from "./VaultComparator";
+import VaultComparator from "../io/formatA/VaultComparator";
 import { generateVaultInsights } from "../insight/vault";
 import AttachmentManager from "../attachments/AttachmentManager";
 import TextDatasource from "../datasources/TextDatasource";
@@ -420,31 +420,10 @@ export default class VaultSource extends EventEmitter {
         const { Format, history } = await this._datasource.load(
             prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type)
         );
-        const stagedVault = Vault.createFromHistory(history, Format);
-        const comparator = new VaultComparator(this._vault, stagedVault);
-        const differences = comparator.calculateDifferences();
-        if (differences.secondary.length === 0) {
-            // Remote doesn't have unseen changes, so we can simply
-            // continue using the same vault..
-            this._vault.format.dirty = false;
-            return this._vault;
+        if (Format !== this._vault.format.getFormat()) {
+            throw new Error("Format loaded during merge did not match current");
         }
-        // Remote has unseen changes, so we need to do a full merge
-        // to manage the differences
-        const newHistoryMain = Format.prepareHistoryForMerge(differences.original);
-        const newHistoryStaged = Format.prepareHistoryForMerge(differences.secondary);
-        const base = differences.common;
-        const newVault = new Vault(Format);
-        newVault.format.clear();
-        // merge all history and execute on new vault
-        // @todo use format to do this
-        base.concat(newHistoryStaged)
-            .concat(newHistoryMain)
-            .forEach(command => {
-                newVault.format.execute(command);
-            });
-        newVault.format.dirty = false;
-        // @todo Update all Group/Entry references
+        const newVault = Format.vaultFromMergedHistories(this._vault.format.history, history);
         this._vault = newVault;
         return newVault;
     }

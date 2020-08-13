@@ -45,7 +45,7 @@ export default class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
-    static vaultFromMergedHistories(historyA: History, historyB: History): Vault {
+    static vaultFromMergedHistories(local: History, incoming: History): Vault {
         notImplemented();
         return null;
     }

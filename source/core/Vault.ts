@@ -25,7 +25,7 @@ export default class Vault extends EventEmitter {
      * @static
      * @memberof Vault
      */
-    static createFromHistory(history: History, format: VaultFormat = getDefaultFormat()): Vault {
+    static createFromHistory(history: History, format: any = getDefaultFormat()): Vault {
         const vault = new Vault(format);
         vault.format.erase();
         vault.format.execute(history);

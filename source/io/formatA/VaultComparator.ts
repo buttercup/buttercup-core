@@ -1,6 +1,6 @@
-import Vault from "./Vault";
-import { createVaultFacade } from "../facades/vault";
-import { History } from "../types";
+import Vault from "../../core/Vault";
+import { createVaultFacade } from "../../facades/vault";
+import { History } from "../../types";
 
 const PRIMATIVES = ["string", "number", "boolean", "undefined"];
 
@@ -46,7 +46,7 @@ export interface HistoryDifferences {
 
 /**
  * Calculate the differences, in commands, between two histories
- * @returns Returns false if no common base is found, or the command
+ * @returns Returns null if no common base is found, or the command
  *  differences as two arrays
  */
 function calculateHistoryDifferences(historyA: History, historyB: History): HistoryDifferences {
