@@ -43,7 +43,6 @@ describe("Format B", function() {
         );
         const fds = new FileDatasource(creds);
         await fds.save(this.vault.format.history, Credentials.fromPassword("test"));
-        console.log(require("fs").readFileSync(tempFile, "utf8"));
         const { Format, history } = await fds.load(Credentials.fromPassword("test"));
         const vault = Vault.createFromHistory(history, Format);
         expect(Format).to.equal(VaultFormatB);
