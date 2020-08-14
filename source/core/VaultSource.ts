@@ -355,7 +355,7 @@ export default class VaultSource extends EventEmitter {
         if (typeof (<any>this._datasource).localDiffersFromRemote === "function") {
             return (<any>this._datasource).localDiffersFromRemote(
                 prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type),
-                this._vault.format.history
+                this.vault.format.history
             );
         }
         if (this._datasource.type !== "text") {
@@ -364,10 +364,11 @@ export default class VaultSource extends EventEmitter {
         }
         return this._datasource
             .load(prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type))
-            .then(({ Format, history }) => Vault.createFromHistory(history, Format))
-            .then(loadedItem => {
-                const comparator = new VaultComparator(this._vault, loadedItem);
-                return comparator.vaultsDiffer();
+            .then(({ Format, history }) => {
+                if (Format !== this.vault.format.getFormat()) {
+                    throw new Error("Loaded format does not match that of current vault");
+                }
+                return Format.historiesDiffer(this.vault.format.history, history);
             });
     }
 

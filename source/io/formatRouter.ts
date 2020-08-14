@@ -3,6 +3,10 @@ import VaultFormatB from "./VaultFormatB";
 import { hasValidSignature as isFormatBSigned } from "./formatB/signing";
 import { VaultFormatID } from "../types";
 
+const DEFAULT_FORMAT = VaultFormatA;
+
+let __defaultFormat = DEFAULT_FORMAT;
+
 export function detectFormat(encryptedContent: string): any {
     if (isFormatBSigned(encryptedContent)) {
         return VaultFormatB;
@@ -11,7 +15,7 @@ export function detectFormat(encryptedContent: string): any {
 }
 
 export function getDefaultFormat(): any {
-    return VaultFormatA;
+    return __defaultFormat;
 }
 
 export function getFormatForID(id: VaultFormatID): any {
@@ -19,4 +23,8 @@ export function getFormatForID(id: VaultFormatID): any {
         return VaultFormatB;
     }
     return VaultFormatA;
+}
+
+export function setDefaultFormat(Format: any = null) {
+    __defaultFormat = Format || DEFAULT_FORMAT;
 }

@@ -122,6 +122,10 @@ export default class VaultFormatA extends VaultFormat {
         );
     }
 
+    static getFormatID(): VaultFormatID {
+        return VaultFormatID.A;
+    }
+
     static historiesDiffer(historyA: History, historyB: History): boolean {
         const differences = VaultComparator.calculateHistoryDifferences(historyA, historyB);
         return differences === null || (differences.original.length > 0 || differences.secondary.length > 0);

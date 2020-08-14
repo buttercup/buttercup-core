@@ -5,7 +5,7 @@ export { default as Group } from "./core/Group";
 export { default as Entry } from "./core/Entry";
 export { default as AttachmentManager } from "./attachments/AttachmentManager";
 
-export { detectFormat, getDefaultFormat } from "./io/formatRouter";
+export { detectFormat, getDefaultFormat, setDefaultFormat } from "./io/formatRouter";
 export { default as VaultFormatA } from "./io/VaultFormatA";
 export { default as VaultFormatB } from "./io/VaultFormatB";
 

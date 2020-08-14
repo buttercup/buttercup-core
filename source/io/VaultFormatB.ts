@@ -1,10 +1,13 @@
 import VaultFormat from "./VaultFormat";
+import Vault from "../core/Vault";
 import { generateUUID } from "../tools/uuid";
 import { getSharedAppEnv } from "../env/appEnv";
 import { getCredentials } from "../credentials/channel";
 import Credentials from "../credentials/Credentials";
 import { historyArrayToString, historyStringToArray } from "./common";
 import { hasValidSignature, sign, stripSignature, vaultContentsEncrypted } from "./formatB/signing";
+import { historiesDiffer } from "./formatB/compare";
+import { mergeRawVaults } from "./formatB/merge";
 import {
     EntryHistoryItem,
     EntryID,
@@ -42,6 +45,14 @@ export default class VaultFormatB extends VaultFormat {
         return {};
     }
 
+    static getFormatID(): VaultFormatID {
+        return VaultFormatID.B;
+    }
+
+    static historiesDiffer(historyA: History, historyB: History): boolean {
+        return historiesDiffer(historyA, historyB);
+    }
+
     static isEncrypted(contents: string): boolean {
         return vaultContentsEncrypted(contents);
     }
@@ -71,6 +82,15 @@ export default class VaultFormatB extends VaultFormat {
 
     static prepareHistoryForMerge(history: History): History {
         return history;
+    }
+
+    static vaultFromMergedHistories(local: History, incoming: History): Vault {
+        const localRaw = JSON.parse(local[0]) as FormatBVault;
+        const incomingRaw = JSON.parse(incoming[0]) as FormatBVault;
+        const merged = mergeRawVaults(localRaw, incomingRaw);
+        const vault = new Vault();
+        vault.format = new VaultFormatB(merged);
+        return vault;
     }
 
     source: FormatBVault;

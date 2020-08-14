@@ -2,7 +2,6 @@ import VError from "verror";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
 import TextDatasource from "./TextDatasource";
 import Credentials from "../credentials/Credentials";
-import VaultComparator from "../io/formatA/VaultComparator";
 import MyButtercupClient from "../myButtercup/MyButtercupClient";
 import { generateNewUpdateID } from "../myButtercup/update";
 import { getCredentials } from "../credentials/channel";
@@ -162,12 +161,11 @@ export default class MyButtercupDatasource extends TextDatasource {
                     return true;
                 }
                 this.setContent("");
-                return this.load(masterCredentials).then(({ history: incomingHistory }) => {
-                    const diffs = VaultComparator.calculateHistoryDifferences(archiveHistory, incomingHistory);
-                    if (!diffs) {
-                        return true;
+                return this.load(masterCredentials).then(({ Format, history: incomingHistory }) => {
+                    if (incomingHistory.format !== Format.getFormatID()) {
+                        throw new Error("Vault format mismatch");
                     }
-                    return diffs.original.length > 0 || diffs.secondary.length > 0;
+                    return Format.historiesDiffer(archiveHistory, incomingHistory);
                 });
             })
             .catch(err => {

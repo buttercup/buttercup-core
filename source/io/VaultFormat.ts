@@ -12,7 +12,8 @@ import {
     FormatBVault,
     GroupID,
     History,
-    PropertyKeyValueObject
+    PropertyKeyValueObject,
+    VaultFormatID
 } from "../types";
 
 function notImplemented() {
@@ -26,6 +27,11 @@ export default class VaultFormat extends EventEmitter {
 
     static extractSharesFromHistory(history: History) {
         notImplemented();
+    }
+
+    static getFormatID(): VaultFormatID {
+        notImplemented();
+        return null;
     }
 
     static historiesDiffer(historyA: History, historyB: History): boolean {
