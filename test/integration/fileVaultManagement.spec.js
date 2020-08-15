@@ -4,7 +4,9 @@ const { Credentials, VaultManager, VaultSource } = require("../../dist/index.nod
 describe("VaultManager", function() {
     describe("with file datasource", function() {
         beforeEach(async function() {
-            this.vaultManager = new VaultManager();
+            this.vaultManager = new VaultManager({
+                autoUpdate: false
+            });
             // source 1
             this.tmp1 = tmp.fileSync();
             const creds = Credentials.fromDatasource(

@@ -18,7 +18,7 @@ describe("VaultManager", function() {
         ["Format A", VaultFormatA],
         ["Format B", VaultFormatB]
     ].forEach(([name, Format]) => {
-        describe(`Using ${name}`, function() {
+        describe(`using ${name}`, function() {
             beforeEach(function(done) {
                 setDefaultFormat(Format);
                 this.vaultManager = new VaultManager({

@@ -26,6 +26,7 @@ export default class VaultItem {
             VaultPermission.Read,
             VaultPermission.Write
         ];
+        this._vault._registerVaultItem(this);
     }
 
     /**

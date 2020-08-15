@@ -1,10 +1,10 @@
 import EventEmitter from "eventemitter3";
-import VaultFormat from "../io/VaultFormat";
 import { getDefaultFormat } from "../io/formatRouter";
 import { findGroupByID, findGroupsByTitle } from "../search/groups";
 import { findEntriesByProperty, findEntryByID } from "../search/entries";
 import Group from "./Group";
 import Entry from "./Entry";
+import VaultItem from "./VaultItem";
 import { EntryID, GroupID, History } from "../types";
 
 /**
@@ -48,8 +48,6 @@ export default class Vault extends EventEmitter {
         vault.createGroup("Trash").setAttribute(Group.Attribute.Role, "trash");
         return vault;
     }
-    
-    format: any;
 
     /**
      * Object form of the vault - The "dataset"
@@ -58,6 +56,24 @@ export default class Vault extends EventEmitter {
      * @memberof Vault
      */
     _dataset: any = {};
+
+    _format: any;
+
+    /**
+     * Collection of child references
+     * @protected
+     * @memberof Vault
+     */
+    _vaultItems: Array<VaultItem>;
+
+    /**
+     * The vault format
+     * @readonly
+     * @memberof Vault
+     */
+    get format(): any {
+        return this._format;
+    }
 
     /**
      * The ID of the Vault
@@ -86,7 +102,8 @@ export default class Vault extends EventEmitter {
      */
     constructor(Format: any = getDefaultFormat()) {
         super();
-        this.format = new Format(this._dataset);
+        this._vaultItems = [];
+        this._format = new Format(this._dataset);
         this.format.on("commandsExecuted", () => {
             this.emit("vaultUpdated");
         });
@@ -224,5 +241,49 @@ export default class Vault extends EventEmitter {
     setAttribute(attribute: string, value: string): this {
         this.format.setVaultAttribute(attribute, value);
         return this;
+    }
+
+    /**
+     * De-register a vault item
+     * @param vaultItem The item to remove from the references list
+     * @memberof Vault
+     * @protected
+     */
+    _deregisterVaultItem(vaultItem: VaultItem) {
+        const ind = this._vaultItems.indexOf(vaultItem);
+        if (ind >= 0) {
+            this._vaultItems.splice(ind, 1);
+        }
+    }
+
+    /**
+     * Register a dependent vault item
+     * @param vaultItem The item to register
+     * @memberof Vault
+     * @protected
+     */
+    _registerVaultItem(vaultItem: VaultItem) {
+        if (this._vaultItems.indexOf(vaultItem) === -1) {
+            this._vaultItems.push(vaultItem);
+        }
+    }
+
+    /**
+     * Update the format reference
+     * @param format The new format instance
+     * @memberof Vault
+     * @protected
+     */
+    _updateFormat(format: any) {
+        this._format = format;
+        this._vaultItems.forEach(vaultItem => {
+            if (vaultItem instanceof Group) {
+                vaultItem._source = this.format.findGroupByID(vaultItem.id);
+            } else if (vaultItem instanceof Entry) {
+                vaultItem._source = this.format.findEntryByID(vaultItem.id);
+            } else {
+                throw new Error("Invalid vault item seen during format update");
+            }
+        });
     }
 }

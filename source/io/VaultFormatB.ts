@@ -94,7 +94,7 @@ export default class VaultFormatB extends VaultFormat {
         const incomingRaw = JSON.parse(incoming[0]) as FormatBVault;
         const merged = mergeRawVaults(localRaw, incomingRaw);
         const vault = new Vault();
-        vault.format = new VaultFormatB(merged);
+        vault._format = new VaultFormatB(merged);
         return vault;
     }
 
@@ -203,6 +203,14 @@ export default class VaultFormatB extends VaultFormat {
         this.source = JSON.parse(command);
         this.dirty = true;
         this.emit("commandsExecuted");
+    }
+
+    findEntryByID(id: EntryID): FormatBEntry {
+        return this.source.e.find(entry => entry.id === id) || null;
+    }
+
+    findGroupByID(id: GroupID): FormatBGroup {
+        return this.source.g.find(group => group.id === id) || null;
     }
 
     findGroupContainingEntryID(id: EntryID): FormatBGroup {

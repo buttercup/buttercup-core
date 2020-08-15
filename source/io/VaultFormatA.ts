@@ -294,6 +294,14 @@ export default class VaultFormatA extends VaultFormat {
         this.emit("commandsExecuted");
     }
 
+    findEntryByID(id: EntryID): FormatAEntry {
+        return this.getAllEntries().find(entry => entry.id === id) || null;
+    }
+
+    findGroupByID(id: GroupID): FormatAGroup {
+        return this.getAllGroups().find(group => group.id === id) || null;
+    }
+
     findGroupContainingEntryID(id: EntryID): FormatAGroup {
         const searchGroups = (groups: Array<FormatAGroup>): FormatAGroup => {
             for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
