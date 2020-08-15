@@ -55,8 +55,8 @@ describe("merging", function() {
         this.stagedVault.setAttribute("new", "set");
         this.vault.setAttribute("later", "test");
         await this.saveAll();
-        expect(this.source.vault.getAttribute("test")).to.equal("changed");
-        expect(this.source.vault.getAttribute("new")).to.equal("set");
-        expect(this.source.vault.getAttribute("later")).to.equal("test");
+        expect(this.vault.getAttribute("test")).to.equal("changed");
+        expect(this.vault.getAttribute("new")).to.equal("set");
+        expect(this.vault.getAttribute("later")).to.equal("test");
     });
 });
