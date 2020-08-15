@@ -10,7 +10,7 @@ import { historiesDiffer } from "./formatB/compare";
 import { mergeRawVaults } from "./formatB/merge";
 import { valuesObjectToKeyValueObject } from "./formatB/conversion";
 import { newRawValue, valueToHistoryItem } from "./formatB/history";
-import { getDateString } from "../tools/date";
+import { getDateString, getTimestamp } from "../tools/date";
 import {
     EntryHistoryItem,
     EntryID,
@@ -29,7 +29,8 @@ function emptyVault(): FormatBVault {
         id: null,
         a: {},
         g: [],
-        e: []
+        e: [],
+        c: getDateString()
     };
 }
 
@@ -310,7 +311,7 @@ export default class VaultFormatB extends VaultFormat {
             const item = entry.a[attribute];
             item.history.unshift(valueToHistoryItem(item));
             item.value = value;
-            item.updated = getDateString();
+            item.updated = getTimestamp();
         }
     }
 
@@ -322,7 +323,7 @@ export default class VaultFormatB extends VaultFormat {
             const item = entry.p[property];
             item.history.unshift(valueToHistoryItem(item));
             item.value = value;
-            item.updated = getDateString();
+            item.updated = getTimestamp();
         }
     }
 
@@ -334,7 +335,7 @@ export default class VaultFormatB extends VaultFormat {
             const item = group.a[attribute];
             item.history.unshift(valueToHistoryItem(item));
             item.value = value;
-            item.updated = getDateString();
+            item.updated = getTimestamp();
         }
     }
 
@@ -350,7 +351,7 @@ export default class VaultFormatB extends VaultFormat {
             const item = this.source.a[key];
             item.history.unshift(valueToHistoryItem(item));
             item.value = value;
-            item.updated = getDateString();
+            item.updated = getTimestamp();
         }
     }
 }

@@ -156,14 +156,14 @@ export interface FormatBKeyValueObject {
 
 export interface FormatBValue {
     value: string;
-    created: DateString;
-    updated: DateString;
+    created: UTCTimestamp;
+    updated: UTCTimestamp;
     history: Array<FormatBValueHistoryItem>;
 }
 
 export interface FormatBValueHistoryItem {
     value: string;
-    updated: DateString;
+    updated: UTCTimestamp;
 }
 
 export interface FormatBVault {
@@ -171,6 +171,7 @@ export interface FormatBVault {
     a: FormatBKeyValueObject;
     g: Array<FormatBGroup>;
     e: Array<FormatBEntry>;
+    c: DateString;
 }
 
 export interface GroupFacade {
@@ -257,6 +258,8 @@ export interface PropertyKeyValueObject {
 }
 
 export type SetTimeout = ReturnType<typeof setTimeout>;
+
+export type UTCTimestamp = number;
 
 export interface VaultFacade {
     id: VaultID;

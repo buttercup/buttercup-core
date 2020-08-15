@@ -1,4 +1,4 @@
-import { getDateString } from "../../tools/date";
+import { getTimestamp } from "../../tools/date";
 import {
     EntryPropertyType,
     FormatBValue,
@@ -42,11 +42,11 @@ export function mergeValues(value1: FormatBValue, value2: FormatBValue, type: En
 }
 
 export function newRawValue(value: string): FormatBValue {
-    const dateStr = getDateString();
+    const ts = getTimestamp();
     return {
         value,
-        created: dateStr,
-        updated: dateStr,
+        created: ts,
+        updated: ts,
         history: []
     }
 }
