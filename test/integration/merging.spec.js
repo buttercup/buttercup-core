@@ -7,7 +7,7 @@ const {
     setDefaultFormat
 } = require("../../dist/index.node.js");
 
-xdescribe("merging", function() {
+describe("merging", function() {
     beforeEach(async function() {
         setDefaultFormat(VaultFormatB);
         const creds = Credentials.fromDatasource(
@@ -38,11 +38,6 @@ xdescribe("merging", function() {
             .setAttribute("test", "test");
         this.vault.setAttribute("test", "test");
         await this.source.save();
-        // await new Promise(resolve => setTimeout(resolve, 1000));
-        // Create local
-        this.vault.setAttribute("later", "test");
-        // this.datasource = new MemoryDatasource(creds);
-        // await this.datasource.save(this.vault.format.history, Credentials.fromPassword("test"));
         const newLoaded = await this.source._datasource.load(Credentials.fromPassword("test"));
         this.stagedVault = Vault.createFromHistory(newLoaded.history, newLoaded.Format);
         this.saveAll = async () => {
@@ -58,9 +53,10 @@ xdescribe("merging", function() {
     it("merges vault attributes", async function() {
         this.stagedVault.setAttribute("test", "changed");
         this.stagedVault.setAttribute("new", "set");
+        this.vault.setAttribute("later", "test");
         await this.saveAll();
-        expect(this.vault.getAttribute("test")).to.equal("test");
-        expect(this.vault.getAttribute("new")).to.equal("set");
-        expect(this.vault.getAttribute("later")).to.equal("test");
+        expect(this.source.vault.getAttribute("test")).to.equal("changed");
+        expect(this.source.vault.getAttribute("new")).to.equal("set");
+        expect(this.source.vault.getAttribute("later")).to.equal("test");
     });
 });
