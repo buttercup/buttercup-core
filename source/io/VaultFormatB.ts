@@ -8,6 +8,9 @@ import { historyArrayToString, historyStringToArray } from "./common";
 import { hasValidSignature, sign, stripSignature, vaultContentsEncrypted } from "./formatB/signing";
 import { historiesDiffer } from "./formatB/compare";
 import { mergeRawVaults } from "./formatB/merge";
+import { valuesObjectToKeyValueObject } from "./formatB/conversion";
+import { newRawValue, valueToHistoryItem } from "./formatB/history";
+import { getDateString } from "../tools/date";
 import {
     EntryHistoryItem,
     EntryID,
@@ -16,6 +19,7 @@ import {
     FormatBVault,
     GroupID,
     History,
+    PropertyKeyValueObject,
     VaultFormatID,
     VaultID
 } from "../types";
@@ -233,24 +237,24 @@ export default class VaultFormatB extends VaultFormat {
         );
     }
 
-    getEntryAttributes(entrySource: FormatBEntry) {
-        return entrySource.a;
+    getEntryAttributes(entrySource: FormatBEntry): PropertyKeyValueObject {
+        return valuesObjectToKeyValueObject(entrySource.a);
     }
 
     getEntryChanges(entrySource: FormatBEntry): Array<EntryHistoryItem> {
         return [];
     }
 
-    getEntryProperties(entrySource: FormatBEntry) {
-        return entrySource.p;
+    getEntryProperties(entrySource: FormatBEntry): PropertyKeyValueObject {
+        return valuesObjectToKeyValueObject(entrySource.p);
     }
 
     getFormat() {
         return VaultFormatB;
     }
 
-    getGroupAttributes(groupSource: FormatBGroup) {
-        return groupSource.a;
+    getGroupAttributes(groupSource: FormatBGroup): PropertyKeyValueObject {
+        return valuesObjectToKeyValueObject(groupSource.a);
     }
 
     getGroupTitle(groupSource: FormatBGroup): string {
@@ -270,7 +274,7 @@ export default class VaultFormatB extends VaultFormat {
     }
 
     getVaultAttributes() {
-        return (<FormatBVault>this.source).a;
+        return valuesObjectToKeyValueObject((<FormatBVault>this.source).a);
     }
 
     getVaultID(): VaultID {
@@ -300,17 +304,38 @@ export default class VaultFormatB extends VaultFormat {
 
     setEntryAttribute(entryID: EntryID, attribute: string, value: string) {
         const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
-        entry.a[attribute] = value;
+        if (!entry.a[attribute]) {
+            entry.a[attribute] = newRawValue(value);
+        } else {
+            const item = entry.a[attribute];
+            item.history.unshift(valueToHistoryItem(item));
+            item.value = value;
+            item.updated = getDateString();
+        }
     }
 
     setEntryProperty(entryID: EntryID, property:string, value: string) {
         const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
-        entry.p[property] = value;
+        if (!entry.p[property]) {
+            entry.p[property] = newRawValue(value);
+        } else {
+            const item = entry.p[property];
+            item.history.unshift(valueToHistoryItem(item));
+            item.value = value;
+            item.updated = getDateString();
+        }
     }
 
     setGroupAttribute(groupID: GroupID, attribute: string, value: string) {
         const group = this.source.g.find((g: FormatBGroup) => g.id === groupID);
-        group.a[attribute] = value;
+        if (!group.a[attribute]) {
+            group.a[attribute] = newRawValue(value);
+        } else {
+            const item = group.a[attribute];
+            item.history.unshift(valueToHistoryItem(item));
+            item.value = value;
+            item.updated = getDateString();
+        }
     }
 
     setGroupTitle(groupID: GroupID, title: string) {
@@ -319,6 +344,13 @@ export default class VaultFormatB extends VaultFormat {
     }
 
     setVaultAttribute(key: string, value: string) {
-        this.source.a[key] = value;
+        if (!this.source.a[key]) {
+            this.source.a[key] = newRawValue(value);
+        } else {
+            const item = this.source.a[key];
+            item.history.unshift(valueToHistoryItem(item));
+            item.value = value;
+            item.updated = getDateString();
+        }
     }
 }

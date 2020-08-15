@@ -43,6 +43,8 @@ export interface DatasourceLoadedData {
     history: History
 }
 
+export type DateString = string;
+
 export type EncryptedContent = string;
 
 export interface EntryFacade {
@@ -137,20 +139,36 @@ export interface FormatAVault {
 export interface FormatBEntry {
     id: EntryID;
     g: GroupID;
-    a: PropertyKeyValueObject;
-    p: PropertyKeyValueObject;
+    a: FormatBKeyValueObject;
+    p: FormatBKeyValueObject;
 }
 
 export interface FormatBGroup {
     id: GroupID;
-    a: PropertyKeyValueObject;
+    a: FormatBKeyValueObject;
     t: string;
     g: GroupID;
 }
 
+export interface FormatBKeyValueObject {
+    [key: string]: FormatBValue
+}
+
+export interface FormatBValue {
+    value: string;
+    created: DateString;
+    updated: DateString;
+    history: Array<FormatBValueHistoryItem>;
+}
+
+export interface FormatBValueHistoryItem {
+    value: string;
+    updated: DateString;
+}
+
 export interface FormatBVault {
     id: VaultID;
-    a: PropertyKeyValueObject;
+    a: FormatBKeyValueObject;
     g: Array<FormatBGroup>;
     e: Array<FormatBEntry>;
 }

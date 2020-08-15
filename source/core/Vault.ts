@@ -49,7 +49,7 @@ export default class Vault extends EventEmitter {
         return vault;
     }
     
-    format: VaultFormat;
+    format: any;
 
     /**
      * Object form of the vault - The "dataset"

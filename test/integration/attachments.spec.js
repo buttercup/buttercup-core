@@ -29,7 +29,7 @@ describe("AttachmentManager", function() {
                 setDefaultFormat(Format);
             });
 
-            beforeEach(function() {
+            afterEach(function() {
                 setDefaultFormat();
             });
 

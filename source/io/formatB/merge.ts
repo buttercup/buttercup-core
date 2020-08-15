@@ -1,4 +1,5 @@
-import { FormatBEntry, FormatBGroup, FormatBVault } from "../../types";
+import { cloneValue, mergeValues } from "./history";
+import { EntryPropertyType, FormatBEntry, FormatBGroup, FormatBKeyValueObject, FormatBVault } from "../../types";
 
 function cloneEntry(entry: FormatBEntry): FormatBEntry {
     return {
@@ -18,14 +19,24 @@ function cloneGroup(group: FormatBGroup): FormatBGroup {
     };
 }
 
-function mergeProperties(propsA: { [key: string]: string }, propsB: { [key: string]: string }): { [key: string]: string } {
-    return Object.assign({}, propsA, propsB);
+function mergeProperties(propsA: FormatBKeyValueObject, propsB: FormatBKeyValueObject, type: EntryPropertyType): FormatBKeyValueObject {
+    const allKeys = [...new Set([ ...Object.keys(propsA), ...Object.keys(propsB) ])];
+    return allKeys.reduce((output, nextKey) => {
+        if ((propsA[nextKey] && !propsB[nextKey]) || (!propsA[nextKey] && propsB[nextKey])) {
+            // Item is only on one props object
+            output[nextKey] = cloneValue(propsA[nextKey] || propsB[nextKey]);
+        } else {
+            // Item exists on both objects, so merge
+            output[nextKey] = mergeValues(propsA[nextKey], propsB[nextKey], type);
+        }
+        return output;
+    }, {});
 }
 
 export function mergeRawVaults(base: FormatBVault, incoming: FormatBVault): FormatBVault {
     const newVault: FormatBVault = {
         id: base.id,
-        a: mergeProperties(base.a, incoming.a),
+        a: mergeProperties(base.a, incoming.a, EntryPropertyType.Attribute),
         g: [],
         e: []
     };
@@ -43,7 +54,7 @@ export function mergeRawVaults(base: FormatBVault, incoming: FormatBVault): Form
         const incomingGroup = incoming.g.find(ing => ing.id === baseGroup.id);
         // Setup new group
         const newGroup = cloneGroup(incomingGroup);
-        newGroup.a = mergeProperties(baseGroup.a, incomingGroup.a);
+        newGroup.a = mergeProperties(baseGroup.a, incomingGroup.a, EntryPropertyType.Attribute);
         newVault.g.push(newGroup);
     });
     // Process unique (one vault only) entries
@@ -60,8 +71,8 @@ export function mergeRawVaults(base: FormatBVault, incoming: FormatBVault): Form
         const incomingEntry = incoming.e.find(ing => ing.id === baseEntry.id);
         // Setup new group
         const newEntry = cloneEntry(incomingEntry);
-        newEntry.p = mergeProperties(baseEntry.p, incomingEntry.p);
-        newEntry.a = mergeProperties(baseEntry.a, incomingEntry.a);
+        newEntry.p = mergeProperties(baseEntry.p, incomingEntry.p, EntryPropertyType.Property);
+        newEntry.a = mergeProperties(baseEntry.a, incomingEntry.a, EntryPropertyType.Attribute);
         newVault.e.push(newEntry);
     });
     return newVault;
