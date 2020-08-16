@@ -5,7 +5,7 @@ const packageInfo = require("../package.json");
 const PASSWORD = "this is a long password used for a test archive!";
 const { version } = packageInfo;
 
-const outputDir = path.resolve(__dirname, "../test/resources/vaults");
+const outputDir = path.resolve(__dirname, "../test/resources/vaults/format-a");
 const outputFile = path.join(outputDir, `/test-archive-${version}.bcup`);
 
 init();

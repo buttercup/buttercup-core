@@ -26,7 +26,7 @@
     "docs": "npm run generate:docs",
     "format": "prettier --write '{source,test}/**/*.js'",
     "generate:docs": "jsdoc2md 'source/**/*.js' > API.md",
-    "generate:vault": "npm run build:node && node scripts/generate_test_vault.js",
+    "generate:vault": "npm run build:node && node scripts/gen_vault_format_a.js",
     "prepublishOnly": "run-s build",
     "test": "run-s test:node test:web test:format",
     "test:format": "prettier-check '{source,test}/**/*.js'",

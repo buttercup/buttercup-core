@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { Credentials, FileDatasource, Vault } = require("../../dist/index.node.js");
 
-const VAULTS_DIR = path.resolve(__dirname, "../resources/vaults");
+const VAULTS_DIR = path.resolve(__dirname, "../resources/vaults/format-a");
 const PASSWORD = "this is a long password used for a test archive!";
 
 describe("reading old vaults", function() {
