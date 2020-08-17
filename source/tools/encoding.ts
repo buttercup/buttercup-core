@@ -4,6 +4,14 @@ import { generateUUID } from "./uuid";
 const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
 export const ENCODED_STRING_PREFIX = "utf8+base64:";
 
+export function base64ToBytes(b64: string): Uint8Array {
+    return Base64.toUint8Array(b64);
+}
+
+export function bytesToBase64(uint8Arr: Uint8Array): string {
+    return Base64.fromUint8Array(uint8Arr);
+}
+
 /**
  * Decode an encoded property value
  * @param {String} value The encoded value

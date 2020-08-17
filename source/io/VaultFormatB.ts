@@ -36,7 +36,7 @@ function emptyVault(): FormatBVault {
 
 export default class VaultFormatB extends VaultFormat {
     static encodeRaw(rawContent: History, credentials: Credentials): Promise<string> {
-        const compress = getSharedAppEnv().getProperty("compression/v1/compressText");
+        const compress = getSharedAppEnv().getProperty("compression/v2/compressText");
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
         const { masterPassword } = getCredentials(credentials.id);
         return Promise.resolve()
@@ -63,7 +63,7 @@ export default class VaultFormatB extends VaultFormat {
     }
 
     static parseEncrypted(encryptedContent: string, credentials: Credentials): Promise<History> {
-        const decompress = getSharedAppEnv().getProperty("compression/v1/decompressText");
+        const decompress = getSharedAppEnv().getProperty("compression/v2/decompressText");
         const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
         const { masterPassword } = getCredentials(credentials.id);
         return Promise.resolve()
@@ -74,14 +74,9 @@ export default class VaultFormatB extends VaultFormat {
                 return stripSignature(encryptedContent);
             })
             .then(encryptedData => decrypt(encryptedData, masterPassword))
-            .then(decrypted => {
-                if (decrypted && decrypted.length > 0) {
-                    const decompressed = decompress(decrypted);
-                    if (decompressed) {
-                        return historyStringToArray(decompressed, VaultFormatID.A);
-                    }
-                }
-                throw new Error("Failed reconstructing history: Decryption failed");
+            .then(async decrypted => {
+                const decompressed = await decompress(decrypted);
+                return historyStringToArray(decompressed, VaultFormatID.B);
             });
     }
 
@@ -200,7 +195,11 @@ export default class VaultFormatB extends VaultFormat {
         } else {
             command = commandOrCommands;
         }
-        this.source = JSON.parse(command);
+        try {
+            this.source = JSON.parse(command);
+        } catch (err) {
+            console.log("FAILED PARSING", command, err);
+        }
         this.dirty = true;
         this.emit("commandsExecuted");
     }
