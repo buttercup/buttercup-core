@@ -195,11 +195,7 @@ export default class VaultFormatB extends VaultFormat {
         } else {
             command = commandOrCommands;
         }
-        try {
-            this.source = JSON.parse(command);
-        } catch (err) {
-            console.log("FAILED PARSING", command, err);
-        }
+        this.source = JSON.parse(command);
         this.dirty = true;
         this.emit("commandsExecuted");
     }

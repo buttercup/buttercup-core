@@ -1,4 +1,4 @@
-import gzip from "gzip-js";
+import { gzip, ungzip } from "pako";
 
 /**
  * Compress text using GZIP
@@ -6,16 +6,10 @@ import gzip from "gzip-js";
  * @returns Compressed text
  */
 function compress(text: string): string {
-    const compressed = gzip.zip(text, {
+    return gzip(text, {
         level: 9,
-        timestamp: Math.round(Date.now() / 1000)
+        to: "string"
     });
-    const compressedLength = compressed.length;
-    let outputText = "";
-    for (let i = 0; i < compressedLength; i += 1) {
-        outputText += String.fromCharCode(compressed[i]);
-    }
-    return outputText;
 }
 
 /**
@@ -24,18 +18,7 @@ function compress(text: string): string {
  * @returns Decompressed text
  */
 function decompress(text: string): string {
-    var compressedData = [],
-        textLen = text.length;
-    for (var i = 0; i < textLen; i += 1) {
-        compressedData.push(text.charCodeAt(i));
-    }
-    const decompressedData = gzip.unzip(compressedData);
-    const decompressedLength = decompressedData.length;
-    let outputText = "";
-    for (let j = 0; j < decompressedLength; j += 1) {
-        outputText += String.fromCharCode(decompressedData[j]);
-    }
-    return outputText;
+    return ungzip(text, { to: "string" });
 }
 
 export function getCompressionResources() {
