@@ -27,6 +27,8 @@ import {
     COMMAND_MANIFEST,
     InigoCommand as Inigo,
     extractCommandComponents,
+    getAllEntries,
+    getAllGroups,
     stripDestructiveCommands
 } from "./formatA/tools";
 import Flattener from "./formatA/Flattener";
@@ -349,33 +351,11 @@ export default class VaultFormatA extends VaultFormat {
     }
 
     getAllEntries(parentID: GroupID = null): Array<FormatAEntry> {
-        const entries = [];
-        const getEntries = (group: FormatAGroup) => {
-            if (parentID === null || group.id === parentID) {
-                entries.push(...(group.entries || []));
-            }
-            (group.groups || []).forEach(group => getEntries(group));
-        };
-        (<FormatAVault>this.source).groups.forEach(group => getEntries(group));
-        return entries;
+        return getAllEntries(this.source, parentID);
     }
 
     getAllGroups(parentID: GroupID = null): Array<FormatAGroup> {
-        const foundGroups = [];
-        const getGroups = (parent: FormatAVault | FormatAGroup) => {
-            (parent.groups || []).forEach(subGroup => {
-                if (
-                    parentID === null ||
-                    (parentID === "0" && typeof (<any>subGroup).parentID === "undefined") ||
-                    (parentID === (<FormatAGroup>subGroup).parentID)
-                ) {
-                    foundGroups.push(subGroup);
-                }
-                getGroups(subGroup);
-            });
-        };
-        getGroups(this.source as FormatAVault);
-        return foundGroups;
+        return getAllGroups(this.source, parentID);
     }
 
     getEntryAttributes(entrySource: FormatAEntry): PropertyKeyValueObject {

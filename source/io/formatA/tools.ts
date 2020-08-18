@@ -272,6 +272,36 @@ export function generateEntryHistoryItem(property: string, propertyType: EntryPr
     });
 }
 
+export function getAllEntries(source: FormatAVault, parentID: GroupID = null): Array<FormatAEntry> {
+    const entries = [];
+    const getEntries = (group: FormatAGroup) => {
+        if (parentID === null || group.id === parentID) {
+            entries.push(...(group.entries || []));
+        }
+        (group.groups || []).forEach(group => getEntries(group));
+    };
+    source.groups.forEach(group => getEntries(group));
+    return entries;
+}
+
+export function getAllGroups(source: FormatAVault, parentID: GroupID = null): Array<FormatAGroup> {
+    const foundGroups = [];
+    const getGroups = (parent: FormatAVault | FormatAGroup) => {
+        (parent.groups || []).forEach(subGroup => {
+            if (
+                parentID === null ||
+                (parentID === "0" && typeof (<any>subGroup).parentID === "undefined") ||
+                (parentID === (<FormatAGroup>subGroup).parentID)
+            ) {
+                foundGroups.push(subGroup);
+            }
+            getGroups(subGroup);
+        });
+    };
+    getGroups(source);
+    return foundGroups;
+}
+
 export function historyArrayToString(historyArray: Array<string>): string {
     return historyArray.join("\n");
 }
