@@ -1,5 +1,10 @@
 import { newRawValue } from "./history";
-import { FormatAEntry, FormatAGroup, FormatBEntry, FormatBGroup, FormatBKeyValueObject, PropertyKeyValueObject } from "../../types";
+import { getDateString } from "../../tools/date";
+import {
+    getAllEntries as getAllFormatAEntries,
+    getAllGroups as getAllFormatAGroups
+} from "../formatA/tools";
+import { FormatAEntry, FormatAGroup, FormatAVault, FormatBEntry, FormatBGroup, FormatBKeyValueObject, FormatBVault, PropertyKeyValueObject } from "../../types";
 
 export function convertFormatAEntry(entry: FormatAEntry): FormatBEntry {
     return {
@@ -16,6 +21,16 @@ export function convertFormatAGroup(group: FormatAGroup): FormatBGroup {
         a: flatKeyValueObjectToValuesObject(group.attributes || {}),
         t: group.title,
         g: group.parentID
+    };
+}
+
+export function convertFormatAVault(vault: FormatAVault): FormatBVault {
+    return {
+        id: vault.id,
+        a: flatKeyValueObjectToValuesObject(vault.attributes || {}),
+        g: getAllFormatAGroups(vault).map(group => convertFormatAGroup(group)),
+        e: getAllFormatAEntries(vault).map(entry => convertFormatAEntry(entry)),
+        c: getDateString()
     };
 }
 
