@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v4.13.1
+_2020-08-19_
+
+ * **Bugfix**:
+   * ([#287](https://github.com/buttercup/buttercup-core/issues/287)) Vaults grow to enormous size
+
 ## v4.13.0
 _2020-08-02_
 
