@@ -25,7 +25,7 @@ describe("Format B", function() {
     it("can find groups", function() {
         const groupA = this.vault.createGroup("Group A (one)");
         const groupB = this.vault.createGroup("Group B (one)");
-        const groupC = this.vault.createGroup("Group C (two)");
+        this.vault.createGroup("Group C (two)");
         const groups = this.vault.findGroupsByTitle(/one/);
         expect(groups).to.have.lengthOf(2);
         expect(groups.find(g => g.id === groupA.id)).to.be.an.instanceOf(Group);
@@ -46,6 +46,7 @@ describe("Format B", function() {
         const { Format, history } = await fds.load(Credentials.fromPassword("test"));
         const vault = Vault.createFromHistory(history, Format);
         expect(Format).to.equal(VaultFormatB);
+        expect(vault.id).to.equal(this.vault.id);
     });
 
     describe("Group", function() {

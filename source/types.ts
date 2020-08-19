@@ -158,6 +158,7 @@ export interface FormatBValue {
     value: string;
     created: UTCTimestamp;
     updated: UTCTimestamp;
+    deleted?: UTCTimestamp;
     history: Array<FormatBValueHistoryItem>;
 }
 
