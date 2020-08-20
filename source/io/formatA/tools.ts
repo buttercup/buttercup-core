@@ -1,7 +1,7 @@
 import { encodeStringValue } from "../../tools/encoding";
 import { generateUUID } from "../../tools/uuid";
 import {
-    EntryHistoryItem,
+    EntryLegacyHistoryItem,
     EntryID,
     EntryPropertyType,
     FormatAEntry,
@@ -247,7 +247,7 @@ export function findGroupContainingGroupID(group: FormatAGroup | FormatAVault, i
 }
 
 /**
- * @typedef {Object} EntryHistoryItem
+ * @typedef {Object} EntryLegacyHistoryItem
  * @property {String} property The property/attribute name
  * @property {String} propertyType Either "property" or "attribute"
  * @property {String|null} originalValue The original value or null if it did not exist
@@ -263,7 +263,7 @@ export function findGroupContainingGroupID(group: FormatAGroup | FormatAVault, i
  *  before this change
  * @param newValue The new value or null if it was deleted
  */
-export function generateEntryHistoryItem(property: string, propertyType: EntryPropertyType, originalValue: string = null, newValue: string = null): EntryHistoryItem {
+export function generateEntryLegacyHistoryItem(property: string, propertyType: EntryPropertyType, originalValue: string = null, newValue: string = null): EntryLegacyHistoryItem {
     return Object.freeze({
         property,
         propertyType,

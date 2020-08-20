@@ -3,7 +3,7 @@ import { generateUUID } from "../tools/uuid";
 import { getEntryURLs, EntryURLType } from "../tools/entry";
 import Group from "./Group";
 import Vault from "./Vault";
-import { EntryHistoryItem, EntryType, GroupID } from "../types";
+import { EntryLegacyHistoryItem, EntryType, GroupID } from "../types";
 
 /**
  * Entry class - some secret item, login or perhaps
@@ -115,7 +115,7 @@ export default class Entry extends VaultItem {
      * Get an array of all history changes made to the entry
      * @memberof Entry
      */
-    getChanges(): Array<EntryHistoryItem> {
+    getChanges(): Array<EntryLegacyHistoryItem> {
         return this.vault.format.getEntryChanges(this._source);
     }
 

@@ -41,7 +41,7 @@ import { generateUUID } from "../tools/uuid";
 import { getCredentials } from "../credentials/channel";
 import { historyArrayToString, historyStringToArray } from "./common";
 import {
-    EntryHistoryItem,
+    EntryLegacyHistoryItem,
     EntryID,
     FormatAEntry,
     FormatAGroup,
@@ -362,7 +362,7 @@ export default class VaultFormatA extends VaultFormat {
         return entrySource.attributes;
     }
 
-    getEntryChanges(entrySource: FormatAEntry): Array<EntryHistoryItem> {
+    getEntryChanges(entrySource: FormatAEntry): Array<EntryLegacyHistoryItem> {
         return entrySource.history || [];
     }
 

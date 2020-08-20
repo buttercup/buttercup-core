@@ -12,7 +12,7 @@ import { valuesObjectToKeyValueObject } from "./formatB/conversion";
 import { newRawValue, valueToHistoryItem } from "./formatB/history";
 import { getDateString, getTimestamp } from "../tools/date";
 import {
-    EntryHistoryItem,
+    EntryLegacyHistoryItem,
     EntryID,
     FormatBEntry,
     FormatBGroup,
@@ -241,7 +241,7 @@ export default class VaultFormatB extends VaultFormat {
         return valuesObjectToKeyValueObject(entrySource.a);
     }
 
-    getEntryChanges(entrySource: FormatBEntry): Array<EntryHistoryItem> {
+    getEntryChanges(entrySource: FormatBEntry): Array<EntryLegacyHistoryItem> {
         return [];
     }
 

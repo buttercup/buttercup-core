@@ -49,14 +49,6 @@ export default class Vault extends EventEmitter {
         return vault;
     }
 
-    /**
-     * Object form of the vault - The "dataset"
-     *  (do not use directly)
-     * @protected
-     * @memberof Vault
-     */
-    _dataset: any = {};
-
     _format: any;
 
     /**
@@ -81,7 +73,7 @@ export default class Vault extends EventEmitter {
      * @memberof Vault
      */
     get id(): string {
-        return this._dataset.id;
+        return this.format.getVaultID();
     }
 
     /**
@@ -103,7 +95,7 @@ export default class Vault extends EventEmitter {
     constructor(Format: any = getDefaultFormat()) {
         super();
         this._vaultItems = [];
-        this._format = new Format(this._dataset);
+        this._format = new Format();
         this.format.on("commandsExecuted", () => {
             this.emit("vaultUpdated");
         });

@@ -52,7 +52,7 @@ export interface EntryFacade {
     type: EntryType;
     fields: Array<EntryFacadeField>;
     parentID: GroupID;
-    _history: Array<EntryHistoryItem>;
+    _history: Array<EntryLegacyHistoryItem>;
 }
 
 export interface EntryFacadeField {
@@ -79,7 +79,7 @@ export interface EntryFacadeFieldFormatting {
     defaultOption?: string;
 }
 
-export interface EntryHistoryItem {
+export interface EntryLegacyHistoryItem {
     property: string;
     propertyType: EntryPropertyType;
     originalValue: string | null;
@@ -114,7 +114,7 @@ export interface FormatAEntry {
     properties?: PropertyKeyValueObject;
     parentID: GroupID;
     permissions?: Array<VaultPermission>;
-    history?: Array<EntryHistoryItem>;
+    history?: Array<EntryLegacyHistoryItem>;
     shareID?: string;
 }
 
