@@ -12,10 +12,12 @@ import { valuesObjectToKeyValueObject } from "./formatB/conversion";
 import { newRawValue, valueToHistoryItem } from "./formatB/history";
 import { getDateString, getTimestamp } from "../tools/date";
 import {
-    EntryLegacyHistoryItem,
+    EntryChange,
+    EntryChangeType,
     EntryID,
     FormatBEntry,
     FormatBGroup,
+    FormatBValueHistoryItem,
     FormatBVault,
     GroupID,
     History,
@@ -241,8 +243,27 @@ export default class VaultFormatB extends VaultFormat {
         return valuesObjectToKeyValueObject(entrySource.a);
     }
 
-    getEntryChanges(entrySource: FormatBEntry): Array<EntryLegacyHistoryItem> {
-        return [];
+    getEntryChanges(entrySource: FormatBEntry): Array<EntryChange> {
+        return Object.keys(entrySource.p).reduce((changes, property) =>
+            [
+                ...changes,
+                ...entrySource.p[property].history.map((histItem: FormatBValueHistoryItem) => {
+                    const change: EntryChange = {
+                        property,
+                        type: histItem.updated === entrySource.p[property].created
+                            ? EntryChangeType.Created
+                            : entrySource.p[property].deleted && histItem.updated === entrySource.p[property].deleted
+                            ? EntryChangeType.Deleted
+                            : EntryChangeType.Modified,
+                        ts: histItem.updated
+                    };
+                    if (change.type !== EntryChangeType.Deleted) {
+                        change.value = histItem.value;
+                    }
+                    return change;
+                })
+            ]
+        , []);
     }
 
     getEntryProperties(entrySource: FormatBEntry): PropertyKeyValueObject {

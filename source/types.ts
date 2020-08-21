@@ -47,6 +47,19 @@ export type DateString = string;
 
 export type EncryptedContent = string;
 
+export interface EntryChange {
+    property: string;
+    type: EntryChangeType;
+    value?: string;
+    ts: UTCTimestamp;
+}
+
+export enum EntryChangeType {
+    Created = "created",
+    Modified = "modified",
+    Deleted = "deleted"
+}
+
 export interface EntryFacade {
     id: EntryID;
     type: EntryType;

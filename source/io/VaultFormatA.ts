@@ -41,7 +41,8 @@ import { generateUUID } from "../tools/uuid";
 import { getCredentials } from "../credentials/channel";
 import { historyArrayToString, historyStringToArray } from "./common";
 import {
-    EntryLegacyHistoryItem,
+    EntryChange,
+    EntryChangeType,
     EntryID,
     FormatAEntry,
     FormatAGroup,
@@ -50,7 +51,8 @@ import {
     History,
     PropertyKeyValueObject,
     VaultFormatID,
-    VaultID
+    VaultID,
+    EntryPropertyType
 } from "../types";
 
 const COMMANDS = {
@@ -362,15 +364,28 @@ export default class VaultFormatA extends VaultFormat {
         return entrySource.attributes;
     }
 
-    getEntryChanges(entrySource: FormatAEntry): Array<EntryLegacyHistoryItem> {
-        return entrySource.history || [];
+    getEntryChanges(entrySource: FormatAEntry): Array<EntryChange> {
+        return (entrySource.history || [])
+            .filter(item => item.propertyType === EntryPropertyType.Property)
+            .map(item => {
+                const type = !item.originalValue ? EntryChangeType.Created : typeof item.newValue === "string" ? EntryChangeType.Modified : EntryChangeType.Deleted;
+                const change: EntryChange = {
+                    property: item.propertyType,
+                    type,
+                    ts: null
+                };
+                if (type === EntryChangeType.Created || EntryChangeType.Modified) {
+                    change.value = item.newValue;
+                }
+                return change;
+            });
     }
 
     getEntryProperties(entrySource: FormatAEntry): PropertyKeyValueObject {
         return entrySource.properties;
     }
 
-    getFormat(): typeof VaultFormat {
+    getFormat(): any {
         return VaultFormatA;
     }
 
