@@ -22,7 +22,8 @@ const { FacadeType: FacadeTypeAttribute } = Entry.Attributes;
 function addExtraFieldsNonDestructive(entry: Entry, fields: Array<EntryFacadeField>) {
     const exists = (propName: string, fieldType: EntryPropertyType) =>
         fields.find(item => item.propertyType === fieldType && item.property === propName);
-    const { properties = {}, attributes = {} } = entry._source;
+    const properties = entry.getProperty();
+    const attributes = entry.getAttribute();
     return [
         ...fields,
         ...Object.keys(properties)

@@ -1,4 +1,3 @@
-import { v4 as uuid } from "uuid";
 import { consumeEntryFacade, createEntryFacade } from "./entry";
 import { idSignifiesNew } from "./tools";
 import { FACADE_VERSION } from "./symbols";
@@ -6,6 +5,7 @@ import Entry from "../core/Entry";
 import Group from "../core/Group";
 import Vault from "../core/Vault";
 import { EntryFacade, GroupFacade, GroupID, VaultFacade } from "../types";
+import { generateUUID } from "../tools/uuid";
 
 export interface ConsumeVaultFacadeOptions {
     mergeMode?: boolean;
@@ -245,7 +245,7 @@ export function consumeVaultFacade(vault: Vault, facade: VaultFacade, options: C
 export function createVaultFacade(vault: Vault, options: CreateVaultFacadeOptions = {}): VaultFacade {
     const { includeTrash = true } = options;
     return {
-        _tag: uuid(),
+        _tag: generateUUID(),
         _ver: FACADE_VERSION,
         type: "vault",
         id: vault.id,

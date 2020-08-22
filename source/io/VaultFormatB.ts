@@ -244,7 +244,6 @@ export default class VaultFormatB extends VaultFormat {
     }
 
     getEntryChanges(entrySource: FormatBEntry): Array<EntryChange> {
-        // console.log("PROP", entrySource.p["username"]);
         return Object.keys(entrySource.p).reduce((changes, property) =>
             [
                 ...changes,
@@ -257,9 +256,6 @@ export default class VaultFormatB extends VaultFormat {
                         ts: histItem.updated,
                         value: histItem.value
                     };
-                    if (property === "username") {
-                        console.log(histItem);
-                    }
                     return change;
                 }),
                 ...(entrySource.p[property].deleted ? [{
@@ -268,8 +264,9 @@ export default class VaultFormatB extends VaultFormat {
                     ts: entrySource.p[property].deleted,
                     value: null
                 }] : [])
-            ]
-        , []);
+            ],
+            []
+        );
     }
 
     getEntryProperties(entrySource: FormatBEntry): PropertyKeyValueObject {
@@ -341,7 +338,7 @@ export default class VaultFormatB extends VaultFormat {
         }
     }
 
-    setEntryProperty(entryID: EntryID, property:string, value: string) {
+    setEntryProperty(entryID: EntryID, property: string, value: string) {
         const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
         if (!entry.p[property]) {
             entry.p[property] = newRawValue(value);

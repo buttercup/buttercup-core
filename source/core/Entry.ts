@@ -3,7 +3,7 @@ import { generateUUID } from "../tools/uuid";
 import { getEntryURLs, EntryURLType } from "../tools/entry";
 import Group from "./Group";
 import Vault from "./Vault";
-import { EntryChange, EntryType, GroupID } from "../types";
+import { EntryChange, EntryType, GroupID, PropertyKeyValueObject } from "../types";
 
 /**
  * Entry class - some secret item, login or perhaps
@@ -102,7 +102,7 @@ export default class Entry extends VaultItem {
      *  is provided
      * @memberof Entry
      */
-    getAttribute(attribute?: string): Object | string | undefined {
+    getAttribute(attribute?: string): PropertyKeyValueObject | string | undefined {
         const attributes = this.vault.format.getEntryAttributes(this._source) || {};
         if (typeof attribute === "undefined") {
             // No property, return entire object
@@ -142,7 +142,7 @@ export default class Entry extends VaultItem {
      *  values if no property specified
      * @memberof Entry
      */
-    getProperty(property?: string): Object | string | undefined {
+    getProperty(property?: string): PropertyKeyValueObject | string | undefined {
         const raw = this.vault.format.getEntryProperties(this._source);
         if (typeof property === "undefined") {
             return Object.assign({}, raw);
