@@ -509,6 +509,10 @@ export default class VaultFormatA extends VaultFormat {
         if (!VALID_COMMAND_EXP.test(currentCommand)) {
             throw new Error(`Invalid command: ${command}`);
         }
+        if (/^pad\s/i.test(command) && /^pad\s/i.test(this.history[this.history.length - 1])) {
+            // Skip adding extra pad
+            return;
+        }
         const commandComponents = extractCommandComponents(currentCommand);
         const commandKey = commandComponents.shift().toLowerCase();
         const executeCommand = COMMANDS[commandKey];
