@@ -132,7 +132,8 @@ export function createEntryFacade(entry?: Entry, options: CreateEntryFacadeOptio
         type: facadeType,
         fields,
         parentID: entry ? entry.getGroup().id : null,
-        _history: entry ? entry.getChanges() : []
+        _history: [], // deprecated
+        _changes: entry ? entry.getChanges() : []
     };
 }
 

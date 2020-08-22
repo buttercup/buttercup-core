@@ -370,7 +370,7 @@ export default class VaultFormatA extends VaultFormat {
             .map(item => {
                 const type = !item.originalValue ? EntryChangeType.Created : typeof item.newValue === "string" ? EntryChangeType.Modified : EntryChangeType.Deleted;
                 const change: EntryChange = {
-                    property: item.propertyType,
+                    property: item.property,
                     type,
                     ts: null
                 };

@@ -244,6 +244,7 @@ export default class VaultFormatB extends VaultFormat {
     }
 
     getEntryChanges(entrySource: FormatBEntry): Array<EntryChange> {
+        // console.log("PROP", entrySource.p["username"]);
         return Object.keys(entrySource.p).reduce((changes, property) =>
             [
                 ...changes,
@@ -252,16 +253,21 @@ export default class VaultFormatB extends VaultFormat {
                         property,
                         type: histItem.updated === entrySource.p[property].created
                             ? EntryChangeType.Created
-                            : entrySource.p[property].deleted && histItem.updated === entrySource.p[property].deleted
-                            ? EntryChangeType.Deleted
                             : EntryChangeType.Modified,
-                        ts: histItem.updated
+                        ts: histItem.updated,
+                        value: histItem.value
                     };
-                    if (change.type !== EntryChangeType.Deleted) {
-                        change.value = histItem.value;
+                    if (property === "username") {
+                        console.log(histItem);
                     }
                     return change;
-                })
+                }),
+                ...(entrySource.p[property].deleted ? [{
+                    property,
+                    type: EntryChangeType.Deleted,
+                    ts: entrySource.p[property].deleted,
+                    value: null
+                }] : [])
             ]
         , []);
     }

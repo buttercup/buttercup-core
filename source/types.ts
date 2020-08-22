@@ -66,6 +66,7 @@ export interface EntryFacade {
     fields: Array<EntryFacadeField>;
     parentID: GroupID;
     _history: Array<EntryLegacyHistoryItem>;
+    _changes: Array<EntryChange>;
 }
 
 export interface EntryFacadeField {
