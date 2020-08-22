@@ -12,10 +12,12 @@ import { valuesObjectToKeyValueObject } from "./formatB/conversion";
 import { newRawValue, valueToHistoryItem } from "./formatB/history";
 import { getDateString, getTimestamp } from "../tools/date";
 import {
-    EntryHistoryItem,
+    EntryChange,
+    EntryChangeType,
     EntryID,
     FormatBEntry,
     FormatBGroup,
+    FormatBValueHistoryItem,
     FormatBVault,
     GroupID,
     History,
@@ -155,17 +157,15 @@ export default class VaultFormatB extends VaultFormat {
 
     deleteEntryAttribute(entryID: EntryID, attribute: string) {
         const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
-        entry.a[attribute] = undefined;
-        delete entry.a[attribute];
+        entry.a[attribute].deleted = getTimestamp();
     }
 
     deleteEntryProperty(entryID: EntryID, property: string) {
         const entry = this.source.e.find(e => e.id === entryID);
-        entry.p[property] = undefined;
-        delete entry.p[property];
+        entry.p[property].deleted = getTimestamp();
     }
 
-    deleteGroup(groupID) {
+    deleteGroup(groupID: GroupID) {
         const ind = this.source.g.findIndex(group => group.id === groupID);
         if (ind >= 0) {
             this.source.g.splice(ind, 1);
@@ -174,13 +174,11 @@ export default class VaultFormatB extends VaultFormat {
 
     deleteGroupAttribute(groupID: GroupID, attribute: string) {
         const group = this.source.g.find(g => g.id === groupID);
-        group.a[attribute] = undefined;
-        delete group.a[attribute];
+        group.a[attribute].deleted = getTimestamp();
     }
 
     deleteVaultAttribute(attribute: string) {
-        this.source.a[attribute] = undefined;
-        delete this.source.a[attribute];
+        this.source.a[attribute].deleted = getTimestamp();
     }
 
     execute(commandOrCommands: string | Array<string>) {
@@ -245,8 +243,27 @@ export default class VaultFormatB extends VaultFormat {
         return valuesObjectToKeyValueObject(entrySource.a);
     }
 
-    getEntryChanges(entrySource: FormatBEntry): Array<EntryHistoryItem> {
-        return [];
+    getEntryChanges(entrySource: FormatBEntry): Array<EntryChange> {
+        return Object.keys(entrySource.p).reduce((changes, property) =>
+            [
+                ...changes,
+                ...entrySource.p[property].history.map((histItem: FormatBValueHistoryItem) => {
+                    const change: EntryChange = {
+                        property,
+                        type: histItem.updated === entrySource.p[property].created
+                            ? EntryChangeType.Created
+                            : entrySource.p[property].deleted && histItem.updated === entrySource.p[property].deleted
+                            ? EntryChangeType.Deleted
+                            : EntryChangeType.Modified,
+                        ts: histItem.updated
+                    };
+                    if (change.type !== EntryChangeType.Deleted) {
+                        change.value = histItem.value;
+                    }
+                    return change;
+                })
+            ]
+        , []);
     }
 
     getEntryProperties(entrySource: FormatBEntry): PropertyKeyValueObject {

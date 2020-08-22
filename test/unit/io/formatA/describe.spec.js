@@ -19,7 +19,7 @@ describe("io/formatA/describe", function() {
             this.entry = this.group.createEntry("my entry");
             this.entry.setProperty("misc", "!@#$%^");
             this.entry.setAttribute("myAttr", "myValue");
-            this.dataset = this.vault._dataset;
+            this.dataset = this.vault.format.source;
         });
 
         it("outputs an array", function() {

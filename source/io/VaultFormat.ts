@@ -2,7 +2,7 @@ import EventEmitter from "eventemitter3";
 import Credentials from "../credentials/Credentials";
 import Vault from "../core/Vault";
 import {
-    EntryHistoryItem,
+    EntryChange,
     EntryID,
     FormatAEntry,
     FormatAGroup,
@@ -168,7 +168,7 @@ export default class VaultFormat extends EventEmitter {
         return {};
     }
 
-    getEntryChanges(entrySource: FormatAEntry | FormatBEntry): Array<EntryHistoryItem> {
+    getEntryChanges(entrySource: FormatAEntry | FormatBEntry): Array<EntryChange> {
         notImplemented();
         return [];
     }

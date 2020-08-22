@@ -48,8 +48,16 @@ export function isFormatBGroup(group: FormatAGroup | FormatBGroup): group is For
     return (<FormatBGroup>group).g !== undefined;
 }
 
+/**
+ * Get a key-value object from a Format-B values object.
+ * This strips deleted properties.
+ * @param valuesObj 
+ */
 export function valuesObjectToKeyValueObject(valuesObj: FormatBKeyValueObject): PropertyKeyValueObject {
-    return Object.keys(valuesObj).reduce((output, key) => Object.assign(output, {
-        [key]: valuesObj[key].value
-    }), {});
+    return Object.keys(valuesObj).reduce((output, key) => {
+        if (valuesObj[key].deleted) return output;
+        return Object.assign(output, {
+            [key]: valuesObj[key].value
+        });
+    }, {});
 }

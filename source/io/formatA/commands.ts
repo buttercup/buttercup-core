@@ -3,7 +3,7 @@ import {
     findGroupByID,
     findGroupContainingEntryID,
     findGroupContainingGroupID,
-    generateEntryHistoryItem
+    generateEntryLegacyHistoryItem
 } from "./tools";
 import {
     EntryID,
@@ -108,7 +108,7 @@ export function executeDeleteEntryAttribute(archive: FormatAVault, opts: any, en
         throw new Error("Failed deleting attribute");
     }
     entry.history = entry.history || [];
-    entry.history.push(generateEntryHistoryItem(attribute, EntryPropertyType.Attribute, value, null));
+    entry.history.push(generateEntryLegacyHistoryItem(attribute, EntryPropertyType.Attribute, value, null));
 }
 
 export function executeDeleteEntryProperty(archive: FormatAVault, opts: any, entryID: EntryID, property: string) {
@@ -124,7 +124,7 @@ export function executeDeleteEntryProperty(archive: FormatAVault, opts: any, ent
         throw new Error(`Failed deleting property: ${property}`);
     }
     entry.history = entry.history || [];
-    entry.history.push(generateEntryHistoryItem(property, EntryPropertyType.Property, value, null));
+    entry.history.push(generateEntryLegacyHistoryItem(property, EntryPropertyType.Property, value, null));
 }
 
 export function executeDeleteGroup(archive: FormatAVault, opts: any, groupID: GroupID) {
@@ -213,7 +213,7 @@ export function executeSetEntryAttribute(archive: FormatAVault, opts: any, entry
     const previousValue = typeof entry.attributes[attribute] === "string" ? entry.attributes[attribute] : null;
     entry.attributes[attribute] = value;
     entry.history = entry.history || [];
-    entry.history.push(generateEntryHistoryItem(attribute, EntryPropertyType.Attribute, previousValue, value));
+    entry.history.push(generateEntryLegacyHistoryItem(attribute, EntryPropertyType.Attribute, previousValue, value));
 }
 
 export function executeSetEntryProperty(archive: FormatAVault, opts: any, entryID: EntryID, property: string, value: string) {
@@ -226,7 +226,7 @@ export function executeSetEntryProperty(archive: FormatAVault, opts: any, entryI
     const previousValue = typeof entry.properties[property] === "string" ? entry.properties[property] : null;
     entry.properties[property] = value;
     entry.history = entry.history || [];
-    entry.history.push(generateEntryHistoryItem(property, EntryPropertyType.Property, previousValue, value));
+    entry.history.push(generateEntryLegacyHistoryItem(property, EntryPropertyType.Property, previousValue, value));
 }
 
 export function executeSetGroupAttribute(archive: FormatAVault, opts: any, groupID: GroupID, attribute: string, value: string) {

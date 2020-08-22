@@ -47,12 +47,25 @@ export type DateString = string;
 
 export type EncryptedContent = string;
 
+export interface EntryChange {
+    property: string;
+    type: EntryChangeType;
+    value?: string;
+    ts: UTCTimestamp;
+}
+
+export enum EntryChangeType {
+    Created = "created",
+    Modified = "modified",
+    Deleted = "deleted"
+}
+
 export interface EntryFacade {
     id: EntryID;
     type: EntryType;
     fields: Array<EntryFacadeField>;
     parentID: GroupID;
-    _history: Array<EntryHistoryItem>;
+    _history: Array<EntryLegacyHistoryItem>;
 }
 
 export interface EntryFacadeField {
@@ -79,7 +92,7 @@ export interface EntryFacadeFieldFormatting {
     defaultOption?: string;
 }
 
-export interface EntryHistoryItem {
+export interface EntryLegacyHistoryItem {
     property: string;
     propertyType: EntryPropertyType;
     originalValue: string | null;
@@ -114,7 +127,7 @@ export interface FormatAEntry {
     properties?: PropertyKeyValueObject;
     parentID: GroupID;
     permissions?: Array<VaultPermission>;
-    history?: Array<EntryHistoryItem>;
+    history?: Array<EntryLegacyHistoryItem>;
     shareID?: string;
 }
 
@@ -158,6 +171,7 @@ export interface FormatBValue {
     value: string;
     created: UTCTimestamp;
     updated: UTCTimestamp;
+    deleted?: UTCTimestamp;
     history: Array<FormatBValueHistoryItem>;
 }
 
