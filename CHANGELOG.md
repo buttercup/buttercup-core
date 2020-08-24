@@ -1,5 +1,15 @@
 # Core library changelog
 
+## v5.0.0
+_2020-08-24_
+
+ * **Major release** (breaking changes)
+   * Codebase converted to **Typescript**
+   * `VaultFormatB` introduced
+   * Vault format routing (default: Format A)
+   * New gzip compression utilities
+   * Removed `getAttachmentDetails` method on datasources
+
 ## v4.13.1
 _2020-08-19_
 
