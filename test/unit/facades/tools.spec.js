@@ -1,7 +1,10 @@
-const Vault = require("../../../dist/core/Vault.js");
-const Entry = require("../../../dist/core/Entry.js");
-const { createFieldDescriptor, getEntryValue } = require("../../../dist/facades/tools.js");
-const { FIELD_VALUE_TYPE_NOTE, FIELD_VALUE_TYPE_TEXT } = require("../../../dist/facades/symbols.js");
+const {
+    Entry,
+    EntryPropertyValueType,
+    EntryType,
+    Vault,
+    createFieldDescriptor
+} = require("../../../dist/index.node.js");
 
 describe("facades/tools", function() {
     beforeEach(function() {
@@ -19,7 +22,7 @@ describe("facades/tools", function() {
             expect(obj).to.have.property("propertyType", "property");
             expect(obj).to.have.property("property", "test");
             expect(obj).to.have.property("value", "");
-            expect(obj).to.have.property("valueType", FIELD_VALUE_TYPE_TEXT);
+            expect(obj).to.have.property("valueType", EntryPropertyValueType.Text);
         });
 
         it("supports taking the value from an Entry", function() {
@@ -31,25 +34,9 @@ describe("facades/tools", function() {
         });
 
         it("outputs valueType when set", function() {
-            this.entry.setAttribute(`${Entry.Attributes.FieldTypePrefix}username`, FIELD_VALUE_TYPE_NOTE);
+            this.entry.setAttribute(`${Entry.Attributes.FieldTypePrefix}username`, EntryType.Note);
             const obj = createFieldDescriptor(this.entry, "Username", "property", "username");
-            expect(obj).to.have.property("valueType", FIELD_VALUE_TYPE_NOTE);
-        });
-    });
-
-    describe("getEntryValue", function() {
-        it("can return property values", function() {
-            expect(getEntryValue(this.entry, "property", "username")).to.equal("user@email.com");
-        });
-
-        it("can return attribute values", function() {
-            expect(getEntryValue(this.entry, "attribute", "testAttribute")).to.equal("testValue");
-        });
-
-        it("throws if the field name is not valid", function() {
-            expect(() => {
-                getEntryValue(this.entry, "what", "username");
-            }).to.throw(/Unknown property type/i);
+            expect(obj).to.have.property("valueType", EntryType.Note);
         });
     });
 });

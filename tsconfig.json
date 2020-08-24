@@ -1,11 +1,17 @@
 {
-    "include": ["./source/**/*"],
-
     "compilerOptions": {
         "allowJs": true,
+        "esModuleInterop": true,
+        "outDir": "./dist",
+        "module": "CommonJS",
         "declaration": true,
-        "emitDeclarationOnly": true,
-        "outDir": "dist",
-        "outFile": "dist/index.d.ts"
-    }
+        "target": "es6"
+    },
+    "include": [
+        "./source/**/*"
+    ],
+    "exclude":[
+        "./source/index.web.ts",
+        "./source/web/**/*"
+    ]
 }

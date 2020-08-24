@@ -1,7 +1,5 @@
 const { v4: uuid } = require("uuid");
-const MemoryDatasource = require("../../../dist/datasources/MemoryDatasource.js");
-const Vault = require("../../../dist/core/Vault.js");
-const Credentials = require("../../../dist/credentials/Credentials.js");
+const { Credentials, MemoryDatasource, Vault } = require("../../../dist/index.node.js");
 
 describe("MemoryDatasource", function() {
     beforeEach(function() {

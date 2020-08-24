@@ -1,5 +1,5 @@
-const { v4: uuid } = require("uuid");
-const { Credentials, MemoryDatasource, Vault } = require("../../source/index.web.js");
+import { v4 as uuid } from "uuid";
+import { Credentials, MemoryDatasource, Vault } from "../../source/index.web";
 
 function arrayBuffersAreEqual(a, b) {
     return dataViewsAreEqual(new DataView(a), new DataView(b));

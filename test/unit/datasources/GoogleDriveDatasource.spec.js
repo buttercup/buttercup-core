@@ -1,5 +1,4 @@
-const GoogleDriveDatasource = require("../../../dist/datasources/GoogleDriveDatasource.js");
-const Credentials = require("../../../dist/credentials/Credentials.js");
+const { Credentials, GoogleDriveDatasource } = require("../../../dist/index.node.js");
 const { getCredentials } = require("../../../dist/credentials/channel.js");
 
 describe("datasources/GoogleDriveDatasource", function() {

@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "rootDir": "./",
+        "esModuleInterop": true,
+        "outDir": "./web",
+        "declarationDir": "./web",
+        "module": "CommonJS",
+        "declaration": true,
+        "target": "es6"
+    },
+    "files": [
+      "./source/**/*"
+    ]
+}

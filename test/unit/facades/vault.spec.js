@@ -1,5 +1,4 @@
-const Vault = require("../../../dist/core/Vault.js");
-const { createGroupFacade, createVaultFacade } = require("../../../dist/facades/vault.js");
+const { Vault, createGroupFacade, createVaultFacade } = require("../../../dist/index.node.js");
 
 describe("facades/vault", function() {
     beforeEach(function() {

@@ -1,6 +1,6 @@
-const { describeVaultDataset } = require("../../../../dist/io/formatA/describe.js");
-const Vault = require("../../../../dist/core/Vault.js");
-const { decodeStringValue, isEncoded } = require("../../../../dist/tools/encoding.js");
+const { describeVaultDataset } = require("../../../../dist/io/formatA/describe");
+const { decodeStringValue, isEncoded } = require("../../../../dist/tools/encoding");
+const { Vault } = require("../../../../dist/index.node.js");
 
 function decodeHistory(lines) {
     return lines.map(line => {
@@ -19,7 +19,7 @@ describe("io/formatA/describe", function() {
             this.entry = this.group.createEntry("my entry");
             this.entry.setProperty("misc", "!@#$%^");
             this.entry.setAttribute("myAttr", "myValue");
-            this.dataset = this.vault._dataset;
+            this.dataset = this.vault.format.source;
         });
 
         it("outputs an array", function() {

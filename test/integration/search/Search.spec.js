@@ -1,7 +1,4 @@
-const Search = require("../../../dist/search/Search.js");
-const Vault = require("../../../dist/core/Vault.js");
-const Group = require("../../../dist/core/Group.js");
-const MemoryStorageInterface = require("../../../dist/storage/MemoryStorageInterface.js");
+const { Group, MemoryStorageInterface, Search, Vault } = require("../../../dist/index.node.js");
 
 describe("Search", function() {
     beforeEach(function() {

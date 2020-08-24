@@ -49,7 +49,7 @@ Entries can come in different types (website logins, SSH keys, credit cards etc.
 This facade object allows other applications to easily and predictably edit entries in a dynamic nature. These facades can be generated on entries by using code like the following:
 
 ```javascript
-const { createEntryFacade } = require("buttercup").entryFacade;
+const { createEntryFacade } = require("buttercup");
 
 const facade = createEntryFacade(myEntry);
 ```
@@ -57,7 +57,7 @@ const facade = createEntryFacade(myEntry);
 After editing a facade, it can be applied to an entry by using code like the following:
 
 ```javascript
-const { consumeEntryFacade } = require("buttercup").entryFacade;
+const { consumeEntryFacade } = require("buttercup");
 
 consumeEntryFacade(myEntry, facade);
 ```

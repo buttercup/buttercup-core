@@ -1,6 +1,4 @@
-const Vault = require("../../../dist/core/Vault.js");
-const Entry = require("../../../dist/core/Entry.js");
-const { createEntryFacade } = require("../../../dist/facades/entry.js");
+const { Entry, Vault, createEntryFacade } = require("../../../dist/index.node.js");
 
 describe("facades/entry", function() {
     describe("createEntryFacade", function() {
@@ -50,9 +48,9 @@ describe("facades/entry", function() {
             expect(attr).to.have.property("valueType", null);
         });
 
-        it("outputs history", function() {
-            const { _history } = createEntryFacade(this.entry);
-            expect(_history).to.have.length.above(0);
+        it("outputs changes", function() {
+            const { _changes } = createEntryFacade(this.entry);
+            expect(_changes).to.have.length.above(0);
         });
     });
 });

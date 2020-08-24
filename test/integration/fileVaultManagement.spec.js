@@ -1,12 +1,12 @@
 const tmp = require("tmp");
-const VaultManager = require("../../dist/core/VaultManager.js");
-const VaultSource = require("../../dist/core/VaultSource.js");
-const Credentials = require("../../dist/credentials/Credentials.js");
+const { Credentials, VaultManager, VaultSource } = require("../../dist/index.node.js");
 
 describe("VaultManager", function() {
     describe("with file datasource", function() {
         beforeEach(async function() {
-            this.vaultManager = new VaultManager();
+            this.vaultManager = new VaultManager({
+                autoUpdate: false
+            });
             // source 1
             this.tmp1 = tmp.fileSync();
             const creds = Credentials.fromDatasource(
@@ -61,8 +61,8 @@ describe("VaultManager", function() {
         });
 
         describe("reorderSource", function() {
-            it("changes the order of sources", function() {
-                this.vaultManager.reorderSource(this.vaultSource2.id, 0);
+            it("changes the order of sources", async function() {
+                await this.vaultManager.reorderSource(this.vaultSource2.id, 0);
                 const [source1, source2] = this.vaultManager.sources;
                 expect(source1.id).to.equal(this.vaultSource2.id);
                 expect(source2.id).to.equal(this.vaultSource1.id);

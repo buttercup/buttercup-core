@@ -1,13 +1,14 @@
-const MemoryDatasource = require("../../dist/datasources/MemoryDatasource.js");
-const { registerDatasource } = require("../../dist/datasources/register.js");
-const VaultManager = require("../../dist/core/VaultManager.js");
-const VaultSource = require("../../dist/core/VaultSource.js");
-const Credentials = require("../../dist/credentials/Credentials.js");
+const {
+    Credentials,
+    MemoryDatasource,
+    VaultManager,
+    VaultSource,
+    registerDatasource
+} = require("../../dist/index.node.js");
 
 class FakeDatasource extends MemoryDatasource {
     constructor(creds) {
         super(creds);
-        // this.type = "fake";
         this.initData = creds.getData();
         try {
             this.type = this.initData.data.datasource.type;
