@@ -97,7 +97,7 @@ const vault1 = new Vault();
 const vault2 = Vault.createWithDefaults();
 ```
 
-The `init()` function call is used to initialise the environment (performs the same function as `@buttercup/app-env` used to). It is required for Buttercup to work. It can be called more than once without affect.
+The `init()` function call is used to initialise the environment (performs the same function as `@buttercup/app-env` used to). It is required for Buttercup to work. It can be called more than once without effect.
 
 Entries can't be added directly to a Vault, but can be to Groups. Creating Groups and Entries is trivial:
 
@@ -165,7 +165,7 @@ Buttercup will automatically transition to using Format B as the default in some
 
 Buttercup's compatibility is defined as the following:
 
- * NodeJS version 10 and up
+ * NodeJS version 12 and up
  * Current versions of the following browsers:
    * Google Chrome
    * Mozilla Firefox
