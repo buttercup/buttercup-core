@@ -46,7 +46,7 @@ This library also supports a variety of datasources for loading from and saving 
  * Local files
  * In-memory (testing, prototyping)
 
-You may want to read the [API documentation](https://github.com/buttercup/buttercup-core/blob/master/API.md) and [changelog](https://github.com/buttercup/buttercup-core/blob/master/CHANGELOG.md). Please read our [guide to contributing](https://github.com/buttercup/buttercup-core/blob/master/CONTRIBUTING.md) before creating any issues or pull requests.
+Check out the [changelog](https://github.com/buttercup/buttercup-core/blob/master/CHANGELOG.md).
 
 ## Installation
 
@@ -56,12 +56,16 @@ To use Buttercup in a NodeJS environment, you can simply install and require it:
 npm install buttercup --save
 ```
 
-_NB: `@buttercup/app-env` was previously required (on version 3.x), but is not required for core version 4. Please uninstall this dependency, along with `@buttercup/facades`, `@buttercup/credentials`, `@buttercup/datasources` and `@buttercup/signing` if you have them installed. These dependencies are included within Buttercup core version 4._
-
 In a Node environment, for example:
 
 ```javascript
 const { Vault } = require("buttercup");
+```
+
+Or for Typescript:
+
+```typescript
+import { Vault } from "buttercup";
 ```
 
 In a _web_ environment, use the following:
@@ -142,6 +146,20 @@ fileDatasource
 ```
 
 Using just a datasource is not recommended as saving and loading is quite low-level and cumbersome. Check the [browser extension](https://github.com/buttercup/buttercup-browser-extension) or [desktop application](https://github.com/buttercup/buttercup-desktop) for examples of how to use the `VaultManager` and other helpful classes.
+
+## Vault Formats
+
+Buttercup currently supports [2 concurrent vault formats](VAULT_FORMAT.md), as it is in the process of transitioning from **Format A** (legacy) to **Format B**. You can switch the operational format by doing the following:
+
+```javascript
+const { VaultFormatB, init, setDefaultFormat } = require("buttercup");
+
+init();
+
+setDefaultFormat(VaultFormatB);
+```
+
+Buttercup will automatically transition to using Format B as the default in some weeks or months (since v5 was released).
 
 ## Compatibility
 
