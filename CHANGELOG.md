@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.0.1
+_2020-08-26_
+
+ * Un-hide Credit Card dates
+
 ## v5.0.0
 _2020-08-24_
 
