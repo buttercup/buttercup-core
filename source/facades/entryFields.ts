@@ -55,8 +55,7 @@ function createCreditCardFields(entry: Entry): Array<EntryFacadeField> {
                     { char: DIGIT, repeat: 3 }
                 ],
                 placeholder: "MM/YYYY"
-            },
-            valueType: EntryPropertyValueType.Password
+            }
         }),
         createFieldDescriptor(entry, "Expiry", EntryPropertyType.Property, "expiry", {
             formatting: {
@@ -68,8 +67,7 @@ function createCreditCardFields(entry: Entry): Array<EntryFacadeField> {
                     { char: DIGIT, repeat: 3 }
                 ],
                 placeholder: "MM/YYYY"
-            },
-            valueType: EntryPropertyValueType.Password
+            }
         })
     ];
 }
