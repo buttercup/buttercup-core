@@ -1,4 +1,4 @@
-import VError from "verror";
+import { Layerr } from "layerr";
 import { request } from "cowl";
 import EventEmitter from "eventemitter3";
 import { Base64 } from "js-base64";
@@ -50,7 +50,7 @@ function demultiplexShares(sharesTxt: string): any {
         try {
             payload = JSON.parse(propLine.replace(/^\<--\(/, "").replace(/\)--\>$/, ""));
         } catch (err) {
-            throw new VError(err, "Invalid share metadata");
+            throw new Layerr(err, "Invalid share metadata");
         }
         if (!payload.id) {
             throw new Error(`Multiplexed share definition invalid:\n\t${propLine}`);
@@ -103,7 +103,7 @@ export default class MyButtercupClient extends EventEmitter {
                 return { accessToken, refreshToken };
             })
             .catch(err => {
-                throw new VError(err, "Failed exchanging auth code for tokens");
+                throw new Layerr(err, "Failed exchanging auth code for tokens");
             });
     }
 
@@ -193,7 +193,7 @@ export default class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.changePassword(password, passwordToken)))
             .catch(err => {
-                throw new VError(err, "Failed changing password");
+                throw new Layerr(err, "Failed changing password");
             });
     }
 
@@ -214,7 +214,7 @@ export default class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.deleteAttachment(attachmentID)))
             .catch(err => {
-                throw new VError(err, "Failed deleting attachment");
+                throw new Layerr(err, "Failed deleting attachment");
             });
     }
 
@@ -241,7 +241,7 @@ export default class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.fetchAttachment(attachmentID)))
             .catch(err => {
-                throw new VError(err, "Failed fetching attachment");
+                throw new Layerr(err, "Failed fetching attachment");
             });
     }
 
@@ -267,7 +267,7 @@ export default class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.fetchAttachmentDetails(attachmentID)))
             .catch(err => {
-                throw new VError(err, "Failed fetching attachment details");
+                throw new Layerr(err, "Failed fetching attachment details");
             });
     }
 
@@ -292,7 +292,7 @@ export default class MyButtercupClient extends EventEmitter {
             .then(resp => demultiplexShares(resp.data))
             .catch(err => this._handleRequestFailure(err).then(() => this.fetchShares(ids)))
             .catch(err => {
-                throw new VError(err, "Failed retrieving shares");
+                throw new Layerr(err, "Failed retrieving shares");
             });
     }
 
@@ -326,7 +326,7 @@ export default class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.fetchUserVault()))
             .catch(err => {
-                throw new VError(err, "Could not retrieve vault");
+                throw new Layerr(err, "Could not retrieve vault");
             });
     }
 
@@ -359,7 +359,7 @@ export default class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.fetchUserVaultDetails()))
             .catch(err => {
-                throw new VError(err, "Could not retrieve vault details");
+                throw new Layerr(err, "Could not retrieve vault details");
             });
     }
 
@@ -388,7 +388,7 @@ export default class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.retrieveDigest()))
             .catch(err => {
-                throw new VError(err, "Failed retrieving digest information");
+                throw new Layerr(err, "Failed retrieving digest information");
             });
     }
 
@@ -405,7 +405,7 @@ export default class MyButtercupClient extends EventEmitter {
         return Promise.all(orgIDs.map(orgID => this.retrieveUsersListForOrganisation(orgID)))
             .then(results => results.reduce((output, users) => [...output, ...users], []))
             .catch(err => {
-                throw new VError(err, "Failed retrieving users list");
+                throw new Layerr(err, "Failed retrieving users list");
             });
     }
 
@@ -433,7 +433,7 @@ export default class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.retrieveUsersListForOrganisation(orgID)))
             .catch(err => {
-                throw new VError(err, "Failed retrieving organisation users");
+                throw new Layerr(err, "Failed retrieving organisation users");
             });
     }
 
@@ -463,7 +463,7 @@ export default class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.testPasswordChange(passwordToken)))
             .catch(err => {
-                throw new VError(err, "Failed checking password-change availability");
+                throw new Layerr(err, "Failed checking password-change availability");
             });
     }
 
@@ -523,7 +523,7 @@ export default class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.uploadAttachment(id, name, type, data)))
             .catch(err => {
-                throw new VError(err, "Failed uploading attachment");
+                throw new Layerr(err, "Failed uploading attachment");
             });
     }
 
@@ -578,7 +578,7 @@ export default class MyButtercupClient extends EventEmitter {
             })
             .catch(err => this._handleRequestFailure(err).then(() => this.writeInsights(insights)))
             .catch(err => {
-                throw new VError(err, "Failed updating vault/account insights");
+                throw new Layerr(err, "Failed updating vault/account insights");
             });
     }
 
@@ -620,7 +620,7 @@ export default class MyButtercupClient extends EventEmitter {
                 )
             )
             .catch(err => {
-                throw new VError(err, "Failed uploading vault contents");
+                throw new Layerr(err, "Failed uploading vault contents");
             });
     }
 
@@ -640,7 +640,7 @@ export default class MyButtercupClient extends EventEmitter {
                     case "token_expired":
                         return this._performTokenRefresh();
                     default:
-                        throw new VError(
+                        throw new Layerr(
                             {
                                 cause: err,
                                 info: {
@@ -690,7 +690,7 @@ export default class MyButtercupClient extends EventEmitter {
                 this.emit("tokensUpdated");
             })
             .catch(err => {
-                throw new VError(err, "Failed exchanging refresh token for new access token");
+                throw new Layerr(err, "Failed exchanging refresh token for new access token");
             });
     }
 }

@@ -89,11 +89,11 @@
     "iocane": "^4.1.0",
     "is-promise": "^4.0.0",
     "js-base64": "^3.4.5",
+    "layerr": "^0.1.2",
     "pako": "^1.0.11",
     "pify": "^5.0.0",
     "url-join": "^4.0.1",
     "uuid": "^8.1.0",
-    "verror": "^1.10.0",
     "webdav": "^3.3.0"
   },
   "devDependencies": {

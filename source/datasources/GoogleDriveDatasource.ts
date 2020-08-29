@@ -1,5 +1,5 @@
 import { createClient } from "@buttercup/googledrive-client";
-import VError from "verror";
+import { Layerr } from "layerr";
 import DatasourceAuthManager from "./DatasourceAuthManager";
 import TextDatasource from "./TextDatasource";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
@@ -56,17 +56,17 @@ export default class GoogleDriveDatasource extends TextDatasource {
                 return super.load(credentials);
             })
             .catch(err => {
-                const { authFailure = false } = VError.info(err);
+                const { authFailure = false } = Layerr.info(err);
                 if (!authFailure) {
-                    throw new VError(err, "Failed fetching Google Drive vault");
+                    throw new Layerr(err, "Failed fetching Google Drive vault");
                 } else if (hasAuthed) {
-                    throw new VError(err, "Re-authentication failed");
+                    throw new Layerr(err, "Re-authentication failed");
                 }
                 return this.authManager
                     .executeAuthHandlers(DATASOURCE_TYPE, this)
                     .then(() => this.load(credentials, true))
                     .catch(err2 => {
-                        throw new VError(err2, "Failed fetching Google Drive vault");
+                        throw new Layerr(err2, "Failed fetching Google Drive vault");
                     });
             });
     }
@@ -88,17 +88,17 @@ export default class GoogleDriveDatasource extends TextDatasource {
                 })
             )
             .catch(err => {
-                const { authFailure = false } = VError.info(err);
+                const { authFailure = false } = Layerr.info(err);
                 if (!authFailure) {
-                    throw new VError(err, "Failed saving Google Drive vault");
+                    throw new Layerr(err, "Failed saving Google Drive vault");
                 } else if (hasAuthed) {
-                    throw new VError(err, "Re-authentication failed");
+                    throw new Layerr(err, "Re-authentication failed");
                 }
                 return this.authManager
                     .executeAuthHandlers(DATASOURCE_TYPE, this)
                     .then(() => this.save(history, credentials, true))
                     .catch(err2 => {
-                        throw new VError(err2, "Failed saving Google Drive vault");
+                        throw new Layerr(err2, "Failed saving Google Drive vault");
                     });
             });
     }

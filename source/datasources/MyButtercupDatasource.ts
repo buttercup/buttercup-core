@@ -1,4 +1,4 @@
-import VError from "verror";
+import { Layerr } from "layerr";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
 import TextDatasource from "./TextDatasource";
 import Credentials from "../credentials/Credentials";
@@ -140,7 +140,7 @@ export default class MyButtercupDatasource extends TextDatasource {
                 this.setContent(archive);
             })
             .catch(err => {
-                throw new VError(err, "Failed retrieving vault contents");
+                throw new Layerr(err, "Failed retrieving vault contents");
             })
             .then(() => super.load(credentials));
     }
@@ -169,7 +169,7 @@ export default class MyButtercupDatasource extends TextDatasource {
                 });
             })
             .catch(err => {
-                throw new VError(err, "Failed comparing remote/local vault status");
+                throw new Layerr(err, "Failed comparing remote/local vault status");
             });
     }
 
@@ -210,7 +210,7 @@ export default class MyButtercupDatasource extends TextDatasource {
         try {
             await this.client.writeUserArchive(encryptedContents, this._updateID, newUpdateID);
         } catch (err) {
-            throw new VError(err, "Failed uploading new vault contents");
+            throw new Layerr(err, "Failed uploading new vault contents");
         }
         // Successful, set the new updateID
         this._updateID = newUpdateID;

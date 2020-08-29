@@ -1,6 +1,6 @@
 import EventEmitter from "eventemitter3";
 import ChannelQueue from "@buttercup/channel-queue";
-import VError from "verror";
+import { Layerr } from "layerr";
 import Vault from "./Vault";
 import Credentials from "../credentials/Credentials";
 import { getCredentials } from "../credentials/channel";
@@ -205,7 +205,7 @@ export default class VaultSource extends EventEmitter {
 
     set colour(newColour: string) {
         if (COLOUR_TEST.test(newColour) !== true) {
-            throw new VError(`Failed setting colour: Invalid format (expected hex): ${newColour}`);
+            throw new Layerr(`Failed setting colour: Invalid format (expected hex): ${newColour}`);
         }
         this._colour = newColour;
         this.emit("updated");
@@ -213,7 +213,7 @@ export default class VaultSource extends EventEmitter {
 
     set order(newOrder: number) {
         if (isNaN(newOrder) || typeof newOrder !== "number" || newOrder < 0) {
-            throw new VError(`Failed setting order: Order must be greater than or equal to 0: ${newOrder}`);
+            throw new Layerr(`Failed setting order: Order must be greater than or equal to 0: ${newOrder}`);
         }
         this._order = newOrder;
         this.emit("updated");
@@ -316,7 +316,7 @@ export default class VaultSource extends EventEmitter {
                 credentials: null
             };
             if (this.status === VaultSource.STATUS_PENDING) {
-                throw new VError(`Failed dehydrating source: Source in pending state: ${this.id}`);
+                throw new Layerr(`Failed dehydrating source: Source in pending state: ${this.id}`);
             } else if (this.status === VaultSource.STATUS_LOCKED) {
                 payload.credentials = this._credentials;
             } else {
@@ -349,7 +349,7 @@ export default class VaultSource extends EventEmitter {
     localDiffersFromRemote(): Promise<boolean> {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
             return Promise.reject(
-                new VError(`Failed diffing source: Source not unlocked (${this.status}): ${this.id}`)
+                new Layerr(`Failed diffing source: Source not unlocked (${this.status}): ${this.id}`)
             );
         }
         if (typeof (<any>this._datasource).localDiffersFromRemote === "function") {
@@ -378,7 +378,7 @@ export default class VaultSource extends EventEmitter {
      */
     async lock() {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
-            throw new VError(`Failed locking source: Source in invalid state (${this.status}): ${this.id}`);
+            throw new Layerr(`Failed locking source: Source in invalid state (${this.status}): ${this.id}`);
         }
         await this._enqueueStateChange(async () => {
             this._status = VaultSource.STATUS_PENDING;
@@ -400,7 +400,7 @@ export default class VaultSource extends EventEmitter {
                 this._vault = currentVault;
                 this._status = VaultSource.STATUS_UNLOCKED;
                 this._attachmentManager = currentAttachmentMgr;
-                throw new VError(err, "Failed locking source");
+                throw new Layerr(err, "Failed locking source");
             }
         });
     }
@@ -456,11 +456,11 @@ export default class VaultSource extends EventEmitter {
 
     async unlock(vaultCredentials: Credentials, config: VaultSourceUnlockOptions = {}) {
         if (!Credentials.isCredentials(vaultCredentials)) {
-            throw new VError(`Failed unlocking source: Invalid credentials passed to source: ${this.id}`);
+            throw new Layerr(`Failed unlocking source: Invalid credentials passed to source: ${this.id}`);
         }
         const { initialiseRemote = false, loadOfflineCopy = false, storeOfflineCopy = true } = config;
         if (this.status !== VaultSource.STATUS_LOCKED) {
-            throw new VError(`Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`);
+            throw new Layerr(`Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`);
         }
         const { masterPassword } = getCredentials(vaultCredentials.id);
         const originalCredentials = this._credentials;
@@ -529,7 +529,7 @@ export default class VaultSource extends EventEmitter {
                     this._datasource = null;
                     this._credentials = originalCredentials;
                     this._attachmentManager = null;
-                    throw new VError(err, "Failed unlocking source");
+                    throw new Layerr(err, "Failed unlocking source");
                 });
         });
     }
@@ -609,7 +609,7 @@ export default class VaultSource extends EventEmitter {
 
     async _updateCredentialsFromDatasource() {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
-            throw new VError(`Failed updating source credentials: Source is not unlocked: ${this.id}`);
+            throw new Layerr(`Failed updating source credentials: Source is not unlocked: ${this.id}`);
         }
         const { masterPassword } = getCredentials((<Credentials>this._credentials).id);
         this._credentials = Credentials.fromCredentials(this._datasource.credentials, masterPassword);
@@ -617,7 +617,7 @@ export default class VaultSource extends EventEmitter {
 
     async _updateInsights() {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
-            throw new VError(`Failed updating vault insights: Source is not unlocked: ${this.id}`);
+            throw new Layerr(`Failed updating vault insights: Source is not unlocked: ${this.id}`);
         }
         const insights = generateVaultInsights(this.vault);
         await this._datasource.updateInsights(insights);
@@ -625,7 +625,7 @@ export default class VaultSource extends EventEmitter {
 
     async _updateVaultCredentials(newCredentials) {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
-            throw new VError(`Failed updating vault credentials: Source is not unlocked: ${this.id}`);
+            throw new Layerr(`Failed updating vault credentials: Source is not unlocked: ${this.id}`);
         }
         this._credentials = newCredentials;
         await this.write();

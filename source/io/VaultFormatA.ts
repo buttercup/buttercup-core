@@ -1,4 +1,4 @@
-import VError from "verror";
+import { Layerr } from "layerr";
 import VaultFormat from "./VaultFormat";
 import Vault from "../core/Vault";
 import Credentials from "../credentials/Credentials";
@@ -527,7 +527,7 @@ export default class VaultFormatA extends VaultFormat {
             ]);
             this.history.push(command);
         } catch (err) {
-            throw new VError(err, `Failed executing vault command: ${commandKey}`);
+            throw new Layerr(err, `Failed executing vault command: ${commandKey}`);
         }
     }
 

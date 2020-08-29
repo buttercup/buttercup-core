@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-import VError from "verror";
+import { Layerr } from "layerr";
 import isPromise from "is-promise";
 import ChannelQueue from "@buttercup/channel-queue";
 import MemoryStorageInterface from "../storage/MemoryStorageInterface";
@@ -246,7 +246,7 @@ export default class VaultManager extends EventEmitter {
      * Rehydrate sources from storage
      * @returns A promise that resolves once rehydration has completed
      * @memberof VaultManager
-     * @throws {VError} Rejects if rehydrating from storage fails
+     * @throws {Layerr} Rejects if rehydrating from storage fails
      */
     async rehydrate() {
         await this._migrateLegacyVaults();
@@ -276,7 +276,7 @@ export default class VaultManager extends EventEmitter {
         await this.enqueueStateChange(async () => {
             const sourceIndex = this._sources.findIndex(source => source.id === sourceID);
             if (sourceIndex === -1) {
-                throw new VError(`Failed removing source: No source found for ID: ${sourceID}`);
+                throw new Layerr(`Failed removing source: No source found for ID: ${sourceID}`);
             }
             const source = this.sources[sourceIndex];
             source.removeAllListeners();
@@ -291,12 +291,12 @@ export default class VaultManager extends EventEmitter {
      * @param sourceID The ID of the source to reorder
      * @param position The 0-based position to move the source to
      * @memberof VaultManager
-     * @throws {VError} Throws if no source is found
+     * @throws {Layerr} Throws if no source is found
      */
     async reorderSource(sourceID: VaultSourceID, position: number): Promise<void> {
         const source = this.getSourceForID(sourceID);
         if (!source) {
-            throw new VError(`Failed reordering source: No source found for ID: ${sourceID}`);
+            throw new Layerr(`Failed reordering source: No source found for ID: ${sourceID}`);
         }
         if (position === source._order) {
             return;
