@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.1.0
+_2020-08-29_
+
+ * Replace `VError` with [`Layerr`](https://github.com/perry-mitchell/layerr) for better portability
+
 ## v5.0.1
 _2020-08-26_
 
