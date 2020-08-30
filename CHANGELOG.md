@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v5.2.1
+_2020-08-30_
+
+ * **Bugfix**:
+   * `Search` would fail to search due to bad `Fuse.js` import on web
+
 ## v5.2.0
 _2020-08-30_
 
