@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.2.0
+_2020-08-30_
+
+ * Upgrade `cowl` to remove `Buffer` dependencies
+
 ## v5.1.0
 _2020-08-29_
 
