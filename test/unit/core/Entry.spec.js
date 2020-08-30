@@ -107,7 +107,6 @@ describe("core/Entry", function() {
 
                 it("contains property deletions", function() {
                     this.entry.deleteProperty("username");
-                    console.log("CHANGES", this.entry.getChanges());
                     const changes = this.entry
                         .getChanges()
                         .filter(item => item.type === EntryChangeType.Deleted && item.property === "username");
