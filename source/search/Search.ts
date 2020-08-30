@@ -1,4 +1,4 @@
-import FuseImport from "fuse.js";
+import Fuse from "fuse.js";
 import levenshtein from "fast-levenshtein";
 import { createVaultFacade } from "../facades/vault";
 import { fieldsToProperties } from "../facades/entry";
@@ -138,10 +138,6 @@ export default class Search {
      * @returns An array of search results
      */
     searchByTerm(term: string): Array<SearchResult> {
-        let Fuse = FuseImport;
-        if (typeof BUTTERCUP_WEB === "boolean" && BUTTERCUP_WEB === true) {
-            Fuse = (<any>FuseImport).default;
-        }
         this._fuse = new Fuse(this._entries, {
             includeScore: true,
             keys: [
