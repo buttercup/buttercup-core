@@ -240,4 +240,8 @@ export default class Entry extends VaultItem {
         this.vault.format.setEntryProperty(this.id, property, value);
         return this;
     }
+
+    _updateRefs() {
+        this._source = this.vault.format.findEntryByID(this.id);
+    }
 }

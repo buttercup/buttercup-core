@@ -294,4 +294,8 @@ export default class Group extends VaultItem {
         this.vault.format.setGroupTitle(this.id, title);
         return this;
     }
+
+    _updateRefs() {
+        this._source = this.vault.format.findGroupByID(this.id);
+    }
 }

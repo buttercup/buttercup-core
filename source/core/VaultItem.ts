@@ -5,7 +5,10 @@ import { VaultPermission } from "../types";
  * Base vault member class (for Entry, Group etc.)
  */
 export default class VaultItem {
+    _boundUpdateRefs: () => void;
+
     _source: any;
+
     /**
      * Reference to the containing vault
      * @protected
@@ -26,7 +29,8 @@ export default class VaultItem {
             VaultPermission.Read,
             VaultPermission.Write
         ];
-        this._vault._registerVaultItem(this);
+        this._boundUpdateRefs = this._updateRefs.bind(this);
+        vault.on("formatUpdated", this._boundUpdateRefs);
     }
 
     /**
@@ -98,7 +102,17 @@ export default class VaultItem {
      * @memberof VaultItem
      */
     _cleanUp() {
+        this._vault.off("formatUpdated", this._boundUpdateRefs);
         this._vault = null;
         this._source = null;
+    }
+
+    /**
+     * Update source references
+     * @protected
+     * @memberof VaultItem
+     */
+    _updateRefs() {
+        // No-op for vault item
     }
 }

@@ -1,14 +1,6 @@
 const BUTTERCUP_FORMAT = "buttercup/b";
 const BUTTERCUP_SIGNATURE = "b~>" + BUTTERCUP_FORMAT;
 
-// /**
-//  * Get the current format
-//  * @returns The format
-//  */
-// export function getFormat(): string {
-//     return BUTTERCUP_FORMAT;
-// }
-
 /**
  * Get the current signature
  * @returns The signature
