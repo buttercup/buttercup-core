@@ -179,7 +179,7 @@ export default class VaultFormatA extends VaultFormat {
         const newHistoryStaged = VaultFormatA.prepareHistoryForMerge(differences.secondary);
         const base = differences.common;
         const newVault = new Vault(VaultFormatA);
-        newVault.format.clear();
+        newVault.format.erase();
         // merge all history and execute on new vault
         base.concat(newHistoryStaged)
             .concat(newHistoryMain)
@@ -197,15 +197,6 @@ export default class VaultFormatA extends VaultFormat {
         super(source);
         this._history = [];
         this._history.format = VaultFormatID.A;
-    }
-
-    clear() {
-        this._history = [];
-        if (this.source) {
-            for (const key in this.source) {
-                delete this.source[key];
-            }
-        }
     }
 
     cloneEntry(entry: FormatAEntry, targetGroupID: GroupID) {}
@@ -282,6 +273,12 @@ export default class VaultFormatA extends VaultFormat {
                 .addArgument(attribute)
                 .generateCommand()
         );
+    }
+
+    erase() {
+        super.erase();
+        Object.assign(this.source, emptyVault());
+        this.emit("erased");
     }
 
     execute(commandOrCommands: string | Array<string>) {
@@ -406,6 +403,10 @@ export default class VaultFormatA extends VaultFormat {
 
     getItemID(itemSource: FormatAGroup | FormatAEntry): GroupID | EntryID {
         return itemSource.id;
+    }
+
+    getItemParentID(itemSource: FormatAGroup | FormatAEntry): GroupID | "0" {
+        return itemSource.parentID;
     }
 
     getVaultAttributes() {

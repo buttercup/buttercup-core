@@ -595,7 +595,7 @@ export default class VaultSource extends EventEmitter {
         // Reset archive history (without shares)
         const { base } = extractedShares;
         delete extractedShares.base;
-        this.vault.format.clear();
+        this.vault.format.erase();
         this.vault.format.execute(base);
         // Update share payloads
         Object.keys(extractedShares).forEach(shareID => {

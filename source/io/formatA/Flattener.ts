@@ -84,7 +84,7 @@ export default class Flattener {
             ...history.slice(availableLines) // the existing history minus the flattened portion
         ];
         // clear the system
-        this.format.clear();
+        this.format.erase();
         // replay all history (expensive)
         this.format.execute(newHistory);
         // newHistory.forEach(this.format.execute.bind(this._westley));

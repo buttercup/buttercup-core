@@ -38,6 +38,7 @@ export default class Group extends VaultItem {
             }
         }
         vault.format.createGroup(parentID, id);
+        vault._rebuild();
         return vault.findGroupByID(id);
     }
 
@@ -89,8 +90,17 @@ export default class Group extends VaultItem {
             this.moveTo(trashGroup);
             return false;
         }
-        // No trash or already in trash, so just delete
+        // No trash or already in trash, so just delete:
+        //  - Child groups
+        this.getGroups().forEach(group => group.delete(/* skip trash: */ true));
+        //  - Child entries
+        this.getEntries().forEach(entry => entry.delete(/* skip trash: */ true));
+        //  - This group
         this.vault.format.deleteGroup(this.id);
+        const ind = this.vault._groups.indexOf(this);
+        if (ind >= 0) {
+            this.vault._groups.splice(ind, 1);
+        }
         this._cleanUp();
         return true;
     }
@@ -171,7 +181,7 @@ export default class Group extends VaultItem {
      * @memberof Group
      */
     getEntries(): Array<Entry> {
-        return this.vault.format.getAllEntries(this.id).map(rawEntry => new Entry(this.vault, rawEntry));
+        return this.vault._entries.filter(entry => entry.getGroup() === this);
     }
 
     /**
@@ -180,7 +190,7 @@ export default class Group extends VaultItem {
      * @memberof Group
      */
     getGroups(): Array<Group> {
-        return this.vault.format.getAllGroups(this.id).map(rawGroup => new Group(this.vault, rawGroup));
+        return this.vault._groups.filter(group => group.getParentGroup() === this);
     }
 
     /**
@@ -191,16 +201,25 @@ export default class Group extends VaultItem {
      * @memberof Group
      */
     getParentGroup(): Group | null {
-        const topmostGroupIDs = this.vault.getGroups().map(group => group.id);
-        if (topmostGroupIDs.indexOf(this.id) >= 0) {
-            // parent is vault
-            return null;
+        const parentID = this.vault.format.getItemParentID(this._source);
+        if (parentID === "0") return null;
+        const parentGroup = this.vault._groups.find(g => g.id === parentID);
+        if (!parentGroup) {
+            console.log("PARENT ID", parentID);
+            throw new Error(`Failed getting parent Group: No group containing child ID found: ${this.id}`);
         }
-        const parentGroup = this.vault.format.findGroupContainingGroupID(this.id);
-        if (parentGroup) {
-            return new Group(this.vault, parentGroup);
-        }
-        throw new Error(`Failed getting parent Group: No group containing child ID found: ${this.id}`);
+        return parentGroup;
+        // const topmostGroupIDs = this.vault.getGroups().map(group => group.id);
+        // if (topmostGroupIDs.indexOf(this.id) >= 0) {
+        //     // parent is vault
+        //     return null;
+        // }
+        // const parentGroup = this.vault.format.findGroupContainingGroupID(this.id);
+        // if (parentGroup) {
+        //     const parentID = this.vault.format.getItemID(parentGroup);
+        //     return this.vault._groups.find(group => group.id === parentID);
+        // }
+        // throw new Error(`Failed getting parent Group: No group containing child ID found: ${this.id}`);
     }
 
     /**

@@ -84,10 +84,11 @@ describe("VaultManager", function() {
                 // Save (+ merge)
                 await source.save();
                 // Expect the changes are present
+                console.log(source.vault._groups);
                 const remoteGroup = source.vault.findGroupsByTitle("Remote")[0];
                 const localGroup = source.vault.findGroupsByTitle("Local")[0];
-                expect(remoteGroup).to.be.an.instanceOf(Group);
-                expect(localGroup).to.be.an.instanceOf(Group);
+                expect(remoteGroup).to.be.an.instanceOf(Group, "Remote item should be a group");
+                expect(localGroup).to.be.an.instanceOf(Group, "Local item should be a group");
             });
         });
     });

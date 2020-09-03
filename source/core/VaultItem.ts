@@ -29,8 +29,6 @@ export default class VaultItem {
             VaultPermission.Read,
             VaultPermission.Write
         ];
-        this._boundUpdateRefs = this._updateRefs.bind(this);
-        vault.on("formatUpdated", this._boundUpdateRefs);
     }
 
     /**
@@ -102,7 +100,6 @@ export default class VaultItem {
      * @memberof VaultItem
      */
     _cleanUp() {
-        this._vault.off("formatUpdated", this._boundUpdateRefs);
         this._vault = null;
         this._source = null;
     }

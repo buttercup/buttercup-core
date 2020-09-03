@@ -5,7 +5,7 @@ describe("core/VaultComparator", function() {
     beforeEach(function() {
         this.vault1 = new Vault();
         this.vault2 = new Vault();
-        this.vault2.format.clear();
+        this.vault2.format.erase();
         this.vault2.format.execute(this.vault1.format.history);
     });
 
@@ -13,7 +13,7 @@ describe("core/VaultComparator", function() {
         beforeEach(function() {
             this.vault1 = Vault.createWithDefaults();
             this.vault2 = new Vault();
-            this.vault2.format.clear();
+            this.vault2.format.erase();
             this.vault2.format.execute(this.vault1.format.history);
             this.vault1.createGroup("diff group");
         });
@@ -66,7 +66,7 @@ describe("core/VaultComparator", function() {
 
         it("returns false when no differences exist after modification", function() {
             this.vault1.createGroup("hai");
-            this.vault2.format.clear();
+            this.vault2.format.erase();
             this.vault2.format.execute(this.vault1.format.history);
             const comparator = new VaultComparator(this.vault1, this.vault2);
             expect(comparator.vaultsDiffer()).to.be.false;
@@ -74,7 +74,7 @@ describe("core/VaultComparator", function() {
 
         it("returns true when an archive is out of date", function() {
             this.vault1.createGroup("hai");
-            this.vault2.format.clear();
+            this.vault2.format.erase();
             this.vault2.format.execute(this.vault1.format.history);
             this.vault1.createGroup("hai again");
             const comparator = new VaultComparator(this.vault1, this.vault2);

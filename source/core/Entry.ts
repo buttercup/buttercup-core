@@ -39,6 +39,7 @@ export default class Entry extends VaultItem {
         const id = generateUUID();
         // Create new entry
         vault.format.createEntry(parentGroupID, id);
+        vault._rebuild();
         return vault.findEntryByID(id);
     }
 
@@ -64,6 +65,10 @@ export default class Entry extends VaultItem {
         }
         // delete it
         this.vault.format.deleteEntry(this.id);
+        const ind = this.vault._entries.indexOf(this);
+        if (ind >= 0) {
+            this.vault._entries.splice(ind, 1);
+        }
         this._cleanUp();
         return true;
     }
@@ -130,7 +135,8 @@ export default class Entry extends VaultItem {
         if (!parentGroup) {
             throw new Error(`No parent group found for entry: ${this.id}`);
         }
-        return new Group(this.vault, parentGroup);
+        const parentID = this.vault.format.getItemID(parentGroup);
+        return this.vault._groups.find(group => group.id === parentID);
     }
 
     /**

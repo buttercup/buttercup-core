@@ -181,6 +181,12 @@ export default class VaultFormatB extends VaultFormat {
         this.source.a[attribute].deleted = getTimestamp();
     }
 
+    erase() {
+        super.erase();
+        Object.assign(this.source, emptyVault());
+        this.emit("erased");
+    }
+
     execute(commandOrCommands: string | Array<string>) {
         let command: string;
         if (Array.isArray(commandOrCommands)) {
@@ -295,6 +301,10 @@ export default class VaultFormatB extends VaultFormat {
 
     getItemID(itemSource: FormatBGroup | FormatBEntry): GroupID | EntryID {
         return itemSource.id;
+    }
+
+    getItemParentID(itemSource: FormatBGroup | FormatBEntry): GroupID | "0" {
+        return itemSource.g;
     }
 
     getVaultAttributes() {
