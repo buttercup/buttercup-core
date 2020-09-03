@@ -209,17 +209,6 @@ export default class Group extends VaultItem {
             throw new Error(`Failed getting parent Group: No group containing child ID found: ${this.id}`);
         }
         return parentGroup;
-        // const topmostGroupIDs = this.vault.getGroups().map(group => group.id);
-        // if (topmostGroupIDs.indexOf(this.id) >= 0) {
-        //     // parent is vault
-        //     return null;
-        // }
-        // const parentGroup = this.vault.format.findGroupContainingGroupID(this.id);
-        // if (parentGroup) {
-        //     const parentID = this.vault.format.getItemID(parentGroup);
-        //     return this.vault._groups.find(group => group.id === parentID);
-        // }
-        // throw new Error(`Failed getting parent Group: No group containing child ID found: ${this.id}`);
     }
 
     /**
