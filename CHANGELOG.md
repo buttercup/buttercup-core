@@ -1,5 +1,12 @@
 # Core library changelog
 
+## v5.3.0
+_2020-09-04_
+
+ * Persistent `Group` and `Entry` items (no spawn on request)
+ * **Bugfix**:
+   * ([#282](https://github.com/buttercup/buttercup-core/issues/282)) Memory leak while auto-updating
+
 ## v5.2.1
 _2020-08-30_
 
