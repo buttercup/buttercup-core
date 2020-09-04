@@ -48,7 +48,13 @@ export default class Vault extends EventEmitter {
         return vault;
     }
 
+    _entries: Array<Entry> = [];
+
     _format: any;
+
+    _groups: Array<Group> = [];
+
+    _onCommandExec: () => void;
 
     /**
      * The vault format
@@ -86,11 +92,11 @@ export default class Vault extends EventEmitter {
      */
     constructor(Format: any = getDefaultFormat()) {
         super();
-        this._format = new Format();
-        this.format.on("commandsExecuted", () => {
-            this.emit("vaultUpdated");
-        });
+        // Setup format
+        this._updateFormat(new Format());
         this.format.initialise();
+        // Create groups and entries
+        this._rebuild();
     }
 
     /**
@@ -200,7 +206,7 @@ export default class Vault extends EventEmitter {
      * @memberof Vault
      */
     getGroups(): Array<Group> {
-        return this.format.getAllGroups("0").map(rawGroup => new Group(this, rawGroup));
+        return this._groups.filter(group => group.getParentGroup() === null);
     }
 
     /**
@@ -226,6 +232,25 @@ export default class Vault extends EventEmitter {
         return this;
     }
 
+    _rebuild(clear: boolean = false) {
+        if (clear) {
+            this._groups = [];
+            this._entries = [];
+        }
+        this.format.getAllGroups().forEach(rawGroup => {
+            const id = this.format.getItemID(rawGroup);
+            if (!this._groups.find(g => g.id === id)) {
+                this._groups.push(new Group(this, rawGroup));
+            }
+        });
+        this.format.getAllEntries().forEach(rawEntry => {
+            const id = this.format.getItemID(rawEntry);
+            if (!this._entries.find(e => e.id === id)) {
+                this._entries.push(new Entry(this, rawEntry));
+            }
+        });
+    }
+
     /**
      * Update the format reference
      * @param format The new format instance
@@ -233,7 +258,24 @@ export default class Vault extends EventEmitter {
      * @protected
      */
     _updateFormat(format: any) {
+        if (this._format) {
+            this._format.removeAllListeners();
+        }
         this._format = format;
-        this.emit("formatUpdated");
+        this._groups.forEach(group => {
+            group._updateRefs();
+        });
+        this._entries.forEach(entry => {
+            entry._updateRefs();
+        });
+        this._rebuild();
+        this.format.on("commandsExecuted", () => {
+            this._rebuild();
+            this.emit("vaultUpdated");
+        });
+        this.format.on("erased", () => {
+            this._rebuild(/* clear all: */ true);
+            this.emit("vaultUpdated");
+        });
     }
 }

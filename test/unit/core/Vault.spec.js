@@ -1,4 +1,5 @@
 const { Group, Vault } = require("../../../dist/index.node.js");
+const { expect } = require("chai");
 
 describe("core/Vault", function() {
     it("can be instantiated", function() {
@@ -138,6 +139,25 @@ describe("core/Vault", function() {
         it("returns null if not found", function() {
             const found = this.vault.findGroupByID("");
             expect(found).to.be.null;
+        });
+    });
+
+    describe("findGroupsByTitle", function() {
+        beforeEach(function() {
+            this.vault = new Vault();
+            this.top = this.vault.createGroup("top");
+            this.bottom = this.top.createGroup("bottom");
+        });
+
+        it("gets the correct group", function() {
+            const found = this.vault.findGroupsByTitle("bottom");
+            expect(found).to.have.a.lengthOf(1);
+            expect(found[0].id).to.equal(this.bottom.id);
+        });
+
+        it("returns an empty array if not found", function() {
+            const found = this.vault.findGroupsByTitle("not-real");
+            expect(found).to.have.a.lengthOf(0);
         });
     });
 

@@ -4,7 +4,6 @@ const {
     Vault,
     VaultFormatA,
     VaultFormatB,
-    consumeGroupFacade,
     consumeVaultFacade,
     createEntryFacade,
     createFieldDescriptor,
@@ -12,7 +11,7 @@ const {
     createVaultFacade
 } = require("../../../dist/index.node.js");
 
-describe("facades/vault", function() {
+describe("Vault facades", function() {
     [
         [VaultFormatA, "A"],
         [VaultFormatB, "B"]
@@ -40,11 +39,12 @@ describe("facades/vault", function() {
             describe("consumeVaultFacade", function() {
                 it("supports deleting entries", function() {
                     const facade = createVaultFacade(this.vault);
-                    const targetEntryIndex = facade.entries.findIndex(entryFacade => entryFacade.id === this.entryA.id);
-                    expect(this.vault.findEntryByID(this.entryA.id)).to.be.an.instanceOf(Entry);
+                    const entryAID = this.entryA.id;
+                    const targetEntryIndex = facade.entries.findIndex(entryFacade => entryFacade.id === entryAID);
+                    expect(this.vault.findEntryByID(entryAID)).to.be.an.instanceOf(Entry);
                     facade.entries.splice(targetEntryIndex, 1);
                     consumeVaultFacade(this.vault, facade);
-                    expect(this.vault.findEntryByID(this.entryA.id)).to.be.null;
+                    expect(this.vault.findEntryByID(entryAID)).to.be.null;
                 });
 
                 it("supports moving entries", function() {

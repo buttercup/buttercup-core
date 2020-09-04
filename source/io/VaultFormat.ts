@@ -73,10 +73,6 @@ export default class VaultFormat extends EventEmitter {
         this.source = source;
     }
 
-    clear() {
-        notImplemented();
-    }
-
     cloneEntry(entry: FormatAEntry | FormatBEntry, targetGroupID: GroupID) {
         notImplemented();
     }
@@ -198,6 +194,11 @@ export default class VaultFormat extends EventEmitter {
     }
 
     getItemID(itemSource: FormatAGroup | FormatAEntry | FormatBGroup | FormatBEntry): GroupID | EntryID {
+        notImplemented();
+        return "";
+    }
+
+    getItemParentID(itemSource: FormatAGroup | FormatAEntry | FormatBGroup | FormatBEntry): GroupID | "0" {
         notImplemented();
         return "";
     }
