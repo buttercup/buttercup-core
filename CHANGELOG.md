@@ -1,5 +1,12 @@
 # Core library changelog
 
+## v5.3.1
+_2020-09-04_
+
+ * **Bugfix**:
+   * Poor facade handling performance
+   * Entries not able to be moved to another group (eg. to Trash)
+
 ## v5.3.0
 _2020-09-04_
 
