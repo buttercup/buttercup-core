@@ -173,6 +173,7 @@ export function executeMoveEntry(archive: FormatAVault, opts: any, entryID: Entr
     const [movedEntry] = originGroup.entries.splice(originIndex, 1);
     targetGroup.entries = targetGroup.entries || [];
     targetGroup.entries.push(movedEntry);
+    movedEntry.parentID = groupID;
 }
 
 export function executeMoveGroup(archive: FormatAVault, opts: any, groupID: GroupID, targetGroupID: GroupID) {

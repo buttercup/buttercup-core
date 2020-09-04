@@ -1,7 +1,7 @@
 import EventEmitter from "eventemitter3";
 import { getDefaultFormat } from "../io/formatRouter";
-import { findGroupByID, findGroupsByTitle } from "../search/groups";
-import { findEntriesByProperty, findEntryByID } from "../search/entries";
+import { findGroupsByTitle } from "../search/groups";
+import { findEntriesByProperty } from "../search/entries";
 import Group from "./Group";
 import Entry from "./Entry";
 import { EntryID, GroupID, History } from "../types";
@@ -149,7 +149,7 @@ export default class Vault extends EventEmitter {
      * @memberof Vault
      */
     findEntryByID(id: EntryID): null | Entry {
-        return findEntryByID(this.getGroups(), id);
+        return this._entries.find(entry => entry.id === id) || null;
     }
 
     /**
@@ -160,7 +160,7 @@ export default class Vault extends EventEmitter {
      * @memberof Vault
      */
     findEntriesByProperty(property: string | RegExp, value: string | RegExp): Array<Entry> {
-        return findEntriesByProperty(this.getGroups(), property, value);
+        return findEntriesByProperty(this._entries, property, value);
     }
 
     /**
@@ -170,7 +170,7 @@ export default class Vault extends EventEmitter {
      * @memberof Vault
      */
     findGroupByID(id: GroupID): null | Group {
-        return findGroupByID(this.getGroups(), id);
+        return this._groups.find(group => group.id === id) || null;
     }
 
     /**
@@ -180,7 +180,7 @@ export default class Vault extends EventEmitter {
      * @memberof Vault
      */
     findGroupsByTitle(title: string | RegExp): Array<Group> {
-        return findGroupsByTitle(this.getGroups(), title);
+        return findGroupsByTitle(this._groups, title);
     }
 
     /**

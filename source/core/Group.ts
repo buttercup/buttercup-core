@@ -3,8 +3,8 @@ import Entry from "./Entry";
 import Vault from "./Vault";
 import { generateUUID } from "../tools/uuid";
 import { moveGroupBetweenVaults } from "../tools/sharing";
-import { findGroupByID, findGroupsByTitle } from "../search/groups";
-import { findEntriesByProperty, findEntryByID } from "../search/entries";
+import { findGroupsByTitle, getAllChildGroups } from "../search/groups";
+import { findEntriesByProperty, getAllChildEntries } from "../search/entries";
 import { EntryID, GroupID } from "../types";
 
 /**
@@ -123,7 +123,7 @@ export default class Group extends VaultItem {
      * @memberof Group
      */
     findEntryByID(id: EntryID): Entry | null {
-        return findEntryByID([this], id);
+        return getAllChildEntries(this.vault._entries, this.id).find(entry => entry.id === id) || null;
     }
 
     /**
@@ -135,7 +135,7 @@ export default class Group extends VaultItem {
      * @memberof Group
      */
     findEntriesByProperty(property: RegExp | string, value: RegExp | string): Array<Entry> {
-        return findEntriesByProperty([this], property, value);
+        return findEntriesByProperty(getAllChildEntries(this.vault._entries, this.id), property, value);
     }
 
     /**
@@ -145,7 +145,7 @@ export default class Group extends VaultItem {
      * @memberof Group
      */
     findGroupByID(id: GroupID): Group | null {
-        return findGroupByID([this], id);
+        return getAllChildGroups(this.vault._groups, this.id).find(group => group.id === id) || null;
     }
 
     /**
@@ -156,7 +156,7 @@ export default class Group extends VaultItem {
      * @memberof Group
      */
     findGroupsByTitle(title: RegExp | string): Array<Group> {
-        return findGroupsByTitle([this], title);
+        return findGroupsByTitle(getAllChildGroups(this.vault._groups, this.id), title);
     }
 
     /**

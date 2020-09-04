@@ -250,7 +250,7 @@ export function createVaultFacade(vault: Vault, options: CreateVaultFacadeOption
         type: "vault",
         id: vault.id,
         attributes: vault.getAttribute() as { [key: string] : string },
-        groups: getGroupsFacades(vault, undefined, { includeTrash }),
+        groups: getGroupsFacades(vault, { includeTrash }),
         entries: getEntriesFacades(vault, { includeTrash })
     };
 }
@@ -303,17 +303,22 @@ function getGroupEntriesFacades(entryCollection: Group, options: GetGroupEntries
 
 /**
  * Convert an array of groups into an array of facades
- * @param groupCollection A group or vault instance
- * @param parentID The parent group ID (defaults to root)
+ * @param vault The vault instance
  * @param options Options for getting group facades
  * @returns An array of group facades
  */
-function getGroupsFacades(groupCollection: Vault | Group, parentID: GroupID = "0", options: GetGroupsFacadesOptions = {}): Array<GroupFacade> {
+function getGroupsFacades(vault: Vault, options: GetGroupsFacadesOptions = {}): Array<GroupFacade> {
     const { includeTrash = true } = options;
-    return groupCollection.getGroups().reduce((facades, group) => {
+    return vault._groups.reduce((output, group) => {
         if (includeTrash === false && (group.isTrash() || group.isInTrash())) {
-            return facades;
+            return output;
         }
-        return [...facades, createGroupFacade(group, parentID), ...getGroupsFacades(group, group.id, options)];
+        return [
+            ...output,
+            createGroupFacade(
+                group,
+                group.vault.format.getItemParentID(group._source)
+            )
+        ];
     }, []);
 }

@@ -304,26 +304,11 @@ export default class VaultFormatA extends VaultFormat {
     }
 
     findGroupContainingEntryID(id: EntryID): FormatAGroup {
-        const searchGroups = (groups: Array<FormatAGroup>): FormatAGroup => {
-            for (let i = 0, groupsLen = groups.length; i < groupsLen; i += 1) {
-                const group = groups[i];
-                if (group.entries) {
-                    for (var j = 0, entriesLen = group.entries.length; j < entriesLen; j += 1) {
-                        if (group.entries[j].id === id) {
-                            return group;
-                        }
-                    }
-                }
-                if (group.groups) {
-                    const deepGroup = searchGroups(group.groups);
-                    if (deepGroup) {
-                        return deepGroup;
-                    }
-                }
-            }
-            return null;
-        };
-        return searchGroups(this.getAllGroups());
+        const matchingEntry = this.getAllEntries().find(entry => entry.id === id);
+        if (matchingEntry) {
+            return this.getAllGroups().find(group => group.id === matchingEntry.parentID) || null;
+        }
+        return null;
     }
 
     findGroupContainingGroupID(id: GroupID): FormatAGroup {
