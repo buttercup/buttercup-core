@@ -120,10 +120,8 @@ describe("Search", function() {
             it("finds multiple similar results", function() {
                 const results = this.search.searchByURL("https://gmov.edu.au/portal/");
                 expect(results).to.have.lengthOf(2);
-                const titles = results.map(result => result.properties.title);
-                expect(titles).to.contain("Work");
-                expect(titles).to.contain("Work logs");
                 expect(results[0].properties.title).to.equal("Work");
+                expect(results[1].properties.title).to.equal("Work logs");
             });
 
             it("supports ordering", function() {
