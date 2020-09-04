@@ -205,7 +205,6 @@ export default class Group extends VaultItem {
         if (parentID === "0") return null;
         const parentGroup = this.vault._groups.find(g => g.id === parentID);
         if (!parentGroup) {
-            console.log("PARENT ID", parentID);
             throw new Error(`Failed getting parent Group: No group containing child ID found: ${this.id}`);
         }
         return parentGroup;
