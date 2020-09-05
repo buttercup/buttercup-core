@@ -3,6 +3,7 @@ import { getCompressionResources as getV1CompressionResources } from "./compress
 import { getCompressionResources as getV2CompressionResources } from "./compression.v2";
 import { getEnvironmentResources } from "./environment";
 import { getNetResources } from "./net";
+import { getRNGResources } from "./rng";
 import { AppEnv } from "../core/appEnv";
 
 export function applyWebConfiguration(appEnv: AppEnv) {
@@ -11,4 +12,5 @@ export function applyWebConfiguration(appEnv: AppEnv) {
     appEnv.setProperties(getV2CompressionResources());
     appEnv.setProperties(getEnvironmentResources());
     appEnv.setProperties(getNetResources());
+    appEnv.setProperties(getRNGResources());
 }

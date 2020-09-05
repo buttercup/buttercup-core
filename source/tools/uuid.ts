@@ -1,9 +1,9 @@
-import { v4 as uuid } from "uuid";
+import { getSharedAppEnv } from "../env/appEnv";
 
 /**
  * Generate a UUID (v4)
  * @returns The new UUID
  */
 export function generateUUID(): string {
-    return uuid();
+    return getSharedAppEnv().getProperty("rng/v1/uuid")();
 }

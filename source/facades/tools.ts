@@ -1,5 +1,5 @@
-import { v4 as uuid } from "uuid";
 import Entry from "../core/Entry";
+import { generateUUID } from "../tools/uuid";
 import {
     EntryFacadeField,
     EntryFacadeFieldFormatting,
@@ -42,7 +42,7 @@ export function createFieldDescriptor(
     const value = entry ? getEntryValue(entry, entryPropertyType, entryPropertyName) : "";
     // Return descriptor
     return {
-        id: uuid(),
+        id: generateUUID(),
         title,
         propertyType: entryPropertyType,
         property: entryPropertyName,

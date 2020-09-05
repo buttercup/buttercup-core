@@ -1,9 +1,9 @@
-import { v4 as uuid } from "uuid";
 import Credentials from "../credentials/Credentials";
 import Entry from "../core/Entry";
 import Vault from "../core/Vault";
 import VaultSource from "../core/VaultSource";
 import { getSharedAppEnv } from "../env/appEnv";
+import { generateUUID } from "../tools/uuid";
 import { decryptAttachment, encryptAttachment, getBufferSize } from "../tools/attachments";
 import { AttachmentDetails } from "../types";
 
@@ -20,7 +20,7 @@ export default class AttachmentManager {
      * @memberof AttachmentManager
      */
     static newAttachmentID(): string {
-        return uuid();
+        return generateUUID();
     }
 
     _credentials: Credentials;
