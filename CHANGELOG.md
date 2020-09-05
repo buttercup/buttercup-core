@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.4.0
+_2020-09-05_
+
+ * UUID app-env method (for mobile compatibility)
+
 ## v5.3.1
 _2020-09-04_
 
