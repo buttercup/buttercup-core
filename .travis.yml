@@ -7,20 +7,23 @@ matrix:
         - NAME="Node stable"
     - language: node_js
       script: npm run test:node
+      node_js: 14
+      env:
+        - NAME="Node 14"
+    - language: node_js
+      script: npm run test:node
       node_js: 12
       env:
         - NAME="Node 12"
     - language: node_js
-      node_js: 12
-      sudo: required
-      dist: trusty
+      node_js: 14
+      dist: focal
       env:
         - NAME="Web"
+        - MOZ_HEADLESS=1
       addons:
         firefox: latest
         chrome: stable
-      before_script:
-        - export DISPLAY=:99.0
-        - sh -e /etc/init.d/xvfb start
-        - sleep 3 # give xvfb some time to start
+      before_install:
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       script: npm run test:web
