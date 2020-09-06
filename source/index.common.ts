@@ -58,6 +58,12 @@ export {
     EntryURLType,
     getEntryURLs
 } from "./tools/entry";
+export {
+    base64ToBytes,
+    bytesToBase64,
+    decodeBase64String,
+    encodeBase64String
+} from "./tools/encoding";
 
 export * from "./types";
 

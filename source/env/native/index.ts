@@ -4,6 +4,7 @@ import { getCompressionResources as getV2CompressionResources } from "./compress
 import { getEnvironmentResources } from "./environment";
 import { getNetResources } from "./net";
 import { getRNGResources } from "./rng";
+import { getEncodingResources } from "./encoding";
 import { AppEnv } from "../core/appEnv";
 
 export function applyNativeConfiguration(appEnv: AppEnv) {
@@ -13,4 +14,5 @@ export function applyNativeConfiguration(appEnv: AppEnv) {
     appEnv.setProperties(getEnvironmentResources());
     appEnv.setProperties(getNetResources());
     appEnv.setProperties(getRNGResources());
+    appEnv.setProperties(getEncodingResources());
 }
