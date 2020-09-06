@@ -1,7 +1,6 @@
 import { Layerr } from "layerr";
 import { request } from "cowl";
 import EventEmitter from "eventemitter3";
-import { Base64 } from "js-base64";
 import NodeFormData from "form-data";
 import {
     API_ATTACHMENT,
@@ -19,6 +18,9 @@ import {
 } from "./symbols";
 import { detectFormat } from "../io/formatRouter";
 import { isTypedArray } from "../tools/buffer";
+import {
+    encodeBase64String,
+} from "../tools/encoding";
 import {
     CowlError,
     MyButtercupAttachment,
@@ -79,7 +81,7 @@ export default class MyButtercupClient extends EventEmitter {
      * @static
      */
     static exchangeAuthCodeForTokens(authCode: string, clientID: string, clientSecret: string, redirectURI: string): Promise<{ accessToken: string, refreshToken: string }> {
-        const baseAuth = Base64.encode(`${clientID}:${clientSecret}`);
+        const baseAuth = encodeBase64String(`${clientID}:${clientSecret}`);
         const encodedRedir = encodeURIComponent(redirectURI);
         const requestOptions = {
             url: OAUTH_TOKEN_URI,
@@ -662,7 +664,7 @@ export default class MyButtercupClient extends EventEmitter {
      * @fires MyButtercupClient#tokensUpdated
      */
     _performTokenRefresh(): Promise<void> {
-        const baseAuth = Base64.encode(`${this._clientID}:${this._clientSecret}`);
+        const baseAuth = encodeBase64String(`${this._clientID}:${this._clientSecret}`);
         const requestOptions = {
             url: OAUTH_TOKEN_URI,
             method: "POST",

@@ -1,28 +1,61 @@
-import { Base64 } from "js-base64";
 import { generateUUID } from "./uuid";
+import { getSharedAppEnv } from "../env/appEnv";
 
 const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
 export const ENCODED_STRING_PREFIX = "utf8+base64:";
 
+/**
+ * Decode a base64 string to a typed array
+ * @param b64 The base64 string
+ * @returns A typed array
+ */
 export function base64ToBytes(b64: string): Uint8Array {
-    return Base64.toUint8Array(b64);
+    const decode = getSharedAppEnv().getProperty("encoding/v1/base64ToBytes");
+    return decode(b64);
 }
 
+/**
+ * Encode a typed array to base64
+ * @param uint8Arr The array of bytes to encode
+ * @returns A base64 encoded string
+ */
 export function bytesToBase64(uint8Arr: Uint8Array): string {
-    return Base64.fromUint8Array(uint8Arr);
+    const encode = getSharedAppEnv().getProperty("encoding/v1/bytesToBase64");
+    return encode(uint8Arr);
+}
+
+/**
+ * Decode a base64 string
+ * @param b64 The base64 string
+ * @returns The decoded string
+ */
+export function decodeBase64String(b64: string): string {
+    const decode = getSharedAppEnv().getProperty("encoding/v1/base64ToText");
+    return decode(b64);
 }
 
 /**
  * Decode an encoded property value
- * @param {String} value The encoded value
- * @returns {String} The decoded value
+ * @param value The encoded value
+ * @returns The decoded value
  */
 export function decodeStringValue(value: string): string {
     if (isEncoded(value) !== true) {
         throw new Error("Cannot decode: provided value is not encoded");
     }
     const newValue = value.substr(ENCODED_STRING_PREFIX.length);
-    return Base64.decode(newValue);
+    const decode = getSharedAppEnv().getProperty("encoding/v1/base64ToText");
+    return decode(newValue);
+}
+
+/**
+ * Encode a base64 string
+ * @param text The raw text to encode
+ * @returns A base64 encoded string
+ */
+export function encodeBase64String(text: string): string {
+    const encode = getSharedAppEnv().getProperty("encoding/v1/textToBase64");
+    return encode(text);
 }
 
 /**
@@ -32,7 +65,8 @@ export function decodeStringValue(value: string): string {
  * @returns The encoded result
  */
 export function encodeStringValue(value: string): string {
-    return `${ENCODED_STRING_PREFIX}${Base64.encode(value)}`;
+    const encode = getSharedAppEnv().getProperty("encoding/v1/textToBase64");
+    return `${ENCODED_STRING_PREFIX}${encode(value)}`;
 }
 
 /**
