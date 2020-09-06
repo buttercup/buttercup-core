@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v5.5.0
+_2020-09-06_
+
+ * Replaced `js-base64` with `base64-js` for `Buffer`-less base64 encoding and decoding
+ * Added base64 encoding and decoding to app-env parameters
+
 ## v5.4.0
 _2020-09-05_
 
