@@ -1,6 +1,6 @@
 import StorageInterface from "../storage/StorageInterface";
 
-function getStorage(): Storage {
+export function getStorage(): Storage {
     return window.localStorage;
 }
 
