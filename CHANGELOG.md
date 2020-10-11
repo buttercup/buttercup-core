@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.6.0
+_2020-10-11_
+
+ * `LocalStorageDatasource` for web
+
 ## v5.5.0
 _2020-09-06_
 
