@@ -1,17 +1,18 @@
-import { mergeHistories, prependSharePrefix, removeSharePrefix } from "../tools/sharing";
+import Vault from "../core/Vault";
+import { mergeHistories } from "../tools/sharing";
 import { hashHistory } from "../tools/hash";
-import { History } from "../types";
+import { History, ShareID, SharePermission } from "../types";
 
 export default class Share {
     _dirty: boolean;
     _history: History;
-    _id: string;
+    _id: ShareID;
     _lastHash: string;
-    _permissions: Array<string>;
+    _permissions: Array<SharePermission>;
 
-    constructor(shareID: string, history: History, permissions: Array<string> = []) {
+    constructor(shareID: ShareID, history: History, permissions: Array<SharePermission> = []) {
         this._id = shareID;
-        this._history = removeSharePrefix(history);
+        this._history = [...history];
         this._lastHash = hashHistory(this._history);
         this._dirty = false;
         this._permissions = permissions;
@@ -25,35 +26,31 @@ export default class Share {
         return [...this._permissions];
     }
 
-    applyToArchive(archive: any) {
-        if (this.archiveHasAppliedShare(archive)) {
+    applyToVault(archive: any) {
+        if (this.vaultHasAppliedShare(archive)) {
             throw new Error("Target archive has already had share applied");
         }
-        const westley = archive._getWestley();
-        westley.executionOptions = {
-            permissions: this.permissions
-        };
-        this.getPrefixedHistory().forEach(line => westley.execute(line));
-        westley.executionOptions = {};
+        // const westley = archive._getWestley();
+        // westley.executionOptions = {
+        //     permissions: this.permissions
+        // };
+        // this.getPrefixedHistory().forEach(line => westley.execute(line));
+        // westley.executionOptions = {};
     }
 
-    archiveHasAppliedShare(archive: any) {
-        return !!archive._getWestley().history.find(line => line.indexOf(`$${this.id}`) === 0);
-    }
-
-    getPrefixedHistory() {
-        return prependSharePrefix(this._history, this.id);
+    vaultHasAppliedShare(vault: Vault) {
+        return !!vault._getWestley().history.find(line => line.indexOf(`$${this.id}`) === 0);
     }
 
     updateHistory(history) {
-        const incoming = removeSharePrefix(history);
-        const incomingHash = hashHistory(incoming);
-        if (incomingHash === this._lastHash) {
-            return false;
-        }
-        this._history = mergeHistories(this._history, incoming);
-        this._lastHash = hashHistory(this._history);
-        this._dirty = true;
-        return true;
+        // const incoming = removeSharePrefix(history);
+        // const incomingHash = hashHistory(incoming);
+        // if (incomingHash === this._lastHash) {
+        //     return false;
+        // }
+        // this._history = mergeHistories(this._history, incoming);
+        // this._lastHash = hashHistory(this._history);
+        // this._dirty = true;
+        // return true;
     }
 }

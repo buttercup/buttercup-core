@@ -578,8 +578,8 @@ export default class VaultSource extends EventEmitter {
     _applyShares() {
         // @todo
         // this._shares.forEach(share => {
-        //     if (!share.archiveHasAppliedShare(this.archive)) {
-        //         share.applyToArchive(this.archive);
+        //     if (!share.vaultHasAppliedShare(this.archive)) {
+        //         share.applyToVault(this.archive);
         //     }
         // });
     }

@@ -17,11 +17,13 @@ import {
     EntryID,
     FormatBEntry,
     FormatBGroup,
+    FormatBShare,
     FormatBValueHistoryItem,
     FormatBVault,
     GroupID,
     History,
     PropertyKeyValueObject,
+    ShareID,
     VaultFormatID,
     VaultID
 } from "../types";
@@ -95,6 +97,7 @@ export default class VaultFormatB extends VaultFormat {
         return vault;
     }
 
+    _shares: Array<FormatBShare> = [];
     source: FormatBVault;
 
     constructor(source: FormatBVault = emptyVault()) {
@@ -324,6 +327,13 @@ export default class VaultFormatB extends VaultFormat {
         this.generateID();
     }
 
+    loadShares(shares: Array<FormatBShare>) {
+        shares.forEach(share => {
+            if (this._shares.find(s => s.id === share.id)) return;
+            this._shares.push(share);
+        });
+    }
+
     moveEntry(entryID: EntryID, groupID: GroupID) {
         const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
         entry.g = groupID;
@@ -386,5 +396,22 @@ export default class VaultFormatB extends VaultFormat {
             item.value = value;
             item.updated = getTimestamp();
         }
+    }
+
+    supportsSharing(): boolean {
+        return true;
+    }
+
+    unloadAllShares() {
+        this._shares.splice(0, Infinity);
+    }
+
+    unloadShares(shareIDs: Array<ShareID>) {
+        shareIDs.forEach(shareID => {
+            const ind = this._shares.findIndex(s => s.id === shareID);
+            if (ind >= 0) {
+                this._shares.splice(ind, 1);
+            }
+        });
     }
 }

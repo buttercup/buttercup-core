@@ -1,7 +1,7 @@
 import { detectFormat } from "../io/formatRouter";
 import Credentials from "../credentials/Credentials";
 import Share from "./Share";
-import { VaultPermission } from "../types";
+import { SharePermission } from "../types";
 
 const ARCHIVE_SHARE_ATTRIBUTE_PREFIX = "BC_SHARE:";
 
@@ -48,9 +48,9 @@ export function initialiseShares(workspace) {
                         .then(share => {
                             delete share.contents;
                             const sharePerms = [
-                                VaultPermission.Manage,
-                                VaultPermission.Read,
-                                VaultPermission.Write
+                                SharePermission.Manage,
+                                SharePermission.Read,
+                                SharePermission.Write
                             ].filter(perm => share[perm] === true);
                             return new Share(share.id, share.history, sharePerms);
                         });

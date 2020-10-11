@@ -13,6 +13,7 @@ import {
     GroupID,
     History,
     PropertyKeyValueObject,
+    ShareID,
     VaultFormatID
 } from "../types";
 
@@ -216,6 +217,10 @@ export default class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
+    loadShares(shares: Array<any>) {
+        notImplemented();
+    }
+
     moveEntry(entryID: EntryID, groupID: GroupID) {
         notImplemented();
     }
@@ -245,6 +250,18 @@ export default class VaultFormat extends EventEmitter {
     }
 
     setVaultAttribute(key: string, value: string) {
+        notImplemented();
+    }
+
+    supportsSharing(): boolean {
+        return false;
+    }
+
+    unloadAllShares() {
+        notImplemented();
+    }
+
+    unloadShares(shareIDs: Array<ShareID>) {
         notImplemented();
     }
 }
