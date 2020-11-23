@@ -41,9 +41,6 @@ export function executeCreateEntry(archive: FormatAVault, opts: any, groupID: Gr
         shareID: opts.shareID,
         parentID: groupID
     };
-    if (opts.permissions) {
-        entry.permissions = opts.permissions;
-    }
     const group = findGroupByID(archive.groups, groupID);
     if (!group) {
         throw new Error(`Invalid group ID: ${groupID}`);
@@ -60,9 +57,6 @@ export function executeCreateGroup(archive: FormatAVault, opts: any, parentID: G
         shareID: opts.shareID,
         parentID
     };
-    if (opts.permissions) {
-        group.permissions = opts.permissions;
-    }
     if (parentID === "0") {
         archive.groups.push(group);
     } else {

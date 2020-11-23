@@ -127,7 +127,6 @@ export interface FormatAEntry {
     attributes?: PropertyKeyValueObject;
     properties?: PropertyKeyValueObject;
     parentID: GroupID;
-    permissions?: Array<VaultPermission>;
     history?: Array<EntryLegacyHistoryItem>;
     shareID?: string;
 }
@@ -139,7 +138,6 @@ export interface FormatAGroup {
     entries?: Array<FormatAEntry>;
     title: string;
     parentID: GroupID;
-    permissions?: Array<VaultPermission>;
     shareID?: string;
 }
 
@@ -274,6 +272,12 @@ export interface PropertyKeyValueObject {
 
 export type SetTimeout = ReturnType<typeof setTimeout>;
 
+export enum SharePermission {
+    Manage = "m",
+    Read = "r",
+    Write = "w"
+}
+
 export type UTCTimestamp = number;
 
 export interface VaultFacade {
@@ -292,12 +296,6 @@ export enum VaultFormatID {
 }
 
 export type VaultID = string;
-
-export enum VaultPermission {
-    Manage = "archive/member/manage",
-    Read = "archive/member/read",
-    Write = "archive/member/write"
-}
 
 export type VaultSourceID = string;
 

@@ -7,6 +7,12 @@ import { VaultPermission } from "../types";
 export default class VaultItem {
     _boundUpdateRefs: () => void;
 
+    _permissions: Array<VaultPermission> = [
+        VaultPermission.Manage,
+        VaultPermission.Read,
+        VaultPermission.Write
+    ];
+
     _source: any;
 
     /**
@@ -24,11 +30,6 @@ export default class VaultItem {
     constructor(vault: Vault, source: any) {
         this._vault = vault;
         this._source = source;
-        this._source.permissions = this._source.permissions || [
-            VaultPermission.Manage,
-            VaultPermission.Read,
-            VaultPermission.Write
-        ];
     }
 
     /**
@@ -45,7 +46,7 @@ export default class VaultItem {
      * @memberof VaultItem
      */
     get permissions(): Array<string> {
-        return [...this._source.permissions];
+        return [...this._permissions];
     }
 
     /**
@@ -62,9 +63,9 @@ export default class VaultItem {
      * @param perm The permission to grant
      * @memberof VaultItem
      */
-    grantPermission(perm: string) {
+    grantPermission(perm: VaultPermission) {
         if (!this.hasPermission(perm)) {
-            this._source.permissions.push(perm);
+            this._permissions.push(perm);
         }
     }
 
@@ -73,8 +74,8 @@ export default class VaultItem {
      * @param perm The permission to check for
      * @memberof VaultItem
      */
-    hasPermission(perm: string): boolean {
-        return this._source.permissions.includes(perm);
+    hasPermission(perm: VaultPermission): boolean {
+        return this._permissions.includes(perm);
     }
 
     /**
@@ -82,7 +83,7 @@ export default class VaultItem {
      * @memberof VaultItem
      */
     revokeAllPermissions() {
-        this._source.permissions = [];
+        this._permissions = [];
     }
 
     /**
@@ -90,8 +91,8 @@ export default class VaultItem {
      * @param perm The permission to revoke
      * @memberof VaultItem
      */
-    revokePermission(perm: string) {
-        this._source.permissions = this._source.permissions.filter(current => current !== perm);
+    revokePermission(perm: VaultPermission) {
+        this._permissions = this._permissions.filter(current => current !== perm);
     }
 
     /**

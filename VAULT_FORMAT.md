@@ -69,6 +69,26 @@ The second format, utilising a JSON structure for vault data:
 }
 ```
 
+Format B vaults can additionally include **shares**, delivered by the My Buttercup service during unlocking. Shares will be included under the property `s`:
+
+```json
+{
+    "id": "fb31b4a6-1e54-4460-ae03-5441a8083be5",
+    "a": {},
+    "g": [],
+    "e": [],
+    "s": [
+        {
+            "id": "d5c7fba4-b8f4-45a3-9c2b-3d61ca9beb29",
+            "g": [],
+            "e": []
+        }
+    ]
+}
+```
+
+Shares are simply containers for groups and entries that are merged with vaults when unlocked.
+
 ## Format A
 
 > September 2015 -> 2020

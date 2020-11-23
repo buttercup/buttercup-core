@@ -1,19 +1,18 @@
-import { mergeHistories, prependSharePrefix, removeSharePrefix } from "../tools/sharing";
 import { hashHistory } from "../tools/hash";
 import { History } from "../types";
 
 export default class Share {
-    _dirty: boolean;
+    // _dirty: boolean;
     _history: History;
     _id: string;
     _lastHash: string;
-    _permissions: Array<string>;
+    _permissions: Array<VaultPermission>;
 
-    constructor(shareID: string, history: History, permissions: Array<string> = []) {
+    constructor(shareID: string, history: History, permissions: Array<VaultPermission> = []) {
         this._id = shareID;
-        this._history = removeSharePrefix(history);
+        this._history = history;
         this._lastHash = hashHistory(this._history);
-        this._dirty = false;
+        // this._dirty = false;
         this._permissions = permissions;
     }
 
