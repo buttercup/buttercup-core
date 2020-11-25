@@ -1,0 +1,82 @@
+const { expect } = require("chai");
+const randomString = require("crypto-random-string");
+const { Group, MemoryStorageInterface, Search, Vault } = require("../../../dist/index.node.js");
+
+const ENTRY_COUNT_MAX = 10;
+const ENTRY_COUNT_MIN = 2;
+const ENTRY_PROP_COUNT = 5;
+const GROUP_COUNT_SUB = 2;
+const GROUP_COUNT_TOP = 18;
+const GROUPS_DEPTH = 3;
+
+function buildVault() {
+    const vault = Vault.createWithDefaults();
+    (function buildLevel(level = 1, parentGroup = null) {
+        const groupCount = level === GROUPS_DEPTH ? 0 : level === 1 ? GROUP_COUNT_TOP : GROUP_COUNT_SUB;
+        const entryCount = parentGroup
+            ? ENTRY_COUNT_MIN + Math.floor((ENTRY_COUNT_MAX - ENTRY_COUNT_MIN) * Math.random())
+            : 0;
+        const groupParent = parentGroup ? parentGroup : vault;
+        for (let g = 0; g < groupCount; g += 1) {
+            const group = groupParent.createGroup(`Test Group ${g}`);
+            if (level < GROUPS_DEPTH) {
+                buildLevel(level + 1, group);
+            }
+            for (let e = 0; e < entryCount; e += 1) {
+                const entry = group.createEntry(`Test Entry ${g}/${e}`);
+                entry.setProperty("username", randomString({ length: 8, type: "distinguishable" }));
+                entry.setProperty("password", randomString({ length: 20 }));
+                entry.setProperty("url", `https://test.com/${randomString({ length: 30, type: "url-safe" })}`);
+                for (let p = 0; p < ENTRY_PROP_COUNT; p += 1) {
+                    const prop = randomString({ length: 8, type: "alphanumeric" });
+                    entry.setProperty(prop, randomString({ length: 16, type: "alphanumeric" }));
+                    entry.setProperty(prop, randomString({ length: 16, type: "alphanumeric" }));
+                    entry.setProperty(prop, randomString({ length: 16, type: "alphanumeric" }));
+                }
+            }
+        }
+    })();
+    return vault;
+}
+
+describe("Search", function() {
+    beforeEach(function() {
+        this.vault = buildVault();
+        this.storage = new MemoryStorageInterface();
+        this.search = new Search([this.vault], this.storage);
+    });
+
+    it("should prepare in under 500 milliseconds", async function() {
+        const start = Date.now();
+        await this.search.prepare();
+        const duration = Date.now() - start;
+        expect(duration).to.be.below(500);
+    });
+
+    describe("searchByTerm", function() {
+        beforeEach(async function() {
+            await this.search.prepare();
+        });
+
+        it("should complete in under 100 milliseconds", function() {
+            const start = Date.now();
+            const results = this.search.searchByTerm(randomString({ length: 16, type: "alphanumeric" }));
+            const duration = Date.now() - start;
+            expect(duration).to.be.below(100);
+        });
+    });
+
+    describe("searchByURL", function() {
+        beforeEach(async function() {
+            await this.search.prepare();
+            this.url = `https://test.com/${randomString({ length: 30, type: "url-safe" })}`;
+        });
+
+        it("should complete in under 100 milliseconds", function() {
+            const start = Date.now();
+            const results = this.search.searchByURL(this.url);
+            const duration = Date.now() - start;
+            expect(duration).to.be.below(100);
+        });
+    });
+});
