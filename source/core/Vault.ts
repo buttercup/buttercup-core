@@ -184,6 +184,24 @@ export default class Vault extends EventEmitter {
     }
 
     /**
+     * Get all entries in the vault
+     * @returns An array of entry instances
+     * @memberof Vault
+     */
+    getAllEntries(): Array<Entry> {
+        return [...this._entries];
+    }
+
+    /**
+     * Get al groups in the vault
+     * @returns An array of group instances
+     * @memberof Vault
+     */
+    getAllGroups(): Array<Group> {
+        return [...this._groups];
+    }
+
+    /**
      * Get the value of an attribute
      * @param attributeName The attribute to get
      * @returns The value of the attribute or undefined if not
