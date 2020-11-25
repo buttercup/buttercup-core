@@ -209,7 +209,8 @@ export default class Entry extends VaultItem {
      * @memberof Entry
      */
     isInTrash(): boolean {
-        return this.getGroup().isInTrash() || this.getGroup().isTrash();
+        const group = this.getGroup();
+        return group.isTrash() || group.isInTrash();
     }
 
     /**
