@@ -1,13 +1,10 @@
 import Fuse from "fuse.js";
 import levenshtein from "fast-levenshtein";
-import { createVaultFacade } from "../facades/vault";
-import { fieldsToProperties } from "../facades/entry";
 import { EntryURLType, getEntryURLs } from "../tools/entry";
+import Entry from "../core/Entry";
 import StorageInterface from "../storage/StorageInterface";
 import Vault from "../core/Vault";
 import { EntryID, VaultID } from "../types";
-
-declare const BUTTERCUP_WEB: boolean;
 
 interface DomainScores {
     [domain: string]: number;
@@ -112,22 +109,22 @@ export default class Search {
                     vaultScore = this._scores[vault.id] = scores;
                 } catch (err) {}
             }
-            // Get entries
-            const { entries } = createVaultFacade(vault, {
-                includeTrash: false
-            });
+            // Process entries
             this._entries.push(
-                ...entries.map(entry => {
-                    const properties = fieldsToProperties(entry.fields);
-                    const urls = getEntryURLs(properties, EntryURLType.General);
-                    return {
-                        id: entry.id,
-                        properties,
-                        urls,
-                        vaultID: vault.id,
-                        domainScores: vaultScore[entry.id] || {}
-                    };
-                })
+                ...vault
+                    .getAllEntries()
+                    .filter((entry: Entry) => entry.isInTrash() === false)
+                    .map((entry: Entry) => {
+                        const properties = entry.getProperties();
+                        const urls = getEntryURLs(properties, EntryURLType.General);
+                        return {
+                            id: entry.id,
+                            properties,
+                            urls,
+                            vaultID: vault.id,
+                            domainScores: vaultScore[entry.id] || {}
+                        };
+                    })
             );
         }
     }
