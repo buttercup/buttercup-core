@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.6.1
+_2020-11-26_
+
+ * `Search` preparation performance improvement
+
 ## v5.6.0
 _2020-10-11_
 
