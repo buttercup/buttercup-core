@@ -1,12 +1,11 @@
-const { expect } = require("chai");
 const randomString = require("crypto-random-string");
-const { Group, MemoryStorageInterface, Search, Vault } = require("../../../dist/index.node.js");
+const { MemoryStorageInterface, Search, Vault } = require("../../../dist/index.node.js");
 
-const ENTRY_COUNT_MAX = 10;
-const ENTRY_COUNT_MIN = 2;
+const ENTRY_COUNT_MAX = 12;
+const ENTRY_COUNT_MIN = 5;
 const ENTRY_PROP_COUNT = 5;
 const GROUP_COUNT_SUB = 2;
-const GROUP_COUNT_TOP = 18;
+const GROUP_COUNT_TOP = 20;
 const GROUPS_DEPTH = 3;
 
 function buildVault() {
