@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.6.2
+_2020-12-06_
+
+ * Upgrade `cowl`: Remove warning for invalid `responseType`
+
 ## v5.6.1
 _2020-11-26_
 
