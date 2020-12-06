@@ -1,9 +1,9 @@
-import Fuse from "fuse.js";
 import levenshtein from "fast-levenshtein";
 import { EntryURLType, getEntryURLs } from "../tools/entry";
 import Entry from "../core/Entry";
 import StorageInterface from "../storage/StorageInterface";
 import Vault from "../core/Vault";
+import { buildSearcher } from "./searcher";
 import { EntryID, VaultID } from "../types";
 
 interface DomainScores {
@@ -135,25 +135,7 @@ export default class Search {
      * @returns An array of search results
      */
     searchByTerm(term: string): Array<SearchResult> {
-        this._fuse = new Fuse(this._entries, {
-            includeScore: true,
-            keys: [
-                {
-                    name: "properties.title",
-                    weight: 0.6
-                },
-                {
-                    name: "properties.username",
-                    weight: 0.25
-                },
-                {
-                    name: "urls",
-                    weight: 0.15
-                }
-            ],
-            shouldSort: true,
-            threshold: 0.5
-        });
+        this._fuse = buildSearcher(this._entries);
         this._results = this._fuse.search(term).map(result => result.item);
         return this._results;
     }
