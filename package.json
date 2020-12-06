@@ -77,7 +77,7 @@
     "@buttercup/channel-queue": "^0.5.0",
     "@buttercup/dropbox-client": "^0.5.0",
     "@buttercup/googledrive-client": "^1.2.0",
-    "cowl": "^1.0.0",
+    "cowl": "^1.0.1",
     "eventemitter3": "^4.0.4",
     "fast-levenshtein": "^2.0.6",
     "foreachasync": "^5.1.3",
