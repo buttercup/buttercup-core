@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.7.0
+_2020-12-06_
+
+ * Reduced key derivation rounds for improved performance
+
 ## v5.6.2
 _2020-12-06_
 
