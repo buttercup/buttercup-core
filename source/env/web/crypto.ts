@@ -1,9 +1,9 @@
 import { createSession } from "iocane/web";
-import { CRYPTO_RANDOM_STRING_CHARS } from "../core/constants";
+import { CRYPTO_PBKDF2_ROUNDS, CRYPTO_RANDOM_STRING_CHARS } from "../core/constants";
 
 const UINT16_MAX = 65535;
 
-let __derivationRoundsOverride = null;
+let __derivationRoundsOverride = CRYPTO_PBKDF2_ROUNDS;
 
 function decryptData(data: string | ArrayBuffer, password): Promise<string | ArrayBuffer> {
     return createSession().decrypt(data, password);
@@ -40,5 +40,5 @@ function randomString(length: number): Promise<string> {
 }
 
 function setDerivationRounds(rounds: number = null) {
-    __derivationRoundsOverride = rounds;
+    __derivationRoundsOverride = !rounds ? CRYPTO_PBKDF2_ROUNDS : rounds;
 }
