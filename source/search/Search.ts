@@ -18,6 +18,10 @@ interface ProcessedSearchEntry {
     domainScores: DomainScores;
 }
 
+export interface SearcherFactory {
+    (items: Array<any>): any;
+}
+
 export interface SearchResult {
     id: EntryID;
     properties: { [property: string]: string };
@@ -56,12 +60,14 @@ export default class Search {
     _fuse: any = null;
     _memory: StorageInterface;
     _results: Array<SearchResult> = [];
+    _searcherFactory: SearcherFactory;
     _scores: SearchScores = {};
     _vaults: Array<Vault>;
 
-    constructor(vaults: Array<Vault>, memory = new StorageInterface()) {
+    constructor(vaults: Array<Vault>, memory = new StorageInterface(), searcherFactory: SearcherFactory = buildSearcher) {
         this._vaults = vaults;
         this._memory = memory;
+        this._searcherFactory = searcherFactory;
     }
 
     /**
@@ -128,7 +134,7 @@ export default class Search {
             );
         }
         // Instantiate new searcher
-        this._fuse = buildSearcher(this._entries);
+        this._fuse = this._searcherFactory(this._entries);
     }
 
     /**
