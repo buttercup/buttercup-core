@@ -127,6 +127,8 @@ export default class Search {
                     })
             );
         }
+        // Instantiate new searcher
+        this._fuse = buildSearcher(this._entries);
     }
 
     /**
@@ -135,7 +137,9 @@ export default class Search {
      * @returns An array of search results
      */
     searchByTerm(term: string): Array<SearchResult> {
-        this._fuse = buildSearcher(this._entries);
+        if (!this._fuse) {
+            throw new Error("Searching interface not prepared");
+        }
         this._results = this._fuse.search(term).map(result => result.item);
         return this._results;
     }

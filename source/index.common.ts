@@ -49,6 +49,7 @@ export { default as StorageInterface } from "./storage/StorageInterface";
 export { default as MemoryStorageInterface } from "./storage/MemoryStorageInterface";
 
 export { default as Search, SearchResult } from "./search/Search";
+export { SearchKey, buildSearcher } from "./search/searcher";
 
 export { AppEnv, AppEnvGetPropertyOptions } from "./env/core/appEnv";
 export { getSharedAppEnv } from "./env/appEnv";
