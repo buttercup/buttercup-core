@@ -1,9 +1,9 @@
-import Fuse from "fuse.js";
 import levenshtein from "fast-levenshtein";
 import { EntryURLType, getEntryURLs } from "../tools/entry";
 import Entry from "../core/Entry";
 import StorageInterface from "../storage/StorageInterface";
 import Vault from "../core/Vault";
+import { buildSearcher } from "./searcher";
 import { EntryID, VaultID } from "../types";
 
 interface DomainScores {
@@ -16,6 +16,10 @@ interface ProcessedSearchEntry {
     urls: Array<string>;
     vaultID: VaultID;
     domainScores: DomainScores;
+}
+
+export interface SearcherFactory {
+    (items: Array<any>): any;
 }
 
 export interface SearchResult {
@@ -56,12 +60,14 @@ export default class Search {
     _fuse: any = null;
     _memory: StorageInterface;
     _results: Array<SearchResult> = [];
+    _searcherFactory: SearcherFactory;
     _scores: SearchScores = {};
     _vaults: Array<Vault>;
 
-    constructor(vaults: Array<Vault>, memory = new StorageInterface()) {
+    constructor(vaults: Array<Vault>, memory = new StorageInterface(), searcherFactory: SearcherFactory = buildSearcher) {
         this._vaults = vaults;
         this._memory = memory;
+        this._searcherFactory = searcherFactory;
     }
 
     /**
@@ -127,6 +133,8 @@ export default class Search {
                     })
             );
         }
+        // Instantiate new searcher
+        this._fuse = this._searcherFactory(this._entries);
     }
 
     /**
@@ -135,25 +143,9 @@ export default class Search {
      * @returns An array of search results
      */
     searchByTerm(term: string): Array<SearchResult> {
-        this._fuse = new Fuse(this._entries, {
-            includeScore: true,
-            keys: [
-                {
-                    name: "properties.title",
-                    weight: 0.6
-                },
-                {
-                    name: "properties.username",
-                    weight: 0.25
-                },
-                {
-                    name: "urls",
-                    weight: 0.15
-                }
-            ],
-            shouldSort: true,
-            threshold: 0.5
-        });
+        if (!this._fuse) {
+            throw new Error("Searching interface not prepared");
+        }
         this._results = this._fuse.search(term).map(result => result.item);
         return this._results;
     }
