@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.8.0
+_2020-12-09_
+
+ * Separated search portions for downstream use
+
 ## v5.7.0
 _2020-12-06_
 
