@@ -1,5 +1,13 @@
 # Core library changelog
 
+## v5.9.0
+_2021-01-23_
+
+ * Dependency upgrades
+ * **Bugfix**:
+   * Types not referenced correctly
+   * URL-based search results ordered incorrectly
+
 ## v5.8.0
 _2020-12-09_
 
