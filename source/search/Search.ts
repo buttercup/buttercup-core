@@ -193,7 +193,7 @@ export default class Search {
             .sort((a, b) => {
                 if (a.domainScore > b.domainScore) {
                     return -1;
-                } else if (b.domainScore > b.domainScore) {
+                } else if (b.domainScore > a.domainScore) {
                     return 1;
                 }
                 if (a.score > b.score) {
