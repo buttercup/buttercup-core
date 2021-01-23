@@ -21,6 +21,7 @@ matrix:
       env:
         - NAME="Web"
         - MOZ_HEADLESS=1
+        - CI=travis
       addons:
         firefox: latest
         chrome: stable
