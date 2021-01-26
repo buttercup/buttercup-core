@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v5.9.1
+_2021-01-26_
+
+ * **Bugfix**:
+   * `crypto-random-string` in devDependencies rather than dependencies
+
 ## v5.9.0
 _2021-01-23_
 
