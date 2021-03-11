@@ -48,38 +48,21 @@ const baseConfig = {
                             onlyCompileBundledFiles: true
                         }
                     }
-                    // {
-                    //     loader: "babel-loader",
-                    //     options: {
-                    //         "presets": [
-                    //             ["@babel/preset-env", {
-                    //                 "useBuiltIns": false,
-                    //                 "targets": {
-                    //                     "chrome": "60"
-                    //                 }
-                    //             }]
-                    //         ],
-                    //         "plugins": [
-                    //             "@babel/plugin-proposal-class-properties",
-                    //             "@babel/plugin-proposal-object-rest-spread"
-                    //         ]
-                    //     }
-                    // }
                 ]
             }
         ]
     },
 
-    node: {
-        crypto: "empty",
-        dns: "empty",
-        fs: "empty",
-        http: "empty",
-        https: "empty",
-        net: "empty",
-        path: "empty",
-        stream: "empty"
-    },
+    // node: {
+    //     crypto: "empty",
+    //     dns: "empty",
+    //     fs: "empty",
+    //     http: "empty",
+    //     https: "empty",
+    //     net: "empty",
+    //     path: "empty",
+    //     stream: "empty"
+    // },
 
     output: {
         path: DIST,
@@ -91,7 +74,17 @@ const baseConfig = {
     plugins,
 
     resolve: {
-        extensions: [".ts", ".js"]
+        extensions: [".ts", ".js"],
+        fallback: {
+            crypto: false,
+            dns: false,
+            fs: false,
+            http: false,
+            https: false,
+            net: false,
+            path: false,
+            stream: false
+        }
     },
 
     target: "web"
