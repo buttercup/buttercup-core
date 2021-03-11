@@ -168,6 +168,9 @@ export default class VaultFormatA extends VaultFormat {
 
     static vaultFromMergedHistories(local: History, incoming: History): Vault {
         const differences = VaultComparator.calculateHistoryDifferences(local, incoming);
+        if (differences === null) {
+            throw new Error("Failed merging vault histories: No common base");
+        }
         if (differences.secondary.length === 0) {
             // Remote doesn't have unseen changes, so we can simply
             // use the existing history
