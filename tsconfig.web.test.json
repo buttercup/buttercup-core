@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "rootDir": "./",
+        "esModuleInterop": true,
+        "outDir": "./web",
+        "module": "CommonJS",
+        "declaration": false,
+        "target": "es6"
+    },
+    "files": [
+      "./source/**/*"
+    ]
+}

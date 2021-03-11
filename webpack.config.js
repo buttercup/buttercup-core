@@ -38,31 +38,18 @@ const baseConfig = {
                 use: "null-loader"
             },
             {
-                test: /\.[tj]s$/,
+                test: /\.ts$/,
                 exclude: /node_modules/,
-                use: [
-                    {
-                        loader: "ts-loader",
-                        options: {
-                            configFile: path.resolve(__dirname, "./tsconfig.web.json"),
-                            onlyCompileBundledFiles: true
-                        }
+                use: {
+                    loader: "ts-loader",
+                    options: {
+                        configFile: path.resolve(__dirname, "./tsconfig.web.json"),
+                        onlyCompileBundledFiles: true
                     }
-                ]
+                }
             }
         ]
     },
-
-    // node: {
-    //     crypto: "empty",
-    //     dns: "empty",
-    //     fs: "empty",
-    //     http: "empty",
-    //     https: "empty",
-    //     net: "empty",
-    //     path: "empty",
-    //     stream: "empty"
-    // },
 
     output: {
         path: DIST,
