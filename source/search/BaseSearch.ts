@@ -1,16 +1,16 @@
 import levenshtein from "fast-levenshtein";
-import { EntryURLType, getEntryURLs } from "../tools/entry";
-import Entry from "../core/Entry";
 import StorageInterface from "../storage/StorageInterface";
-import Vault from "../core/Vault";
 import { buildSearcher } from "./searcher";
-import { EntryID, VaultID } from "../types";
+import Vault from "../core/Vault";
+import { EntryID, VaultFacade, VaultID } from "../types";
 
 interface DomainScores {
     [domain: string]: number;
 }
 
-interface ProcessedSearchEntry {
+type EntryFetcher = (target: Vault | VaultFacade, memory: StorageInterface) => Promise<Array<ProcessedSearchEntry>>;
+
+export interface ProcessedSearchEntry {
     id: EntryID;
     properties: { [property: string]: string };
     urls: Array<string>;
@@ -51,21 +51,24 @@ function extractDomain(str: string): string {
     return (match && match[3]) || "";
 }
 
-/**
- * Search class for searching entries
- * @memberof module:Buttercup
- */
-export default class Search {
+export class BaseSearch {
     _entries: Array<ProcessedSearchEntry> = [];
+    _entryFetcher: EntryFetcher;
     _fuse: any = null;
     _memory: StorageInterface;
     _results: Array<SearchResult> = [];
     _searcherFactory: SearcherFactory;
     _scores: SearchScores = {};
-    _vaults: Array<Vault>;
+    _targets: Array<Vault> | Array<VaultFacade>;
 
-    constructor(vaults: Array<Vault>, memory = new StorageInterface(), searcherFactory: SearcherFactory = buildSearcher) {
-        this._vaults = vaults;
+    constructor(
+        targets: Array<Vault> | Array<VaultFacade>,
+        entryFetcher: EntryFetcher,
+        memory = new StorageInterface(),
+        searcherFactory: SearcherFactory = buildSearcher
+    ) {
+        this._targets = targets;
+        this._entryFetcher = entryFetcher;
         this._memory = memory;
         this._searcherFactory = searcherFactory;
     }
@@ -105,34 +108,47 @@ export default class Search {
     async prepare() {
         this._entries = [];
         this._scores = {};
-        for (const vault of this._vaults) {
+        for (const target of this._targets) {
             // Get scores
-            const scoresRaw = await this._memory.getValue(`bcup_search_${vault.id}`);
-            let vaultScore = {};
+            const scoresRaw = await this._memory.getValue(`bcup_search_${target.id}`);
             if (scoresRaw) {
                 try {
                     const scores = JSON.parse(scoresRaw);
-                    vaultScore = this._scores[vault.id] = scores;
+                    this._scores[target.id] = scores;
                 } catch (err) {}
             }
             // Process entries
-            this._entries.push(
-                ...vault
-                    .getAllEntries()
-                    .filter((entry: Entry) => entry.isInTrash() === false)
-                    .map((entry: Entry) => {
-                        const properties = entry.getProperties();
-                        const urls = getEntryURLs(properties, EntryURLType.General);
-                        return {
-                            id: entry.id,
-                            properties,
-                            urls,
-                            vaultID: vault.id,
-                            domainScores: vaultScore[entry.id] || {}
-                        };
-                    })
-            );
+            const entries = await this._entryFetcher(target, this._memory);
+            this._entries.push(...entries);
         }
+        // for (const vault of this._vaults) {
+        //     // Get scores
+        //     const scoresRaw = await this._memory.getValue(`bcup_search_${vault.id}`);
+        //     let vaultScore = {};
+        //     if (scoresRaw) {
+        //         try {
+        //             const scores = JSON.parse(scoresRaw);
+        //             vaultScore = this._scores[vault.id] = scores;
+        //         } catch (err) {}
+        //     }
+            // Process entries
+            // this._entries.push(
+            //     ...vault
+            //         .getAllEntries()
+            //         .filter((entry: Entry) => entry.isInTrash() === false)
+            //         .map((entry: Entry) => {
+            //             const properties = entry.getProperties();
+            //             const urls = getEntryURLs(properties, EntryURLType.General);
+            //             return {
+            //                 id: entry.id,
+            //                 properties,
+            //                 urls,
+            //                 vaultID: vault.id,
+            //                 domainScores: vaultScore[entry.id] || {}
+            //             };
+            //         })
+            // );
+        // }
         // Instantiate new searcher
         this._fuse = this._searcherFactory(this._entries);
     }
