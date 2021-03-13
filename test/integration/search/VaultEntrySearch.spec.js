@@ -1,6 +1,6 @@
-import { Group, MemoryStorageInterface, Search, Vault } from "../../source/index.web";
+const { Group, MemoryStorageInterface, Vault, VaultEntrySearch } = require("../../../dist/index.node.js");
 
-describe("Search", function() {
+describe("VaultEntrySearch", function() {
     beforeEach(function() {
         const vault = (this.vault = new Vault());
         const groupA = vault.createGroup("Email");
@@ -51,14 +51,14 @@ describe("Search", function() {
 
     it("can be instantiated", function() {
         expect(() => {
-            new Search([this.vault]);
+            new VaultEntrySearch([this.vault]);
         }).to.not.throw();
     });
 
     describe("instance", function() {
         beforeEach(function() {
             this.storage = new MemoryStorageInterface();
-            this.search = new Search([this.vault], this.storage);
+            this.search = new VaultEntrySearch([this.vault], this.storage);
             return this.search.prepare();
         });
 

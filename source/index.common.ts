@@ -51,6 +51,7 @@ export { default as MemoryStorageInterface } from "./storage/MemoryStorageInterf
 export { SearchResult } from "./Search/BaseSearch";
 export { VaultEntrySearch as Search } from "./search/VaultEntrySearch"; // compat @todo remove
 export { VaultEntrySearch } from "./search/VaultEntrySearch";
+export { VaultFacadeEntrySearch } from "./search/VaultFacadeEntrySearch";
 export { SearchKey, buildSearcher } from "./search/searcher";
 
 export { AppEnv, AppEnvGetPropertyOptions } from "./env/core/appEnv";

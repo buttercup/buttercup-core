@@ -6,14 +6,15 @@ import StorageInterface from "../storage/StorageInterface";
 
 async function extractEntries(vault: Vault, memory: StorageInterface): Promise<Array<ProcessedSearchEntry>> {
     // Get scores
-    const scoresRaw = await this._memory.getValue(`bcup_search_${vault.id}`);
+    const scoresRaw = await memory.getValue(`bcup_search_${vault.id}`);
     let vaultScore = {};
     if (scoresRaw) {
         try {
             const scores = JSON.parse(scoresRaw);
-            vaultScore = this._scores[vault.id] = scores;
+            vaultScore = scores;
         } catch (err) {}
     }
+    // Get entries
     return vault
         .getAllEntries()
         .filter((entry: Entry) => entry.isInTrash() === false)

@@ -1,5 +1,5 @@
 const randomString = require("crypto-random-string");
-const { MemoryStorageInterface, Search, Vault } = require("../../../dist/index.node.js");
+const { MemoryStorageInterface, Vault, VaultEntrySearch } = require("../../../dist/index.node.js");
 
 const ENTRY_COUNT_MAX = 12;
 const ENTRY_COUNT_MIN = 5;
@@ -38,11 +38,11 @@ function buildVault() {
     return vault;
 }
 
-describe("Search", function() {
+describe("VaultEntrySearch", function() {
     beforeEach(function() {
         this.vault = buildVault();
         this.storage = new MemoryStorageInterface();
-        this.search = new Search([this.vault], this.storage);
+        this.search = new VaultEntrySearch([this.vault], this.storage);
     });
 
     it("should prepare in under 500 milliseconds", async function() {
