@@ -9,6 +9,30 @@ webpackConfig.module.rules.push({
     test: /\.(png|jpg)$/,
     use: "arraybuffer-loader"
 });
+// BEGIN typescript support
+webpackConfig.module.rules.unshift({
+    test: /\.js$/,
+    use: [{
+        loader: "babel-loader",
+        options: {
+            "presets": [
+                ["@babel/preset-env", {
+                    "useBuiltIns": false,
+                    "targets": {
+                        "firefox": "70"
+                    }
+                }]
+            ],
+            "plugins": [
+                "@babel/plugin-proposal-class-properties",
+                "@babel/plugin-proposal-object-rest-spread"
+            ]
+        }
+    }]
+});
+const tsRule = webpackConfig.module.rules.find(rule => rule.test && /\.ts/.test(rule.test.toString()));
+tsRule.use.options.configFile = tsRule.use.options.configFile.replace("tsconfig.web.json", "tsconfig.web.test.json");
+// END typescript support
 
 module.exports = config => config.set({
 
@@ -32,12 +56,12 @@ module.exports = config => config.set({
     exclude: [],
 
     files: [
-        "source/web/index.js",
-        "test/web/index.js",
-        "test/web/**/*.spec.js"
+        { pattern: "source/index.web.ts" },
+        { pattern: "test/web/index.js" },
+        { pattern: "test/web/**/*.spec.js" }
     ],
 
-    frameworks: ["mocha", "sinon"],
+    frameworks: ["mocha", "sinon", "webpack"],
 
     plugins: [
         require("karma-webpack"),
@@ -51,7 +75,7 @@ module.exports = config => config.set({
     ],
 
     preprocessors: {
-        "source/**/*.js": ["webpack"],
+        "*.ts": ["webpack"],
         "test/web/index.js": ["webpack"],
         "test/web/**/*.spec.js": ["webpack"]
     },

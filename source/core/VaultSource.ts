@@ -631,14 +631,8 @@ export default class VaultSource extends EventEmitter {
         await this.write();
     }
 
-    /**
-     * Wait for the source to enter a non-pending state
-     * @protected
-     * @returns {Promise}
-     * @memberof VaultSource
-     */
     _waitNonPending() {
-        return new Promise(resolve => {
+        return new Promise<void>(resolve => {
             if (this.status !== VaultSource.STATUS_PENDING) return resolve();
             const handleChange = () => {
                 this.removeListener("unlocked", handleChange);

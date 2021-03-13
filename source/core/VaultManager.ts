@@ -344,7 +344,7 @@ export default class VaultManager extends EventEmitter {
      * @param delay Milliseconds between updates
      * @memberof VaultManager
      */
-    toggleAutoUpdating(enable: boolean = !this._autoUpdateEnabled, delay: number = DEFAULT_AUTO_UPDATE_DELAY) {
+    toggleAutoUpdating(enable: boolean = !this._autoUpdateEnabled, delay: number = this._autoUpdateDelay) {
         if (enable) {
             this._autoUpdateDelay = delay;
             this._startAutoUpdateTimer();
@@ -365,9 +365,9 @@ export default class VaultManager extends EventEmitter {
             await Promise.all(
                 updateableSources.map(source =>
                     source.update().catch(err => {
-                        // we ignore auto-update errors
-                        console.error(`Failed auto-updating source: ${source.id}`);
-                        this.emit("autoUpdateFailed", { source });
+                        // we don't return auto-update errors, but emit them
+                        console.error(`Failed auto-updating source: ${source.id}`, err);
+                        this.emit("autoUpdateFailed", { source, error: err });
                     })
                 )
             );
