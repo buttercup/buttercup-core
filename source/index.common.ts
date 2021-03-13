@@ -48,7 +48,7 @@ export { default as Credentials } from "./credentials/Credentials";
 export { default as StorageInterface } from "./storage/StorageInterface";
 export { default as MemoryStorageInterface } from "./storage/MemoryStorageInterface";
 
-export { SearchResult } from "./Search/BaseSearch";
+export { SearchResult } from "./search/BaseSearch";
 export { VaultEntrySearch as Search } from "./search/VaultEntrySearch"; // compat @todo remove
 export { VaultEntrySearch } from "./search/VaultEntrySearch";
 export { VaultFacadeEntrySearch } from "./search/VaultFacadeEntrySearch";
