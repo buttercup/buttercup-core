@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.10.0
+_2021-03-13_
+
+ * Dependencies update
+
 ## v5.9.1
 _2021-01-26_
 
