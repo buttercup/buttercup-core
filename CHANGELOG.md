@@ -1,5 +1,12 @@
 # Core library changelog
 
+## v5.11.0
+_2021-03-14_
+
+ * `Search` deprecated
+ * `VaultEntrySearch` replaces `Search` as vault entry searching utility
+ * `VaultFacadeEntrySearch` added to support _facade_ searching for entries
+
 ## v5.10.0
 _2021-03-13_
 
