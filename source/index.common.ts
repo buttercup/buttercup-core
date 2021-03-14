@@ -48,7 +48,10 @@ export { default as Credentials } from "./credentials/Credentials";
 export { default as StorageInterface } from "./storage/StorageInterface";
 export { default as MemoryStorageInterface } from "./storage/MemoryStorageInterface";
 
-export { default as Search, SearchResult } from "./search/Search";
+export { SearchResult } from "./search/BaseSearch";
+export { VaultEntrySearch as Search } from "./search/VaultEntrySearch"; // compat @todo remove
+export { VaultEntrySearch } from "./search/VaultEntrySearch";
+export { VaultFacadeEntrySearch } from "./search/VaultFacadeEntrySearch";
 export { SearchKey, buildSearcher } from "./search/searcher";
 
 export { AppEnv, AppEnvGetPropertyOptions } from "./env/core/appEnv";
