@@ -121,34 +121,6 @@ export class BaseSearch {
             const entries = await this._entryFetcher(target, this._memory);
             this._entries.push(...entries);
         }
-        // for (const vault of this._vaults) {
-        //     // Get scores
-        //     const scoresRaw = await this._memory.getValue(`bcup_search_${vault.id}`);
-        //     let vaultScore = {};
-        //     if (scoresRaw) {
-        //         try {
-        //             const scores = JSON.parse(scoresRaw);
-        //             vaultScore = this._scores[vault.id] = scores;
-        //         } catch (err) {}
-        //     }
-            // Process entries
-            // this._entries.push(
-            //     ...vault
-            //         .getAllEntries()
-            //         .filter((entry: Entry) => entry.isInTrash() === false)
-            //         .map((entry: Entry) => {
-            //             const properties = entry.getProperties();
-            //             const urls = getEntryURLs(properties, EntryURLType.General);
-            //             return {
-            //                 id: entry.id,
-            //                 properties,
-            //                 urls,
-            //                 vaultID: vault.id,
-            //                 domainScores: vaultScore[entry.id] || {}
-            //             };
-            //         })
-            // );
-        // }
         // Instantiate new searcher
         this._fuse = this._searcherFactory(this._entries);
     }
