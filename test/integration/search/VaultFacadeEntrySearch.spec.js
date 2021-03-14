@@ -1,4 +1,10 @@
-const { Group, MemoryStorageInterface, Vault, VaultFacadeEntrySearch, createVaultFacade } = require("../../../dist/index.node.js");
+const {
+    Group,
+    MemoryStorageInterface,
+    Vault,
+    VaultFacadeEntrySearch,
+    createVaultFacade
+} = require("../../../dist/index.node.js");
 
 describe("VaultFacadeEntrySearch", function() {
     beforeEach(function() {
