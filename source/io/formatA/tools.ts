@@ -21,9 +21,9 @@ interface FormatACommandArguments {
 }
 
 interface FormatACommandManifestCommand {
-    s: string;                              // The command
-    d: boolean;                             // Destructive flag
-    args: Array<FormatACommandArgument>;    // Command argument definitions
+    s: string; // The command
+    d: boolean; // Destructive flag
+    args: Array<FormatACommandArgument>; // Command argument definitions
 }
 
 interface FormatACommandManifestCommands {
@@ -263,7 +263,12 @@ export function findGroupContainingGroupID(group: FormatAGroup | FormatAVault, i
  *  before this change
  * @param newValue The new value or null if it was deleted
  */
-export function generateEntryLegacyHistoryItem(property: string, propertyType: EntryPropertyType, originalValue: string = null, newValue: string = null): EntryLegacyHistoryItem {
+export function generateEntryLegacyHistoryItem(
+    property: string,
+    propertyType: EntryPropertyType,
+    originalValue: string = null,
+    newValue: string = null
+): EntryLegacyHistoryItem {
     return Object.freeze({
         property,
         propertyType,
@@ -291,7 +296,7 @@ export function getAllGroups(source: FormatAVault, parentID: GroupID = null): Ar
             if (
                 parentID === null ||
                 (parentID === "0" && typeof (<any>subGroup).parentID === "undefined") ||
-                (parentID === (<FormatAGroup>subGroup).parentID)
+                parentID === (<FormatAGroup>subGroup).parentID
             ) {
                 foundGroups.push(subGroup);
             }

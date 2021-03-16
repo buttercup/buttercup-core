@@ -1,9 +1,5 @@
 import { getTimestamp } from "../../tools/date";
-import {
-    EntryPropertyType,
-    FormatBValue,
-    FormatBValueHistoryItem
-} from "../../types";
+import { EntryPropertyType, FormatBValue, FormatBValueHistoryItem } from "../../types";
 
 export const MAX_ATTRIBUTE_HISTORY = 3;
 export const MAX_PROPERTY_HISTORY = 5;
@@ -18,21 +14,18 @@ export function cloneValue(value: FormatBValue) {
 }
 
 function filterDuplicateHistoryItems(items: Array<FormatBValueHistoryItem>): Array<FormatBValueHistoryItem> {
-    return items.filter((thisItem, thisIndex, itemArr) =>
-        itemArr.findIndex(sub => sub.value === thisItem.value && sub.updated === thisItem.updated) === thisIndex
+    return items.filter(
+        (thisItem, thisIndex, itemArr) =>
+            itemArr.findIndex(sub => sub.value === thisItem.value && sub.updated === thisItem.updated) === thisIndex
     );
 }
 
 export function mergeValues(value1: FormatBValue, value2: FormatBValue, type: EntryPropertyType): FormatBValue {
-    const mostRecentValue = value1.updated > value2.updated || value1.updated === value2.updated
-        ? value1
-        : value2;
+    const mostRecentValue = value1.updated > value2.updated || value1.updated === value2.updated ? value1 : value2;
     const olderValue = value1 === mostRecentValue ? value2 : value1;
-    const newHistory = sortValueHistory(filterDuplicateHistoryItems([
-        valueToHistoryItem(olderValue),
-        ...value1.history,
-        ...value2.history
-    ]));
+    const newHistory = sortValueHistory(
+        filterDuplicateHistoryItems([valueToHistoryItem(olderValue), ...value1.history, ...value2.history])
+    );
     return {
         value: mostRecentValue.value,
         created: mostRecentValue.created,
@@ -48,7 +41,7 @@ export function newRawValue(value: string): FormatBValue {
         created: ts,
         updated: ts,
         history: []
-    }
+    };
 }
 
 export function sortValueHistory(history: Array<FormatBValueHistoryItem>): Array<FormatBValueHistoryItem> {
@@ -62,7 +55,10 @@ export function sortValueHistory(history: Array<FormatBValueHistoryItem>): Array
     });
 }
 
-export function trimValueHistory(history: Array<FormatBValueHistoryItem>, type: EntryPropertyType): Array<FormatBValueHistoryItem> {
+export function trimValueHistory(
+    history: Array<FormatBValueHistoryItem>,
+    type: EntryPropertyType
+): Array<FormatBValueHistoryItem> {
     const max = type === EntryPropertyType.Attribute ? MAX_ATTRIBUTE_HISTORY : MAX_PROPERTY_HISTORY;
     const sorted = sortValueHistory(history);
     return sorted.slice(0, max);

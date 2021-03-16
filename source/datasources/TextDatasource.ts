@@ -4,7 +4,16 @@ import Credentials from "../credentials/Credentials";
 import { credentialsAllowsPurpose, getCredentials } from "../credentials/channel";
 import { detectFormat, getFormatForID } from "../io/formatRouter";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
-import { AttachmentDetails, BufferLike, CredentialsDatasourceConfiguration, DatasourceLoadedData, EncryptedContent, History, VaultID, VaultInsights } from "../types";
+import {
+    AttachmentDetails,
+    BufferLike,
+    CredentialsDatasourceConfiguration,
+    DatasourceLoadedData,
+    EncryptedContent,
+    History,
+    VaultID,
+    VaultInsights
+} from "../types";
 
 /**
  * Datasource for text input and output
@@ -142,7 +151,12 @@ export default class TextDatasource extends EventEmitter {
      * @param details Attachment details object
      * @memberof TextDatasource
      */
-    putAttachment(vaultID: VaultID, attachmentID: string, buffer: BufferLike, details: AttachmentDetails): Promise<void> {
+    putAttachment(
+        vaultID: VaultID,
+        attachmentID: string,
+        buffer: BufferLike,
+        details: AttachmentDetails
+    ): Promise<void> {
         return Promise.reject(new Error("Attachments not supported"));
     }
 

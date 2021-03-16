@@ -184,7 +184,7 @@ export default class Entry extends VaultItem {
      * @memberof Entry
      */
     getType(): EntryType {
-        return (<EntryType | undefined>this.getAttribute(Entry.Attributes.FacadeType)) || EntryType.Login;
+        return <EntryType | undefined>this.getAttribute(Entry.Attributes.FacadeType) || EntryType.Login;
     }
 
     /**

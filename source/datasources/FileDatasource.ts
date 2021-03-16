@@ -99,7 +99,12 @@ export default class FileDatasource extends TextDatasource {
      * @param details The attachment details
      * @memberof FileDatasource
      */
-    async putAttachment(vaultID: VaultID, attachmentID: string, buffer: BufferLike, details: AttachmentDetails): Promise<void> {
+    async putAttachment(
+        vaultID: VaultID,
+        attachmentID: string,
+        buffer: BufferLike,
+        details: AttachmentDetails
+    ): Promise<void> {
         await this._ensureAttachmentsPaths(vaultID);
         const attachmentPath = path.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
         await this.writeFile(attachmentPath, buffer);

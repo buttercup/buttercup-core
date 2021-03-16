@@ -17,7 +17,7 @@ export function historyArrayToString(historyArray: History): string {
  * @private
  */
 export function historyStringToArray(historyString: string, formatID?: VaultFormatID): History {
-    const hist = (<History> historyString.split("\n"));
+    const hist = <History>historyString.split("\n");
     if (formatID) {
         hist.format = formatID;
     }

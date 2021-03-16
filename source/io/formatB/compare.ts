@@ -1,10 +1,5 @@
 import { sortValueHistory } from "./history";
-import {
-    FormatBKeyValueObject,
-    FormatBValue,
-    FormatBVault,
-    History
-} from "../../types";
+import { FormatBKeyValueObject, FormatBValue, FormatBVault, History } from "../../types";
 
 export function historiesDiffer(historyA: History, historyB: History) {
     const vaultA = inflateHistory(historyA);
@@ -43,11 +38,9 @@ function inflateHistory(history: History): FormatBVault {
 }
 
 export function propertiesDiffer(props1: FormatBKeyValueObject, props2: FormatBKeyValueObject): boolean {
-    const allKeys = [...new Set([ ...Object.keys(props1), ...Object.keys(props2) ])];
+    const allKeys = [...new Set([...Object.keys(props1), ...Object.keys(props2)])];
     if (allKeys.length === 0) return false;
-    return allKeys.some(key =>
-        valuesDiffer(props1[key], props2[key])
-    );
+    return allKeys.some(key => valuesDiffer(props1[key], props2[key]));
 }
 
 export function valuesDiffer(value1: FormatBValue, value2: FormatBValue): boolean {

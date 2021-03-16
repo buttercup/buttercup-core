@@ -8,7 +8,7 @@ import { getCredentials } from "../credentials/channel";
 import { BufferLike, DatasourceLoadedData, EncryptedContent, History, VaultID, VaultInsights } from "../types";
 
 interface OnTokensUpdatedCallback {
-    (): void
+    (): void;
 }
 
 /**

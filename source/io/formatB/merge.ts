@@ -19,8 +19,12 @@ function cloneGroup(group: FormatBGroup): FormatBGroup {
     };
 }
 
-function mergeProperties(propsA: FormatBKeyValueObject, propsB: FormatBKeyValueObject, type: EntryPropertyType): FormatBKeyValueObject {
-    const allKeys = [...new Set([ ...Object.keys(propsA), ...Object.keys(propsB) ])];
+function mergeProperties(
+    propsA: FormatBKeyValueObject,
+    propsB: FormatBKeyValueObject,
+    type: EntryPropertyType
+): FormatBKeyValueObject {
+    const allKeys = [...new Set([...Object.keys(propsA), ...Object.keys(propsB)])];
     return allKeys.reduce((output, nextKey) => {
         if ((propsA[nextKey] && !propsB[nextKey]) || (!propsA[nextKey] && propsB[nextKey])) {
             // Item is only on one props object

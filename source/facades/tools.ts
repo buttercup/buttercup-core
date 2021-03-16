@@ -1,11 +1,6 @@
 import Entry from "../core/Entry";
 import { generateUUID } from "../tools/uuid";
-import {
-    EntryFacadeField,
-    EntryFacadeFieldFormatting,
-    EntryPropertyType,
-    EntryPropertyValueType
-} from "../types";
+import { EntryFacadeField, EntryFacadeFieldFormatting, EntryPropertyType, EntryPropertyValueType } from "../types";
 
 export interface CreateFieldDescriptorOptions {
     formatting?: boolean | EntryFacadeFieldFormatting;

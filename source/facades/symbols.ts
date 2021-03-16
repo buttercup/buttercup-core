@@ -4,15 +4,15 @@ export type EntryPropertyTypeIndex = {
     [key in EntryPropertyValueType]: {
         title: string;
         slug: EntryPropertyValueType;
-    }
-}
+    };
+};
 
 export type EntryTypeIndex = {
     [key in EntryType]: {
         title: string;
         slug: EntryType;
-    }
-}
+    };
+};
 
 /**
  * Default entry type

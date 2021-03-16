@@ -120,10 +120,7 @@ export default class VaultFormatB extends VaultFormat {
         // clone groups
         this.source.g.forEach(childGroup => {
             if (childGroup.g === group.id) {
-                this.cloneGroup(
-                    childGroup,
-                    newGroup.id
-                );
+                this.cloneGroup(childGroup, newGroup.id);
             }
         });
     }
@@ -233,16 +230,12 @@ export default class VaultFormatB extends VaultFormat {
 
     getAllEntries(parentID: GroupID = null): Array<FormatBEntry> {
         const source = this.source as FormatBVault;
-        return parentID === null ? source.e : source.e.filter(entry =>
-            entry.g === parentID
-        );
+        return parentID === null ? source.e : source.e.filter(entry => entry.g === parentID);
     }
 
     getAllGroups(parentID: GroupID = null): Array<FormatBGroup> {
         const source = this.source as FormatBVault;
-        return parentID === null ? source.g : source.g.filter(group =>
-            group.g === parentID
-        );
+        return parentID === null ? source.g : source.g.filter(group => group.g === parentID);
     }
 
     getEntryAttributes(entrySource: FormatBEntry): PropertyKeyValueObject {
@@ -250,26 +243,31 @@ export default class VaultFormatB extends VaultFormat {
     }
 
     getEntryChanges(entrySource: FormatBEntry): Array<EntryChange> {
-        return Object.keys(entrySource.p).reduce((changes, property) =>
-            [
+        return Object.keys(entrySource.p).reduce(
+            (changes, property) => [
                 ...changes,
                 ...entrySource.p[property].history.map((histItem: FormatBValueHistoryItem) => {
                     const change: EntryChange = {
                         property,
-                        type: histItem.updated === entrySource.p[property].created
-                            ? EntryChangeType.Created
-                            : EntryChangeType.Modified,
+                        type:
+                            histItem.updated === entrySource.p[property].created
+                                ? EntryChangeType.Created
+                                : EntryChangeType.Modified,
                         ts: histItem.updated,
                         value: histItem.value
                     };
                     return change;
                 }),
-                ...(entrySource.p[property].deleted ? [{
-                    property,
-                    type: EntryChangeType.Deleted,
-                    ts: entrySource.p[property].deleted,
-                    value: null
-                }] : [])
+                ...(entrySource.p[property].deleted
+                    ? [
+                          {
+                              property,
+                              type: EntryChangeType.Deleted,
+                              ts: entrySource.p[property].deleted,
+                              value: null
+                          }
+                      ]
+                    : [])
             ],
             []
         );
@@ -292,9 +290,7 @@ export default class VaultFormatB extends VaultFormat {
     }
 
     getHistory(): History {
-        const hist = (<History> [
-            JSON.stringify(this.source)
-        ]);
+        const hist = <History>[JSON.stringify(this.source)];
         hist.format = VaultFormatID.B;
         return hist;
     }

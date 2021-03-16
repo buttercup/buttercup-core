@@ -1,5 +1,15 @@
-export { default as VaultManager, InterruptedAutoUpdateFunction, VaultManagerAddSourceOptions, VaultManagerOptions } from "./core/VaultManager";
-export { default as VaultSource, VaultSourceConfig, VaultSourceMetadata, VaultSourceUnlockOptions } from "./core/VaultSource";
+export {
+    default as VaultManager,
+    InterruptedAutoUpdateFunction,
+    VaultManagerAddSourceOptions,
+    VaultManagerOptions
+} from "./core/VaultManager";
+export {
+    default as VaultSource,
+    VaultSourceConfig,
+    VaultSourceMetadata,
+    VaultSourceUnlockOptions
+} from "./core/VaultSource";
 export { default as Vault } from "./core/Vault";
 export { default as Group } from "./core/Group";
 export { default as Entry } from "./core/Entry";
@@ -29,8 +39,7 @@ export {
     consumeVaultFacade,
     createGroupFacade,
     createVaultFacade
-}
-from "./facades/vault";
+} from "./facades/vault";
 export { isOTPURI, isVaultFacade } from "./facades/detection";
 export { CreateEntryFacadeOptions, consumeEntryFacade, createEntryFacade, fieldsToProperties } from "./facades/entry";
 export { CreateFieldDescriptorOptions, createFieldDescriptor } from "./facades/tools";
@@ -58,16 +67,8 @@ export { AppEnv, AppEnvGetPropertyOptions } from "./env/core/appEnv";
 export { getSharedAppEnv } from "./env/appEnv";
 
 export { generateUUID } from "./tools/uuid";
-export {
-    EntryURLType,
-    getEntryURLs
-} from "./tools/entry";
-export {
-    base64ToBytes,
-    bytesToBase64,
-    decodeBase64String,
-    encodeBase64String
-} from "./tools/encoding";
+export { EntryURLType, getEntryURLs } from "./tools/entry";
+export { base64ToBytes, bytesToBase64, decodeBase64String, encodeBase64String } from "./tools/encoding";
 
 export * from "./types";
 

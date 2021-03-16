@@ -33,11 +33,6 @@ async function extractEntries(facade: VaultFacade, memory: StorageInterface): Pr
 
 export class VaultFacadeEntrySearch extends BaseSearch {
     constructor(facades: Array<VaultFacade>, memory?: StorageInterface, searcherFactory?: SearcherFactory) {
-        super(
-            facades,
-            extractEntries,
-            memory,
-            searcherFactory
-        );
+        super(facades, extractEntries, memory, searcherFactory);
     }
 }

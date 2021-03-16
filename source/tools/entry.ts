@@ -16,7 +16,10 @@ const URL_PROP_ICON = /icon[\s_-]*ur[li]/i;
  * @param properties The entry properties
  * @param preference Optional URL type preference
  */
-export function getEntryURLs(properties: { [key: string]: string }, preference: EntryURLType = EntryURLType.Any): Array<string> {
+export function getEntryURLs(
+    properties: { [key: string]: string },
+    preference: EntryURLType = EntryURLType.Any
+): Array<string> {
     const urlRef = Object.keys(properties)
         .filter(key => URL_PROP.test(key))
         .reduce(

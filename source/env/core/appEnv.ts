@@ -31,7 +31,7 @@ export interface AppEnvGetPropertyOptions {
 interface InternalPrivateAPI {
     properties: {
         [key: string]: any;
-    }
+    };
 }
 
 /**

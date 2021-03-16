@@ -8,11 +8,11 @@ import StorageInterface from "../storage/StorageInterface";
 import { SetTimeout, VaultSourceID } from "../types";
 
 export interface InterruptedAutoUpdateFunction {
-    (): void | Promise<any>
+    (): void | Promise<any>;
 }
 
 interface StateChangeEnqueuedFunction {
-    (): void | Promise<any>
+    (): void | Promise<any>;
 }
 
 export interface VaultManagerAddSourceOptions {
@@ -131,9 +131,7 @@ export default class VaultManager extends EventEmitter {
      * @memberof VaultManager
      */
     async dehydrate() {
-        await this.enqueueStateChange(() =>
-            Promise.all(this._sources.map(source => this.dehydrateSource(source)))
-        );
+        await this.enqueueStateChange(() => Promise.all(this._sources.map(source => this.dehydrateSource(source))));
     }
 
     /**

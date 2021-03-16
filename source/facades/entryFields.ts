@@ -106,9 +106,9 @@ function createWebsiteFields(entry: Entry): Array<EntryFacadeField> {
 }
 
 export default {
-    [EntryType.CreditCard]:     createCreditCardFields,
-    [EntryType.Login]:          createLoginFields,
-    [EntryType.Note]:           createNoteFields,
-    [EntryType.SSHKey]:         createSSHKeyFields,
-    [EntryType.Website]:        createWebsiteFields
+    [EntryType.CreditCard]: createCreditCardFields,
+    [EntryType.Login]: createLoginFields,
+    [EntryType.Note]: createNoteFields,
+    [EntryType.SSHKey]: createSSHKeyFields,
+    [EntryType.Website]: createWebsiteFields
 };

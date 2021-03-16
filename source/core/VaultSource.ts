@@ -5,11 +5,7 @@ import Vault from "./Vault";
 import Credentials from "../credentials/Credentials";
 import { getCredentials } from "../credentials/channel";
 import { getUniqueID } from "../tools/encoding";
-import {
-    getSourceOfflineArchive,
-    sourceHasOfflineCopy,
-    storeSourceOfflineCopy
-} from "../tools/vaultManagement";
+import { getSourceOfflineArchive, sourceHasOfflineCopy, storeSourceOfflineCopy } from "../tools/vaultManagement";
 import { credentialsToDatasource, prepareDatasourceCredentials } from "../datasources/register";
 import { initialiseShares } from "../myButtercup/sharing";
 import VaultComparator from "../io/formatA/VaultComparator";
@@ -20,25 +16,25 @@ import VaultManager from "./VaultManager";
 import { VaultSourceID, VaultSourceStatus } from "../types";
 
 interface StateChangeEnqueuedFunction {
-    (): void | Promise<any>
+    (): void | Promise<any>;
 }
 
 export interface VaultSourceConfig {
     colour?: string;
     id?: VaultSourceID;
     order?: number;
-    meta?: VaultSourceMetadata
+    meta?: VaultSourceMetadata;
 }
 
 export interface VaultSourceUnlockOptions {
     initialiseRemote?: boolean;
     loadOfflineCopy?: boolean;
-    storeOfflineCopy?: boolean; 
+    storeOfflineCopy?: boolean;
 }
 
 export interface VaultSourceMetadata {
-    [property: string]: any
-};
+    [property: string]: any;
+}
 
 const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;
 const DEFAULT_COLOUR = "#000000";

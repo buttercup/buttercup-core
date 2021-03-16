@@ -2,19 +2,23 @@ import Entry from "../core/Entry";
 import Group from "../core/Group";
 import { GroupID } from "../types";
 
-export function findEntriesByProperty(entries: Array<Entry>, property: string | RegExp, value: string | RegExp): Array<Entry> {
+export function findEntriesByProperty(
+    entries: Array<Entry>,
+    property: string | RegExp,
+    value: string | RegExp
+): Array<Entry> {
     return entries.filter(entry => {
         const props = entry.getProperties(property);
         const propKeys = Object.keys(props);
         return propKeys.length > 0
             ? propKeys.some(propKey => {
-                    const itemValue = props[propKey];
-                    if (value instanceof RegExp) {
-                        return value.test(itemValue);
-                    } else {
-                        return itemValue.indexOf(value) >= 0;
-                    }
-                })
+                  const itemValue = props[propKey];
+                  if (value instanceof RegExp) {
+                      return value.test(itemValue);
+                  } else {
+                      return itemValue.indexOf(value) >= 0;
+                  }
+              })
             : false;
     });
 }

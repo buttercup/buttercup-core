@@ -5,9 +5,7 @@ import * as base64 from "base64-js";
  * @returns A decoded string or array of bytes
  */
 function decodeBase64(b64: string, raw: boolean = false): string | Uint8Array {
-    return raw
-        ? base64.toByteArray(b64)
-        : (new TextDecoder()).decode(base64.toByteArray(b64));
+    return raw ? base64.toByteArray(b64) : new TextDecoder().decode(base64.toByteArray(b64));
 }
 
 /**
@@ -23,7 +21,7 @@ function encodeBytesToBase64(bytes: Uint8Array): string {
  * @returns A base64-encoded string
  */
 function encodeTextToBase64(text: string): string {
-    return encodeBytesToBase64((new TextEncoder()).encode(text));
+    return encodeBytesToBase64(new TextEncoder().encode(text));
 }
 
 export function getEncodingResources() {

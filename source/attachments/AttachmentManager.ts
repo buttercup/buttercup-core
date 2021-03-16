@@ -109,7 +109,14 @@ export default class AttachmentManager {
      *  attachment
      * @memberof AttachmentManager
      */
-    async setAttachment(entry: Entry, attachmentID: string, attachmentData: Buffer | ArrayBuffer, name: string, type: string, timestamp = new Date()) {
+    async setAttachment(
+        entry: Entry,
+        attachmentID: string,
+        attachmentData: Buffer | ArrayBuffer,
+        name: string,
+        type: string,
+        timestamp = new Date()
+    ) {
         this._checkAttachmentSupport();
         if (!name || !type) {
             throw new Error(`Attachment properties required: name/type => ${name}/${type}`);

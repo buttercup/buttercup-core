@@ -1,10 +1,16 @@
 import { newRawValue } from "./history";
 import { getDateString } from "../../tools/date";
+import { getAllEntries as getAllFormatAEntries, getAllGroups as getAllFormatAGroups } from "../formatA/tools";
 import {
-    getAllEntries as getAllFormatAEntries,
-    getAllGroups as getAllFormatAGroups
-} from "../formatA/tools";
-import { FormatAEntry, FormatAGroup, FormatAVault, FormatBEntry, FormatBGroup, FormatBKeyValueObject, FormatBVault, PropertyKeyValueObject } from "../../types";
+    FormatAEntry,
+    FormatAGroup,
+    FormatAVault,
+    FormatBEntry,
+    FormatBGroup,
+    FormatBKeyValueObject,
+    FormatBVault,
+    PropertyKeyValueObject
+} from "../../types";
 
 export function convertFormatAEntry(entry: FormatAEntry): FormatBEntry {
     return {
@@ -35,9 +41,13 @@ export function convertFormatAVault(vault: FormatAVault): FormatBVault {
 }
 
 function flatKeyValueObjectToValuesObject(obj: PropertyKeyValueObject): FormatBKeyValueObject {
-    return Object.keys(obj).reduce((output, key) => Object.assign(output, {
-        [key]: newRawValue(obj[key])
-    }), {});
+    return Object.keys(obj).reduce(
+        (output, key) =>
+            Object.assign(output, {
+                [key]: newRawValue(obj[key])
+            }),
+        {}
+    );
 }
 
 export function isFormatBEntry(entry: FormatAEntry | FormatBEntry): entry is FormatBEntry {
@@ -51,7 +61,7 @@ export function isFormatBGroup(group: FormatAGroup | FormatBGroup): group is For
 /**
  * Get a key-value object from a Format-B values object.
  * This strips deleted properties.
- * @param valuesObj 
+ * @param valuesObj
  */
 export function valuesObjectToKeyValueObject(valuesObj: FormatBKeyValueObject): PropertyKeyValueObject {
     return Object.keys(valuesObj).reduce((output, key) => {

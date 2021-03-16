@@ -1,5 +1,6 @@
 import { getSharedAppEnv } from "./env/core/singleton";
 import { applyWebConfiguration } from "./env/web/index";
+import * as localFileClient from "./web/localFileClient";
 
 let __hasInitialised = false;
 
@@ -17,6 +18,6 @@ export function init() {
 export { default as LocalFileDatasource } from "./web/LocalFileDatasource";
 export { default as LocalStorageInterface } from "./web/LocalStorageInterface";
 export { default as LocalStorageDatasource } from "./web/LocalStorageDatasource";
-export * as localFileClient from "./web/localFileClient";
+export { localFileClient };
 
 export * from "./index.common";

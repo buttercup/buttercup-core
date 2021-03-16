@@ -30,10 +30,10 @@ function addExtraFieldsNonDestructive(entry: Entry, fields: Array<EntryFacadeFie
             .filter(name => !exists(name, EntryPropertyType.Property))
             .map(name =>
                 createFieldDescriptor(
-                    entry,                      // Entry instance
-                    "",                         // Title
+                    entry, // Entry instance
+                    "", // Title
                     EntryPropertyType.Property, // Type
-                    name,                       // Property name
+                    name, // Property name
                     { removeable: true }
                 )
             ),
@@ -41,10 +41,10 @@ function addExtraFieldsNonDestructive(entry: Entry, fields: Array<EntryFacadeFie
             .filter(name => !exists(name, EntryPropertyType.Attribute))
             .map(name =>
                 createFieldDescriptor(
-                    entry,                          // Entry instance
-                    "",                             // Title
-                    EntryPropertyType.Attribute,    // Type
-                    name                            // Property name
+                    entry, // Entry instance
+                    "", // Title
+                    EntryPropertyType.Attribute, // Type
+                    name // Property name
                 )
             )
     ];
@@ -118,7 +118,11 @@ export function createEntryFacade(entry?: Entry, options: CreateEntryFacadeOptio
         throw new Error(`Failed creating entry facade: No factory found for type "${facadeType}"`);
     }
     const fields = entry ? addExtraFieldsNonDestructive(entry, createFields(entry)) : createFields(entry);
-    if (!fields.find(field => field.propertyType === EntryPropertyType.Attribute && field.property === FacadeTypeAttribute)) {
+    if (
+        !fields.find(
+            field => field.propertyType === EntryPropertyType.Attribute && field.property === FacadeTypeAttribute
+        )
+    ) {
         const entryTypeField = createFieldDescriptor(
             entry, // Entry instance
             "", // Title
@@ -175,7 +179,13 @@ function getEntryFacadeType(entry?: Entry): EntryType {
  * @throws {Error} Throws if the property type is not recognised
  * @private
  */
-function setEntryValue(entry: Entry, propertyType: EntryPropertyType, property: string, value: string, valueType?: EntryPropertyValueType) {
+function setEntryValue(
+    entry: Entry,
+    propertyType: EntryPropertyType,
+    property: string,
+    value: string,
+    valueType?: EntryPropertyValueType
+) {
     switch (propertyType) {
         case "property":
             if (entry.getProperty(property) !== value) {

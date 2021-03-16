@@ -5,15 +5,7 @@ import {
     findGroupContainingGroupID,
     generateEntryLegacyHistoryItem
 } from "./tools";
-import {
-    EntryID,
-    EntryPropertyType,
-    FormatAEntry,
-    FormatAGroup,
-    FormatAVault,
-    GroupID,
-    VaultID
-} from "../../types";
+import { EntryID, EntryPropertyType, FormatAEntry, FormatAGroup, FormatAVault, GroupID, VaultID } from "../../types";
 
 export function executeArchiveID(vault: FormatAVault, opts: any, id: VaultID) {
     if (opts.shareID) {
@@ -204,7 +196,13 @@ export function executeSetArchiveAttribute(archive: FormatAVault, opts: any, att
     archive.attributes[attribute] = value;
 }
 
-export function executeSetEntryAttribute(archive: FormatAVault, opts: any, entryID: EntryID, attribute: string, value: string) {
+export function executeSetEntryAttribute(
+    archive: FormatAVault,
+    opts: any,
+    entryID: EntryID,
+    attribute: string,
+    value: string
+) {
     archive.groups = archive.groups || [];
     const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
@@ -217,7 +215,13 @@ export function executeSetEntryAttribute(archive: FormatAVault, opts: any, entry
     entry.history.push(generateEntryLegacyHistoryItem(attribute, EntryPropertyType.Attribute, previousValue, value));
 }
 
-export function executeSetEntryProperty(archive: FormatAVault, opts: any, entryID: EntryID, property: string, value: string) {
+export function executeSetEntryProperty(
+    archive: FormatAVault,
+    opts: any,
+    entryID: EntryID,
+    property: string,
+    value: string
+) {
     archive.groups = archive.groups || [];
     const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
@@ -230,7 +234,13 @@ export function executeSetEntryProperty(archive: FormatAVault, opts: any, entryI
     entry.history.push(generateEntryLegacyHistoryItem(property, EntryPropertyType.Property, previousValue, value));
 }
 
-export function executeSetGroupAttribute(archive: FormatAVault, opts: any, groupID: GroupID, attribute: string, value: string) {
+export function executeSetGroupAttribute(
+    archive: FormatAVault,
+    opts: any,
+    groupID: GroupID,
+    attribute: string,
+    value: string
+) {
     archive.groups = archive.groups || [];
     const group = findGroupByID(archive.groups, groupID);
     if (!group) {

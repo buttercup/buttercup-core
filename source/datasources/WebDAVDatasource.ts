@@ -76,9 +76,7 @@ export default class WebDAVDatasource extends TextDatasource {
      * @memberof WebDAVDatasource
      */
     save(history: History, credentials: Credentials): Promise<EncryptedContent> {
-        return super
-            .save(history, credentials)
-            .then(encrypted => this.client.putFileContents(this.path, encrypted));
+        return super.save(history, credentials).then(encrypted => this.client.putFileContents(this.path, encrypted));
     }
 
     /**

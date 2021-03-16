@@ -12,8 +12,8 @@ export type BufferLike = Buffer | ArrayBuffer;
 
 export interface CowlError extends Error {
     responseHeaders: {
-        [key: string]: string
-    }
+        [key: string]: string;
+    };
 }
 
 export interface CredentialsData {
@@ -39,8 +39,8 @@ export interface CredentialsDatasourceConfiguration {
 }
 
 export interface DatasourceLoadedData {
-    Format: any,
-    history: History
+    Format: any;
+    history: History;
 }
 
 export type DateString = string;
@@ -82,8 +82,8 @@ export interface EntryFacadeField {
 
 export interface EntryFacadeFieldFormattingSegment {
     char?: RegExp | string; // A character to match with a regular expression
-    repeat?: number;        // Number of times to repeat the character match (required for `char`)
-    exactly?: string;       // The exact character match (operates in opposition to `char`)
+    repeat?: number; // Number of times to repeat the character match (required for `char`)
+    exactly?: string; // The exact character match (operates in opposition to `char`)
 }
 
 export interface EntryFacadeFieldFormatting {
@@ -165,7 +165,7 @@ export interface FormatBGroup {
 }
 
 export interface FormatBKeyValueObject {
-    [key: string]: FormatBValue
+    [key: string]: FormatBValue;
 }
 
 export interface FormatBValue {
@@ -305,17 +305,17 @@ export enum VaultSourceStatus {
     Locked = "locked",
     Pending = "pending",
     Unlocked = "unlocked"
-};
+}
 
- export interface VaultInsights {
-    avgPassLen: number;         // Average password length
+export interface VaultInsights {
+    avgPassLen: number; // Average password length
     duplicatePasswords: number; // Number of duplicate passwords
-    entries: number;            // Number of entries in the vault
-    groups: number;             // Number of groups in the vault
-    longPassLen: number;        // Longest password length
-    shortPassLen: number;       // Shortest password length
-    trashEntries: number;       // Number of entries in trash
-    trashGroups: number;        // Number of groups in trash
-    usernames: number;          // Number of usernames in the vault
-    weakPasswords: number;      // Number of detected weak passwords
- }
+    entries: number; // Number of entries in the vault
+    groups: number; // Number of groups in the vault
+    longPassLen: number; // Longest password length
+    shortPassLen: number; // Shortest password length
+    trashEntries: number; // Number of entries in trash
+    trashGroups: number; // Number of groups in trash
+    usernames: number; // Number of usernames in the vault
+    weakPasswords: number; // Number of detected weak passwords
+}

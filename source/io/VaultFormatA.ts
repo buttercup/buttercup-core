@@ -132,7 +132,7 @@ export default class VaultFormatA extends VaultFormat {
 
     static historiesDiffer(historyA: History, historyB: History): boolean {
         const differences = VaultComparator.calculateHistoryDifferences(historyA, historyB);
-        return differences === null || (differences.original.length > 0 || differences.secondary.length > 0);
+        return differences === null || differences.original.length > 0 || differences.secondary.length > 0;
     }
 
     static isEncrypted(contents: string): boolean {
@@ -353,7 +353,11 @@ export default class VaultFormatA extends VaultFormat {
         return (entrySource.history || [])
             .filter(item => item.propertyType === EntryPropertyType.Property)
             .map(item => {
-                const type = !item.originalValue ? EntryChangeType.Created : typeof item.newValue === "string" ? EntryChangeType.Modified : EntryChangeType.Deleted;
+                const type = !item.originalValue
+                    ? EntryChangeType.Created
+                    : typeof item.newValue === "string"
+                    ? EntryChangeType.Modified
+                    : EntryChangeType.Deleted;
                 const change: EntryChange = {
                     property: item.property,
                     type,

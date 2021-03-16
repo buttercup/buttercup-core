@@ -2,7 +2,15 @@ import TextDatasource from "./TextDatasource";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
 import Credentials from "../credentials/Credentials";
 import { getCredentials } from "../credentials/channel";
-import { AttachmentDetails, BufferLike, DatasourceLoadedData, EncryptedContent, History, MemoryStore, VaultID } from "../types";
+import {
+    AttachmentDetails,
+    BufferLike,
+    DatasourceLoadedData,
+    EncryptedContent,
+    History,
+    MemoryStore,
+    VaultID
+} from "../types";
 
 const TYPE = "memory";
 
@@ -79,7 +87,12 @@ export default class MemoryDatasource extends TextDatasource {
      * @param details Attachment details
      * @memberof MemoryDatasource
      */
-    putAttachment(vaultID: VaultID, attachmentID: string, buffer: BufferLike, details: AttachmentDetails): Promise<void> {
+    putAttachment(
+        vaultID: VaultID,
+        attachmentID: string,
+        buffer: BufferLike,
+        details: AttachmentDetails
+    ): Promise<void> {
         return this._ensureAttachmentsPaths(vaultID).then(() => {
             this._store.attachments[vaultID][attachmentID] = buffer;
         });

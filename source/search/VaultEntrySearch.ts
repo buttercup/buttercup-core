@@ -34,11 +34,6 @@ async function extractEntries(vault: Vault, memory: StorageInterface): Promise<A
 
 export class VaultEntrySearch extends BaseSearch {
     constructor(vaults: Array<Vault>, memory?: StorageInterface, searcherFactory?: SearcherFactory) {
-        super(
-            vaults,
-            extractEntries,
-            memory,
-            searcherFactory
-        );
+        super(vaults, extractEntries, memory, searcherFactory);
     }
 }

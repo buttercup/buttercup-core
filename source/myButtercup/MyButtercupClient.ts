@@ -18,9 +18,7 @@ import {
 } from "./symbols";
 import { detectFormat } from "../io/formatRouter";
 import { isTypedArray } from "../tools/buffer";
-import {
-    encodeBase64String,
-} from "../tools/encoding";
+import { encodeBase64String } from "../tools/encoding";
 import {
     CowlError,
     MyButtercupAttachment,
@@ -80,7 +78,12 @@ export default class MyButtercupClient extends EventEmitter {
      * @memberof MyButtercupClient
      * @static
      */
-    static exchangeAuthCodeForTokens(authCode: string, clientID: string, clientSecret: string, redirectURI: string): Promise<{ accessToken: string, refreshToken: string }> {
+    static exchangeAuthCodeForTokens(
+        authCode: string,
+        clientID: string,
+        clientSecret: string,
+        redirectURI: string
+    ): Promise<{ accessToken: string; refreshToken: string }> {
         const baseAuth = encodeBase64String(`${clientID}:${clientSecret}`);
         const encodedRedir = encodeURIComponent(redirectURI);
         const requestOptions = {
@@ -303,7 +306,7 @@ export default class MyButtercupClient extends EventEmitter {
      * @returns The user's vault contents
      * @memberof MyButtercupClient
      */
-    fetchUserVault(): Promise<{ archive: string, updateID: number }> {
+    fetchUserVault(): Promise<{ archive: string; updateID: number }> {
         const requestOptions = {
             url: API_OWN_ARCHIVE,
             method: "GET",

@@ -249,7 +249,7 @@ export function createVaultFacade(vault: Vault, options: CreateVaultFacadeOption
         _ver: FACADE_VERSION,
         type: "vault",
         id: vault.id,
-        attributes: vault.getAttribute() as { [key: string] : string },
+        attributes: vault.getAttribute() as { [key: string]: string },
         groups: getGroupsFacades(vault, { includeTrash }),
         entries: getEntriesFacades(vault, { includeTrash })
     };
@@ -266,7 +266,7 @@ export function createGroupFacade(group: Group, parentID: GroupID = "0"): GroupF
         type: "group",
         id: group ? group.id : null,
         title: group ? group.getTitle() : "",
-        attributes: group ? group.getAttribute() as { [key: string]: string } : {},
+        attributes: group ? (group.getAttribute() as { [key: string]: string }) : {},
         parentID
     };
 }
@@ -287,7 +287,10 @@ function getEntriesFacades(vault: Vault, options: GetGroupEntriesFacadesOptions 
  * @param options Options for getting entry facades
  * @returns An array of entry facades
  */
-function getGroupEntriesFacades(entryCollection: Group, options: GetGroupEntriesFacadesOptions = {}): Array<EntryFacade> {
+function getGroupEntriesFacades(
+    entryCollection: Group,
+    options: GetGroupEntriesFacadesOptions = {}
+): Array<EntryFacade> {
     const { includeTrash = true } = options;
     const facades = entryCollection.getEntries().reduce((facades, entry) => {
         if (includeTrash === false && entry.isInTrash()) {
@@ -313,12 +316,6 @@ function getGroupsFacades(vault: Vault, options: GetGroupsFacadesOptions = {}): 
         if (includeTrash === false && (group.isTrash() || group.isInTrash())) {
             return output;
         }
-        return [
-            ...output,
-            createGroupFacade(
-                group,
-                group.vault.format.getItemParentID(group._source)
-            )
-        ];
+        return [...output, createGroupFacade(group, group.vault.format.getItemParentID(group._source))];
     }, []);
 }

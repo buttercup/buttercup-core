@@ -14,7 +14,11 @@ export function sourceHasOfflineCopy(storage: StorageInterface, sourceID: VaultS
     );
 }
 
-export function storeSourceOfflineCopy(storage: StorageInterface, sourceID: VaultSourceID, content: string): Promise<void> {
+export function storeSourceOfflineCopy(
+    storage: StorageInterface,
+    sourceID: VaultSourceID,
+    content: string
+): Promise<void> {
     const sourceKey = `${STORAGE_PREFIX}${sourceID}`;
     return storage.setValue(sourceKey, content);
 }

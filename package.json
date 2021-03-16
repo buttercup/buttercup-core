@@ -24,12 +24,12 @@
     "dev:node": "tsc --watch",
     "dev:web": "webpack --mode=development --watch",
     "docs": "npm run generate:docs",
-    "format": "prettier --write '{source,test}/**/*.js'",
+    "format": "prettier --write '{source,test}/**/*.{js,ts}'",
     "generate:docs": "jsdoc2md 'source/**/*.js' > API.md",
     "generate:vault": "npm run build:node && node scripts/gen_vault_format_a.js && node scripts/gen_vault_format_b.js",
     "prepublishOnly": "run-s build",
     "test": "run-s test:node test:web test:format",
-    "test:format": "prettier-check '{source,test}/**/*.js'",
+    "test:format": "prettier-check '{source,test}/**/*.{js,ts}'",
     "test:integration": "npm run build:node && mocha -r test/index.js --timeout 15000 'test/integration/**/*.spec.js'",
     "test:integration:watch": "nodemon --exec 'npm run test:integration' --watch source --watch test",
     "test:node": "npm run build:node && nyc mocha -r test/index.js --timeout 15000 'test/{unit,integration}/**/*.spec.js'",
@@ -46,7 +46,7 @@
     "*.md"
   ],
   "lint-staged": {
-    "{source,test}/**/*.js": [
+    "{source,test}/**/*.{js,ts}": [
       "prettier --write"
     ]
   },

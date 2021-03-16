@@ -89,7 +89,7 @@ export function registerDatasource(datasourceType: string, DSClass: any, flags =
 }
 
 interface DatasourcePostProcessorHandler {
-    remove: () => void
+    remove: () => void;
 }
 
 /**
