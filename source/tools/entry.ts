@@ -1,4 +1,7 @@
+import Entry from "../core/Entry";
+import Group from "../core/Group";
 import { objectValues } from "./polyfill";
+import { GroupID } from "../types";
 
 export enum EntryURLType {
     Any = "any",
@@ -9,6 +12,20 @@ export enum EntryURLType {
 
 const URL_PROP = /(^|[a-zA-Z0-9_-]|\b)(ur[li]|UR[LI]|Ur[li])(\b|$|[_-])/;
 const URL_PROP_ICON = /icon[\s_-]*ur[li]/i;
+
+export function getEntryPath(entry: Entry): Array<GroupID> {
+    let lastParent: Group = null;
+    const path: Array<GroupID> = [];
+    do {
+        lastParent = lastParent
+            ? lastParent.getParentGroup()
+            : entry.getGroup();
+        if (lastParent) {
+            path.unshift(lastParent.id);
+        }
+    } while (lastParent);
+    return path;
+}
 
 /**
  * Get URLs from an entry's properties

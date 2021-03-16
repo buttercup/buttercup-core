@@ -1,7 +1,7 @@
 import facadeFieldFactories from "./entryFields";
 import { createFieldDescriptor, getEntryValueType, setEntryValueType } from "./tools";
 import Entry from "../core/Entry";
-import { EntryFacade, EntryFacadeField, EntryPropertyType, EntryType, EntryPropertyValueType } from "../types";
+import { EntryFacade, EntryFacadeField, EntryID, EntryPropertyType, EntryType, EntryPropertyValueType, GroupID, VaultFacade } from "../types";
 
 export interface CreateEntryFacadeOptions {
     type?: EntryType;
@@ -154,6 +154,24 @@ export function fieldsToProperties(facadeFields: Array<EntryFacadeField>): { [ke
         output[field.property] = field.value;
         return output;
     }, {});
+}
+
+export function getEntryFacadePath(entryID: EntryID, facade: VaultFacade): Array<GroupID> {
+    const entry = facade.entries.find(entry => entry.id === entryID);
+    if (!entry) {
+        throw new Error(`No entry facade found for ID: ${entryID}`);
+    }
+    let targetGroupID: GroupID = null;
+    const path: Array<GroupID> = [];
+    do {
+        targetGroupID = targetGroupID
+            ? facade.groups.find(g => g.id === targetGroupID).parentID
+            : entry.parentID;
+        if (targetGroupID && targetGroupID != "0") {
+            path.unshift(targetGroupID);
+        }
+    } while (targetGroupID && targetGroupID != "0");
+    return path;
 }
 
 /**

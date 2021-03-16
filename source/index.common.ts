@@ -41,7 +41,7 @@ export {
     createVaultFacade
 } from "./facades/vault";
 export { isOTPURI, isVaultFacade } from "./facades/detection";
-export { CreateEntryFacadeOptions, consumeEntryFacade, createEntryFacade, fieldsToProperties } from "./facades/entry";
+export { CreateEntryFacadeOptions, consumeEntryFacade, createEntryFacade, fieldsToProperties, getEntryFacadePath } from "./facades/entry";
 export { CreateFieldDescriptorOptions, createFieldDescriptor } from "./facades/tools";
 export {
     DEFAULT_ENTRY_TYPE,
@@ -67,7 +67,7 @@ export { AppEnv, AppEnvGetPropertyOptions } from "./env/core/appEnv";
 export { getSharedAppEnv } from "./env/appEnv";
 
 export { generateUUID } from "./tools/uuid";
-export { EntryURLType, getEntryURLs } from "./tools/entry";
+export { EntryURLType, getEntryPath, getEntryURLs } from "./tools/entry";
 export { base64ToBytes, bytesToBase64, decodeBase64String, encodeBase64String } from "./tools/encoding";
 
 export * from "./types";
