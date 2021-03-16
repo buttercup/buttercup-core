@@ -2,7 +2,7 @@ import levenshtein from "fast-levenshtein";
 import StorageInterface from "../storage/StorageInterface";
 import { buildSearcher } from "./searcher";
 import Vault from "../core/Vault";
-import { EntryID, VaultFacade, VaultID } from "../types";
+import { EntryID, EntryType, VaultFacade, VaultID } from "../types";
 
 interface DomainScores {
     [domain: string]: number;
@@ -10,11 +10,7 @@ interface DomainScores {
 
 type EntryFetcher = (target: Vault | VaultFacade, memory: StorageInterface) => Promise<Array<ProcessedSearchEntry>>;
 
-export interface ProcessedSearchEntry {
-    id: EntryID;
-    properties: { [property: string]: string };
-    urls: Array<string>;
-    vaultID: VaultID;
+export interface ProcessedSearchEntry extends SearchResult {
     domainScores: DomainScores;
 }
 
@@ -25,6 +21,7 @@ export interface SearcherFactory {
 export interface SearchResult {
     id: EntryID;
     properties: { [property: string]: string };
+    entryType: EntryType;
     urls: Array<string>;
     vaultID: VaultID;
 }

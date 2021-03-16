@@ -22,6 +22,7 @@ async function extractEntries(facade: VaultFacade, memory: StorageInterface): Pr
         entries.push({
             id: nextEntry.id,
             properties,
+            entryType: nextEntry.type,
             urls,
             vaultID: facade.id,
             domainScores: vaultScore[nextEntry.id] || {}

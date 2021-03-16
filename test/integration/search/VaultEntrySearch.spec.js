@@ -1,4 +1,4 @@
-const { Group, MemoryStorageInterface, Vault, VaultEntrySearch } = require("../../../dist/index.node.js");
+const { Entry, EntryType, Group, MemoryStorageInterface, Vault, VaultEntrySearch } = require("../../../dist/index.node.js");
 
 describe("VaultEntrySearch", function() {
     beforeEach(function() {
@@ -8,7 +8,8 @@ describe("VaultEntrySearch", function() {
             .createEntry("Personal Mail")
             .setProperty("username", "green.monkey@fastmail.com")
             .setProperty("password", "df98Sm2.109x{91")
-            .setProperty("url", "https://fastmail.com");
+            .setProperty("url", "https://fastmail.com")
+            .setAttribute(Entry.Attributes.FacadeType, EntryType.Website);
         groupA
             .createEntry("Work")
             .setProperty("username", "j.crowley@gmov.edu.au")
@@ -23,7 +24,8 @@ describe("VaultEntrySearch", function() {
         groupB
             .createEntry("MyBank")
             .setProperty("username", "324654356346")
-            .setProperty("PIN", "1234");
+            .setProperty("PIN", "1234")
+            .setAttribute(Entry.Attributes.FacadeType, EntryType.Login);
         groupB
             .createEntry("Insurance")
             .setProperty("username", "testing-user")
@@ -102,6 +104,11 @@ describe("VaultEntrySearch", function() {
             it("excludes trash entries", function() {
                 const results = this.search.searchByTerm("ebay");
                 expect(results).to.have.lengthOf(0);
+            });
+
+            it("returns resulting entry type", function() {
+                const [res] = this.search.searchByTerm("Personal Mail");
+                expect(res).to.have.property("entryType", EntryType.Website);
             });
         });
 
