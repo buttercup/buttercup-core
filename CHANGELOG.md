@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.12.0
+_2021-03-16_
+
+ * Search result `entryType` property
+
 ## v5.11.0
 _2021-03-14_
 
