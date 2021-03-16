@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.12.1
+_2021-03-16_
+
+ * `getEntryPath` and `getEntryFacadePath` helpers
+
 ## v5.12.0
 _2021-03-16_
 
