@@ -15,10 +15,7 @@ describe("tools/entry", function() {
         });
 
         it("returns the correct path", function() {
-            expect(getEntryPath(this.entry)).to.deep.equal([
-                this.group1.id,
-                this.group2.id
-            ]);
+            expect(getEntryPath(this.entry)).to.deep.equal([this.group1.id, this.group2.id]);
         });
     });
-})
+});

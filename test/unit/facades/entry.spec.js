@@ -1,4 +1,10 @@
-const { Entry, Vault, createEntryFacade, createVaultFacade, getEntryFacadePath } = require("../../../dist/index.node.js");
+const {
+    Entry,
+    Vault,
+    createEntryFacade,
+    createVaultFacade,
+    getEntryFacadePath
+} = require("../../../dist/index.node.js");
 
 describe("facades/entry", function() {
     describe("createEntryFacade", function() {
@@ -69,10 +75,7 @@ describe("facades/entry", function() {
         });
 
         it("returns the correct path", function() {
-            expect(getEntryFacadePath(this.entry.id, this.vaultFacade)).to.deep.equal([
-                this.group1.id,
-                this.group2.id
-            ]);
+            expect(getEntryFacadePath(this.entry.id, this.vaultFacade)).to.deep.equal([this.group1.id, this.group2.id]);
         });
     });
 });

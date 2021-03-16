@@ -17,9 +17,7 @@ export function getEntryPath(entry: Entry): Array<GroupID> {
     let lastParent: Group = null;
     const path: Array<GroupID> = [];
     do {
-        lastParent = lastParent
-            ? lastParent.getParentGroup()
-            : entry.getGroup();
+        lastParent = lastParent ? lastParent.getParentGroup() : entry.getGroup();
         if (lastParent) {
             path.unshift(lastParent.id);
         }

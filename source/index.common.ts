@@ -41,7 +41,13 @@ export {
     createVaultFacade
 } from "./facades/vault";
 export { isOTPURI, isVaultFacade } from "./facades/detection";
-export { CreateEntryFacadeOptions, consumeEntryFacade, createEntryFacade, fieldsToProperties, getEntryFacadePath } from "./facades/entry";
+export {
+    CreateEntryFacadeOptions,
+    consumeEntryFacade,
+    createEntryFacade,
+    fieldsToProperties,
+    getEntryFacadePath
+} from "./facades/entry";
 export { CreateFieldDescriptorOptions, createFieldDescriptor } from "./facades/tools";
 export {
     DEFAULT_ENTRY_TYPE,
