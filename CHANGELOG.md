@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v5.12.2
+_2021-03-21_
+
+ * **Bugfix**:
+   * `VaultManager` auto-update race condition
+
 ## v5.12.1
 _2021-03-16_
 
