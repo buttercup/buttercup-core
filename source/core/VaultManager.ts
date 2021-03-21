@@ -347,9 +347,7 @@ export default class VaultManager extends EventEmitter {
             this._autoUpdateDelay = delay;
             this._startAutoUpdateTimer();
         } else {
-            this._autoUpdateDelay = null;
-            clearTimeout(this._autoUpdateTimer);
-            this._autoUpdateTimer = null;
+            this._stopAutoUpdateTimer();
         }
     }
 
@@ -389,15 +387,24 @@ export default class VaultManager extends EventEmitter {
         );
     }
 
-    _startAutoUpdateTimer() {
-        clearTimeout(this._autoUpdateTimer);
-        this._autoUpdateTimer = setTimeout(() => {
-            this._autoUpdateSources().then(() => {
-                if (this._autoUpdateEnabled) {
-                    this._startAutoUpdateTimer();
-                }
-            });
-        }, this._autoUpdateDelay);
+    async _startAutoUpdateTimer() {
+        await this.enqueueStateChange(() => {
+            clearTimeout(this._autoUpdateTimer);
+            this._autoUpdateTimer = setTimeout(() => {
+                this._autoUpdateSources().then(() => {
+                    if (this._autoUpdateEnabled) {
+                        this._startAutoUpdateTimer();
+                    }
+                });
+            }, this._autoUpdateDelay);
+        });
+    }
+
+    async _stopAutoUpdateTimer() {
+        await this.enqueueStateChange(() => {
+            clearTimeout(this._autoUpdateTimer);
+            this._autoUpdateTimer = null;
+        });
     }
 
     _storeDehydratedSource(id: VaultSourceID, dehydratedSource: string) {

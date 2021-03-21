@@ -537,18 +537,21 @@ export default class VaultSource extends EventEmitter {
      * @memberof VaultSource
      */
     async update({ skipDiff = false } = {}) {
-        await this._enqueueStateChange(
+        const didUpdate = await this._enqueueStateChange(
             () =>
                 (skipDiff ? Promise.resolve(false) : this.localDiffersFromRemote()).then(differs => {
                     if (differs) {
-                        return this.mergeFromRemote();
+                        return this.mergeFromRemote().then(() => true);
                     }
+                    return false;
                 }),
             // @todo shares
             // .then(() => initialiseShares(this)),
             /* stack */ "updating"
         );
-        this.emit("updated");
+        if (didUpdate) {
+            this.emit("updated");
+        }
     }
 
     /**
