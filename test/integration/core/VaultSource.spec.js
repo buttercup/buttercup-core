@@ -17,13 +17,19 @@ const {
 async function createTextSourceCredentials() {
     const vault = new Vault();
     const general = vault.createGroup("General");
-    general.createEntry("Login").setProperty("username", "user").setProperty("password", "test");
+    general
+        .createEntry("Login")
+        .setProperty("username", "user")
+        .setProperty("password", "test");
     const tds = new TextDatasource(Credentials.fromDatasource({ type: "text" }, "test"));
     const encrypted = await tds.save(vault.format.getHistory(), Credentials.fromPassword("test"));
-    return Credentials.fromDatasource({
-        type: "text",
-        content: encrypted
-    }, "test");
+    return Credentials.fromDatasource(
+        {
+            type: "text",
+            content: encrypted
+        },
+        "test"
+    );
 }
 
 describe("VaultSource", function() {

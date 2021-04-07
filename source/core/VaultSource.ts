@@ -454,9 +454,10 @@ export default class VaultSource extends EventEmitter {
         if (this.status !== VaultSourceStatus.Locked && this.status !== VaultSourceStatus.Unlocked) {
             throw new Error(`Source in invalid state for password test: ${this.status}`);
         }
-        const credStr = this.status === VaultSourceStatus.Locked
-            ? this._credentials as string
-            : await (<Credentials> this._credentials).toSecureString();
+        const credStr =
+            this.status === VaultSourceStatus.Locked
+                ? (this._credentials as string)
+                : await (<Credentials>this._credentials).toSecureString();
         try {
             await processDehydratedCredentials(credStr, password);
             return true;
