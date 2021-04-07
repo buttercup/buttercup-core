@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v5.13.0
+_2021-04-07_
+
+ * `VaultSource#testMasterPassword`
+
 ## v5.12.2
 _2021-03-21_
 
