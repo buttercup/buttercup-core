@@ -59,4 +59,21 @@ describe("merging", function() {
         expect(this.vault.getAttribute("new")).to.equal("set");
         expect(this.vault.getAttribute("later")).to.equal("test");
     });
+
+    it("handles large amounts of divergence", async function() {
+        const count = 300;
+        for (let i = 0; i < count; i += 1) {
+            const sg1 = this.stagedVault.createGroup(`SG ${i}`);
+            sg1.createEntry(`SE ${i}`)
+                .setProperty("username", `user ${i}`)
+                .setProperty("password", `pass${i}`);
+            const og1 = this.vault.createGroup(`G ${i}`);
+            og1.createEntry(`E ${i}`)
+                .setProperty("username", `user ${i}`)
+                .setProperty("password", `pass${i}`);
+        }
+        await this.saveAll();
+        const originalCount = this.vault.format.getAllEntries().length;
+        expect(originalCount).to.be.above(count * 2);
+    });
 });
