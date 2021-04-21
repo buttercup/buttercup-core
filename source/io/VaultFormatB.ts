@@ -387,4 +387,8 @@ export default class VaultFormatB extends VaultFormat {
             item.updated = getTimestamp();
         }
     }
+
+    supportsShares(): boolean {
+        return true;
+    }
 }
