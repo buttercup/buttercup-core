@@ -154,7 +154,6 @@ export interface FormatAEntry {
     attributes?: PropertyKeyValueObject;
     properties?: PropertyKeyValueObject;
     parentID: GroupID;
-    permissions?: Array<VaultPermission>;
     history?: Array<EntryLegacyHistoryItem>;
 }
 
@@ -165,7 +164,6 @@ export interface FormatAGroup {
     entries?: Array<FormatAEntry>;
     title: string;
     parentID: GroupID;
-    permissions?: Array<VaultPermission>;
 }
 
 export interface FormatAVault {
@@ -195,6 +193,11 @@ export interface FormatBGroup {
 
 export interface FormatBKeyValueObject {
     [key: string]: FormatBValue;
+}
+
+export interface FormatBShare {
+    id: ShareID;
+    upd: string;
 }
 
 export interface FormatBValue {
@@ -263,12 +266,6 @@ export enum VaultFormatID {
 }
 
 export type VaultID = string;
-
-export enum VaultPermission {
-    Manage = "archive/member/manage",
-    Read = "archive/member/read",
-    Write = "archive/member/write"
-}
 
 export type VaultSourceID = string;
 
