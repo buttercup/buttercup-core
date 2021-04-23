@@ -178,6 +178,7 @@ export interface FormatAVault {
 export interface FormatBEntry {
     id: EntryID;
     g: GroupID;
+    d?: UTCTimestamp;
     a: FormatBKeyValueObject;
     p: FormatBKeyValueObject;
     s?: ShareID;
@@ -186,6 +187,7 @@ export interface FormatBEntry {
 export interface FormatBGroup {
     id: GroupID;
     a: FormatBKeyValueObject;
+    d?: UTCTimestamp;
     t: string;
     g: GroupID;
     s?: ShareID;
