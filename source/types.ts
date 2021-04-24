@@ -198,6 +198,8 @@ export interface FormatBKeyValueObject {
 export interface FormatBShare {
     id: ShareID;
     upd: string;
+    k: string;
+    p: Array<SharePermission>;
 }
 
 export interface FormatBValue {
@@ -219,6 +221,7 @@ export interface FormatBVault {
     g: Array<FormatBGroup>;
     e: Array<FormatBEntry>;
     c: DateString;
+    s: Array<FormatBShare>;
 }
 
 export interface GroupFacade {
@@ -235,6 +238,16 @@ export interface History extends Array<string> {
     format?: VaultFormatID;
 }
 
+export interface IncomingShare {
+    id: ShareID;
+    format: VaultFormatID;
+    key: string;
+    update: string;
+    permissions: Array<SharePermission>;
+    groups: Array<FormatBGroup>;
+    entries: Array<FormatBEntry>;
+}
+
 export interface MemoryStore {
     attachments?: Object;
     vault?: EncryptedContent;
@@ -247,6 +260,12 @@ export interface PropertyKeyValueObject {
 export type SetTimeout = ReturnType<typeof setTimeout>;
 
 export type ShareID = string;
+
+export enum SharePermission {
+    Manage = "m",
+    Read = "r",
+    Write = "w"
+}
 
 export type UTCTimestamp = number;
 
