@@ -1,5 +1,12 @@
 # Core library changelog
 
+## v5.13.1
+_2021-05-18_
+
+ * **Bugfix**:
+   * Merging Format-A vaults would break due to incorrectly modified PAD IDs
+   * Decryption would break if the file contents contained a new-line
+
 ## v5.13.0
 _2021-04-07_
 
