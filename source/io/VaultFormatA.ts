@@ -184,11 +184,7 @@ export default class VaultFormatA extends VaultFormat {
         const newVault = new Vault(VaultFormatA);
         newVault.format.erase();
         // merge all history and execute on new vault
-        base.concat(newHistoryStaged)
-            .concat(newHistoryMain)
-            .forEach(command => {
-                newVault.format.execute(command);
-            });
+        newVault.format.execute(base.concat(newHistoryStaged).concat(newHistoryMain));
         newVault.format.dirty = false;
         return newVault;
     }
