@@ -73,7 +73,7 @@ describe("AttachmentManager", function() {
             name: "image.png",
             type: "image/png",
             sizeOriginal: 439968,
-            sizeEncrypted: 440129,
+            sizeEncrypted: 440185,
             created: nowDate.toUTCString(),
             updated: nowDate.toUTCString()
         });
@@ -133,7 +133,7 @@ describe("AttachmentManager", function() {
                 );
             } catch (err) {
                 expect(err).to.match(/Not enough space/i);
-                expect(err).to.match(/needed = 440129 B/i);
+                expect(err).to.match(/needed = 440185 B/i);
                 expect(err).to.match(/available = 1000 B/i);
             }
             expect(getAvailableStorage.callCount).to.equal(1);
