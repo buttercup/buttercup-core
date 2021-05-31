@@ -1,4 +1,4 @@
-import { createSession } from "iocane/web";
+import { createAdapter } from "iocane/web";
 import { CRYPTO_PBKDF2_ROUNDS, CRYPTO_RANDOM_STRING_CHARS } from "../core/constants";
 
 const UINT16_MAX = 65535;
@@ -6,15 +6,15 @@ const UINT16_MAX = 65535;
 let __derivationRoundsOverride = CRYPTO_PBKDF2_ROUNDS;
 
 function decryptData(data: string | ArrayBuffer, password): Promise<string | ArrayBuffer> {
-    return createSession().decrypt(data, password);
+    return createAdapter().decrypt(data, password);
 }
 
 function encryptData(data: string | ArrayBuffer, password): Promise<string | ArrayBuffer> {
-    const session = createSession();
+    const adapter = createAdapter();
     if (__derivationRoundsOverride > 0) {
-        session.setDerivationRounds(__derivationRoundsOverride);
+        adapter.setDerivationRounds(__derivationRoundsOverride);
     }
-    return session.encrypt(data, password);
+    return adapter.encrypt(data, password);
 }
 
 export function getCryptoResources() {

@@ -1,3 +1,4 @@
+import { WebDAVClient } from "webdav";
 import TextDatasource from "./TextDatasource";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
 import { getSharedAppEnv } from "../env/appEnv";
@@ -11,7 +12,7 @@ import { DatasourceLoadedData, EncryptedContent, History } from "../types";
  * @memberof module:Buttercup
  */
 export default class WebDAVDatasource extends TextDatasource {
-    _client: any;
+    _client: WebDAVClient;
     _path: string;
 
     /**
@@ -63,7 +64,7 @@ export default class WebDAVDatasource extends TextDatasource {
         return this.hasContent
             ? super.load(credentials)
             : this.client.getFileContents(this.path, { format: "text" }).then(content => {
-                  this.setContent(content);
+                  this.setContent(content as string);
                   return super.load(credentials);
               });
     }
@@ -75,8 +76,9 @@ export default class WebDAVDatasource extends TextDatasource {
      * @returns A promise resolving when the save is complete
      * @memberof WebDAVDatasource
      */
-    save(history: History, credentials: Credentials): Promise<EncryptedContent> {
-        return super.save(history, credentials).then(encrypted => this.client.putFileContents(this.path, encrypted));
+    async save(history: History, credentials: Credentials): Promise<any> {
+        const content = await super.save(history, credentials);
+        await this.client.putFileContents(this.path, content);
     }
 
     /**

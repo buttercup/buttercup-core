@@ -1,19 +1,19 @@
-import { createSession } from "iocane";
+import { createAdapter } from "iocane";
 import cryptoRandomString from "crypto-random-string";
 import { CRYPTO_PBKDF2_ROUNDS, CRYPTO_RANDOM_STRING_CHARS } from "../core/constants";
 
 let __derivationRoundsOverride = CRYPTO_PBKDF2_ROUNDS;
 
 function decryptData(data: string | Buffer, password: string): Promise<string | Buffer> {
-    return createSession().decrypt(data, password) as Promise<string | Buffer>;
+    return createAdapter().decrypt(data, password) as Promise<string | Buffer>;
 }
 
 function encryptData(data: string | Buffer, password: string): Promise<string | Buffer> {
-    const session = createSession();
+    const adapter = createAdapter();
     if (__derivationRoundsOverride > 0) {
-        session.setDerivationRounds(__derivationRoundsOverride);
+        adapter.setDerivationRounds(__derivationRoundsOverride);
     }
-    return session.encrypt(data, password) as Promise<string | Buffer>;
+    return adapter.encrypt(data, password) as Promise<string | Buffer>;
 }
 
 export function getCryptoResources() {

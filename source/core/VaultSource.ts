@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-import ChannelQueue from "@buttercup/channel-queue";
+import { ChannelQueue } from "@buttercup/channel-queue";
 import { Layerr } from "layerr";
 import Vault from "./Vault";
 import Credentials from "../credentials/Credentials";
@@ -8,7 +8,6 @@ import { getUniqueID } from "../tools/encoding";
 import { getSourceOfflineArchive, sourceHasOfflineCopy, storeSourceOfflineCopy } from "../tools/vaultManagement";
 import { credentialsToDatasource, prepareDatasourceCredentials } from "../datasources/register";
 import { initialiseShares } from "../myButtercup/sharing";
-import VaultComparator from "../io/formatA/VaultComparator";
 import { generateVaultInsights } from "../insight/vault";
 import AttachmentManager from "../attachments/AttachmentManager";
 import TextDatasource from "../datasources/TextDatasource";
@@ -600,8 +599,8 @@ export default class VaultSource extends EventEmitter {
     }
 
     _enqueueStateChange(cb: StateChangeEnqueuedFunction, stack?: string): Promise<any> {
-        const args = stack ? [cb, undefined, stack] : [cb];
-        return this._queue.channel("state").enqueue(...args);
+        const channel = this._queue.channel("state");
+        return stack ? channel.enqueue(cb, undefined, stack) : channel.enqueue(cb);
     }
 
     _unloadShares() {
