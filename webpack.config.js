@@ -70,7 +70,8 @@ const baseConfig = {
             https: false,
             net: false,
             path: false,
-            stream: false
+            stream: false,
+            util: false
         }
     },
 

@@ -7,13 +7,13 @@ export const ATTACHMENT_EXT = "bcatt";
 
 export function decryptAttachment(buff: BufferLike, credentials: Credentials): Promise<BufferLike> {
     const { masterPassword } = getCredentials(credentials.id);
-    const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptBuffer");
+    const decrypt = getSharedAppEnv().getProperty("crypto/v2/decryptBuffer");
     return decrypt(buff, masterPassword);
 }
 
 export function encryptAttachment(buff: BufferLike, credentials: Credentials): Promise<BufferLike> {
     const { masterPassword } = getCredentials(credentials.id);
-    const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptBuffer");
+    const encrypt = getSharedAppEnv().getProperty("crypto/v2/encryptBuffer");
     return encrypt(buff, masterPassword);
 }
 

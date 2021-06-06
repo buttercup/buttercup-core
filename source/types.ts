@@ -209,65 +209,6 @@ export interface MemoryStore {
     vault?: EncryptedContent;
 }
 
-export interface MyButtercupAttachment extends MyButtercupAttachmentDetails {
-    data: Buffer | ArrayBuffer;
-}
-
-export interface MyButtercupAttachmentDetails {
-    name: string;
-    size: number;
-    type: string;
-}
-
-export interface MyButtercupDigest {
-    account_name: string;
-    archive_id: number;
-    messages: Array<Object>;
-    new_shares: Array<MyButtercupIncomingShare>;
-    organisations: Array<MyButtercupOrganisation>;
-    public_key: string;
-    storage_total: number;
-    storage_used: number;
-}
-
-export interface MyButtercupEncryptedShare extends MyButtercupShare {
-    content: string;
-}
-
-export interface MyButtercupIncomingShare extends MyButtercupShare {
-    share_password_enc: string;
-    sharing_user_id: number;
-    sharing_user_key: string;
-}
-
-export interface MyButtercupOrganisation {
-    id: number;
-    name: string;
-    created: string;
-}
-
-export interface MyButtercupShare {
-    id: string;
-    perm_manage: boolean;
-    perm_read: boolean;
-    perm_write: boolean;
-    title: string;
-}
-
-export interface MyButtercupUsersListItem {
-    name: string;
-    organisation_id: number;
-    public_key: string;
-    user_id: number;
-}
-
-export interface MyButtercupVaultDetails {
-    created: string;
-    id: number;
-    lastUpdate: string;
-    updateID: number;
-}
-
 export interface PropertyKeyValueObject {
     [key: string]: string;
 }

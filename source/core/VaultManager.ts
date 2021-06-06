@@ -1,7 +1,7 @@
 import EventEmitter from "eventemitter3";
 import { Layerr } from "layerr";
 import isPromise from "is-promise";
-import ChannelQueue from "@buttercup/channel-queue";
+import { ChannelQueue } from "@buttercup/channel-queue";
 import MemoryStorageInterface from "../storage/MemoryStorageInterface";
 import VaultSource from "./VaultSource";
 import StorageInterface from "../storage/StorageInterface";
