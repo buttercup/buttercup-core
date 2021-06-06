@@ -7,7 +7,6 @@ import { getCredentials } from "../credentials/channel";
 import { getUniqueID } from "../tools/encoding";
 import { getSourceOfflineArchive, sourceHasOfflineCopy, storeSourceOfflineCopy } from "../tools/vaultManagement";
 import { credentialsToDatasource, prepareDatasourceCredentials } from "../datasources/register";
-import { initialiseShares } from "../myButtercup/sharing";
 import { generateVaultInsights } from "../insight/vault";
 import AttachmentManager from "../attachments/AttachmentManager";
 import TextDatasource from "../datasources/TextDatasource";
