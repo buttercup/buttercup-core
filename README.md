@@ -39,7 +39,6 @@ The core of the system, this **Buttercup Core**, boasts a few awesome features:
 
 This library also supports a variety of datasources for loading from and saving to:
 
- * [My Buttercup](https://my.buttercup.pw)
  * WebDAV
  * [Dropbox](https://www.dropbox.com/)
  * [Google Drive](https://www.google.com/drive/)
