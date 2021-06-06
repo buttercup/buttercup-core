@@ -18,8 +18,8 @@ function encryptData(data: string | Buffer, password: string): Promise<string | 
 
 export function getCryptoResources() {
     return {
-        "crypto/v1/decryptBuffer": decryptData,
-        "crypto/v1/encryptBuffer": encryptData,
+        "crypto/v2/decryptBuffer": decryptData,
+        "crypto/v2/encryptBuffer": encryptData,
         "crypto/v1/decryptText": decryptData,
         "crypto/v1/encryptText": encryptData,
         "crypto/v1/randomString": randomString,
