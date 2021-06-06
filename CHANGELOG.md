@@ -1,5 +1,13 @@
 # Core library changelog
 
+## v6.0.0
+_2021-06-06_
+
+ * **Major release** (breaking changes)
+   * My Buttercup support removed
+   * New `iocane` version: New attachment encoding
+   * Attachment support for WebDAV datasource
+
 ## v5.13.1
 _2021-05-18_
 

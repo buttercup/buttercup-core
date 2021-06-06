@@ -22,7 +22,7 @@ Buttercup is a JavaScript password manager for NodeJS and the browser (though yo
 
 Because Buttercup is designed first and foremost to be consumed by users in some application, **VaultManager** and **VaultSource** constructs are provided to allow for easy control over several vaults in a somewhat shared environment. A vault manager provides easy-to-use methods to perform dehydration and rehydration (storage in serialised form) of vaults to some secure storage (files, remote datasources etc.).
 
-Buttercup can save and load vaults that are stored locally, in cloud service providers like Dropbox or Google Drive, or in our own [**My Buttercup**](https://my.buttercup.pw) hosted service. It does this by providing a **Datasource** construct for each provider.
+Buttercup can save and load vaults that are stored locally, in cloud service providers like Dropbox or Google Drive, or in a cloud service's WebDAV-enabled storage. It does this by providing a **Datasource** construct for each provider.
 
 Because Buttercup can be consumed in some interesting and varied environments, serialisation tools called **facades** are provided to allow for greater flexibility when working with vault data structures. Facades provide a way to move data around without _classes_, converting vaults to and from JSON objects. Facades are used when attaching vaults to user interfaces like with the [Buttercup UI library](https://github.com/buttercup/ui).
 
