@@ -1,7 +1,11 @@
 const {
     Entry,
+    EntryPropertyType,
+    EntryType,
     Vault,
     createEntryFacade,
+    createEntryFromFacade,
+    createFieldDescriptor,
     createVaultFacade,
     getEntryFacadePath
 } = require("../../../dist/index.node.js");
@@ -57,6 +61,39 @@ describe("facades/entry", function() {
         it("outputs changes", function() {
             const { _changes } = createEntryFacade(this.entry);
             expect(_changes).to.have.length.above(0);
+        });
+    });
+
+    describe("createEntryFromFacade", function() {
+        beforeEach(function() {
+            const vault = new Vault();
+            this.group = vault.createGroup("test");
+            this.entry = createEntryFromFacade(this.group, {
+                type: EntryType.Website,
+                fields: [
+                    {
+                        ...createFieldDescriptor(null, "Title", EntryPropertyType.Property, "title"),
+                        value: "Test"
+                    },
+                    {
+                        ...createFieldDescriptor(null, "Username", EntryPropertyType.Property, "username"),
+                        value: "user"
+                    }
+                ]
+            });
+        });
+
+        it("creates new entries", function() {
+            expect(this.entry).to.be.an.instanceOf(Entry);
+        });
+
+        it("sets correct type", function() {
+            expect(this.entry.getType()).to.equal(EntryType.Website);
+        });
+
+        it("sets properties correctly", function() {
+            expect(this.entry.getProperty("title")).to.equal("Test");
+            expect(this.entry.getProperty("username")).to.equal("user");
         });
     });
 

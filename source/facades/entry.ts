@@ -1,6 +1,7 @@
 import facadeFieldFactories from "./entryFields";
 import { createFieldDescriptor, getEntryValueType, setEntryValueType } from "./tools";
 import Entry from "../core/Entry";
+import Group from "../core/Group";
 import {
     EntryFacade,
     EntryFacadeField,
@@ -149,6 +150,32 @@ export function createEntryFacade(entry?: Entry, options: CreateEntryFacadeOptio
         _history: [], // deprecated
         _changes: entry ? entry.getChanges() : []
     };
+}
+
+/**
+ * Create a new entry using an entry facade
+ * @param group The parent group
+ * @param facade The entry facade
+ * @returns A newly created Entry
+ * @memberof module:Buttercup
+ */
+export function createEntryFromFacade(group: Group, facade: EntryFacade): Entry {
+    const entry = group.createEntry();
+    const baseFacadeType = getEntryFacadeType(entry);
+    const facadeType = facade.type || baseFacadeType;
+    const preparedFacade: EntryFacade = {
+        ...facade,
+        parentID: group.id,
+        // Keep type same as new entry, for now..
+        type: baseFacadeType,
+        id: null
+    };
+    consumeEntryFacade(entry, preparedFacade);
+    if (facadeType !== baseFacadeType) {
+        // Set intended facade type
+        entry.setAttribute(Entry.Attributes.FacadeType, facadeType);
+    }
+    return entry;
 }
 
 /**

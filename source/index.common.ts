@@ -43,6 +43,7 @@ export {
     CreateEntryFacadeOptions,
     consumeEntryFacade,
     createEntryFacade,
+    createEntryFromFacade,
     fieldsToProperties,
     getEntryFacadePath
 } from "./facades/entry";
