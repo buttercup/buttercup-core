@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.1.0
+_2021-08-14_
+
+ * `createEntryFromFacade` for creating new entries from facades
+
 ## v6.0.0
 _2021-06-06_
 
