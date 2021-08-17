@@ -154,11 +154,13 @@ export default class VaultFormatB extends VaultFormat {
 
     deleteEntryAttribute(entryID: EntryID, attribute: string) {
         const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
+        if (!entry.a[attribute]) return;
         entry.a[attribute].deleted = getTimestamp();
     }
 
     deleteEntryProperty(entryID: EntryID, property: string) {
         const entry = this.source.e.find(e => e.id === entryID);
+        if (!entry.p[property]) return;
         entry.p[property].deleted = getTimestamp();
     }
 
@@ -171,10 +173,12 @@ export default class VaultFormatB extends VaultFormat {
 
     deleteGroupAttribute(groupID: GroupID, attribute: string) {
         const group = this.source.g.find(g => g.id === groupID);
+        if (!group.a[attribute]) return;
         group.a[attribute].deleted = getTimestamp();
     }
 
     deleteVaultAttribute(attribute: string) {
+        if (!this.source.a[attribute]) return;
         this.source.a[attribute].deleted = getTimestamp();
     }
 

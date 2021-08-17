@@ -1,5 +1,5 @@
 import facadeFieldFactories from "./entryFields";
-import { createFieldDescriptor, getEntryValueType, setEntryValueType } from "./tools";
+import { createFieldDescriptor, getEntryPropertyValueType, setEntryPropertyValueType } from "./tools";
 import Entry from "../core/Entry";
 import Group from "../core/Group";
 import {
@@ -222,6 +222,33 @@ function getEntryFacadeType(entry?: Entry): EntryType {
 }
 
 /**
+ * Set the value type of an entry property within a facade
+ * @param facade The entry facade to modify
+ * @param propertyName The property to apply a new value type to
+ * @param valueType The new value type
+ */
+export function setEntryFacadePropertyValueType(
+    facade: EntryFacade,
+    propertyName: string,
+    valueType: EntryPropertyValueType
+) {
+    const matchingPropertyField = facade.fields.find(
+        field => field.property === propertyName && field.propertyType === EntryPropertyType.Property
+    );
+    const matchingAttributeField = facade.fields.find(
+        field =>
+            field.property === `${Entry.Attributes.FieldTypePrefix}${propertyName}` &&
+            field.propertyType === EntryPropertyType.Attribute
+    );
+    if (matchingPropertyField) {
+        matchingPropertyField.valueType = valueType;
+    }
+    if (matchingAttributeField) {
+        matchingAttributeField.value = valueType;
+    }
+}
+
+/**
  * Set a value on an entry
  * @param entry The entry instance
  * @param propertyType Type of property ("property"/"attribute")
@@ -254,7 +281,7 @@ function setEntryValue(
         default:
             throw new Error(`Cannot set value: Unknown property type: ${propertyType}`);
     }
-    if (valueType && getEntryValueType(entry, property) !== valueType) {
-        setEntryValueType(entry, property, valueType);
+    if (valueType && getEntryPropertyValueType(entry, property) !== valueType) {
+        setEntryPropertyValueType(entry, property, valueType);
     }
 }

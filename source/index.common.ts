@@ -45,9 +45,15 @@ export {
     createEntryFacade,
     createEntryFromFacade,
     fieldsToProperties,
-    getEntryFacadePath
+    getEntryFacadePath,
+    setEntryFacadePropertyValueType
 } from "./facades/entry";
-export { CreateFieldDescriptorOptions, createFieldDescriptor } from "./facades/tools";
+export {
+    CreateFieldDescriptorOptions,
+    createFieldDescriptor,
+    getEntryPropertyValueType,
+    setEntryPropertyValueType
+} from "./facades/tools";
 export {
     DEFAULT_ENTRY_TYPE,
     DEFAULT_FIELD_TYPE,

@@ -46,7 +46,7 @@ export function createFieldDescriptor(
             ? valueType
             : entryPropertyType === "attribute"
             ? null
-            : getEntryValueType(entry, entryPropertyName),
+            : getEntryPropertyValueType(entry, entryPropertyName),
         formatting,
         removeable
     };
@@ -79,7 +79,7 @@ export function getEntryValue(entry: Entry, propertyType: EntryPropertyType, nam
  * @returns The entry value type (returns default "text"
  *  if entry not specified)
  */
-export function getEntryValueType(entry: Entry | null, propertyName: string): EntryPropertyValueType {
+export function getEntryPropertyValueType(entry: Entry | null, propertyName: string): EntryPropertyValueType {
     if (!entry) {
         return EntryPropertyValueType.Text;
     }
@@ -104,6 +104,6 @@ export function idSignifiesNew(id: string, mergeMode: boolean = false): boolean 
  * @param propertyName The property name
  * @param valueType The value type
  */
-export function setEntryValueType(entry: Entry, propertyName: string, valueType: EntryPropertyValueType) {
+export function setEntryPropertyValueType(entry: Entry, propertyName: string, valueType: EntryPropertyValueType) {
     entry.setAttribute(`${Entry.Attributes.FieldTypePrefix}${propertyName}`, valueType);
 }
