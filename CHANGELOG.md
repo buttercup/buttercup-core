@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.2.0
+_2021-08-17_
+
+ * `setEntryFacadePropertyValueType` For setting facade entry property value types
+ * Exposed `getEntryPropertyValueType` and `setEntryPropertyValueType` helpers
+
 ## v6.1.0
 _2021-08-14_
 
