@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.3.0
+_2021-10-03_
+
+ * `VaultSource#rename`
+
 ## v6.2.0
 _2021-08-17_
 
