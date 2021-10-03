@@ -424,6 +424,16 @@ export default class VaultSource extends EventEmitter {
     }
 
     /**
+     * Rename the vault source
+     * @param name The new name
+     * @memberof VaultSource
+     */
+    rename(name: string) {
+        this._name = name;
+        this.emit("updated");
+    }
+
+    /**
      * Save the vault to the remote, ensuring that it's first merged and
      * updated to prevent conflicts or overwrites.
      * @memberof VaultSource

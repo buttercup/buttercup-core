@@ -4,7 +4,7 @@ const {
     Credentials,
     FileDatasource,
     Group,
-    MemoryStorageInterface,
+    TextDatasource,
     Vault,
     VaultFormatA,
     VaultFormatB,
@@ -12,6 +12,24 @@ const {
     VaultSource,
     setDefaultFormat
 } = require("../../../dist/index.node.js");
+
+async function createTextSourceCredentials() {
+    const vault = new Vault();
+    const general = vault.createGroup("General");
+    general
+        .createEntry("Login")
+        .setProperty("username", "user")
+        .setProperty("password", "test");
+    const tds = new TextDatasource(Credentials.fromDatasource({ type: "text" }, "test"));
+    const encrypted = await tds.save(vault.format.getHistory(), Credentials.fromPassword("test"));
+    return Credentials.fromDatasource(
+        {
+            type: "text",
+            content: encrypted
+        },
+        "test"
+    );
+}
 
 describe("VaultManager", function() {
     [
@@ -89,6 +107,29 @@ describe("VaultManager", function() {
                 expect(remoteGroup).to.be.an.instanceOf(Group, "Remote item should be a group");
                 expect(localGroup).to.be.an.instanceOf(Group, "Local item should be a group");
             });
+        });
+    });
+
+    describe("with VaultSource", function() {
+        beforeEach(async function() {
+            this.vaultManager = new VaultManager({
+                autoUpdate: false
+            });
+            const sourceCredentials = await createTextSourceCredentials();
+            this.vaultSource = new VaultSource("Test", "text", await sourceCredentials.toSecureString());
+            await this.vaultManager.addSource(this.vaultSource);
+        });
+
+        it("supports renaming sources", function(done) {
+            sinon.spy(this.vaultManager, "dehydrateSource");
+            const updatedSpy = sinon.spy();
+            this.vaultSource.on("updated", updatedSpy);
+            this.vaultSource.rename("new-name");
+            setTimeout(() => {
+                expect(updatedSpy.calledOnce).to.be.true;
+                expect(this.vaultManager.dehydrateSource.calledWithExactly(this.vaultSource)).to.be.true;
+                done();
+            }, 100);
         });
     });
 });
