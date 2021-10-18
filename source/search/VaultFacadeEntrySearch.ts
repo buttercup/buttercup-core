@@ -24,6 +24,7 @@ async function extractEntries(facade: VaultFacade, memory: StorageInterface): Pr
             properties,
             entryType: nextEntry.type,
             urls,
+            groupID: nextEntry.parentID,
             vaultID: facade.id,
             domainScores: vaultScore[nextEntry.id] || {}
         });

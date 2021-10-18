@@ -199,7 +199,6 @@ export interface GroupFacade {
 
 export type GroupID = string;
 
-// export type History = Array<string>;
 export interface History extends Array<string> {
     format?: VaultFormatID;
 }

@@ -59,7 +59,7 @@ describe("VaultEntrySearch", function() {
 
         it("should complete in under 100 milliseconds", function() {
             const start = Date.now();
-            const results = this.search.searchByTerm(randomString({ length: 16, type: "alphanumeric" }));
+            this.search.searchByTerm(randomString({ length: 16, type: "alphanumeric" }));
             const duration = Date.now() - start;
             expect(duration).to.be.below(100);
         });
@@ -73,7 +73,7 @@ describe("VaultEntrySearch", function() {
 
         it("should complete in under 100 milliseconds", function() {
             const start = Date.now();
-            const results = this.search.searchByURL(this.url);
+            this.search.searchByURL(this.url);
             const duration = Date.now() - start;
             expect(duration).to.be.below(100);
         });

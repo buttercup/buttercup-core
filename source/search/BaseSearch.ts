@@ -2,7 +2,7 @@ import levenshtein from "fast-levenshtein";
 import StorageInterface from "../storage/StorageInterface";
 import { buildSearcher } from "./searcher";
 import Vault from "../core/Vault";
-import { EntryID, EntryType, VaultFacade, VaultID } from "../types";
+import { EntryID, EntryType, GroupID, VaultFacade, VaultID } from "../types";
 
 interface DomainScores {
     [domain: string]: number;
@@ -20,6 +20,7 @@ export interface SearcherFactory {
 
 export interface SearchResult {
     id: EntryID;
+    groupID: GroupID;
     properties: { [property: string]: string };
     entryType: EntryType;
     urls: Array<string>;

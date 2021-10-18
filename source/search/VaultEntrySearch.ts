@@ -26,6 +26,7 @@ async function extractEntries(vault: Vault, memory: StorageInterface): Promise<A
                 properties,
                 entryType: entry.getType(),
                 urls,
+                groupID: entry.getGroup().id,
                 vaultID: vault.id,
                 domainScores: vaultScore[entry.id] || {}
             };

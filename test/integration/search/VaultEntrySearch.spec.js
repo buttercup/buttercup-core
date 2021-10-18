@@ -117,6 +117,13 @@ describe("VaultEntrySearch", function() {
                 const [res] = this.search.searchByTerm("Personal Mail");
                 expect(res).to.have.property("entryType", EntryType.Website);
             });
+
+            it("returns results including entry group IDs", function() {
+                const [res] = this.search.searchByTerm("Personal Mail");
+                expect(res)
+                    .to.have.property("groupID")
+                    .that.is.a("string");
+            });
         });
 
         describe("searchByURL", function() {
