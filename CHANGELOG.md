@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.4.0
+_2021-10-18_
+
+ * Search results include `groupID`
+
 ## v6.3.0
 _2021-10-03_
 
