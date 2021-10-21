@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.5.0
+_2021-10-21_
+
+ * `Entry#getPropertyValueType`
+ * `Entry#setPropertyValueType`
+
 ## v6.4.0
 _2021-10-18_
 
