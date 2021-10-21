@@ -1,5 +1,6 @@
 const {
     EntryChangeType,
+    EntryPropertyValueType,
     Group,
     Vault,
     VaultFormatA,
@@ -155,6 +156,15 @@ describe("core/Entry", function() {
                 });
             });
 
+            describe("getPropertyValueType", function() {
+                it("gets value types", function() {
+                    const property = "username";
+                    expect(this.entry.getPropertyValueType(property)).to.equal(EntryPropertyValueType.Text);
+                    this.entry.setPropertyValueType(property, EntryPropertyValueType.Password);
+                    expect(this.entry.getPropertyValueType(property)).to.equal(EntryPropertyValueType.Password);
+                });
+            });
+
             describe("getProperties", function() {
                 it("returns exact property values", function() {
                     expect(this.entry.getProperties(/title/)).to.deep.equal({ title: "entry" });
@@ -239,6 +249,16 @@ describe("core/Entry", function() {
                     this.entry.setProperty("©öoł", "two");
                     expect(this.entry.getProperty("-")).to.equal("one");
                     expect(this.entry.getProperty("©öoł")).to.equal("two");
+                });
+            });
+
+            describe("setPropertyValueType", function() {
+                it("sets value types", function() {
+                    const property = "custom";
+                    this.entry.setProperty(property, "abc123");
+                    expect(this.entry.getPropertyValueType(property)).to.equal(EntryPropertyValueType.Text);
+                    this.entry.setPropertyValueType(property, EntryPropertyValueType.Password);
+                    expect(this.entry.getPropertyValueType(property)).to.equal(EntryPropertyValueType.Password);
                 });
             });
         });

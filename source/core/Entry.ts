@@ -3,7 +3,7 @@ import { generateUUID } from "../tools/uuid";
 import { getEntryURLs, EntryURLType } from "../tools/entry";
 import Group from "./Group";
 import Vault from "./Vault";
-import { EntryChange, EntryType, GroupID, PropertyKeyValueObject } from "../types";
+import { EntryChange, EntryPropertyValueType, EntryType, GroupID, PropertyKeyValueObject } from "../types";
 
 /**
  * Entry class - some secret item, login or perhaps
@@ -157,6 +157,17 @@ export default class Entry extends VaultItem {
     }
 
     /**
+     * Set the value type of an entry property
+     * @param property The property to get the value type of
+     * @returns The property value type
+     * @memberof Entry
+     */
+    getPropertyValueType(property: string): EntryPropertyValueType {
+        const attr = this.getAttribute(`${Entry.Attributes.FieldTypePrefix}${property}`) as EntryPropertyValueType;
+        return attr || EntryPropertyValueType.Text;
+    }
+
+    /**
      * Get property values via RegExp expressions.
      * If no property expression is specified, it returns the empty behavior of
      * {@see Entry.getProperty}.
@@ -245,6 +256,22 @@ export default class Entry extends VaultItem {
      */
     setProperty(property: string, value: string): this {
         this.vault.format.setEntryProperty(this.id, property, value);
+        return this;
+    }
+
+    /**
+     * Set the value type of an entry property
+     * @param property The property to set the value type for
+     * @param valueType The new value type to set, or `null` to remove
+     * @returns Returns self
+     * @memberof Entry
+     */
+    setPropertyValueType(property: string, valueType: EntryPropertyValueType | null): this {
+        if (valueType === null) {
+            this.deleteAttribute(`${Entry.Attributes.FieldTypePrefix}${property}`);
+        } else {
+            this.setAttribute(`${Entry.Attributes.FieldTypePrefix}${property}`, valueType);
+        }
         return this;
     }
 
