@@ -6,7 +6,14 @@ import { getSharedAppEnv } from "../env/appEnv";
 import Credentials from "../credentials/Credentials";
 import { getCredentials } from "../credentials/channel";
 import { ATTACHMENT_EXT } from "../tools/attachments";
-import { AttachmentDetails, BufferLike, DatasourceLoadedData, History, VaultID } from "../types";
+import {
+    AttachmentDetails,
+    BufferLike,
+    DatasourceConfigurationWebDAV,
+    DatasourceLoadedData,
+    History,
+    VaultID
+} from "../types";
 
 const MAX_DATA_SIZE = 200 * 1024 * 1024; // 200 MB
 
@@ -26,7 +33,7 @@ export default class WebDAVDatasource extends TextDatasource {
     constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig } = credentialData;
+        const { datasource: datasourceConfig } = credentialData as { datasource: DatasourceConfigurationWebDAV };
         const { endpoint, password, path, username } = datasourceConfig;
         this._path = path;
         const createClient = getSharedAppEnv().getProperty("net/webdav/v1/newClient");

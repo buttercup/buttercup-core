@@ -6,7 +6,15 @@ import { fireInstantiationHandlers, registerDatasource } from "./register";
 import Credentials from "../credentials/Credentials";
 import { getCredentials } from "../credentials/channel";
 import { ATTACHMENT_EXT } from "../tools/attachments";
-import { AttachmentDetails, BufferLike, DatasourceLoadedData, EncryptedContent, History, VaultID } from "../types";
+import {
+    AttachmentDetails,
+    BufferLike,
+    DatasourceConfigurationFile,
+    DatasourceLoadedData,
+    EncryptedContent,
+    History,
+    VaultID
+} from "../types";
 
 /**
  * File datasource for loading and saving files
@@ -29,7 +37,7 @@ export default class FileDatasource extends TextDatasource {
     constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig } = credentialData;
+        const { datasource: datasourceConfig } = credentialData as { datasource: DatasourceConfigurationFile };
         const { path } = datasourceConfig;
         this._filename = path;
         this.mkdir = pify(fs.mkdir);

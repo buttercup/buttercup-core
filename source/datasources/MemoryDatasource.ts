@@ -5,6 +5,7 @@ import { getCredentials } from "../credentials/channel";
 import {
     AttachmentDetails,
     BufferLike,
+    DatasourceConfigurationMemory,
     DatasourceLoadedData,
     EncryptedContent,
     History,
@@ -31,7 +32,7 @@ export default class MemoryDatasource extends TextDatasource {
     constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig } = credentialData;
+        const { datasource: datasourceConfig } = credentialData as { datasource: DatasourceConfigurationMemory };
         const { property } = datasourceConfig;
         this._property = property;
         this._store = global[property] = global[property] || {};
