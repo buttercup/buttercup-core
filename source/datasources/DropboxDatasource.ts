@@ -33,6 +33,18 @@ export default class DropboxDatasource extends TextDatasource {
     }
 
     /**
+     * Get the datasource configuration
+     * @memberof DropboxDatasource
+     */
+    getConfiguration(): DatasourceConfigurationDropbox {
+        return {
+            type: "dropbox",
+            token: this.token,
+            path: this.path
+        };
+    }
+
+    /**
      * Load an archive from the datasource
      * @param credentials The credentials for decryption
      * @returns A promise that resolves archive history

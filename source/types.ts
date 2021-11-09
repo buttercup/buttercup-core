@@ -28,25 +28,30 @@ export interface DatasourceConfiguration {
 }
 
 export interface DatasourceConfigurationDropbox extends DatasourceConfiguration {
+    type: "dropbox";
     path: string;
     token: string;
 }
 
 export interface DatasourceConfigurationGoogleDrive extends DatasourceConfiguration {
+    type: "googledrive";
     fileID: string;
     refreshToken: string;
     token: string;
 }
 
 export interface DatasourceConfigurationFile extends DatasourceConfiguration {
+    type: "file";
     path: string;
 }
 
 export interface DatasourceConfigurationMemory extends DatasourceConfiguration {
+    type: "memory";
     property: string;
 }
 
 export interface DatasourceConfigurationWebDAV extends DatasourceConfiguration {
+    type: "webdav";
     endpoint: string;
     password: string;
     path: string;

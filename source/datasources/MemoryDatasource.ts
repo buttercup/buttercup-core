@@ -67,6 +67,17 @@ export default class MemoryDatasource extends TextDatasource {
     }
 
     /**
+     * Get the datasource configuration
+     * @memberof MemoryDatasource
+     */
+    getConfiguration(): DatasourceConfigurationMemory {
+        return {
+            type: "memory",
+            property: this._property
+        };
+    }
+
+    /**
      * Load from a global property
      * @param credentials The credentials for decryption
      * @returns A promise resolving with vault history

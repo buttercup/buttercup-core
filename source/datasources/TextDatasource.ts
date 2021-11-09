@@ -96,6 +96,17 @@ export default class TextDatasource extends EventEmitter {
     }
 
     /**
+     * Get the datasource configuration
+     * @memberof TextDatasource
+     */
+    getConfiguration(): DatasourceConfiguration {
+        return {
+            type: "text",
+            content: this._content
+        };
+    }
+
+    /**
      * Get the total storage space, in bytes
      * @returns Bytes of free space, or null if not
      *  available

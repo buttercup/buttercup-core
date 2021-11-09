@@ -85,6 +85,17 @@ export default class FileDatasource extends TextDatasource {
     }
 
     /**
+     * Get the datasource configuration
+     * @memberof FileDatasource
+     */
+    getConfiguration(): DatasourceConfigurationFile {
+        return {
+            type: "file",
+            path: this._filename
+        };
+    }
+
+    /**
      * Load from the filename specified in the constructor using a password
      * @param credentials The credentials for decryption
      * @returns A promise resolving with archive history

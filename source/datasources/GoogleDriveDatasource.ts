@@ -41,6 +41,19 @@ export default class GoogleDriveDatasource extends TextDatasource {
     }
 
     /**
+     * Get the datasource configuration
+     * @memberof GoogleDriveDatasource
+     */
+    getConfiguration(): DatasourceConfigurationGoogleDrive {
+        return {
+            type: "googledrive",
+            token: this.token,
+            refreshToken: this.refreshToken,
+            fileID: this.fileID
+        };
+    }
+
+    /**
      * Load an archive from the datasource
      * @param {Credentials} credentials The credentials for decryption
      * @returns {Promise.<LoadedVaultData>} A promise that resolves archive history

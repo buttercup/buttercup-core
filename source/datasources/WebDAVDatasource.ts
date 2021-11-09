@@ -23,8 +23,9 @@ const MAX_DATA_SIZE = 200 * 1024 * 1024; // 200 MB
  * @memberof module:Buttercup
  */
 export default class WebDAVDatasource extends TextDatasource {
-    _client: WebDAVClient;
-    _path: string;
+    protected _client: WebDAVClient;
+    private _config: DatasourceConfigurationWebDAV;
+    protected _path: string;
 
     /**
      * Constructor for the datasource
@@ -34,7 +35,7 @@ export default class WebDAVDatasource extends TextDatasource {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
         const { datasource: datasourceConfig } = credentialData as { datasource: DatasourceConfigurationWebDAV };
-        const { endpoint, password, path, username } = datasourceConfig;
+        const { endpoint, password, path, username } = (this._config = datasourceConfig);
         this._path = path;
         const createClient = getSharedAppEnv().getProperty("net/webdav/v1/newClient");
         if (typeof username === "string" && typeof password === "string") {
@@ -99,6 +100,14 @@ export default class WebDAVDatasource extends TextDatasource {
         await this._ensureAttachmentsPaths(vaultID);
         const attachmentPath = pathPosix.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
         return this.client.getFileContents(attachmentPath) as Promise<BufferLike>;
+    }
+
+    /**
+     * Get the datasource configuration
+     * @memberof WebDAVDatasource
+     */
+    getConfiguration(): DatasourceConfigurationWebDAV {
+        return this._config;
     }
 
     /**
