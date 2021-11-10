@@ -5,6 +5,7 @@ import TextDatasource from "./TextDatasource";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
 import Credentials from "../credentials/Credentials";
 import { getCredentials } from "../credentials/channel";
+import { DatasourceConfigurationGoogleDrive } from "../types";
 
 const DATASOURCE_TYPE = "googledrive";
 
@@ -28,7 +29,7 @@ export default class GoogleDriveDatasource extends TextDatasource {
     constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig } = credentialData;
+        const { datasource: datasourceConfig } = credentialData as { datasource: DatasourceConfigurationGoogleDrive };
         const { token, refreshToken, fileID } = datasourceConfig;
         this.fileID = fileID;
         this.token = token;
@@ -37,6 +38,19 @@ export default class GoogleDriveDatasource extends TextDatasource {
         this.authManager = DatasourceAuthManager.getSharedManager();
         this.type = DATASOURCE_TYPE;
         fireInstantiationHandlers(DATASOURCE_TYPE, this);
+    }
+
+    /**
+     * Get the datasource configuration
+     * @memberof GoogleDriveDatasource
+     */
+    getConfiguration(): DatasourceConfigurationGoogleDrive {
+        return {
+            type: "googledrive",
+            token: this.token,
+            refreshToken: this.refreshToken,
+            fileID: this.fileID
+        };
     }
 
     /**

@@ -3,7 +3,7 @@ import TextDatasource from "./TextDatasource";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
 import Credentials from "../credentials/Credentials";
 import { getCredentials } from "../credentials/channel";
-import { DatasourceLoadedData, EncryptedContent, History } from "../types";
+import { DatasourceConfigurationDropbox, DatasourceLoadedData, EncryptedContent, History } from "../types";
 
 /**
  * Datasource for Dropbox archives
@@ -23,13 +23,25 @@ export default class DropboxDatasource extends TextDatasource {
     constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig } = credentialData;
+        const { datasource: datasourceConfig } = credentialData as { datasource: DatasourceConfigurationDropbox };
         const { token, path } = datasourceConfig;
         this.path = path;
         this.token = token;
         this.client = createClient(token);
         this.type = "dropbox";
         fireInstantiationHandlers("dropbox", this);
+    }
+
+    /**
+     * Get the datasource configuration
+     * @memberof DropboxDatasource
+     */
+    getConfiguration(): DatasourceConfigurationDropbox {
+        return {
+            type: "dropbox",
+            token: this.token,
+            path: this.path
+        };
     }
 
     /**

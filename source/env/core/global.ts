@@ -1,4 +1,4 @@
-export function getGlobal(): NodeJS.Global | Window {
+export function getGlobal(): typeof globalThis | Window {
     if (typeof window !== "undefined") {
         return window;
     } else if (typeof global !== "undefined") {

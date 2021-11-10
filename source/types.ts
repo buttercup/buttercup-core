@@ -17,25 +17,45 @@ export interface CowlError extends Error {
 }
 
 export interface CredentialsData {
-    datasource?: CredentialsDatasourceConfiguration;
+    datasource?: DatasourceConfiguration;
     [key: string]: any;
 }
 
-export interface CredentialsDatasourceConfiguration {
+export interface DatasourceConfiguration {
     type: string;
-    accessToken?: string;
-    clientID?: string;
-    clientSecret?: string;
     content?: string;
-    endpoint?: string;
-    fileID?: string;
-    password?: string;
-    path?: string;
-    property?: string;
-    refreshToken?: string;
-    token?: string;
-    username?: string;
-    vaultID?: number;
+    [key: string]: any;
+}
+
+export interface DatasourceConfigurationDropbox extends DatasourceConfiguration {
+    type: "dropbox";
+    path: string;
+    token: string;
+}
+
+export interface DatasourceConfigurationGoogleDrive extends DatasourceConfiguration {
+    type: "googledrive";
+    fileID: string;
+    refreshToken: string;
+    token: string;
+}
+
+export interface DatasourceConfigurationFile extends DatasourceConfiguration {
+    type: "file";
+    path: string;
+}
+
+export interface DatasourceConfigurationMemory extends DatasourceConfiguration {
+    type: "memory";
+    property: string;
+}
+
+export interface DatasourceConfigurationWebDAV extends DatasourceConfiguration {
+    type: "webdav";
+    endpoint: string;
+    password: string;
+    path: string;
+    username: string;
 }
 
 export interface DatasourceLoadedData {
