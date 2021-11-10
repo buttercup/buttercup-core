@@ -43,7 +43,7 @@ export default class LocalFileDatasource extends TextDatasource {
      * @memberof LocalFileDatasource
      */
     load(credentials: Credentials): Promise<DatasourceLoadedData> {
-        const readProc = new Promise((resolve, reject) => {
+        const readProc = new Promise<string>((resolve, reject) => {
             this.client.readFile(this.path, (err: Error | null, content: string) => {
                 if (err) {
                     return reject(err);
