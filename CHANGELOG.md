@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.6.0
+_2021-11-09_
+
+ * Explicit datasource config types
+ * Datasource config exports
+
 ## v6.5.0
 _2021-10-21_
 
