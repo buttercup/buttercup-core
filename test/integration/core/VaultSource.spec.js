@@ -59,6 +59,10 @@ describe("VaultSource", function() {
             await this.vaultSource.unlock(Credentials.fromPassword("test"));
         });
 
+        it("sets source ID on datasource", function() {
+            expect(this.vaultSource._datasource.sourceID).to.equal(this.vaultSource.id);
+        });
+
         describe("testMasterPassword", function() {
             it("returns true for matching password", async function() {
                 const res = await this.vaultSource.testMasterPassword("test");
