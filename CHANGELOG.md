@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.7.0
+_2022-01-17_
+
+ * `TextDatasource.sourceID` for tracking parent `VaultSource`
+
 ## v6.6.0
 _2021-11-09_
 
