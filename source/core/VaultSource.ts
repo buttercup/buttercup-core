@@ -499,6 +499,7 @@ export default class VaultSource extends EventEmitter {
                     const datasource = (this._datasource = credentialsToDatasource(
                         Credentials.fromCredentials(credentials, masterPassword)
                     ));
+                    datasource.sourceID = this.id;
                     if (typeof offlineContent === "string") {
                         datasource.setContent(offlineContent);
                     }

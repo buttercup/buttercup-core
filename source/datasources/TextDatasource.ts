@@ -12,7 +12,8 @@ import {
     EncryptedContent,
     History,
     VaultID,
-    VaultInsights
+    VaultInsights,
+    VaultSourceID
 } from "../types";
 
 /**
@@ -22,7 +23,9 @@ import {
 export default class TextDatasource extends EventEmitter {
     _content: EncryptedContent;
     _credentials: Credentials;
-    type: string;
+
+    public sourceID: VaultSourceID = null;
+    public type: string;
 
     /**
      * Constructor for the text datasource
