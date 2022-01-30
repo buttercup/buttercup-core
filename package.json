@@ -78,9 +78,9 @@
   "homepage": "https://github.com/buttercup/buttercup-core#readme",
   "dependencies": {
     "@buttercup/channel-queue": "^1.0.1",
-    "@buttercup/dropbox-client": "^0.5.0",
-    "@buttercup/googledrive-client": "^1.2.0",
-    "cowl": "^1.0.1",
+    "@buttercup/dropbox-client": "^0.7.1",
+    "@buttercup/googledrive-client": "^1.3.1",
+    "cowl": "^1.0.2",
     "crypto-random-string": "^3.3.1",
     "eventemitter3": "^4.0.7",
     "fast-levenshtein": "^3.0.0",
