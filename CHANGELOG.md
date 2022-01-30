@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.8.2
+_2022-01-30_
+
+ * `cowl` upgrade for `Layerr` info pass-through
+
 ## v6.8.1
 _2022-01-30_
 
