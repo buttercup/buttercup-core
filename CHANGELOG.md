@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.8.1
+_2022-01-30_
+
+ * **Bugfix**:
+   * Revert `is-in-browser` for `cowl`
+
 ## v6.8.0
 _2022-01-30_
 
