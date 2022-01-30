@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.8.0
+_2022-01-30_
+
+ * Improved `VaultSource#unlock` stability
+   * Bugfix: `cowl` request dependency update to fix request failures when offline
+
 ## v6.7.0
 _2022-01-17_
 
