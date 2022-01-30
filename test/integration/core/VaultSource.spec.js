@@ -1,12 +1,5 @@
 const {
     Credentials,
-    // FileDatasource,
-    // Group,
-    // MemoryStorageInterface,
-    // Vault,
-    // VaultFormatA,
-    // VaultFormatB,
-    // VaultManager,
     TextDatasource,
     Vault,
     VaultManager,
