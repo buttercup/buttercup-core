@@ -10,6 +10,7 @@ const {
     VaultFormatB,
     VaultManager,
     VaultSource,
+    VaultSourceStatus,
     setDefaultFormat
 } = require("../../../dist/index.node.js");
 
@@ -130,6 +131,22 @@ describe("VaultManager", function() {
                 expect(this.vaultManager.dehydrateSource.calledWithExactly(this.vaultSource)).to.be.true;
                 done();
             }, 100);
+        });
+
+        it("stores offline copies", async function() {
+            expect(await this.vaultSource.checkOfflineCopy()).to.equal(false, "Should not have offline copy");
+            await this.vaultSource.unlock(Credentials.fromPassword("test"));
+            expect(await this.vaultSource.checkOfflineCopy()).to.equal(true, "Should have offline copy");
+        });
+
+        it("loads from offline copies", async function() {
+            await this.vaultSource.unlock(Credentials.fromPassword("test"));
+            await this.vaultSource.lock();
+            await this.vaultSource.unlock(Credentials.fromPassword("test"), {
+                loadOfflineCopy: true
+            });
+            expect(this.vaultSource.status).to.equal(VaultSourceStatus.Unlocked);
+            expect(this.vaultSource.vault.format).to.have.property("readOnly", true, "Vault should be read-only");
         });
     });
 });
