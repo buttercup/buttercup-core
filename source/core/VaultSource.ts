@@ -326,10 +326,12 @@ export default class VaultSource extends EventEmitter {
      *  if it doesn't exist
      * @memberof VaultSource
      */
-    getOfflineContent(): Promise<string | null> {
-        return this.checkOfflineCopy().then(hasContent =>
-            hasContent ? getSourceOfflineArchive(this._vaultManager._cacheStorage, this.id) : null
-        );
+    async getOfflineContent(): Promise<string | null> {
+        const hasContent = await this.checkOfflineCopy();
+        if (hasContent) {
+            return getSourceOfflineArchive(this._vaultManager._cacheStorage, this.id);
+        }
+        return null;
     }
 
     /**
@@ -485,73 +487,63 @@ export default class VaultSource extends EventEmitter {
         const { masterPassword } = getCredentials(vaultCredentials.id);
         const originalCredentials = this._credentials;
         this._status = VaultSource.STATUS_PENDING;
-        await this._enqueueStateChange(() => {
-            let offlineContent = null;
-            return this.getOfflineContent()
-                .then(availableOfflineContent => {
-                    if (availableOfflineContent && loadOfflineCopy) {
-                        offlineContent = availableOfflineContent;
-                    }
-                    return processDehydratedCredentials(this._credentials as string, masterPassword);
-                })
-                .then((newCredentials: Credentials) => {
-                    const credentials = (this._credentials = newCredentials);
-                    const datasource = (this._datasource = credentialsToDatasource(
-                        Credentials.fromCredentials(credentials, masterPassword)
-                    ));
-                    datasource.sourceID = this.id;
-                    if (typeof offlineContent === "string") {
-                        datasource.setContent(offlineContent);
-                    }
-                    datasource.on("updated", () => {
-                        this._waitNonPending()
-                            .then(async () => {
-                                if (this.status === VaultSource.STATUS_UNLOCKED) {
-                                    await this._updateCredentialsFromDatasource();
-                                }
-                                this.emit("updated");
-                            })
-                            .catch(err => {
-                                console.error(`Error updating datasource credentials for vault: ${this.id}`, err);
-                            });
+        await this._enqueueStateChange(async () => {
+            // Get offline content if available and requested
+            const offlineContent = loadOfflineCopy ? await this.getOfflineContent() : null;
+            const credentials: Credentials = (this._credentials = await processDehydratedCredentials(
+                this._credentials as string,
+                masterPassword
+            ));
+            // Initialise datasource
+            const datasource = (this._datasource = credentialsToDatasource(
+                Credentials.fromCredentials(credentials, masterPassword)
+            ));
+            datasource.sourceID = this.id;
+            if (typeof offlineContent === "string") {
+                datasource.setContent(offlineContent);
+            }
+            // Listen for datasource updates
+            datasource.on("updated", () => {
+                this._waitNonPending()
+                    .then(async () => {
+                        if (this.status === VaultSource.STATUS_UNLOCKED) {
+                            await this._updateCredentialsFromDatasource();
+                        }
+                        this.emit("updated");
+                    })
+                    .catch(err => {
+                        console.error(`Error updating datasource credentials for vault: ${this.id}`, err);
                     });
-                    const defaultVault = Vault.createWithDefaults();
-                    const loadWork = initialiseRemote
-                        ? datasource.save(defaultVault.format.history, credentials).then(() => {
-                              this._vault = defaultVault;
-                          })
-                        : datasource.load(credentials).then(({ Format, history }) => {
-                              this._vault = Vault.createFromHistory(history, Format);
-                          });
-                    return loadWork
-                        .then(() => {
-                            if (storeOfflineCopy) {
-                                // Store an offline copy for later use
-                                return storeSourceOfflineCopy(
-                                    this._vaultManager._cacheStorage,
-                                    this.id,
-                                    datasource._content
-                                );
-                            }
-                            if (loadOfflineCopy) {
-                                // Flag the format as read-only
-                                this.vault.format._readOnly = true;
-                            }
-                        })
-                        .then(() => {
-                            this._status = VaultSource.STATUS_UNLOCKED;
-                            this.emit("unlocked");
-                            this._attachmentManager = new AttachmentManager(this);
-                        });
-                })
-                .catch(err => {
-                    this._status = VaultSource.STATUS_LOCKED;
-                    this._vault = null;
-                    this._datasource = null;
-                    this._credentials = originalCredentials;
-                    this._attachmentManager = null;
-                    throw new Layerr(err, "Failed unlocking source");
-                });
+            });
+            // Perform pre-save or load
+            if (initialiseRemote) {
+                const defaultVault = Vault.createWithDefaults();
+                await datasource.save(defaultVault.format.history, credentials);
+                this._vault = defaultVault;
+            } else {
+                const { Format, history } = await datasource.load(credentials);
+                this._vault = Vault.createFromHistory(history, Format);
+            }
+            // Handle offline state
+            if (storeOfflineCopy) {
+                // Store an offline copy for later use
+                await storeSourceOfflineCopy(this._vaultManager._cacheStorage, this.id, datasource._content);
+            }
+            if (loadOfflineCopy) {
+                // Flag the format as read-only
+                this.vault.format._readOnly = true;
+            }
+            // Configure source status
+            this._status = VaultSource.STATUS_UNLOCKED;
+            this._attachmentManager = new AttachmentManager(this);
+            this.emit("unlocked");
+        }).catch(err => {
+            this._status = VaultSource.STATUS_LOCKED;
+            this._vault = null;
+            this._datasource = null;
+            this._credentials = originalCredentials;
+            this._attachmentManager = null;
+            throw new Layerr(err, "Failed unlocking source");
         });
     }
 
