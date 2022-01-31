@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.9.1
+_2022-01-31_
+
+ * **Bugfix**:
+   * `VaultSource#save` correctly detecting saved content
+
 ## v6.9.0
 _2022-01-31_
 
