@@ -24,6 +24,10 @@ export interface VaultSourceConfig {
     meta?: VaultSourceMetadata;
 }
 
+export interface VaultSourceSaveOptions {
+    storeOfflineCopy?: boolean;
+}
+
 export interface VaultSourceUnlockOptions {
     initialiseRemote?: boolean;
     loadOfflineCopy?: boolean;
@@ -440,7 +444,8 @@ export default class VaultSource extends EventEmitter {
      * updated to prevent conflicts or overwrites.
      * @memberof VaultSource
      */
-    async save() {
+    async save(config: VaultSourceSaveOptions = {}) {
+        const { storeOfflineCopy = true } = config;
         await this._enqueueStateChange(async () => {
             if (await this.localDiffersFromRemote()) {
                 await this.mergeFromRemote();
@@ -451,6 +456,11 @@ export default class VaultSource extends EventEmitter {
             );
             this._vault.format.dirty = false;
             await this._updateInsights();
+            // Handle offline state
+            if (storeOfflineCopy) {
+                // Store an offline copy for later use
+                await storeSourceOfflineCopy(this._vaultManager._cacheStorage, this.id, this._datasource._content);
+            }
         }, /* stack */ "saving");
         this.emit("updated");
     }
