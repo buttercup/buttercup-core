@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.9.0
+_2022-01-31_
+
+ * `VaultSource` `save` options parameter, with `storeOfflineCopy` (default `true`)
+
 ## v6.8.2
 _2022-01-30_
 
