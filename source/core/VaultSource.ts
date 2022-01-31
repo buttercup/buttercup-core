@@ -450,17 +450,31 @@ export default class VaultSource extends EventEmitter {
             if (await this.localDiffersFromRemote()) {
                 await this.mergeFromRemote();
             }
-            await this._datasource.save(
-                this._vault.format.history,
-                prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type)
-            );
-            this._vault.format.dirty = false;
-            await this._updateInsights();
-            // Handle offline state
-            if (storeOfflineCopy) {
-                // Store an offline copy for later use
-                await storeSourceOfflineCopy(this._vaultManager._cacheStorage, this.id, this._datasource._content);
+            // Capture encrypted content
+            let encryptedContent: string = null;
+            const encryptedCallback = ({ content }) => {
+                encryptedContent = content;
+            };
+            this._datasource.once("encryptedContent", encryptedCallback);
+            // Unlock
+            try {
+                await this._datasource.save(
+                    this._vault.format.history,
+                    prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type)
+                );
+            } catch (err) {
+                this._datasource.off("encryptedContent", encryptedCallback);
+                throw err;
             }
+            // Clear state
+            this._vault.format.dirty = false;
+            // Handle offline state
+            if (storeOfflineCopy && encryptedContent) {
+                // Store an offline copy for later use
+                await storeSourceOfflineCopy(this._vaultManager._cacheStorage, this.id, encryptedContent);
+            }
+            // Misc
+            await this._updateInsights();
         }, /* stack */ "saving");
         this.emit("updated");
     }

@@ -198,7 +198,9 @@ export default class TextDatasource extends EventEmitter {
         if (!history.format) {
             throw new Error("Unable to save: Provided history does not contain a format");
         }
-        return getFormatForID(history.format).encodeRaw(history, credentials);
+        const content = await getFormatForID(history.format).encodeRaw(history, credentials);
+        this.emit("encryptedContent", { content });
+        return content;
     }
 
     /**

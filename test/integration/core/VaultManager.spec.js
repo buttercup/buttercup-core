@@ -133,9 +133,18 @@ describe("VaultManager", function() {
             }, 100);
         });
 
-        it("stores offline copies", async function() {
+        it("stores offline copies (unlock)", async function() {
             expect(await this.vaultSource.checkOfflineCopy()).to.equal(false, "Should not have offline copy");
             await this.vaultSource.unlock(Credentials.fromPassword("test"));
+            expect(await this.vaultSource.checkOfflineCopy()).to.equal(true, "Should have offline copy");
+        });
+
+        it("stores offline copies (save)", async function() {
+            await this.vaultSource.unlock(Credentials.fromPassword("test"), {
+                storeOfflineCopy: false
+            });
+            expect(await this.vaultSource.checkOfflineCopy()).to.equal(false, "Should not have offline copy");
+            await this.vaultSource.save();
             expect(await this.vaultSource.checkOfflineCopy()).to.equal(true, "Should have offline copy");
         });
 
