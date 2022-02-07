@@ -6,13 +6,18 @@ import { getNetResources } from "./net";
 import { getRNGResources } from "./rng";
 import { getEncodingResources } from "./encoding";
 import { AppEnv } from "../core/appEnv";
+import { AppEnvMapper } from "../appEnv";
 
-export function applyNativeConfiguration(appEnv: AppEnv) {
-    appEnv.setProperties(getCryptoResources());
-    appEnv.setProperties(getV1CompressionResources());
-    appEnv.setProperties(getV2CompressionResources());
-    appEnv.setProperties(getEnvironmentResources());
-    appEnv.setProperties(getNetResources());
-    appEnv.setProperties(getRNGResources());
-    appEnv.setProperties(getEncodingResources());
+export function applyNativeConfiguration(appEnv: AppEnv, map: AppEnvMapper) {
+    appEnv.setProperties(
+        map({
+            ...getCryptoResources(),
+            ...getV1CompressionResources(),
+            ...getV2CompressionResources(),
+            ...getEnvironmentResources(),
+            ...getNetResources(),
+            ...getRNGResources(),
+            ...getEncodingResources()
+        })
+    );
 }
