@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.10.0
+_2022-02-07_
+
+ * `init` method app env map method for modifying individual properties
+
 ## v6.9.1
 _2022-01-31_
 
