@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.11.0
+_2022-02-13_
+
+ * Format A/B signature test methods
+
 ## v6.10.0
 _2022-02-07_
 
