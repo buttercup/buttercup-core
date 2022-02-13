@@ -17,7 +17,15 @@ export { default as AttachmentManager } from "./attachments/AttachmentManager";
 
 export { detectFormat, getDefaultFormat, setDefaultFormat } from "./io/formatRouter";
 export { default as VaultFormatA } from "./io/VaultFormatA";
+export {
+    getSignature as getFormatASignature,
+    hasValidSignature as hasValidFormatASignature
+} from "./io/formatA/signing";
 export { default as VaultFormatB } from "./io/VaultFormatB";
+export {
+    getSignature as getFormatBSignature,
+    hasValidSignature as hasValidFormatBSignature
+} from "./io/formatB/signing";
 
 export { default as TextDatasource } from "./datasources/TextDatasource";
 export { default as MemoryDatasource } from "./datasources/MemoryDatasource";
