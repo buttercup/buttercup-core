@@ -1,13 +1,6 @@
-import { CredentialsData } from "../types";
+import { CredentialsPayload } from "../types";
 
 const __store = {};
-
-export interface CredentialsPayload {
-    data: CredentialsData;
-    masterPassword: string | null;
-    purposes: Array<string>;
-    open: boolean;
-}
 
 export function credentialsAllowsPurpose(id: string, purpose: string): boolean {
     const { purposes } = getCredentials(id);

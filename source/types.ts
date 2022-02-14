@@ -21,6 +21,13 @@ export interface CredentialsData {
     [key: string]: any;
 }
 
+export interface CredentialsPayload {
+    data: CredentialsData;
+    masterPassword: string | null;
+    purposes: Array<string>;
+    open: boolean;
+}
+
 export interface DatasourceConfiguration {
     type: string;
     content?: string;

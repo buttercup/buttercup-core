@@ -1,6 +1,7 @@
 import { generateUUID } from "../tools/uuid";
 import { credentialsAllowsPurpose, getCredentials, setCredentials } from "./channel";
 import { getSharedAppEnv } from "../env/appEnv";
+import { CredentialsData, CredentialsPayload, DatasourceConfiguration } from "../types";
 
 /**
  * The signature of legacy encrypted credentials
@@ -49,7 +50,6 @@ function unsignEncryptedContent(content: string): string {
  * credentials to be shared or transferred outside of the
  * environment. Credential properties are stored in memory
  * and are inaccessible to public functions.
- * @memberof module:Buttercup
  */
 export default class Credentials {
     static PURPOSE_DECRYPT_VAULT = "vault-decrypt";
@@ -58,7 +58,6 @@ export default class Credentials {
 
     /**
      * Get all available purposes
-     * @memberof Credentials
      * @static
      */
     static allPurposes() {
@@ -75,8 +74,6 @@ export default class Credentials {
      * @param credentials A credentials instance
      * @param masterPassword The master password used to
      *  encrypt the instance being cloned
-     * @memberof Credentials
-     * @static
      * @throws {Error} Throws if no master password provided
      * @throws {Error} Throws if master password does not match
      *  original
@@ -100,10 +97,8 @@ export default class Credentials {
      *  authenticating against the datasource host platform.
      * @param masterPassword Optional master password to
      *  store alongside the credentials. Used to create secure strings.
-     * @memberof Credentials
-     * @static
      */
-    static fromDatasource(datasourceConfig: Object, masterPassword: string = null): Credentials {
+    static fromDatasource(datasourceConfig: DatasourceConfiguration, masterPassword: string = null): Credentials {
         return new Credentials(
             {
                 datasource: datasourceConfig
@@ -122,8 +117,6 @@ export default class Credentials {
      * @param masterPassword Optional master password
      *  to store alongside the credentials. Used to create secure
      *  strings.
-     * @memberof Credentials
-     * @static
      */
     static fromPassword(password: string, masterPassword: string = null): Credentials {
         const masterPass = masterPassword || password;
@@ -135,8 +128,6 @@ export default class Credentials {
      * @param content Encrypted content
      * @param masterPassword The password for decryption
      * @returns A promise that resolves with the new instance
-     * @static
-     * @memberof Credentials
      */
     static fromSecureString(content: string, masterPassword: string): Promise<Credentials> {
         const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
@@ -166,8 +157,6 @@ export default class Credentials {
     /**
      * Check if a value is an instance of Credentials
      * @param inst The value to check
-     * @statuc
-     * @memberof Credentials
      */
     static isCredentials(inst: Credentials | any): boolean {
         return !!inst && typeof inst === "object" && typeof inst.toSecureString === "function" && !!inst.id;
@@ -181,7 +170,7 @@ export default class Credentials {
      * @param masterPassword Optional master password to store with
      *  the credentials data, which is used for generating secure strings.
      */
-    constructor(obj: Object = {}, masterPassword: string = null) {
+    constructor(obj: CredentialsData = {}, masterPassword: string = null) {
         const id = generateUUID();
         Object.defineProperty(this, "id", {
             writable: false,
@@ -199,9 +188,22 @@ export default class Credentials {
 
     /**
      * Get raw credentials data (only available in specialised environments)
-     * @memberof Credentials
+     * @returns Credentials data object, or null if not available
      */
-    getData(): Object | null {
+    getCredentialsData(): CredentialsData {
+        const isClosedEnv = getSharedAppEnv().getProperty("env/v1/isClosedEnv")();
+        const payload = getCredentials(this.id);
+        if (isClosedEnv || payload.open === true) {
+            return payload.data;
+        }
+        return null;
+    }
+
+    /**
+     * Get raw credentials data (only available in specialised environments)
+     * @deprecated Use getCredentialsData instead
+     */
+    getData(): CredentialsPayload | null {
         const isClosedEnv = getSharedAppEnv().getProperty("env/v1/isClosedEnv")();
         const payload = getCredentials(this.id);
         if (isClosedEnv || payload.open === true) {
@@ -218,7 +220,6 @@ export default class Credentials {
      *  new allowed purposes. If a purpose mentioned is
      *  not currently permitted, it will be ignored.
      * @returns Returns self
-     * @memberof Credentials
      * @example
      *  credentials.restrictPurposes(
      *      Credentials.PURPOSE_SECURE_EXPORT
@@ -242,22 +243,36 @@ export default class Credentials {
     }
 
     /**
+     * Set the credential data
+     * @param data The credentials data to overwrite the old with
+     */
+    setCredentialsData(data: CredentialsData): void {
+        const isClosedEnv = getSharedAppEnv().getProperty("env/v1/isClosedEnv")();
+        const payload = getCredentials(this.id);
+        if (!isClosedEnv && payload.open !== true) {
+            throw new Error("Unable to set data: Insecure environment and payload is not open");
+        }
+        const newPayload: CredentialsPayload = {
+            ...payload,
+            data
+        };
+        setCredentials(this.id, newPayload);
+    }
+
+    /**
      * Convert the credentials to an encrypted string, for storage
      * @returns A promise that resolves with the encrypted credentials
      * @throws {Error} Rejects when masterPassword is not a string
      * @throws {Error} Rejects if credentials don't permit secure export purposes
-     * @memberof Credentials
      */
-    toSecureString(): Promise<string> {
+    async toSecureString(): Promise<string> {
         if (credentialsAllowsPurpose(this.id, Credentials.PURPOSE_SECURE_EXPORT) !== true) {
-            return Promise.reject(new Error("Credential purposes don't allow for secure exports"));
+            throw new Error("Credential purposes don't allow for secure exports");
         }
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
         const { data, masterPassword } = getCredentials(this.id);
         if (typeof masterPassword !== "string") {
-            return Promise.reject(
-                new Error("Cannot convert Credentials to string: master password was not set or is invalid")
-            );
+            throw new Error("Cannot convert Credentials to string: master password was not set or is invalid");
         }
         return encrypt(JSON.stringify(data), masterPassword).then(signEncryptedContent);
     }
@@ -265,7 +280,6 @@ export default class Credentials {
     /**
      * Get raw credentials data (only available in specialised environments)
      * @protected
-     * @memberof Credentials
      * @deprecated
      */
     _getData() {
