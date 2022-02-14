@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.12.0
+_2022-02-14_
+
+ * `Credentials#setCredentialsData` and `Credentials#getCredentialsData` for setting and getting credentials data in closed environments
+ * `Credentials#getData` deprecated
+
 ## v6.11.0
 _2022-02-13_
 
