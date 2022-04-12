@@ -8,10 +8,6 @@
     {
       "name": "Perry Mitchell",
       "email": "perry@perrymitchell.net"
-    },
-    {
-      "name": "Sallar Kaboli",
-      "email": "sallar.kaboli@gmail.com"
     }
   ],
   "scripts": {
@@ -78,7 +74,7 @@
   "homepage": "https://github.com/buttercup/buttercup-core#readme",
   "dependencies": {
     "@buttercup/channel-queue": "^1.0.1",
-    "@buttercup/dropbox-client": "^0.7.3",
+    "@buttercup/dropbox-client": "^0.8.0",
     "@buttercup/googledrive-client": "^1.3.3",
     "cowl": "^1.1.0",
     "crypto-random-string": "^3.3.1",
