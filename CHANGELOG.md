@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.13.1
+_2022-04-13_
+
+ * Dropbox client improved web compatibility
+
 ## v6.13.0
 _2022-04-12_
 
