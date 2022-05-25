@@ -1,8 +1,8 @@
-import { createClient } from "@buttercup/dropbox-client";
 import TextDatasource from "./TextDatasource";
 import { fireInstantiationHandlers, registerDatasource } from "./register";
 import Credentials from "../credentials/Credentials";
 import { getCredentials } from "../credentials/channel";
+import { getSharedAppEnv } from "../env/appEnv";
 import { DatasourceConfigurationDropbox, DatasourceLoadedData, EncryptedContent, History } from "../types";
 
 /**
@@ -27,6 +27,7 @@ export default class DropboxDatasource extends TextDatasource {
         const { token, path } = datasourceConfig;
         this.path = path;
         this.token = token;
+        const createClient = getSharedAppEnv().getProperty("net/dropbox/v1/newClient");
         this.client = createClient(token);
         this.type = "dropbox";
         fireInstantiationHandlers("dropbox", this);
