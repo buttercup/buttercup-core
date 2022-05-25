@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.14.0
+_2022-05-25_
+
+ * Dropbox client upgrade for Node / Web compatibility
+
 ## v6.13.1
 _2022-04-13_
 
