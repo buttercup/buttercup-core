@@ -258,6 +258,15 @@ export interface MemoryStore {
     vault?: EncryptedContent;
 }
 
+export interface OutgoingShare {
+    id: ShareID;
+    format: VaultFormatID;
+    key: string;
+    update: string;
+    groups: Array<FormatBGroup>;
+    entries: Array<FormatBEntry>;
+}
+
 export interface PropertyKeyValueObject {
     [key: string]: string;
 }

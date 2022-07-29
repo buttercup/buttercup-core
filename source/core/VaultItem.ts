@@ -43,6 +43,7 @@ export default class VaultItem {
      * @memberof VaultItem
      */
     get shareID(): string | null {
+        if (!this._vault.format.supportsShares()) return null;
         return this._vault.format.getItemShareID(this._source);
     }
 
