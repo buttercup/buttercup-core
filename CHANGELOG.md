@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.15.0
+_2022-08-03_
+
+ * `VaultSource#convert` method for converting vault format
+
 ## v6.14.0
 _2022-05-25_
 
