@@ -5,6 +5,7 @@ import { findEntriesByProperty } from "../search/entries";
 import Group from "./Group";
 import Entry from "./Entry";
 import { EntryID, GroupID, History } from "../types";
+import VaultFormat from "../io/VaultFormat";
 
 /**
  * Vault class - Contains Groups and Entrys
@@ -90,11 +91,16 @@ export default class Vault extends EventEmitter {
      *  Will use the default system format (recommended) if not
      *  specified.
      */
-    constructor(Format: any = getDefaultFormat()) {
+    constructor(format: any = getDefaultFormat()) {
         super();
         // Setup format
-        this._updateFormat(new Format());
-        this.format.initialise();
+        if (format instanceof VaultFormat) {
+            this._updateFormat(format);
+        } else {
+            const Format = format;
+            this._updateFormat(new Format());
+            this.format.initialise();
+        }
         // Create groups and entries
         this._rebuild();
     }

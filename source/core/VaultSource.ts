@@ -11,7 +11,9 @@ import { generateVaultInsights } from "../insight/vault";
 import AttachmentManager from "../attachments/AttachmentManager";
 import TextDatasource from "../datasources/TextDatasource";
 import VaultManager from "./VaultManager";
-import { VaultSourceID, VaultSourceStatus } from "../types";
+import { VaultFormatID, VaultSourceID, VaultSourceStatus } from "../types";
+import { convertFormatAVault } from "../io/formatB/conversion";
+import { VaultFormatB } from "../index.common";
 
 interface StateChangeEnqueuedFunction {
     (): void | Promise<any>;
@@ -288,12 +290,32 @@ export default class VaultSource extends EventEmitter {
 
     /**
      * Check if the source has an offline copy
-     * @returns {Promise.<Boolean>} A promise which resolves with whether an offline
+     * @returns A promise which resolves with whether an offline
      *  copy is available or not
      * @memberof VaultSource
      */
     checkOfflineCopy() {
         return sourceHasOfflineCopy(this._vaultManager._cacheStorage, this.id);
+    }
+
+    /**
+     * Convert vault to a new format
+     * @param targetFormat The target format to convert to
+     * @memberof VaultSource
+     */
+    async convert(targetFormat: VaultFormatID): Promise<void> {
+        if (this.status !== VaultSource.STATUS_UNLOCKED) {
+            throw new Layerr(`Failed converting source: Source not unlocked (${this.status}): ${this.id}`);
+        }
+        if (this.vault.format.getFormat().getFormatID() !== VaultFormatID.A) {
+            throw new Layerr(`Failed converting source: Source not in expected format: ${this.id}`);
+        }
+        if (targetFormat !== VaultFormatID.B) {
+            throw new Layerr(`Failed converting source: Target format not valid: ${this.id}`);
+        }
+        const formatBSource = convertFormatAVault(this.vault.format.source);
+        const format = new VaultFormatB(formatBSource);
+        this._vault = new Vault(format);
     }
 
     /**

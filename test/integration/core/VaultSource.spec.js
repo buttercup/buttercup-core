@@ -1,7 +1,9 @@
+const { expect } = require("chai");
 const {
     Credentials,
     TextDatasource,
     Vault,
+    VaultFormatID,
     VaultManager,
     VaultSource,
     setDefaultFormat
@@ -54,6 +56,14 @@ describe("VaultSource", function() {
 
         it("sets source ID on datasource", function() {
             expect(this.vaultSource._datasource.sourceID).to.equal(this.vaultSource.id);
+        });
+
+        describe("convert", function() {
+            it("converts from format A to B", async function() {
+                await this.vaultSource.convert(VaultFormatID.B);
+                const [loginEntry] = this.vaultSource.vault.findEntriesByProperty("title", "Login");
+                expect(loginEntry.getProperty("username")).to.equal("user");
+            });
         });
 
         describe("testMasterPassword", function() {
