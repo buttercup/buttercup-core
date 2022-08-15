@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.15.1
+_2022-08-15_
+
+ * **Bugfix**:
+   * Transfer history in format A -> B conversion
+
 ## v6.15.0
 _2022-08-03_
 
