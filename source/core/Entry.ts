@@ -177,7 +177,7 @@ export default class Entry extends VaultItem {
      * @returns A key-value object of the matching properties
      * @memberof Entry
      */
-    getProperties(propertyExpression?: RegExp | string) {
+    getProperties(propertyExpression?: RegExp | string): PropertyKeyValueObject {
         const raw = this.vault.format.getEntryProperties(this._source);
         if (typeof propertyExpression === "undefined") {
             return Object.assign({}, raw);

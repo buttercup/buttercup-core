@@ -3,6 +3,7 @@ const {
     Credentials,
     TextDatasource,
     Vault,
+    VaultFormatA,
     VaultFormatID,
     VaultManager,
     VaultSource,
@@ -29,6 +30,7 @@ async function createTextSourceCredentials() {
 
 describe("VaultSource", function() {
     beforeEach(async function() {
+        setDefaultFormat(VaultFormatA);
         this.sourceCredentials = await createTextSourceCredentials();
         this.vaultSource = new VaultSource("Test", "text", await this.sourceCredentials.toSecureString());
         this.vaultManager = new VaultManager();

@@ -2,6 +2,7 @@ import { newRawValue } from "./history";
 import { getDateString } from "../../tools/date";
 import { getAllEntries as getAllFormatAEntries, getAllGroups as getAllFormatAGroups } from "../formatA/tools";
 import {
+    EntryPropertyType,
     FormatAEntry,
     FormatAGroup,
     FormatAVault,
@@ -13,12 +14,32 @@ import {
 } from "../../types";
 
 export function convertFormatAEntry(entry: FormatAEntry): FormatBEntry {
-    return {
+    const changes = entry.history || [];
+    const formatBEntry = {
         id: entry.id,
         a: flatKeyValueObjectToValuesObject(entry.attributes || {}),
         p: flatKeyValueObjectToValuesObject(entry.properties || {}),
         g: entry.parentID
     };
+    for (const key in formatBEntry.a) {
+        const propChanges = changes.filter(
+            change => change.property === key && change.propertyType === EntryPropertyType.Attribute
+        );
+        formatBEntry.a[key].history = propChanges.map(propChange => ({
+            value: propChange.newValue,
+            updated: null
+        }));
+    }
+    for (const key in formatBEntry.p) {
+        const propChanges = changes.filter(
+            change => change.property === key && change.propertyType === EntryPropertyType.Property
+        );
+        formatBEntry.p[key].history = propChanges.map(propChange => ({
+            value: propChange.newValue,
+            updated: null
+        }));
+    }
+    return formatBEntry;
 }
 
 export function convertFormatAGroup(group: FormatAGroup): FormatBGroup {
