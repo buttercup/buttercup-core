@@ -21,8 +21,8 @@ const TYPE = "memory";
  * @memberof module:Buttercup
  */
 export default class MemoryDatasource extends TextDatasource {
-    _property: string;
-    _store: MemoryStore;
+    protected _property: string;
+    private _store: MemoryStore;
 
     /**
      * Constructor for the datasource

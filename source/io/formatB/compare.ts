@@ -44,6 +44,7 @@ export function propertiesDiffer(props1: FormatBKeyValueObject, props2: FormatBK
 }
 
 export function valuesDiffer(value1: FormatBValue, value2: FormatBValue): boolean {
+    if ((!value1 && value2) || (value1 && !value2)) return true;
     for (const prop of ["value", "created", "updated"]) {
         if (value1[prop] !== value2[prop]) return true;
     }
