@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.15.2
+_2022-08-16_
+
+ * **Bugfix**:
+   * Saving new properties in format B vaults throws error
+
 ## v6.15.1
 _2022-08-15_
 
