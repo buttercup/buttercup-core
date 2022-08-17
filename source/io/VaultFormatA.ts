@@ -487,6 +487,10 @@ export default class VaultFormatA extends VaultFormat {
         );
     }
 
+    supportsShares(): boolean {
+        return false;
+    }
+
     _executeCommand(command: string) {
         let currentCommand = command,
             shareID = null;

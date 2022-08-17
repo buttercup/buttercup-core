@@ -33,6 +33,7 @@ export { default as FileDatasource } from "./datasources/FileDatasource";
 export { default as WebDAVDatasource } from "./datasources/WebDAVDatasource";
 export { default as DropboxDatasource } from "./datasources/DropboxDatasource";
 export { default as GoogleDriveDatasource } from "./datasources/GoogleDriveDatasource";
+export { default as ButtercupServerDatasource } from "./datasources/ButtercupServerDatasource";
 export { default as DatasourceAuthManager } from "./datasources/DatasourceAuthManager";
 export { registerDatasource } from "./datasources/register";
 

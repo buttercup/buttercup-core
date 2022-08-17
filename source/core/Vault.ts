@@ -4,8 +4,8 @@ import { findGroupsByTitle } from "../search/groups";
 import { findEntriesByProperty } from "../search/entries";
 import Group from "./Group";
 import Entry from "./Entry";
-import { EntryID, GroupID, History } from "../types";
 import VaultFormat from "../io/VaultFormat";
+import { EntryID, FormatBShare, GroupID, History } from "../types";
 
 /**
  * Vault class - Contains Groups and Entrys
@@ -56,6 +56,8 @@ export default class Vault extends EventEmitter {
     _groups: Array<Group> = [];
 
     _onCommandExec: () => void;
+
+    _shares: Array<any> = [];
 
     /**
      * The vault format
@@ -273,6 +275,14 @@ export default class Vault extends EventEmitter {
                 this._entries.push(new Entry(this, rawEntry));
             }
         });
+        if (this.format.supportsShares()) {
+            this.format.getAllShares().forEach((rawShare: FormatBShare) => {
+                const id = this.format.getShareID(rawShare);
+                if (!this._shares.find(s => s.id === id)) {
+                    this._shares.push(this.format.createShareInstance(rawShare));
+                }
+            });
+        }
     }
 
     /**

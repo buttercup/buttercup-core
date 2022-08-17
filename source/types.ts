@@ -149,14 +149,17 @@ export enum EntryType {
     Website = "website"
 }
 
+export enum ErrorCode {
+    NoManagementPermission = "perm:no-mgmt",
+    NoWritePermission = "perm:no-write"
+}
+
 export interface FormatAEntry {
     id: EntryID;
     attributes?: PropertyKeyValueObject;
     properties?: PropertyKeyValueObject;
     parentID: GroupID;
-    permissions?: Array<VaultPermission>;
     history?: Array<EntryLegacyHistoryItem>;
-    shareID?: string;
 }
 
 export interface FormatAGroup {
@@ -166,8 +169,6 @@ export interface FormatAGroup {
     entries?: Array<FormatAEntry>;
     title: string;
     parentID: GroupID;
-    permissions?: Array<VaultPermission>;
-    shareID?: string;
 }
 
 export interface FormatAVault {
@@ -180,19 +181,30 @@ export interface FormatAVault {
 export interface FormatBEntry {
     id: EntryID;
     g: GroupID;
+    d?: UTCTimestamp;
     a: FormatBKeyValueObject;
     p: FormatBKeyValueObject;
+    s?: ShareID;
 }
 
 export interface FormatBGroup {
     id: GroupID;
     a: FormatBKeyValueObject;
+    d?: UTCTimestamp;
     t: string;
     g: GroupID;
+    s?: ShareID;
 }
 
 export interface FormatBKeyValueObject {
     [key: string]: FormatBValue;
+}
+
+export interface FormatBShare {
+    id: ShareID;
+    upd: string;
+    k: string;
+    p: Array<SharePermission>;
 }
 
 export interface FormatBValue {
@@ -214,6 +226,7 @@ export interface FormatBVault {
     g: Array<FormatBGroup>;
     e: Array<FormatBEntry>;
     c: DateString;
+    s: Array<FormatBShare>;
 }
 
 export interface GroupFacade {
@@ -230,9 +243,28 @@ export interface History extends Array<string> {
     format?: VaultFormatID;
 }
 
+export interface IncomingShare {
+    id: ShareID;
+    format: VaultFormatID;
+    key: string;
+    update: string;
+    permissions: Array<SharePermission>;
+    groups: Array<FormatBGroup>;
+    entries: Array<FormatBEntry>;
+}
+
 export interface MemoryStore {
     attachments?: Object;
     vault?: EncryptedContent;
+}
+
+export interface OutgoingShare {
+    id: ShareID;
+    format: VaultFormatID;
+    key: string;
+    update: string;
+    groups: Array<FormatBGroup>;
+    entries: Array<FormatBEntry>;
 }
 
 export interface PropertyKeyValueObject {
@@ -240,6 +272,14 @@ export interface PropertyKeyValueObject {
 }
 
 export type SetTimeout = ReturnType<typeof setTimeout>;
+
+export type ShareID = string;
+
+export enum SharePermission {
+    Manage = "m",
+    Read = "r",
+    Write = "w"
+}
 
 export type UTCTimestamp = number;
 
@@ -259,12 +299,6 @@ export enum VaultFormatID {
 }
 
 export type VaultID = string;
-
-export enum VaultPermission {
-    Manage = "archive/member/manage",
-    Read = "archive/member/read",
-    Write = "archive/member/write"
-}
 
 export type VaultSourceID = string;
 

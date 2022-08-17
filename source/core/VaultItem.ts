@@ -1,5 +1,7 @@
+import { Layerr } from "layerr";
 import Vault from "./Vault";
-import { VaultPermission } from "../types";
+import Share from "./Share";
+import { ErrorCode, SharePermission } from "../types";
 
 /**
  * Base vault member class (for Entry, Group etc.)
@@ -24,11 +26,6 @@ export default class VaultItem {
     constructor(vault: Vault, source: any) {
         this._vault = vault;
         this._source = source;
-        this._source.permissions = this._source.permissions || [
-            VaultPermission.Manage,
-            VaultPermission.Read,
-            VaultPermission.Write
-        ];
     }
 
     /**
@@ -41,11 +38,13 @@ export default class VaultItem {
     }
 
     /**
-     * The current granted permissions
+     * The share ID of the entry or group, if available
+     * @readonly
      * @memberof VaultItem
      */
-    get permissions(): Array<string> {
-        return [...this._source.permissions];
+    get shareID(): string | null {
+        if (!this._vault.format.supportsShares()) return null;
+        return this._vault.format.getItemShareID(this._source);
     }
 
     /**
@@ -57,41 +56,19 @@ export default class VaultItem {
         return this._vault;
     }
 
-    /**
-     * Grant a new permission to the member
-     * @param perm The permission to grant
-     * @memberof VaultItem
-     */
-    grantPermission(perm: string) {
-        if (!this.hasPermission(perm)) {
-            this._source.permissions.push(perm);
-        }
+    permitsManagement(): boolean {
+        const share = this._getShare();
+        return share ? share.hasPermission(SharePermission.Manage) : true;
     }
 
-    /**
-     * Check if the member has a permission
-     * @param perm The permission to check for
-     * @memberof VaultItem
-     */
-    hasPermission(perm: string): boolean {
-        return this._source.permissions.includes(perm);
+    permitsModification(): boolean {
+        const share = this._getShare();
+        return share ? share.hasPermission(SharePermission.Write) : true;
     }
 
-    /**
-     * Revoke all permissions
-     * @memberof VaultItem
-     */
-    revokeAllPermissions() {
-        this._source.permissions = [];
-    }
-
-    /**
-     * Revoke a single permission
-     * @param perm The permission to revoke
-     * @memberof VaultItem
-     */
-    revokePermission(perm: string) {
-        this._source.permissions = this._source.permissions.filter(current => current !== perm);
+    permitsViewing(): boolean {
+        const share = this._getShare();
+        return share ? share.hasPermission(SharePermission.Read) : true;
     }
 
     /**
@@ -102,6 +79,37 @@ export default class VaultItem {
     _cleanUp() {
         this._vault = null;
         this._source = null;
+    }
+
+    _getShare(): Share | null {
+        const shareID = this.shareID;
+        return shareID ? this._vault._shares.find(share => share.id === shareID) : null;
+    }
+
+    _requireMgmtPermission() {
+        if (!this.permitsManagement()) {
+            throw new Layerr(
+                {
+                    info: {
+                        code: ErrorCode.NoManagementPermission
+                    }
+                },
+                "Management permission not granted for operation"
+            );
+        }
+    }
+
+    _requireWritePermission() {
+        if (!this.permitsModification()) {
+            throw new Layerr(
+                {
+                    info: {
+                        code: ErrorCode.NoWritePermission
+                    }
+                },
+                "Write permission not granted for operation"
+            );
+        }
     }
 
     /**

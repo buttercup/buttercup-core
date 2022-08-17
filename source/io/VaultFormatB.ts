@@ -1,5 +1,6 @@
 import VaultFormat from "./VaultFormat";
 import Vault from "../core/Vault";
+import Share from "../core/Share";
 import { generateUUID } from "../tools/uuid";
 import { getSharedAppEnv } from "../env/appEnv";
 import { getCredentials } from "../credentials/channel";
@@ -17,11 +18,13 @@ import {
     EntryID,
     FormatBEntry,
     FormatBGroup,
+    FormatBShare,
     FormatBValueHistoryItem,
     FormatBVault,
     GroupID,
     History,
     PropertyKeyValueObject,
+    ShareID,
     VaultFormatID,
     VaultID
 } from "../types";
@@ -32,7 +35,8 @@ function emptyVault(): FormatBVault {
         a: {},
         g: [],
         e: [],
-        c: getDateString()
+        c: getDateString(),
+        s: []
     };
 }
 
@@ -145,41 +149,45 @@ export default class VaultFormatB extends VaultFormat {
         this.source.g.push(group);
     }
 
+    createShareInstance(share: FormatBShare): Share {
+        return new Share(share.id, share.upd, share.k, share.p);
+    }
+
     deleteEntry(entryID: EntryID) {
         const ind = this.source.e.findIndex(entry => entry.id === entryID);
         if (ind >= 0) {
-            this.source.e.splice(ind, 1);
+            this.source.e[ind].d = this.source.e[ind].d || getTimestamp();
         }
     }
 
     deleteEntryAttribute(entryID: EntryID, attribute: string) {
-        const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
+        const entry = this.findEntryByID(entryID);
         if (!entry.a[attribute]) return;
-        entry.a[attribute].deleted = getTimestamp();
+        entry.a[attribute].deleted = entry.a[attribute].updated = getTimestamp();
     }
 
     deleteEntryProperty(entryID: EntryID, property: string) {
-        const entry = this.source.e.find(e => e.id === entryID);
+        const entry = this.findEntryByID(entryID);
         if (!entry.p[property]) return;
-        entry.p[property].deleted = getTimestamp();
+        entry.p[property].deleted = entry.p[property].updated = getTimestamp();
     }
 
     deleteGroup(groupID: GroupID) {
         const ind = this.source.g.findIndex(group => group.id === groupID);
         if (ind >= 0) {
-            this.source.g.splice(ind, 1);
+            this.source.g[ind].d = this.source.g[ind].d || getTimestamp();
         }
     }
 
     deleteGroupAttribute(groupID: GroupID, attribute: string) {
-        const group = this.source.g.find(g => g.id === groupID);
+        const group = this.findGroupByID(groupID);
         if (!group.a[attribute]) return;
-        group.a[attribute].deleted = getTimestamp();
+        group.a[attribute].deleted = group.a[attribute].updated = getTimestamp();
     }
 
     deleteVaultAttribute(attribute: string) {
         if (!this.source.a[attribute]) return;
-        this.source.a[attribute].deleted = getTimestamp();
+        this.source.a[attribute].deleted = this.source.a[attribute].updated = getTimestamp();
     }
 
     erase() {
@@ -206,11 +214,13 @@ export default class VaultFormatB extends VaultFormat {
     }
 
     findEntryByID(id: EntryID): FormatBEntry {
-        return this.source.e.find(entry => entry.id === id) || null;
+        const item = this.source.e.find(entry => entry.id === id);
+        return item && !item.d ? item : null;
     }
 
     findGroupByID(id: GroupID): FormatBGroup {
-        return this.source.g.find(group => group.id === id) || null;
+        const item = this.source.g.find(group => group.id === id);
+        return item && !item.d ? item : null;
     }
 
     findGroupContainingEntryID(id: EntryID): FormatBGroup {
@@ -234,12 +244,18 @@ export default class VaultFormatB extends VaultFormat {
 
     getAllEntries(parentID: GroupID = null): Array<FormatBEntry> {
         const source = this.source as FormatBVault;
-        return parentID === null ? source.e : source.e.filter(entry => entry.g === parentID);
+        const entries = parentID === null ? source.e : source.e.filter(entry => entry.g === parentID);
+        return entries.filter(e => !e.d);
     }
 
     getAllGroups(parentID: GroupID = null): Array<FormatBGroup> {
         const source = this.source as FormatBVault;
-        return parentID === null ? source.g : source.g.filter(group => group.g === parentID);
+        const groups = parentID === null ? source.g : source.g.filter(group => group.g === parentID);
+        return groups.filter(g => !g.d);
+    }
+
+    getAllShares(): Array<FormatBShare> {
+        return [...(this.source.s || [])];
     }
 
     getEntryAttributes(entrySource: FormatBEntry): PropertyKeyValueObject {
@@ -307,6 +323,14 @@ export default class VaultFormatB extends VaultFormat {
         return itemSource.g;
     }
 
+    getItemShareID(itemSource: FormatBGroup | FormatBEntry): ShareID | null {
+        return itemSource.s ?? null;
+    }
+
+    getShareID(share: FormatBShare): ShareID {
+        return share.id;
+    }
+
     getVaultAttributes() {
         return valuesObjectToKeyValueObject((<FormatBVault>this.source).a);
     }
@@ -326,18 +350,26 @@ export default class VaultFormatB extends VaultFormat {
 
     moveEntry(entryID: EntryID, groupID: GroupID) {
         const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
+        if (!entry || entry.d) {
+            throw new Error(`Can't move deleted entry: ${entryID}`);
+        }
         entry.g = groupID;
     }
 
     moveGroup(groupID: GroupID, newParentID: GroupID) {
         const group = this.source.g.find((g: FormatBGroup) => g.id === groupID);
+        if (!group || group.d) {
+            throw new Error(`Can't move deleted group: ${groupID}`);
+        }
         group.g = newParentID;
     }
 
-    optimise() {}
+    optimise() {
+        // @todo: Delete old deleted items
+    }
 
     setEntryAttribute(entryID: EntryID, attribute: string, value: string) {
-        const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
+        const entry = this.findEntryByID(entryID);
         if (!entry.a[attribute]) {
             entry.a[attribute] = newRawValue(value);
         } else {
@@ -349,7 +381,7 @@ export default class VaultFormatB extends VaultFormat {
     }
 
     setEntryProperty(entryID: EntryID, property: string, value: string) {
-        const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
+        const entry = this.findEntryByID(entryID);
         if (!entry.p[property]) {
             entry.p[property] = newRawValue(value);
         } else {
@@ -361,7 +393,7 @@ export default class VaultFormatB extends VaultFormat {
     }
 
     setGroupAttribute(groupID: GroupID, attribute: string, value: string) {
-        const group = this.source.g.find((g: FormatBGroup) => g.id === groupID);
+        const group = this.findGroupByID(groupID);
         if (!group.a[attribute]) {
             group.a[attribute] = newRawValue(value);
         } else {
@@ -373,7 +405,7 @@ export default class VaultFormatB extends VaultFormat {
     }
 
     setGroupTitle(groupID: GroupID, title: string) {
-        const group = this.source.g.find((g: FormatBGroup) => g.id === groupID);
+        const group = this.findGroupByID(groupID);
         group.t = title;
     }
 
@@ -386,5 +418,9 @@ export default class VaultFormatB extends VaultFormat {
             item.value = value;
             item.updated = getTimestamp();
         }
+    }
+
+    supportsShares(): boolean {
+        return true;
     }
 }
