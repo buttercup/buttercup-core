@@ -129,17 +129,17 @@ export default class GoogleDriveDatasource extends TextDatasource {
 
     /**
      * Update the OAuth2 tokens
-     * @param {String} accessToken The access token
-     * @param {String=} refreshToken The refresh token
+     * @param accessToken The access token
+     * @param refreshToken The refresh token, if available
      * @memberof GoogleDriveDatasource
      */
-    updateTokens(accessToken, refreshToken) {
+    updateTokens(accessToken: string, refreshToken?: string) {
         this.token = accessToken;
-        this.refreshToken = refreshToken;
+        if (refreshToken) this.refreshToken = refreshToken;
         this.client = createClient(accessToken);
         const { data: credentialData } = getCredentials(this.credentials.id);
         credentialData.datasource.token = accessToken;
-        credentialData.datasource.refreshToken = refreshToken;
+        if (refreshToken) credentialData.datasource.refreshToken = refreshToken;
         this.emit("updated");
     }
 }
