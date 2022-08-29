@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.15.3
+_2022-08-29_
+
+ * **Bugfix**:
+   * Prevent setting Google Drive refresh token if empty (unavailable)
+
 ## v6.15.2
 _2022-08-16_
 
