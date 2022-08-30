@@ -44,14 +44,14 @@ module.exports = config => config.set({
 
     colors: true,
 
-    coverageReporter: {
-        dir: "build/coverage/",
-        reporters: [
-            { type: "html" },
-            { type: "text" },
-            { type: "text-summary" }
-        ]
-    },
+    // coverageReporter: {
+    //     dir: "build/coverage/",
+    //     reporters: [
+    //         { type: "html" },
+    //         { type: "text" },
+    //         { type: "text-summary" }
+    //     ]
+    // },
 
     exclude: [],
 
@@ -65,12 +65,10 @@ module.exports = config => config.set({
 
     plugins: [
         require("karma-webpack"),
-        require("istanbul-instrumenter-loader"),
         require("karma-chrome-launcher"),
         require("karma-firefox-launcher"),
         require("karma-mocha"),
         require("karma-sinon"),
-        require("karma-coverage"),
         require("karma-spec-reporter")
     ],
 
