@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.16.1
+_2022-08-31_
+
+ * Dropbox client update for custom headers
+
 ## v6.16.0
 _2022-08-30_
 
