@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.16.2
+_2022-08-31_
+
+ * **Bugfix**:
+   * Dropbox client updated: Bad `headers` option type
+
 ## v6.16.1
 _2022-08-31_
 
