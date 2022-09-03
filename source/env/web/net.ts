@@ -5,7 +5,8 @@ export function getNetResources() {
     return {
         "net/dropbox/v1/newClient": (token: string) =>
             new DropboxClient(token, {
-                compat: true
+                compat: true,
+                compatPutCorsHack: false
             }),
         "net/webdav/v1/newClient": createClient
     };
