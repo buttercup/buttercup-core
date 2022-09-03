@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.16.3
+_2022-09-03_
+
+ * Dropbox client upgrade: Compatibility for CORS hack
+
 ## v6.16.2
 _2022-08-31_
 
