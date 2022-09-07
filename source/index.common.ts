@@ -92,6 +92,12 @@ export { base64ToBytes, bytesToBase64, decodeBase64String, encodeBase64String } 
 
 export * from "./types";
 
+export { ButtercupServerAuthURLOptions } from "./clients/ButtercupServerClient";
+import { getAuthorizationURL } from "./clients/ButtercupServerClient";
+export const ButtercupServer = {
+    getAuthorizationURL
+};
+
 /**
  * @module Buttercup
  */
