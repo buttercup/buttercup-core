@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v6.17.0
+_2023-01-09_
+
+ * Dependency updates & audit
+
 ## v6.16.5
 _2022-09-03_
 
