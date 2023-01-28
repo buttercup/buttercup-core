@@ -1,4 +1,6 @@
-import { gzip, ungzip } from "pako";
+import pako from "pako";
+
+const { gzip, ungzip } = pako;
 
 /**
  * Compress text using GZIP

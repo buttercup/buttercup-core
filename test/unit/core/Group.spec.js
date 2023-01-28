@@ -1,4 +1,5 @@
-const { Entry, Group, Vault, VaultPermission, generateUUID } = require("../../../dist/index.node.js");
+import { expect } from "chai";
+import { Entry, Group, Vault, VaultPermission, generateUUID } from "../../../dist/node/index.js";
 
 describe("core/Group", function() {
     beforeEach(function() {

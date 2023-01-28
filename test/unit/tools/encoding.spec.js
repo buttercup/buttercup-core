@@ -1,7 +1,7 @@
-const { base64ToBytes, bytesToBase64, decodeBase64String, encodeBase64String } = require("../../../dist/index.node.js");
+import { expect } from "chai";
+import { base64ToBytes, bytesToBase64, decodeBase64String, encodeBase64String } from "../../../dist/node/index.js";
 
 const BASE64 = "VGVzdDogdGV4dCE=";
-const BASE64_BYTES = [];
 const RAW = "Test: text!";
 const RAW_BYTES = new Uint8Array([84, 101, 115, 116, 58, 32, 116, 101, 120, 116, 33]);
 

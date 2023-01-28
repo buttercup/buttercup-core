@@ -1,4 +1,5 @@
-const {
+import { expect } from "chai";
+import {
     EntryChangeType,
     EntryPropertyValueType,
     Group,
@@ -7,8 +8,7 @@ const {
     VaultFormatB,
     VaultPermission,
     setDefaultFormat
-} = require("../../../dist/index.node.js");
-const { expect } = require("chai");
+} from "../../../dist/node/index.js";
 
 describe("core/Entry", function() {
     [

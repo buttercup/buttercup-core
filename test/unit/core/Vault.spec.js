@@ -1,5 +1,6 @@
-const { Group, Vault } = require("../../../dist/index.node.js");
-const { expect } = require("chai");
+import { expect } from "chai";
+import sinon from "sinon";
+import { Group, Vault } from "../../../dist/node/index.js";
 
 describe("core/Vault", function() {
     it("can be instantiated", function() {
