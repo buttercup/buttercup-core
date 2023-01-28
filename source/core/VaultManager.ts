@@ -2,10 +2,10 @@ import EventEmitter from "eventemitter3";
 import { Layerr } from "layerr";
 import isPromise from "is-promise";
 import { ChannelQueue } from "@buttercup/channel-queue";
-import MemoryStorageInterface from "../storage/MemoryStorageInterface";
-import VaultSource from "./VaultSource";
-import StorageInterface from "../storage/StorageInterface";
-import { SetTimeout, VaultSourceID } from "../types";
+import { MemoryStorageInterface } from "../storage/MemoryStorageInterface.js";
+import { VaultSource } from "./VaultSource.js";
+import { StorageInterface } from "../storage/StorageInterface.js";
+import { SetTimeout, VaultSourceID } from "../types.js";
 
 export interface InterruptedAutoUpdateFunction {
     (): void | Promise<any>;
@@ -36,7 +36,7 @@ const STORAGE_KEY_PREFIX_TEST = /^bcup_vaultmgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]
  * @augments EventEmitter
  * @memberof module:Buttercup
  */
-export default class VaultManager extends EventEmitter {
+export class VaultManager extends EventEmitter {
     /**
      * Key prefix for stored vaults
      * @static

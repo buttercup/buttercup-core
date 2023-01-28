@@ -1,6 +1,6 @@
-import { describeVaultDataset } from "./describe";
-import VaultFormatA from "../VaultFormatA";
-import { FormatAVault } from "../../types";
+import { describeVaultDataset } from "./describe.js";
+import { VaultFormatA } from "../VaultFormatA.js";
+import { FormatAVault } from "../../types.js";
 
 /**
  * Check if a command should be preserved (not flattened)
@@ -19,7 +19,7 @@ function mustBePreserved(command: string): boolean {
 /**
  * Flattener class for flattening archive history sets
  */
-export default class Flattener {
+export class Flattener {
     /**
      * Minimum history lines before flattening can occur
      * @static

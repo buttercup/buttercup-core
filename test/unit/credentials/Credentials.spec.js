@@ -1,4 +1,5 @@
-const { Credentials } = require("../../../dist/index.node.js");
+import { expect } from "chai";
+import { Credentials } from "../../../dist/node/index.js";
 
 describe("credentials/Credentials", function() {
     beforeEach(function() {

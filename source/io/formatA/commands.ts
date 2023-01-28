@@ -4,8 +4,8 @@ import {
     findGroupContainingEntryID,
     findGroupContainingGroupID,
     generateEntryLegacyHistoryItem
-} from "./tools";
-import { EntryID, EntryPropertyType, FormatAEntry, FormatAGroup, FormatAVault, GroupID, VaultID } from "../../types";
+} from "./tools.js";
+import { EntryID, EntryPropertyType, FormatAEntry, FormatAGroup, FormatAVault, GroupID, VaultID } from "../../types.js";
 
 export function executeArchiveID(vault: FormatAVault, opts: any, id: VaultID) {
     if (opts.shareID) {

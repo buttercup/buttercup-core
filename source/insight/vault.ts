@@ -1,5 +1,5 @@
-import Vault from "../core/Vault";
-import { VaultInsights } from "../types";
+import { Vault } from "../core/Vault.js";
+import { VaultInsights } from "../types.js";
 
 const DIGITS = /[0-9]+/;
 const LOWER_CASE = /[a-z]+/;

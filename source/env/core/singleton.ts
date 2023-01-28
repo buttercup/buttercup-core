@@ -1,6 +1,6 @@
-import { AppEnv, createAppEnv } from "./appEnv";
-import { assignObjImmutableProp } from "./prop";
-import { getGlobal } from "./global";
+import { AppEnv, createAppEnv } from "./appEnv.js";
+import { assignObjImmutableProp } from "./prop.js";
+import { getGlobal } from "./global.js";
 
 const GLOBAL_INSTANCE_REF = "@@__ButtercupAppEnv";
 

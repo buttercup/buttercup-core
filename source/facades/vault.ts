@@ -1,11 +1,11 @@
-import { consumeEntryFacade, createEntryFacade } from "./entry";
-import { idSignifiesNew } from "./tools";
-import { FACADE_VERSION } from "./symbols";
-import Entry from "../core/Entry";
-import Group from "../core/Group";
-import Vault from "../core/Vault";
-import { EntryFacade, GroupFacade, GroupID, VaultFacade } from "../types";
-import { generateUUID } from "../tools/uuid";
+import { consumeEntryFacade, createEntryFacade } from "./entry.js";
+import { idSignifiesNew } from "./tools.js";
+import { FACADE_VERSION } from "./symbols.js";
+import { Entry } from "../core/Entry.js";
+import { Group } from "../core/Group.js";
+import { Vault } from "../core/Vault.js";
+import { generateUUID } from "../tools/uuid.js";
+import { EntryFacade, GroupFacade, GroupID, VaultFacade } from "../types.js";
 
 export interface ConsumeVaultFacadeOptions {
     mergeMode?: boolean;

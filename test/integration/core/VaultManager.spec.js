@@ -1,6 +1,8 @@
-const path = require("path");
-const tmp = require("tmp");
-const {
+import { join } from "path";
+import { expect } from "chai";
+import sinon from "sinon";
+import { dir } from "tmp";
+import {
     Credentials,
     FileDatasource,
     Group,
@@ -12,7 +14,7 @@ const {
     VaultSource,
     VaultSourceStatus,
     setDefaultFormat
-} = require("../../../dist/index.node.js");
+} from "../../../dist/node/index.js";
 
 async function createTextSourceCredentials() {
     const vault = new Vault();
@@ -43,7 +45,7 @@ describe("VaultManager", function() {
                 this.vaultManager = new VaultManager({
                     autoUpdate: false
                 });
-                tmp.dir((err, dirPath, cleanup) => {
+                dir((err, dirPath, cleanup) => {
                     if (err) return document(err);
                     this.tmpDir = dirPath;
                     this.cleanup = cleanup;
@@ -79,7 +81,7 @@ describe("VaultManager", function() {
             });
 
             it("can merge differences between local and remote vaults", async function() {
-                const vaultPath = path.join(this.tmpDir, "vault.bcup");
+                const vaultPath = join(this.tmpDir, "vault.bcup");
                 // Init first
                 const creds = Credentials.fromDatasource(
                     {

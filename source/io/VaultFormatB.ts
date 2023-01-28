@@ -1,16 +1,16 @@
-import VaultFormat from "./VaultFormat";
-import Vault from "../core/Vault";
-import { generateUUID } from "../tools/uuid";
-import { getSharedAppEnv } from "../env/appEnv";
-import { getCredentials } from "../credentials/channel";
-import Credentials from "../credentials/Credentials";
-import { historyArrayToString, historyStringToArray } from "./common";
-import { hasValidSignature, sign, stripSignature, vaultContentsEncrypted } from "./formatB/signing";
-import { historiesDiffer } from "./formatB/compare";
-import { mergeRawVaults } from "./formatB/merge";
-import { valuesObjectToKeyValueObject } from "./formatB/conversion";
-import { newRawValue, valueToHistoryItem } from "./formatB/history";
-import { getDateString, getTimestamp } from "../tools/date";
+import { VaultFormat } from "./VaultFormat.js";
+import { Vault } from "../core/Vault.js";
+import { generateUUID } from "../tools/uuid.js";
+import { getSharedAppEnv } from "../env/appEnv.js";
+import { getCredentials } from "../credentials/channel.js";
+import { Credentials } from "../credentials/Credentials.js";
+import { historyArrayToString, historyStringToArray } from "./common.js";
+import { hasValidSignature, sign, stripSignature, vaultContentsEncrypted } from "./formatB/signing.js";
+import { historiesDiffer } from "./formatB/compare.js";
+import { mergeRawVaults } from "./formatB/merge.js";
+import { valuesObjectToKeyValueObject } from "./formatB/conversion.js";
+import { newRawValue, valueToHistoryItem } from "./formatB/history.js";
+import { getDateString, getTimestamp } from "../tools/date.js";
 import {
     EntryChange,
     EntryChangeType,
@@ -24,7 +24,7 @@ import {
     PropertyKeyValueObject,
     VaultFormatID,
     VaultID
-} from "../types";
+} from "../types.js";
 
 function emptyVault(): FormatBVault {
     return {
@@ -36,7 +36,7 @@ function emptyVault(): FormatBVault {
     };
 }
 
-export default class VaultFormatB extends VaultFormat {
+export class VaultFormatB extends VaultFormat {
     static encodeRaw(rawContent: History, credentials: Credentials): Promise<string> {
         const compress = getSharedAppEnv().getProperty("compression/v2/compressText");
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");

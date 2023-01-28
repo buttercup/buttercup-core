@@ -4,9 +4,9 @@ import {
     MemoryStorageInterface,
     VaultManager,
     VaultSource
-} from "../../source/index.web";
+} from "../../source/index.web.js";
 
-const IMAGE_DATA = require("../resources/attachments/image.png");
+import IMAGE_DATA from "../resources/attachments/image.png";
 
 // compare ArrayBuffers
 function arrayBuffersAreEqual(a, b) {

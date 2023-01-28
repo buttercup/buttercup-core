@@ -1,10 +1,10 @@
-import Vault from "./Vault";
-import { VaultPermission } from "../types";
+import { Vault } from "./Vault.js";
+import { VaultPermission } from "../types.js";
 
 /**
  * Base vault member class (for Entry, Group etc.)
  */
-export default class VaultItem {
+export class VaultItem {
     _boundUpdateRefs: () => void;
 
     _source: any;
@@ -12,7 +12,6 @@ export default class VaultItem {
     /**
      * Reference to the containing vault
      * @protected
-     * @memberof VaultItem
      */
     _vault: Vault = null;
 
@@ -34,7 +33,6 @@ export default class VaultItem {
     /**
      * The ID of the entry or group
      * @readonly
-     * @memberof VaultItem
      */
     get id(): string {
         return this._vault.format.getItemID(this._source);
@@ -42,7 +40,6 @@ export default class VaultItem {
 
     /**
      * The current granted permissions
-     * @memberof VaultItem
      */
     get permissions(): Array<string> {
         return [...this._source.permissions];
@@ -51,7 +48,6 @@ export default class VaultItem {
     /**
      * The vault this item belongs to
      * @readonly
-     * @memberof VaultItem
      */
     get vault(): Vault {
         return this._vault;
@@ -60,7 +56,6 @@ export default class VaultItem {
     /**
      * Grant a new permission to the member
      * @param perm The permission to grant
-     * @memberof VaultItem
      */
     grantPermission(perm: string) {
         if (!this.hasPermission(perm)) {
@@ -71,7 +66,6 @@ export default class VaultItem {
     /**
      * Check if the member has a permission
      * @param perm The permission to check for
-     * @memberof VaultItem
      */
     hasPermission(perm: string): boolean {
         return this._source.permissions.includes(perm);
@@ -79,7 +73,6 @@ export default class VaultItem {
 
     /**
      * Revoke all permissions
-     * @memberof VaultItem
      */
     revokeAllPermissions() {
         this._source.permissions = [];
@@ -88,7 +81,6 @@ export default class VaultItem {
     /**
      * Revoke a single permission
      * @param perm The permission to revoke
-     * @memberof VaultItem
      */
     revokePermission(perm: string) {
         this._source.permissions = this._source.permissions.filter(current => current !== perm);
@@ -97,7 +89,6 @@ export default class VaultItem {
     /**
      * Clean up all of the data in the vault item
      * @protected
-     * @memberof VaultItem
      */
     _cleanUp() {
         this._vault = null;
@@ -107,7 +98,6 @@ export default class VaultItem {
     /**
      * Update source references
      * @protected
-     * @memberof VaultItem
      */
     _updateRefs() {
         // No-op for vault item

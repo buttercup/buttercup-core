@@ -1,11 +1,11 @@
 import { createClient } from "@buttercup/googledrive-client";
 import { Layerr } from "layerr";
-import DatasourceAuthManager from "./DatasourceAuthManager";
-import TextDatasource from "./TextDatasource";
-import { fireInstantiationHandlers, registerDatasource } from "./register";
-import Credentials from "../credentials/Credentials";
-import { getCredentials } from "../credentials/channel";
-import { DatasourceConfigurationGoogleDrive } from "../types";
+import DatasourceAuthManager from "./DatasourceAuthManager.js";
+import { TextDatasource } from "./TextDatasource.js";
+import { fireInstantiationHandlers, registerDatasource } from "./register.js";
+import { Credentials } from "../credentials/Credentials.js";
+import { getCredentials } from "../credentials/channel.js";
+import { DatasourceConfigurationGoogleDrive } from "../types.js";
 
 const DATASOURCE_TYPE = "googledrive";
 

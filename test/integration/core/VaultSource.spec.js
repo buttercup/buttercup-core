@@ -1,5 +1,5 @@
-const { expect } = require("chai");
-const {
+import { expect } from "chai";
+import {
     Credentials,
     MemoryDatasource,
     Vault,
@@ -9,7 +9,7 @@ const {
     VaultManager,
     VaultSource,
     setDefaultFormat
-} = require("../../../dist/index.node.js");
+} from "../../../dist/node/index.js";
 
 async function createTextSourceCredentials() {
     const memoryProperty = `test${Math.random()}`;

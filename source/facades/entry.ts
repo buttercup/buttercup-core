@@ -1,7 +1,7 @@
-import facadeFieldFactories from "./entryFields";
-import { createFieldDescriptor, getEntryPropertyValueType, setEntryPropertyValueType } from "./tools";
-import Entry from "../core/Entry";
-import Group from "../core/Group";
+import facadeFieldFactories from "./entryFields.js";
+import { createFieldDescriptor, getEntryPropertyValueType, setEntryPropertyValueType } from "./tools.js";
+import { Entry } from "../core/Entry.js";
+import { Group } from "../core/Group.js";
 import {
     EntryFacade,
     EntryFacadeField,
@@ -11,7 +11,7 @@ import {
     EntryPropertyValueType,
     GroupID,
     VaultFacade
-} from "../types";
+} from "../types.js";
 
 export interface CreateEntryFacadeOptions {
     type?: EntryType;

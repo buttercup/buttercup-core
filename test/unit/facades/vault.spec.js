@@ -1,4 +1,5 @@
-const { Vault, createGroupFacade, createVaultFacade } = require("../../../dist/index.node.js");
+import { expect } from "chai";
+import { Vault, createGroupFacade, createVaultFacade } from "../../../dist/node/index.js";
 
 describe("facades/vault", function() {
     beforeEach(function() {

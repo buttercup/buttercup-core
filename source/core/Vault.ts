@@ -1,18 +1,18 @@
 import EventEmitter from "eventemitter3";
-import { getDefaultFormat } from "../io/formatRouter";
-import { findGroupsByTitle } from "../search/groups";
-import { findEntriesByProperty } from "../search/entries";
-import Group from "./Group";
-import Entry from "./Entry";
-import { EntryID, GroupID, History } from "../types";
-import VaultFormat from "../io/VaultFormat";
+import { getDefaultFormat } from "../io/formatRouter.js";
+import { findGroupsByTitle } from "../search/groups.js";
+import { findEntriesByProperty } from "../search/entries.js";
+import { Group } from "./Group.js";
+import { Entry } from "./Entry.js";
+import { VaultFormat } from "../io/VaultFormat.js";
+import { EntryID, GroupID, History } from "../types.js";
 
 /**
  * Vault class - Contains Groups and Entrys
  * @augments EventEmitter
  * @memberof module:Buttercup
  */
-export default class Vault extends EventEmitter {
+export class Vault extends EventEmitter {
     static Attribute = Object.freeze({
         AttachmentsKey: "BC_ATTACHMENTS_KEY"
     });

@@ -1,6 +1,6 @@
-import Entry from "../core/Entry";
-import Group from "../core/Group";
-import { GroupID } from "../types";
+import { Entry } from "../core/Entry.js";
+import { Group } from "../core/Group.js";
+import { GroupID } from "../types.js";
 
 export function findEntriesByProperty(
     entries: Array<Entry>,

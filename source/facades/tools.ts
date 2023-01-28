@@ -1,6 +1,6 @@
-import Entry from "../core/Entry";
-import { generateUUID } from "../tools/uuid";
-import { EntryFacadeField, EntryFacadeFieldFormatting, EntryPropertyType, EntryPropertyValueType } from "../types";
+import { Entry } from "../core/Entry.js";
+import { generateUUID } from "../tools/uuid.js";
+import { EntryFacadeField, EntryFacadeFieldFormatting, EntryPropertyType, EntryPropertyValueType } from "../types.js";
 
 export interface CreateFieldDescriptorOptions {
     formatting?: boolean | EntryFacadeFieldFormatting;

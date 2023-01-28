@@ -1,11 +1,12 @@
-const {
+import { expect } from "chai";
+import {
     Credentials,
     Vault,
     VaultFormatB,
     VaultManager,
     VaultSource,
     setDefaultFormat
-} = require("../../dist/index.node.js");
+} from "../../dist/node/index.js";
 
 describe("merging", function() {
     beforeEach(async function() {

@@ -1,10 +1,5 @@
-const {
-    Entry,
-    EntryPropertyValueType,
-    EntryType,
-    Vault,
-    createFieldDescriptor
-} = require("../../../dist/index.node.js");
+import { expect } from "chai";
+import { Entry, EntryPropertyValueType, EntryType, Vault, createFieldDescriptor } from "../../../dist/node/index.js";
 
 describe("facades/tools", function() {
     beforeEach(function() {

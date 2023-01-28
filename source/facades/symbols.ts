@@ -1,4 +1,4 @@
-import { EntryPropertyValueType, EntryType } from "../types";
+import { EntryPropertyValueType, EntryType } from "../types.js";
 
 export type EntryPropertyTypeIndex = {
     [key in EntryPropertyValueType]: {

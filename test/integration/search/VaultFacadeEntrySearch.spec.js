@@ -1,10 +1,11 @@
-const {
+import { expect } from "chai";
+import {
     Group,
     MemoryStorageInterface,
     Vault,
     VaultFacadeEntrySearch,
     createVaultFacade
-} = require("../../../dist/index.node.js");
+} from "../../../dist/node/index.js";
 
 describe("VaultFacadeEntrySearch", function() {
     beforeEach(function() {

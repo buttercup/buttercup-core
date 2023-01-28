@@ -1,6 +1,6 @@
-import { createFieldDescriptor } from "./tools";
-import Entry from "../core/Entry";
-import { EntryFacadeField, EntryPropertyType, EntryPropertyValueType, EntryType } from "../types";
+import { createFieldDescriptor } from "./tools.js";
+import { Entry } from "../core/Entry.js";
+import { EntryFacadeField, EntryPropertyType, EntryPropertyValueType, EntryType } from "../types.js";
 
 const DIGIT = "\\d";
 

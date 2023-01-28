@@ -1,22 +1,23 @@
-const nested = require("nested-property");
-const { convertFormatAEntry, convertFormatAGroup } = require("../../../../dist/io/formatB/conversion");
+import { expect } from "chai";
+import { get } from "nested-property";
+import { convertFormatAEntry, convertFormatAGroup } from "../../../../dist/node/io/formatB/conversion.js";
 
 describe("io/formatB/conversion", function() {
     function testEntry(actualPath, expectedPath) {
         it("sets correct entry ID", function() {
-            const actual = nested.get(this, actualPath);
-            const expected = nested.get(this, expectedPath);
+            const actual = get(this, actualPath);
+            const expected = get(this, expectedPath);
             expect(actual).to.have.property("id", expected.id);
         });
 
         it("sets correct entry parent ID", function() {
-            const actual = nested.get(this, actualPath);
-            const expected = nested.get(this, expectedPath);
+            const actual = get(this, actualPath);
+            const expected = get(this, expectedPath);
             expect(actual).to.have.property("g", expected.parentID);
         });
 
         it("sets correct entry attributes", function() {
-            const actual = nested.get(this, actualPath);
+            const actual = get(this, actualPath);
             expect(actual)
                 .to.have.property("a")
                 .that.is.an("object");
@@ -27,7 +28,7 @@ describe("io/formatB/conversion", function() {
         });
 
         it("sets correct entry properties", function() {
-            const actual = nested.get(this, actualPath);
+            const actual = get(this, actualPath);
             expect(actual)
                 .to.have.property("p")
                 .that.is.an("object");
@@ -40,19 +41,19 @@ describe("io/formatB/conversion", function() {
 
     function testGroup(actualPath, expectedPath) {
         it("sets correct group ID", function() {
-            const actual = nested.get(this, actualPath);
-            const expected = nested.get(this, expectedPath);
+            const actual = get(this, actualPath);
+            const expected = get(this, expectedPath);
             expect(actual).to.have.property("id", expected.id);
         });
 
         it("sets correct group title", function() {
-            const actual = nested.get(this, actualPath);
-            const expected = nested.get(this, expectedPath);
+            const actual = get(this, actualPath);
+            const expected = get(this, expectedPath);
             expect(actual).to.have.property("t", expected.title);
         });
 
         it("sets correct group attributes", function() {
-            const actual = nested.get(this, actualPath);
+            const actual = get(this, actualPath);
             expect(actual)
                 .to.have.property("a")
                 .that.is.an("object");
@@ -63,8 +64,8 @@ describe("io/formatB/conversion", function() {
         });
 
         it("sets correct group parent ID", function() {
-            const actual = nested.get(this, actualPath);
-            const expected = nested.get(this, expectedPath);
+            const actual = get(this, actualPath);
+            const expected = get(this, expectedPath);
             expect(actual).to.have.property("g", expected.parentID);
         });
     }

@@ -1,4 +1,4 @@
-import { getSharedAppEnv } from "../env/appEnv";
+import { getSharedAppEnv } from "../env/appEnv.js";
 
 /**
  * Generate a UUID (v4)

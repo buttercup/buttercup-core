@@ -1,4 +1,4 @@
-const webpackConfig = require("./webpack.config.js");
+const webpackConfig = require("./webpack.config.cjs");
 
 const CI =  !!process.env.CI;
 
@@ -38,7 +38,7 @@ module.exports = config => config.set({
 
     basePath: __dirname,
 
-    browsers: CI ? ["ChromeHeadless", "FirefoxHeadless"] : ["FirefoxHeadless"],
+    browsers: CI ? ["ChromeHeadless", "FirefoxHeadless"] : ["ChromeHeadless"],
 
     captureTimeout: 60000,
 
@@ -62,6 +62,8 @@ module.exports = config => config.set({
     ],
 
     frameworks: ["mocha", "sinon", "webpack"],
+
+    // logLevel: config.LOG_DEBUG,
 
     plugins: [
         require("karma-webpack"),

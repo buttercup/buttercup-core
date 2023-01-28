@@ -1,5 +1,5 @@
-import { sortValueHistory } from "./history";
-import { FormatBKeyValueObject, FormatBValue, FormatBVault, History } from "../../types";
+import { sortValueHistory } from "./history.js";
+import { FormatBKeyValueObject, FormatBValue, FormatBVault, History } from "../../types.js";
 
 export function historiesDiffer(historyA: History, historyB: History) {
     const vaultA = inflateHistory(historyA);

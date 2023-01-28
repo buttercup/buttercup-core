@@ -1,5 +1,6 @@
-const { v4: uuid } = require("uuid");
-const { Credentials, MemoryDatasource, Vault } = require("../../../dist/index.node.js");
+import { expect } from "chai";
+import { v4 as uuid } from "uuid";
+import { Credentials, MemoryDatasource, Vault } from "../../../dist/node/index.js";
 
 describe("MemoryDatasource", function() {
     beforeEach(function() {

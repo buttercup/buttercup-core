@@ -1,5 +1,5 @@
-import { InigoCommand as Inigo } from "./tools";
-import { FormatAGroup, FormatAVault, GroupID, History } from "../../types";
+import { InigoCommand as Inigo } from "./tools.js";
+import { FormatAGroup, FormatAVault, GroupID, History } from "../../types.js";
 
 const { Command } = Inigo;
 

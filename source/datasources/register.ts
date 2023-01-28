@@ -1,6 +1,6 @@
-import { getCredentials } from "../credentials/channel";
-import Credentials from "../credentials/Credentials";
-import TextDatasource from "./TextDatasource";
+import { getCredentials } from "../credentials/channel.js";
+import { Credentials } from "../credentials/Credentials.js";
+import { TextDatasource } from "./TextDatasource.js";
 
 const __datasources = {};
 const __datasourceFlags = {};

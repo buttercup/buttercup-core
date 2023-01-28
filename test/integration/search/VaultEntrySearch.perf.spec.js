@@ -1,5 +1,6 @@
-const randomString = require("crypto-random-string");
-const { MemoryStorageInterface, Vault, VaultEntrySearch } = require("../../../dist/index.node.js");
+import { expect } from "chai";
+import randomString from "crypto-random-string";
+import { MemoryStorageInterface, Vault, VaultEntrySearch } from "../../../dist/node/index.js";
 
 const ENTRY_COUNT_MAX = 12;
 const ENTRY_COUNT_MIN = 5;

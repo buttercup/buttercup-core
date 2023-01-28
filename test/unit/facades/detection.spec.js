@@ -1,4 +1,5 @@
-const { isVaultFacade } = require("../../../dist/index.node.js");
+import { expect } from "chai";
+import { isVaultFacade } from "../../../dist/node/index.js";
 
 describe("facades/detection", function() {
     describe("isVaultFacade", function() {

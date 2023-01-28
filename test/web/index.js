@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { init } from "../../source/index.web";
-import { getSharedAppEnv } from "../../source/env/appEnv";
+import { init } from "../../source/index.web.js";
+import { getSharedAppEnv } from "../../source/env/appEnv.js";
 
 init();
 

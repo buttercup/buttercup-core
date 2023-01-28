@@ -1,5 +1,6 @@
-const { Credentials, GoogleDriveDatasource } = require("../../../dist/index.node.js");
-const { getCredentials } = require("../../../dist/credentials/channel.js");
+import { expect } from "chai";
+import { Credentials, GoogleDriveDatasource } from "../../../dist/node/index.js";
+import { getCredentials } from "../../../dist/node/credentials/channel.js";
 
 describe("datasources/GoogleDriveDatasource", function() {
     beforeEach(function() {

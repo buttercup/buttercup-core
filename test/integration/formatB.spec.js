@@ -1,5 +1,6 @@
-const tmp = require("tmp");
-const { Credentials, FileDatasource, Group, Vault, VaultFormatB } = require("../../dist/index.node.js");
+import { expect } from "chai";
+import { fileSync } from "tmp";
+import { Credentials, FileDatasource, Group, Vault, VaultFormatB } from "../../dist/node/index.js";
 
 describe("Format B", function() {
     beforeEach(function() {
@@ -33,7 +34,7 @@ describe("Format B", function() {
     });
 
     it("can save and load to a file", async function() {
-        const tempFile = tmp.fileSync().name;
+        const tempFile = fileSync().name;
         const creds = Credentials.fromDatasource(
             {
                 type: "file",

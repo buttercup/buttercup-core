@@ -1,9 +1,15 @@
-import { fireInstantiationHandlers, registerDatasource } from "../datasources/register";
-import TextDatasource from "../datasources/TextDatasource";
-import { getCredentials } from "../credentials/channel";
-import { buildClient } from "./localFileClient";
-import { DatasourceLoadedData, EncryptedContent, History } from "../types";
-import Credentials from "../credentials/Credentials";
+import { fireInstantiationHandlers, registerDatasource } from "../datasources/register.js";
+import { TextDatasource } from "../datasources/TextDatasource.js";
+import { getCredentials } from "../credentials/channel.js";
+import { buildClient } from "./localFileClient.js";
+import { Credentials } from "../credentials/Credentials.js";
+import {
+    CredentialsPayload,
+    DatasourceConfiguration,
+    DatasourceLoadedData,
+    EncryptedContent,
+    History
+} from "../types.js";
 
 /**
  * Local file datasource, connecting via the desktop
@@ -18,9 +24,9 @@ export default class LocalFileDatasource extends TextDatasource {
 
     constructor(credentials: Credentials) {
         super(credentials);
-        const { data: credentialData } = getCredentials(credentials.id);
+        const { data: credentialData } = getCredentials(credentials.id) as CredentialsPayload;
         const { datasource: datasourceConfig } = credentialData;
-        const { path, token } = datasourceConfig;
+        const { path, token } = datasourceConfig as DatasourceConfiguration;
         this._path = path;
         this._token = token;
         this.client = buildClient(token);

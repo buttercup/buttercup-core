@@ -1,18 +1,18 @@
-import VaultItem from "./VaultItem";
-import Entry from "./Entry";
-import Vault from "./Vault";
-import { generateUUID } from "../tools/uuid";
-import { moveGroupBetweenVaults } from "../tools/sharing";
-import { findGroupsByTitle, getAllChildGroups } from "../search/groups";
-import { findEntriesByProperty, getAllChildEntries } from "../search/entries";
-import { EntryID, GroupID } from "../types";
+import { VaultItem } from "./VaultItem.js";
+import { Entry } from "./Entry.js";
+import { Vault } from "./Vault.js";
+import { generateUUID } from "../tools/uuid.js";
+import { moveGroupBetweenVaults } from "../tools/sharing.js";
+import { findGroupsByTitle, getAllChildGroups } from "../search/groups.js";
+import { findEntriesByProperty, getAllChildEntries } from "../search/entries.js";
+import { EntryID, GroupID } from "../types.js";
 
 /**
  * Group class - contains Entrys
  * @augments VaultItem
  * @memberof module:Buttercup
  */
-export default class Group extends VaultItem {
+export class Group extends VaultItem {
     static Attribute = Object.freeze({
         Role: "bc_group_role"
     });

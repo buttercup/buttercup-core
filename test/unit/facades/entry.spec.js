@@ -1,4 +1,5 @@
-const {
+import { expect } from "chai";
+import {
     Entry,
     EntryPropertyType,
     EntryType,
@@ -8,7 +9,7 @@ const {
     createFieldDescriptor,
     createVaultFacade,
     getEntryFacadePath
-} = require("../../../dist/index.node.js");
+} from "../../../dist/node/index.js";
 
 describe("facades/entry", function() {
     describe("createEntryFacade", function() {

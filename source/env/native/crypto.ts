@@ -1,6 +1,6 @@
 import { createAdapter } from "iocane";
 import cryptoRandomString from "crypto-random-string";
-import { CRYPTO_PBKDF2_ROUNDS, CRYPTO_RANDOM_STRING_CHARS } from "../core/constants";
+import { CRYPTO_PBKDF2_ROUNDS, CRYPTO_RANDOM_STRING_CHARS } from "../core/constants.js";
 
 let __derivationRoundsOverride = CRYPTO_PBKDF2_ROUNDS;
 

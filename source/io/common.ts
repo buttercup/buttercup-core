@@ -1,4 +1,4 @@
-import { History, VaultFormatID } from "../types";
+import { History, VaultFormatID } from "../types.js";
 
 /**
  * Convert array of history lines to a string

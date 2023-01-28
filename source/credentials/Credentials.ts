@@ -1,7 +1,7 @@
-import { generateUUID } from "../tools/uuid";
-import { credentialsAllowsPurpose, getCredentials, setCredentials } from "./channel";
-import { getSharedAppEnv } from "../env/appEnv";
-import { CredentialsData, CredentialsPayload, DatasourceConfiguration } from "../types";
+import { generateUUID } from "../tools/uuid.js";
+import { credentialsAllowsPurpose, getCredentials, setCredentials } from "./channel.js";
+import { getSharedAppEnv } from "../env/appEnv.js";
+import { CredentialsData, CredentialsPayload, DatasourceConfiguration } from "../types.js";
 
 /**
  * The signature of legacy encrypted credentials
@@ -51,7 +51,7 @@ function unsignEncryptedContent(content: string): string {
  * environment. Credential properties are stored in memory
  * and are inaccessible to public functions.
  */
-export default class Credentials {
+export class Credentials {
     static PURPOSE_DECRYPT_VAULT = "vault-decrypt";
     static PURPOSE_ENCRYPT_VAULT = "vault-encrypt";
     static PURPOSE_SECURE_EXPORT = "secure-export";

@@ -1,4 +1,5 @@
-const {
+import { expect } from "chai";
+import {
     EntryPropertyValueType,
     Vault,
     VaultFormatA,
@@ -8,7 +9,7 @@ const {
     getEntryPropertyValueType,
     setEntryFacadePropertyValueType,
     setEntryPropertyValueType
-} = require("../../../dist/index.node.js");
+} from "../../../dist/node/index.js";
 
 describe("Entry facades", function() {
     [

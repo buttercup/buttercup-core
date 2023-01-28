@@ -1,9 +1,9 @@
-import TextDatasource from "./TextDatasource";
-import { fireInstantiationHandlers, registerDatasource } from "./register";
-import Credentials from "../credentials/Credentials";
-import { getCredentials } from "../credentials/channel";
-import { getSharedAppEnv } from "../env/appEnv";
-import { DatasourceConfigurationDropbox, DatasourceLoadedData, EncryptedContent, History } from "../types";
+import { TextDatasource } from "./TextDatasource.js";
+import { fireInstantiationHandlers, registerDatasource } from "./register.js";
+import { Credentials } from "../credentials/Credentials.js";
+import { getCredentials } from "../credentials/channel.js";
+import { getSharedAppEnv } from "../env/appEnv.js";
+import { DatasourceConfigurationDropbox, DatasourceLoadedData, EncryptedContent, History } from "../types.js";
 
 /**
  * Datasource for Dropbox archives

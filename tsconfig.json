@@ -1,11 +1,13 @@
 {
     "compilerOptions": {
-        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
         "esModuleInterop": true,
-        "outDir": "./dist",
-        "module": "CommonJS",
+        "outDir": "./dist/node",
+        "module": "es2020",
+        "moduleResolution": "node",
         "declaration": true,
-        "target": "es6"
+        "target": "es2020"
     },
     "include": [
         "./source/**/*"

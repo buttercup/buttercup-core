@@ -1,11 +1,11 @@
 import fs from "fs";
 import path from "path";
 import pify from "pify";
-import TextDatasource from "./TextDatasource";
-import { fireInstantiationHandlers, registerDatasource } from "./register";
-import Credentials from "../credentials/Credentials";
-import { getCredentials } from "../credentials/channel";
-import { ATTACHMENT_EXT } from "../tools/attachments";
+import { TextDatasource } from "./TextDatasource.js";
+import { fireInstantiationHandlers, registerDatasource } from "./register.js";
+import { Credentials } from "../credentials/Credentials.js";
+import { getCredentials } from "../credentials/channel.js";
+import { ATTACHMENT_EXT } from "../tools/attachments.js";
 import {
     AttachmentDetails,
     BufferLike,
@@ -14,14 +14,14 @@ import {
     EncryptedContent,
     History,
     VaultID
-} from "../types";
+} from "../types.js";
 
 /**
  * File datasource for loading and saving files
  * @augments TextDatasource
  * @memberof module:Buttercup
  */
-export default class FileDatasource extends TextDatasource {
+export class FileDatasource extends TextDatasource {
     _filename: string;
     mkdir: Function;
     readFile: Function;

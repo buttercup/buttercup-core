@@ -1,8 +1,8 @@
-import { BaseSearch, ProcessedSearchEntry, SearcherFactory } from "./BaseSearch";
-import Vault from "../core/Vault";
-import Entry from "../core/Entry";
-import { EntryURLType, getEntryURLs } from "../tools/entry";
-import StorageInterface from "../storage/StorageInterface";
+import { BaseSearch, ProcessedSearchEntry, SearcherFactory } from "./BaseSearch.js";
+import { Vault } from "../core/Vault.js";
+import { Entry } from "../core/Entry.js";
+import { EntryURLType, getEntryURLs } from "../tools/entry.js";
+import { StorageInterface } from "../storage/StorageInterface.js";
 
 async function extractEntries(vault: Vault, memory: StorageInterface): Promise<Array<ProcessedSearchEntry>> {
     // Get scores

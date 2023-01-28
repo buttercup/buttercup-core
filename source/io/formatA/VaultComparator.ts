@@ -1,6 +1,6 @@
-import Vault from "../../core/Vault";
-import { createVaultFacade } from "../../facades/vault";
-import { History } from "../../types";
+import { Vault } from "../../core/Vault.js";
+import { createVaultFacade } from "../../facades/vault.js";
+import { History } from "../../types.js";
 
 const PRIMATIVES = ["string", "number", "boolean", "undefined"];
 

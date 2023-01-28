@@ -1,7 +1,7 @@
-import VaultFormatA from "./VaultFormatA";
-import VaultFormatB from "./VaultFormatB";
-import { hasValidSignature as isFormatBSigned } from "./formatB/signing";
-import { VaultFormatID } from "../types";
+import { VaultFormatA } from "./VaultFormatA.js";
+import { VaultFormatB } from "./VaultFormatB.js";
+import { hasValidSignature as isFormatBSigned } from "./formatB/signing.js";
+import { VaultFormatID } from "../types.js";
 
 const DEFAULT_FORMAT = VaultFormatA;
 

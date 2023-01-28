@@ -1,4 +1,4 @@
-import { CredentialsPayload } from "../types";
+import { CredentialsPayload } from "../types.js";
 
 const __store = {};
 

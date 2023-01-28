@@ -1,5 +1,5 @@
-import Group from "../core/Group";
-import Entry from "../core/Entry";
+import { Group } from "../core/Group.js";
+import { Entry } from "../core/Entry.js";
 
 /**
  * Find entry instances by filtering with a compare function

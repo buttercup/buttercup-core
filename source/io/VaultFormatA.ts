@@ -1,7 +1,7 @@
 import { Layerr } from "layerr";
-import VaultFormat from "./VaultFormat";
-import Vault from "../core/Vault";
-import Credentials from "../credentials/Credentials";
+import { VaultFormat } from "./VaultFormat.js";
+import { Vault } from "../core/Vault.js";
+import { Credentials } from "../credentials/Credentials.js";
 import {
     executeArchiveID,
     executeComment,
@@ -22,7 +22,7 @@ import {
     executeSetEntryProperty,
     executeSetGroupAttribute,
     executeTitleGroup
-} from "./formatA/commands";
+} from "./formatA/commands.js";
 import {
     COMMAND_MANIFEST,
     InigoCommand as Inigo,
@@ -30,16 +30,16 @@ import {
     getAllEntries,
     getAllGroups,
     stripDestructiveCommands
-} from "./formatA/tools";
-import Flattener from "./formatA/Flattener";
-import { getFormat, hasValidSignature, sign, stripSignature, vaultContentsEncrypted } from "./formatA/signing";
-import { describeVaultDataset } from "./formatA/describe";
-import VaultComparator from "./formatA/VaultComparator";
-import { getSharedAppEnv } from "../env/appEnv";
-import { decodeStringValue, isEncoded } from "../tools/encoding";
-import { generateUUID } from "../tools/uuid";
-import { getCredentials } from "../credentials/channel";
-import { historyArrayToString, historyStringToArray } from "./common";
+} from "./formatA/tools.js";
+import { Flattener } from "./formatA/Flattener.js";
+import { getFormat, hasValidSignature, sign, stripSignature, vaultContentsEncrypted } from "./formatA/signing.js";
+import { describeVaultDataset } from "./formatA/describe.js";
+import VaultComparator from "./formatA/VaultComparator.js";
+import { getSharedAppEnv } from "../env/appEnv.js";
+import { decodeStringValue, isEncoded } from "../tools/encoding.js";
+import { generateUUID } from "../tools/uuid.js";
+import { getCredentials } from "../credentials/channel.js";
+import { historyArrayToString, historyStringToArray } from "./common.js";
 import {
     EntryChange,
     EntryChangeType,
@@ -53,7 +53,7 @@ import {
     VaultFormatID,
     VaultID,
     EntryPropertyType
-} from "../types";
+} from "../types.js";
 
 const COMMANDS = {
     aid: executeArchiveID,
@@ -89,8 +89,8 @@ function emptyVault(): FormatAVault {
     };
 }
 
-export default class VaultFormatA extends VaultFormat {
-    static encodeRaw(rawContent: History, credentials: Credentials): Promise<string> {
+export class VaultFormatA extends VaultFormat {
+    static async encodeRaw(rawContent: History, credentials: Credentials): Promise<string> {
         const compress = getSharedAppEnv().getProperty("compression/v1/compressText");
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
         const { masterPassword } = getCredentials(credentials.id);

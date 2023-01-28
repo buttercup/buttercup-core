@@ -1,6 +1,4 @@
-const { expect } = require("chai");
-const sinon = require("sinon");
-const { init } = require("../dist/index.node.js");
+import { init } from "../dist/node/index.js";
 
 let closed = false;
 
@@ -10,9 +8,7 @@ init(env => ({
 }));
 
 Object.assign(global, {
-    expect,
     setClosedEnv: isClosed => {
         closed = isClosed;
-    },
-    sinon
+    }
 });

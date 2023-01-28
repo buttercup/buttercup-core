@@ -1,4 +1,5 @@
-const { Vault, getEntryPath } = require("../../../dist/index.node.js");
+import { expect } from "chai";
+import { Vault, getEntryPath } from "../../../dist/node/index.js";
 
 describe("tools/entry", function() {
     describe("getEntryPath", function() {

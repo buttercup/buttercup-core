@@ -1,8 +1,8 @@
 import levenshtein from "fast-levenshtein";
-import StorageInterface from "../storage/StorageInterface";
-import { buildSearcher } from "./searcher";
-import Vault from "../core/Vault";
-import { EntryID, EntryType, GroupID, VaultFacade, VaultID } from "../types";
+import { StorageInterface } from "../storage/StorageInterface.js";
+import { buildSearcher } from "./searcher.js";
+import { Vault } from "../core/Vault.js";
+import { EntryID, EntryType, GroupID, VaultFacade, VaultID } from "../types.js";
 
 interface DomainScores {
     [domain: string]: number;

@@ -1,4 +1,4 @@
-import { DateString, UTCTimestamp } from "../types";
+import { DateString, UTCTimestamp } from "../types.js";
 
 export function getDateFromDateString(dateString: DateString): Date {
     return new Date(dateString);

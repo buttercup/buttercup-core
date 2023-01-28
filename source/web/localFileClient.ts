@@ -1,5 +1,5 @@
 import joinURL from "url-join";
-import { getSharedAppEnv } from "../env/appEnv";
+import { getSharedAppEnv } from "../env/appEnv.js";
 
 const BASE_URL = "http://localhost:12821";
 
