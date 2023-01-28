@@ -146,6 +146,10 @@ fileDatasource
 
 Using just a datasource is not recommended as saving and loading is quite low-level and cumbersome. Check the [browser extension](https://github.com/buttercup/buttercup-browser-extension) or [desktop application](https://github.com/buttercup/buttercup-desktop) for examples of how to use the `VaultManager` and other helpful classes.
 
+### Development
+
+To develop Buttercup Core, clone the repository on a Linux or Mac OS machine. Ensure that you're running NodeJS version 16/18. Install all dependencies by running `npm install` in the project directory. Run the tests to ensure everything is functioning correctly: `npm test`.
+
 ## Vault Formats
 
 Buttercup currently supports [2 concurrent vault formats](VAULT_FORMAT.md), as it is in the process of transitioning from **Format A** (legacy) to **Format B**. You can switch the operational format by doing the following:
