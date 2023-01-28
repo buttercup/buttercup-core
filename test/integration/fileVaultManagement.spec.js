@@ -1,5 +1,6 @@
-const tmp = require("tmp");
-const { Credentials, VaultManager, VaultSource } = require("../../dist/index.node.js");
+import { expect } from "chai";
+import { fileSync } from "tmp";
+import { Credentials, VaultManager, VaultSource } from "../../dist/node/index.js";
 
 describe("VaultManager", function() {
     describe("with file datasource", function() {
@@ -8,7 +9,7 @@ describe("VaultManager", function() {
                 autoUpdate: false
             });
             // source 1
-            this.tmp1 = tmp.fileSync();
+            this.tmp1 = fileSync();
             const creds = Credentials.fromDatasource(
                 {
                     type: "file",
@@ -23,7 +24,7 @@ describe("VaultManager", function() {
                 initialiseRemote: true
             });
             // source 2
-            this.tmp2 = tmp.fileSync();
+            this.tmp2 = fileSync();
             const creds2 = Credentials.fromDatasource(
                 {
                     type: "file",

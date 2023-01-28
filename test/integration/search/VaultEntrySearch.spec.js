@@ -1,11 +1,5 @@
-const {
-    Entry,
-    EntryType,
-    Group,
-    MemoryStorageInterface,
-    Vault,
-    VaultEntrySearch
-} = require("../../../dist/index.node.js");
+import { expect } from "chai";
+import { Entry, EntryType, Group, MemoryStorageInterface, Vault, VaultEntrySearch } from "../../../dist/node/index.js";
 
 describe("VaultEntrySearch", function() {
     beforeEach(function() {

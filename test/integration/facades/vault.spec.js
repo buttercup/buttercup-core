@@ -1,4 +1,5 @@
-const {
+import { expect } from "chai";
+import {
     Entry,
     Group,
     Vault,
@@ -9,7 +10,7 @@ const {
     createFieldDescriptor,
     createGroupFacade,
     createVaultFacade
-} = require("../../../dist/index.node.js");
+} from "../../../dist/node/index.js";
 
 describe("Vault facades", function() {
     [

@@ -1,10 +1,5 @@
-const {
-    Credentials,
-    MemoryDatasource,
-    VaultManager,
-    VaultSource,
-    registerDatasource
-} = require("../../dist/index.node.js");
+import { expect } from "chai";
+import { Credentials, MemoryDatasource, VaultManager, VaultSource, registerDatasource } from "../../dist/node/index.js";
 
 class FakeDatasource extends MemoryDatasource {
     constructor(creds) {

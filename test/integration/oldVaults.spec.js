@@ -1,19 +1,24 @@
-const fs = require("fs");
-const path = require("path");
-const { Credentials, FileDatasource, Vault } = require("../../dist/index.node.js");
+import { expect } from "chai";
+import { readdirSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { Credentials, FileDatasource, Vault } from "../../dist/node/index.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 describe("reading old vaults", function() {
     describe("Format A", function() {
-        const VAULTS_DIR = path.resolve(__dirname, "../resources/vaults/format-a");
+        const VAULTS_DIR = resolve(__dirname, "../resources/vaults/format-a");
         const PASSWORD = "this is a long password used for a test archive!";
 
-        fs.readdirSync(VAULTS_DIR).forEach(filename => {
+        readdirSync(VAULTS_DIR).forEach(filename => {
             const [, version] = /test-archive-(\d+\.\d+\.\d+(\-[0-9a-zA-Z.]+)?)\.bcup/.exec(filename);
             describe(`v${version}`, function() {
                 const readVault = () => {
                     const creds = Credentials.fromDatasource(
                         {
-                            path: path.join(VAULTS_DIR, filename)
+                            path: join(VAULTS_DIR, filename)
                         },
                         PASSWORD
                     );
@@ -33,16 +38,16 @@ describe("reading old vaults", function() {
     });
 
     describe("Format B", function() {
-        const VAULTS_DIR = path.resolve(__dirname, "../resources/vaults/format-b");
+        const VAULTS_DIR = resolve(__dirname, "../resources/vaults/format-b");
         const PASSWORD = "this is a long password used for a test vault!";
 
-        fs.readdirSync(VAULTS_DIR).forEach(filename => {
+        readdirSync(VAULTS_DIR).forEach(filename => {
             const [, version] = /test-vault-(\d+\.\d+\.\d+(\-[0-9a-zA-Z.]+)?)\.bcup/.exec(filename);
             describe(`v${version}`, function() {
                 const readVault = async () => {
                     const creds = Credentials.fromDatasource(
                         {
-                            path: path.join(VAULTS_DIR, filename)
+                            path: join(VAULTS_DIR, filename)
                         },
                         PASSWORD
                     );

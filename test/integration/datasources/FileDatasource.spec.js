@@ -1,7 +1,8 @@
-const path = require("path");
-const { v4: uuid } = require("uuid");
-const tmp = require("tmp");
-const { Credentials, FileDatasource, Vault } = require("../../../dist/index.node.js");
+import { join } from "path";
+import { expect } from "chai";
+import { v4 as uuid } from "uuid";
+import { dir } from "tmp";
+import { Credentials, FileDatasource, Vault } from "../../../dist/node/index.js";
 
 describe("FileDatasource", function() {
     beforeEach(function(done) {
@@ -10,11 +11,11 @@ describe("FileDatasource", function() {
             .findGroupsByTitle("General")[0]
             .createEntry("Test")
             .setProperty("username", "test");
-        tmp.dir((err, dirPath, cleanup) => {
+        dir((err, dirPath, cleanup) => {
             if (err) return done(err);
             this.fds = new FileDatasource(
                 Credentials.fromDatasource({
-                    path: path.join(dirPath, "vault.bcup")
+                    path: join(dirPath, "vault.bcup")
                 })
             );
             this.cleanup = cleanup;

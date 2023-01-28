@@ -1,8 +1,10 @@
-const path = require("path");
-const fs = require("fs");
-const pify = require("pify");
-const tmp = require("tmp");
-const {
+import { basename, dirname, join, resolve } from "node:path";
+import { readFile, stat } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { expect } from "chai";
+import sinon from "sinon";
+import { dirSync } from "tmp";
+import {
     AttachmentManager,
     Credentials,
     MemoryStorageInterface,
@@ -12,12 +14,12 @@ const {
     VaultManager,
     VaultSource,
     setDefaultFormat
-} = require("../../dist/index.node.js");
+} from "../../dist/node/index.js";
 
-const IMAGE_PATH = path.resolve(__dirname, "../resources/attachments/image.png");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-const readFile = pify(fs.readFile);
-const stat = pify(fs.stat);
+const IMAGE_PATH = resolve(__dirname, "../resources/attachments/image.png");
 
 describe("AttachmentManager", function() {
     [
@@ -40,7 +42,7 @@ describe("AttachmentManager", function() {
                 },
                 {
                     type: "file",
-                    path: path.join(tmp.dirSync().name, "vault.bcup")
+                    path: join(dirSync().name, "vault.bcup")
                 }
             ].forEach(datasourceConfig => {
                 describe(`using datasource type: ${datasourceConfig.type}`, function() {
@@ -75,7 +77,7 @@ describe("AttachmentManager", function() {
                             this.entry,
                             attachmentID,
                             attachmentData,
-                            path.basename(IMAGE_PATH),
+                            basename(IMAGE_PATH),
                             "image/png",
                             nowDate
                         );
@@ -110,7 +112,7 @@ describe("AttachmentManager", function() {
                                 this.entry,
                                 attachmentID,
                                 attachmentData,
-                                path.basename(IMAGE_PATH),
+                                basename(IMAGE_PATH),
                                 "image/png",
                                 nowDate
                             );
@@ -143,7 +145,7 @@ describe("AttachmentManager", function() {
                                 this.entry,
                                 this.attachmentID,
                                 this.attachmentData,
-                                path.basename(IMAGE_PATH),
+                                basename(IMAGE_PATH),
                                 "image/png"
                             );
                             await this.source.attachmentManager.setAttachment(
@@ -207,7 +209,7 @@ describe("AttachmentManager", function() {
                                     this.entry,
                                     this.attachmentID,
                                     newData,
-                                    path.basename(IMAGE_PATH),
+                                    basename(IMAGE_PATH),
                                     "image/png"
                                 );
                             } catch (err) {

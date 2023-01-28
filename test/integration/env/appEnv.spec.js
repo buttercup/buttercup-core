@@ -1,4 +1,5 @@
-const { getSharedAppEnv } = require("../../../dist/index.node.js");
+import { expect } from "chai";
+import { getSharedAppEnv } from "../../../dist/node/index.js";
 
 describe("appEnv", function() {
     describe("compression", function() {

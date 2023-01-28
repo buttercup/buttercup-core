@@ -1,4 +1,5 @@
-const { Credentials, MemoryDatasource, Vault, VaultFormatA } = require("../../dist/index.node.js");
+import { expect } from "chai";
+import { Credentials, MemoryDatasource, Vault, VaultFormatA } from "../../dist/node/index.js";
 
 describe("Format A", function() {
     function reduceCommandsToPadIDs(output, cmd) {
