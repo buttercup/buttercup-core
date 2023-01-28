@@ -1,5 +1,5 @@
-import { getTimestamp } from "../../tools/date";
-import { EntryPropertyType, FormatBValue, FormatBValueHistoryItem } from "../../types";
+import { getTimestamp } from "../../tools/date.js";
+import { EntryPropertyType, FormatBValue, FormatBValueHistoryItem } from "../../types.js";
 
 export const MAX_ATTRIBUTE_HISTORY = 3;
 export const MAX_PROPERTY_HISTORY = 5;

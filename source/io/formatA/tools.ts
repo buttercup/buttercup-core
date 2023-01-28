@@ -1,5 +1,5 @@
-import { encodeStringValue } from "../../tools/encoding";
-import { generateUUID } from "../../tools/uuid";
+import { encodeStringValue } from "../../tools/encoding.js";
+import { generateUUID } from "../../tools/uuid.js";
 import {
     EntryLegacyHistoryItem,
     EntryID,
@@ -8,7 +8,7 @@ import {
     FormatAGroup,
     FormatAVault,
     GroupID
-} from "../../types";
+} from "../../types.js";
 
 interface FormatACommandArgument {
     test: RegExp;

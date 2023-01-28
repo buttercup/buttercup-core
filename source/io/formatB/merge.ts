@@ -1,5 +1,5 @@
-import { cloneValue, mergeValues } from "./history";
-import { EntryPropertyType, FormatBEntry, FormatBGroup, FormatBKeyValueObject, FormatBVault } from "../../types";
+import { cloneValue, mergeValues } from "./history.js";
+import { EntryPropertyType, FormatBEntry, FormatBGroup, FormatBKeyValueObject, FormatBVault } from "../../types.js";
 
 function cloneEntry(entry: FormatBEntry): FormatBEntry {
     return {

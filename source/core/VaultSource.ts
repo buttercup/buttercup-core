@@ -1,19 +1,19 @@
 import EventEmitter from "eventemitter3";
 import { ChannelQueue } from "@buttercup/channel-queue";
 import { Layerr } from "layerr";
-import Vault from "./Vault";
-import Credentials from "../credentials/Credentials";
-import { getCredentials } from "../credentials/channel";
-import { getUniqueID } from "../tools/encoding";
-import { getSourceOfflineArchive, sourceHasOfflineCopy, storeSourceOfflineCopy } from "../tools/vaultManagement";
-import { credentialsToDatasource, prepareDatasourceCredentials } from "../datasources/register";
-import { generateVaultInsights } from "../insight/vault";
-import AttachmentManager from "../attachments/AttachmentManager";
-import TextDatasource from "../datasources/TextDatasource";
-import VaultManager from "./VaultManager";
-import { VaultFormatID, VaultSourceID, VaultSourceStatus } from "../types";
-import { convertFormatAVault } from "../io/formatB/conversion";
-import { VaultFormatB } from "../index.common";
+import { Vault } from "./Vault.js";
+import { Credentials } from "../credentials/Credentials.js";
+import { getCredentials } from "../credentials/channel.js";
+import { getUniqueID } from "../tools/encoding.js";
+import { getSourceOfflineArchive, sourceHasOfflineCopy, storeSourceOfflineCopy } from "../tools/vaultManagement.js";
+import { credentialsToDatasource, prepareDatasourceCredentials } from "../datasources/register.js";
+import { generateVaultInsights } from "../insight/vault.js";
+import { AttachmentManager } from "../attachments/AttachmentManager.js";
+import { TextDatasource } from "../datasources/TextDatasource.js";
+import { VaultManager } from "./VaultManager.js";
+import { convertFormatAVault } from "../io/formatB/conversion.js";
+import { VaultFormatB } from "../index.common.js";
+import { VaultFormatID, VaultSourceID, VaultSourceStatus } from "../types.js";
 
 interface StateChangeEnqueuedFunction {
     (): void | Promise<any>;
@@ -58,7 +58,7 @@ function processDehydratedCredentials(credentialsString: string, masterPassword:
  * @augments EventEmitter
  * @memberof module:Buttercup
  */
-export default class VaultSource extends EventEmitter {
+export class VaultSource extends EventEmitter {
     static STATUS_LOCKED = VaultSourceStatus.Locked;
     static STATUS_PENDING = VaultSourceStatus.Pending;
     static STATUS_UNLOCKED = VaultSourceStatus.Unlocked;

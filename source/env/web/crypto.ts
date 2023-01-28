@@ -1,5 +1,5 @@
 import { createAdapter } from "iocane/web";
-import { CRYPTO_PBKDF2_ROUNDS, CRYPTO_RANDOM_STRING_CHARS } from "../core/constants";
+import { CRYPTO_PBKDF2_ROUNDS, CRYPTO_RANDOM_STRING_CHARS } from "../core/constants.js";
 
 const UINT16_MAX = 65535;
 

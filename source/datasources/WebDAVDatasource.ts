@@ -1,11 +1,11 @@
 import { WebDAVClient } from "webdav";
 import pathPosix from "path-posix";
-import TextDatasource from "./TextDatasource";
-import { fireInstantiationHandlers, registerDatasource } from "./register";
-import { getSharedAppEnv } from "../env/appEnv";
-import Credentials from "../credentials/Credentials";
-import { getCredentials } from "../credentials/channel";
-import { ATTACHMENT_EXT } from "../tools/attachments";
+import { TextDatasource } from "./TextDatasource.js";
+import { fireInstantiationHandlers, registerDatasource } from "./register.js";
+import { getSharedAppEnv } from "../env/appEnv.js";
+import { Credentials } from "../credentials/Credentials.js";
+import { getCredentials } from "../credentials/channel.js";
+import { ATTACHMENT_EXT } from "../tools/attachments.js";
 import {
     AttachmentDetails,
     BufferLike,
@@ -13,7 +13,7 @@ import {
     DatasourceLoadedData,
     History,
     VaultID
-} from "../types";
+} from "../types.js";
 
 const MAX_DATA_SIZE = 200 * 1024 * 1024; // 200 MB
 

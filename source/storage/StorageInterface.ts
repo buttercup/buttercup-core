@@ -3,7 +3,7 @@
  * @see MemoryStorageInterface
  * @memberof module:Buttercup
  */
-export default class StorageInterface {
+export class StorageInterface {
     /**
      * Get all keys as an array
      * @memberof StorageInterface

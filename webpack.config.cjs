@@ -2,10 +2,11 @@ const path = require("path");
 const exec = require("child_process").exec;
 const { DefinePlugin } = require("webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const ResolveTypeScriptPlugin = require("resolve-typescript-plugin");
 
 const SOURCE = path.resolve(__dirname, "./source");
 const WEB_ENTRY = path.join(SOURCE, "index.web.ts");
-const DIST = path.resolve(__dirname, "./web");
+const DIST = path.resolve(__dirname, "./dist/web");
 
 const plugins = [
     new DefinePlugin({
@@ -61,7 +62,7 @@ const baseConfig = {
     plugins,
 
     resolve: {
-        extensions: [".ts", ".js"],
+        extensions: [".js"],
         fallback: {
             crypto: false,
             dns: false,
@@ -72,7 +73,10 @@ const baseConfig = {
             path: false,
             stream: false,
             util: false
-        }
+        },
+        plugins: [
+            new ResolveTypeScriptPlugin()
+        ]
     },
 
     target: "web"

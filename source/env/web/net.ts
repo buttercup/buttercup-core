@@ -1,4 +1,4 @@
-import { createClient } from "webdav/web";
+import { createClient } from "webdav";
 import { DropboxClient } from "@buttercup/dropbox-client";
 
 export function getNetResources() {

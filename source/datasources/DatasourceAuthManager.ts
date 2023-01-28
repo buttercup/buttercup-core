@@ -1,7 +1,7 @@
 import EventEmitter from "eventemitter3";
 import { forEachAsync } from "foreachasync";
 import globals from "global";
-import TextDatasource from "./TextDatasource";
+import { TextDatasource } from "./TextDatasource.js";
 
 function markGlobalPresence() {
     if (typeof globals._bcupAuthMgr !== "undefined") {

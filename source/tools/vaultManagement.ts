@@ -1,5 +1,5 @@
-import StorageInterface from "../storage/StorageInterface";
-import { VaultSourceID } from "../types";
+import { StorageInterface } from "../storage/StorageInterface.js";
+import { VaultSourceID } from "../types.js";
 
 const STORAGE_PREFIX = "bcup_archivecache_";
 

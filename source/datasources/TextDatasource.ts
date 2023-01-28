@@ -1,9 +1,9 @@
 import EventEmitter from "eventemitter3";
 import hash from "hash.js";
-import Credentials from "../credentials/Credentials";
-import { credentialsAllowsPurpose, getCredentials } from "../credentials/channel";
-import { detectFormat, getFormatForID } from "../io/formatRouter";
-import { fireInstantiationHandlers, registerDatasource } from "./register";
+import { Credentials } from "../credentials/Credentials.js";
+import { credentialsAllowsPurpose, getCredentials } from "../credentials/channel.js";
+import { detectFormat, getFormatForID } from "../io/formatRouter.js";
+import { fireInstantiationHandlers, registerDatasource } from "./register.js";
 import {
     AttachmentDetails,
     BufferLike,
@@ -14,13 +14,13 @@ import {
     VaultID,
     VaultInsights,
     VaultSourceID
-} from "../types";
+} from "../types.js";
 
 /**
  * Datasource for text input and output
  * @memberof module:Buttercup
  */
-export default class TextDatasource extends EventEmitter {
+export class TextDatasource extends EventEmitter {
     _content: EncryptedContent;
     _credentials: Credentials;
 

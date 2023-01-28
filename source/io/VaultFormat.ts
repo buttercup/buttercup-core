@@ -1,6 +1,6 @@
 import EventEmitter from "eventemitter3";
-import Credentials from "../credentials/Credentials";
-import Vault from "../core/Vault";
+import { Credentials } from "../credentials/Credentials.js";
+import { Vault } from "../core/Vault.js";
 import {
     EntryChange,
     EntryID,
@@ -14,13 +14,13 @@ import {
     History,
     PropertyKeyValueObject,
     VaultFormatID
-} from "../types";
+} from "../types.js";
 
 function notImplemented() {
     throw new Error("Not implemented");
 }
 
-export default class VaultFormat extends EventEmitter {
+export class VaultFormat extends EventEmitter {
     static encodeRaw(rawContent: History, credentials: Credentials) {
         notImplemented();
     }

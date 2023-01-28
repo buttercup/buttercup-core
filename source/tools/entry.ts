@@ -1,7 +1,7 @@
-import Entry from "../core/Entry";
-import Group from "../core/Group";
-import { objectValues } from "./polyfill";
-import { GroupID } from "../types";
+import { Entry } from "../core/Entry.js";
+import { Group } from "../core/Group.js";
+import { objectValues } from "./polyfill.js";
+import { GroupID } from "../types.js";
 
 export enum EntryURLType {
     Any = "any",

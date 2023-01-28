@@ -1,7 +1,7 @@
-import TextDatasource from "./TextDatasource";
-import { fireInstantiationHandlers, registerDatasource } from "./register";
-import Credentials from "../credentials/Credentials";
-import { getCredentials } from "../credentials/channel";
+import { TextDatasource } from "./TextDatasource.js";
+import { fireInstantiationHandlers, registerDatasource } from "./register.js";
+import { Credentials } from "../credentials/Credentials.js";
+import { getCredentials } from "../credentials/channel.js";
 import {
     AttachmentDetails,
     BufferLike,
@@ -11,7 +11,7 @@ import {
     History,
     MemoryStore,
     VaultID
-} from "../types";
+} from "../types.js";
 
 const TYPE = "memory";
 
@@ -20,7 +20,7 @@ const TYPE = "memory";
  * @augments TextDatasource
  * @memberof module:Buttercup
  */
-export default class MemoryDatasource extends TextDatasource {
+export class MemoryDatasource extends TextDatasource {
     protected _property: string;
     private _store: MemoryStore;
 

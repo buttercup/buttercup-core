@@ -1,6 +1,6 @@
-import Group from "../core/Group";
-import Vault from "../core/Vault";
-import { History } from "../types";
+import { Group } from "../core/Group.js";
+import { Vault } from "../core/Vault.js";
+import { History } from "../types.js";
 
 const SHARE_COMMAND_EXP = /^\$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\s/;
 

@@ -1,7 +1,7 @@
-import { getSharedAppEnv } from "../env/appEnv";
-import { getCredentials } from "../credentials/channel";
-import Credentials from "../credentials/Credentials";
-import { BufferLike } from "../types";
+import { getSharedAppEnv } from "../env/appEnv.js";
+import { getCredentials } from "../credentials/channel.js";
+import { Credentials } from "../credentials/Credentials.js";
+import { BufferLike } from "../types.js";
 
 export const ATTACHMENT_EXT = "bcatt";
 

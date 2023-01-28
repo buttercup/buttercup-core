@@ -1,11 +1,11 @@
-import StorageInterface from "./StorageInterface";
+import { StorageInterface } from "./StorageInterface.js";
 
 /**
  * Storage interface for memory storage
  * @augments StorageInterface
  * @memberof module:Buttercup
  */
-export default class MemoryStorageInterface extends StorageInterface {
+export class MemoryStorageInterface extends StorageInterface {
     _store: { [property: string]: string } = {};
 
     /**

@@ -1,5 +1,5 @@
-import Group from "../core/Group";
-import { GroupID } from "../types";
+import { Group } from "../core/Group.js";
+import { GroupID } from "../types.js";
 
 /**
  * Find groups by their title

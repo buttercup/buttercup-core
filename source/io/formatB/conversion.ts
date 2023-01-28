@@ -1,6 +1,6 @@
-import { newRawValue } from "./history";
-import { getDateString } from "../../tools/date";
-import { getAllEntries as getAllFormatAEntries, getAllGroups as getAllFormatAGroups } from "../formatA/tools";
+import { newRawValue } from "./history.js";
+import { getDateString } from "../../tools/date.js";
+import { getAllEntries as getAllFormatAEntries, getAllGroups as getAllFormatAGroups } from "../formatA/tools.js";
 import {
     EntryPropertyType,
     FormatAEntry,
@@ -11,7 +11,7 @@ import {
     FormatBKeyValueObject,
     FormatBVault,
     PropertyKeyValueObject
-} from "../../types";
+} from "../../types.js";
 
 export function convertFormatAEntry(entry: FormatAEntry): FormatBEntry {
     const changes = entry.history || [];

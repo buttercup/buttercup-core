@@ -1,5 +1,5 @@
 import { gzip, ungzip } from "pako";
-import { base64ToBytes, bytesToBase64 } from "../../tools/encoding";
+import { base64ToBytes, bytesToBase64 } from "../../tools/encoding.js";
 
 /**
  * Compress text using GZIP

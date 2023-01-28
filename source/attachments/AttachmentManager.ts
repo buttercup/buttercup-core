@@ -1,23 +1,18 @@
-import Credentials from "../credentials/Credentials";
-import Entry from "../core/Entry";
-import Vault from "../core/Vault";
-import VaultSource from "../core/VaultSource";
-import { getSharedAppEnv } from "../env/appEnv";
-import { generateUUID } from "../tools/uuid";
-import { decryptAttachment, encryptAttachment, getBufferSize } from "../tools/attachments";
-import { AttachmentDetails } from "../types";
+import { Credentials } from "../credentials/Credentials.js";
+import { Entry } from "../core/Entry.js";
+import { Vault } from "../core/Vault.js";
+import { VaultSource } from "../core/VaultSource.js";
+import { getSharedAppEnv } from "../env/appEnv.js";
+import { generateUUID } from "../tools/uuid.js";
+import { decryptAttachment, encryptAttachment, getBufferSize } from "../tools/attachments.js";
+import { AttachmentDetails } from "../types.js";
 
 const ATTACHMENTS_KEY_LENGTH = 48;
 
-/**
- * Attachment manager
- * @memberof module:Buttercup
- */
-export default class AttachmentManager {
+export class AttachmentManager {
     /**
      * Get a new attachment ID
      * @static
-     * @memberof AttachmentManager
      */
     static newAttachmentID(): string {
         return generateUUID();
@@ -40,7 +35,6 @@ export default class AttachmentManager {
      * @param entry Entry instance the attachment can be found on
      * @param attachmentID The attachment ID
      * @throws {Error} Throws if the attachment isn't found
-     * @memberof AttachmentManager
      */
     async getAttachment(entry: Entry, attachmentID: string): Promise<Buffer | ArrayBuffer> {
         this._checkAttachmentSupport();
@@ -58,7 +52,6 @@ export default class AttachmentManager {
      * @param entry Entry instance the attachment can be found on
      * @param attachmentID The attachment ID
      * @returns The details or null if the attachment isn't found
-     * @memberof AttachmentManager
      */
     async getAttachmentDetails(entry: Entry, attachmentID: string): Promise<AttachmentDetails> {
         this._checkAttachmentSupport();
@@ -70,7 +63,6 @@ export default class AttachmentManager {
     /**
      * List all attachments
      * @param entry Entry instance the attachment can be found on
-     * @memberof AttachmentManager
      */
     async listAttachments(entry: Entry): Promise<Array<AttachmentDetails>> {
         this._checkAttachmentSupport();
@@ -86,7 +78,6 @@ export default class AttachmentManager {
      *  the entry
      * @param entry Entry instance the attachment can be found on
      * @param attachmentID The attachment ID
-     * @memberof AttachmentManager
      */
     async removeAttachment(entry: Entry, attachmentID: string) {
         this._checkAttachmentSupport();
@@ -107,7 +98,6 @@ export default class AttachmentManager {
      * @param type The MIME type
      * @param timestamp Optional timestamp override for the creation of the
      *  attachment
-     * @memberof AttachmentManager
      */
     async setAttachment(
         entry: Entry,

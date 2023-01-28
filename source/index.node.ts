@@ -1,6 +1,6 @@
-import { getSharedAppEnv } from "./env/core/singleton";
-import { AppEnvMapper } from "./env/appEnv";
-import { applyNativeConfiguration } from "./env/native/index";
+import { getSharedAppEnv } from "./env/core/singleton.js";
+import { AppEnvMapper } from "./env/appEnv.js";
+import { applyNativeConfiguration } from "./env/native/index.js";
 
 let __hasInitialised = false;
 
@@ -15,4 +15,4 @@ export function init(appEnvMapper: AppEnvMapper = x => x) {
     applyNativeConfiguration(appEnv, appEnvMapper);
 }
 
-export * from "./index.common";
+export * from "./index.common.js";

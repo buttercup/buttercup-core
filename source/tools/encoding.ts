@@ -1,5 +1,5 @@
-import { generateUUID } from "./uuid";
-import { getSharedAppEnv } from "../env/appEnv";
+import { generateUUID } from "./uuid.js";
+import { getSharedAppEnv } from "../env/appEnv.js";
 
 const ENCODED_STRING_PATTERN = /^utf8\+base64:(|[a-zA-Z0-9+\/=]+)$/;
 export const ENCODED_STRING_PREFIX = "utf8+base64:";

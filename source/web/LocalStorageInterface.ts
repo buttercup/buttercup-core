@@ -1,4 +1,4 @@
-import StorageInterface from "../storage/StorageInterface";
+import { StorageInterface } from "../storage/StorageInterface.js";
 
 export function getStorage(): Storage {
     return window.localStorage;
@@ -19,8 +19,8 @@ export default class LocalStorageInterface extends StorageInterface {
      * Get all keys from storage
      * @returns A promise that resolves with an array of keys
      */
-    getAllKeys() {
-        return Promise.resolve(Object.keys(this.storage));
+    async getAllKeys() {
+        return Object.keys(this.storage);
     }
 
     /**
@@ -28,9 +28,9 @@ export default class LocalStorageInterface extends StorageInterface {
      * @param name The key name
      * @returns A promise that resolves with the value
      */
-    getValue(name: string): Promise<string> {
+    async getValue(name: string): Promise<string | null> {
         const value = this.storage.getItem(name);
-        return Promise.resolve(value);
+        return value;
     }
 
     /**
@@ -38,9 +38,8 @@ export default class LocalStorageInterface extends StorageInterface {
      * @param name The key name
      * @returns A promise that resolves when the removal has completed
      */
-    removeKey(name: string): Promise<void> {
+    async removeKey(name: string): Promise<void> {
         this.storage.removeItem(name);
-        return Promise.resolve();
     }
 
     /**
@@ -49,8 +48,7 @@ export default class LocalStorageInterface extends StorageInterface {
      * @param value The value to set
      * @returns A promise that resolves when the value is set
      */
-    setValue(name: string, value: string): Promise<void> {
+    async setValue(name: string, value: string): Promise<void> {
         this.storage.setItem(name, value);
-        return Promise.resolve();
     }
 }

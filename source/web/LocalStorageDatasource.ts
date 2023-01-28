@@ -1,9 +1,15 @@
-import TextDatasource from "../datasources/TextDatasource";
-import { fireInstantiationHandlers, registerDatasource } from "../datasources/register";
-import Credentials from "../credentials/Credentials";
-import { getCredentials } from "../credentials/channel";
-import LocalStorageInterface from "./LocalStorageInterface";
-import { DatasourceLoadedData, EncryptedContent, History } from "../types";
+import { TextDatasource } from "../datasources/TextDatasource.js";
+import { fireInstantiationHandlers, registerDatasource } from "../datasources/register.js";
+import { Credentials } from "../credentials/Credentials.js";
+import { getCredentials } from "../credentials/channel.js";
+import LocalStorageInterface from "./LocalStorageInterface.js";
+import {
+    CredentialsPayload,
+    DatasourceConfiguration,
+    DatasourceLoadedData,
+    EncryptedContent,
+    History
+} from "../types.js";
 
 const TYPE = "localstorage";
 
@@ -23,9 +29,9 @@ export default class LocalStorageDatasource extends TextDatasource {
      */
     constructor(credentials: Credentials) {
         super(credentials);
-        const { data: credentialData } = getCredentials(credentials.id);
+        const { data: credentialData } = getCredentials(credentials.id) as CredentialsPayload;
         const { datasource: datasourceConfig } = credentialData;
-        const { property } = datasourceConfig;
+        const { property } = datasourceConfig as DatasourceConfiguration;
         this._property = property;
         this._storage = new LocalStorageInterface();
         this.type = TYPE;

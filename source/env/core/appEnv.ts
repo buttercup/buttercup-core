@@ -1,4 +1,4 @@
-import { assignObjImmutableProp } from "./prop";
+import { assignObjImmutableProp } from "./prop.js";
 
 export interface AppEnv {
     getProperty: AppEnvGetPropertyMethod;

@@ -1,17 +1,16 @@
-import VaultItem from "./VaultItem";
-import { generateUUID } from "../tools/uuid";
-import { getEntryURLs, EntryURLType } from "../tools/entry";
-import Group from "./Group";
-import Vault from "./Vault";
-import { EntryChange, EntryPropertyValueType, EntryType, GroupID, PropertyKeyValueObject } from "../types";
+import { VaultItem } from "./VaultItem.js";
+import { generateUUID } from "../tools/uuid.js";
+import { getEntryURLs, EntryURLType } from "../tools/entry.js";
+import { Group } from "./Group.js";
+import { Vault } from "./Vault.js";
+import { EntryChange, EntryPropertyValueType, EntryType, GroupID, PropertyKeyValueObject } from "../types.js";
 
 /**
  * Entry class - some secret item, login or perhaps
  * even a credit card
  * @augments VaultItem
- * @memberof module:Buttercup
  */
-export default class Entry extends VaultItem {
+export class Entry extends VaultItem {
     static Attributes = Object.freeze({
         AttachmentPrefix: "BC_ENTRY_ATTACHMENT:",
         FacadeType: "BC_ENTRY_FACADE_TYPE",
@@ -24,7 +23,6 @@ export default class Entry extends VaultItem {
      * @param vault The target vault instance
      * @param parentGroupID The target group to
      *  create the entry in (cannot be vault-level)
-     * @memberof Entry
      * @static
      */
     static createNew(vault: Vault, parentGroupID: GroupID): Entry {
@@ -52,7 +50,6 @@ export default class Entry extends VaultItem {
      * @see moveToGroup
      * @see Vault.getTrashGroup
      * @returns Whether or not the item was deleted
-     * @memberof Entry
      */
     delete(skipTrash: boolean = false): boolean {
         const trashGroup = this.vault.getTrashGroup();
@@ -77,7 +74,6 @@ export default class Entry extends VaultItem {
      * Delete an attribute
      * @param attribute The attribute name
      * @throws {Error} Throws if the attribute doesn't exist, or cannot be deleted
-     * @memberof Entry
      * @returns Self
      */
     deleteAttribute(attribute: string): this {
@@ -89,7 +85,6 @@ export default class Entry extends VaultItem {
      * Delete a property
      * @throws {Error} Throws if property doesn't exist, or cannot be deleted
      * @param property The property to delete
-     * @memberof Entry
      * @returns Self
      */
     deleteProperty(property: string): this {
@@ -105,7 +100,6 @@ export default class Entry extends VaultItem {
      * @returns The attribute value or an object
      *  containing all attribute keys and their values if no attribute name
      *  is provided
-     * @memberof Entry
      */
     getAttribute(attribute?: string): PropertyKeyValueObject | string | undefined {
         const attributes = this.vault.format.getEntryAttributes(this._source) || {};
@@ -118,7 +112,6 @@ export default class Entry extends VaultItem {
 
     /**
      * Get an array of all history changes made to the entry
-     * @memberof Entry
      */
     getChanges(): Array<EntryChange> {
         return this.vault.format.getEntryChanges(this._source);
@@ -127,7 +120,6 @@ export default class Entry extends VaultItem {
     /**
      * Get the containing group for the entry
      * @returns The parent group
-     * @memberof Entry
      * @throws {Error} Throws if no parent group found
      */
     getGroup(): Group {
@@ -146,7 +138,6 @@ export default class Entry extends VaultItem {
      * @param property The name of the property to fetch
      * @returns The property value or an object with all
      *  values if no property specified
-     * @memberof Entry
      */
     getProperty(property?: string): PropertyKeyValueObject | string | undefined {
         const raw = this.vault.format.getEntryProperties(this._source);
@@ -160,7 +151,6 @@ export default class Entry extends VaultItem {
      * Set the value type of an entry property
      * @param property The property to get the value type of
      * @returns The property value type
-     * @memberof Entry
      */
     getPropertyValueType(property: string): EntryPropertyValueType {
         const attr = this.getAttribute(`${Entry.Attributes.FieldTypePrefix}${property}`) as EntryPropertyValueType;
@@ -175,7 +165,6 @@ export default class Entry extends VaultItem {
      *  a regular expression, it is then tested against all property keys. If a
      *  string, it's compared exactly.
      * @returns A key-value object of the matching properties
-     * @memberof Entry
      */
     getProperties(propertyExpression?: RegExp | string): PropertyKeyValueObject {
         const raw = this.vault.format.getEntryProperties(this._source);
@@ -192,7 +181,6 @@ export default class Entry extends VaultItem {
     /**
      * Get the entry type
      * @returns
-     * @memberof Entry
      */
     getType(): EntryType {
         return <EntryType | undefined>this.getAttribute(Entry.Attributes.FacadeType) || EntryType.Login;
@@ -208,7 +196,6 @@ export default class Entry extends VaultItem {
      *  - "any" - Return all found URLs
      * @param urlTypePreference The URL type preference
      * @returns An array of URLs
-     * @memberof Entry
      */
     getURLs(urlTypePreference: EntryURLType): Array<string> {
         return getEntryURLs(this.getProperty() as { [key: string]: string }, urlTypePreference);
@@ -217,7 +204,6 @@ export default class Entry extends VaultItem {
     /**
      * Check if the entry is in the trash
      * @returns Whether or not the entry is in the trash
-     * @memberof Entry
      */
     isInTrash(): boolean {
         const group = this.getGroup();
@@ -228,7 +214,6 @@ export default class Entry extends VaultItem {
      * Move the entry to another group
      * @returns Returns self
      * @param group The target group
-     * @memberof Entry
      */
     moveToGroup(group: Group): this {
         this.vault.format.moveEntry(this.id, group.id);
@@ -240,7 +225,6 @@ export default class Entry extends VaultItem {
      * @param attribute The name of the attribute
      * @param value The value to set
      * @returns Returns self
-     * @memberof Entry
      */
     setAttribute(attribute: string, value: string): this {
         this.vault.format.setEntryAttribute(this.id, attribute, value);
@@ -252,7 +236,6 @@ export default class Entry extends VaultItem {
      * @param property The property name
      * @param value The property value
      * @returns Returns self
-     * @memberof Entry
      */
     setProperty(property: string, value: string): this {
         this.vault.format.setEntryProperty(this.id, property, value);
@@ -264,7 +247,6 @@ export default class Entry extends VaultItem {
      * @param property The property to set the value type for
      * @param valueType The new value type to set, or `null` to remove
      * @returns Returns self
-     * @memberof Entry
      */
     setPropertyValueType(property: string, valueType: EntryPropertyValueType | null): this {
         if (valueType === null) {

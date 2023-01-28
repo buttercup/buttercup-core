@@ -1,12 +1,12 @@
-import { getCryptoResources } from "./crypto";
-import { getCompressionResources as getV1CompressionResources } from "./compression.v1";
-import { getCompressionResources as getV2CompressionResources } from "./compression.v2";
-import { getEnvironmentResources } from "./environment";
-import { getNetResources } from "./net";
-import { getRNGResources } from "./rng";
-import { getEncodingResources } from "./encoding";
-import { AppEnv } from "../core/appEnv";
-import { AppEnvMapper } from "../appEnv";
+import { getCryptoResources } from "./crypto.js";
+import { getCompressionResources as getV1CompressionResources } from "./compression.v1.js";
+import { getCompressionResources as getV2CompressionResources } from "./compression.v2.js";
+import { getEnvironmentResources } from "./environment.js";
+import { getNetResources } from "./net.js";
+import { getRNGResources } from "./rng.js";
+import { getEncodingResources } from "./encoding.js";
+import { AppEnv } from "../core/appEnv.js";
+import { AppEnvMapper } from "../appEnv.js";
 
 export function applyWebConfiguration(appEnv: AppEnv, map: AppEnvMapper) {
     appEnv.setProperties(
