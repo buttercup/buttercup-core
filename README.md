@@ -73,7 +73,9 @@ In a _web_ environment, use the following:
 import { Vault } from "buttercup/web";
 ```
 
-_Buttercup core supports Node version 12 and up. Most features may work on Node 10, but it is not officially supported._
+Buttercup core is ESM - you must either import it in a project that is also ESM, or use a build tool like Webpack.
+
+_Buttercup core supports Node version 14 and up. For older Node versions use v6 and earlier._
 
 ## Usage
 
