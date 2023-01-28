@@ -1,5 +1,12 @@
 # Core library changelog
 
+## v7.0.0
+_2023-01-28_
+
+ * **Major Update**
+   * ESM
+   * Node v12 support dropped
+
 ## v6.17.0
 _2023-01-09_
 
