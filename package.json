@@ -20,7 +20,8 @@
   "scripts": {
     "analyse": "ANALYSE=bundle npm run build",
     "build": "run-s clean build:node build:web",
-    "build:node": "tsc && rename 's/index\\.node\\./index\\./g' \"./dist/node/*\"",
+    "build:node": "tsc && npm run build:node:rename",
+    "build:node:rename": "mv ./dist/node/index.node.js ./dist/node/index.js && mv ./dist/node/index.node.d.ts ./dist/node/index.d.ts",
     "build:web": "webpack --config webpack.config.cjs --mode=production",
     "clean": "rimraf ./dist && rimraf ./web",
     "dev": "concurrently -k 'npm run dev:node' 'npm run dev:web'",
