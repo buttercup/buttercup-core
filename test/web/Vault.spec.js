@@ -1,4 +1,4 @@
-import { Group, Vault } from "../../source/index.web";
+import { Group, Vault } from "../../source/index.web.js";
 
 describe("Vault", function() {
     it("can be instantiated", function() {

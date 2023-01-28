@@ -1,4 +1,4 @@
-import { Group, MemoryStorageInterface, Vault, VaultEntrySearch } from "../../source/index.web";
+import { Group, MemoryStorageInterface, Vault, VaultEntrySearch } from "../../source/index.web.js";
 
 describe("VaultEntrySearch", function() {
     beforeEach(function() {

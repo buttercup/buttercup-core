@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { Credentials, MemoryDatasource, Vault } from "../../source/index.web";
+import { Credentials, MemoryDatasource, Vault } from "../../source/index.web.js";
 
 function arrayBuffersAreEqual(a, b) {
     return dataViewsAreEqual(new DataView(a), new DataView(b));

@@ -1,4 +1,4 @@
-import { getSharedAppEnv } from "../../../source/index.web";
+import { getSharedAppEnv } from "../../../source/index.web.js";
 
 describe("appEnv", function() {
     describe("compression", function() {
