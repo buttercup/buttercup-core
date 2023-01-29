@@ -4,7 +4,7 @@ import { Credentials, FileDatasource, Group, Vault, VaultFormatB } from "../../d
 
 describe("Format B", function() {
     beforeEach(function() {
-        this.vault = new Vault(VaultFormatB);
+        this.vault = Vault.createWithDefaults(VaultFormatB);
     });
 
     it("creates groups correctly", function() {
@@ -72,14 +72,15 @@ describe("Format B", function() {
 
     describe("Entry", function() {
         beforeEach(function() {
-            this.group = this.vault.createGroup("Root");
+            this.trash = this.vault.getTrashGroup();
+            this.group1 = this.vault.createGroup("Root");
             this.group2 = this.vault.createGroup("Other");
-            this.entry1 = this.group
+            this.entry1 = this.group1
                 .createEntry("My Bank")
                 .setProperty("username", "u93840293")
                 .setProperty("password", "ipnt2np4g-0")
                 .setProperty("Url", "https://my.bank.org/abc-123/login.php");
-            this.entry2 = this.group
+            this.entry2 = this.group1
                 .createEntry("Work email")
                 .setProperty("username", "j.ericsson@test.org")
                 .setProperty("password", "mo3m;,23903j9")
@@ -97,8 +98,15 @@ describe("Format B", function() {
 
         it("can be moved", function() {
             this.entry1.moveToGroup(this.group2);
-            expect(this.group.getEntries()).to.have.lengthOf(1);
+            expect(this.group1.getEntries()).to.have.lengthOf(1);
             expect(this.group2.getEntries()).to.have.lengthOf(1);
+        });
+
+        it("can be deleted", function() {
+            expect(this.trash.getEntries()).to.have.lengthOf(0);
+            this.entry1.delete();
+            expect(this.group1.getEntries()).to.have.lengthOf(1);
+            expect(this.trash.getEntries()).to.have.lengthOf(1);
         });
     });
 });
