@@ -38,12 +38,13 @@ export default class Vault extends EventEmitter {
 
     /**
      * Create a Vault with the default template
+     * @param format Optional vault format override
      * @returns The new vault
      * @memberof Vault
      * @static
      */
-    static createWithDefaults(): Vault {
-        const vault = new Vault();
+    static createWithDefaults(format: any = getDefaultFormat()): Vault {
+        const vault = new Vault(format);
         vault.createGroup("General");
         vault.createGroup("Trash").setAttribute(Group.Attribute.Role, "trash");
         return vault;
