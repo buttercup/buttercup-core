@@ -446,7 +446,7 @@ export class VaultSource extends EventEmitter {
         if (Format !== this._vault.format.getFormat()) {
             throw new Error("Format loaded during merge did not match current");
         }
-        const newVault = Format.vaultFromMergedHistories(this._vault.format.history, history);
+        const newVault = Format.vaultFromMergedHistories(history, this._vault.format.history);
         this._vault._updateFormat(newVault.format);
         return this._vault;
     }

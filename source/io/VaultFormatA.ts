@@ -166,25 +166,25 @@ export class VaultFormatA extends VaultFormat {
         return stripDestructiveCommands(history);
     }
 
-    static vaultFromMergedHistories(local: History, incoming: History): Vault {
-        const differences = VaultComparator.calculateHistoryDifferences(local, incoming);
+    static vaultFromMergedHistories(base: History, incoming: History): Vault {
+        const differences = VaultComparator.calculateHistoryDifferences(base, incoming);
         if (differences === null) {
             throw new Error("Failed merging vault histories: No common base");
         }
         if (differences.secondary.length === 0) {
             // Remote doesn't have unseen changes, so we can simply
             // use the existing history
-            return Vault.createFromHistory(local, VaultFormatA);
+            return Vault.createFromHistory(base, VaultFormatA);
         }
         // Remote has unseen changes, so we need to do a full merge
         // to manage the differences
         const newHistoryMain = VaultFormatA.prepareHistoryForMerge(differences.original);
         const newHistoryStaged = VaultFormatA.prepareHistoryForMerge(differences.secondary);
-        const base = differences.common;
+        const common = differences.common;
         const newVault = new Vault(VaultFormatA);
         newVault.format.erase();
         // merge all history and execute on new vault
-        newVault.format.execute(base.concat(newHistoryStaged).concat(newHistoryMain));
+        newVault.format.execute(common.concat(newHistoryStaged).concat(newHistoryMain));
         newVault.format.dirty = false;
         return newVault;
     }

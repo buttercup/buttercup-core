@@ -86,10 +86,10 @@ export class VaultFormatB extends VaultFormat {
         return history;
     }
 
-    static vaultFromMergedHistories(local: History, incoming: History): Vault {
-        const localRaw = JSON.parse(local[0]) as FormatBVault;
+    static vaultFromMergedHistories(base: History, incoming: History): Vault {
+        const baseRaw = JSON.parse(base[0]) as FormatBVault;
         const incomingRaw = JSON.parse(incoming[0]) as FormatBVault;
-        const merged = mergeRawVaults(localRaw, incomingRaw);
+        const merged = mergeRawVaults(baseRaw, incomingRaw);
         const vault = new Vault();
         vault._format = new VaultFormatB(merged);
         return vault;
