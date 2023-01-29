@@ -178,13 +178,13 @@ export class VaultFormatA extends VaultFormat {
         }
         // Remote has unseen changes, so we need to do a full merge
         // to manage the differences
-        const newHistoryMain = VaultFormatA.prepareHistoryForMerge(differences.original);
-        const newHistoryStaged = VaultFormatA.prepareHistoryForMerge(differences.secondary);
+        const newHistoryBase = VaultFormatA.prepareHistoryForMerge(differences.original);
+        const newHistoryIncoming = VaultFormatA.prepareHistoryForMerge(differences.secondary);
         const common = differences.common;
         const newVault = new Vault(VaultFormatA);
         newVault.format.erase();
         // merge all history and execute on new vault
-        newVault.format.execute(common.concat(newHistoryStaged).concat(newHistoryMain));
+        newVault.format.execute(common.concat(newHistoryBase).concat(newHistoryIncoming));
         newVault.format.dirty = false;
         return newVault;
     }
