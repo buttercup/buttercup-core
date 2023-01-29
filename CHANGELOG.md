@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.17.1
+_2023-01-29_
+
+ * **Bugfix**:
+   * [#321](https://github.com/buttercup/buttercup-core/issues/321): Format B merging ignores entry parent sometimes
+
 ## v6.17.0
 _2023-01-09_
 
