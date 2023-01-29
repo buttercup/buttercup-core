@@ -38,7 +38,7 @@ module.exports = config => config.set({
 
     basePath: __dirname,
 
-    browsers: CI ? ["ChromeHeadless", "FirefoxHeadless"] : ["FirefoxHeadless"],
+    browsers: CI ? ["ChromeHeadless", "FirefoxHeadless"] : ["ChromeHeadless"],
 
     captureTimeout: 60000,
 
