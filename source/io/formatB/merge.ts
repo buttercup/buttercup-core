@@ -78,6 +78,7 @@ export function mergeRawVaults(base: FormatBVault, incoming: FormatBVault): Form
         const newEntry = cloneEntry(incomingEntry);
         newEntry.p = mergeProperties(baseEntry.p, incomingEntry.p, EntryPropertyType.Property);
         newEntry.a = mergeProperties(baseEntry.a, incomingEntry.a, EntryPropertyType.Attribute);
+        newEntry.g = incomingEntry.g;
         newVault.e.push(newEntry);
     });
     return newVault;
