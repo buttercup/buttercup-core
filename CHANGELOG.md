@@ -6,6 +6,8 @@ _2023-01-28_
  * **Major Update**
    * ESM
    * Node v12 support dropped
+   * **Bugfix**:
+     * [#321](https://github.com/buttercup/buttercup-core/issues/321): Format B merging ignores entry parent changes
 
 ## v6.17.0
 _2023-01-09_
