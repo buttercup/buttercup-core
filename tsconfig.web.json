@@ -1,13 +1,13 @@
 {
     "compilerOptions": {
-        "allowJs": true,
-        "rootDir": "./",
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
         "esModuleInterop": true,
-        "outDir": "./web",
-        "declarationDir": "./web",
-        "module": "CommonJS",
+        "outDir": "./dist/web",
+        "module": "es2020",
+        "moduleResolution": "node",
         "declaration": true,
-        "target": "es6"
+        "target": "es2020"
     },
     "files": [
       "./source/**/*"

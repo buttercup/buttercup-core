@@ -24,7 +24,7 @@
     "build:node:rename": "mv ./dist/node/index.node.js ./dist/node/index.js && mv ./dist/node/index.node.d.ts ./dist/node/index.d.ts",
     "build:web": "run-s build:web:source build:web:types",
     "build:web:source": "webpack --config webpack.config.cjs --mode=production",
-    "build:web:types": "tsc --emitDeclarationOnly --outDir ./dist/web && mv ./dist/web/index.node.d.ts ./dist/web/index.d.ts",
+    "build:web:types": "tsc --emitDeclarationOnly --outDir ./dist/web && mv ./dist/web/index.web.d.ts ./dist/web/index.d.ts",
     "clean": "rimraf ./dist && rimraf ./web",
     "dev": "concurrently -k 'npm run dev:node' 'npm run dev:web'",
     "dev:node": "tsc --watch",
