@@ -47,8 +47,6 @@
   "files": [
     "dist/**/*.js",
     "dist/**/*.d.ts",
-    "web/**/*.js",
-    "web/**/*.d.ts",
     "*.md"
   ],
   "engines": {
