@@ -11,17 +11,7 @@ const DIST = path.resolve(__dirname, "./dist/web");
 const plugins = [
     new DefinePlugin({
         BUTTERCUP_WEB: true
-    }),
-    {
-        apply: compiler => {
-            compiler.hooks.afterEmit.tap("AfterEmitPlugin", compilation => {
-                exec("./scripts/fix_web_typings.sh", (err, stdout, stderr) => {
-                    if (stdout) process.stdout.write(stdout);
-                    if (stderr) process.stderr.write(stderr);
-                });
-            });
-        }
-    }
+    })
 ];
 if (process.env.ANALYSE === "bundle") {
     plugins.push(new BundleAnalyzerPlugin());
