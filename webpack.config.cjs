@@ -32,6 +32,12 @@ const baseConfig = {
 
     entry: WEB_ENTRY,
 
+    experiments: {
+        outputModule: true
+    },
+
+    externalsType: "module",
+
     module: {
         rules: [
             {
@@ -55,8 +61,12 @@ const baseConfig = {
     output: {
         path: DIST,
         filename: "index.js",
-        library: "Buttercup",
-        libraryTarget: "umd"
+        environment: {
+            module: true
+        },
+        library: {
+            type: "module"
+        }
     },
 
     plugins,
