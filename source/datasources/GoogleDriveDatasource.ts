@@ -1,4 +1,4 @@
-import { createClient } from "@buttercup/googledrive-client";
+import { GoogleDriveClient } from "@buttercup/googledrive-client";
 import { Layerr } from "layerr";
 import DatasourceAuthManager from "./DatasourceAuthManager.js";
 import { TextDatasource } from "./TextDatasource.js";
@@ -34,7 +34,7 @@ export default class GoogleDriveDatasource extends TextDatasource {
         this.fileID = fileID;
         this.token = token;
         this.refreshToken = refreshToken;
-        this.client = createClient(token);
+        this.client = new GoogleDriveClient(token);
         this.authManager = DatasourceAuthManager.getSharedManager();
         this.type = DATASOURCE_TYPE;
         fireInstantiationHandlers(DATASOURCE_TYPE, this);
@@ -136,7 +136,7 @@ export default class GoogleDriveDatasource extends TextDatasource {
     updateTokens(accessToken: string, refreshToken?: string) {
         this.token = accessToken;
         if (refreshToken) this.refreshToken = refreshToken;
-        this.client = createClient(accessToken);
+        this.client = new GoogleDriveClient(accessToken);
         const { data: credentialData } = getCredentials(this.credentials.id);
         credentialData.datasource.token = accessToken;
         if (refreshToken) credentialData.datasource.refreshToken = refreshToken;
