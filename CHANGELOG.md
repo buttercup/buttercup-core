@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v6.17.2
+_2023-01-31_
+
+ * **Bugfix**:
+   * [#322](https://github.com/buttercup/buttercup-core/issues/322): Google Drive client misses new token expiration error response
+
 ## v6.17.1
 _2023-01-29_
 
