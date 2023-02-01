@@ -10,12 +10,6 @@ export interface AttachmentDetails {
 
 export type BufferLike = Buffer | ArrayBuffer;
 
-export interface CowlError extends Error {
-    responseHeaders: {
-        [key: string]: string;
-    };
-}
-
 export interface CredentialsData {
     datasource?: DatasourceConfiguration;
     [key: string]: any;
