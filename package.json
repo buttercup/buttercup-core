@@ -82,8 +82,8 @@
   "homepage": "https://github.com/buttercup/buttercup-core#readme",
   "dependencies": {
     "@buttercup/channel-queue": "^1.2.0",
-    "@buttercup/dropbox-client": "^2.0.0",
-    "@buttercup/googledrive-client": "^2.0.1",
+    "@buttercup/dropbox-client": "^2.1.0",
+    "@buttercup/googledrive-client": "^2.1.0",
     "crypto-random-string": "^5.0.0",
     "eventemitter3": "^5.0.0",
     "fast-levenshtein": "^3.0.0",
@@ -100,7 +100,7 @@
     "pify": "^6.1.0",
     "url-join": "^5.0.0",
     "uuid": "^9.0.0",
-    "webdav": "^5.0.0-r1"
+    "webdav": "^5.0.0-r2"
   },
   "devDependencies": {
     "@babel/cli": "^7.20.7",
