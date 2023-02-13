@@ -83,7 +83,7 @@
   "dependencies": {
     "@buttercup/channel-queue": "^1.2.0",
     "@buttercup/dropbox-client": "^2.1.0",
-    "@buttercup/googledrive-client": "^2.1.0",
+    "@buttercup/googledrive-client": "^2.2.0",
     "crypto-random-string": "^5.0.0",
     "eventemitter3": "^5.0.0",
     "fast-levenshtein": "^3.0.0",
