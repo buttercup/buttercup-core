@@ -1,11 +1,12 @@
 # Core library changelog
 
 ## v7.0.0
-_2023-01-28_
+_2023-02-13_
 
  * **Major Update**
    * ESM
    * Node v12 support dropped
+   * Google Drive shared folders and files support
    * **Bugfix**:
      * [#321](https://github.com/buttercup/buttercup-core/issues/321): Format B merging ignores entry parent changes
 
