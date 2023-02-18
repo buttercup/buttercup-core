@@ -254,6 +254,13 @@ export enum VaultFormatID {
 
 export type VaultID = string;
 
+export interface VaultLiveSnapshot {
+    credentials: CredentialsPayload;
+    formatID: VaultFormatID;
+    formatSource: FormatAVault | FormatBVault;
+    version: "1a";
+}
+
 export enum VaultPermission {
     Manage = "archive/member/manage",
     Read = "archive/member/read",

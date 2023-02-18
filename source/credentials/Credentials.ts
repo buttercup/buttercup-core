@@ -190,7 +190,7 @@ export class Credentials {
      * Get raw credentials data (only available in specialised environments)
      * @returns Credentials data object, or null if not available
      */
-    getCredentialsData(): CredentialsData {
+    getCredentialsData(): CredentialsData | null {
         const isClosedEnv = getSharedAppEnv().getProperty("env/v1/isClosedEnv")();
         const payload = getCredentials(this.id);
         if (isClosedEnv || payload.open === true) {
@@ -201,7 +201,6 @@ export class Credentials {
 
     /**
      * Get raw credentials data (only available in specialised environments)
-     * @deprecated Use getCredentialsData instead
      */
     getData(): CredentialsPayload | null {
         const isClosedEnv = getSharedAppEnv().getProperty("env/v1/isClosedEnv")();

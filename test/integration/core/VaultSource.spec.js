@@ -8,7 +8,8 @@ import {
     VaultFormatID,
     VaultManager,
     VaultSource,
-    setDefaultFormat
+    setDefaultFormat,
+    VaultSourceStatus
 } from "../../../dist/node/index.js";
 
 async function createTextSourceCredentials() {
@@ -81,6 +82,29 @@ describe("VaultSource", function() {
                         });
                     });
                 }
+
+                describe("using live snapshots", function() {
+                    it("can collect relevant data", function() {
+                        const snapshot = this.vaultSource.getLiveSnapshot();
+                        expect(snapshot)
+                            .to.have.nested.property("credentials.masterPassword")
+                            .that.is.a("string");
+                        expect(snapshot).to.have.property("formatID", Format.getFormatID());
+                        expect(snapshot).to.have.property("version", "1a");
+                    });
+
+                    it("can restore vault source unlocked state", async function() {
+                        const snapshot = this.vaultSource.getLiveSnapshot();
+                        await this.vaultSource.lock();
+                        expect(this.vaultSource.status).to.equal(VaultSourceStatus.Locked);
+                        expect(this.vaultSource.attachmentManager).to.be.null;
+                        await this.vaultSource.restoreFromLiveSnapshot(snapshot);
+                        expect(this.vaultSource.status).to.equal(VaultSourceStatus.Unlocked);
+                        expect(this.vaultSource.attachmentManager).to.not.be.null;
+                        const passwordWorks = await this.vaultSource.testMasterPassword("test");
+                        expect(passwordWorks).to.equal(true, "Password should match");
+                    });
+                });
 
                 describe("save", function() {
                     it("saves changes", async function() {

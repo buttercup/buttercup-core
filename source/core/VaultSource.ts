@@ -3,7 +3,7 @@ import { ChannelQueue } from "@buttercup/channel-queue";
 import { Layerr } from "layerr";
 import { Vault } from "./Vault.js";
 import { Credentials } from "../credentials/Credentials.js";
-import { getCredentials } from "../credentials/channel.js";
+import { getCredentials, setCredentials } from "../credentials/channel.js";
 import { getUniqueID } from "../tools/encoding.js";
 import { getSourceOfflineArchive, sourceHasOfflineCopy, storeSourceOfflineCopy } from "../tools/vaultManagement.js";
 import { credentialsToDatasource, prepareDatasourceCredentials } from "../datasources/register.js";
@@ -13,7 +13,8 @@ import { TextDatasource } from "../datasources/TextDatasource.js";
 import { VaultManager } from "./VaultManager.js";
 import { convertFormatAVault } from "../io/formatB/conversion.js";
 import { VaultFormatB } from "../index.common.js";
-import { VaultFormatID, VaultSourceID, VaultSourceStatus } from "../types.js";
+import { VaultFormatID, VaultLiveSnapshot, VaultSourceID, VaultSourceStatus } from "../types.js";
+import { getFormatForID } from "../io/formatRouter.js";
 
 interface StateChangeEnqueuedFunction {
     (): void | Promise<any>;
@@ -347,6 +348,26 @@ export class VaultSource extends EventEmitter {
     }
 
     /**
+     * Get a live snapshot of the current unlocked state
+     * @returns A snapshot object
+     */
+    getLiveSnapshot(): VaultLiveSnapshot {
+        if (this.status !== VaultSourceStatus.Unlocked) {
+            throw new Layerr("Not possible to fetch live snapshot: Vault is not unlocked");
+        }
+        const credentials = getCredentials((this._credentials as Credentials).id);
+        if (!credentials) {
+            throw new Layerr("Failed fetching live snapshot: Invalid credentials data");
+        }
+        return {
+            credentials,
+            formatID: this.vault._format.getFormat().getFormatID(),
+            formatSource: this.vault._format.source,
+            version: "1a"
+        };
+    }
+
+    /**
      * Get offline content, if it exists
      * @returns A promise a resolves with the content, or null
      *  if it doesn't exist
@@ -456,9 +477,42 @@ export class VaultSource extends EventEmitter {
      * @param name The new name
      * @memberof VaultSource
      */
-    rename(name: string) {
+    rename(name: string): void {
         this._name = name;
         this.emit("updated");
+    }
+
+    /**
+     * Restore unlocked state from a live snapshot
+     * @param snapshot The snapshot taken previously
+     */
+    async restoreFromLiveSnapshot(snapshot: VaultLiveSnapshot): Promise<void> {
+        if (this.status !== VaultSourceStatus.Locked) {
+            throw new Layerr("Cannot restore live snapshot: Vault is not locked");
+        }
+        if (snapshot.version !== "1a") {
+            throw new Layerr(
+                `Failed restoring live snapshot: Snapshot version unsupported or unrecognised: ${snapshot.version}`
+            );
+        }
+        // Setup credentials and datasource
+        const credentials = (this._credentials = new Credentials(
+            snapshot.credentials.data,
+            snapshot.credentials.masterPassword
+        ));
+        setCredentials(credentials.id, snapshot.credentials);
+        // Initialise datasource
+        const datasource = (this._datasource = credentialsToDatasource(
+            Credentials.fromCredentials(credentials, snapshot.credentials.masterPassword)
+        ));
+        datasource.sourceID = this.id;
+        // Setup vault
+        const Format = getFormatForID(snapshot.formatID);
+        this._vault = new Vault(new Format(snapshot.formatSource));
+        // Set statuses
+        this._status = VaultSource.STATUS_UNLOCKED;
+        this._attachmentManager = new AttachmentManager(this);
+        this.emit("unlocked");
     }
 
     /**
