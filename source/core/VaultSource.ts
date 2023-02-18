@@ -347,6 +347,10 @@ export class VaultSource extends EventEmitter {
         });
     }
 
+    /**
+     * Get a live snapshot of the current unlocked state
+     * @returns A snapshot object
+     */
     getLiveSnapshot(): VaultLiveSnapshot {
         if (this.status !== VaultSourceStatus.Unlocked) {
             throw new Layerr("Not possible to fetch live snapshot: Vault is not unlocked");
@@ -478,6 +482,10 @@ export class VaultSource extends EventEmitter {
         this.emit("updated");
     }
 
+    /**
+     * Restore unlocked state from a live snapshot
+     * @param snapshot The snapshot taken previously
+     */
     async restoreFromLiveSnapshot(snapshot: VaultLiveSnapshot): Promise<void> {
         if (this.status !== VaultSourceStatus.Locked) {
             throw new Layerr("Cannot restore live snapshot: Vault is not locked");
