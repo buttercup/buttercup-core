@@ -135,7 +135,7 @@ export class VaultManager extends EventEmitter {
     }
 
     /**
-     * Dehydrate a single archive source
+     * Dehydrate a single vault source
      * @param sourceID The ID of the source
      * @returns A promise that resolves once the source has been dehydrated
      * @memberof VaultManager
@@ -154,6 +154,8 @@ export class VaultManager extends EventEmitter {
     enqueueStateChange(cb: StateChangeEnqueuedFunction) {
         return this._queue.channel("state").enqueue(cb);
     }
+
+    getLiveSnapshot() {}
 
     /**
      * Get the next viable order number for a new source

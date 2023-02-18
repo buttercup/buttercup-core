@@ -52,7 +52,7 @@ export class Vault extends EventEmitter {
 
     _entries: Array<Entry> = [];
 
-    _format: any;
+    _format: VaultFormat;
 
     _groups: Array<Group> = [];
 

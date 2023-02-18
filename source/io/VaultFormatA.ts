@@ -189,8 +189,8 @@ export class VaultFormatA extends VaultFormat {
         return newVault;
     }
 
-    _history: History;
-    source: FormatAVault;
+    protected _history: History;
+    public source: FormatAVault;
 
     constructor(source: FormatAVault = emptyVault()) {
         super(source);

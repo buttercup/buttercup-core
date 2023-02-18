@@ -56,9 +56,9 @@ export class VaultFormat extends EventEmitter {
         return null;
     }
 
-    _readOnly = false;
-    dirty = false;
-    source: FormatAVault | FormatBVault = null;
+    protected _readOnly = false;
+    public dirty = false;
+    public source: FormatAVault | FormatBVault = null;
 
     get history() {
         return this.getHistory();
