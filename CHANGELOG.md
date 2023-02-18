@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v7.1.0
+_2023-02-18_
+
+ * Vault source live snapshots
+
 ## v7.0.0
 _2023-02-13_
 
