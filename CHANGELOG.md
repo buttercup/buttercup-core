@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v7.1.1
+_2023-02-19_
+
+ * **Bugfix**:
+   * `VaultManager` missing vault source live snapshot handling
+
 ## v7.1.0
 _2023-02-18_
 
