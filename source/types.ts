@@ -258,6 +258,7 @@ export interface VaultLiveSnapshot {
     credentials: CredentialsPayload;
     formatID: VaultFormatID;
     formatSource: FormatAVault | FormatBVault;
+    sourceID: VaultSourceID;
     version: "1a";
 }
 

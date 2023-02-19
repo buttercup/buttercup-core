@@ -363,6 +363,7 @@ export class VaultSource extends EventEmitter {
             credentials,
             formatID: this.vault._format.getFormat().getFormatID(),
             formatSource: this.vault._format.source,
+            sourceID: this.id,
             version: "1a"
         };
     }

@@ -5,7 +5,7 @@ import { ChannelQueue } from "@buttercup/channel-queue";
 import { MemoryStorageInterface } from "../storage/MemoryStorageInterface.js";
 import { VaultSource } from "./VaultSource.js";
 import { StorageInterface } from "../storage/StorageInterface.js";
-import { SetTimeout, VaultSourceID } from "../types.js";
+import { SetTimeout, VaultLiveSnapshot, VaultSourceID, VaultSourceStatus } from "../types.js";
 
 export interface InterruptedAutoUpdateFunction {
     (): void | Promise<any>;
@@ -155,7 +155,13 @@ export class VaultManager extends EventEmitter {
         return this._queue.channel("state").enqueue(cb);
     }
 
-    getLiveSnapshot() {}
+    /**
+     * Fetch all currently available Live Snapshots of vaults
+     * @returns An array of snapshot objects
+     */
+    getLiveSnapshots(): Array<VaultLiveSnapshot> {
+        return this.unlockedSources.map(source => source.getLiveSnapshot());
+    }
 
     /**
      * Get the next viable order number for a new source
@@ -335,6 +341,23 @@ export class VaultManager extends EventEmitter {
             source._order = index;
         });
         this.emit("sourcesUpdated");
+    }
+
+    /**
+     * Restore all sources from snapshots that were taken previously
+     * @param snapshots An array of snapshot objects
+     */
+    async restoreLiveSnapshots(snapshots: Array<VaultLiveSnapshot>) {
+        await Promise.all(
+            snapshots.map(async snapshot => {
+                const source = this.sources.find(src => (snapshot.sourceID = src.id));
+                if (!source || source.status !== VaultSourceStatus.Locked) {
+                    // Skip source snapshot
+                    return;
+                }
+                await source.restoreFromLiveSnapshot(snapshot);
+            })
+        );
     }
 
     /**
