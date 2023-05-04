@@ -47,10 +47,6 @@ export class VaultFormat extends EventEmitter {
         notImplemented();
     }
 
-    static prepareHistoryForMerge(history: History) {
-        notImplemented();
-    }
-
     static vaultFromMergedHistories(local: History, incoming: History): Vault {
         notImplemented();
         return null;

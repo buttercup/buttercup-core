@@ -54,6 +54,7 @@ import {
     VaultID,
     EntryPropertyType
 } from "../types.js";
+import { smartStripRemovedAssets } from "./formatA/merge.js";
 
 const COMMANDS = {
     aid: executeArchiveID,
@@ -162,10 +163,6 @@ export class VaultFormatA extends VaultFormat {
             });
     }
 
-    static prepareHistoryForMerge(history: History): History {
-        return stripDestructiveCommands(history);
-    }
-
     static vaultFromMergedHistories(base: History, incoming: History): Vault {
         const differences = VaultComparator.calculateHistoryDifferences(base, incoming);
         if (differences === null) {
@@ -178,13 +175,13 @@ export class VaultFormatA extends VaultFormat {
         }
         // Remote has unseen changes, so we need to do a full merge
         // to manage the differences
-        const newHistoryBase = VaultFormatA.prepareHistoryForMerge(differences.original);
-        const newHistoryIncoming = VaultFormatA.prepareHistoryForMerge(differences.secondary);
-        const common = differences.common;
+        const { original: newHistoryBase, secondary: newHistoryIncoming, common } = differences;
+        const inlineHistory = [...common, ...smartStripRemovedAssets([...newHistoryBase, ...newHistoryIncoming])];
+        // Prepare vault target
         const newVault = new Vault(VaultFormatA);
         newVault.format.erase();
         // merge all history and execute on new vault
-        newVault.format.execute(common.concat(newHistoryBase).concat(newHistoryIncoming));
+        newVault.format.execute(inlineHistory);
         newVault.format.dirty = false;
         return newVault;
     }
