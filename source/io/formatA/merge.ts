@@ -1,5 +1,4 @@
 import { History } from "../../types.js";
-import { InigoCommand as Inigo } from "./tools.js";
 
 const ENTRY_SPECIFIC_TARGET_COMMANDS = ["cen", "den", "dea", "dem", "dep", "men", "sea", "sem", "sep"];
 const GROUP_SPECIFIC_TARGET_COMMANDS = ["cgr", "dgr", "dga", "mgr", "sga", "tgr"];

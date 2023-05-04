@@ -40,6 +40,7 @@ import { decodeStringValue, isEncoded } from "../tools/encoding.js";
 import { generateUUID } from "../tools/uuid.js";
 import { getCredentials } from "../credentials/channel.js";
 import { historyArrayToString, historyStringToArray } from "./common.js";
+import { smartStripRemovedAssets } from "./formatA/merge.js";
 import {
     EntryChange,
     EntryChangeType,
@@ -54,7 +55,6 @@ import {
     VaultID,
     EntryPropertyType
 } from "../types.js";
-import { smartStripRemovedAssets } from "./formatA/merge.js";
 
 const COMMANDS = {
     aid: executeArchiveID,
