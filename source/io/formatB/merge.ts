@@ -43,8 +43,21 @@ export function mergeRawVaults(base: FormatBVault, incoming: FormatBVault): Form
         a: mergeProperties(base.a, incoming.a, EntryPropertyType.Attribute),
         g: [],
         e: [],
-        c: base.c
+        c: base.c,
+        del: {
+            e: { ...base.del.e },
+            g: { ...base.del.g }
+        }
     };
+    // Setup deletions
+    for (const entryID in incoming.del.e) {
+        if (
+            (newVault.del.e[entryID] && incoming.del.e[entryID] < newVault.del.e[entryID]) ||
+            !newVault.del.e[entryID]
+        ) {
+            newVault.del.e[entryID] = incoming.del.e[entryID];
+        }
+    }
     // Process unique (one vault only) groups
     const uniqueGroupsBase = base.g.filter(group => !incoming.g.find(inGroup => inGroup.id === group.id));
     const uniqueGroupsIncoming = incoming.g.filter(group => !base.g.find(baseGroup => baseGroup.id === group.id));

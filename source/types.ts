@@ -204,6 +204,10 @@ export interface FormatBValueHistoryItem {
 
 export interface FormatBVault {
     id: VaultID;
+    del: {
+        e: Record<EntryID, UTCTimestamp>;
+        g: Record<GroupID, UTCTimestamp>;
+    };
     a: FormatBKeyValueObject;
     g: Array<FormatBGroup>;
     e: Array<FormatBEntry>;

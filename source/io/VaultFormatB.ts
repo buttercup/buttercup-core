@@ -32,7 +32,11 @@ function emptyVault(): FormatBVault {
         a: {},
         g: [],
         e: [],
-        c: getDateString()
+        c: getDateString(),
+        del: {
+            e: {},
+            g: {}
+        }
     };
 }
 
@@ -315,8 +319,15 @@ export class VaultFormatB extends VaultFormat {
         Object.assign(this.source, {
             a: this.source.a || {},
             g: this.source.g || [],
-            e: this.source.e || []
+            e: this.source.e || [],
+            del: this.source.del || {}
         });
+        if (!this.source.del.e) {
+            this.source.del.e = {};
+        }
+        if (!this.source.del.g) {
+            this.source.del.g = {};
+        }
         this.generateID();
     }
 
@@ -330,7 +341,9 @@ export class VaultFormatB extends VaultFormat {
         group.g = newParentID;
     }
 
-    optimise() {}
+    optimise() {
+        // @todo Cleanup `del` list
+    }
 
     setEntryAttribute(entryID: EntryID, attribute: string, value: string) {
         const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
