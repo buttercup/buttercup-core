@@ -26,6 +26,8 @@ import {
     VaultID
 } from "../types.js";
 
+const DELETION_LIST_TTL = 12 * 7 * 24 * 60 * 60 * 1000; // 12 weeks
+
 function emptyVault(): FormatBVault {
     return {
         id: null,
@@ -342,7 +344,17 @@ export class VaultFormatB extends VaultFormat {
     }
 
     optimise() {
-        // @todo Cleanup `del` list
+        const cutoff = Date.now() - DELETION_LIST_TTL;
+        for (const entryID in this.source.del.e) {
+            if (this.source.del.e[entryID] < cutoff) {
+                delete this.source.del.e[entryID];
+            }
+        }
+        for (const groupID in this.source.del.g) {
+            if (this.source.del.g[groupID] < cutoff) {
+                delete this.source.del.g[groupID];
+            }
+        }
     }
 
     setEntryAttribute(entryID: EntryID, attribute: string, value: string) {

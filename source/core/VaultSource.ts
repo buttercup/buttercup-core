@@ -625,6 +625,8 @@ export class VaultSource extends EventEmitter {
                 const { Format, history } = await datasource.load(credentials);
                 this._vault = Vault.createFromHistory(history, Format);
             }
+            // Optimise storage
+            this._vault.format.optimise();
             // Handle offline state
             if (storeOfflineCopy) {
                 // Store an offline copy for later use
