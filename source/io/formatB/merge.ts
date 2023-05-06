@@ -62,6 +62,7 @@ export function mergeRawVaults(base: FormatBVault, incoming: FormatBVault): Form
     const uniqueGroupsBase = base.g.filter(group => !incoming.g.find(inGroup => inGroup.id === group.id));
     const uniqueGroupsIncoming = incoming.g.filter(group => !base.g.find(baseGroup => baseGroup.id === group.id));
     [...uniqueGroupsBase, ...uniqueGroupsIncoming].forEach(group => {
+        if (newVault.del.g[group.id]) return;
         newVault.g.push(cloneGroup(group));
     });
     // Process all matching groups (on both vaults)
@@ -79,6 +80,7 @@ export function mergeRawVaults(base: FormatBVault, incoming: FormatBVault): Form
     const uniqueEntriesBase = base.e.filter(entry => !incoming.e.find(inEntry => inEntry.id === entry.id));
     const uniqueEntriesIncoming = incoming.e.filter(entry => !base.e.find(baseEntry => baseEntry.id === entry.id));
     [...uniqueEntriesBase, ...uniqueEntriesIncoming].forEach(entry => {
+        if (newVault.del.e[entry.id]) return;
         newVault.e.push(cloneEntry(entry));
     });
     // Process all matching entries (on both vaults)

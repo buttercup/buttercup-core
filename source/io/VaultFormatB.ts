@@ -1,4 +1,4 @@
-import { VaultFormat } from "./VaultFormat.js";
+import { ORPHANS_GROUP_TITLE, VaultFormat } from "./VaultFormat.js";
 import { Vault } from "../core/Vault.js";
 import { generateUUID } from "../tools/uuid.js";
 import { getSharedAppEnv } from "../env/appEnv.js";
@@ -151,6 +151,7 @@ export class VaultFormatB extends VaultFormat {
         const ind = this.source.e.findIndex(entry => entry.id === entryID);
         if (ind >= 0) {
             this.source.e.splice(ind, 1);
+            this.source.del.e[entryID] = Date.now();
         }
     }
 
@@ -170,6 +171,7 @@ export class VaultFormatB extends VaultFormat {
         const ind = this.source.g.findIndex(group => group.id === groupID);
         if (ind >= 0) {
             this.source.g.splice(ind, 1);
+            this.source.del.g[groupID] = Date.now();
         }
     }
 
@@ -344,6 +346,33 @@ export class VaultFormatB extends VaultFormat {
     }
 
     optimise() {
+        // Clean up orphans
+        {
+            // Groups
+            const groups = this.getAllGroups();
+            const groupIDs = ["0", ...groups.map(g => g.id)];
+            for (const group of groups) {
+                if (groupIDs.includes(group.g) === false) {
+                    // Re-attach orphaned group
+                    const orphansGroup = this.prepareOrphansGroup();
+                    this.moveGroup(group.id, orphansGroup.id);
+                }
+            }
+        }
+        {
+            // Entries
+            const groups = this.getAllGroups();
+            const groupIDs = ["0", ...groups.map(g => g.id)];
+            const entries = this.getAllEntries();
+            for (const entry of entries) {
+                if (groupIDs.includes(entry.g) === false) {
+                    // Re-attach orphaned entry
+                    const orphansGroup = this.prepareOrphansGroup();
+                    this.moveEntry(entry.id, orphansGroup.id);
+                }
+            }
+        }
+        // Clean up deletion registers (expired)
         const cutoff = Date.now() - DELETION_LIST_TTL;
         for (const entryID in this.source.del.e) {
             if (this.source.del.e[entryID] < cutoff) {
@@ -355,6 +384,20 @@ export class VaultFormatB extends VaultFormat {
                 delete this.source.del.g[groupID];
             }
         }
+    }
+
+    prepareOrphansGroup(): FormatBGroup {
+        let orphansGroup = this.getAllGroups().find(g => g.t === ORPHANS_GROUP_TITLE);
+        if (!orphansGroup) {
+            const id = generateUUID();
+            this.createGroup("0", id);
+            this.setGroupTitle(id, ORPHANS_GROUP_TITLE);
+            orphansGroup = this.findGroupByID(id);
+            if (!orphansGroup) {
+                throw new Error("Failed creating Orphaned Items group");
+            }
+        }
+        return orphansGroup;
     }
 
     setEntryAttribute(entryID: EntryID, attribute: string, value: string) {

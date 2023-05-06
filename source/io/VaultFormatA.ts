@@ -1,5 +1,5 @@
 import { Layerr } from "layerr";
-import { VaultFormat } from "./VaultFormat.js";
+import { ORPHANS_GROUP_TITLE, VaultFormat } from "./VaultFormat.js";
 import { Vault } from "../core/Vault.js";
 import { Credentials } from "../credentials/Credentials.js";
 import {
@@ -430,6 +430,7 @@ export class VaultFormatA extends VaultFormat {
     }
 
     optimise() {
+        // Flatten
         const flattener = new Flattener(this);
         if (flattener.canBeFlattened()) {
             flattener.flatten();

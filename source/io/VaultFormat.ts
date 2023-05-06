@@ -16,6 +16,8 @@ import {
     VaultFormatID
 } from "../types.js";
 
+export const ORPHANS_GROUP_TITLE = "Orphaned Items";
+
 function notImplemented() {
     throw new Error("Not implemented");
 }
@@ -222,6 +224,11 @@ export class VaultFormat extends EventEmitter {
 
     optimise() {
         notImplemented();
+    }
+
+    prepareOrphansGroup(): FormatAGroup | FormatBGroup {
+        notImplemented();
+        return null;
     }
 
     setEntryAttribute(entryID: EntryID, attribute: string, value: string) {

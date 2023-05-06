@@ -10,7 +10,7 @@ import {
 
 describe("Vault", function() {
     [
-        // ["Format A", VaultFormatA],
+        ["Format A", VaultFormatA],
         ["Format B", VaultFormatB]
     ].forEach(([format, Format]) => {
         describe(`using ${format}`, function() {
@@ -37,40 +37,17 @@ describe("Vault", function() {
                 setDefaultFormat();
             });
 
-            it.only("can empty trash", async function() {
+            it("can empty trash", async function() {
                 const group = this.vault.createGroup("Main");
                 const entry = group.createEntry("Test");
                 entry.delete();
                 await this.source.save();
                 // Now empty trash
                 this.vault.emptyTrash();
-                console.log("TRASH BEFORE", this.vault.getTrashGroup().getEntries());
                 await this.source.save();
-                console.log("TRASH AFTER", this.vault.getTrashGroup().getEntries());
+                expect(this.vault.getTrashGroup().getEntries()).to.have.lengthOf(0, "Should have 0 entries");
+                expect(this.vault.getTrashGroup().getGroups()).to.have.lengthOf(0, "Should have 0 groups");
             });
-
-            // it("updates own format reference on update", async function() {
-            //     const originalVault = this.vault;
-            //     const initialFormat = originalVault;
-            //     await this.source.mergeFromRemote();
-            //     expect(this.source.vault).to.equal(originalVault);
-            //     expect(originalVault.format).to.not.equal(initialFormat);
-            // });
-
-            // it("updates group references on update", async function() {
-            //     const myGroup = this.vault.createGroup("Test");
-            //     await this.source.mergeFromRemote();
-            //     const refMyGroup = this.vault.findGroupsByTitle("Test")[0];
-            //     expect(refMyGroup._source).to.equal(myGroup._source);
-            // });
-
-            // it("updates entry references on update", async function() {
-            //     const myGroup = this.vault.createGroup("Test");
-            //     const myEntry = myGroup.createEntry("Test");
-            //     await this.source.mergeFromRemote();
-            //     const refMyEntry = this.vault.findEntriesByProperty("title", "Test")[0];
-            //     expect(refMyEntry._source).to.equal(myEntry._source);
-            // });
         });
     });
 });
