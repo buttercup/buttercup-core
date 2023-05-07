@@ -58,6 +58,14 @@ export function mergeRawVaults(base: FormatBVault, incoming: FormatBVault): Form
             newVault.del.e[entryID] = incoming.del.e[entryID];
         }
     }
+    for (const groupID in incoming.del.g) {
+        if (
+            (newVault.del.g[groupID] && incoming.del.g[groupID] < newVault.del.g[groupID]) ||
+            !newVault.del.g[groupID]
+        ) {
+            newVault.del.g[groupID] = incoming.del.g[groupID];
+        }
+    }
     // Process unique (one vault only) groups
     const uniqueGroupsBase = base.g.filter(group => !incoming.g.find(inGroup => inGroup.id === group.id));
     const uniqueGroupsIncoming = incoming.g.filter(group => !base.g.find(baseGroup => baseGroup.id === group.id));
