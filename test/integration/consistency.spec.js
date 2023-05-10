@@ -16,7 +16,7 @@ const ENTRIES_PER_GROUP = 25;
 const GROUP_COUNT = 25;
 const CHANGE_COUNT = 1000;
 const LOG_EVERY = 250;
-const SAVE_EVERY = 15;
+const SAVE_EVERY = 20;
 
 function getAllChildEntryIDs(group) {
     return [
@@ -50,8 +50,8 @@ describe.only("consistency", function() {
     });
 
     [
-        ["Format A", VaultFormatA]
-        // ["Format B", VaultFormatB]
+        ["Format A", VaultFormatA],
+        ["Format B", VaultFormatB]
     ].forEach(([name, Format]) => {
         describe(`using: ${name}`, function() {
             beforeEach(async function() {
@@ -124,35 +124,35 @@ describe.only("consistency", function() {
                         console.log(` -> ${Math.round((i / CHANGE_COUNT) * 100)}%`);
                     }
                     switch (i % 10) {
-                        // case 0: {
-                        //     // Set property
-                        //     const entry = getRandomEntry();
-                        //     const properties = Object.keys(entry.getProperties());
-                        //     const property = properties[Math.floor(Math.random() * properties.length)];
-                        //     entry.setProperty(property, `new value: ${Math.random()} ${Date.now()}`);
-                        //     break;
-                        // }
-                        // case 1: {
-                        //     // Add property
-                        //     const entry = getRandomEntry();
-                        //     entry.setProperty(`prop${Date.now()}`, `first value: ${Math.random()} ${Date.now()}`);
-                        //     break;
-                        // }
-                        // case 2: {
-                        //     // Delete/Restore entry
-                        //     const entry = getRandomEntry();
-                        //     if (entry.isInTrash()) {
-                        //         // Restore
-                        //         const group = getRandomGroup();
-                        //         entry.moveToGroup(group);
-                        //         this.entryGroup[entry.id] = group.id;
-                        //     } else {
-                        //         // Delete (trash)
-                        //         entry.delete();
-                        //         this.entryGroup[entry.id] = trashGroup.id;
-                        //     }
-                        //     break;
-                        // }
+                        case 0: {
+                            // Set property
+                            const entry = getRandomEntry();
+                            const properties = Object.keys(entry.getProperties());
+                            const property = properties[Math.floor(Math.random() * properties.length)];
+                            entry.setProperty(property, `new value: ${Math.random()} ${Date.now()}`);
+                            break;
+                        }
+                        case 1: {
+                            // Add property
+                            const entry = getRandomEntry();
+                            entry.setProperty(`prop${Date.now()}`, `first value: ${Math.random()} ${Date.now()}`);
+                            break;
+                        }
+                        case 2: {
+                            // Delete/Restore entry
+                            const entry = getRandomEntry();
+                            if (entry.isInTrash()) {
+                                // Restore
+                                const group = getRandomGroup();
+                                entry.moveToGroup(group);
+                                this.entryGroup[entry.id] = group.id;
+                            } else {
+                                // Delete (trash)
+                                entry.delete();
+                                this.entryGroup[entry.id] = trashGroup.id;
+                            }
+                            break;
+                        }
                         default: {
                             {
                                 // Move entry
