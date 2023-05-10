@@ -8,7 +8,6 @@ describe("WebDAVDatasource", function() {
         // Server
         this.dir = dirSync().name;
         this.server = createServer(this.dir, "basic");
-        console.log(this.dir);
         await this.server.start();
         // Vault
         this.vault = Vault.createWithDefaults();
@@ -18,12 +17,15 @@ describe("WebDAVDatasource", function() {
             .setProperty("username", "test");
         const webdavURL = `http://localhost:${PORT}${PATH}`;
         this.datasource = new WebDAVDatasource(
-            Credentials.fromDatasource({
-                endpoint: webdavURL,
-                password: PASSWORD,
-                path: "/test.bcup",
-                username: USERNAME
-            })
+            Credentials.fromDatasource(
+                {
+                    endpoint: webdavURL,
+                    password: PASSWORD,
+                    path: "/test.bcup",
+                    username: USERNAME
+                },
+                "test"
+            )
         );
     });
 
