@@ -270,6 +270,11 @@ export class Group extends VaultItem {
         if (targetVault.readOnly) {
             throw new Error("Cannot move group: target archive is read-only");
         }
+        if (target instanceof Group && !!this.findGroupByID(target.id)) {
+            // Target is a child of this group, so we can't move to it as
+            // it'd become circular.
+            throw new Error("Cannot move group: target group is a child of the current group");
+        }
         if (this.vault.id === targetVault.id) {
             // target is local, so create commands here
             this.vault.format.moveGroup(this.id, targetGroupID);
