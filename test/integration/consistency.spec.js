@@ -37,7 +37,7 @@ function getAllChildIDs(group) {
     };
 }
 
-describe.only("consistency", function() {
+describe("consistency", function() {
     beforeEach(async function() {
         // Server
         this.dir = dirSync().name;
