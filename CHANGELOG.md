@@ -1,5 +1,15 @@
 # Core library changelog
 
+## v7.2.0
+_2023-05-11_
+
+ * **Major changes**
+   * Default format changed from **A** to **B**
+ * Connect vault format optimisation to unlock process
+ * Improve format merging during saving (deleted items)
+ * **Bugfix**:
+   * [#329](https://github.com/buttercup/buttercup-core/issues/329): Unable to empty trash
+
 ## v7.1.1
 _2023-02-19_
 
