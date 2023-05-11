@@ -1,5 +1,12 @@
 # Core library changelog
 
+## v7.2.1
+_2023-05-11_
+
+ * Removed Format A merge skipping check (was for performance) to ensure stability
+ * **Bugfix**:
+   * Saving Google Drive vaults would write "Untitled" files and never update original vault ([Buttercup Desktop issue](https://github.com/buttercup/buttercup-desktop/issues/1208))
+
 ## v7.2.0
 _2023-05-11_
 
