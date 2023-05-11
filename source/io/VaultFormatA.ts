@@ -1,5 +1,5 @@
 import { Layerr } from "layerr";
-import { VaultFormat } from "./VaultFormat.js";
+import { ORPHANS_GROUP_TITLE, VaultFormat } from "./VaultFormat.js";
 import { Vault } from "../core/Vault.js";
 import { Credentials } from "../credentials/Credentials.js";
 import {
@@ -40,6 +40,7 @@ import { decodeStringValue, isEncoded } from "../tools/encoding.js";
 import { generateUUID } from "../tools/uuid.js";
 import { getCredentials } from "../credentials/channel.js";
 import { historyArrayToString, historyStringToArray } from "./common.js";
+import { smartStripRemovedAssets } from "./formatA/merge.js";
 import {
     EntryChange,
     EntryChangeType,
@@ -162,10 +163,6 @@ export class VaultFormatA extends VaultFormat {
             });
     }
 
-    static prepareHistoryForMerge(history: History): History {
-        return stripDestructiveCommands(history);
-    }
-
     static vaultFromMergedHistories(base: History, incoming: History): Vault {
         const differences = VaultComparator.calculateHistoryDifferences(base, incoming);
         if (differences === null) {
@@ -178,13 +175,13 @@ export class VaultFormatA extends VaultFormat {
         }
         // Remote has unseen changes, so we need to do a full merge
         // to manage the differences
-        const newHistoryBase = VaultFormatA.prepareHistoryForMerge(differences.original);
-        const newHistoryIncoming = VaultFormatA.prepareHistoryForMerge(differences.secondary);
-        const common = differences.common;
+        const { original: newHistoryBase, secondary: newHistoryIncoming, common } = differences;
+        const inlineHistory = [...common, ...smartStripRemovedAssets([...newHistoryBase, ...newHistoryIncoming])];
+        // Prepare vault target
         const newVault = new Vault(VaultFormatA);
         newVault.format.erase();
         // merge all history and execute on new vault
-        newVault.format.execute(common.concat(newHistoryBase).concat(newHistoryIncoming));
+        newVault.format.execute(inlineHistory);
         newVault.format.dirty = false;
         return newVault;
     }
@@ -433,6 +430,7 @@ export class VaultFormatA extends VaultFormat {
     }
 
     optimise() {
+        // Flatten
         const flattener = new Flattener(this);
         if (flattener.canBeFlattened()) {
             flattener.flatten();

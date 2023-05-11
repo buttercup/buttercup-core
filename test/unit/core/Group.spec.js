@@ -1,14 +1,27 @@
 import { expect } from "chai";
-import { Entry, Group, Vault, VaultPermission, generateUUID } from "../../../dist/node/index.js";
+import {
+    Entry,
+    Group,
+    Vault,
+    VaultFormatA,
+    VaultPermission,
+    generateUUID,
+    setDefaultFormat
+} from "../../../dist/node/index.js";
 
 describe("core/Group", function() {
     beforeEach(function() {
+        setDefaultFormat(VaultFormatA);
         this.vault = Vault.createWithDefaults();
         this.group = this.vault.createGroup("test");
         this.group.setAttribute("abc", "123");
         this.group.setAttribute("another", "attribute");
         this.entry1 = this.group.createEntry("entry1");
         this.entry2 = this.group.createEntry("entry2");
+    });
+
+    afterEach(function() {
+        setDefaultFormat();
     });
 
     describe("get:id", function() {
@@ -60,7 +73,7 @@ describe("core/Group", function() {
 
             it("can create title-less entries", function() {
                 const entry = this.group.createEntry();
-                expect(entry.getProperty("title")).to.equal("");
+                expect(entry.getProperty("title")).to.be.undefined;
             });
         });
 

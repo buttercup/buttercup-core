@@ -1,13 +1,18 @@
 import { expect } from "chai";
 import VaultComparator from "../../../../dist/node/io/formatA/VaultComparator.js";
-import { Vault } from "../../../../dist/node/index.js";
+import { Vault, VaultFormatA, setDefaultFormat } from "../../../../dist/node/index.js";
 
 describe("core/VaultComparator", function() {
     beforeEach(function() {
+        setDefaultFormat(VaultFormatA);
         this.vault1 = new Vault();
         this.vault2 = new Vault();
         this.vault2.format.erase();
         this.vault2.format.execute(this.vault1.format.history);
+    });
+
+    afterEach(function() {
+        setDefaultFormat();
     });
 
     describe("calculateDifferences", function() {

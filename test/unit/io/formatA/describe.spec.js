@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describeVaultDataset } from "../../../../dist/node/io/formatA/describe.js";
 import { decodeStringValue, isEncoded } from "../../../../dist/node/tools/encoding.js";
-import { Vault } from "../../../../dist/node/index.js";
+import { Vault, VaultFormatA, setDefaultFormat } from "../../../../dist/node/index.js";
 
 function decodeHistory(lines) {
     return lines.map(line => {
@@ -15,12 +15,17 @@ function decodeHistory(lines) {
 describe("io/formatA/describe", function() {
     describe("describeVaultDataset", function() {
         beforeEach(function() {
+            setDefaultFormat(VaultFormatA);
             this.vault = new Vault();
             this.group = this.vault.createGroup("main");
             this.entry = this.group.createEntry("my entry");
             this.entry.setProperty("misc", "!@#$%^");
             this.entry.setAttribute("myAttr", "myValue");
             this.dataset = this.vault.format.source;
+        });
+
+        afterEach(function() {
+            setDefaultFormat();
         });
 
         it("outputs an array", function() {

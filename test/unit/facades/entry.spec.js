@@ -4,16 +4,19 @@ import {
     EntryPropertyType,
     EntryType,
     Vault,
+    VaultFormatB,
     createEntryFacade,
     createEntryFromFacade,
     createFieldDescriptor,
     createVaultFacade,
-    getEntryFacadePath
+    getEntryFacadePath,
+    setDefaultFormat
 } from "../../../dist/node/index.js";
 
 describe("facades/entry", function() {
     describe("createEntryFacade", function() {
         beforeEach(function() {
+            setDefaultFormat(VaultFormatB);
             const vault = new Vault();
             this.entry = vault.createGroup("test").createEntry("Bank");
             this.entry
@@ -21,6 +24,10 @@ describe("facades/entry", function() {
                 .setProperty("password", "passw0rd")
                 .setProperty("URL", "https://bank.com")
                 .setAttribute("BC_TEST", "test");
+        });
+
+        afterEach(function() {
+            setDefaultFormat();
         });
 
         it("outputs the correct facade type", function() {
@@ -59,7 +66,13 @@ describe("facades/entry", function() {
             expect(attr).to.have.property("valueType", null);
         });
 
-        it("outputs changes", function() {
+        it("outputs 0 changes when nothing overridden", function() {
+            const { _changes } = createEntryFacade(this.entry);
+            expect(_changes).to.have.lengthOf(0);
+        });
+
+        it("outputs changes when something overridden", function() {
+            this.entry.setProperty("username", "second");
             const { _changes } = createEntryFacade(this.entry);
             expect(_changes).to.have.length.above(0);
         });

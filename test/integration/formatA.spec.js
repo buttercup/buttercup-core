@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Credentials, MemoryDatasource, Vault, VaultFormatA } from "../../dist/node/index.js";
+import { Credentials, MemoryDatasource, Vault, VaultFormatA, setDefaultFormat } from "../../dist/node/index.js";
 
 describe("Format A", function() {
     function reduceCommandsToPadIDs(output, cmd) {
@@ -9,6 +9,14 @@ describe("Format A", function() {
         }
         return output;
     }
+
+    beforeEach(function() {
+        setDefaultFormat(VaultFormatA);
+    });
+
+    afterEach(function() {
+        setDefaultFormat();
+    });
 
     it("retains PAD IDs between loads", async function() {
         let vault = new Vault();

@@ -1,4 +1,4 @@
-import { VaultFormat } from "./VaultFormat.js";
+import { ORPHANS_GROUP_TITLE, VaultFormat } from "./VaultFormat.js";
 import { Vault } from "../core/Vault.js";
 import { generateUUID } from "../tools/uuid.js";
 import { getSharedAppEnv } from "../env/appEnv.js";
@@ -26,13 +26,19 @@ import {
     VaultID
 } from "../types.js";
 
+const DELETION_LIST_TTL = 12 * 7 * 24 * 60 * 60 * 1000; // 12 weeks
+
 function emptyVault(): FormatBVault {
     return {
         id: null,
         a: {},
         g: [],
         e: [],
-        c: getDateString()
+        c: getDateString(),
+        del: {
+            e: {},
+            g: {}
+        }
     };
 }
 
@@ -80,10 +86,6 @@ export class VaultFormatB extends VaultFormat {
                 const decompressed = await decompress(decrypted);
                 return historyStringToArray(decompressed, VaultFormatID.B);
             });
-    }
-
-    static prepareHistoryForMerge(history: History): History {
-        return history;
     }
 
     static vaultFromMergedHistories(base: History, incoming: History): Vault {
@@ -139,7 +141,7 @@ export class VaultFormatB extends VaultFormat {
         const group: FormatBGroup = {
             id: groupID,
             g: parentID,
-            t: "",
+            t: "New group",
             a: {}
         };
         this.source.g.push(group);
@@ -149,6 +151,7 @@ export class VaultFormatB extends VaultFormat {
         const ind = this.source.e.findIndex(entry => entry.id === entryID);
         if (ind >= 0) {
             this.source.e.splice(ind, 1);
+            this.source.del.e[entryID] = Date.now();
         }
     }
 
@@ -168,6 +171,7 @@ export class VaultFormatB extends VaultFormat {
         const ind = this.source.g.findIndex(group => group.id === groupID);
         if (ind >= 0) {
             this.source.g.splice(ind, 1);
+            this.source.del.g[groupID] = Date.now();
         }
     }
 
@@ -319,8 +323,15 @@ export class VaultFormatB extends VaultFormat {
         Object.assign(this.source, {
             a: this.source.a || {},
             g: this.source.g || [],
-            e: this.source.e || []
+            e: this.source.e || [],
+            del: this.source.del || {}
         });
+        if (!this.source.del.e) {
+            this.source.del.e = {};
+        }
+        if (!this.source.del.g) {
+            this.source.del.g = {};
+        }
         this.generateID();
     }
 
@@ -334,7 +345,60 @@ export class VaultFormatB extends VaultFormat {
         group.g = newParentID;
     }
 
-    optimise() {}
+    optimise() {
+        // Clean up orphans
+        {
+            // Groups
+            const groups = this.getAllGroups();
+            const groupIDs = ["0", ...groups.map(g => g.id)];
+            for (const group of groups) {
+                if (groupIDs.includes(group.g) === false) {
+                    // Re-attach orphaned group
+                    const orphansGroup = this.prepareOrphansGroup();
+                    this.moveGroup(group.id, orphansGroup.id);
+                }
+            }
+        }
+        {
+            // Entries
+            const groups = this.getAllGroups();
+            const groupIDs = ["0", ...groups.map(g => g.id)];
+            const entries = this.getAllEntries();
+            for (const entry of entries) {
+                if (groupIDs.includes(entry.g) === false) {
+                    // Re-attach orphaned entry
+                    const orphansGroup = this.prepareOrphansGroup();
+                    this.moveEntry(entry.id, orphansGroup.id);
+                }
+            }
+        }
+        // Clean up deletion registers (expired)
+        const cutoff = Date.now() - DELETION_LIST_TTL;
+        for (const entryID in this.source.del.e) {
+            if (this.source.del.e[entryID] < cutoff) {
+                delete this.source.del.e[entryID];
+            }
+        }
+        for (const groupID in this.source.del.g) {
+            if (this.source.del.g[groupID] < cutoff) {
+                delete this.source.del.g[groupID];
+            }
+        }
+    }
+
+    prepareOrphansGroup(): FormatBGroup {
+        let orphansGroup = this.getAllGroups().find(g => g.t === ORPHANS_GROUP_TITLE);
+        if (!orphansGroup) {
+            const id = generateUUID();
+            this.createGroup("0", id);
+            this.setGroupTitle(id, ORPHANS_GROUP_TITLE);
+            orphansGroup = this.findGroupByID(id);
+            if (!orphansGroup) {
+                throw new Error("Failed creating Orphaned Items group");
+            }
+        }
+        return orphansGroup;
+    }
 
     setEntryAttribute(entryID: EntryID, attribute: string, value: string) {
         const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
