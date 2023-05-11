@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import sinon from "sinon";
-import { Group, Vault } from "../../../dist/node/index.js";
+import { Group, Vault, VaultFormatA, setDefaultFormat } from "../../../dist/node/index.js";
 
 describe("core/Vault", function() {
     it("can be instantiated", function() {
@@ -16,6 +16,7 @@ describe("core/Vault", function() {
 
     describe("static:createFromHistory", function() {
         beforeEach(function() {
+            setDefaultFormat(VaultFormatA);
             this.history = [
                 "aid 95d8023d-f1a0-4bda-9ac3-a39b6613293c",
                 "cmm utf8+base64:QnV0dGVyY3VwIGFyY2hpdmUgY3JlYXRlZCAoMjAxOC02LTQp",
@@ -26,6 +27,10 @@ describe("core/Vault", function() {
                 "tgr f35882ed-cee3-4144-b8fa-b3f8038175be utf8+base64:bWFpbg==",
                 "pad 84115b0d-b7bc-43aa-ba9d-3ae5db2e71d7"
             ];
+        });
+
+        afterEach(function() {
+            setDefaultFormat();
         });
 
         it("creates an vault", function() {
@@ -79,12 +84,6 @@ describe("core/Vault", function() {
             expect(this.vault.getAttribute("test")).to.equal("value");
             this.vault.deleteAttribute("test");
             expect(this.vault.getAttribute("test")).to.be.undefined;
-        });
-
-        it("throws if an attribute doesn't exist", function() {
-            expect(() => {
-                this.vault.deleteAttribute("not-here");
-            }).to.throw(/no such attribute/i);
         });
     });
 

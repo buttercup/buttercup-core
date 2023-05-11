@@ -3,7 +3,7 @@ import { VaultFormatB } from "./VaultFormatB.js";
 import { hasValidSignature as isFormatBSigned } from "./formatB/signing.js";
 import { VaultFormatID } from "../types.js";
 
-const DEFAULT_FORMAT = VaultFormatA;
+const DEFAULT_FORMAT = VaultFormatB;
 
 let __defaultFormat = DEFAULT_FORMAT;
 

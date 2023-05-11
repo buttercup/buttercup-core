@@ -27,9 +27,7 @@ export function executeCreateEntry(archive: FormatAVault, opts: any, groupID: Gr
     archive.groups = archive.groups || [];
     const entry: FormatAEntry = {
         id: entryID,
-        properties: {
-            title: ""
-        },
+        properties: {},
         shareID: opts.shareID,
         parentID: groupID
     };

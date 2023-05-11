@@ -141,7 +141,7 @@ export class VaultFormatB extends VaultFormat {
         const group: FormatBGroup = {
             id: groupID,
             g: parentID,
-            t: "",
+            t: "New group",
             a: {}
         };
         this.source.g.push(group);
