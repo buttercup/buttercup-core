@@ -533,7 +533,7 @@ export class VaultSource extends EventEmitter {
                 encryptedContent = content;
             };
             this._datasource.once("encryptedContent", encryptedCallback);
-            // Unlock
+            // Save
             try {
                 await this._datasource.save(
                     this._vault.format.history,

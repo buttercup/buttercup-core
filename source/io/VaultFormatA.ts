@@ -1,5 +1,5 @@
 import { Layerr } from "layerr";
-import { ORPHANS_GROUP_TITLE, VaultFormat } from "./VaultFormat.js";
+import { VaultFormat } from "./VaultFormat.js";
 import { Vault } from "../core/Vault.js";
 import { Credentials } from "../credentials/Credentials.js";
 import {
@@ -28,8 +28,7 @@ import {
     InigoCommand as Inigo,
     extractCommandComponents,
     getAllEntries,
-    getAllGroups,
-    stripDestructiveCommands
+    getAllGroups
 } from "./formatA/tools.js";
 import { Flattener } from "./formatA/Flattener.js";
 import { getFormat, hasValidSignature, sign, stripSignature, vaultContentsEncrypted } from "./formatA/signing.js";
@@ -168,13 +167,7 @@ export class VaultFormatA extends VaultFormat {
         if (differences === null) {
             throw new Error("Failed merging vault histories: No common base");
         }
-        if (differences.secondary.length === 0) {
-            // Remote doesn't have unseen changes, so we can simply
-            // use the existing history
-            return Vault.createFromHistory(base, VaultFormatA);
-        }
-        // Remote has unseen changes, so we need to do a full merge
-        // to manage the differences
+        // Do a full merge to ensure the differences are merged, if any
         const { original: newHistoryBase, secondary: newHistoryIncoming, common } = differences;
         const inlineHistory = [...common, ...smartStripRemovedAssets([...newHistoryBase, ...newHistoryIncoming])];
         // Prepare vault target

@@ -224,7 +224,7 @@ describe("consistency", function() {
                         );
                     }
                 }
-            }).timeout(180000);
+            }).timeout(5 * 60 * 1000);
         });
     });
 });

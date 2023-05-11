@@ -1,7 +1,24 @@
 import { History } from "../../types.js";
 
-const ENTRY_SPECIFIC_TARGET_COMMANDS = ["cen", "den", "dea", "dem", "dep", "men", "sea", "sem", "sep"];
-const GROUP_SPECIFIC_TARGET_COMMANDS = ["cgr", "dgr", "dga", "mgr", "sga", "tgr"];
+const ENTRY_SPECIFIC_TARGET_COMMANDS = {
+    cen: 1, // entry ID is argument 2
+    den: 0,
+    dea: 0,
+    dem: 0,
+    dep: 0,
+    men: 0,
+    sea: 0,
+    sem: 0,
+    sep: 0
+};
+const GROUP_SPECIFIC_TARGET_COMMANDS = {
+    cgr: 1, // group ID is argument 2
+    dgr: 0,
+    dga: 0,
+    mgr: 0,
+    sga: 0,
+    tgr: 0
+};
 
 /**
  * Process history in order, following which entries/groups are
@@ -15,10 +32,16 @@ export function smartStripRemovedAssets(history: History): History {
     const deletedGroups: Set<string> = new Set([]);
     return history.filter(line => {
         const [command, ...args] = line.split(/\s/g);
-        if (ENTRY_SPECIFIC_TARGET_COMMANDS.includes(command) && deletedEntries.has(args[0])) {
+        if (
+            typeof ENTRY_SPECIFIC_TARGET_COMMANDS[command] === "number" &&
+            deletedEntries.has(args[ENTRY_SPECIFIC_TARGET_COMMANDS[command]])
+        ) {
             return false;
         }
-        if (GROUP_SPECIFIC_TARGET_COMMANDS.includes(command) && deletedGroups.has(args[0])) {
+        if (
+            typeof GROUP_SPECIFIC_TARGET_COMMANDS[command] === "number" &&
+            deletedGroups.has(args[GROUP_SPECIFIC_TARGET_COMMANDS[command]])
+        ) {
             return false;
         }
         if (command === "den") {
