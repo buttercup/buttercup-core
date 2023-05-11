@@ -16,7 +16,7 @@ const DATASOURCE_TYPE = "googledrive";
  */
 export default class GoogleDriveDatasource extends TextDatasource {
     authManager: DatasourceAuthManager;
-    client: any;
+    client: GoogleDriveClient;
     fileID: string;
     token: string;
     refreshToken: string;
@@ -95,12 +95,7 @@ export default class GoogleDriveDatasource extends TextDatasource {
     save(history, credentials, hasAuthed = false) {
         return super
             .save(history, credentials)
-            .then(encryptedContent =>
-                this.client.putFileContents({
-                    id: this.fileID,
-                    contents: encryptedContent
-                })
-            )
+            .then(encryptedContent => this.client.putFileContents(encryptedContent, this.fileID))
             .catch(err => {
                 const { authFailure = false } = Layerr.info(err);
                 if (!authFailure) {
