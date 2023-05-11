@@ -314,19 +314,3 @@ export function historyArrayToString(historyArray: Array<string>): string {
 export function historyStringToArray(historyString: string): Array<string> {
     return historyString.split("\n");
 }
-
-/**
- * Strip destructive commands from a history collection
- * @param history The history
- * @returns The history minus any destructive commands
- */
-export function stripDestructiveCommands(history: Array<string>): Array<string> {
-    const getCommandType = fullCommand => (fullCommand && fullCommand.length >= 3 ? fullCommand.substr(0, 3) : "");
-    const destructiveSlugs = Object.keys(COMMAND_MANIFEST)
-        .map(key => COMMAND_MANIFEST[key])
-        .filter(command => command.d)
-        .map(command => command.s);
-    return history.filter(command => {
-        return destructiveSlugs.indexOf(getCommandType(command)) < 0;
-    });
-}
