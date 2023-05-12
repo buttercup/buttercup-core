@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v7.2.2
+_2023-05-12_
+
+ * **Bugfix**:
+   * Format B vaults unable to be opened: "Cannot read properties of undefined (reading 'e')"
+
 ## v7.2.1
 _2023-05-11_
 
