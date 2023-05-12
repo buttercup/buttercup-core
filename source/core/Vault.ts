@@ -27,6 +27,7 @@ export class Vault extends EventEmitter {
      */
     static createFromHistory(history: History, format: any = getDefaultFormat()): Vault {
         const vault = new Vault(format);
+        vault.format.initialise();
         vault.format.erase();
         vault.format.execute(history);
         vault.format.dirty = false;

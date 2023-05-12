@@ -626,7 +626,11 @@ export class VaultSource extends EventEmitter {
                 this._vault = Vault.createFromHistory(history, Format);
             }
             // Optimise storage
-            this._vault.format.optimise();
+            try {
+                this._vault.format.optimise();
+            } catch (err) {
+                throw new Layerr(err, "Failed optimising vault format");
+            }
             // Handle offline state
             if (storeOfflineCopy) {
                 // Store an offline copy for later use

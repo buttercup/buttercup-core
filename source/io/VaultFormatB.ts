@@ -332,7 +332,9 @@ export class VaultFormatB extends VaultFormat {
         if (!this.source.del.g) {
             this.source.del.g = {};
         }
-        this.generateID();
+        if (!this.source.id) {
+            this.generateID();
+        }
     }
 
     moveEntry(entryID: EntryID, groupID: GroupID) {
@@ -346,6 +348,8 @@ export class VaultFormatB extends VaultFormat {
     }
 
     optimise() {
+        // Initialise first
+        this.initialise();
         // Clean up orphans
         {
             // Groups

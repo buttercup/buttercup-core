@@ -396,12 +396,17 @@ export class VaultFormatA extends VaultFormat {
     }
 
     initialise() {
-        this.execute(
-            Inigo.create(Inigo.Command.Format)
-                .addArgument(getFormat())
-                .generateCommand()
-        );
-        this.generateID();
+        const hasFormatted = typeof this.source.format === "string";
+        if (!hasFormatted) {
+            this.execute(
+                Inigo.create(Inigo.Command.Format)
+                    .addArgument(getFormat())
+                    .generateCommand()
+            );
+        }
+        if (!this.source.id) {
+            this.generateID();
+        }
     }
 
     moveEntry(entryID: EntryID, groupID: GroupID) {
