@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v7.2.3
+_2023-05-12_
+
+ * **Bugfix**:
+   * [#333](https://github.com/buttercup/buttercup-core/issues/333): Unable to save Format B vaults ("Cannot read properties of undefined (reading 'e')")
+
 ## v7.2.2
 _2023-05-12_
 
