@@ -101,13 +101,13 @@ export class FileDatasource extends TextDatasource {
      * @returns A promise resolving with archive history
      * @memberof FileDatasource
      */
-    load(credentials: Credentials): Promise<DatasourceLoadedData> {
-        return this.hasContent
-            ? super.load(credentials)
-            : this.readFile(this.path, "utf8").then(contents => {
-                  this.setContent(contents);
-                  return super.load(credentials);
-              });
+    async load(credentials: Credentials): Promise<DatasourceLoadedData> {
+        if (this.hasContent) {
+            return super.load(credentials);
+        }
+        const contents = await this.readFile(this.path, "utf8");
+        this.setContent(contents);
+        return super.load(credentials);
     }
 
     /**

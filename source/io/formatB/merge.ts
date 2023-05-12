@@ -45,8 +45,8 @@ export function mergeRawVaults(base: FormatBVault, incoming: FormatBVault): Form
         e: [],
         c: base.c,
         del: {
-            e: { ...base.del.e },
-            g: { ...base.del.g }
+            e: { ...(base.del?.e || {}) },
+            g: { ...(base.del?.g || {}) }
         }
     };
     // Setup deletions
