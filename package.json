@@ -10,6 +10,7 @@
     },
     "./web": "./dist/web/index.js"
   },
+  "react-native": "./dist/web/index.js",
   "types": "dist/node/index.d.ts",
   "contributors": [
     {

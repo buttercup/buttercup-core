@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v7.2.4
+_2023-07-16_
+
+ * React-Native entry point in `package.json`
+
 ## v7.2.3
 _2023-05-12_
 
