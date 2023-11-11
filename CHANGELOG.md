@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v7.3.0
+_2023-11-11_
+
+ * Update dependencies
+
 ## v7.2.4
 _2023-07-16_
 
