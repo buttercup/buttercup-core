@@ -34,7 +34,9 @@ export default class WebDAVDatasource extends TextDatasource {
     constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig } = credentialData as { datasource: DatasourceConfigurationWebDAV };
+        const { datasource: datasourceConfig } = credentialData as {
+            datasource: DatasourceConfigurationWebDAV;
+        };
         const { endpoint, password, path, username } = (this._config = datasourceConfig);
         this._path = path;
         const createClient = getSharedAppEnv().getProperty("net/webdav/v1/newClient");
@@ -98,7 +100,12 @@ export default class WebDAVDatasource extends TextDatasource {
      */
     async getAttachment(vaultID: VaultID, attachmentID: string): Promise<BufferLike> {
         await this._ensureAttachmentsPaths(vaultID);
-        const attachmentPath = pathPosix.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
+        const attachmentPath = pathPosix.join(
+            this.baseDir,
+            ".buttercup",
+            vaultID,
+            `${attachmentID}.${ATTACHMENT_EXT}`
+        );
         return this.client.getFileContents(attachmentPath) as Promise<BufferLike>;
     }
 
@@ -119,7 +126,7 @@ export default class WebDAVDatasource extends TextDatasource {
     load(credentials: Credentials): Promise<DatasourceLoadedData> {
         return this.hasContent
             ? super.load(credentials)
-            : this.client.getFileContents(this.path, { format: "text" }).then(content => {
+            : this.client.getFileContents(this.path, { format: "text" }).then((content) => {
                   this.setContent(content as string);
                   return super.load(credentials);
               });
@@ -140,7 +147,12 @@ export default class WebDAVDatasource extends TextDatasource {
         details: AttachmentDetails
     ): Promise<void> {
         await this._ensureAttachmentsPaths(vaultID);
-        const attachmentPath = pathPosix.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
+        const attachmentPath = pathPosix.join(
+            this.baseDir,
+            ".buttercup",
+            vaultID,
+            `${attachmentID}.${ATTACHMENT_EXT}`
+        );
         await this.client.putFileContents(attachmentPath, buffer);
     }
 
@@ -152,7 +164,12 @@ export default class WebDAVDatasource extends TextDatasource {
      */
     async removeAttachment(vaultID: VaultID, attachmentID: string): Promise<void> {
         await this._ensureAttachmentsPaths(vaultID);
-        const attachmentPath = pathPosix.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
+        const attachmentPath = pathPosix.join(
+            this.baseDir,
+            ".buttercup",
+            vaultID,
+            `${attachmentID}.${ATTACHMENT_EXT}`
+        );
         await this.client.deleteFile(attachmentPath);
     }
 

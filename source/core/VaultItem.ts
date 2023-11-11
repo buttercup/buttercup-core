@@ -83,7 +83,7 @@ export class VaultItem {
      * @param perm The permission to revoke
      */
     revokePermission(perm: string) {
-        this._source.permissions = this._source.permissions.filter(current => current !== perm);
+        this._source.permissions = this._source.permissions.filter((current) => current !== perm);
     }
 
     /**

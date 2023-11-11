@@ -1,4 +1,8 @@
 {
-  "printWidth": 120,
-  "tabWidth": 4
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "printWidth": 100,
+  "quoteProps": "consistent",
+  "tabWidth": 4,
+  "trailingComma": "none"
 }

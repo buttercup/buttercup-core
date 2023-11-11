@@ -30,7 +30,7 @@ const GROUP_SPECIFIC_TARGET_COMMANDS = {
 export function smartStripRemovedAssets(history: History): History {
     const deletedEntries: Set<string> = new Set([]);
     const deletedGroups: Set<string> = new Set([]);
-    return history.filter(line => {
+    return history.filter((line) => {
         const [command, ...args] = line.split(/\s/g);
         if (
             typeof ENTRY_SPECIFIC_TARGET_COMMANDS[command] === "number" &&

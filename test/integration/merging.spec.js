@@ -8,8 +8,8 @@ import {
     setDefaultFormat
 } from "../../dist/node/index.js";
 
-describe("merging", function() {
-    beforeEach(async function() {
+describe("merging", function () {
+    beforeEach(async function () {
         setDefaultFormat(VaultFormatB);
         const creds = Credentials.fromDatasource(
             {
@@ -42,16 +42,19 @@ describe("merging", function() {
         const newLoaded = await this.source._datasource.load(Credentials.fromPassword("test"));
         this.stagedVault = Vault.createFromHistory(newLoaded.history, newLoaded.Format);
         this.saveAll = async () => {
-            await this.source._datasource.save(this.stagedVault.format.history, Credentials.fromPassword("test"));
+            await this.source._datasource.save(
+                this.stagedVault.format.history,
+                Credentials.fromPassword("test")
+            );
             await this.source.save();
         };
     });
 
-    afterEach(function() {
+    afterEach(function () {
         setDefaultFormat();
     });
 
-    it("merges vault attributes", async function() {
+    it("merges vault attributes", async function () {
         this.stagedVault.setAttribute("test", "changed");
         this.stagedVault.setAttribute("new", "set");
         this.vault.setAttribute("later", "test");
@@ -61,7 +64,7 @@ describe("merging", function() {
         expect(this.vault.getAttribute("later")).to.equal("test");
     });
 
-    it("handles large amounts of divergence", async function() {
+    it("handles large amounts of divergence", async function () {
         const count = 300;
         for (let i = 0; i < count; i += 1) {
             const sg1 = this.stagedVault.createGroup(`SG ${i}`);

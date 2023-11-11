@@ -1,5 +1,9 @@
 import facadeFieldFactories from "./entryFields.js";
-import { createFieldDescriptor, getEntryPropertyValueType, setEntryPropertyValueType } from "./tools.js";
+import {
+    createFieldDescriptor,
+    getEntryPropertyValueType,
+    setEntryPropertyValueType
+} from "./tools.js";
 import { Entry } from "../core/Entry.js";
 import { Group } from "../core/Group.js";
 import {
@@ -31,14 +35,14 @@ const { FacadeType: FacadeTypeAttribute } = Entry.Attributes;
  */
 function addExtraFieldsNonDestructive(entry: Entry, fields: Array<EntryFacadeField>) {
     const exists = (propName: string, fieldType: EntryPropertyType) =>
-        fields.find(item => item.propertyType === fieldType && item.property === propName);
+        fields.find((item) => item.propertyType === fieldType && item.property === propName);
     const properties = entry.getProperty();
     const attributes = entry.getAttribute();
     return [
         ...fields,
         ...Object.keys(properties)
-            .filter(name => !exists(name, EntryPropertyType.Property))
-            .map(name =>
+            .filter((name) => !exists(name, EntryPropertyType.Property))
+            .map((name) =>
                 createFieldDescriptor(
                     entry, // Entry instance
                     "", // Title
@@ -48,8 +52,8 @@ function addExtraFieldsNonDestructive(entry: Entry, fields: Array<EntryFacadeFie
                 )
             ),
         ...Object.keys(attributes)
-            .filter(name => !exists(name, EntryPropertyType.Attribute))
-            .map(name =>
+            .filter((name) => !exists(name, EntryPropertyType.Attribute))
+            .map((name) =>
                 createFieldDescriptor(
                     entry, // Entry instance
                     "", // Title
@@ -68,7 +72,13 @@ function addExtraFieldsNonDestructive(entry: Entry, fields: Array<EntryFacadeFie
  * @private
  */
 function applyFieldDescriptor(entry: Entry, descriptor: EntryFacadeField) {
-    setEntryValue(entry, descriptor.propertyType, descriptor.property, descriptor.value, descriptor.valueType);
+    setEntryValue(
+        entry,
+        descriptor.propertyType,
+        descriptor.property,
+        descriptor.value,
+        descriptor.valueType
+    );
 }
 
 /**
@@ -83,12 +93,14 @@ export function consumeEntryFacade(entry: Entry, facade: EntryFacade) {
         const properties = entry.getProperty();
         const attributes = entry.getAttribute();
         if (facade.type !== facadeType) {
-            throw new Error(`Failed consuming entry data: Expected type "${facadeType}" but received "${facade.type}"`);
+            throw new Error(
+                `Failed consuming entry data: Expected type "${facadeType}" but received "${facade.type}"`
+            );
         }
         // update data
-        (facade.fields || []).forEach(field => applyFieldDescriptor(entry, field));
+        (facade.fields || []).forEach((field) => applyFieldDescriptor(entry, field));
         // remove missing properties
-        Object.keys(properties).forEach(propKey => {
+        Object.keys(properties).forEach((propKey) => {
             const correspondingField = facade.fields.find(
                 ({ propertyType, property }) => propertyType === "property" && property === propKey
             );
@@ -97,7 +109,7 @@ export function consumeEntryFacade(entry: Entry, facade: EntryFacade) {
             }
         });
         // remove missing attributes
-        Object.keys(attributes).forEach(attrKey => {
+        Object.keys(attributes).forEach((attrKey) => {
             const correspondingField = facade.fields.find(
                 ({ propertyType, property }) => propertyType === "attribute" && property === attrKey
             );
@@ -117,7 +129,10 @@ export function consumeEntryFacade(entry: Entry, facade: EntryFacade) {
  * @returns A newly created facade
  * @memberof module:Buttercup
  */
-export function createEntryFacade(entry?: Entry, options: CreateEntryFacadeOptions = {}): EntryFacade {
+export function createEntryFacade(
+    entry?: Entry,
+    options: CreateEntryFacadeOptions = {}
+): EntryFacade {
     if (entry && entry instanceof Entry !== true) {
         throw new Error("Failed creating entry facade: Provided item is not an Entry");
     }
@@ -127,10 +142,14 @@ export function createEntryFacade(entry?: Entry, options: CreateEntryFacadeOptio
     if (!createFields) {
         throw new Error(`Failed creating entry facade: No factory found for type "${facadeType}"`);
     }
-    const fields = entry ? addExtraFieldsNonDestructive(entry, createFields(entry)) : createFields(entry);
+    const fields = entry
+        ? addExtraFieldsNonDestructive(entry, createFields(entry))
+        : createFields(entry);
     if (
         !fields.find(
-            field => field.propertyType === EntryPropertyType.Attribute && field.property === FacadeTypeAttribute
+            (field) =>
+                field.propertyType === EntryPropertyType.Attribute &&
+                field.property === FacadeTypeAttribute
         )
     ) {
         const entryTypeField = createFieldDescriptor(
@@ -184,7 +203,9 @@ export function createEntryFromFacade(group: Group, facade: EntryFacade): Entry 
  * @param facadeFields Array of fields
  * @memberof module:Buttercup
  */
-export function fieldsToProperties(facadeFields: Array<EntryFacadeField>): { [key: string]: string } {
+export function fieldsToProperties(facadeFields: Array<EntryFacadeField>): {
+    [key: string]: string;
+} {
     return facadeFields.reduce((output, field) => {
         if (field.propertyType !== "property") return output;
         output[field.property] = field.value;
@@ -193,14 +214,16 @@ export function fieldsToProperties(facadeFields: Array<EntryFacadeField>): { [ke
 }
 
 export function getEntryFacadePath(entryID: EntryID, facade: VaultFacade): Array<GroupID> {
-    const entry = facade.entries.find(entry => entry.id === entryID);
+    const entry = facade.entries.find((entry) => entry.id === entryID);
     if (!entry) {
         throw new Error(`No entry facade found for ID: ${entryID}`);
     }
     let targetGroupID: GroupID = null;
     const path: Array<GroupID> = [];
     do {
-        targetGroupID = targetGroupID ? facade.groups.find(g => g.id === targetGroupID).parentID : entry.parentID;
+        targetGroupID = targetGroupID
+            ? facade.groups.find((g) => g.id === targetGroupID).parentID
+            : entry.parentID;
         if (targetGroupID && targetGroupID != "0") {
             path.unshift(targetGroupID);
         }
@@ -233,10 +256,11 @@ export function setEntryFacadePropertyValueType(
     valueType: EntryPropertyValueType
 ) {
     const matchingPropertyField = facade.fields.find(
-        field => field.property === propertyName && field.propertyType === EntryPropertyType.Property
+        (field) =>
+            field.property === propertyName && field.propertyType === EntryPropertyType.Property
     );
     const matchingAttributeField = facade.fields.find(
-        field =>
+        (field) =>
             field.property === `${Entry.Attributes.FieldTypePrefix}${propertyName}` &&
             field.propertyType === EntryPropertyType.Attribute
     );

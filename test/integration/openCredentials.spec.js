@@ -1,5 +1,11 @@
 import { expect } from "chai";
-import { Credentials, MemoryDatasource, VaultManager, VaultSource, registerDatasource } from "../../dist/node/index.js";
+import {
+    Credentials,
+    MemoryDatasource,
+    VaultManager,
+    VaultSource,
+    registerDatasource
+} from "../../dist/node/index.js";
 
 class FakeDatasource extends MemoryDatasource {
     constructor(creds) {
@@ -16,9 +22,11 @@ class FakeDatasource extends MemoryDatasource {
     }
 }
 
-describe("VaultSource with custom datasource", function() {
-    beforeEach(async function() {
-        this.datasourceTypeDefault = `fake-datasource-default-${Math.floor(Math.random() * 999999)}`;
+describe("VaultSource with custom datasource", function () {
+    beforeEach(async function () {
+        this.datasourceTypeDefault = `fake-datasource-default-${Math.floor(
+            Math.random() * 999999
+        )}`;
         this.datasourceTypeOpen = `fake-datasource-open-${Math.floor(Math.random() * 999999)}`;
         registerDatasource(this.datasourceTypeDefault, FakeDatasource);
         registerDatasource(this.datasourceTypeOpen, FakeDatasource, {
@@ -42,7 +50,11 @@ describe("VaultSource with custom datasource", function() {
         const credsOpenStr = await credsOpen.toSecureString();
         const credsDefaultStr = await credsDefault.toSecureString();
         this.vaultSourceOpen = new VaultSource("test", this.datasourceTypeOpen, credsOpenStr);
-        this.vaultSourceDefault = new VaultSource("test", this.datasourceTypeDefault, credsDefaultStr);
+        this.vaultSourceDefault = new VaultSource(
+            "test",
+            this.datasourceTypeDefault,
+            credsDefaultStr
+        );
         await this.vaultManager.addSource(this.vaultSourceOpen);
         await this.vaultManager.addSource(this.vaultSourceDefault);
         await this.vaultSourceOpen.unlock(Credentials.fromPassword("test"), {
@@ -53,20 +65,20 @@ describe("VaultSource with custom datasource", function() {
         });
     });
 
-    it("provides open credentials on unlock", function() {
+    it("provides open credentials on unlock", function () {
         const { _datasource: datasource } = this.vaultSourceOpen;
         expect(datasource.initData).to.have.property("masterPassword", "test");
         expect(datasource.initData).to.have.property("open", true);
     });
 
-    it("provides open credentials on load", async function() {
+    it("provides open credentials on load", async function () {
         await this.vaultSourceOpen.localDiffersFromRemote();
         const { _datasource: datasource } = this.vaultSourceOpen;
         expect(datasource.loadData).to.have.property("masterPassword", "test");
         expect(datasource.loadData).to.have.property("open", true);
     });
 
-    it("provides closed credentials by default", function() {
+    it("provides closed credentials by default", function () {
         const { _datasource: datasource } = this.vaultSourceDefault;
         expect(datasource.initData).to.be.null;
     });

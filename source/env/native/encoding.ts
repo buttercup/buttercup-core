@@ -5,7 +5,11 @@
 function decodeBase64(b64: string, raw: boolean = false): string | Uint8Array {
     const buff = Buffer.from(b64, "base64");
     return raw
-        ? new Uint8Array(buff.buffer, buff.byteOffset, buff.byteLength / Uint8Array.BYTES_PER_ELEMENT)
+        ? new Uint8Array(
+              buff.buffer,
+              buff.byteOffset,
+              buff.byteLength / Uint8Array.BYTES_PER_ELEMENT
+          )
         : buff.toString("utf8");
 }
 

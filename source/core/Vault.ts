@@ -141,10 +141,10 @@ export class Vault extends EventEmitter {
     emptyTrash(): this {
         const trash = this.getTrashGroup();
         if (!trash) return;
-        trash.getGroups().forEach(group => {
+        trash.getGroups().forEach((group) => {
             group.delete(/* skip trash */ true);
         });
-        trash.getEntries().forEach(entry => {
+        trash.getEntries().forEach((entry) => {
             entry.delete(/* skip trash */ true);
         });
         return this;
@@ -157,7 +157,7 @@ export class Vault extends EventEmitter {
      * @memberof Vault
      */
     findEntryByID(id: EntryID): null | Entry {
-        return this._entries.find(entry => entry.id === id) || null;
+        return this._entries.find((entry) => entry.id === id) || null;
     }
 
     /**
@@ -178,7 +178,7 @@ export class Vault extends EventEmitter {
      * @memberof Vault
      */
     findGroupByID(id: GroupID): null | Group {
-        return this._groups.find(group => group.id === id) || null;
+        return this._groups.find((group) => group.id === id) || null;
     }
 
     /**
@@ -232,7 +232,7 @@ export class Vault extends EventEmitter {
      * @memberof Vault
      */
     getGroups(): Array<Group> {
-        return this._groups.filter(group => group.getParentGroup() === null);
+        return this._groups.filter((group) => group.getParentGroup() === null);
     }
 
     /**
@@ -242,7 +242,7 @@ export class Vault extends EventEmitter {
      * @memberof Vault
      */
     getTrashGroup(): Group | null {
-        const trashGroup = this.getGroups().find(group => group.isTrash());
+        const trashGroup = this.getGroups().find((group) => group.isTrash());
         return trashGroup || null;
     }
 
@@ -263,15 +263,15 @@ export class Vault extends EventEmitter {
             this._groups = [];
             this._entries = [];
         }
-        this.format.getAllGroups().forEach(rawGroup => {
+        this.format.getAllGroups().forEach((rawGroup) => {
             const id = this.format.getItemID(rawGroup);
-            if (!this._groups.find(g => g.id === id)) {
+            if (!this._groups.find((g) => g.id === id)) {
                 this._groups.push(new Group(this, rawGroup));
             }
         });
-        this.format.getAllEntries().forEach(rawEntry => {
+        this.format.getAllEntries().forEach((rawEntry) => {
             const id = this.format.getItemID(rawEntry);
-            if (!this._entries.find(e => e.id === id)) {
+            if (!this._entries.find((e) => e.id === id)) {
                 this._entries.push(new Entry(this, rawEntry));
             }
         });
@@ -288,10 +288,10 @@ export class Vault extends EventEmitter {
             this._format.removeAllListeners();
         }
         this._format = format;
-        this._groups.forEach(group => {
+        this._groups.forEach((group) => {
             group._updateRefs();
         });
-        this._entries.forEach(entry => {
+        this._entries.forEach((entry) => {
             entry._updateRefs();
         });
         this._rebuild();

@@ -48,7 +48,9 @@ function __getProperty(propertyName: string, options: AppEnvGetPropertyOptions =
         return self.properties[propertyName];
     }
     if (failIfNotExist) {
-        throw new Error(`Unable to get application environment property: '${propertyName}' does not exist`);
+        throw new Error(
+            `Unable to get application environment property: '${propertyName}' does not exist`
+        );
     }
     return defaultValue;
 }
@@ -90,7 +92,9 @@ function __setProperties(propertyList: { [key: string]: any }) {
 function __setProperty(propertyName, propertyValue) {
     const self = this as InternalPrivateAPI;
     if (typeof self.properties[propertyName] !== "undefined") {
-        throw new Error(`Unable to set application environment property: '${propertyName}' already exists`);
+        throw new Error(
+            `Unable to set application environment property: '${propertyName}' already exists`
+        );
     }
     assignObjImmutableProp(self.properties, propertyName, propertyValue);
 }

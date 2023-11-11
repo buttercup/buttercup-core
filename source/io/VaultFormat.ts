@@ -112,7 +112,7 @@ export class VaultFormat extends EventEmitter {
     }
 
     erase() {
-        Object.keys(this.source).forEach(sourceKey => {
+        Object.keys(this.source).forEach((sourceKey) => {
             this.source[sourceKey] = undefined;
             delete this.source[sourceKey];
         });
@@ -191,12 +191,16 @@ export class VaultFormat extends EventEmitter {
         return [];
     }
 
-    getItemID(itemSource: FormatAGroup | FormatAEntry | FormatBGroup | FormatBEntry): GroupID | EntryID {
+    getItemID(
+        itemSource: FormatAGroup | FormatAEntry | FormatBGroup | FormatBEntry
+    ): GroupID | EntryID {
         notImplemented();
         return "";
     }
 
-    getItemParentID(itemSource: FormatAGroup | FormatAEntry | FormatBGroup | FormatBEntry): GroupID | "0" {
+    getItemParentID(
+        itemSource: FormatAGroup | FormatAEntry | FormatBGroup | FormatBEntry
+    ): GroupID | "0" {
         notImplemented();
         return "";
     }

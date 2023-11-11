@@ -20,14 +20,19 @@ const SAVE_EVERY = 20;
 
 function getAllChildEntryIDs(group) {
     return [
-        ...group.getEntries().map(entry => entry.id),
-        ...group.getGroups().reduce((output, group) => [...output, ...getAllChildEntryIDs(group)], [])
+        ...group.getEntries().map((entry) => entry.id),
+        ...group
+            .getGroups()
+            .reduce((output, group) => [...output, ...getAllChildEntryIDs(group)], [])
     ];
 }
 
 function getAllChildGroupIDs(group) {
     const groups = group.getGroups();
-    return [...groups.map(g => g.id), ...groups.reduce((output, g) => [...output, ...getAllChildGroupIDs(g)], [])];
+    return [
+        ...groups.map((g) => g.id),
+        ...groups.reduce((output, g) => [...output, ...getAllChildGroupIDs(g)], [])
+    ];
 }
 
 function getAllChildIDs(group) {
@@ -37,15 +42,15 @@ function getAllChildIDs(group) {
     };
 }
 
-describe("consistency", function() {
-    beforeEach(async function() {
+describe("consistency", function () {
+    beforeEach(async function () {
         // Server
         this.dir = dirSync().name;
         this.server = createServer(this.dir, "basic");
         await this.server.start();
     });
 
-    afterEach(async function() {
+    afterEach(async function () {
         await this.server.stop();
     });
 
@@ -53,8 +58,8 @@ describe("consistency", function() {
         ["Format A", VaultFormatA],
         ["Format B", VaultFormatB]
     ].forEach(([name, Format]) => {
-        describe(`using: ${name}`, function() {
-            beforeEach(async function() {
+        describe(`using: ${name}`, function () {
+            beforeEach(async function () {
                 setDefaultFormat(Format);
                 this.vaultManager = new VaultManager({
                     autoUpdate: false
@@ -96,16 +101,18 @@ describe("consistency", function() {
                 await this.vaultSource.save();
             });
 
-            afterEach(function() {
+            afterEach(function () {
                 setDefaultFormat();
             });
 
-            it("remains in-tact over many changes", async function() {
+            it("remains in-tact over many changes", async function () {
                 const trashGroup = this.vaultSource.vault.getTrashGroup();
                 const getRandomEntry = () => {
                     const { entries: allTrashEntries } = getAllChildIDs(trashGroup);
                     const entryIDs = Object.keys(this.entries).filter(
-                        entryID => this.entryGroup[entryID] !== null && allTrashEntries.includes(entryID) === false
+                        (entryID) =>
+                            this.entryGroup[entryID] !== null &&
+                            allTrashEntries.includes(entryID) === false
                     );
                     const entryID = entryIDs[Math.floor(Math.random() * entryIDs.length)];
                     return this.entries[entryID];
@@ -113,7 +120,9 @@ describe("consistency", function() {
                 const getRandomGroup = () => {
                     const { groups: allTrashGroups } = getAllChildIDs(trashGroup);
                     const groupIDs = Object.keys(this.groups).filter(
-                        groupID => this.groupGroup[groupID] !== null && allTrashGroups.includes(groupID) === false
+                        (groupID) =>
+                            this.groupGroup[groupID] !== null &&
+                            allTrashGroups.includes(groupID) === false
                     );
                     const groupID = groupIDs[Math.floor(Math.random() * groupIDs.length)];
                     return this.groups[groupID];
@@ -128,14 +137,21 @@ describe("consistency", function() {
                             // Set property
                             const entry = getRandomEntry();
                             const properties = Object.keys(entry.getProperties());
-                            const property = properties[Math.floor(Math.random() * properties.length)];
-                            entry.setProperty(property, `new value: ${Math.random()} ${Date.now()}`);
+                            const property =
+                                properties[Math.floor(Math.random() * properties.length)];
+                            entry.setProperty(
+                                property,
+                                `new value: ${Math.random()} ${Date.now()}`
+                            );
                             break;
                         }
                         case 1: {
                             // Add property
                             const entry = getRandomEntry();
-                            entry.setProperty(`prop${Date.now()}`, `first value: ${Math.random()} ${Date.now()}`);
+                            entry.setProperty(
+                                `prop${Date.now()}`,
+                                `first value: ${Math.random()} ${Date.now()}`
+                            );
                             break;
                         }
                         case 2: {
@@ -191,7 +207,8 @@ describe("consistency", function() {
                         await this.vaultSource.save();
                     }
                 }
-                const { entries: currentTrashEntries, groups: currentTrashGroups } = getAllChildIDs(trashGroup);
+                const { entries: currentTrashEntries, groups: currentTrashGroups } =
+                    getAllChildIDs(trashGroup);
                 for (const entryID in this.entries) {
                     const status = this.entryGroup[entryID];
                     if (status === null) {
@@ -201,7 +218,7 @@ describe("consistency", function() {
                     } else {
                         const targetGroup = this.vaultSource.vault.findGroupByID(status);
                         expect(targetGroup.findEntryByID(entryID)).to.satisfy(
-                            e => e && e.id === entryID,
+                            (e) => e && e.id === entryID,
                             "Group should contain entry"
                         );
                     }
@@ -214,12 +231,12 @@ describe("consistency", function() {
                         expect(currentTrashGroups).to.contain(groupID);
                     } else if (status === "0") {
                         const rootGroups = this.vaultSource.vault.getGroups();
-                        const target = rootGroups.find(rg => rg.id === groupID);
+                        const target = rootGroups.find((rg) => rg.id === groupID);
                         expect(target).to.be.an.instanceOf(Group);
                     } else {
                         const targetGroup = this.vaultSource.vault.findGroupByID(status);
                         expect(targetGroup.findGroupByID(groupID)).to.satisfy(
-                            g => g && g.id === groupID,
+                            (g) => g && g.id === groupID,
                             "Group should contain group"
                         );
                     }

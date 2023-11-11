@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { Credentials } from "../../../dist/node/index.js";
 
-describe("credentials/Credentials", function() {
-    beforeEach(function() {
+describe("credentials/Credentials", function () {
+    beforeEach(function () {
         setClosedEnv(true);
         this.credentials = new Credentials(
             {
@@ -14,12 +14,12 @@ describe("credentials/Credentials", function() {
         );
     });
 
-    afterEach(function() {
+    afterEach(function () {
         setClosedEnv(false);
     });
 
-    describe("getCredentialsData", function() {
-        it("returns stored data", function() {
+    describe("getCredentialsData", function () {
+        it("returns stored data", function () {
             const data = this.credentials.getCredentialsData();
             expect(data).to.deep.equal({
                 datasource: {
@@ -29,8 +29,8 @@ describe("credentials/Credentials", function() {
         });
     });
 
-    describe("setCredentialsData", function() {
-        it("updates stored data", function() {
+    describe("setCredentialsData", function () {
+        it("updates stored data", function () {
             this.credentials.setCredentialsData({
                 datasource: {
                     type: "file"

@@ -40,7 +40,7 @@ export function credentialsToDatasource(credentials: Credentials): TextDatasourc
  * @private
  */
 export function fireInstantiationHandlers(type: string, datasource: TextDatasource) {
-    __postHandlers.forEach(handler => {
+    __postHandlers.forEach((handler) => {
         try {
             handler(type, datasource);
         } catch (err) {
@@ -56,7 +56,10 @@ export function fireInstantiationHandlers(type: string, datasource: TextDatasour
  * @param credentials
  * @private
  */
-export function prepareDatasourceCredentials(credentials: Credentials, typeOverride: string = null): Credentials {
+export function prepareDatasourceCredentials(
+    credentials: Credentials,
+    typeOverride: string = null
+): Credentials {
     const {
         data: { datasource },
         masterPassword
@@ -98,7 +101,9 @@ interface DatasourcePostProcessorHandler {
  * @returns The result of the registration
  * @private
  */
-export function registerDatasourcePostProcessor(callback: Function): DatasourcePostProcessorHandler {
+export function registerDatasourcePostProcessor(
+    callback: Function
+): DatasourcePostProcessorHandler {
     __postHandlers.push(callback);
     return {
         remove: () => {

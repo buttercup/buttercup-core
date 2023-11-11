@@ -8,7 +8,10 @@ import { Entry } from "../core/Entry.js";
  *  to strip
  * @returns An array of found entries
  */
-export function findEntriesByCheck(groups: Array<Group>, compareFn: (entry: Entry) => boolean): Array<Entry> {
+export function findEntriesByCheck(
+    groups: Array<Group>,
+    compareFn: (entry: Entry) => boolean
+): Array<Entry> {
     let foundEntries = [],
         newEntries;
     groups.forEach((group: Group) => {
@@ -30,7 +33,10 @@ export function findEntriesByCheck(groups: Array<Group>, compareFn: (entry: Entr
  * @param compareFn A comparision function - return true to keep, false to strip
  * @returns An array of found groups
  */
-export function findGroupsByCheck(groups: Array<Group>, compareFn: (group: Group) => boolean): Array<Group> {
+export function findGroupsByCheck(
+    groups: Array<Group>,
+    compareFn: (group: Group) => boolean
+): Array<Group> {
     let foundGroups = groups.filter(compareFn);
     groups.forEach((group: Group) => {
         const subFound = findGroupsByCheck(group.getGroups(), compareFn);

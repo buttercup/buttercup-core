@@ -1,6 +1,11 @@
 import { createFieldDescriptor } from "./tools.js";
 import { Entry } from "../core/Entry.js";
-import { EntryFacadeField, EntryPropertyType, EntryPropertyValueType, EntryType } from "../types.js";
+import {
+    EntryFacadeField,
+    EntryPropertyType,
+    EntryPropertyValueType,
+    EntryType
+} from "../types.js";
 
 const DIGIT = "\\d";
 
@@ -102,7 +107,10 @@ function createSSHKeyFields(entry: Entry): Array<EntryFacadeField> {
 }
 
 function createWebsiteFields(entry: Entry): Array<EntryFacadeField> {
-    return [...createLoginFields(entry), createFieldDescriptor(entry, "URL", EntryPropertyType.Property, "url")];
+    return [
+        ...createLoginFields(entry),
+        createFieldDescriptor(entry, "URL", EntryPropertyType.Property, "url")
+    ];
 }
 
 export default {

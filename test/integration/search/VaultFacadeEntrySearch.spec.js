@@ -7,8 +7,8 @@ import {
     createVaultFacade
 } from "../../../dist/node/index.js";
 
-describe("VaultFacadeEntrySearch", function() {
-    beforeEach(function() {
+describe("VaultFacadeEntrySearch", function () {
+    beforeEach(function () {
         const vault = (this.vault = new Vault());
         const groupA = vault.createGroup("Email");
         groupA
@@ -56,41 +56,41 @@ describe("VaultFacadeEntrySearch", function() {
         trashGroup.setAttribute(Group.Attribute.Role, "trash");
     });
 
-    it("can be instantiated", function() {
+    it("can be instantiated", function () {
         expect(() => {
             new VaultFacadeEntrySearch([createVaultFacade(this.vault)]);
         }).to.not.throw();
     });
 
-    describe("instance", function() {
-        beforeEach(function() {
+    describe("instance", function () {
+        beforeEach(function () {
             this.storage = new MemoryStorageInterface();
             this.search = new VaultFacadeEntrySearch([createVaultFacade(this.vault)], this.storage);
             return this.search.prepare();
         });
 
-        describe("searchByTerm", function() {
-            it("finds results by term", function() {
-                const results = this.search.searchByTerm("work").map(res => res.properties.title);
+        describe("searchByTerm", function () {
+            it("finds results by term", function () {
+                const results = this.search.searchByTerm("work").map((res) => res.properties.title);
                 expect(results[0]).to.equal("Work");
                 expect(results[1]).to.equal("Work logs");
                 expect(results[2]).to.equal("Wordpress");
             });
 
-            it.skip("excludes trash entries", function() {
+            it.skip("excludes trash entries", function () {
                 const results = this.search.searchByTerm("ebay");
                 expect(results).to.have.lengthOf(0);
             });
         });
 
-        describe("searchByURL", function() {
-            it("finds results by URL", function() {
+        describe("searchByURL", function () {
+            it("finds results by URL", function () {
                 const results = this.search.searchByURL("https://wordpress.com/homepage/test/org");
                 expect(results).to.have.length.above(0);
                 expect(results[0]).to.have.nested.property("properties.title", "Wordpress");
             });
 
-            it.skip("excludes trash entries", function() {
+            it.skip("excludes trash entries", function () {
                 const results = this.search.searchByURL("ebay.com");
                 expect(results).to.have.lengthOf(0);
             });

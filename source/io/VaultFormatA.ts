@@ -31,7 +31,13 @@ import {
     getAllGroups
 } from "./formatA/tools.js";
 import { Flattener } from "./formatA/Flattener.js";
-import { getFormat, hasValidSignature, sign, stripSignature, vaultContentsEncrypted } from "./formatA/signing.js";
+import {
+    getFormat,
+    hasValidSignature,
+    sign,
+    stripSignature,
+    vaultContentsEncrypted
+} from "./formatA/signing.js";
 import { describeVaultDataset } from "./formatA/describe.js";
 import VaultComparator from "./formatA/VaultComparator.js";
 import { getSharedAppEnv } from "../env/appEnv.js";
@@ -96,8 +102,8 @@ export class VaultFormatA extends VaultFormat {
         const { masterPassword } = getCredentials(credentials.id);
         return Promise.resolve()
             .then(() => historyArrayToString(rawContent))
-            .then(history => compress(history))
-            .then(compressed => encrypt(compressed, masterPassword))
+            .then((history) => compress(history))
+            .then((compressed) => encrypt(compressed, masterPassword))
             .then(sign);
     }
 
@@ -132,7 +138,11 @@ export class VaultFormatA extends VaultFormat {
 
     static historiesDiffer(historyA: History, historyB: History): boolean {
         const differences = VaultComparator.calculateHistoryDifferences(historyA, historyB);
-        return differences === null || differences.original.length > 0 || differences.secondary.length > 0;
+        return (
+            differences === null ||
+            differences.original.length > 0 ||
+            differences.secondary.length > 0
+        );
     }
 
     static isEncrypted(contents: string): boolean {
@@ -150,8 +160,8 @@ export class VaultFormatA extends VaultFormat {
                 }
                 return stripSignature(encryptedContent);
             })
-            .then(encryptedData => decrypt(encryptedData, masterPassword))
-            .then(decrypted => {
+            .then((encryptedData) => decrypt(encryptedData, masterPassword))
+            .then((decrypted) => {
                 if (decrypted && decrypted.length > 0) {
                     const decompressed = decompress(decrypted);
                     if (decompressed) {
@@ -169,7 +179,10 @@ export class VaultFormatA extends VaultFormat {
         }
         // Do a full merge to ensure the differences are merged, if any
         const { original: newHistoryBase, secondary: newHistoryIncoming, common } = differences;
-        const inlineHistory = [...common, ...smartStripRemovedAssets([...newHistoryBase, ...newHistoryIncoming])];
+        const inlineHistory = [
+            ...common,
+            ...smartStripRemovedAssets([...newHistoryBase, ...newHistoryIncoming])
+        ];
         // Prepare vault target
         const newVault = new Vault(VaultFormatA);
         newVault.format.erase();
@@ -215,9 +228,7 @@ export class VaultFormatA extends VaultFormat {
 
     deleteEntry(entryID: EntryID) {
         this.execute(
-            Inigo.create(Inigo.Command.DeleteEntry)
-                .addArgument(entryID)
-                .generateCommand()
+            Inigo.create(Inigo.Command.DeleteEntry).addArgument(entryID).generateCommand()
         );
     }
 
@@ -241,9 +252,7 @@ export class VaultFormatA extends VaultFormat {
 
     deleteGroup(groupID: GroupID) {
         this.execute(
-            Inigo.create(Inigo.Command.DeleteGroup)
-                .addArgument(groupID)
-                .generateCommand()
+            Inigo.create(Inigo.Command.DeleteGroup).addArgument(groupID).generateCommand()
         );
     }
 
@@ -275,7 +284,7 @@ export class VaultFormatA extends VaultFormat {
             throw new Error("Format is in read-only mode");
         }
         const commands = Array.isArray(commandOrCommands) ? commandOrCommands : [commandOrCommands];
-        commands.forEach(command => this._executeCommand(command));
+        commands.forEach((command) => this._executeCommand(command));
         const lastCommand = commands[commands.length - 1];
         if (/^pad\s/i.test(lastCommand) === false) {
             this._pad();
@@ -285,17 +294,17 @@ export class VaultFormatA extends VaultFormat {
     }
 
     findEntryByID(id: EntryID): FormatAEntry {
-        return this.getAllEntries().find(entry => entry.id === id) || null;
+        return this.getAllEntries().find((entry) => entry.id === id) || null;
     }
 
     findGroupByID(id: GroupID): FormatAGroup {
-        return this.getAllGroups().find(group => group.id === id) || null;
+        return this.getAllGroups().find((group) => group.id === id) || null;
     }
 
     findGroupContainingEntryID(id: EntryID): FormatAGroup {
-        const matchingEntry = this.getAllEntries().find(entry => entry.id === id);
+        const matchingEntry = this.getAllEntries().find((entry) => entry.id === id);
         if (matchingEntry) {
-            return this.getAllGroups().find(group => group.id === matchingEntry.parentID) || null;
+            return this.getAllGroups().find((group) => group.id === matchingEntry.parentID) || null;
         }
         return null;
     }
@@ -305,7 +314,7 @@ export class VaultFormatA extends VaultFormat {
             for (const group of groups) {
                 if (group.id === id) return null;
                 const children = group.groups || [];
-                const childMatch = !!children.find(child => child.id === id);
+                const childMatch = !!children.find((child) => child.id === id);
                 if (childMatch) return group;
                 const deepGroup = searchGroups(children);
                 if (deepGroup) return deepGroup;
@@ -317,9 +326,7 @@ export class VaultFormatA extends VaultFormat {
 
     generateID() {
         this.execute(
-            Inigo.create(Inigo.Command.ArchiveID)
-                .addArgument(generateUUID())
-                .generateCommand()
+            Inigo.create(Inigo.Command.ArchiveID).addArgument(generateUUID()).generateCommand()
         );
     }
 
@@ -337,8 +344,8 @@ export class VaultFormatA extends VaultFormat {
 
     getEntryChanges(entrySource: FormatAEntry): Array<EntryChange> {
         return (entrySource.history || [])
-            .filter(item => item.propertyType === EntryPropertyType.Property)
-            .map(item => {
+            .filter((item) => item.propertyType === EntryPropertyType.Property)
+            .map((item) => {
                 const type = !item.originalValue
                     ? EntryChangeType.Created
                     : typeof item.newValue === "string"
@@ -399,9 +406,7 @@ export class VaultFormatA extends VaultFormat {
         const hasFormatted = typeof this.source.format === "string";
         if (!hasFormatted) {
             this.execute(
-                Inigo.create(Inigo.Command.Format)
-                    .addArgument(getFormat())
-                    .generateCommand()
+                Inigo.create(Inigo.Command.Format).addArgument(getFormat()).generateCommand()
             );
         }
         if (!this.source.id) {
@@ -487,7 +492,10 @@ export class VaultFormatA extends VaultFormat {
         let currentCommand = command,
             shareID = null;
         if (SHARE_COMMAND_EXP.test(currentCommand)) {
-            const shareMatch = /^\$([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/.exec(currentCommand);
+            const shareMatch =
+                /^\$([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/.exec(
+                    currentCommand
+                );
             shareID = shareMatch[1];
             currentCommand = currentCommand.replace(SHARE_COMMAND_EXP, "");
         }
@@ -521,12 +529,14 @@ export class VaultFormatA extends VaultFormat {
     }
 
     _processCommandParameters(commandKey: string, parameters: Array<string>) {
-        const friendlyCommand = Object.keys(COMMAND_MANIFEST).find(manifestKey => {
+        const friendlyCommand = Object.keys(COMMAND_MANIFEST).find((manifestKey) => {
             return COMMAND_MANIFEST[manifestKey].s === commandKey;
         });
         const commandDescriptor = COMMAND_MANIFEST[friendlyCommand];
         if (!commandDescriptor) {
-            throw new Error(`Cannot process command parameters: no command found for key: ${commandKey}`);
+            throw new Error(
+                `Cannot process command parameters: no command found for key: ${commandKey}`
+            );
         }
         return parameters.map((parameter, i) => {
             if (commandDescriptor.args[i].encode === true) {

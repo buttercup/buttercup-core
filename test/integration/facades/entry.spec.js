@@ -11,13 +11,13 @@ import {
     setEntryPropertyValueType
 } from "../../../dist/node/index.js";
 
-describe("Entry facades", function() {
+describe("Entry facades", function () {
     [
         [VaultFormatA, "A"],
         [VaultFormatB, "B"]
     ].forEach(([Format, formatName]) => {
-        describe(`Format: ${formatName}`, function() {
-            beforeEach(function() {
+        describe(`Format: ${formatName}`, function () {
+            beforeEach(function () {
                 this.vault = new Vault(Format);
                 this.group = this.vault.createGroup("group");
                 this.entry = this.group
@@ -30,10 +30,16 @@ describe("Entry facades", function() {
                 this.entryFacade = createEntryFacade(this.entry);
             });
 
-            it("sets the correct value type when changing via property field", function() {
-                setEntryFacadePropertyValueType(this.entryFacade, "password", EntryPropertyValueType.Note);
+            it("sets the correct value type when changing via property field", function () {
+                setEntryFacadePropertyValueType(
+                    this.entryFacade,
+                    "password",
+                    EntryPropertyValueType.Note
+                );
                 consumeEntryFacade(this.entry, this.entryFacade);
-                expect(getEntryPropertyValueType(this.entry, "password")).to.equal(EntryPropertyValueType.Note);
+                expect(getEntryPropertyValueType(this.entry, "password")).to.equal(
+                    EntryPropertyValueType.Note
+                );
             });
         });
     });

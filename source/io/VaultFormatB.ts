@@ -5,7 +5,12 @@ import { getSharedAppEnv } from "../env/appEnv.js";
 import { getCredentials } from "../credentials/channel.js";
 import { Credentials } from "../credentials/Credentials.js";
 import { historyArrayToString, historyStringToArray } from "./common.js";
-import { hasValidSignature, sign, stripSignature, vaultContentsEncrypted } from "./formatB/signing.js";
+import {
+    hasValidSignature,
+    sign,
+    stripSignature,
+    vaultContentsEncrypted
+} from "./formatB/signing.js";
 import { historiesDiffer } from "./formatB/compare.js";
 import { mergeRawVaults } from "./formatB/merge.js";
 import { valuesObjectToKeyValueObject } from "./formatB/conversion.js";
@@ -49,8 +54,8 @@ export class VaultFormatB extends VaultFormat {
         const { masterPassword } = getCredentials(credentials.id);
         return Promise.resolve()
             .then(() => historyArrayToString(rawContent))
-            .then(history => compress(history))
-            .then(compressed => encrypt(compressed, masterPassword))
+            .then((history) => compress(history))
+            .then((compressed) => encrypt(compressed, masterPassword))
             .then(sign);
     }
 
@@ -81,8 +86,8 @@ export class VaultFormatB extends VaultFormat {
                 }
                 return stripSignature(encryptedContent);
             })
-            .then(encryptedData => decrypt(encryptedData, masterPassword))
-            .then(async decrypted => {
+            .then((encryptedData) => decrypt(encryptedData, masterPassword))
+            .then(async (decrypted) => {
                 const decompressed = await decompress(decrypted);
                 return historyStringToArray(decompressed, VaultFormatID.B);
             });
@@ -112,15 +117,15 @@ export class VaultFormatB extends VaultFormat {
         this.source.g.push(newGroup);
         // clone entries
         const childEntries = this.source.e
-            .filter(entry => entry.g === group.id)
-            .map(entry => {
+            .filter((entry) => entry.g === group.id)
+            .map((entry) => {
                 const newEntry = JSON.parse(JSON.stringify(entry));
                 newEntry.g = newGroup.id;
                 return newEntry;
             });
         this.source.e.push(...childEntries);
         // clone groups
-        this.source.g.forEach(childGroup => {
+        this.source.g.forEach((childGroup) => {
             if (childGroup.g === group.id) {
                 this.cloneGroup(childGroup, newGroup.id);
             }
@@ -148,7 +153,7 @@ export class VaultFormatB extends VaultFormat {
     }
 
     deleteEntry(entryID: EntryID) {
-        const ind = this.source.e.findIndex(entry => entry.id === entryID);
+        const ind = this.source.e.findIndex((entry) => entry.id === entryID);
         if (ind >= 0) {
             this.source.e.splice(ind, 1);
             this.source.del.e[entryID] = Date.now();
@@ -162,13 +167,13 @@ export class VaultFormatB extends VaultFormat {
     }
 
     deleteEntryProperty(entryID: EntryID, property: string) {
-        const entry = this.source.e.find(e => e.id === entryID);
+        const entry = this.source.e.find((e) => e.id === entryID);
         if (!entry.p[property]) return;
         entry.p[property].deleted = getTimestamp();
     }
 
     deleteGroup(groupID: GroupID) {
-        const ind = this.source.g.findIndex(group => group.id === groupID);
+        const ind = this.source.g.findIndex((group) => group.id === groupID);
         if (ind >= 0) {
             this.source.g.splice(ind, 1);
             this.source.del.g[groupID] = Date.now();
@@ -176,7 +181,7 @@ export class VaultFormatB extends VaultFormat {
     }
 
     deleteGroupAttribute(groupID: GroupID, attribute: string) {
-        const group = this.source.g.find(g => g.id === groupID);
+        const group = this.source.g.find((g) => g.id === groupID);
         if (!group.a[attribute]) return;
         group.a[attribute].deleted = getTimestamp();
     }
@@ -210,26 +215,26 @@ export class VaultFormatB extends VaultFormat {
     }
 
     findEntryByID(id: EntryID): FormatBEntry {
-        return this.source.e.find(entry => entry.id === id) || null;
+        return this.source.e.find((entry) => entry.id === id) || null;
     }
 
     findGroupByID(id: GroupID): FormatBGroup {
-        return this.source.g.find(group => group.id === id) || null;
+        return this.source.g.find((group) => group.id === id) || null;
     }
 
     findGroupContainingEntryID(id: EntryID): FormatBGroup {
-        const matchingEntry = this.getAllEntries().find(entry => entry.id === id);
+        const matchingEntry = this.getAllEntries().find((entry) => entry.id === id);
         if (matchingEntry) {
-            return this.getAllGroups().find(group => group.id === matchingEntry.g) || null;
+            return this.getAllGroups().find((group) => group.id === matchingEntry.g) || null;
         }
         return null;
     }
 
     findGroupContainingGroupID(id: GroupID): FormatBGroup {
         const groups = this.getAllGroups();
-        const matchingGroup = groups.find(group => group.id === id);
+        const matchingGroup = groups.find((group) => group.id === id);
         if (!matchingGroup) return null;
-        return groups.find(group => group.id === matchingGroup.g) || null;
+        return groups.find((group) => group.id === matchingGroup.g) || null;
     }
 
     generateID() {
@@ -238,12 +243,12 @@ export class VaultFormatB extends VaultFormat {
 
     getAllEntries(parentID: GroupID = null): Array<FormatBEntry> {
         const source = this.source as FormatBVault;
-        return parentID === null ? source.e : source.e.filter(entry => entry.g === parentID);
+        return parentID === null ? source.e : source.e.filter((entry) => entry.g === parentID);
     }
 
     getAllGroups(parentID: GroupID = null): Array<FormatBGroup> {
         const source = this.source as FormatBVault;
-        return parentID === null ? source.g : source.g.filter(group => group.g === parentID);
+        return parentID === null ? source.g : source.g.filter((group) => group.g === parentID);
     }
 
     getEntryAttributes(entrySource: FormatBEntry): PropertyKeyValueObject {
@@ -354,7 +359,7 @@ export class VaultFormatB extends VaultFormat {
         {
             // Groups
             const groups = this.getAllGroups();
-            const groupIDs = ["0", ...groups.map(g => g.id)];
+            const groupIDs = ["0", ...groups.map((g) => g.id)];
             for (const group of groups) {
                 if (groupIDs.includes(group.g) === false) {
                     // Re-attach orphaned group
@@ -366,7 +371,7 @@ export class VaultFormatB extends VaultFormat {
         {
             // Entries
             const groups = this.getAllGroups();
-            const groupIDs = ["0", ...groups.map(g => g.id)];
+            const groupIDs = ["0", ...groups.map((g) => g.id)];
             const entries = this.getAllEntries();
             for (const entry of entries) {
                 if (groupIDs.includes(entry.g) === false) {
@@ -391,7 +396,7 @@ export class VaultFormatB extends VaultFormat {
     }
 
     prepareOrphansGroup(): FormatBGroup {
-        let orphansGroup = this.getAllGroups().find(g => g.t === ORPHANS_GROUP_TITLE);
+        let orphansGroup = this.getAllGroups().find((g) => g.t === ORPHANS_GROUP_TITLE);
         if (!orphansGroup) {
             const id = generateUUID();
             this.createGroup("0", id);

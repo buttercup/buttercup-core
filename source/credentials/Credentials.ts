@@ -40,7 +40,9 @@ function unsignEncryptedContent(content: string): string {
     if (newIndex === -1 && oldIndex === -1) {
         throw new Error("Invalid credentials content (unknown signature)");
     }
-    return newIndex === 0 ? content.substr(SIGNING_KEY.length) : content.substr(LEGACY_SIGNING_KEY.length);
+    return newIndex === 0
+        ? content.substr(SIGNING_KEY.length)
+        : content.substr(LEGACY_SIGNING_KEY.length);
 }
 
 /**
@@ -98,7 +100,10 @@ export class Credentials {
      * @param masterPassword Optional master password to
      *  store alongside the credentials. Used to create secure strings.
      */
-    static fromDatasource(datasourceConfig: DatasourceConfiguration, masterPassword: string = null): Credentials {
+    static fromDatasource(
+        datasourceConfig: DatasourceConfiguration,
+        masterPassword: string = null
+    ): Credentials {
         return new Credentials(
             {
                 datasource: datasourceConfig
@@ -159,7 +164,12 @@ export class Credentials {
      * @param inst The value to check
      */
     static isCredentials(inst: Credentials | any): boolean {
-        return !!inst && typeof inst === "object" && typeof inst.toSecureString === "function" && !!inst.id;
+        return (
+            !!inst &&
+            typeof inst === "object" &&
+            typeof inst.toSecureString === "function" &&
+            !!inst.id
+        );
     }
 
     id: string;
@@ -231,7 +241,7 @@ export class Credentials {
         const creds = getCredentials(this.id);
         const { purposes } = creds;
         // Filter out purposes which have already been restricted
-        const finalPurposes = allowedPurposes.filter(newPurpose => purposes.includes(newPurpose));
+        const finalPurposes = allowedPurposes.filter((newPurpose) => purposes.includes(newPurpose));
         setCredentials(
             this.id,
             Object.assign(creds, {
@@ -271,7 +281,9 @@ export class Credentials {
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
         const { data, masterPassword } = getCredentials(this.id);
         if (typeof masterPassword !== "string") {
-            throw new Error("Cannot convert Credentials to string: master password was not set or is invalid");
+            throw new Error(
+                "Cannot convert Credentials to string: master password was not set or is invalid"
+            );
         }
         return encrypt(JSON.stringify(data), masterPassword).then(signEncryptedContent);
     }

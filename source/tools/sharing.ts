@@ -18,7 +18,10 @@ export function mergeHistories(initial, incoming) {
 export function moveGroupBetweenVaults(movingGroup: Group, targetGroup: Group | Vault) {
     // Clone
     const targetVault = targetGroup instanceof Vault ? (targetGroup as Vault) : targetGroup.vault;
-    targetVault.format.cloneGroup(movingGroup._source, targetGroup instanceof Vault ? "0" : targetGroup.id);
+    targetVault.format.cloneGroup(
+        movingGroup._source,
+        targetGroup instanceof Vault ? "0" : targetGroup.id
+    );
     // Delete original
     movingGroup.delete(/* skip trash */ true);
 }
@@ -29,7 +32,7 @@ export function moveGroupBetweenVaults(movingGroup: Group, targetGroup: Group | 
  * @returns Prefixed history lines
  */
 export function prependSharePrefix(history: History, shareID: string): History {
-    return history.map(line => (SHARE_COMMAND_EXP.test(line) ? line : `$${shareID} ${line}`));
+    return history.map((line) => (SHARE_COMMAND_EXP.test(line) ? line : `$${shareID} ${line}`));
 }
 
 /**
@@ -38,5 +41,7 @@ export function prependSharePrefix(history: History, shareID: string): History {
  * @returns Non-prefixed history lines
  */
 export function removeSharePrefix(history: History): History {
-    return history.map(line => (SHARE_COMMAND_EXP.test(line) ? line.replace(SHARE_COMMAND_EXP, "") : line));
+    return history.map((line) =>
+        SHARE_COMMAND_EXP.test(line) ? line.replace(SHARE_COMMAND_EXP, "") : line
+    );
 }

@@ -3,7 +3,13 @@ import { generateUUID } from "../tools/uuid.js";
 import { getEntryURLs, EntryURLType } from "../tools/entry.js";
 import { Group } from "./Group.js";
 import { Vault } from "./Vault.js";
-import { EntryChange, EntryPropertyValueType, EntryType, GroupID, PropertyKeyValueObject } from "../types.js";
+import {
+    EntryChange,
+    EntryPropertyValueType,
+    EntryType,
+    GroupID,
+    PropertyKeyValueObject
+} from "../types.js";
 
 /**
  * Entry class - some secret item, login or perhaps
@@ -54,7 +60,8 @@ export class Entry extends VaultItem {
     delete(skipTrash: boolean = false): boolean {
         const trashGroup = this.vault.getTrashGroup();
         const parentGroup = this.getGroup();
-        const canTrash = trashGroup && parentGroup && !parentGroup.isTrash() && !parentGroup.isInTrash();
+        const canTrash =
+            trashGroup && parentGroup && !parentGroup.isTrash() && !parentGroup.isInTrash();
         if (canTrash && !skipTrash) {
             // trash it
             this.moveToGroup(trashGroup);
@@ -128,7 +135,7 @@ export class Entry extends VaultItem {
             throw new Error(`No parent group found for entry: ${this.id}`);
         }
         const parentID = this.vault.format.getItemID(parentGroup);
-        return this.vault._groups.find(group => group.id === parentID);
+        return this.vault._groups.find((group) => group.id === parentID);
     }
 
     /**
@@ -153,7 +160,9 @@ export class Entry extends VaultItem {
      * @returns The property value type
      */
     getPropertyValueType(property: string): EntryPropertyValueType {
-        const attr = this.getAttribute(`${Entry.Attributes.FieldTypePrefix}${property}`) as EntryPropertyValueType;
+        const attr = this.getAttribute(
+            `${Entry.Attributes.FieldTypePrefix}${property}`
+        ) as EntryPropertyValueType;
         return attr || EntryPropertyValueType.Text;
     }
 
@@ -173,7 +182,9 @@ export class Entry extends VaultItem {
         }
         const isRexp = propertyExpression instanceof RegExp;
         return Object.keys(raw).reduce((aggr, key) => {
-            const matches = isRexp ? (<RegExp>propertyExpression).test(key) : propertyExpression === key;
+            const matches = isRexp
+                ? (<RegExp>propertyExpression).test(key)
+                : propertyExpression === key;
             return matches ? Object.assign(aggr, { [key]: raw[key] }) : aggr;
         }, {});
     }
@@ -183,7 +194,9 @@ export class Entry extends VaultItem {
      * @returns
      */
     getType(): EntryType {
-        return <EntryType | undefined>this.getAttribute(Entry.Attributes.FacadeType) || EntryType.Login;
+        return (
+            <EntryType | undefined>this.getAttribute(Entry.Attributes.FacadeType) || EntryType.Login
+        );
     }
 
     /**

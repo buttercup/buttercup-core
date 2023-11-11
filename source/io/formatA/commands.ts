@@ -5,7 +5,15 @@ import {
     findGroupContainingGroupID,
     generateEntryLegacyHistoryItem
 } from "./tools.js";
-import { EntryID, EntryPropertyType, FormatAEntry, FormatAGroup, FormatAVault, GroupID, VaultID } from "../../types.js";
+import {
+    EntryID,
+    EntryPropertyType,
+    FormatAEntry,
+    FormatAGroup,
+    FormatAVault,
+    GroupID,
+    VaultID
+} from "../../types.js";
 
 export function executeArchiveID(vault: FormatAVault, opts: any, id: VaultID) {
     if (opts.shareID) {
@@ -23,7 +31,12 @@ export function executeComment() {
     // Comment has no action
 }
 
-export function executeCreateEntry(archive: FormatAVault, opts: any, groupID: GroupID, entryID: EntryID) {
+export function executeCreateEntry(
+    archive: FormatAVault,
+    opts: any,
+    groupID: GroupID,
+    entryID: EntryID
+) {
     archive.groups = archive.groups || [];
     const entry: FormatAEntry = {
         id: entryID,
@@ -42,7 +55,12 @@ export function executeCreateEntry(archive: FormatAVault, opts: any, groupID: Gr
     group.entries.push(entry);
 }
 
-export function executeCreateGroup(archive: FormatAVault, opts: any, parentID: GroupID | VaultID, newID: GroupID) {
+export function executeCreateGroup(
+    archive: FormatAVault,
+    opts: any,
+    parentID: GroupID | VaultID,
+    newID: GroupID
+) {
     archive.groups = archive.groups || [];
     const group: FormatAGroup = {
         id: newID,
@@ -85,7 +103,12 @@ export function executeDeleteEntry(archive: FormatAVault, opts: any, entryID: En
     group.entries.splice(index, 1);
 }
 
-export function executeDeleteEntryAttribute(archive: FormatAVault, opts: any, entryID: EntryID, attribute: string) {
+export function executeDeleteEntryAttribute(
+    archive: FormatAVault,
+    opts: any,
+    entryID: EntryID,
+    attribute: string
+) {
     archive.groups = archive.groups || [];
     const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
@@ -98,10 +121,17 @@ export function executeDeleteEntryAttribute(archive: FormatAVault, opts: any, en
         throw new Error("Failed deleting attribute");
     }
     entry.history = entry.history || [];
-    entry.history.push(generateEntryLegacyHistoryItem(attribute, EntryPropertyType.Attribute, value, null));
+    entry.history.push(
+        generateEntryLegacyHistoryItem(attribute, EntryPropertyType.Attribute, value, null)
+    );
 }
 
-export function executeDeleteEntryProperty(archive: FormatAVault, opts: any, entryID: EntryID, property: string) {
+export function executeDeleteEntryProperty(
+    archive: FormatAVault,
+    opts: any,
+    entryID: EntryID,
+    property: string
+) {
     archive.groups = archive.groups || [];
     const entry = findEntryByID(archive.groups, entryID);
     if (!entry) {
@@ -114,7 +144,9 @@ export function executeDeleteEntryProperty(archive: FormatAVault, opts: any, ent
         throw new Error(`Failed deleting property: ${property}`);
     }
     entry.history = entry.history || [];
-    entry.history.push(generateEntryLegacyHistoryItem(property, EntryPropertyType.Property, value, null));
+    entry.history.push(
+        generateEntryLegacyHistoryItem(property, EntryPropertyType.Property, value, null)
+    );
 }
 
 export function executeDeleteGroup(archive: FormatAVault, opts: any, groupID: GroupID) {
@@ -126,7 +158,12 @@ export function executeDeleteGroup(archive: FormatAVault, opts: any, groupID: Gr
     group.groups.splice(index, 1);
 }
 
-export function executeDeleteGroupAttribute(archive: FormatAVault, opts: any, groupID: GroupID, attribute: string) {
+export function executeDeleteGroupAttribute(
+    archive: FormatAVault,
+    opts: any,
+    groupID: GroupID,
+    attribute: string
+) {
     archive.groups = archive.groups || [];
     const group = findGroupByID(archive.groups, groupID);
     if (!group) {
@@ -150,9 +187,17 @@ export function executeFormat(archive: FormatAVault, opts: any, format: string) 
     archive.format = format;
 }
 
-export function executeMoveEntry(archive: FormatAVault, opts: any, entryID: EntryID, groupID: GroupID) {
+export function executeMoveEntry(
+    archive: FormatAVault,
+    opts: any,
+    entryID: EntryID,
+    groupID: GroupID
+) {
     archive.groups = archive.groups || [];
-    const { group: originGroup, index: originIndex } = findGroupContainingEntryID(archive.groups, entryID);
+    const { group: originGroup, index: originIndex } = findGroupContainingEntryID(
+        archive.groups,
+        entryID
+    );
     if (!originGroup) {
         throw new Error(`Invalid entry ID: ${entryID}`);
     }
@@ -166,7 +211,12 @@ export function executeMoveEntry(archive: FormatAVault, opts: any, entryID: Entr
     movedEntry.parentID = groupID;
 }
 
-export function executeMoveGroup(archive: FormatAVault, opts: any, groupID: GroupID, targetGroupID: GroupID) {
+export function executeMoveGroup(
+    archive: FormatAVault,
+    opts: any,
+    groupID: GroupID,
+    targetGroupID: GroupID
+) {
     archive.groups = archive.groups || [];
     const { group: originGroup, index: originIndex } = findGroupContainingGroupID(archive, groupID);
     if (!originGroup) {
@@ -189,7 +239,12 @@ export function executePad() {
     // Comment has no action
 }
 
-export function executeSetArchiveAttribute(archive: FormatAVault, opts: any, attribute: string, value: string) {
+export function executeSetArchiveAttribute(
+    archive: FormatAVault,
+    opts: any,
+    attribute: string,
+    value: string
+) {
     archive.attributes = archive.attributes || {};
     archive.attributes[attribute] = value;
 }
@@ -207,10 +262,13 @@ export function executeSetEntryAttribute(
         throw new Error(`Entry not found for ID: ${entryID}`);
     }
     entry.attributes = entry.attributes || {};
-    const previousValue = typeof entry.attributes[attribute] === "string" ? entry.attributes[attribute] : null;
+    const previousValue =
+        typeof entry.attributes[attribute] === "string" ? entry.attributes[attribute] : null;
     entry.attributes[attribute] = value;
     entry.history = entry.history || [];
-    entry.history.push(generateEntryLegacyHistoryItem(attribute, EntryPropertyType.Attribute, previousValue, value));
+    entry.history.push(
+        generateEntryLegacyHistoryItem(attribute, EntryPropertyType.Attribute, previousValue, value)
+    );
 }
 
 export function executeSetEntryProperty(
@@ -226,10 +284,13 @@ export function executeSetEntryProperty(
         throw new Error(`Entry not found for ID: ${entryID}`);
     }
     entry.properties = entry.properties || {};
-    const previousValue = typeof entry.properties[property] === "string" ? entry.properties[property] : null;
+    const previousValue =
+        typeof entry.properties[property] === "string" ? entry.properties[property] : null;
     entry.properties[property] = value;
     entry.history = entry.history || [];
-    entry.history.push(generateEntryLegacyHistoryItem(property, EntryPropertyType.Property, previousValue, value));
+    entry.history.push(
+        generateEntryLegacyHistoryItem(property, EntryPropertyType.Property, previousValue, value)
+    );
 }
 
 export function executeSetGroupAttribute(
@@ -248,7 +309,12 @@ export function executeSetGroupAttribute(
     group.attributes[attribute] = value;
 }
 
-export function executeTitleGroup(archive: FormatAVault, opts: any, groupID: GroupID, title: string) {
+export function executeTitleGroup(
+    archive: FormatAVault,
+    opts: any,
+    groupID: GroupID,
+    title: string
+) {
     archive.groups = archive.groups || [];
     const group = findGroupByID(archive.groups, groupID);
     if (!group) {

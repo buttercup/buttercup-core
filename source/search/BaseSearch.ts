@@ -8,7 +8,10 @@ interface DomainScores {
     [domain: string]: number;
 }
 
-type EntryFetcher = (target: Vault | VaultFacade, memory: StorageInterface) => Promise<Array<ProcessedSearchEntry>>;
+type EntryFetcher = (
+    target: Vault | VaultFacade,
+    memory: StorageInterface
+) => Promise<Array<ProcessedSearchEntry>>;
 
 export interface ProcessedSearchEntry extends SearchResult {
     domainScores: DomainScores;
@@ -95,7 +98,9 @@ export class BaseSearch {
         const domain = extractDomain(url);
         if (!domain) return;
         vaultScore[entryID] = vaultScore[entryID] || {};
-        vaultScore[entryID][domain] = vaultScore[entryID][domain] ? vaultScore[entryID][domain] + 1 : 1;
+        vaultScore[entryID][domain] = vaultScore[entryID][domain]
+            ? vaultScore[entryID][domain] + 1
+            : 1;
         await this._memory.setValue(`bcup_search_${vaultID}`, JSON.stringify(vaultScore));
     }
 
@@ -132,7 +137,7 @@ export class BaseSearch {
         if (!this._fuse) {
             throw new Error("Searching interface not prepared");
         }
-        this._results = this._fuse.search(term).map(result => result.item);
+        this._results = this._fuse.search(term).map((result) => result.item);
         return this._results;
     }
 
@@ -189,7 +194,7 @@ export class BaseSearch {
                 }
                 return 0;
             })
-            .map(result => result.item);
+            .map((result) => result.item);
         return this._results;
     }
 }

@@ -4,7 +4,12 @@ export {
     VaultManagerAddSourceOptions,
     VaultManagerOptions
 } from "./core/VaultManager.js";
-export { VaultSource, VaultSourceConfig, VaultSourceMetadata, VaultSourceUnlockOptions } from "./core/VaultSource.js";
+export {
+    VaultSource,
+    VaultSourceConfig,
+    VaultSourceMetadata,
+    VaultSourceUnlockOptions
+} from "./core/VaultSource.js";
 export { Vault } from "./core/Vault.js";
 export { Group } from "./core/Group.js";
 export { Entry } from "./core/Entry.js";
@@ -82,7 +87,12 @@ export { getSharedAppEnv } from "./env/appEnv.js";
 
 export { generateUUID } from "./tools/uuid.js";
 export { EntryURLType, getEntryPath, getEntryURLs } from "./tools/entry.js";
-export { base64ToBytes, bytesToBase64, decodeBase64String, encodeBase64String } from "./tools/encoding.js";
+export {
+    base64ToBytes,
+    bytesToBase64,
+    decodeBase64String,
+    encodeBase64String
+} from "./tools/encoding.js";
 
 export * from "./types.js";
 

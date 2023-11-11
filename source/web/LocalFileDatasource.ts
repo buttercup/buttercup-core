@@ -72,9 +72,9 @@ export default class LocalFileDatasource extends TextDatasource {
      */
     save(history: History, credentials: Credentials): Promise<EncryptedContent> {
         return super.save(history, credentials).then(
-            encrypted =>
+            (encrypted) =>
                 new Promise((resolve, reject) => {
-                    this.client.writeFile(this.path, encrypted, err => {
+                    this.client.writeFile(this.path, encrypted, (err) => {
                         if (err) {
                             return reject(err);
                         }

@@ -4,7 +4,10 @@ import { Entry } from "../core/Entry.js";
 import { EntryURLType, getEntryURLs } from "../tools/entry.js";
 import { StorageInterface } from "../storage/StorageInterface.js";
 
-async function extractEntries(vault: Vault, memory: StorageInterface): Promise<Array<ProcessedSearchEntry>> {
+async function extractEntries(
+    vault: Vault,
+    memory: StorageInterface
+): Promise<Array<ProcessedSearchEntry>> {
     // Get scores
     const scoresRaw = await memory.getValue(`bcup_search_${vault.id}`);
     let vaultScore = {};
@@ -34,7 +37,11 @@ async function extractEntries(vault: Vault, memory: StorageInterface): Promise<A
 }
 
 export class VaultEntrySearch extends BaseSearch {
-    constructor(vaults: Array<Vault>, memory?: StorageInterface, searcherFactory?: SearcherFactory) {
+    constructor(
+        vaults: Array<Vault>,
+        memory?: StorageInterface,
+        searcherFactory?: SearcherFactory
+    ) {
         super(vaults, extractEntries, memory, searcherFactory);
     }
 }

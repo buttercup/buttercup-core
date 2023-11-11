@@ -3,14 +3,20 @@ import { VaultSourceID } from "../types.js";
 
 const STORAGE_PREFIX = "bcup_archivecache_";
 
-export function getSourceOfflineArchive(storage: StorageInterface, sourceID: VaultSourceID): Promise<any> {
+export function getSourceOfflineArchive(
+    storage: StorageInterface,
+    sourceID: VaultSourceID
+): Promise<any> {
     const sourceKey = `${STORAGE_PREFIX}${sourceID}`;
     return storage.getValue(sourceKey);
 }
 
-export function sourceHasOfflineCopy(storage: StorageInterface, sourceID: VaultSourceID): Promise<boolean> {
+export function sourceHasOfflineCopy(
+    storage: StorageInterface,
+    sourceID: VaultSourceID
+): Promise<boolean> {
     return getSourceOfflineArchive(storage, sourceID).then(
-        archiveContents => !!archiveContents && archiveContents.length > 0
+        (archiveContents) => !!archiveContents && archiveContents.length > 0
     );
 }
 

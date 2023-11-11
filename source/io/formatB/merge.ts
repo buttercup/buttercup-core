@@ -1,5 +1,11 @@
 import { cloneValue, mergeValues } from "./history.js";
-import { EntryPropertyType, FormatBEntry, FormatBGroup, FormatBKeyValueObject, FormatBVault } from "../../types.js";
+import {
+    EntryPropertyType,
+    FormatBEntry,
+    FormatBGroup,
+    FormatBKeyValueObject,
+    FormatBVault
+} from "../../types.js";
 
 function cloneEntry(entry: FormatBEntry): FormatBEntry {
     return {
@@ -67,36 +73,44 @@ export function mergeRawVaults(base: FormatBVault, incoming: FormatBVault): Form
         }
     }
     // Process unique (one vault only) groups
-    const uniqueGroupsBase = base.g.filter(group => !incoming.g.find(inGroup => inGroup.id === group.id));
-    const uniqueGroupsIncoming = incoming.g.filter(group => !base.g.find(baseGroup => baseGroup.id === group.id));
-    [...uniqueGroupsBase, ...uniqueGroupsIncoming].forEach(group => {
+    const uniqueGroupsBase = base.g.filter(
+        (group) => !incoming.g.find((inGroup) => inGroup.id === group.id)
+    );
+    const uniqueGroupsIncoming = incoming.g.filter(
+        (group) => !base.g.find((baseGroup) => baseGroup.id === group.id)
+    );
+    [...uniqueGroupsBase, ...uniqueGroupsIncoming].forEach((group) => {
         if (newVault.del.g[group.id]) return;
         newVault.g.push(cloneGroup(group));
     });
     // Process all matching groups (on both vaults)
-    base.g.forEach(baseGroup => {
+    base.g.forEach((baseGroup) => {
         // Skip unique groups
         if (uniqueGroupsBase.indexOf(baseGroup) >= 0) return;
         // Find matching on incoming vault
-        const incomingGroup = incoming.g.find(ing => ing.id === baseGroup.id);
+        const incomingGroup = incoming.g.find((ing) => ing.id === baseGroup.id);
         // Setup new group
         const newGroup = cloneGroup(incomingGroup);
         newGroup.a = mergeProperties(baseGroup.a, incomingGroup.a, EntryPropertyType.Attribute);
         newVault.g.push(newGroup);
     });
     // Process unique (one vault only) entries
-    const uniqueEntriesBase = base.e.filter(entry => !incoming.e.find(inEntry => inEntry.id === entry.id));
-    const uniqueEntriesIncoming = incoming.e.filter(entry => !base.e.find(baseEntry => baseEntry.id === entry.id));
-    [...uniqueEntriesBase, ...uniqueEntriesIncoming].forEach(entry => {
+    const uniqueEntriesBase = base.e.filter(
+        (entry) => !incoming.e.find((inEntry) => inEntry.id === entry.id)
+    );
+    const uniqueEntriesIncoming = incoming.e.filter(
+        (entry) => !base.e.find((baseEntry) => baseEntry.id === entry.id)
+    );
+    [...uniqueEntriesBase, ...uniqueEntriesIncoming].forEach((entry) => {
         if (newVault.del.e[entry.id]) return;
         newVault.e.push(cloneEntry(entry));
     });
     // Process all matching entries (on both vaults)
-    base.e.forEach(baseEntry => {
+    base.e.forEach((baseEntry) => {
         // Skip unique groups
         if (uniqueEntriesBase.indexOf(baseEntry) >= 0) return;
         // Find matching on incoming vault
-        const incomingEntry = incoming.e.find(ing => ing.id === baseEntry.id);
+        const incomingEntry = incoming.e.find((ing) => ing.id === baseEntry.id);
         // Setup new group
         const newEntry = cloneEntry(incomingEntry);
         newEntry.p = mergeProperties(baseEntry.p, incomingEntry.p, EntryPropertyType.Property);

@@ -20,6 +20,9 @@ export function isVaultFacade(obj: any): boolean {
         return false;
     }
     return (
-        obj.type === "vault" && typeof obj.id === "string" && Array.isArray(obj.entries) && Array.isArray(obj.groups)
+        obj.type === "vault" &&
+        typeof obj.id === "string" &&
+        Array.isArray(obj.entries) &&
+        Array.isArray(obj.groups)
     );
 }
