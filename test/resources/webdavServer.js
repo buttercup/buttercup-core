@@ -31,22 +31,24 @@ export function createServer(dir, authType /* "basic" | "digest" */) {
         maxRequestDepth: Infinity,
         headers: {
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "HEAD, GET, PUT, PROPFIND, DELETE, OPTIONS, MKCOL, MOVE, COPY",
-            "Access-Control-Allow-Headers": "Accept, Authorization, Content-Type, Content-Length, Depth"
+            "Access-Control-Allow-Methods":
+                "HEAD, GET, PUT, PROPFIND, DELETE, OPTIONS, MKCOL, MOVE, COPY",
+            "Access-Control-Allow-Headers":
+                "Accept, Authorization, Content-Type, Content-Length, Depth"
         }
     });
     // console.log(`Created server on localhost with port: 9988, and authType: ${authType}`);
     return {
         start: function start() {
-            return new Promise(function(resolve) {
-                server.setFileSystem(PATH, new ws.PhysicalFileSystem(dir), function() {
+            return new Promise(function (resolve) {
+                server.setFileSystem(PATH, new ws.PhysicalFileSystem(dir), function () {
                     server.start(resolve);
                 });
             });
         },
 
         stop: function stop() {
-            return new Promise(function(resolve) {
+            return new Promise(function (resolve) {
                 server.stop(resolve);
             });
         }

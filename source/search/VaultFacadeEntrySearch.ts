@@ -4,7 +4,10 @@ import { fieldsToProperties } from "../facades/entry.js";
 import { StorageInterface } from "../storage/StorageInterface.js";
 import { EntryFacade, VaultFacade } from "../types.js";
 
-async function extractEntries(facade: VaultFacade, memory: StorageInterface): Promise<Array<ProcessedSearchEntry>> {
+async function extractEntries(
+    facade: VaultFacade,
+    memory: StorageInterface
+): Promise<Array<ProcessedSearchEntry>> {
     // Get scores
     const scoresRaw = await memory.getValue(`bcup_search_${facade.id}`);
     let vaultScore = {};
@@ -33,7 +36,11 @@ async function extractEntries(facade: VaultFacade, memory: StorageInterface): Pr
 }
 
 export class VaultFacadeEntrySearch extends BaseSearch {
-    constructor(facades: Array<VaultFacade>, memory?: StorageInterface, searcherFactory?: SearcherFactory) {
+    constructor(
+        facades: Array<VaultFacade>,
+        memory?: StorageInterface,
+        searcherFactory?: SearcherFactory
+    ) {
         super(facades, extractEntries, memory, searcherFactory);
     }
 }

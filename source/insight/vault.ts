@@ -23,11 +23,11 @@ export function generateVaultInsights(vault: Vault): VaultInsights {
     const passwordCounts = {};
     const usernameSet = new Set();
     const entryPasswordLengths = [];
-    const processGroup = group => {
+    const processGroup = (group) => {
         const entries = group.getEntries();
         groupCount += 1;
         entryCount += entries.length;
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
             const password = entry.getProperty("password");
             if (typeof password === "string") {
                 entryPasswordLengths.push(password.length);
@@ -51,16 +51,17 @@ export function generateVaultInsights(vault: Vault): VaultInsights {
                 }
             }
         });
-        group.getGroups().forEach(subGroup => processGroup(subGroup));
+        group.getGroups().forEach((subGroup) => processGroup(subGroup));
     };
-    vault.getGroups().forEach(group => processGroup(group));
-    const avgPassLen = entryPasswordLengths.reduce((total, next) => total + next, 0) / entryPasswordLengths.length;
+    vault.getGroups().forEach((group) => processGroup(group));
+    const avgPassLen =
+        entryPasswordLengths.reduce((total, next) => total + next, 0) / entryPasswordLengths.length;
     const trashGroup = vault.getTrashGroup();
     if (trashGroup) {
-        const processTrashGroup = group => {
+        const processTrashGroup = (group) => {
             const subGroups = group.getGroups();
             trashGroupCount += subGroups.length;
-            subGroups.forEach(subGroup => processTrashGroup(subGroup));
+            subGroups.forEach((subGroup) => processTrashGroup(subGroup));
             trashEntryCount += group.getEntries().length;
         };
         processTrashGroup(trashGroup);
@@ -86,7 +87,9 @@ export function generateVaultInsights(vault: Vault): VaultInsights {
 function isWeak(password: string): boolean {
     if (!password) return true;
     if (password.length < 10) return true;
-    const matchingSets = [DIGITS, LOWER_CASE, OTHER, SYMBOLS, UPPER_CASE].filter(set => set.test(password)).length;
+    const matchingSets = [DIGITS, LOWER_CASE, OTHER, SYMBOLS, UPPER_CASE].filter((set) =>
+        set.test(password)
+    ).length;
     if (matchingSets >= 3) return false;
     return true;
 }

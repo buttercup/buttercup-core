@@ -9,7 +9,7 @@ let __hasInitialised = false;
  * Initialise the web environment
  * @memberof module:Buttercup
  */
-export function init(appEnvMapper: AppEnvMapper = x => x) {
+export function init(appEnvMapper: AppEnvMapper = (x) => x) {
     if (__hasInitialised) return;
     __hasInitialised = true;
     const appEnv = getSharedAppEnv();

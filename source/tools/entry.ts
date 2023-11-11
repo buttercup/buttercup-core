@@ -36,7 +36,7 @@ export function getEntryURLs(
     preference: EntryURLType = EntryURLType.Any
 ): Array<string> {
     const urlRef = Object.keys(properties)
-        .filter(key => URL_PROP.test(key))
+        .filter((key) => URL_PROP.test(key))
         .reduce(
             (output, nextKey) =>
                 Object.assign(output, {
@@ -60,9 +60,9 @@ export function getEntryURLs(
                 }
                 return 0;
             })
-            .map(key => urlRef[key]);
+            .map((key) => urlRef[key]);
     } else if (preference === EntryURLType.Icon) {
-        const iconProp = Object.keys(urlRef).find(key => URL_PROP_ICON.test(key));
+        const iconProp = Object.keys(urlRef).find((key) => URL_PROP_ICON.test(key));
         return iconProp ? [urlRef[iconProp]] : [];
     }
     // Default is "any" URLs

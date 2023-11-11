@@ -5,7 +5,11 @@ import { Vault } from "./Vault.js";
 import { Credentials } from "../credentials/Credentials.js";
 import { getCredentials, setCredentials } from "../credentials/channel.js";
 import { getUniqueID } from "../tools/encoding.js";
-import { getSourceOfflineArchive, sourceHasOfflineCopy, storeSourceOfflineCopy } from "../tools/vaultManagement.js";
+import {
+    getSourceOfflineArchive,
+    sourceHasOfflineCopy,
+    storeSourceOfflineCopy
+} from "../tools/vaultManagement.js";
 import { credentialsToDatasource, prepareDatasourceCredentials } from "../datasources/register.js";
 import { generateVaultInsights } from "../insight/vault.js";
 import { AttachmentManager } from "../attachments/AttachmentManager.js";
@@ -45,7 +49,10 @@ const COLOUR_TEST = /^#([a-f0-9]{3}|[a-f0-9]{6})$/i;
 const DEFAULT_COLOUR = "#000000";
 const DEFAULT_ORDER = 1000;
 
-function processDehydratedCredentials(credentialsString: string, masterPassword: string): Promise<Credentials> {
+function processDehydratedCredentials(
+    credentialsString: string,
+    masterPassword: string
+): Promise<Credentials> {
     if (/^v1\n/.test(credentialsString)) {
         const [, sourceCredStr] = credentialsString.split("\n");
         return Credentials.fromSecureString(sourceCredStr, masterPassword);
@@ -81,7 +88,14 @@ export class VaultSource extends EventEmitter {
             }
             credentials = `v1\n${sourceCredentials}\n${archiveCredentials}`;
         }
-        const { id, name, type, colour = DEFAULT_COLOUR, order = DEFAULT_ORDER, meta = {} } = target;
+        const {
+            id,
+            name,
+            type,
+            colour = DEFAULT_COLOUR,
+            order = DEFAULT_ORDER,
+            meta = {}
+        } = target;
         return new VaultSource(name, type, credentials, {
             id,
             colour,
@@ -105,9 +119,19 @@ export class VaultSource extends EventEmitter {
     _vault: Vault = null;
     _vaultManager: VaultManager = null;
 
-    constructor(name: string, type: string, credentialsString: string, config: VaultSourceConfig = {}) {
+    constructor(
+        name: string,
+        type: string,
+        credentialsString: string,
+        config: VaultSourceConfig = {}
+    ) {
         super();
-        const { colour = DEFAULT_COLOUR, id = getUniqueID(), order = DEFAULT_ORDER, meta = {} } = config;
+        const {
+            colour = DEFAULT_COLOUR,
+            id = getUniqueID(),
+            order = DEFAULT_ORDER,
+            meta = {}
+        } = config;
         // Queue for managing state transitions
         this._queue = new ChannelQueue();
         // Credentials state and status go hand-in-hand:
@@ -214,7 +238,9 @@ export class VaultSource extends EventEmitter {
 
     set order(newOrder: number) {
         if (isNaN(newOrder) || typeof newOrder !== "number" || newOrder < 0) {
-            throw new Layerr(`Failed setting order: Order must be greater than or equal to 0: ${newOrder}`);
+            throw new Layerr(
+                `Failed setting order: Order must be greater than or equal to 0: ${newOrder}`
+            );
         }
         this._order = newOrder;
         this.emit("updated");
@@ -227,7 +253,11 @@ export class VaultSource extends EventEmitter {
      * @param meta Optional metadata
      * @memberof VaultSource
      */
-    async changeMasterPassword(oldPassword: string, newPassword: string, meta: { [key: string]: any } = {}) {
+    async changeMasterPassword(
+        oldPassword: string,
+        newPassword: string,
+        meta: { [key: string]: any } = {}
+    ) {
         if (oldPassword === newPassword) {
             throw new Error("New password cannot be the same as the previous one");
         } else if (!newPassword) {
@@ -262,7 +292,10 @@ export class VaultSource extends EventEmitter {
         // Clear offline cache
         await storeSourceOfflineCopy(this._vaultManager._cacheStorage, this.id, null);
         // Change password
-        const newCredentials = Credentials.fromCredentials(this._credentials as Credentials, oldPassword);
+        const newCredentials = Credentials.fromCredentials(
+            this._credentials as Credentials,
+            oldPassword
+        );
         const newCreds = getCredentials(newCredentials.id);
         newCreds.masterPassword = newPassword;
         await this._updateVaultCredentials(newCredentials);
@@ -306,7 +339,9 @@ export class VaultSource extends EventEmitter {
      */
     async convert(targetFormat: VaultFormatID): Promise<void> {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
-            throw new Layerr(`Failed converting source: Source not unlocked (${this.status}): ${this.id}`);
+            throw new Layerr(
+                `Failed converting source: Source not unlocked (${this.status}): ${this.id}`
+            );
         }
         if (this.vault.format.getFormat().getFormatID() !== VaultFormatID.A) {
             throw new Layerr(`Failed converting source: Source not in expected format: ${this.id}`);
@@ -393,12 +428,17 @@ export class VaultSource extends EventEmitter {
     localDiffersFromRemote(): Promise<boolean> {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
             return Promise.reject(
-                new Layerr(`Failed diffing source: Source not unlocked (${this.status}): ${this.id}`)
+                new Layerr(
+                    `Failed diffing source: Source not unlocked (${this.status}): ${this.id}`
+                )
             );
         }
         if (typeof (<any>this._datasource).localDiffersFromRemote === "function") {
             return (<any>this._datasource).localDiffersFromRemote(
-                prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type),
+                prepareDatasourceCredentials(
+                    this._credentials as Credentials,
+                    this._datasource.type
+                ),
                 this.vault.format.history
             );
         }
@@ -407,7 +447,12 @@ export class VaultSource extends EventEmitter {
             this._datasource.setContent("");
         }
         return this._datasource
-            .load(prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type))
+            .load(
+                prepareDatasourceCredentials(
+                    this._credentials as Credentials,
+                    this._datasource.type
+                )
+            )
             .then(({ Format, history }) => {
                 if (Format !== this.vault.format.getFormat()) {
                     throw new Error("Loaded format does not match that of current vault");
@@ -422,7 +467,9 @@ export class VaultSource extends EventEmitter {
      */
     async lock() {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
-            throw new Layerr(`Failed locking source: Source in invalid state (${this.status}): ${this.id}`);
+            throw new Layerr(
+                `Failed locking source: Source in invalid state (${this.status}): ${this.id}`
+            );
         }
         await this._enqueueStateChange(async () => {
             this._status = VaultSource.STATUS_PENDING;
@@ -537,7 +584,10 @@ export class VaultSource extends EventEmitter {
             try {
                 await this._datasource.save(
                     this._vault.format.history,
-                    prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type)
+                    prepareDatasourceCredentials(
+                        this._credentials as Credentials,
+                        this._datasource.type
+                    )
                 );
             } catch (err) {
                 this._datasource.off("encryptedContent", encryptedCallback);
@@ -548,7 +598,11 @@ export class VaultSource extends EventEmitter {
             // Handle offline state
             if (storeOfflineCopy && encryptedContent) {
                 // Store an offline copy for later use
-                await storeSourceOfflineCopy(this._vaultManager._cacheStorage, this.id, encryptedContent);
+                await storeSourceOfflineCopy(
+                    this._vaultManager._cacheStorage,
+                    this.id,
+                    encryptedContent
+                );
             }
             // Misc
             await this._updateInsights();
@@ -562,7 +616,10 @@ export class VaultSource extends EventEmitter {
     }
 
     async testMasterPassword(password: string): Promise<boolean> {
-        if (this.status !== VaultSourceStatus.Locked && this.status !== VaultSourceStatus.Unlocked) {
+        if (
+            this.status !== VaultSourceStatus.Locked &&
+            this.status !== VaultSourceStatus.Unlocked
+        ) {
             throw new Error(`Source in invalid state for password test: ${this.status}`);
         }
         const credStr =
@@ -579,11 +636,19 @@ export class VaultSource extends EventEmitter {
 
     async unlock(vaultCredentials: Credentials, config: VaultSourceUnlockOptions = {}) {
         if (!Credentials.isCredentials(vaultCredentials)) {
-            throw new Layerr(`Failed unlocking source: Invalid credentials passed to source: ${this.id}`);
+            throw new Layerr(
+                `Failed unlocking source: Invalid credentials passed to source: ${this.id}`
+            );
         }
-        const { initialiseRemote = false, loadOfflineCopy = false, storeOfflineCopy = true } = config;
+        const {
+            initialiseRemote = false,
+            loadOfflineCopy = false,
+            storeOfflineCopy = true
+        } = config;
         if (this.status !== VaultSource.STATUS_LOCKED) {
-            throw new Layerr(`Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`);
+            throw new Layerr(
+                `Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`
+            );
         }
         const { masterPassword } = getCredentials(vaultCredentials.id);
         const originalCredentials = this._credentials;
@@ -591,10 +656,8 @@ export class VaultSource extends EventEmitter {
         await this._enqueueStateChange(async () => {
             // Get offline content if available and requested
             const offlineContent = loadOfflineCopy ? await this.getOfflineContent() : null;
-            const credentials: Credentials = (this._credentials = await processDehydratedCredentials(
-                this._credentials as string,
-                masterPassword
-            ));
+            const credentials: Credentials = (this._credentials =
+                await processDehydratedCredentials(this._credentials as string, masterPassword));
             // Initialise datasource
             const datasource = (this._datasource = credentialsToDatasource(
                 Credentials.fromCredentials(credentials, masterPassword)
@@ -612,8 +675,11 @@ export class VaultSource extends EventEmitter {
                         }
                         this.emit("updated");
                     })
-                    .catch(err => {
-                        console.error(`Error updating datasource credentials for vault: ${this.id}`, err);
+                    .catch((err) => {
+                        console.error(
+                            `Error updating datasource credentials for vault: ${this.id}`,
+                            err
+                        );
                     });
             });
             // Perform pre-save or load
@@ -634,7 +700,11 @@ export class VaultSource extends EventEmitter {
             // Handle offline state
             if (storeOfflineCopy) {
                 // Store an offline copy for later use
-                await storeSourceOfflineCopy(this._vaultManager._cacheStorage, this.id, datasource._content);
+                await storeSourceOfflineCopy(
+                    this._vaultManager._cacheStorage,
+                    this.id,
+                    datasource._content
+                );
             }
             if (loadOfflineCopy) {
                 // Flag the format as read-only
@@ -644,7 +714,7 @@ export class VaultSource extends EventEmitter {
             this._status = VaultSource.STATUS_UNLOCKED;
             this._attachmentManager = new AttachmentManager(this);
             this.emit("unlocked");
-        }).catch(err => {
+        }).catch((err) => {
             this._status = VaultSource.STATUS_LOCKED;
             this._vault = null;
             this._datasource = null;
@@ -663,12 +733,14 @@ export class VaultSource extends EventEmitter {
     async update({ skipDiff = false } = {}) {
         const didUpdate = await this._enqueueStateChange(
             () =>
-                (skipDiff ? Promise.resolve(false) : this.localDiffersFromRemote()).then(differs => {
-                    if (differs) {
-                        return this.mergeFromRemote().then(() => true);
+                (skipDiff ? Promise.resolve(false) : this.localDiffersFromRemote()).then(
+                    (differs) => {
+                        if (differs) {
+                            return this.mergeFromRemote().then(() => true);
+                        }
+                        return false;
                     }
-                    return false;
-                }),
+                ),
             // @todo shares
             // .then(() => initialiseShares(this)),
             /* stack */ "updating"
@@ -690,7 +762,10 @@ export class VaultSource extends EventEmitter {
         await this._enqueueStateChange(async () => {
             await this._datasource.save(
                 this._vault.format.history,
-                prepareDatasourceCredentials(this._credentials as Credentials, this._datasource.type)
+                prepareDatasourceCredentials(
+                    this._credentials as Credentials,
+                    this._datasource.type
+                )
             );
             this._vault.format.dirty = false;
             await this._updateInsights();
@@ -721,10 +796,12 @@ export class VaultSource extends EventEmitter {
         this.vault.format.erase();
         this.vault.format.execute(base);
         // Update share payloads
-        Object.keys(extractedShares).forEach(shareID => {
-            const share = this._shares.find(share => share.id === shareID);
+        Object.keys(extractedShares).forEach((shareID) => {
+            const share = this._shares.find((share) => share.id === shareID);
             if (!share) {
-                throw new Error(`Failed updating extracted share: No share found in workspace for ID: ${shareID}`);
+                throw new Error(
+                    `Failed updating extracted share: No share found in workspace for ID: ${shareID}`
+                );
             }
             share.updateHistory(extractedShares[shareID]);
         });
@@ -732,10 +809,15 @@ export class VaultSource extends EventEmitter {
 
     async _updateCredentialsFromDatasource() {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
-            throw new Layerr(`Failed updating source credentials: Source is not unlocked: ${this.id}`);
+            throw new Layerr(
+                `Failed updating source credentials: Source is not unlocked: ${this.id}`
+            );
         }
         const { masterPassword } = getCredentials((<Credentials>this._credentials).id);
-        this._credentials = Credentials.fromCredentials(this._datasource.credentials, masterPassword);
+        this._credentials = Credentials.fromCredentials(
+            this._datasource.credentials,
+            masterPassword
+        );
     }
 
     async _updateInsights() {
@@ -748,14 +830,16 @@ export class VaultSource extends EventEmitter {
 
     async _updateVaultCredentials(newCredentials) {
         if (this.status !== VaultSource.STATUS_UNLOCKED) {
-            throw new Layerr(`Failed updating vault credentials: Source is not unlocked: ${this.id}`);
+            throw new Layerr(
+                `Failed updating vault credentials: Source is not unlocked: ${this.id}`
+            );
         }
         this._credentials = newCredentials;
         await this.write();
     }
 
     _waitNonPending() {
-        return new Promise<void>(resolve => {
+        return new Promise<void>((resolve) => {
             if (this.status !== VaultSource.STATUS_PENDING) return resolve();
             const handleChange = () => {
                 this.removeListener("unlocked", handleChange);

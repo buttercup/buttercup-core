@@ -43,7 +43,10 @@ export class AttachmentManager {
             throw new Error(`Attachment not available: ${attachmentID}`);
         }
         const credentials = await this._getAttachmentsCredentials();
-        const data = await this._source._datasource.getAttachment(this._source.vault.id, attachmentID);
+        const data = await this._source._datasource.getAttachment(
+            this._source.vault.id,
+            attachmentID
+        );
         return decryptAttachment(data, credentials);
     }
 
@@ -68,9 +71,9 @@ export class AttachmentManager {
         this._checkAttachmentSupport();
         const attributes = entry.getAttribute();
         const attachmentKeys = Object.keys(attributes).filter(
-            key => key.indexOf(Entry.Attributes.AttachmentPrefix) === 0
+            (key) => key.indexOf(Entry.Attributes.AttachmentPrefix) === 0
         );
-        return attachmentKeys.map(key => JSON.parse(attributes[key]));
+        return attachmentKeys.map((key) => JSON.parse(attributes[key]));
     }
 
     /**

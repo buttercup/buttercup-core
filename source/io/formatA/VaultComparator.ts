@@ -22,14 +22,21 @@ export interface CommonRecentCommandResult {
  * @returns Returns null if no common point, or an object with the common
  *  information. `a` and `b` are the indexes where the common padding occurs.
  */
-function calculateCommonRecentCommand(historyA: History, historyB: History): CommonRecentCommandResult | null {
-    const getCommandType = fullCommand => (fullCommand && fullCommand.length >= 3 ? fullCommand.substr(0, 3) : "");
-    const getPaddingID = command => command.split(" ")[1];
+function calculateCommonRecentCommand(
+    historyA: History,
+    historyB: History
+): CommonRecentCommandResult | null {
+    const getCommandType = (fullCommand) =>
+        fullCommand && fullCommand.length >= 3 ? fullCommand.substr(0, 3) : "";
+    const getPaddingID = (command) => command.split(" ")[1];
     for (let a = historyA.length - 1; a >= 9; a -= 1) {
         if (getCommandType(historyA[a]) === "pad") {
             const paddingA = getPaddingID(historyA[a]);
             for (let b = historyB.length - 1; b >= 0; b -= 1) {
-                if (getCommandType(historyB[b]) === "pad" && getPaddingID(historyB[b]) === paddingA) {
+                if (
+                    getCommandType(historyB[b]) === "pad" &&
+                    getPaddingID(historyB[b]) === paddingA
+                ) {
                     return { a, b };
                 }
             }
@@ -69,7 +76,7 @@ function calculateHistoryDifferences(historyA: History, historyB: History): Hist
  * @returns The de-duped array
  */
 function dedupe<T>(arr: Array<T>): Array<T> {
-    return arr.filter(function(item, pos) {
+    return arr.filter(function (item, pos) {
         return arr.indexOf(item) === pos;
     });
 }
@@ -85,14 +92,14 @@ function dedupe<T>(arr: Array<T>): Array<T> {
  */
 function different(object1: Object, object2: Object): boolean {
     if (Array.isArray(object1) && Array.isArray(object2)) {
-        let differs = object1.some(function(item1) {
-            return !object2.some(function(item2) {
+        let differs = object1.some(function (item1) {
+            return !object2.some(function (item2) {
                 return different(item1, item2) === false;
             });
         });
         if (!differs) {
-            return object2.some(function(item1) {
-                return !object1.some(function(item2) {
+            return object2.some(function (item1) {
+                return !object1.some(function (item2) {
                     return different(item1, item2) === false;
                 });
             });
@@ -102,11 +109,11 @@ function different(object1: Object, object2: Object): boolean {
             return false;
         }
         let allKeys = dedupe([...Object.keys(object1), ...Object.keys(object2)]),
-            isMissingAKey = allKeys.some(function(key) {
+            isMissingAKey = allKeys.some(function (key) {
                 return !(object1.hasOwnProperty(key) && object2.hasOwnProperty(key));
             });
         if (!isMissingAKey) {
-            return allKeys.some(function(key) {
+            return allKeys.some(function (key) {
                 return different(object1[key], object2[key]);
             });
         }
@@ -144,7 +151,10 @@ export default class VaultComparator {
      * @memberof VaultComparator
      */
     calculateDifferences(): HistoryDifferences {
-        return VaultComparator.calculateHistoryDifferences(this._vaultA.format.history, this._vaultB.format.history);
+        return VaultComparator.calculateHistoryDifferences(
+            this._vaultA.format.history,
+            this._vaultB.format.history
+        );
     }
 
     /**

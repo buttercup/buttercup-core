@@ -104,7 +104,9 @@ export class InigoCommand {
         const argRules = this._commandKey.args;
         const newArgRule = argRules.length <= newArgIndex ? false : argRules[newArgIndex];
         if (newArgRule === false) {
-            throw new Error(`Failed adding argument for command "${this._commandKey.s}": too many arguments`);
+            throw new Error(
+                `Failed adding argument for command "${this._commandKey.s}": too many arguments`
+            );
         }
         if (!newArgRule.test.test(arg)) {
             throw new Error(
@@ -133,11 +135,14 @@ export function extractCommandComponents(cmd: string): Array<string> {
     // Replace complex command segments
     while ((match = patt.exec(command))) {
         const [matched] = match;
-        command = command.substr(0, match.index) + PLACEHOLDER_QUOTED + command.substr(match.index + matched.length);
+        command =
+            command.substr(0, match.index) +
+            PLACEHOLDER_QUOTED +
+            command.substr(match.index + matched.length);
         matches.push(matched.substring(1, matched.length - 1));
     }
     // Split command, map back to original values
-    return command.split(" ").map(part => {
+    return command.split(" ").map((part) => {
         let item = part.trim();
         if (item === PLACEHOLDER_QUOTED) {
             item = matches.shift();
@@ -183,7 +188,7 @@ function findGroupByCheck(groups, checkFn) {
 }
 
 export function findGroupByID(groups, id) {
-    return findGroupByCheck(groups, function(group) {
+    return findGroupByCheck(groups, function (group) {
         return group.id === id;
     });
 }
@@ -283,16 +288,16 @@ export function getAllEntries(source: FormatAVault, parentID: GroupID = null): A
         if (parentID === null || group.id === parentID) {
             entries.push(...(group.entries || []));
         }
-        (group.groups || []).forEach(group => getEntries(group));
+        (group.groups || []).forEach((group) => getEntries(group));
     };
-    source.groups.forEach(group => getEntries(group));
+    source.groups.forEach((group) => getEntries(group));
     return entries;
 }
 
 export function getAllGroups(source: FormatAVault, parentID: GroupID = null): Array<FormatAGroup> {
     const foundGroups = [];
     const getGroups = (parent: FormatAVault | FormatAGroup) => {
-        (parent.groups || []).forEach(subGroup => {
+        (parent.groups || []).forEach((subGroup) => {
             if (
                 parentID === null ||
                 (parentID === "0" && typeof (<any>subGroup).parentID === "undefined") ||

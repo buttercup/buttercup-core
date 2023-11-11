@@ -92,9 +92,9 @@ export class Group extends VaultItem {
         }
         // No trash or already in trash, so just delete:
         //  - Child groups
-        this.getGroups().forEach(group => group.delete(/* skip trash: */ true));
+        this.getGroups().forEach((group) => group.delete(/* skip trash: */ true));
         //  - Child entries
-        this.getEntries().forEach(entry => entry.delete(/* skip trash: */ true));
+        this.getEntries().forEach((entry) => entry.delete(/* skip trash: */ true));
         //  - This group
         this.vault.format.deleteGroup(this.id);
         const ind = this.vault._groups.indexOf(this);
@@ -123,7 +123,10 @@ export class Group extends VaultItem {
      * @memberof Group
      */
     findEntryByID(id: EntryID): Entry | null {
-        return getAllChildEntries(this.vault._entries, this.id).find(entry => entry.id === id) || null;
+        return (
+            getAllChildEntries(this.vault._entries, this.id).find((entry) => entry.id === id) ||
+            null
+        );
     }
 
     /**
@@ -135,7 +138,11 @@ export class Group extends VaultItem {
      * @memberof Group
      */
     findEntriesByProperty(property: RegExp | string, value: RegExp | string): Array<Entry> {
-        return findEntriesByProperty(getAllChildEntries(this.vault._entries, this.id), property, value);
+        return findEntriesByProperty(
+            getAllChildEntries(this.vault._entries, this.id),
+            property,
+            value
+        );
     }
 
     /**
@@ -145,7 +152,9 @@ export class Group extends VaultItem {
      * @memberof Group
      */
     findGroupByID(id: GroupID): Group | null {
-        return getAllChildGroups(this.vault._groups, this.id).find(group => group.id === id) || null;
+        return (
+            getAllChildGroups(this.vault._groups, this.id).find((group) => group.id === id) || null
+        );
     }
 
     /**
@@ -181,7 +190,7 @@ export class Group extends VaultItem {
      * @memberof Group
      */
     getEntries(): Array<Entry> {
-        return this.vault._entries.filter(entry => entry.getGroup() === this);
+        return this.vault._entries.filter((entry) => entry.getGroup() === this);
     }
 
     /**
@@ -190,7 +199,7 @@ export class Group extends VaultItem {
      * @memberof Group
      */
     getGroups(): Array<Group> {
-        return this.vault._groups.filter(group => group.getParentGroup() === this);
+        return this.vault._groups.filter((group) => group.getParentGroup() === this);
     }
 
     /**
@@ -203,9 +212,11 @@ export class Group extends VaultItem {
     getParentGroup(): Group | null {
         const parentID = this.vault.format.getItemParentID(this._source);
         if (parentID === "0") return null;
-        const parentGroup = this.vault._groups.find(g => g.id === parentID);
+        const parentGroup = this.vault._groups.find((g) => g.id === parentID);
         if (!parentGroup) {
-            throw new Error(`Failed getting parent Group: No group containing child ID found: ${this.id}`);
+            throw new Error(
+                `Failed getting parent Group: No group containing child ID found: ${this.id}`
+            );
         }
         return parentGroup;
     }

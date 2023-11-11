@@ -29,8 +29,8 @@ function dataViewsAreEqual(a, b) {
     return true;
 }
 
-describe("AttachmentManager", function() {
-    beforeEach(async function() {
+describe("AttachmentManager", function () {
+    beforeEach(async function () {
         this.vaultManager = new VaultManager({
             cacheStorage: new MemoryStorageInterface(),
             sourceStorage: new MemoryStorageInterface()
@@ -50,11 +50,11 @@ describe("AttachmentManager", function() {
         this.entry = this.group.createEntry("Account").setProperty("username", "user@test.com");
     });
 
-    it("supports attachments", async function() {
+    it("supports attachments", async function () {
         expect(this.source.supportsAttachments()).to.be.true;
     });
 
-    it("can add attachments", async function() {
+    it("can add attachments", async function () {
         const attachmentID = AttachmentManager.newAttachmentID();
         const nowDate = new Date();
         await this.source.attachmentManager.setAttachment(
@@ -65,9 +65,15 @@ describe("AttachmentManager", function() {
             "image/png",
             nowDate
         );
-        const attachmentDataRead = await this.source.attachmentManager.getAttachment(this.entry, attachmentID);
+        const attachmentDataRead = await this.source.attachmentManager.getAttachment(
+            this.entry,
+            attachmentID
+        );
         expect(arrayBuffersAreEqual(IMAGE_DATA, attachmentDataRead)).to.be.true;
-        const details = await this.source.attachmentManager.getAttachmentDetails(this.entry, attachmentID);
+        const details = await this.source.attachmentManager.getAttachmentDetails(
+            this.entry,
+            attachmentID
+        );
         expect(details).to.deep.equal({
             id: attachmentID,
             name: "image.png",
@@ -79,8 +85,8 @@ describe("AttachmentManager", function() {
         });
     });
 
-    describe("with an attachment added", function() {
-        beforeEach(async function() {
+    describe("with an attachment added", function () {
+        beforeEach(async function () {
             this.attachmentData = IMAGE_DATA;
             this.attachmentID = AttachmentManager.newAttachmentID();
             this.attachmentID2 = AttachmentManager.newAttachmentID();
@@ -100,7 +106,7 @@ describe("AttachmentManager", function() {
             );
         });
 
-        it("supports removing attachments", async function() {
+        it("supports removing attachments", async function () {
             await this.source.attachmentManager.removeAttachment(this.entry, this.attachmentID);
             try {
                 await this.source.attachmentManager.getAttachment(this.entry, this.attachmentID);
@@ -109,15 +115,15 @@ describe("AttachmentManager", function() {
             }
         });
 
-        it("supports listing attachments", async function() {
+        it("supports listing attachments", async function () {
             const attachments = await this.source.attachmentManager.listAttachments(this.entry);
-            const files = attachments.map(item => item.name);
+            const files = attachments.map((item) => item.name);
             expect(files).to.have.a.lengthOf(2);
             expect(files).to.contain("image.png");
             expect(files).to.contain("test.png");
         });
 
-        it("fails to add an attachment if there's not enough free space", async function() {
+        it("fails to add an attachment if there's not enough free space", async function () {
             const getAvailableStorage = (this.source._datasource.getAvailableStorage = sinon
                 .stub()
                 .callsFake(() => Promise.resolve(1000)));
@@ -140,7 +146,7 @@ describe("AttachmentManager", function() {
             expect(this.source._datasource.putAttachment.notCalled).to.be.true;
         });
 
-        it("fails to update an attachment if there's not enough free space", async function() {
+        it("fails to update an attachment if there's not enough free space", async function () {
             const getAvailableStorage = (this.source._datasource.getAvailableStorage = sinon
                 .stub()
                 .callsFake(() => Promise.resolve(1000)));

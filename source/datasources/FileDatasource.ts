@@ -37,7 +37,9 @@ export class FileDatasource extends TextDatasource {
     constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig } = credentialData as { datasource: DatasourceConfigurationFile };
+        const { datasource: datasourceConfig } = credentialData as {
+            datasource: DatasourceConfigurationFile;
+        };
         const { path } = datasourceConfig;
         this._filename = path;
         this.mkdir = pify(fs.mkdir);
@@ -80,7 +82,12 @@ export class FileDatasource extends TextDatasource {
      */
     async getAttachment(vaultID: VaultID, attachmentID: string): Promise<BufferLike> {
         await this._ensureAttachmentsPaths(vaultID);
-        const attachmentPath = path.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
+        const attachmentPath = path.join(
+            this.baseDir,
+            ".buttercup",
+            vaultID,
+            `${attachmentID}.${ATTACHMENT_EXT}`
+        );
         return this.readFile(attachmentPath);
     }
 
@@ -125,7 +132,12 @@ export class FileDatasource extends TextDatasource {
         details: AttachmentDetails
     ): Promise<void> {
         await this._ensureAttachmentsPaths(vaultID);
-        const attachmentPath = path.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
+        const attachmentPath = path.join(
+            this.baseDir,
+            ".buttercup",
+            vaultID,
+            `${attachmentID}.${ATTACHMENT_EXT}`
+        );
         await this.writeFile(attachmentPath, buffer);
     }
 
@@ -137,7 +149,12 @@ export class FileDatasource extends TextDatasource {
      */
     async removeAttachment(vaultID: VaultID, attachmentID: string): Promise<void> {
         await this._ensureAttachmentsPaths(vaultID);
-        const attachmentPath = path.join(this.baseDir, ".buttercup", vaultID, `${attachmentID}.${ATTACHMENT_EXT}`);
+        const attachmentPath = path.join(
+            this.baseDir,
+            ".buttercup",
+            vaultID,
+            `${attachmentID}.${ATTACHMENT_EXT}`
+        );
         await this.unlink(attachmentPath);
     }
 
@@ -149,7 +166,9 @@ export class FileDatasource extends TextDatasource {
      * @memberof FileDatasource
      */
     save(history: History, credentials: Credentials): Promise<EncryptedContent> {
-        return super.save(history, credentials).then(encrypted => this.writeFile(this.path, encrypted));
+        return super
+            .save(history, credentials)
+            .then((encrypted) => this.writeFile(this.path, encrypted));
     }
 
     /**

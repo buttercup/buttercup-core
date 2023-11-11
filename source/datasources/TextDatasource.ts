@@ -73,7 +73,10 @@ export class TextDatasource extends EventEmitter {
      * @returns True/False if in preflight, as to whether or not the password change
      *  can be performed at this time, or undefined when not in preflight mode.
      */
-    async changePassword(newCredentials: Credentials, preflight: boolean): Promise<boolean | undefined> {
+    async changePassword(
+        newCredentials: Credentials,
+        preflight: boolean
+    ): Promise<boolean | undefined> {
         throw new Error("Changing password not supported");
     }
 
@@ -130,10 +133,7 @@ export class TextDatasource extends EventEmitter {
         if (!content) {
             throw new Error("Failed getting ID: Datasource requires content for ID generation");
         }
-        return hash
-            .sha256()
-            .update(content)
-            .digest("hex");
+        return hash.sha256().update(content).digest("hex");
     }
 
     /**

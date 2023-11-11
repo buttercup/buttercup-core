@@ -29,11 +29,15 @@ async function createTextSourceCredentials() {
     );
 }
 
-describe("vault conversion: A to B", function() {
-    beforeEach(async function() {
+describe("vault conversion: A to B", function () {
+    beforeEach(async function () {
         setDefaultFormat(VaultFormatA);
         this.sourceCredentials = await createTextSourceCredentials();
-        this.vaultSource = new VaultSource("Test", "text", await this.sourceCredentials.toSecureString());
+        this.vaultSource = new VaultSource(
+            "Test",
+            "text",
+            await this.sourceCredentials.toSecureString()
+        );
         this.vaultManager = new VaultManager();
         await this.vaultManager.addSource(this.vaultSource);
         // Unlock
@@ -42,20 +46,20 @@ describe("vault conversion: A to B", function() {
         await this.vaultSource.convert(VaultFormatID.B);
     });
 
-    it("retains groups", function() {
+    it("retains groups", function () {
         const [generalGroup] = this.vaultSource.vault.findGroupsByTitle("General");
         expect(generalGroup.getTitle()).to.equal("General");
     });
 
-    it("retains entries", function() {
+    it("retains entries", function () {
         const [loginEntry] = this.vaultSource.vault.findEntriesByProperty("title", "Login");
         expect(loginEntry.getProperty("username")).to.equal("user");
     });
 
-    it("retains entry property history", function() {
+    it("retains entry property history", function () {
         const [loginEntry] = this.vaultSource.vault.findEntriesByProperty("title", "Login");
-        const changes = loginEntry.getChanges().filter(change => change.property === "password");
+        const changes = loginEntry.getChanges().filter((change) => change.property === "password");
         expect(changes).to.have.lengthOf(2);
-        expect(changes.map(change => change.value)).to.deep.equal(["test", "passw0rd"]);
+        expect(changes.map((change) => change.value)).to.deep.equal(["test", "passw0rd"]);
     });
 });

@@ -3,8 +3,8 @@ import { dirSync } from "tmp";
 import { Credentials, Vault, WebDAVDatasource } from "../../../dist/node/index.js";
 import { PASSWORD, PATH, PORT, USERNAME, createServer } from "../../resources/webdavServer.js";
 
-describe("WebDAVDatasource", function() {
-    beforeEach(async function() {
+describe("WebDAVDatasource", function () {
+    beforeEach(async function () {
         // Server
         this.dir = dirSync().name;
         this.server = createServer(this.dir, "basic");
@@ -29,11 +29,11 @@ describe("WebDAVDatasource", function() {
         );
     });
 
-    afterEach(async function() {
+    afterEach(async function () {
         await this.server.stop();
     });
 
-    it("supports saving and loading", async function() {
+    it("supports saving and loading", async function () {
         await this.datasource.save(this.vault.format.history, Credentials.fromPassword("test"));
         const { Format, history } = await this.datasource.load(Credentials.fromPassword("test"));
         const vault = Vault.createFromHistory(history, Format);

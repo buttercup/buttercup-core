@@ -29,7 +29,8 @@ export interface VaultManagerOptions {
 const DEFAULT_AUTO_UPDATE_DELAY = 1000 * 60 * 2.5; // 2.5 mins
 const NOOP = () => {};
 const STORAGE_KEY_PREFIX = "bcup_vaultmgr_";
-const STORAGE_KEY_PREFIX_TEST = /^bcup_vaultmgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+const STORAGE_KEY_PREFIX_TEST =
+    /^bcup_vaultmgr_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
 /**
  * Vault manager, to manage vault sources and their vaults
@@ -86,7 +87,7 @@ export class VaultManager extends EventEmitter {
      * @memberof VaultManager
      */
     get unlockedSources(): Array<VaultSource> {
-        return this._sources.filter(source => source.status === VaultSource.STATUS_UNLOCKED);
+        return this._sources.filter((source) => source.status === VaultSource.STATUS_UNLOCKED);
     }
 
     /**
@@ -106,11 +107,12 @@ export class VaultManager extends EventEmitter {
      */
     async addSource(source: VaultSource, opts: VaultManagerAddSourceOptions = {}) {
         const { order: orderOverride } = opts;
-        const existing = this._sources.find(src => src.id === source.id);
+        const existing = this._sources.find((src) => src.id === source.id);
         if (existing) return;
         await this.enqueueStateChange(async () => {
             source._vaultManager = this;
-            const newOrder = typeof orderOverride === "number" ? orderOverride : this.getNextOrder();
+            const newOrder =
+                typeof orderOverride === "number" ? orderOverride : this.getNextOrder();
             this._sources.push(source);
             // Configure the order
             source.order = newOrder;
@@ -131,7 +133,9 @@ export class VaultManager extends EventEmitter {
      * @memberof VaultManager
      */
     async dehydrate() {
-        await this.enqueueStateChange(() => Promise.all(this._sources.map(source => this.dehydrateSource(source))));
+        await this.enqueueStateChange(() =>
+            Promise.all(this._sources.map((source) => this.dehydrateSource(source)))
+        );
     }
 
     /**
@@ -141,7 +145,10 @@ export class VaultManager extends EventEmitter {
      * @memberof VaultManager
      */
     async dehydrateSource(sourceOrSourceID: VaultSource | VaultSourceID) {
-        const source = typeof sourceOrSourceID === "string" ? this.getSourceForID(sourceOrSourceID) : sourceOrSourceID;
+        const source =
+            typeof sourceOrSourceID === "string"
+                ? this.getSourceForID(sourceOrSourceID)
+                : sourceOrSourceID;
         const dehydratedString = await source.dehydrate();
         await this._storeDehydratedSource(source.id, dehydratedString);
     }
@@ -160,7 +167,7 @@ export class VaultManager extends EventEmitter {
      * @returns An array of snapshot objects
      */
     getLiveSnapshots(): Array<VaultLiveSnapshot> {
-        return this.unlockedSources.map(source => source.getLiveSnapshot());
+        return this.unlockedSources.map((source) => source.getLiveSnapshot());
     }
 
     /**
@@ -169,7 +176,7 @@ export class VaultManager extends EventEmitter {
      * @memberof VaultManager
      */
     getNextOrder(): number {
-        return Math.max(...this._sources.map(source => source._order), -1) + 1;
+        return Math.max(...this._sources.map((source) => source._order), -1) + 1;
     }
 
     /**
@@ -179,7 +186,7 @@ export class VaultManager extends EventEmitter {
      * @memberof VaultManager
      */
     getSourceForID(sourceID: VaultSourceID): VaultSource | null {
-        const source = this._sources.find(target => target.id && target.id === sourceID);
+        const source = this._sources.find((target) => target.id && target.id === sourceID);
         return source || null;
     }
 
@@ -188,7 +195,7 @@ export class VaultManager extends EventEmitter {
      * @memberof VaultManager
      */
     getUpdateableSources(): Array<VaultSource> {
-        return this._sources.filter(source => source.canBeUpdated());
+        return this._sources.filter((source) => source.canBeUpdated());
     }
 
     /**
@@ -234,13 +241,13 @@ export class VaultManager extends EventEmitter {
                     return retVal;
                 }
                 return (<Promise<any>>retVal)
-                    .then(res => {
+                    .then((res) => {
                         // Wait until after the promise has completed
                         // or failed:
                         restoreAutoUpdating();
                         return res;
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         restoreAutoUpdating();
                         throw err;
                     });
@@ -259,8 +266,8 @@ export class VaultManager extends EventEmitter {
         const storageKeys = await this._sourceStorage.getAllKeys();
         await Promise.all(
             storageKeys
-                .filter(key => STORAGE_KEY_PREFIX_TEST.test(key))
-                .map(async key => {
+                .filter((key) => STORAGE_KEY_PREFIX_TEST.test(key))
+                .map(async (key) => {
                     const dehydratedSource = await this._sourceStorage.getValue(key);
                     const source = VaultSource.rehydrate(dehydratedSource);
                     await this.addSource(source, {
@@ -280,7 +287,7 @@ export class VaultManager extends EventEmitter {
      */
     async removeSource(sourceID: VaultSourceID) {
         await this.enqueueStateChange(async () => {
-            const sourceIndex = this._sources.findIndex(source => source.id === sourceID);
+            const sourceIndex = this._sources.findIndex((source) => source.id === sourceID);
             if (sourceIndex === -1) {
                 throw new Layerr(`Failed removing source: No source found for ID: ${sourceID}`);
             }
@@ -310,7 +317,7 @@ export class VaultManager extends EventEmitter {
         const originalOrder = source._order;
         source._order = position;
         const movingUp = position < originalOrder;
-        this.sources.forEach(otherSource => {
+        this.sources.forEach((otherSource) => {
             if (otherSource.id !== sourceID) {
                 if (movingUp && otherSource._order >= position) {
                     otherSource._order += 1;
@@ -349,8 +356,8 @@ export class VaultManager extends EventEmitter {
      */
     async restoreLiveSnapshots(snapshots: Array<VaultLiveSnapshot>) {
         await Promise.all(
-            snapshots.map(async snapshot => {
-                const source = this.sources.find(src => (snapshot.sourceID = src.id));
+            snapshots.map(async (snapshot) => {
+                const source = this.sources.find((src) => (snapshot.sourceID = src.id));
                 if (!source || source.status !== VaultSourceStatus.Locked) {
                     // Skip source snapshot
                     return;
@@ -367,7 +374,10 @@ export class VaultManager extends EventEmitter {
      * @param delay Milliseconds between updates
      * @memberof VaultManager
      */
-    toggleAutoUpdating(enable: boolean = !this._autoUpdateEnabled, delay: number = this._autoUpdateDelay) {
+    toggleAutoUpdating(
+        enable: boolean = !this._autoUpdateEnabled,
+        delay: number = this._autoUpdateDelay
+    ) {
         if (enable) {
             this._autoUpdateDelay = delay;
             this._startAutoUpdateTimer();
@@ -384,8 +394,8 @@ export class VaultManager extends EventEmitter {
                 return;
             }
             await Promise.all(
-                updateableSources.map(source =>
-                    source.update().catch(err => {
+                updateableSources.map((source) =>
+                    source.update().catch((err) => {
                         // we don't return auto-update errors, but emit them
                         console.error(`Failed auto-updating source: ${source.id}`, err);
                         this.emit("autoUpdateFailed", { source, error: err });
@@ -401,8 +411,8 @@ export class VaultManager extends EventEmitter {
         const storageKeys = await this._sourceStorage.getAllKeys();
         await Promise.all(
             storageKeys
-                .filter(key => key && key.indexOf(legacyPrefix) === 0)
-                .map(async key => {
+                .filter((key) => key && key.indexOf(legacyPrefix) === 0)
+                .map(async (key) => {
                     const value = await this._sourceStorage.getValue(key);
                     if (!value) return;
                     const newKey = key.replace(legacyPrefix, STORAGE_KEY_PREFIX);

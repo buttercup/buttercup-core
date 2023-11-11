@@ -1,6 +1,9 @@
 import { newRawValue } from "./history.js";
 import { getDateString } from "../../tools/date.js";
-import { getAllEntries as getAllFormatAEntries, getAllGroups as getAllFormatAGroups } from "../formatA/tools.js";
+import {
+    getAllEntries as getAllFormatAEntries,
+    getAllGroups as getAllFormatAGroups
+} from "../formatA/tools.js";
 import {
     EntryPropertyType,
     FormatAEntry,
@@ -23,18 +26,20 @@ export function convertFormatAEntry(entry: FormatAEntry): FormatBEntry {
     };
     for (const key in formatBEntry.a) {
         const propChanges = changes.filter(
-            change => change.property === key && change.propertyType === EntryPropertyType.Attribute
+            (change) =>
+                change.property === key && change.propertyType === EntryPropertyType.Attribute
         );
-        formatBEntry.a[key].history = propChanges.map(propChange => ({
+        formatBEntry.a[key].history = propChanges.map((propChange) => ({
             value: propChange.newValue,
             updated: null
         }));
     }
     for (const key in formatBEntry.p) {
         const propChanges = changes.filter(
-            change => change.property === key && change.propertyType === EntryPropertyType.Property
+            (change) =>
+                change.property === key && change.propertyType === EntryPropertyType.Property
         );
-        formatBEntry.p[key].history = propChanges.map(propChange => ({
+        formatBEntry.p[key].history = propChanges.map((propChange) => ({
             value: propChange.newValue,
             updated: null
         }));
@@ -55,8 +60,8 @@ export function convertFormatAVault(vault: FormatAVault): FormatBVault {
     return {
         id: vault.id,
         a: flatKeyValueObjectToValuesObject(vault.attributes || {}),
-        g: getAllFormatAGroups(vault).map(group => convertFormatAGroup(group)),
-        e: getAllFormatAEntries(vault).map(entry => convertFormatAEntry(entry)),
+        g: getAllFormatAGroups(vault).map((group) => convertFormatAGroup(group)),
+        e: getAllFormatAEntries(vault).map((entry) => convertFormatAEntry(entry)),
         c: getDateString(),
         del: {
             e: {},
@@ -88,7 +93,9 @@ export function isFormatBGroup(group: FormatAGroup | FormatBGroup): group is For
  * This strips deleted properties.
  * @param valuesObj
  */
-export function valuesObjectToKeyValueObject(valuesObj: FormatBKeyValueObject): PropertyKeyValueObject {
+export function valuesObjectToKeyValueObject(
+    valuesObj: FormatBKeyValueObject
+): PropertyKeyValueObject {
     return Object.keys(valuesObj).reduce((output, key) => {
         if (valuesObj[key].deleted) return output;
         return Object.assign(output, {

@@ -29,7 +29,9 @@ export default class GoogleDriveDatasource extends TextDatasource {
     constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig } = credentialData as { datasource: DatasourceConfigurationGoogleDrive };
+        const { datasource: datasourceConfig } = credentialData as {
+            datasource: DatasourceConfigurationGoogleDrive;
+        };
         const { token, refreshToken, fileID } = datasourceConfig;
         this.fileID = fileID;
         this.token = token;
@@ -65,11 +67,11 @@ export default class GoogleDriveDatasource extends TextDatasource {
         }
         return this.client
             .getFileContents(this.fileID)
-            .then(content => {
+            .then((content) => {
                 this.setContent(content);
                 return super.load(credentials);
             })
-            .catch(err => {
+            .catch((err) => {
                 const { authFailure = false } = Layerr.info(err);
                 if (!authFailure) {
                     throw new Layerr(err, "Failed fetching Google Drive vault");
@@ -79,7 +81,7 @@ export default class GoogleDriveDatasource extends TextDatasource {
                 return this.authManager
                     .executeAuthHandlers(DATASOURCE_TYPE, this)
                     .then(() => this.load(credentials, true))
-                    .catch(err2 => {
+                    .catch((err2) => {
                         throw new Layerr(err2, "Failed fetching Google Drive vault");
                     });
             });
@@ -95,8 +97,8 @@ export default class GoogleDriveDatasource extends TextDatasource {
     save(history, credentials, hasAuthed = false) {
         return super
             .save(history, credentials)
-            .then(encryptedContent => this.client.putFileContents(encryptedContent, this.fileID))
-            .catch(err => {
+            .then((encryptedContent) => this.client.putFileContents(encryptedContent, this.fileID))
+            .catch((err) => {
                 const { authFailure = false } = Layerr.info(err);
                 if (!authFailure) {
                     throw new Layerr(err, "Failed saving Google Drive vault");
@@ -106,7 +108,7 @@ export default class GoogleDriveDatasource extends TextDatasource {
                 return this.authManager
                     .executeAuthHandlers(DATASOURCE_TYPE, this)
                     .then(() => this.save(history, credentials, true))
-                    .catch(err2 => {
+                    .catch((err2) => {
                         throw new Layerr(err2, "Failed saving Google Drive vault");
                     });
             });

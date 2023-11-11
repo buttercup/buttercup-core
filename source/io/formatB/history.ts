@@ -9,22 +9,35 @@ export function cloneValue(value: FormatBValue) {
         value: value.value,
         created: value.created,
         updated: value.updated,
-        history: value.history.map(item => Object.assign({}, item))
+        history: value.history.map((item) => Object.assign({}, item))
     };
 }
 
-function filterDuplicateHistoryItems(items: Array<FormatBValueHistoryItem>): Array<FormatBValueHistoryItem> {
+function filterDuplicateHistoryItems(
+    items: Array<FormatBValueHistoryItem>
+): Array<FormatBValueHistoryItem> {
     return items.filter(
         (thisItem, thisIndex, itemArr) =>
-            itemArr.findIndex(sub => sub.value === thisItem.value && sub.updated === thisItem.updated) === thisIndex
+            itemArr.findIndex(
+                (sub) => sub.value === thisItem.value && sub.updated === thisItem.updated
+            ) === thisIndex
     );
 }
 
-export function mergeValues(value1: FormatBValue, value2: FormatBValue, type: EntryPropertyType): FormatBValue {
-    const mostRecentValue = value1.updated > value2.updated || value1.updated === value2.updated ? value1 : value2;
+export function mergeValues(
+    value1: FormatBValue,
+    value2: FormatBValue,
+    type: EntryPropertyType
+): FormatBValue {
+    const mostRecentValue =
+        value1.updated > value2.updated || value1.updated === value2.updated ? value1 : value2;
     const olderValue = value1 === mostRecentValue ? value2 : value1;
     const newHistory = sortValueHistory(
-        filterDuplicateHistoryItems([valueToHistoryItem(olderValue), ...value1.history, ...value2.history])
+        filterDuplicateHistoryItems([
+            valueToHistoryItem(olderValue),
+            ...value1.history,
+            ...value2.history
+        ])
     );
     return {
         value: mostRecentValue.value,
@@ -44,7 +57,9 @@ export function newRawValue(value: string): FormatBValue {
     };
 }
 
-export function sortValueHistory(history: Array<FormatBValueHistoryItem>): Array<FormatBValueHistoryItem> {
+export function sortValueHistory(
+    history: Array<FormatBValueHistoryItem>
+): Array<FormatBValueHistoryItem> {
     return history.sort((a, b) => {
         if (a.updated > b.updated) {
             return -1;

@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { isVaultFacade } from "../../../dist/node/index.js";
 
-describe("facades/detection", function() {
-    describe("isVaultFacade", function() {
-        it("recognises facade-like objects", function() {
+describe("facades/detection", function () {
+    describe("isVaultFacade", function () {
+        it("recognises facade-like objects", function () {
             expect(
                 isVaultFacade({
                     type: "vault",
@@ -14,7 +14,7 @@ describe("facades/detection", function() {
             ).to.be.true;
         });
 
-        it("recognises non-facade-like objects", function() {
+        it("recognises non-facade-like objects", function () {
             expect(
                 isVaultFacade({
                     type: "vault",

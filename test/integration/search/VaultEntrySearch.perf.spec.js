@@ -12,7 +12,8 @@ const GROUPS_DEPTH = 3;
 function buildVault() {
     const vault = Vault.createWithDefaults();
     (function buildLevel(level = 1, parentGroup = null) {
-        const groupCount = level === GROUPS_DEPTH ? 0 : level === 1 ? GROUP_COUNT_TOP : GROUP_COUNT_SUB;
+        const groupCount =
+            level === GROUPS_DEPTH ? 0 : level === 1 ? GROUP_COUNT_TOP : GROUP_COUNT_SUB;
         const entryCount = parentGroup
             ? ENTRY_COUNT_MIN + Math.floor((ENTRY_COUNT_MAX - ENTRY_COUNT_MIN) * Math.random())
             : 0;
@@ -26,7 +27,10 @@ function buildVault() {
                 const entry = group.createEntry(`Test Entry ${g}/${e}`);
                 entry.setProperty("username", randomString({ length: 8, type: "distinguishable" }));
                 entry.setProperty("password", randomString({ length: 20 }));
-                entry.setProperty("url", `https://test.com/${randomString({ length: 30, type: "url-safe" })}`);
+                entry.setProperty(
+                    "url",
+                    `https://test.com/${randomString({ length: 30, type: "url-safe" })}`
+                );
                 for (let p = 0; p < ENTRY_PROP_COUNT; p += 1) {
                     const prop = randomString({ length: 8, type: "alphanumeric" });
                     entry.setProperty(prop, randomString({ length: 16, type: "alphanumeric" }));
@@ -39,26 +43,26 @@ function buildVault() {
     return vault;
 }
 
-describe("VaultEntrySearch", function() {
-    beforeEach(function() {
+describe("VaultEntrySearch", function () {
+    beforeEach(function () {
         this.vault = buildVault();
         this.storage = new MemoryStorageInterface();
         this.search = new VaultEntrySearch([this.vault], this.storage);
     });
 
-    it("should prepare in under 500 milliseconds", async function() {
+    it("should prepare in under 500 milliseconds", async function () {
         const start = Date.now();
         await this.search.prepare();
         const duration = Date.now() - start;
         expect(duration).to.be.below(500);
     });
 
-    describe("searchByTerm", function() {
-        beforeEach(async function() {
+    describe("searchByTerm", function () {
+        beforeEach(async function () {
             await this.search.prepare();
         });
 
-        it("should complete in under 100 milliseconds", function() {
+        it("should complete in under 100 milliseconds", function () {
             const start = Date.now();
             this.search.searchByTerm(randomString({ length: 16, type: "alphanumeric" }));
             const duration = Date.now() - start;
@@ -66,13 +70,13 @@ describe("VaultEntrySearch", function() {
         });
     });
 
-    describe("searchByURL", function() {
-        beforeEach(async function() {
+    describe("searchByURL", function () {
+        beforeEach(async function () {
             await this.search.prepare();
             this.url = `https://test.com/${randomString({ length: 30, type: "url-safe" })}`;
         });
 
-        it("should complete in under 100 milliseconds", function() {
+        it("should complete in under 100 milliseconds", function () {
             const start = Date.now();
             this.search.searchByURL(this.url);
             const duration = Date.now() - start;

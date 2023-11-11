@@ -9,7 +9,10 @@ const { Command } = Inigo;
  * @param parentGroupID The ID of the parent group
  * @returns An array of commands
  */
-export function describeVaultDataset(dataset: FormatAVault | FormatAGroup, parentGroupID: GroupID): History {
+export function describeVaultDataset(
+    dataset: FormatAVault | FormatAGroup,
+    parentGroupID: GroupID
+): History {
     const isVault = typeof (<FormatAVault>dataset).format === "string";
     const currentGroupID = isVault ? "0" : dataset.id;
     const entries = currentGroupID === "0" ? [] : (<FormatAGroup>dataset).entries || [];
@@ -25,13 +28,11 @@ export function describeVaultDataset(dataset: FormatAVault | FormatAGroup, paren
         }
         if (dataset.id) {
             commands.push(
-                Inigo.create(Command.ArchiveID)
-                    .addArgument(dataset.id)
-                    .generateCommand()
+                Inigo.create(Command.ArchiveID).addArgument(dataset.id).generateCommand()
             );
         }
         if (dataset.attributes) {
-            Object.keys(dataset.attributes).forEach(function(attributeName) {
+            Object.keys(dataset.attributes).forEach(function (attributeName) {
                 commands.push(
                     Inigo.create(Command.SetArchiveAttribute)
                         .addArgument(attributeName)
@@ -74,7 +75,7 @@ export function describeVaultDataset(dataset: FormatAVault | FormatAGroup, paren
         }
         commands.push(Inigo.generatePaddingCommand());
     }
-    entries.forEach(function(entry) {
+    entries.forEach(function (entry) {
         commands.push(
             Inigo.create(Command.CreateEntry)
                 .addArgument(currentGroupID)
@@ -82,7 +83,7 @@ export function describeVaultDataset(dataset: FormatAVault | FormatAGroup, paren
                 .generateCommand()
         );
         if (entry.properties) {
-            Object.keys(entry.properties).forEach(propertyName => {
+            Object.keys(entry.properties).forEach((propertyName) => {
                 commands.push(
                     Inigo.create(Command.SetEntryProperty)
                         .addArgument(entry.id)
@@ -107,7 +108,7 @@ export function describeVaultDataset(dataset: FormatAVault | FormatAGroup, paren
         }
         commands.push(Inigo.generatePaddingCommand());
     });
-    (dataset.groups || []).forEach(function(group) {
+    (dataset.groups || []).forEach(function (group) {
         commands = commands.concat(describeVaultDataset(group, currentGroupID));
     });
     return commands;

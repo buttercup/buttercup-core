@@ -1,7 +1,13 @@
 import { expect } from "chai";
-import { Credentials, MemoryDatasource, Vault, VaultFormatA, setDefaultFormat } from "../../dist/node/index.js";
+import {
+    Credentials,
+    MemoryDatasource,
+    Vault,
+    VaultFormatA,
+    setDefaultFormat
+} from "../../dist/node/index.js";
 
-describe("Format A", function() {
+describe("Format A", function () {
     function reduceCommandsToPadIDs(output, cmd) {
         const [method, id] = cmd.split(" ");
         if (method.toLowerCase() === "pad") {
@@ -10,20 +16,17 @@ describe("Format A", function() {
         return output;
     }
 
-    beforeEach(function() {
+    beforeEach(function () {
         setDefaultFormat(VaultFormatA);
     });
 
-    afterEach(function() {
+    afterEach(function () {
         setDefaultFormat();
     });
 
-    it("retains PAD IDs between loads", async function() {
+    it("retains PAD IDs between loads", async function () {
         let vault = new Vault();
-        vault
-            .createGroup("General")
-            .createGroup("Test")
-            .createGroup("Sub");
+        vault.createGroup("General").createGroup("Test").createGroup("Sub");
         const memStore = `formatATest-${Math.random()}`;
         const mds = new MemoryDatasource(
             Credentials.fromDatasource(
@@ -42,12 +45,9 @@ describe("Format A", function() {
         expect(idSet1).to.deep.equal(idSet2);
     });
 
-    it("retains PAD IDs between saves", async function() {
+    it("retains PAD IDs between saves", async function () {
         let vault = new Vault();
-        vault
-            .createGroup("General")
-            .createGroup("Test")
-            .createGroup("Sub");
+        vault.createGroup("General").createGroup("Test").createGroup("Sub");
         const memStore = `formatATest-${Math.random()}`;
         const mds = new MemoryDatasource(
             Credentials.fromDatasource(

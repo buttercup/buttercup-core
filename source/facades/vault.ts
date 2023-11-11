@@ -50,12 +50,12 @@ export function consumeGroupFacade(group: Group, facade: GroupFacade) {
     }
     // Check attributes
     Object.keys(existingAttributes)
-        .filter(attr => !attributes.hasOwnProperty(attr))
-        .forEach(attr => {
+        .filter((attr) => !attributes.hasOwnProperty(attr))
+        .forEach((attr) => {
             // Remove missing
             group.deleteAttribute(attr);
         });
-    Object.keys(attributes).forEach(attr => {
+    Object.keys(attributes).forEach((attr) => {
         if (!existingAttributes[attr] || existingAttributes[attr] !== attributes[attr]) {
             // Different value
             group.setAttribute(attr, attributes[attr]);
@@ -71,7 +71,11 @@ export function consumeGroupFacade(group: Group, facade: GroupFacade) {
  * @param options Options for the consumption
  * @memberof module:Buttercup
  */
-export function consumeVaultFacade(vault: Vault, facade: VaultFacade, options: ConsumeVaultFacadeOptions = {}) {
+export function consumeVaultFacade(
+    vault: Vault,
+    facade: VaultFacade,
+    options: ConsumeVaultFacadeOptions = {}
+) {
     if (facade._ver !== FACADE_VERSION) {
         throw new Error("Invalid vault facade version");
     }
@@ -92,11 +96,15 @@ export function consumeVaultFacade(vault: Vault, facade: VaultFacade, options: C
     }
     const newIDLookup = {};
     // Create comparison facade
-    let { groups: currentGroups, entries: currentEntries, attributes: currentAttributes } = createVaultFacade(vault);
+    let {
+        groups: currentGroups,
+        entries: currentEntries,
+        attributes: currentAttributes
+    } = createVaultFacade(vault);
     // Handle group removal
     if (!mergeMode) {
-        currentGroups.forEach(currentGroupFacade => {
-            const existing = groups.find(group => group.id === currentGroupFacade.id);
+        currentGroups.forEach((currentGroupFacade) => {
+            const existing = groups.find((group) => group.id === currentGroupFacade.id);
             if (!existing) {
                 // Removed, so delete
                 const targetItem = vault.findGroupByID(currentGroupFacade.id);
@@ -115,7 +123,7 @@ export function consumeVaultFacade(vault: Vault, facade: VaultFacade, options: C
     let groupsLeft = [...groups];
     while (groupsLeft.length > 0) {
         let originalLength = groupsLeft.length;
-        groupsLeft = groupsLeft.filter(groupRaw => {
+        groupsLeft = groupsLeft.filter((groupRaw) => {
             const groupFacade = Object.assign({}, groupRaw);
             const groupIDTargetedNew = idSignifiesNew(groupFacade.id, mergeMode);
             if (!groupFacade.id || groupIDTargetedNew) {
@@ -129,14 +137,15 @@ export function consumeVaultFacade(vault: Vault, facade: VaultFacade, options: C
                     }
                 }
                 // Handle group addition
-                const targetParent = targetParentID === "0" ? vault : vault.findGroupByID(targetParentID);
+                const targetParent =
+                    targetParentID === "0" ? vault : vault.findGroupByID(targetParentID);
                 const newGroupInst = targetParent.createGroup(groupFacade.title);
                 if (groupIDTargetedNew) {
                     newIDLookup[`${groupFacade.id}`] = newGroupInst.id;
                 }
                 groupFacade.id = newGroupInst.id;
             } else {
-                if (!currentGroups.find(group => group.id === groupFacade.id)) {
+                if (!currentGroups.find((group) => group.id === groupFacade.id)) {
                     // Group had an ID which is now gone, so it was removed
                     return;
                 }
@@ -156,14 +165,14 @@ export function consumeVaultFacade(vault: Vault, facade: VaultFacade, options: C
             return false; // remove from loop - done
         });
         if (originalLength === groupsLeft.length) {
-            const ids = groupsLeft.map(group => group.id);
+            const ids = groupsLeft.map((group) => group.id);
             throw new Error(`Processing facade stalled: groups not resolveable: ${ids.join(", ")}`);
         }
     }
     // Handle entry removal
     if (!mergeMode) {
-        currentEntries.forEach(currentEntryFacade => {
-            const existing = entries.find(entry => entry.id === currentEntryFacade.id);
+        currentEntries.forEach((currentEntryFacade) => {
+            const existing = entries.find((entry) => entry.id === currentEntryFacade.id);
             if (!existing) {
                 // Removed, so delete
                 const entry = vault.findEntryByID(currentEntryFacade.id);
@@ -177,7 +186,7 @@ export function consumeVaultFacade(vault: Vault, facade: VaultFacade, options: C
     currentEntries = getEntriesFacades(vault);
     // Manage other entry operations
     let entriesLeft = [...entries];
-    entriesLeft = entriesLeft.filter(entryRaw => {
+    entriesLeft = entriesLeft.filter((entryRaw) => {
         const entryFacade = Object.assign({}, entryRaw);
         const entryIDTargetedNew = idSignifiesNew(entryFacade.id, mergeMode);
         if (!entryFacade.id || entryIDTargetedNew) {
@@ -203,7 +212,7 @@ export function consumeVaultFacade(vault: Vault, facade: VaultFacade, options: C
                 newEntry.setAttribute(FacadeType, entryFacade.type);
             }
         } else {
-            if (!currentEntries.find(entry => entry.id === entryRaw.id)) {
+            if (!currentEntries.find((entry) => entry.id === entryRaw.id)) {
                 // Entry had an ID which is now gone, so it was removed
                 return;
             }
@@ -221,12 +230,12 @@ export function consumeVaultFacade(vault: Vault, facade: VaultFacade, options: C
     });
     // Check attributes
     Object.keys(currentAttributes)
-        .filter(attr => !attributes.hasOwnProperty(attr))
-        .forEach(attr => {
+        .filter((attr) => !attributes.hasOwnProperty(attr))
+        .forEach((attr) => {
             // Remove missing
             vault.deleteAttribute(attr);
         });
-    Object.keys(attributes).forEach(attr => {
+    Object.keys(attributes).forEach((attr) => {
         // Skip this attribute if it's the attachments key
         if (attr === Vault.Attribute.AttachmentsKey && mergeMode) return;
         if (!currentAttributes[attr] || currentAttributes[attr] !== attributes[attr]) {
@@ -242,7 +251,10 @@ export function consumeVaultFacade(vault: Vault, facade: VaultFacade, options: C
  * @returns A vault facade
  * @memberof module:Buttercup
  */
-export function createVaultFacade(vault: Vault, options: CreateVaultFacadeOptions = {}): VaultFacade {
+export function createVaultFacade(
+    vault: Vault,
+    options: CreateVaultFacadeOptions = {}
+): VaultFacade {
     const { includeTrash = true } = options;
     return {
         _tag: generateUUID(),
@@ -278,7 +290,9 @@ export function createGroupFacade(group: Group, parentID: GroupID = "0"): GroupF
  * @returns An array of entry facades
  */
 function getEntriesFacades(vault: Vault, options: GetGroupEntriesFacadesOptions = {}) {
-    return vault.getGroups().reduce((output, group) => [...output, ...getGroupEntriesFacades(group, options)], []);
+    return vault
+        .getGroups()
+        .reduce((output, group) => [...output, ...getGroupEntriesFacades(group, options)], []);
 }
 
 /**
@@ -298,7 +312,7 @@ function getGroupEntriesFacades(
         }
         return [...facades, Object.assign({}, createEntryFacade(entry))];
     }, []);
-    entryCollection.getGroups().forEach(group => {
+    entryCollection.getGroups().forEach((group) => {
         facades.push(...getGroupEntriesFacades(group, options));
     });
     return facades;
@@ -316,6 +330,9 @@ function getGroupsFacades(vault: Vault, options: GetGroupsFacadesOptions = {}): 
         if (includeTrash === false && (group.isTrash() || group.isInTrash())) {
             return output;
         }
-        return [...output, createGroupFacade(group, group.vault.format.getItemParentID(group._source))];
+        return [
+            ...output,
+            createGroupFacade(group, group.vault.format.getItemParentID(group._source))
+        ];
     }, []);
 }

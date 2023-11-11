@@ -2,9 +2,9 @@ import { expect } from "chai";
 import { fileSync } from "tmp";
 import { Credentials, VaultManager, VaultSource } from "../../dist/node/index.js";
 
-describe("VaultManager", function() {
-    describe("with file datasource", function() {
-        beforeEach(async function() {
+describe("VaultManager", function () {
+    describe("with file datasource", function () {
+        beforeEach(async function () {
             this.vaultManager = new VaultManager({
                 autoUpdate: false
             });
@@ -40,12 +40,12 @@ describe("VaultManager", function() {
             });
         });
 
-        afterEach(function() {
+        afterEach(function () {
             this.tmp1.removeCallback();
             this.tmp2.removeCallback();
         });
 
-        it("can change password", async function() {
+        it("can change password", async function () {
             await this.vaultSource1.changeMasterPassword("test", "test2");
             expect(this.vaultSource1.status).to.equal(VaultSource.STATUS_UNLOCKED);
             await this.vaultSource1.lock();
@@ -53,16 +53,16 @@ describe("VaultManager", function() {
             expect(this.vaultSource1.status).to.equal(VaultSource.STATUS_UNLOCKED);
         });
 
-        describe("sources", function() {
-            it("stores sources initially in the order they were added", function() {
+        describe("sources", function () {
+            it("stores sources initially in the order they were added", function () {
                 const [source1, source2] = this.vaultManager.sources;
                 expect(source1.id).to.equal(this.vaultSource1.id);
                 expect(source2.id).to.equal(this.vaultSource2.id);
             });
         });
 
-        describe("reorderSource", function() {
-            it("changes the order of sources", async function() {
+        describe("reorderSource", function () {
+            it("changes the order of sources", async function () {
                 await this.vaultManager.reorderSource(this.vaultSource2.id, 0);
                 const [source1, source2] = this.vaultManager.sources;
                 expect(source1.id).to.equal(this.vaultSource2.id);

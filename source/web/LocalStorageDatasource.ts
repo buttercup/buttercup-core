@@ -61,7 +61,7 @@ export default class LocalStorageDatasource extends TextDatasource {
      * @memberof LocalStorageDatasource
      */
     save(history: History, credentials: Credentials): Promise<EncryptedContent> {
-        return super.save(history, credentials).then(async encrypted => {
+        return super.save(history, credentials).then(async (encrypted) => {
             await this._storage.setValue("vault", encrypted);
             return encrypted;
         });

@@ -7,11 +7,11 @@ export function findEntriesByProperty(
     property: string | RegExp,
     value: string | RegExp
 ): Array<Entry> {
-    return entries.filter(entry => {
+    return entries.filter((entry) => {
         const props = entry.getProperties(property);
         const propKeys = Object.keys(props);
         return propKeys.length > 0
-            ? propKeys.some(propKey => {
+            ? propKeys.some((propKey) => {
                   const itemValue = props[propKey];
                   if (value instanceof RegExp) {
                       return value.test(itemValue);
@@ -25,11 +25,13 @@ export function findEntriesByProperty(
 
 export function getAllChildEntries(entries: Array<Entry>, parentGroupID: GroupID): Array<Entry> {
     if (parentGroupID === "0") return [...entries];
-    return entries.filter(entry => {
+    return entries.filter((entry) => {
         const parentID = entry.vault.format.getItemParentID(entry._source);
         if (parentID === parentGroupID) return true;
         let nextParent: Group;
-        while ((nextParent = nextParent ? nextParent.getParentGroup() : entry.getGroup()) !== null) {
+        while (
+            (nextParent = nextParent ? nextParent.getParentGroup() : entry.getGroup()) !== null
+        ) {
             if (nextParent.id === parentGroupID) {
                 return true;
             }

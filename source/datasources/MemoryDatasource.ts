@@ -32,7 +32,9 @@ export class MemoryDatasource extends TextDatasource {
     constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig } = credentialData as { datasource: DatasourceConfigurationMemory };
+        const { datasource: datasourceConfig } = credentialData as {
+            datasource: DatasourceConfigurationMemory;
+        };
         const { property } = datasourceConfig;
         this._property = property;
         this._store = global[property] = global[property] || {};
@@ -131,7 +133,7 @@ export class MemoryDatasource extends TextDatasource {
      * @memberof MemoryDatasource
      */
     save(history: History, credentials: Credentials): Promise<EncryptedContent> {
-        return super.save(history, credentials).then(encrypted => {
+        return super.save(history, credentials).then((encrypted) => {
             this._store.vault = encrypted;
             return encrypted;
         });

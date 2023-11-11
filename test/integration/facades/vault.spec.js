@@ -12,17 +12,19 @@ import {
     createVaultFacade
 } from "../../../dist/node/index.js";
 
-describe("Vault facades", function() {
+describe("Vault facades", function () {
     [
         [VaultFormatA, "A"],
         [VaultFormatB, "B"]
     ].forEach(([Format, formatName]) => {
-        describe(`Format: ${formatName}`, function() {
-            beforeEach(function() {
+        describe(`Format: ${formatName}`, function () {
+            beforeEach(function () {
                 this.vault = new Vault(Format);
                 this.vault.setAttribute("ATTR_1", "one").setAttribute("ATTR_2", "two");
                 const topGroup = (this.topGroup = this.vault.createGroup("top"));
-                const bottomGroup = (this.bottomGroup = topGroup.createGroup("one").createGroup("two"));
+                const bottomGroup = (this.bottomGroup = topGroup
+                    .createGroup("one")
+                    .createGroup("two"));
                 this.otherGroup = this.vault.createGroup("other");
                 topGroup.createGroup("three");
                 this.entryA = topGroup
@@ -37,40 +39,52 @@ describe("Vault facades", function() {
                     .setProperty("password", "pa55w0rd");
             });
 
-            describe("consumeVaultFacade", function() {
-                it("supports deleting entries", function() {
+            describe("consumeVaultFacade", function () {
+                it("supports deleting entries", function () {
                     const facade = createVaultFacade(this.vault);
                     const entryAID = this.entryA.id;
-                    const targetEntryIndex = facade.entries.findIndex(entryFacade => entryFacade.id === entryAID);
+                    const targetEntryIndex = facade.entries.findIndex(
+                        (entryFacade) => entryFacade.id === entryAID
+                    );
                     expect(this.vault.findEntryByID(entryAID)).to.be.an.instanceOf(Entry);
                     facade.entries.splice(targetEntryIndex, 1);
                     consumeVaultFacade(this.vault, facade);
                     expect(this.vault.findEntryByID(entryAID)).to.be.null;
                 });
 
-                it("supports moving entries", function() {
+                it("supports moving entries", function () {
                     const facade = createVaultFacade(this.vault);
-                    const targetEntryIndex = facade.entries.findIndex(entryFacade => entryFacade.id === this.entryA.id);
+                    const targetEntryIndex = facade.entries.findIndex(
+                        (entryFacade) => entryFacade.id === this.entryA.id
+                    );
                     facade.entries[targetEntryIndex].parentID = this.bottomGroup.id;
-                    expect(this.vault.findEntryByID(this.entryA.id).getGroup().id).to.equal(this.topGroup.id);
+                    expect(this.vault.findEntryByID(this.entryA.id).getGroup().id).to.equal(
+                        this.topGroup.id
+                    );
                     consumeVaultFacade(this.vault, facade);
-                    expect(this.vault.findEntryByID(this.entryA.id).getGroup().id).to.equal(this.bottomGroup.id);
+                    expect(this.vault.findEntryByID(this.entryA.id).getGroup().id).to.equal(
+                        this.bottomGroup.id
+                    );
                 });
 
-                it("supports adding entries", function() {
+                it("supports adding entries", function () {
                     const facade = createVaultFacade(this.vault);
                     const entryFacade = createEntryFacade();
-                    entryFacade.fields.find(field => field.property === "title").value = "Test Entry";
+                    entryFacade.fields.find((field) => field.property === "title").value =
+                        "Test Entry";
                     entryFacade.parentID = this.topGroup.id;
                     facade.entries.push(entryFacade);
                     consumeVaultFacade(this.vault, facade);
-                    expect(this.vault.findEntriesByProperty("title", "Test Entry")[0]).to.be.an.instanceOf(Entry);
+                    expect(
+                        this.vault.findEntriesByProperty("title", "Test Entry")[0]
+                    ).to.be.an.instanceOf(Entry);
                 });
 
-                it("supports adding entries of other types", function() {
+                it("supports adding entries of other types", function () {
                     const facade = createVaultFacade(this.vault);
                     const entryFacade = createEntryFacade(null, { type: "note" });
-                    entryFacade.fields.find(field => field.property === "title").value = "Test Entry";
+                    entryFacade.fields.find((field) => field.property === "title").value =
+                        "Test Entry";
                     entryFacade.parentID = this.topGroup.id;
                     facade.entries.push(entryFacade);
                     consumeVaultFacade(this.vault, facade);
@@ -78,11 +92,13 @@ describe("Vault facades", function() {
                     expect(entry.getAttribute(Entry.Attributes.FacadeType)).to.equal("note");
                 });
 
-                it("supports deleting groups", function() {
+                it("supports deleting groups", function () {
                     const facade = createVaultFacade(this.vault);
                     const topGroupID = this.topGroup.id;
                     const bottomGroupID = this.bottomGroup.id;
-                    const groupIndex = facade.groups.findIndex(groupFacade => groupFacade.id === topGroupID);
+                    const groupIndex = facade.groups.findIndex(
+                        (groupFacade) => groupFacade.id === topGroupID
+                    );
                     facade.groups.splice(groupIndex, 1);
                     expect(this.vault.findGroupByID(topGroupID)).to.be.an.instanceOf(Group);
                     consumeVaultFacade(this.vault, facade);
@@ -90,26 +106,30 @@ describe("Vault facades", function() {
                     expect(this.vault.findGroupByID(bottomGroupID)).to.be.null;
                 });
 
-                it("supports moving groups", function() {
+                it("supports moving groups", function () {
                     const facade = createVaultFacade(this.vault);
                     const otherGroupID = this.otherGroup.id;
                     const bottomGroupID = this.bottomGroup.id;
-                    facade.groups.find(groupFacade => groupFacade.id === bottomGroupID).parentID = otherGroupID;
+                    facade.groups.find((groupFacade) => groupFacade.id === bottomGroupID).parentID =
+                        otherGroupID;
                     consumeVaultFacade(this.vault, facade);
                     const otherGroupChildren = this.vault.findGroupByID(otherGroupID).getGroups();
                     expect(otherGroupChildren[0].id).to.equal(bottomGroupID);
                 });
 
-                it("supports moving groups to root", function() {
+                it("supports moving groups to root", function () {
                     const facade = createVaultFacade(this.vault);
                     const bottomGroupID = this.bottomGroup.id;
-                    facade.groups.find(groupFacade => groupFacade.id === bottomGroupID).parentID = "0";
+                    facade.groups.find((groupFacade) => groupFacade.id === bottomGroupID).parentID =
+                        "0";
                     consumeVaultFacade(this.vault, facade);
-                    expect(this.vault.getGroups().find(g => g.id === bottomGroupID)).to.be.an.instanceOf(Group);
+                    expect(
+                        this.vault.getGroups().find((g) => g.id === bottomGroupID)
+                    ).to.be.an.instanceOf(Group);
                 });
 
-                describe("using ID placeholders", function() {
-                    beforeEach(function() {
+                describe("using ID placeholders", function () {
+                    beforeEach(function () {
                         const facade = createVaultFacade(this.vault);
                         const newGroup1 = createGroupFacade();
                         newGroup1.title = "New 1";
@@ -128,7 +148,7 @@ describe("Vault facades", function() {
                         consumeVaultFacade(this.vault, facade);
                     });
 
-                    it("can create new items with relationships", function() {
+                    it("can create new items with relationships", function () {
                         const [parentGroup] = this.vault.findGroupsByTitle("New 1");
                         expect(parentGroup).to.be.an.instanceOf(Group);
                         const [childGroup] = parentGroup.getGroups();
@@ -139,8 +159,8 @@ describe("Vault facades", function() {
                     });
                 });
 
-                describe("in merge mode", function() {
-                    beforeEach(function() {
+                describe("in merge mode", function () {
+                    beforeEach(function () {
                         const newVault = new Vault();
                         newVault
                             .createGroup("merged")
@@ -153,63 +173,66 @@ describe("Vault facades", function() {
                         });
                     });
 
-                    it("can merge-in new items", function() {
+                    it("can merge-in new items", function () {
                         const [mergeGroup] = this.vault.findGroupsByTitle("merged");
                         expect(mergeGroup).to.be.an.instanceOf(Group);
                         const [mergeEntry] = this.vault.findEntriesByProperty("title", "merged");
                         expect(mergeEntry).to.be.an.instanceOf(Entry);
                     });
 
-                    it("retains existing items", function() {
+                    it("retains existing items", function () {
                         const [existingGroup] = this.vault.findGroupsByTitle("three");
                         expect(existingGroup).to.be.an.instanceOf(Group);
-                        const [existingEntry] = this.vault.findEntriesByProperty("title", "Entry A");
+                        const [existingEntry] = this.vault.findEntriesByProperty(
+                            "title",
+                            "Entry A"
+                        );
                         expect(existingEntry).to.be.an.instanceOf(Entry);
                     });
                 });
             });
 
-            describe("createVaultFacade", function() {
-                beforeEach(function() {
+            describe("createVaultFacade", function () {
+                beforeEach(function () {
                     const trash = this.vault.createGroup("Trash");
                     trash.createGroup("Trash sub");
                     this.trashEntry = trash.createEntry("Trash entry");
                     trash.setAttribute(Group.Attribute.Role, "trash");
                 });
 
-                it("outputs expected groups", function() {
+                it("outputs expected groups", function () {
                     const facade = createVaultFacade(this.vault);
-                    const groupNames = facade.groups.map(group => group.title);
+                    const groupNames = facade.groups.map((group) => group.title);
                     expect(groupNames).to.contain("top");
                     expect(groupNames).to.contain("two");
                     expect(groupNames).to.contain("Trash");
                     expect(groupNames).to.contain("Trash sub");
                 });
 
-                it("does not output trash group when configured", function() {
+                it("does not output trash group when configured", function () {
                     const facade = createVaultFacade(this.vault, {
                         includeTrash: false
                     });
-                    const groupNames = facade.groups.map(group => group.title);
+                    const groupNames = facade.groups.map((group) => group.title);
                     expect(groupNames).to.contain("top");
                     expect(groupNames).to.contain("two");
                     expect(groupNames).to.not.contain("Trash");
                     expect(groupNames).to.not.contain("Trash sub");
                 });
 
-                it("outputs expected entries", function() {
+                it("outputs expected entries", function () {
                     const facade = createVaultFacade(this.vault);
-                    const entryIDs = facade.entries.map(entry => entry.id);
+                    const entryIDs = facade.entries.map((entry) => entry.id);
                     expect(entryIDs).to.include(this.entryA.id);
                     expect(entryIDs).to.include(this.entryB.id);
                     expect(entryIDs).to.include(this.trashEntry.id);
                 });
 
-                it("does not output entries in trash when configured", function() {
+                it("does not output entries in trash when configured", function () {
                     const facade = createVaultFacade(this.vault, {
                         includeTrash: false
                     });
-                    const entryIDs = facade.entries.map(entry => entry.id);
+                    const entryIDs = facade.entries.map((entry) => entry.id);
                     expect(entryIDs).to.include(this.entryA.id);
                     expect(entryIDs).to.include(this.entryB.id);
                     expect(entryIDs).to.not.include(this.trashEntry.id);

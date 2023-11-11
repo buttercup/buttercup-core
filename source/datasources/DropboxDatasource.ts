@@ -3,7 +3,12 @@ import { fireInstantiationHandlers, registerDatasource } from "./register.js";
 import { Credentials } from "../credentials/Credentials.js";
 import { getCredentials } from "../credentials/channel.js";
 import { getSharedAppEnv } from "../env/appEnv.js";
-import { DatasourceConfigurationDropbox, DatasourceLoadedData, EncryptedContent, History } from "../types.js";
+import {
+    DatasourceConfigurationDropbox,
+    DatasourceLoadedData,
+    EncryptedContent,
+    History
+} from "../types.js";
 
 /**
  * Datasource for Dropbox archives
@@ -23,7 +28,9 @@ export default class DropboxDatasource extends TextDatasource {
     constructor(credentials: Credentials) {
         super(credentials);
         const { data: credentialData } = getCredentials(credentials.id);
-        const { datasource: datasourceConfig } = credentialData as { datasource: DatasourceConfigurationDropbox };
+        const { datasource: datasourceConfig } = credentialData as {
+            datasource: DatasourceConfigurationDropbox;
+        };
         const { token, path } = datasourceConfig;
         this.path = path;
         this.token = token;
@@ -55,7 +62,7 @@ export default class DropboxDatasource extends TextDatasource {
         if (this.hasContent) {
             return super.load(credentials);
         }
-        return this.client.getFileContents(this.path).then(content => {
+        return this.client.getFileContents(this.path).then((content) => {
             this.setContent(content);
             return super.load(credentials);
         });
@@ -71,7 +78,9 @@ export default class DropboxDatasource extends TextDatasource {
     save(history: History, credentials: Credentials): Promise<EncryptedContent> {
         return super
             .save(history, credentials)
-            .then((encryptedContent: EncryptedContent) => this.client.putFileContents(this.path, encryptedContent));
+            .then((encryptedContent: EncryptedContent) =>
+                this.client.putFileContents(this.path, encryptedContent)
+            );
     }
 
     /**

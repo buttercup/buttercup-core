@@ -19,10 +19,7 @@ import {
 async function createTextSourceCredentials() {
     const vault = new Vault();
     const general = vault.createGroup("General");
-    general
-        .createEntry("Login")
-        .setProperty("username", "user")
-        .setProperty("password", "test");
+    general.createEntry("Login").setProperty("username", "user").setProperty("password", "test");
     const tds = new TextDatasource(Credentials.fromDatasource({ type: "text" }, "test"));
     const encrypted = await tds.save(vault.format.getHistory(), Credentials.fromPassword("test"));
     return Credentials.fromDatasource(
@@ -34,13 +31,13 @@ async function createTextSourceCredentials() {
     );
 }
 
-describe("VaultManager", function() {
+describe("VaultManager", function () {
     [
         ["Format A", VaultFormatA],
         ["Format B", VaultFormatB]
     ].forEach(([name, Format]) => {
-        describe(`using ${name}`, function() {
-            beforeEach(function(done) {
+        describe(`using ${name}`, function () {
+            beforeEach(function (done) {
                 setDefaultFormat(Format);
                 this.vaultManager = new VaultManager({
                     autoUpdate: false
@@ -53,12 +50,12 @@ describe("VaultManager", function() {
                 });
             });
 
-            afterEach(function() {
+            afterEach(function () {
                 this.cleanup();
                 setDefaultFormat();
             });
 
-            it("can migrate & unlock legacy vaults", async function() {
+            it("can migrate & unlock legacy vaults", async function () {
                 await this.vaultManager._sourceStorage.setValue(
                     `${VaultManager.STORAGE_KEY_PREFIX}b441aecb-810c-4665-a164-9d2e9a2b932a`,
                     JSON.stringify({
@@ -80,7 +77,7 @@ describe("VaultManager", function() {
                 expect(this.vaultManager.sources[0].status).to.equal(VaultSource.STATUS_UNLOCKED);
             });
 
-            it("can merge differences between local and remote vaults", async function() {
+            it("can merge differences between local and remote vaults", async function () {
                 const vaultPath = join(this.tmpDir, "vault.bcup");
                 // Init first
                 const creds = Credentials.fromDatasource(
@@ -113,51 +110,72 @@ describe("VaultManager", function() {
         });
     });
 
-    describe("with VaultSource", function() {
-        beforeEach(async function() {
+    describe("with VaultSource", function () {
+        beforeEach(async function () {
             this.vaultManager = new VaultManager({
                 autoUpdate: false
             });
             const sourceCredentials = await createTextSourceCredentials();
-            this.vaultSource = new VaultSource("Test", "text", await sourceCredentials.toSecureString());
+            this.vaultSource = new VaultSource(
+                "Test",
+                "text",
+                await sourceCredentials.toSecureString()
+            );
             await this.vaultManager.addSource(this.vaultSource);
         });
 
-        it("supports renaming sources", function(done) {
+        it("supports renaming sources", function (done) {
             sinon.spy(this.vaultManager, "dehydrateSource");
             const updatedSpy = sinon.spy();
             this.vaultSource.on("updated", updatedSpy);
             this.vaultSource.rename("new-name");
             setTimeout(() => {
                 expect(updatedSpy.calledOnce).to.be.true;
-                expect(this.vaultManager.dehydrateSource.calledWithExactly(this.vaultSource)).to.be.true;
+                expect(this.vaultManager.dehydrateSource.calledWithExactly(this.vaultSource)).to.be
+                    .true;
                 done();
             }, 100);
         });
 
-        it("stores offline copies (unlock)", async function() {
-            expect(await this.vaultSource.checkOfflineCopy()).to.equal(false, "Should not have offline copy");
+        it("stores offline copies (unlock)", async function () {
+            expect(await this.vaultSource.checkOfflineCopy()).to.equal(
+                false,
+                "Should not have offline copy"
+            );
             await this.vaultSource.unlock(Credentials.fromPassword("test"));
-            expect(await this.vaultSource.checkOfflineCopy()).to.equal(true, "Should have offline copy");
+            expect(await this.vaultSource.checkOfflineCopy()).to.equal(
+                true,
+                "Should have offline copy"
+            );
         });
 
-        it("stores offline copies (save)", async function() {
+        it("stores offline copies (save)", async function () {
             await this.vaultSource.unlock(Credentials.fromPassword("test"), {
                 storeOfflineCopy: false
             });
-            expect(await this.vaultSource.checkOfflineCopy()).to.equal(false, "Should not have offline copy");
+            expect(await this.vaultSource.checkOfflineCopy()).to.equal(
+                false,
+                "Should not have offline copy"
+            );
             await this.vaultSource.save();
-            expect(await this.vaultSource.checkOfflineCopy()).to.equal(true, "Should have offline copy");
+            expect(await this.vaultSource.checkOfflineCopy()).to.equal(
+                true,
+                "Should have offline copy"
+            );
         });
 
-        it("loads from offline copies", async function() {
+        it("loads from offline copies", async function () {
             await this.vaultSource.unlock(Credentials.fromPassword("test"));
             await this.vaultSource.lock();
             await this.vaultSource.unlock(Credentials.fromPassword("test"), {
                 loadOfflineCopy: true
             });
             expect(this.vaultSource.status).to.equal(VaultSourceStatus.Unlocked);
-            expect(this.vaultSource.vault.format).to.have.property("readOnly", true, "Vault should be read-only");
+            expect(this.vaultSource.vault.format).to.have.property(
+                "readOnly",
+                true,
+                "Vault should be read-only"
+            );
         });
     });
 });
