@@ -1,7 +1,7 @@
 import EventEmitter from "eventemitter3";
 import hash from "hash.js";
 import { Credentials } from "../credentials/Credentials.js";
-import { credentialsAllowsPurpose, getCredentials } from "../credentials/channel.js";
+import { credentialsAllowsPurpose, getCredentials } from "../credentials/memory/credentials.js";
 import { detectFormat, getFormatForID } from "../io/formatRouter.js";
 import { fireInstantiationHandlers, registerDatasource } from "./register.js";
 import {

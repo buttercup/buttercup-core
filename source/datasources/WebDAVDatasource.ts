@@ -4,7 +4,7 @@ import { TextDatasource } from "./TextDatasource.js";
 import { fireInstantiationHandlers, registerDatasource } from "./register.js";
 import { getSharedAppEnv } from "../env/appEnv.js";
 import { Credentials } from "../credentials/Credentials.js";
-import { getCredentials } from "../credentials/channel.js";
+import { getCredentials } from "../credentials/memory/credentials.js";
 import { ATTACHMENT_EXT } from "../tools/attachments.js";
 import {
     AttachmentDetails,

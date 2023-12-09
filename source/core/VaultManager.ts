@@ -165,6 +165,7 @@ export class VaultManager extends EventEmitter {
     /**
      * Fetch all currently available Live Snapshots of vaults
      * @returns An array of snapshot objects
+     * @deprecated Will be removed in next major - insecure
      */
     getLiveSnapshots(): Array<VaultLiveSnapshot> {
         return this.unlockedSources.map((source) => source.getLiveSnapshot());
@@ -353,6 +354,7 @@ export class VaultManager extends EventEmitter {
     /**
      * Restore all sources from snapshots that were taken previously
      * @param snapshots An array of snapshot objects
+     * @deprecated Will be removed in next major - insecure
      */
     async restoreLiveSnapshots(snapshots: Array<VaultLiveSnapshot>) {
         await Promise.all(

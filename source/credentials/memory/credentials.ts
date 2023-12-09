@@ -1,6 +1,6 @@
-import { CredentialsPayload } from "../types.js";
+import { CredentialsPayload } from "../../types.js";
 
-const __store = {};
+const __store: Record<string, CredentialsPayload | null> = {};
 
 export function credentialsAllowsPurpose(id: string, purpose: string): boolean {
     const { purposes } = getCredentials(id);

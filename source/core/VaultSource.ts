@@ -3,7 +3,8 @@ import { ChannelQueue } from "@buttercup/channel-queue";
 import { Layerr } from "layerr";
 import { Vault } from "./Vault.js";
 import { Credentials } from "../credentials/Credentials.js";
-import { getCredentials, setCredentials } from "../credentials/channel.js";
+import { getCredentials, setCredentials } from "../credentials/memory/credentials.js";
+import { getMasterPassword, setMasterPassword } from "../credentials/memory/password.js";
 import { getUniqueID } from "../tools/encoding.js";
 import {
     getSourceOfflineArchive,
@@ -17,8 +18,8 @@ import { TextDatasource } from "../datasources/TextDatasource.js";
 import { VaultManager } from "./VaultManager.js";
 import { convertFormatAVault } from "../io/formatB/conversion.js";
 import { VaultFormatB } from "../index.common.js";
-import { VaultFormatID, VaultLiveSnapshot, VaultSourceID, VaultSourceStatus } from "../types.js";
 import { getFormatForID } from "../io/formatRouter.js";
+import { VaultFormatID, VaultLiveSnapshot, VaultSourceID, VaultSourceStatus } from "../types.js";
 
 interface StateChangeEnqueuedFunction {
     (): void | Promise<any>;
@@ -272,8 +273,8 @@ export class VaultSource extends EventEmitter {
             await this.unlock(Credentials.fromPassword(oldPassword));
         } else {
             // Unlocked, so check password..
-            const credentials = getCredentials((<Credentials>this._credentials).id);
-            if (credentials.masterPassword !== oldPassword) {
+            const masterPassword = getMasterPassword((<Credentials>this._credentials).id);
+            if (masterPassword !== oldPassword) {
                 throw new Error("Old password does not match current unlocked instance value");
             }
             // ..and then update
@@ -296,8 +297,7 @@ export class VaultSource extends EventEmitter {
             this._credentials as Credentials,
             oldPassword
         );
-        const newCreds = getCredentials(newCredentials.id);
-        newCreds.masterPassword = newPassword;
+        setMasterPassword(newCredentials.id, newPassword);
         await this._updateVaultCredentials(newCredentials);
         // Re-lock if it was locked earlier
         if (wasLocked) {
@@ -385,19 +385,23 @@ export class VaultSource extends EventEmitter {
     /**
      * Get a live snapshot of the current unlocked state
      * @returns A snapshot object
+     * @deprecated Will be removed in next major - insecure
      */
     getLiveSnapshot(): VaultLiveSnapshot {
         if (this.status !== VaultSourceStatus.Unlocked) {
             throw new Layerr("Not possible to fetch live snapshot: Vault is not unlocked");
         }
-        const credentials = getCredentials((this._credentials as Credentials).id);
+        const credentialsID = (this._credentials as Credentials).id;
+        const credentials = getCredentials(credentialsID);
         if (!credentials) {
             throw new Layerr("Failed fetching live snapshot: Invalid credentials data");
         }
+        const masterPassword = getMasterPassword(credentialsID);
         return {
             credentials,
             formatID: this.vault._format.getFormat().getFormatID(),
             formatSource: this.vault._format.source,
+            masterPassword,
             sourceID: this.id,
             version: "1a"
         };
@@ -533,6 +537,7 @@ export class VaultSource extends EventEmitter {
     /**
      * Restore unlocked state from a live snapshot
      * @param snapshot The snapshot taken previously
+     * @deprecated Will be removed in next major - insecure
      */
     async restoreFromLiveSnapshot(snapshot: VaultLiveSnapshot): Promise<void> {
         if (this.status !== VaultSourceStatus.Locked) {
@@ -546,12 +551,12 @@ export class VaultSource extends EventEmitter {
         // Setup credentials and datasource
         const credentials = (this._credentials = new Credentials(
             snapshot.credentials.data,
-            snapshot.credentials.masterPassword
+            snapshot.masterPassword
         ));
         setCredentials(credentials.id, snapshot.credentials);
         // Initialise datasource
         const datasource = (this._datasource = credentialsToDatasource(
-            Credentials.fromCredentials(credentials, snapshot.credentials.masterPassword)
+            Credentials.fromCredentials(credentials, snapshot.masterPassword)
         ));
         datasource.sourceID = this.id;
         // Setup vault
@@ -650,7 +655,7 @@ export class VaultSource extends EventEmitter {
                 `Failed unlocking source: Source in invalid state (${this.status}): ${this.id}`
             );
         }
-        const { masterPassword } = getCredentials(vaultCredentials.id);
+        const masterPassword = getMasterPassword(vaultCredentials.id);
         const originalCredentials = this._credentials;
         this._status = VaultSource.STATUS_PENDING;
         await this._enqueueStateChange(async () => {
@@ -813,7 +818,7 @@ export class VaultSource extends EventEmitter {
                 `Failed updating source credentials: Source is not unlocked: ${this.id}`
             );
         }
-        const { masterPassword } = getCredentials((<Credentials>this._credentials).id);
+        const masterPassword = getMasterPassword((<Credentials>this._credentials).id);
         this._credentials = Credentials.fromCredentials(
             this._datasource.credentials,
             masterPassword

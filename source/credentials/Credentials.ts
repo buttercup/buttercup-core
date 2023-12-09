@@ -1,6 +1,7 @@
 import { generateUUID } from "../tools/uuid.js";
-import { credentialsAllowsPurpose, getCredentials, setCredentials } from "./channel.js";
+import { credentialsAllowsPurpose, getCredentials, setCredentials } from "./memory/credentials.js";
 import { getSharedAppEnv } from "../env/appEnv.js";
+import { getMasterPassword, setMasterPassword } from "./memory/password.js";
 import { CredentialsData, CredentialsPayload, DatasourceConfiguration } from "../types.js";
 
 /**
@@ -85,7 +86,8 @@ export class Credentials {
             throw new Error("Master password is required for credentials cloning");
         }
         const credentialsData = getCredentials(credentials.id);
-        if (credentialsData.masterPassword !== masterPassword) {
+        const credentialsPassword = getMasterPassword(credentials.id);
+        if (credentialsPassword !== masterPassword) {
             throw new Error("Master password does not match that of the credentials to be cloned");
         }
         const newData = JSON.parse(JSON.stringify(credentialsData.data));
@@ -134,29 +136,27 @@ export class Credentials {
      * @param masterPassword The password for decryption
      * @returns A promise that resolves with the new instance
      */
-    static fromSecureString(content: string, masterPassword: string): Promise<Credentials> {
+    static async fromSecureString(content: string, masterPassword: string): Promise<Credentials> {
         const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
-        return decrypt(unsignEncryptedContent(content), masterPassword)
-            .then((decryptedContent: string) => JSON.parse(decryptedContent))
-            .then((credentialsData: any) => {
-                // Handle compatibility updates for legacy credentials
-                if (credentialsData.datasource) {
-                    if (typeof credentialsData.datasource === "string") {
-                        credentialsData.datasource = JSON.parse(credentialsData.datasource);
-                    }
-                    // Move username and password INTO the datasource config, as
-                    // they relate to the remote connection/source
-                    if (credentialsData.username) {
-                        credentialsData.datasource.username = credentialsData.username;
-                        delete credentialsData.username;
-                    }
-                    if (credentialsData.password) {
-                        credentialsData.datasource.password = credentialsData.password;
-                        delete credentialsData.password;
-                    }
-                }
-                return new Credentials(credentialsData, masterPassword);
-            });
+        const decryptedContent = await decrypt(unsignEncryptedContent(content), masterPassword);
+        const credentialsData = JSON.parse(decryptedContent);
+        // Handle compatibility updates for legacy credentials
+        if (credentialsData.datasource) {
+            if (typeof credentialsData.datasource === "string") {
+                credentialsData.datasource = JSON.parse(credentialsData.datasource);
+            }
+            // Move username and password INTO the datasource config, as
+            // they relate to the remote connection/source
+            if (credentialsData.username) {
+                credentialsData.datasource.username = credentialsData.username;
+                delete credentialsData.username;
+            }
+            if (credentialsData.password) {
+                credentialsData.datasource.password = credentialsData.password;
+                delete credentialsData.password;
+            }
+        }
+        return new Credentials(credentialsData, masterPassword);
     }
 
     /**
@@ -190,10 +190,10 @@ export class Credentials {
         });
         setCredentials(id, {
             data: obj,
-            masterPassword,
             purposes: Credentials.allPurposes(),
             open: false
         });
+        setMasterPassword(id, masterPassword);
     }
 
     /**
@@ -279,7 +279,8 @@ export class Credentials {
             throw new Error("Credential purposes don't allow for secure exports");
         }
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
-        const { data, masterPassword } = getCredentials(this.id);
+        const { data } = getCredentials(this.id);
+        const masterPassword = getMasterPassword(this.id);
         if (typeof masterPassword !== "string") {
             throw new Error(
                 "Cannot convert Credentials to string: master password was not set or is invalid"

@@ -2,7 +2,7 @@ import { ORPHANS_GROUP_TITLE, VaultFormat } from "./VaultFormat.js";
 import { Vault } from "../core/Vault.js";
 import { generateUUID } from "../tools/uuid.js";
 import { getSharedAppEnv } from "../env/appEnv.js";
-import { getCredentials } from "../credentials/channel.js";
+import { getMasterPassword } from "../credentials/memory/password.js";
 import { Credentials } from "../credentials/Credentials.js";
 import { historyArrayToString, historyStringToArray } from "./common.js";
 import {
@@ -51,7 +51,7 @@ export class VaultFormatB extends VaultFormat {
     static encodeRaw(rawContent: History, credentials: Credentials): Promise<string> {
         const compress = getSharedAppEnv().getProperty("compression/v2/compressText");
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
-        const { masterPassword } = getCredentials(credentials.id);
+        const masterPassword = getMasterPassword(credentials.id);
         return Promise.resolve()
             .then(() => historyArrayToString(rawContent))
             .then((history) => compress(history))
@@ -78,7 +78,7 @@ export class VaultFormatB extends VaultFormat {
     static parseEncrypted(encryptedContent: string, credentials: Credentials): Promise<History> {
         const decompress = getSharedAppEnv().getProperty("compression/v2/decompressText");
         const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
-        const { masterPassword } = getCredentials(credentials.id);
+        const masterPassword = getMasterPassword(credentials.id);
         return Promise.resolve()
             .then(() => {
                 if (!hasValidSignature(encryptedContent)) {

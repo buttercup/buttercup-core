@@ -17,7 +17,6 @@ export interface CredentialsData {
 
 export interface CredentialsPayload {
     data: CredentialsData;
-    masterPassword: string | null;
     purposes: Array<string>;
     open: boolean;
 }
@@ -262,6 +261,7 @@ export interface VaultLiveSnapshot {
     credentials: CredentialsPayload;
     formatID: VaultFormatID;
     formatSource: FormatAVault | FormatBVault;
+    masterPassword: string;
     sourceID: VaultSourceID;
     version: "1a";
 }

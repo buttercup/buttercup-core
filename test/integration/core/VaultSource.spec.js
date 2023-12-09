@@ -93,8 +93,8 @@ describe("VaultSource", function () {
                     it("can collect relevant data", function () {
                         const snapshot = this.vaultSource.getLiveSnapshot();
                         expect(snapshot)
-                            .to.have.nested.property("credentials.masterPassword")
-                            .that.is.a("string");
+                            .to.have.nested.property("credentials.data")
+                            .that.is.an("object");
                         expect(snapshot).to.have.property("formatID", Format.getFormatID());
                         expect(snapshot).to.have.property("version", "1a");
                     });

@@ -43,7 +43,7 @@ import VaultComparator from "./formatA/VaultComparator.js";
 import { getSharedAppEnv } from "../env/appEnv.js";
 import { decodeStringValue, isEncoded } from "../tools/encoding.js";
 import { generateUUID } from "../tools/uuid.js";
-import { getCredentials } from "../credentials/channel.js";
+import { getMasterPassword } from "../credentials/memory/password.js";
 import { historyArrayToString, historyStringToArray } from "./common.js";
 import { smartStripRemovedAssets } from "./formatA/merge.js";
 import {
@@ -99,7 +99,7 @@ export class VaultFormatA extends VaultFormat {
     static async encodeRaw(rawContent: History, credentials: Credentials): Promise<string> {
         const compress = getSharedAppEnv().getProperty("compression/v1/compressText");
         const encrypt = getSharedAppEnv().getProperty("crypto/v1/encryptText");
-        const { masterPassword } = getCredentials(credentials.id);
+        const masterPassword = getMasterPassword(credentials.id);
         return Promise.resolve()
             .then(() => historyArrayToString(rawContent))
             .then((history) => compress(history))
@@ -152,7 +152,7 @@ export class VaultFormatA extends VaultFormat {
     static parseEncrypted(encryptedContent: string, credentials: Credentials): Promise<History> {
         const decompress = getSharedAppEnv().getProperty("compression/v1/decompressText");
         const decrypt = getSharedAppEnv().getProperty("crypto/v1/decryptText");
-        const { masterPassword } = getCredentials(credentials.id);
+        const masterPassword = getMasterPassword(credentials.id);
         return Promise.resolve()
             .then(() => {
                 if (!hasValidSignature(encryptedContent)) {

@@ -67,14 +67,20 @@ describe("VaultSource with custom datasource", function () {
 
     it("provides open credentials on unlock", function () {
         const { _datasource: datasource } = this.vaultSourceOpen;
-        expect(datasource.initData).to.have.property("masterPassword", "test");
+        expect(datasource.initData).to.have.nested.property(
+            "data.datasource.type",
+            this.datasourceTypeOpen
+        );
         expect(datasource.initData).to.have.property("open", true);
     });
 
     it("provides open credentials on load", async function () {
         await this.vaultSourceOpen.localDiffersFromRemote();
         const { _datasource: datasource } = this.vaultSourceOpen;
-        expect(datasource.loadData).to.have.property("masterPassword", "test");
+        expect(datasource.loadData).to.have.nested.property(
+            "data.datasource.type",
+            this.datasourceTypeOpen
+        );
         expect(datasource.loadData).to.have.property("open", true);
     });
 
