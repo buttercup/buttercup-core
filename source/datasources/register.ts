@@ -1,4 +1,5 @@
-import { getCredentials } from "../credentials/channel.js";
+import { getCredentials } from "../credentials/memory/credentials.js";
+import { getMasterPassword } from "../credentials/memory/password.js";
 import { Credentials } from "../credentials/Credentials.js";
 import { TextDatasource } from "./TextDatasource.js";
 
@@ -61,9 +62,9 @@ export function prepareDatasourceCredentials(
     typeOverride: string = null
 ): Credentials {
     const {
-        data: { datasource },
-        masterPassword
+        data: { datasource }
     } = getCredentials(credentials.id);
+    const masterPassword = getMasterPassword(credentials.id);
     const datasourceType = typeOverride || datasource.type || "";
     const { open = false } = __datasourceFlags[datasourceType] || {};
     if (!open) {

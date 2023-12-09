@@ -1,6 +1,6 @@
 import { fireInstantiationHandlers, registerDatasource } from "../datasources/register.js";
 import { TextDatasource } from "../datasources/TextDatasource.js";
-import { getCredentials } from "../credentials/channel.js";
+import { getCredentials } from "../credentials/memory/credentials.js";
 import { buildClient } from "./localFileClient.js";
 import { Credentials } from "../credentials/Credentials.js";
 import {

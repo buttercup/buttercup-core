@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Credentials, GoogleDriveDatasource } from "../../../dist/node/index.js";
-import { getCredentials } from "../../../dist/node/credentials/channel.js";
+import { getCredentials } from "../../../dist/node/credentials/memory/credentials.js";
 
 describe("datasources/GoogleDriveDatasource", function () {
     beforeEach(function () {

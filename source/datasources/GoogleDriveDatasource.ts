@@ -4,8 +4,8 @@ import DatasourceAuthManager from "./DatasourceAuthManager.js";
 import { TextDatasource } from "./TextDatasource.js";
 import { fireInstantiationHandlers, registerDatasource } from "./register.js";
 import { Credentials } from "../credentials/Credentials.js";
-import { getCredentials } from "../credentials/channel.js";
-import { DatasourceConfigurationGoogleDrive } from "../types.js";
+import { getCredentials } from "../credentials/memory/credentials.js";
+import { DatasourceConfigurationGoogleDrive, DatasourceLoadedData, History } from "../types.js";
 
 const DATASOURCE_TYPE = "googledrive";
 
@@ -23,7 +23,7 @@ export default class GoogleDriveDatasource extends TextDatasource {
 
     /**
      * Datasource for Google Drive connections
-     * @param {Credentials} credentials The credentials instance with which to
+     * @param credentials The credentials instance with which to
      *  configure the datasource with
      */
     constructor(credentials: Credentials) {
@@ -57,11 +57,11 @@ export default class GoogleDriveDatasource extends TextDatasource {
 
     /**
      * Load an archive from the datasource
-     * @param {Credentials} credentials The credentials for decryption
-     * @returns {Promise.<LoadedVaultData>} A promise that resolves archive history
+     * @param credentials The credentials for decryption
+     * @returns A promise that resolves archive history
      * @memberof GoogleDriveDatasource
      */
-    load(credentials, hasAuthed = false) {
+    load(credentials: Credentials, hasAuthed: boolean = false): Promise<DatasourceLoadedData> {
         if (this.hasContent) {
             return super.load(credentials);
         }
@@ -89,12 +89,12 @@ export default class GoogleDriveDatasource extends TextDatasource {
 
     /**
      * Save an archive using the datasource
-     * @param {Array.<String>} history The archive history to save
-     * @param {Credentials} credentials The credentials to save with
-     * @returns {Promise} A promise that resolves when saving has completed
+     * @param history The archive history to save
+     * @param credentials The credentials to save with
+     * @returns A promise that resolves when saving has completed
      * @memberof GoogleDriveDatasource
      */
-    save(history, credentials, hasAuthed = false) {
+    save(history: History, credentials: Credentials, hasAuthed: boolean = false) {
         return super
             .save(history, credentials)
             .then((encryptedContent) => this.client.putFileContents(encryptedContent, this.fileID))
@@ -116,7 +116,7 @@ export default class GoogleDriveDatasource extends TextDatasource {
 
     /**
      * Whether or not the datasource supports bypassing remote fetch operations
-     * @returns {Boolean} True if content can be set to bypass fetch operations,
+     * @returns True if content can be set to bypass fetch operations,
      *  false otherwise
      * @memberof GoogleDriveDatasource
      */
