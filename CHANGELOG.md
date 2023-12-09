@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v7.4.0
+_2023-12-09_
+
+ * `Credentials` master password handling upgrade
+   * [#336](https://github.com/buttercup/buttercup-core/issues/336) CVE-2023-41646
+
 ## v7.3.0
 _2023-11-11_
 
