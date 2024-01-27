@@ -59,6 +59,8 @@ export class Vault extends EventEmitter {
 
     _onCommandExec: () => void;
 
+    _tagMap: Map<string, Array<EntryID>> = new Map();
+
     /**
      * The vault format
      * @readonly
@@ -171,6 +173,12 @@ export class Vault extends EventEmitter {
         return findEntriesByProperty(this._entries, property, value);
     }
 
+    findEntriesByTag(tag: string): Array<Entry> {
+        const tagLower = tag.toLowerCase();
+        const entryIDs = this._tagMap.has(tagLower) ? this._tagMap.get(tagLower) : [];
+        return entryIDs.map((id) => this.findEntryByID(id));
+    }
+
     /**
      * Find a group by its ID
      * @param id The group ID to search for
@@ -207,6 +215,14 @@ export class Vault extends EventEmitter {
      */
     getAllGroups(): Array<Group> {
         return [...this._groups];
+    }
+
+    /**
+     * Get all registered entry tags
+     * @returns An array of tag strings
+     */
+    getAllTags(): Array<string> {
+        return [...this._tagMap.keys()];
     }
 
     /**
@@ -273,6 +289,23 @@ export class Vault extends EventEmitter {
             const id = this.format.getItemID(rawEntry);
             if (!this._entries.find((e) => e.id === id)) {
                 this._entries.push(new Entry(this, rawEntry));
+            }
+        });
+    }
+
+    _rebuildTags() {
+        this._tagMap = new Map();
+        this.getAllEntries().forEach((entry) => {
+            const tags = entry.getTags();
+            for (const tag of tags) {
+                const tagLower = tag.toLowerCase();
+                const existingIDs = this._tagMap.has(tagLower)
+                    ? [...this._tagMap.get(tagLower)]
+                    : [];
+                if (!existingIDs.includes(entry.id)) {
+                    existingIDs.push(entry.id);
+                }
+                this._tagMap.set(tagLower, existingIDs);
             }
         });
     }

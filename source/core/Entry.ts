@@ -57,10 +57,11 @@ export class Entry extends VaultItem {
     addTags(...tags: Array<string>): this {
         const current = new Set(this.getTags());
         for (const tag of tags) {
-            if (!isValidTag(tag)) {
-                throw new Error(`Cannot add entry tag: Invalid format: ${tag}`);
+            const tagLower = tag.toLowerCase();
+            if (!isValidTag(tagLower)) {
+                throw new Error(`Cannot add entry tag: Invalid format: ${tagLower}`);
             }
-            current.add(tag);
+            current.add(tagLower);
         }
         this.setAttribute(Entry.Attributes.Tags, [...current].join(","));
         return this;
@@ -275,7 +276,8 @@ export class Entry extends VaultItem {
     removeTags(...tags: Array<string>): this {
         const current = new Set(this.getTags());
         for (const tag of tags) {
-            current.delete(tag);
+            const tagLower = tag.toLowerCase();
+            current.delete(tagLower);
         }
         this.setAttribute(Entry.Attributes.Tags, [...current].join(","));
         return this;
