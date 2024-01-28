@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import {
+    Entry,
     EntryChangeType,
     EntryPropertyValueType,
     Group,
@@ -22,6 +23,7 @@ describe("core/Entry", function () {
                 this.group = this.vault.createGroup("test");
                 this.otherGroup = this.vault.createGroup("second");
                 this.entry = this.group.createEntry("entry");
+                this.entry.setAttribute(Entry.Attributes.Tags, "one,two,three");
                 this.entry.setAttribute("attrib", "ok");
                 this.entry.setAttribute("attrib2", "also-ok");
                 this.entry.setProperty("metakey", "metaval");
@@ -48,6 +50,31 @@ describe("core/Entry", function () {
                     expect(this.entry.permissions).to.contain(VaultPermission.Manage);
                     expect(this.entry.permissions).to.contain(VaultPermission.Read);
                     expect(this.entry.permissions).to.contain(VaultPermission.Write);
+                });
+            });
+
+            describe("addTags", function () {
+                it("adds tags", function () {
+                    this.entry.addTags("four", "five");
+                    expect(this.entry.getTags()).to.deep.equal([
+                        "one",
+                        "two",
+                        "three",
+                        "four",
+                        "five"
+                    ]);
+                });
+
+                it("throws adding tags with invalid characters", function () {
+                    expect(() => {
+                        this.entry.addTags("ok", "!");
+                    }).to.throw(/Invalid format/i);
+                });
+
+                it("throws adding empty", function () {
+                    expect(() => {
+                        this.entry.addTags("ok", "");
+                    }).to.throw(/Invalid format/i);
                 });
             });
 
@@ -94,7 +121,7 @@ describe("core/Entry", function () {
                 });
 
                 it("returns an object if no parameter is provided", function () {
-                    expect(this.entry.getAttribute()).to.deep.equal({
+                    expect(this.entry.getAttribute()).to.deep.include({
                         attrib: "ok",
                         attrib2: "also-ok"
                     });
@@ -218,6 +245,12 @@ describe("core/Entry", function () {
                 });
             });
 
+            describe("getTags", function () {
+                it("returns an array of strings", function () {
+                    expect(this.entry.getTags()).to.deep.equal(["one", "two", "three"]);
+                });
+            });
+
             describe("getURLs", function () {
                 it("returns an array of URLs", function () {
                     const urls = this.entry.getURLs();
@@ -240,6 +273,13 @@ describe("core/Entry", function () {
                     this.entry.moveToGroup(this.otherGroup);
                     expect(this.group.getEntries()).to.have.lengthOf(0);
                     expect(this.otherGroup.getEntries()).to.have.lengthOf(1);
+                });
+            });
+
+            describe("removeTags", function () {
+                it("removes tags", function () {
+                    this.entry.removeTags("one", "two");
+                    expect(this.entry.getTags()).to.deep.equal(["three"]);
                 });
             });
 
