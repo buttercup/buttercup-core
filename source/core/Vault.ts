@@ -194,6 +194,7 @@ export class Vault extends EventEmitter {
             return [...entryIDs].map((id) => this.findEntryByID(id));
         }
         const entryIDs = this._tagMap.has(tagLower) ? this._tagMap.get(tagLower) : [];
+        console.log("SEARCHING", entryIDs, this._tagMap);
         return entryIDs.map((id) => this.findEntryByID(id));
     }
 
@@ -309,6 +310,7 @@ export class Vault extends EventEmitter {
                 this._entries.push(new Entry(this, rawEntry));
             }
         });
+        this._rebuildTags();
     }
 
     _rebuildTags() {
