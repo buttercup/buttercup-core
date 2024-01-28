@@ -173,8 +173,26 @@ export class Vault extends EventEmitter {
         return findEntriesByProperty(this._entries, property, value);
     }
 
-    findEntriesByTag(tag: string): Array<Entry> {
+    /**
+     * Find entries by a certain tag
+     * @param tag The case-insensitive tag name
+     * @param exact Whether to match exact tag names or use partial
+     *  matching. Default is true (exact).
+     * @returns An array of entries
+     */
+    findEntriesByTag(tag: string, exact: boolean = true): Array<Entry> {
         const tagLower = tag.toLowerCase();
+        if (!exact) {
+            const entryIDs = new Set<string>();
+            for (const [currentTag, currentIDs] of this._tagMap.entries()) {
+                if (currentTag.toLowerCase().indexOf(tagLower) === 0) {
+                    for (const id of currentIDs) {
+                        entryIDs.add(id);
+                    }
+                }
+            }
+            return [...entryIDs].map((id) => this.findEntryByID(id));
+        }
         const entryIDs = this._tagMap.has(tagLower) ? this._tagMap.get(tagLower) : [];
         return entryIDs.map((id) => this.findEntryByID(id));
     }

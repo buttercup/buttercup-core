@@ -25,13 +25,14 @@ async function extractEntries(
             const properties = entry.getProperties();
             const urls = getEntryURLs(properties, EntryURLType.General);
             return {
+                domainScores: vaultScore[entry.id] || {},
+                entryType: entry.getType(),
+                groupID: entry.getGroup().id,
                 id: entry.id,
                 properties,
-                entryType: entry.getType(),
+                tags: entry.getTags(),
                 urls,
-                groupID: entry.getGroup().id,
-                vaultID: vault.id,
-                domainScores: vaultScore[entry.id] || {}
+                vaultID: vault.id
             };
         });
 }
