@@ -124,6 +124,40 @@ describe("core/Vault", function () {
         });
     });
 
+    describe("findEntriesByTag", function () {
+        beforeEach(function () {
+            this.vault = new Vault();
+            const group = this.vault.createGroup("test");
+            this.entry1 = group.createEntry("one").addTags("alpha", "new", "metal_material");
+            this.entry2 = group.createEntry("two").addTags("beta", "new", "metal_finish");
+            this.entry3 = group.createEntry("three").addTags("gamma", "old");
+        });
+
+        describe("using exact matching", function () {
+            it("returns correct results for single-matching tag", function () {
+                const foundEntries = this.vault.findEntriesByTag("alpha");
+                expect(foundEntries).to.have.lengthOf(1);
+                expect(foundEntries[0].id).to.equal(this.entry1.id);
+            });
+
+            it("returns correct results for multi-matching tag", function () {
+                const foundEntries = this.vault.findEntriesByTag("new");
+                expect(foundEntries).to.have.lengthOf(2);
+                expect(foundEntries[0].id).to.equal(this.entry1.id);
+                expect(foundEntries[1].id).to.equal(this.entry2.id);
+            });
+        });
+
+        describe("using partial matching", function () {
+            it("returns correct results for matching prefix", function () {
+                const foundEntries = this.vault.findEntriesByTag("metal_", false);
+                expect(foundEntries).to.have.lengthOf(2);
+                expect(foundEntries[0].id).to.equal(this.entry1.id);
+                expect(foundEntries[1].id).to.equal(this.entry2.id);
+            });
+        });
+    });
+
     describe("findGroupByID", function () {
         beforeEach(function () {
             this.vault = new Vault();
