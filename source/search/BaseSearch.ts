@@ -3,7 +3,7 @@ import { StorageInterface } from "../storage/StorageInterface.js";
 import { buildSearcher } from "./searcher.js";
 import { Vault } from "../core/Vault.js";
 import { EntryID, EntryType, GroupID, VaultFacade, VaultID } from "../types.js";
-import { extractTagsFromSearchTerm } from "./tags.js";
+import { extractTagsFromSearchTerm, tagsMatchSearch } from "./tags.js";
 
 interface DomainScores {
     [domain: string]: number;
@@ -142,15 +142,17 @@ export class BaseSearch {
         const { tags, term: searchTerm } = extractTagsFromSearchTerm(term);
         if (tags.length > 0) {
             // Instantiate new searcher based on a subset of entries
-            const subset = this._entries.filter((entry) =>
-                entry.tags.some((entryTag) => tags.includes(entryTag))
-            );
+            const subset = this._entries.filter((entry) => tagsMatchSearch(tags, entry.tags));
+            if (searchTerm.trim().length === 0) {
+                // Tags only, return all entries
+                return subset;
+            }
             this._fuse = this._searcherFactory(subset);
         } else {
             // Reset instance
             this._fuse = this._searcherFactory(this._entries);
         }
-        this._results = this._fuse.search(term).map((result) => result.item);
+        this._results = this._fuse.search(searchTerm).map((result) => result.item);
         return this._results;
     }
 

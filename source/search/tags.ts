@@ -18,3 +18,9 @@ export function extractTagsFromSearchTerm(term: string): {
         term: searchItems.join(" ").trim()
     };
 }
+
+export function tagsMatchSearch(searchTags: Array<string>, entryTags: Array<string>): boolean {
+    return searchTags.every((searchTag) =>
+        entryTags.some((entryTag) => entryTag.indexOf(searchTag) === 0)
+    );
+}
