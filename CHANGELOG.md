@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v7.5.0
+_2024-01-29_
+
+ * [#224](https://github.com/buttercup/buttercup-core/issues/224) Entry **tags**
+
 ## v7.4.0
 _2023-12-09_
 
