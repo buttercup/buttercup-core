@@ -59,6 +59,8 @@ export class Vault extends EventEmitter {
 
     _onCommandExec: () => void;
 
+    _tagMap: Map<string, Array<EntryID>> = new Map();
+
     /**
      * The vault format
      * @readonly
@@ -172,6 +174,31 @@ export class Vault extends EventEmitter {
     }
 
     /**
+     * Find entries by a certain tag
+     * @param tag The case-insensitive tag name
+     * @param exact Whether to match exact tag names or use partial
+     *  matching. Default is true (exact).
+     * @returns An array of entries
+     */
+    findEntriesByTag(tag: string, exact: boolean = true): Array<Entry> {
+        const tagLower = tag.toLowerCase();
+        if (!exact) {
+            const entryIDs = new Set<string>();
+            for (const [currentTag, currentIDs] of this._tagMap.entries()) {
+                if (currentTag.toLowerCase().indexOf(tagLower) === 0) {
+                    for (const id of currentIDs) {
+                        entryIDs.add(id);
+                    }
+                }
+            }
+            return [...entryIDs].map((id) => this.findEntryByID(id));
+        }
+        const entryIDs = this._tagMap.has(tagLower) ? this._tagMap.get(tagLower) : [];
+        console.log("SEARCHING", entryIDs, this._tagMap);
+        return entryIDs.map((id) => this.findEntryByID(id));
+    }
+
+    /**
      * Find a group by its ID
      * @param id The group ID to search for
      * @returns The group or null if not found
@@ -207,6 +234,14 @@ export class Vault extends EventEmitter {
      */
     getAllGroups(): Array<Group> {
         return [...this._groups];
+    }
+
+    /**
+     * Get all registered entry tags
+     * @returns An array of tag strings
+     */
+    getAllTags(): Array<string> {
+        return [...this._tagMap.keys()];
     }
 
     /**
@@ -273,6 +308,24 @@ export class Vault extends EventEmitter {
             const id = this.format.getItemID(rawEntry);
             if (!this._entries.find((e) => e.id === id)) {
                 this._entries.push(new Entry(this, rawEntry));
+            }
+        });
+        this._rebuildTags();
+    }
+
+    _rebuildTags() {
+        this._tagMap = new Map();
+        this.getAllEntries().forEach((entry) => {
+            const tags = entry.getTags();
+            for (const tag of tags) {
+                const tagLower = tag.toLowerCase();
+                const existingIDs = this._tagMap.has(tagLower)
+                    ? [...this._tagMap.get(tagLower)]
+                    : [];
+                if (!existingIDs.includes(entry.id)) {
+                    existingIDs.push(entry.id);
+                }
+                this._tagMap.set(tagLower, existingIDs);
             }
         });
     }

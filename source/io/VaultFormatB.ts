@@ -130,6 +130,7 @@ export class VaultFormatB extends VaultFormat {
                 this.cloneGroup(childGroup, newGroup.id);
             }
         });
+        this.emit("commandsExecuted");
     }
 
     createEntry(groupID: GroupID, entryID: EntryID) {
@@ -140,6 +141,7 @@ export class VaultFormatB extends VaultFormat {
             a: {}
         };
         this.source.e.push(entry);
+        this.emit("commandsExecuted");
     }
 
     createGroup(parentID: GroupID, groupID: GroupID) {
@@ -150,6 +152,7 @@ export class VaultFormatB extends VaultFormat {
             a: {}
         };
         this.source.g.push(group);
+        this.emit("commandsExecuted");
     }
 
     deleteEntry(entryID: EntryID) {
@@ -157,6 +160,7 @@ export class VaultFormatB extends VaultFormat {
         if (ind >= 0) {
             this.source.e.splice(ind, 1);
             this.source.del.e[entryID] = Date.now();
+            this.emit("commandsExecuted");
         }
     }
 
@@ -164,12 +168,14 @@ export class VaultFormatB extends VaultFormat {
         const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
         if (!entry.a[attribute]) return;
         entry.a[attribute].deleted = getTimestamp();
+        this.emit("commandsExecuted");
     }
 
     deleteEntryProperty(entryID: EntryID, property: string) {
         const entry = this.source.e.find((e) => e.id === entryID);
         if (!entry.p[property]) return;
         entry.p[property].deleted = getTimestamp();
+        this.emit("commandsExecuted");
     }
 
     deleteGroup(groupID: GroupID) {
@@ -177,6 +183,7 @@ export class VaultFormatB extends VaultFormat {
         if (ind >= 0) {
             this.source.g.splice(ind, 1);
             this.source.del.g[groupID] = Date.now();
+            this.emit("commandsExecuted");
         }
     }
 
@@ -184,11 +191,13 @@ export class VaultFormatB extends VaultFormat {
         const group = this.source.g.find((g) => g.id === groupID);
         if (!group.a[attribute]) return;
         group.a[attribute].deleted = getTimestamp();
+        this.emit("commandsExecuted");
     }
 
     deleteVaultAttribute(attribute: string) {
         if (!this.source.a[attribute]) return;
         this.source.a[attribute].deleted = getTimestamp();
+        this.emit("commandsExecuted");
     }
 
     erase() {
@@ -239,6 +248,7 @@ export class VaultFormatB extends VaultFormat {
 
     generateID() {
         this.source.id = generateUUID();
+        this.emit("commandsExecuted");
     }
 
     getAllEntries(parentID: GroupID = null): Array<FormatBEntry> {
@@ -338,18 +348,23 @@ export class VaultFormatB extends VaultFormat {
             this.source.del.g = {};
         }
         if (!this.source.id) {
+            // Emits "commandsExecuted"
             this.generateID();
+        } else {
+            this.emit("commandsExecuted");
         }
     }
 
     moveEntry(entryID: EntryID, groupID: GroupID) {
         const entry = this.source.e.find((e: FormatBEntry) => e.id === entryID);
         entry.g = groupID;
+        this.emit("commandsExecuted");
     }
 
     moveGroup(groupID: GroupID, newParentID: GroupID) {
         const group = this.source.g.find((g: FormatBGroup) => g.id === groupID);
         group.g = newParentID;
+        this.emit("commandsExecuted");
     }
 
     optimise() {
@@ -393,6 +408,7 @@ export class VaultFormatB extends VaultFormat {
                 delete this.source.del.g[groupID];
             }
         }
+        this.emit("commandsExecuted");
     }
 
     prepareOrphansGroup(): FormatBGroup {
@@ -419,6 +435,7 @@ export class VaultFormatB extends VaultFormat {
             item.value = value;
             item.updated = getTimestamp();
         }
+        this.emit("commandsExecuted");
     }
 
     setEntryProperty(entryID: EntryID, property: string, value: string) {
@@ -431,6 +448,7 @@ export class VaultFormatB extends VaultFormat {
             item.value = value;
             item.updated = getTimestamp();
         }
+        this.emit("commandsExecuted");
     }
 
     setGroupAttribute(groupID: GroupID, attribute: string, value: string) {
@@ -443,11 +461,13 @@ export class VaultFormatB extends VaultFormat {
             item.value = value;
             item.updated = getTimestamp();
         }
+        this.emit("commandsExecuted");
     }
 
     setGroupTitle(groupID: GroupID, title: string) {
         const group = this.source.g.find((g: FormatBGroup) => g.id === groupID);
         group.t = title;
+        this.emit("commandsExecuted");
     }
 
     setVaultAttribute(key: string, value: string) {
@@ -459,5 +479,6 @@ export class VaultFormatB extends VaultFormat {
             item.value = value;
             item.updated = getTimestamp();
         }
+        this.emit("commandsExecuted");
     }
 }

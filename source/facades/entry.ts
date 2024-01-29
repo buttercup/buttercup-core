@@ -199,6 +199,22 @@ export function createEntryFromFacade(group: Group, facade: EntryFacade): Entry 
 
 /**
  * Convert an array of entry facade fields to a
+ * key-value object with only attributes
+ * @param facadeFields Array of fields
+ * @memberof module:Buttercup
+ */
+export function fieldsToAttributes(facadeFields: Array<EntryFacadeField>): {
+    [key: string]: string;
+} {
+    return facadeFields.reduce((output, field) => {
+        if (field.propertyType !== EntryPropertyType.Attribute) return output;
+        output[field.property] = field.value;
+        return output;
+    }, {});
+}
+
+/**
+ * Convert an array of entry facade fields to a
  * key-value object with only properties
  * @param facadeFields Array of fields
  * @memberof module:Buttercup
@@ -207,7 +223,7 @@ export function fieldsToProperties(facadeFields: Array<EntryFacadeField>): {
     [key: string]: string;
 } {
     return facadeFields.reduce((output, field) => {
-        if (field.propertyType !== "property") return output;
+        if (field.propertyType !== EntryPropertyType.Property) return output;
         output[field.property] = field.value;
         return output;
     }, {});

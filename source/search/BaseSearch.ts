@@ -3,6 +3,7 @@ import { StorageInterface } from "../storage/StorageInterface.js";
 import { buildSearcher } from "./searcher.js";
 import { Vault } from "../core/Vault.js";
 import { EntryID, EntryType, GroupID, VaultFacade, VaultID } from "../types.js";
+import { extractTagsFromSearchTerm, tagsMatchSearch } from "./tags.js";
 
 interface DomainScores {
     [domain: string]: number;
@@ -22,10 +23,11 @@ export interface SearcherFactory {
 }
 
 export interface SearchResult {
-    id: EntryID;
-    groupID: GroupID;
-    properties: { [property: string]: string };
     entryType: EntryType;
+    groupID: GroupID;
+    id: EntryID;
+    properties: { [property: string]: string };
+    tags: Array<string>;
     urls: Array<string>;
     vaultID: VaultID;
 }
@@ -137,7 +139,20 @@ export class BaseSearch {
         if (!this._fuse) {
             throw new Error("Searching interface not prepared");
         }
-        this._results = this._fuse.search(term).map((result) => result.item);
+        const { tags, term: searchTerm } = extractTagsFromSearchTerm(term);
+        if (tags.length > 0) {
+            // Instantiate new searcher based on a subset of entries
+            const subset = this._entries.filter((entry) => tagsMatchSearch(tags, entry.tags));
+            if (searchTerm.trim().length === 0) {
+                // Tags only, return all entries
+                return subset;
+            }
+            this._fuse = this._searcherFactory(subset);
+        } else {
+            // Reset instance
+            this._fuse = this._searcherFactory(this._entries);
+        }
+        this._results = this._fuse.search(searchTerm).map((result) => result.item);
         return this._results;
     }
 

@@ -22,22 +22,26 @@ describe("VaultEntrySearch", function () {
             .createEntry("Work")
             .setProperty("username", "j.crowley@gmov.edu.au")
             .setProperty("password", "#f05c.*skU3")
-            .setProperty("URL", "gmov.edu.au/portal/auth");
+            .setProperty("URL", "gmov.edu.au/portal/auth")
+            .addTags("job");
         groupA
             .createEntry("Work logs")
             .setProperty("username", "j.crowley@gmov.edu.au")
             .setProperty("password", "#f05c.*skU3")
-            .setProperty("URL", "https://logs.gmov.edu.au/sys30/atc.php");
+            .setProperty("URL", "https://logs.gmov.edu.au/sys30/atc.php")
+            .addTags("job");
         const groupB = vault.createGroup("Bank");
         groupB
             .createEntry("MyBank")
             .setProperty("username", "324654356346")
             .setProperty("PIN", "1234")
-            .setAttribute(Entry.Attributes.FacadeType, EntryType.Login);
+            .setAttribute(Entry.Attributes.FacadeType, EntryType.Login)
+            .addTags("finance", "banking");
         groupB
             .createEntry("Insurance")
             .setProperty("username", "testing-user")
-            .setProperty("URL", "http://test.org/portal-int/login.aspx");
+            .setProperty("URL", "http://test.org/portal-int/login.aspx")
+            .addTags("finance");
         const groupC = vault.createGroup("General");
         groupC
             .createEntry("Clipart")
@@ -122,6 +126,25 @@ describe("VaultEntrySearch", function () {
             it("returns results including entry group IDs", function () {
                 const [res] = this.search.searchByTerm("Personal Mail");
                 expect(res).to.have.property("groupID").that.is.a("string");
+            });
+
+            it("returns results using a single tag, no search", function () {
+                const results = this.search.searchByTerm("#job").map((res) => res.properties.title);
+                expect(results).to.deep.equal(["Work", "Work logs"]);
+            });
+
+            it("returns results using multiple tags, no search", function () {
+                const results = this.search
+                    .searchByTerm("#finance #banking")
+                    .map((res) => res.properties.title);
+                expect(results).to.deep.equal(["MyBank"]);
+            });
+
+            it("returns results using tags and search", function () {
+                const results = this.search
+                    .searchByTerm("#job logs")
+                    .map((res) => res.properties.title);
+                expect(results).to.deep.equal(["Work logs"]);
             });
         });
 

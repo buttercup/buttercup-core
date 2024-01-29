@@ -3,6 +3,7 @@ import { generateUUID } from "../tools/uuid.js";
 import { getEntryURLs, EntryURLType } from "../tools/entry.js";
 import { Group } from "./Group.js";
 import { Vault } from "./Vault.js";
+import { isValidTag } from "../tools/tag.js";
 import {
     EntryChange,
     EntryPropertyValueType,
@@ -20,7 +21,8 @@ export class Entry extends VaultItem {
     static Attributes = Object.freeze({
         AttachmentPrefix: "BC_ENTRY_ATTACHMENT:",
         FacadeType: "BC_ENTRY_FACADE_TYPE",
-        FieldTypePrefix: "BC_ENTRY_FIELD_TYPE:"
+        FieldTypePrefix: "BC_ENTRY_FIELD_TYPE:",
+        Tags: "BC_ENTRY_TAGS"
     });
 
     /**
@@ -45,6 +47,24 @@ export class Entry extends VaultItem {
         vault.format.createEntry(parentGroupID, id);
         vault._rebuild();
         return vault.findEntryByID(id);
+    }
+
+    /**
+     * Add one or more tags to the entry
+     * @param tags A collection of tag strings
+     * @returns Self
+     */
+    addTags(...tags: Array<string>): this {
+        const current = new Set(this.getTags());
+        for (const tag of tags) {
+            const tagLower = tag.toLowerCase();
+            if (!isValidTag(tagLower)) {
+                throw new Error(`Cannot add entry tag: Invalid format: ${tagLower}`);
+            }
+            current.add(tagLower);
+        }
+        this.setAttribute(Entry.Attributes.Tags, [...current].join(","));
+        return this;
     }
 
     /**
@@ -108,6 +128,8 @@ export class Entry extends VaultItem {
      *  containing all attribute keys and their values if no attribute name
      *  is provided
      */
+    getAttribute(): PropertyKeyValueObject;
+    getAttribute(attribute: string): string | undefined;
     getAttribute(attribute?: string): PropertyKeyValueObject | string | undefined {
         const attributes = this.vault.format.getEntryAttributes(this._source) || {};
         if (typeof attribute === "undefined") {
@@ -190,8 +212,21 @@ export class Entry extends VaultItem {
     }
 
     /**
+     * Get entry tags
+     * @returns An array of tag strings
+     */
+    getTags(): Array<string> {
+        const tags = this.getAttribute(Entry.Attributes.Tags);
+        return typeof tags === "string"
+            ? tags.split(",").reduce((output, tag) => {
+                  return isValidTag(tag) ? [...output, tag] : output;
+              }, [])
+            : [];
+    }
+
+    /**
      * Get the entry type
-     * @returns
+     * @returns The entry type
      */
     getType(): EntryType {
         return (
@@ -230,6 +265,21 @@ export class Entry extends VaultItem {
      */
     moveToGroup(group: Group): this {
         this.vault.format.moveEntry(this.id, group.id);
+        return this;
+    }
+
+    /**
+     * Remove one or more tags
+     * @param tags Collection of tags to remove
+     * @returns Self
+     */
+    removeTags(...tags: Array<string>): this {
+        const current = new Set(this.getTags());
+        for (const tag of tags) {
+            const tagLower = tag.toLowerCase();
+            current.delete(tagLower);
+        }
+        this.setAttribute(Entry.Attributes.Tags, [...current].join(","));
         return this;
     }
 
