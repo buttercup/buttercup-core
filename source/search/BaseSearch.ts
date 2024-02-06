@@ -2,8 +2,8 @@ import levenshtein from "fast-levenshtein";
 import { StorageInterface } from "../storage/StorageInterface.js";
 import { buildSearcher } from "./searcher.js";
 import { Vault } from "../core/Vault.js";
-import { EntryID, EntryType, GroupID, VaultFacade, VaultID } from "../types.js";
 import { extractTagsFromSearchTerm, tagsMatchSearch } from "./tags.js";
+import { EntryID, EntryType, GroupID, VaultFacade, VaultID, VaultSourceID } from "../types.js";
 
 interface DomainScores {
     [domain: string]: number;
@@ -28,6 +28,7 @@ export interface SearchResult {
     id: EntryID;
     properties: { [property: string]: string };
     tags: Array<string>;
+    sourceID?: VaultSourceID;
     urls: Array<string>;
     vaultID: VaultID;
 }
@@ -78,8 +79,17 @@ export class BaseSearch {
 
     /**
      * Last search results
+     * @deprecated Use `getResults` instead
      */
     get results(): Array<SearchResult> {
+        return this._results;
+    }
+
+    /**
+     * Get last search results
+     * @returns An array of results
+     */
+    getResults(): Array<SearchResult> {
         return this._results;
     }
 
@@ -110,7 +120,7 @@ export class BaseSearch {
      * Prepare the search instance by processing
      * entries
      */
-    async prepare() {
+    async prepare(): Promise<void> {
         this._entries = [];
         this._scores = {};
         for (const target of this._targets) {

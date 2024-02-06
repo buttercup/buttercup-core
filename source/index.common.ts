@@ -80,6 +80,7 @@ export { SearchResult } from "./search/BaseSearch.js";
 export { VaultEntrySearch as Search } from "./search/VaultEntrySearch.js"; // compat @todo remove
 export { VaultEntrySearch } from "./search/VaultEntrySearch.js";
 export { VaultFacadeEntrySearch } from "./search/VaultFacadeEntrySearch.js";
+export { VaultSourceEntrySearch } from "./search/VaultSourceEntrySearch.js";
 export { SearchKey, buildSearcher } from "./search/searcher.js";
 
 export { AppEnv, AppEnvGetPropertyOptions } from "./env/core/appEnv.js";

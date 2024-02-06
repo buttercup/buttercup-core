@@ -1,52 +1,29 @@
 import { expect } from "chai";
-import { EntryType, MemoryStorageInterface, VaultEntrySearch } from "../../../dist/node/index.js";
-import { createSampleVault } from "./helpers.js";
+import {
+    EntryType,
+    MemoryStorageInterface,
+    VaultSourceEntrySearch
+} from "../../../dist/node/index.js";
+import { createSampleManager } from "./helpers.js";
 
-describe("VaultEntrySearch", function () {
-    beforeEach(function () {
-        this.vault = createSampleVault();
+describe("VaultSourceEntrySearch", function () {
+    beforeEach(async function () {
+        const [, source] = await createSampleManager();
+        this.source = source;
+        this.vault = source.vault;
     });
 
     it("can be instantiated", function () {
         expect(() => {
-            new VaultEntrySearch([this.vault]);
+            new VaultSourceEntrySearch([this.source]);
         }).to.not.throw();
     });
 
     describe("instance", function () {
         beforeEach(function () {
             this.storage = new MemoryStorageInterface();
-            this.search = new VaultEntrySearch([this.vault], this.storage);
+            this.search = new VaultSourceEntrySearch([this.source], this.storage);
             return this.search.prepare();
-        });
-
-        describe("incrementScore", function () {
-            it("writes correct first scores", async function () {
-                await this.search.incrementScore("111", "222", "http://test.org/abc");
-                await this.search.incrementScore("111", "222", "http://example.spec.xyz/");
-                await this.search.incrementScore("111", "333", "http://a.b.com.au");
-                const res = await this.storage.getValue("bcup_search_111");
-                expect(JSON.parse(res)).to.deep.equal({
-                    222: {
-                        "test.org": 1,
-                        "example.spec.xyz": 1
-                    },
-                    333: {
-                        "a.b.com.au": 1
-                    }
-                });
-            });
-
-            it("writes correct incremented scores", async function () {
-                await this.search.incrementScore("111", "222", "http://test.org/abc");
-                await this.search.incrementScore("111", "222", "http://test.org/testing");
-                const res = await this.storage.getValue("bcup_search_111");
-                expect(JSON.parse(res)).to.deep.equal({
-                    222: {
-                        "test.org": 2
-                    }
-                });
-            });
         });
 
         describe("searchByTerm", function () {
@@ -89,6 +66,13 @@ describe("VaultEntrySearch", function () {
                     .searchByTerm("#job logs")
                     .map((res) => res.properties.title);
                 expect(results).to.deep.equal(["Work logs"]);
+            });
+
+            describe("results", function () {
+                it("contain source ID", function () {
+                    const [res] = this.search.searchByTerm("Personal Mail");
+                    expect(res).to.have.property("sourceID", this.source.id);
+                });
             });
         });
 
