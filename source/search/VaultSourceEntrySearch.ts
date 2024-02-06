@@ -25,9 +25,18 @@ export class VaultSourceEntrySearch extends VaultEntrySearch {
 
     /**
      * Last search results
+     * @deprecated Use `getResults` instead
      */
     get results(): Array<SearchResult> {
-        return this._results.map((res) => {
+        return this.getResults();
+    }
+
+    /**
+     * Get last search results
+     * @returns An array of results
+     */
+    getResults(): Array<SearchResult> {
+        return super.getResults().map((res) => {
             const output = res;
             const source = this._sources.find((src) => src?.vault?.id === output.vaultID);
             if (source) {
