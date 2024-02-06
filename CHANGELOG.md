@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v7.6.0
+_2024-02-06_
+
+ * `VaultSourceEntrySearch` for searching vault sources rather than vaults/facades
+
 ## v7.5.0
 _2024-01-29_
 
