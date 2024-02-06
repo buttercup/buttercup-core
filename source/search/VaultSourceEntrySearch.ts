@@ -36,4 +36,38 @@ export class VaultSourceEntrySearch extends VaultEntrySearch {
             return output;
         });
     }
+
+    /**
+     * Search for entries by term
+     * @param term The term to search for
+     * @returns An array of search results
+     */
+    searchByTerm(term: string): Array<SearchResult> {
+        const results = super.searchByTerm(term);
+        return results.map((res) => {
+            const output = res;
+            const source = this._sources.find((src) => src?.vault?.id === output.vaultID);
+            if (source) {
+                output.sourceID = source.id;
+            }
+            return output;
+        });
+    }
+
+    /**
+     * Search for entries by URL
+     * @param url The URL to search with
+     * @returns An array of search results
+     */
+    searchByURL(url: string): Array<SearchResult> {
+        const results = super.searchByURL(url);
+        return results.map((res) => {
+            const output = res;
+            const source = this._sources.find((src) => src?.vault?.id === output.vaultID);
+            if (source) {
+                output.sourceID = source.id;
+            }
+            return output;
+        });
+    }
 }
