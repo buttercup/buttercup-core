@@ -1,5 +1,10 @@
 # Core library changelog
 
+## v7.7.0
+_2024-03-18_
+
+ * WebDAV automatic auth type detection
+
 ## v7.6.0
 _2024-02-06_
 
