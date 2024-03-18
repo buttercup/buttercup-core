@@ -1,4 +1,5 @@
-import { WebDAVClient } from "webdav";
+import { AuthType, WebDAVClient } from "webdav";
+import type { createClient as createWebDAVClient } from "webdav";
 import pathPosix from "path-posix";
 import { TextDatasource } from "./TextDatasource.js";
 import { fireInstantiationHandlers, registerDatasource } from "./register.js";
@@ -39,9 +40,12 @@ export default class WebDAVDatasource extends TextDatasource {
         };
         const { endpoint, password, path, username } = (this._config = datasourceConfig);
         this._path = path;
-        const createClient = getSharedAppEnv().getProperty("net/webdav/v1/newClient");
+        const createClient = getSharedAppEnv().getProperty(
+            "net/webdav/v1/newClient"
+        ) as typeof createWebDAVClient;
         if (typeof username === "string" && typeof password === "string") {
             this._client = createClient(endpoint, {
+                authType: AuthType.Auto,
                 username,
                 password,
                 maxBodyLength: MAX_DATA_SIZE,

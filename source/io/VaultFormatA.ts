@@ -349,8 +349,8 @@ export class VaultFormatA extends VaultFormat {
                 const type = !item.originalValue
                     ? EntryChangeType.Created
                     : typeof item.newValue === "string"
-                    ? EntryChangeType.Modified
-                    : EntryChangeType.Deleted;
+                      ? EntryChangeType.Modified
+                      : EntryChangeType.Deleted;
                 const change: EntryChange = {
                     property: item.property,
                     type,

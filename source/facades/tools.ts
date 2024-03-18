@@ -50,8 +50,8 @@ export function createFieldDescriptor(
         valueType: valueType
             ? valueType
             : entryPropertyType === "attribute"
-            ? null
-            : getEntryPropertyValueType(entry, entryPropertyName),
+              ? null
+              : getEntryPropertyValueType(entry, entryPropertyName),
         formatting,
         removeable
     };
