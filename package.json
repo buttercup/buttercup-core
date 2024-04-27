@@ -6,11 +6,13 @@
   "exports": {
     ".": {
       "browser": "./dist/web/index.js",
+      "react-native": "./dist/react-native/index.js",
       "default": "./dist/node/index.js"
     },
+    "./react-native": "./dist/react-native/index.js",
     "./web": "./dist/web/index.js"
   },
-  "react-native": "./dist/web/index.js",
+  "react-native": "./dist/react-native/index.js",
   "types": "dist/node/index.d.ts",
   "contributors": [
     {
@@ -101,7 +103,7 @@
     "pify": "^6.1.0",
     "url-join": "^5.0.0",
     "uuid": "^9.0.1",
-    "webdav": "^5.5.0"
+    "webdav": "^5.6.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.4",
@@ -142,6 +144,7 @@
     "webdav-server": "^2.6.2",
     "webpack": "^5.89.0",
     "webpack-bundle-analyzer": "^4.10.1",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "^5.10.0"
   }
 }
