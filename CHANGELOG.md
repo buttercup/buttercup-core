@@ -1,5 +1,11 @@
 # Core library changelog
 
+## v7.7.1
+_2024-05-12_
+
+ * **Bugfix**:
+   * `group` parameter in `createGroupFacade` was not optional
+
 ## v7.7.0
 _2024-03-18_
 
