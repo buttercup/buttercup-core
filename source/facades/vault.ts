@@ -273,7 +273,7 @@ export function createVaultFacade(
  * @param parentID The parent ID of the group
  * @memberof module:Buttercup
  */
-export function createGroupFacade(group: Group, parentID: GroupID = "0"): GroupFacade {
+export function createGroupFacade(group: Group | null, parentID: GroupID = "0"): GroupFacade {
     return {
         type: "group",
         id: group ? group.id : null,
