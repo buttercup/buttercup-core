@@ -16,6 +16,14 @@ A NodeJS secrets vault.
 
 [![NPM](https://nodei.co/npm/buttercup.png)](https://www.npmjs.com/package/buttercup)
 
+---
+
+⚠️ **Project Closure** ⚠️
+
+The Buttercup project has come to an end, and these repositories are in transition to becoming public archives. No public-facing resources will be removed, wherever possible. Please do not create issues or PRs - they will unfortunately be ignored. Discussion can be found [here](https://github.com/buttercup/buttercup-desktop/discussions/1395), and explanation [here](https://gist.github.com/perry-mitchell/43ebfcec4d874b77a704be1d4f2262e6).
+
+---
+
 ## About
 
 Buttercup is a JavaScript password manager for NodeJS and the browser (though you can also see it used on platforms like [React Native](https://github.com/buttercup/buttercup-mobile)). It's based around the concept of a **Vault** and its secret **Entry** items (a login, credit card etc.). Entries are then separated into **Group** containers that make organising vaults a little easier.
